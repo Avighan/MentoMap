@@ -46,6 +46,22 @@ const MysteryRoomRenderer = ({
   const [lastHint, setLastHint] = useState(null);
   useEffect(() => { setLastHint(null); }, [openPuzzleId]);
 
+  // Soft auto-prompt (Task 24). After `auto_prompt_seconds` of inactivity
+  // on an open puzzle, drop a level-0 nudge into `lastHint` once. The next
+  // real hint (level 1+) replaces it.
+  const [autoPromptShown, setAutoPromptShown] = useState({});
+  const autoPromptSeconds = gameData?.hint_policy?.auto_prompt_seconds || 120;
+  useEffect(() => {
+    if (!openPuzzleId) return undefined;
+    if (autoPromptShown[openPuzzleId]) return undefined;
+    const timer = setTimeout(() => {
+      setAutoPromptShown((p) => ({ ...p, [openPuzzleId]: true }));
+      // Only nudge if no real hint has appeared in the meantime.
+      setLastHint((prev) => prev || { level: 0, text: 'Need a hint? Try the 🤔 button.' });
+    }, autoPromptSeconds * 1000);
+    return () => clearTimeout(timer);
+  }, [openPuzzleId, autoPromptShown, autoPromptSeconds]);
+
   // Stable label map for evidence items (used by EvidenceBoardModal).
   const evidenceLabels = useMemo(() => {
     const labels = {};
