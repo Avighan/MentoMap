@@ -198,6 +198,18 @@ class EscapeRoomEngine:
             unlocked.append(opt["id"])
         return unlocked
 
+    def compute_fingerprint(self, run_state: Dict[str, Any]) -> Dict[str, int]:
+        from collections import Counter
+        tags = Counter()
+        for entry in run_state.get("skill_tag_log", []):
+            for tag in entry.get("tags", []):
+                if tag.endswith("_negative") or tag.endswith("_positive"):
+                    base = tag.rsplit("_", 1)[0]
+                    tags[base] += 1 if tag.endswith("_positive") else -1
+                else:
+                    tags[tag] += 1
+        return dict(tags)
+
     def _find_hotspot(self, game_def, room_id, hotspot_id):
         for room in game_def.get("rooms", []):
             if room["id"] != room_id:

@@ -299,3 +299,20 @@ def test_request_hint_returns_first_then_second_then_solution():
     # past last hint = repeat last
     assert d4["events"][0]["text"] == "solution"
     assert s4["hints_used"]["p1"] == 4
+
+
+def test_compute_fingerprint_aggregates_skill_tag_log():
+    g = _minimal_game_def()
+    engine = EscapeRoomEngine()
+    state = engine.start({}, g)
+    state["skill_tag_log"] = [
+        {"action": "examine", "target": "x", "tags": ["empathy"]},
+        {"action": "solve_puzzle", "target": "p1", "tags": ["empathy", "critical_thinking"]},
+        {"action": "climax_choose", "target": "whistleblower", "tags": ["courage", "ethical_reasoning"]},
+    ]
+    fp = engine.compute_fingerprint(state)
+    assert fp["empathy"] == 2
+    assert fp["critical_thinking"] == 1
+    assert fp["courage"] == 1
+    assert fp["ethical_reasoning"] == 1
+    assert sum(fp.values()) == 5
