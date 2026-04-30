@@ -63,3 +63,36 @@ def test_examine_unknown_hotspot_raises():
     state = engine.start({}, _minimal_game_def())
     with pytest.raises(ValueError, match="unknown hotspot"):
         engine.handle_action(state, _minimal_game_def(), {"action": "examine", "target": "hotspot:nope"})
+
+
+def test_pickup_adds_item_to_inventory_and_evidence():
+    game_def = _minimal_game_def()
+    game_def["rooms"][0]["hotspots"] = [
+        {"id": "key_spot", "bbox": [0,0,0.1,0.1], "yields_item": "staff_room_key"}
+    ]
+    game_def["items"] = [
+        {"id": "staff_room_key", "icon": "/k.png", "is_evidence": True,
+         "skill_tags_on_pickup": ["strategic_thinking"]}
+    ]
+    engine = EscapeRoomEngine()
+    state = engine.start({}, game_def)
+
+    new_state, deltas = engine.handle_action(
+        state, game_def, {"action": "pickup", "target": "hotspot:key_spot"}
+    )
+    assert "staff_room_key" in new_state["inventory"]
+    assert "staff_room_key" in new_state["evidence_collected"]
+    assert deltas["skill_tags"] == ["strategic_thinking"]
+
+
+def test_pickup_twice_is_idempotent():
+    game_def = _minimal_game_def()
+    game_def["rooms"][0]["hotspots"] = [
+        {"id": "key_spot", "bbox": [0,0,0.1,0.1], "yields_item": "k1"}
+    ]
+    game_def["items"] = [{"id": "k1", "icon": "/k.png", "is_evidence": False}]
+    engine = EscapeRoomEngine()
+    state = engine.start({}, game_def)
+    engine.handle_action(state, game_def, {"action": "pickup", "target": "hotspot:key_spot"})
+    engine.handle_action(state, game_def, {"action": "pickup", "target": "hotspot:key_spot"})
+    assert state["inventory"].count("k1") == 1

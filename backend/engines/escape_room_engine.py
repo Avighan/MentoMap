@@ -28,20 +28,35 @@ class EscapeRoomEngine:
         run_state["hotspots_examined"] = []
         return run_state
 
-    def handle_action(
-        self,
-        run_state: Dict[str, Any],
-        game_def: Dict[str, Any],
-        action: Dict[str, Any],
-    ) -> tuple:
-        """
-        Dispatch an action verb. Returns (new_state, deltas).
-        deltas = {"skill_tags": [...], "knowledge_delta": 0, "events": [...]}
-        """
+    def handle_action(self, run_state, game_def, action):
         verb = action.get("action")
-        if verb == "examine":
-            return self._examine(run_state, game_def, action)
-        raise ValueError(f"unknown action verb: {verb}")
+        dispatch = {
+            "examine": self._examine,
+            "pickup": self._pickup,
+        }
+        if verb not in dispatch:
+            raise ValueError(f"unknown action verb: {verb}")
+        return dispatch[verb](run_state, game_def, action)
+
+    def _pickup(self, run_state, game_def, action):
+        target = action.get("target", "")
+        if not target.startswith("hotspot:"):
+            raise ValueError(f"pickup target must be a hotspot: {target}")
+        hotspot_id = target.split(":", 1)[1]
+        hotspot = self._find_hotspot(game_def, run_state["current_room"], hotspot_id)
+        if hotspot is None or "yields_item" not in hotspot:
+            raise ValueError(f"hotspot has no item: {hotspot_id}")
+        item_id = hotspot["yields_item"]
+        item = next((i for i in game_def.get("items", []) if i["id"] == item_id), None)
+        if item is None:
+            raise ValueError(f"item not found in catalogue: {item_id}")
+        if item_id not in run_state["inventory"]:
+            run_state["inventory"].append(item_id)
+            if item.get("is_evidence"):
+                run_state["evidence_collected"].append(item_id)
+        tags = list(item.get("skill_tags_on_pickup", []))
+        run_state["skill_tag_log"].append({"action": "pickup", "target": item_id, "tags": tags})
+        return run_state, {"skill_tags": tags, "knowledge_delta": 0, "events": [{"type": "pickup", "item": item_id}]}
 
     def _examine(self, run_state, game_def, action):
         target = action.get("target", "")
