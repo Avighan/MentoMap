@@ -279,3 +279,23 @@ def test_move_to_room_invalid_exit_raises():
     state = engine.start({}, g)
     with pytest.raises(ValueError, match="no exit"):
         engine.handle_action(state, g, {"action": "move_to_room", "target": "classroom"})
+
+
+def test_request_hint_returns_first_then_second_then_solution():
+    g = _minimal_game_def()
+    g["puzzles"] = [{"id": "p1", "type": "factual", "options": ["a","b"], "correct": 0,
+                     "skill_tags_correct": [], "skill_tags_wrong": []}]
+    g["hints"] = {"p1": ["nudge", "pointer", "solution"]}
+    engine = EscapeRoomEngine()
+    state = engine.start({}, g)
+
+    s1, d1 = engine.handle_action(state, g, {"action": "request_hint", "puzzle_id": "p1"})
+    assert d1["events"][0] == {"type": "hint", "puzzle_id": "p1", "level": 1, "text": "nudge"}
+    s2, d2 = engine.handle_action(s1, g, {"action": "request_hint", "puzzle_id": "p1"})
+    assert d2["events"][0]["text"] == "pointer"
+    s3, d3 = engine.handle_action(s2, g, {"action": "request_hint", "puzzle_id": "p1"})
+    assert d3["events"][0]["text"] == "solution"
+    s4, d4 = engine.handle_action(s3, g, {"action": "request_hint", "puzzle_id": "p1"})
+    # past last hint = repeat last
+    assert d4["events"][0]["text"] == "solution"
+    assert s4["hints_used"]["p1"] == 4

@@ -37,6 +37,7 @@ class EscapeRoomEngine:
             "submit_synthesis": self._submit_synthesis,
             "climax_choose": self._climax_choose,
             "move_to_room": self._move_to_room,
+            "request_hint": self._request_hint,
         }
         if verb not in dispatch:
             raise ValueError(f"unknown action verb: {verb}")
@@ -143,6 +144,17 @@ class EscapeRoomEngine:
             return 0
         correct = sum(1 for p in factual if run_state["puzzles_solved"].get(p["id"], {}).get("correct"))
         return round(correct / len(factual) * 100)
+
+    def _request_hint(self, run_state, game_def, action):
+        puzzle_id = action.get("puzzle_id")
+        ladder = game_def.get("hints", {}).get(puzzle_id, [])
+        if not ladder:
+            return run_state, {"skill_tags": [], "knowledge_delta": 0, "events": [{"type": "hint", "puzzle_id": puzzle_id, "level": 0, "text": "No hints available."}]}
+        used = run_state["hints_used"].get(puzzle_id, 0)
+        level = used + 1
+        idx = min(used, len(ladder) - 1)
+        run_state["hints_used"][puzzle_id] = level
+        return run_state, {"skill_tags": [], "knowledge_delta": 0, "events": [{"type": "hint", "puzzle_id": puzzle_id, "level": level, "text": ladder[idx]}]}
 
     def _move_to_room(self, run_state, game_def, action):
         target_room = action.get("target")
