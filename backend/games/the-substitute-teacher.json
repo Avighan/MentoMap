@@ -199,7 +199,117 @@
     "skill_tags_correct": ["critical_thinking"],
     "skill_tags_partial": ["adaptability"]
   },
-  "climax": {"options": []},
-  "hints": {},
-  "epilogues": {}
+  "climax": {
+    "modal_text": "You hear footsteps in the corridor outside. The lights at the far end flick on. Principal Sharma is back early. You have seconds to decide. The evidence you have found is in your hands. Do you knock on her door?",
+    "options": [
+      {
+        "id": "compliant_bystander",
+        "label": "Walk away quietly — leave everything as you found it",
+        "gating": null,
+        "gating_message": "",
+        "skill_tags": []
+      },
+      {
+        "id": "cautious_investigator",
+        "label": "Tell another teacher in general terms — let the adults sort it out",
+        "gating": null,
+        "gating_message": "",
+        "skill_tags": ["critical_thinking"]
+      },
+      {
+        "id": "quiet_protector",
+        "label": "Slip a note under Mrs. Iyer's door naming Aarav — no confrontation",
+        "gating": {"evidence_min": 4},
+        "gating_message": "Collect at least 4 pieces of evidence to unlock this path.",
+        "skill_tags": ["empathy", "courage"]
+      },
+      {
+        "id": "whistleblower",
+        "label": "Knock on Principal Sharma's door and present what you found",
+        "gating": {"evidence_min": 7, "synthesis_correct": true},
+        "gating_message": "Solve the evidence board with 7 or more pieces of evidence to unlock this path.",
+        "skill_tags": ["courage", "ethical_reasoning"]
+      }
+    ]
+  },
+  "hint_policy": {"auto_prompt_seconds": 120, "max_auto_prompts_per_puzzle": 1},
+  "hints": {
+    "p1_complaint": [
+      "The letter has two important parts — the body and the signature block at the bottom. Both are worth reading carefully.",
+      "Ignore the school letterhead at the top — that is just where it was received, not who wrote it. Focus on the name and address printed at the end of the letter.",
+      "The letter is signed by Aarav's parent. The correct answer is option A: a parent filed this complaint, not the school board, and it was not anonymous."
+    ],
+    "p2_voicemails": [
+      "Each voicemail tells you something different. One is official, one is threatening, one is worried. Which voice is most concerned about Aarav himself?",
+      "The first message is administrative. The second message tells you who applied pressure. But only one message specifically names Aarav and expresses worry about what happens to him next.",
+      "Voicemail 3 from Mrs. Iyer is the key. She confirms the complaint, says the Principal refused to act, and asks Ms. Banerjee not to let the situation disappear. Select option C."
+    ],
+    "p3_email_thread": [
+      "The emails have dates on them. Try reading the oldest date first — what set the whole chain in motion?",
+      "Ms. Banerjee wrote the very first email — she noticed something about Aarav and flagged it to the Principal. Everything that came after was a reaction to that one act of care.",
+      "The correct first email is option A: Ms. Banerjee's concern email to Principal Sharma, dated Monday. The full order is A (concern) → B (warning) → C (parent complaint) → D (transfer request) → E (approval)."
+    ],
+    "p4_drawing": [
+      "Look at where each figure is standing in relation to the others, and at Aarav's figure in particular. What does the body language and positioning suggest?",
+      "The adult figures are positioned close together, and the smaller figure stands apart. The child's face has no expression drawn in — that absence is deliberate. What emotion does that negative space communicate?",
+      "(No 'solution' — this puzzle is interpretive.)"
+    ],
+    "p5_notebook": [
+      "You are looking for a note that shows Ms. Banerjee was responding to something Aarav said, not inserting herself uninvited. Check the dates on each note — timing matters here.",
+      "The complaint says Ms. Banerjee was 'prying'. A note written the day before her email to the Principal would show whether that is true — did she act on her own initiative, or did she respond to Aarav?",
+      "The correct note is option B — written in blue ink, dated the day before Ms. Banerjee's first email to the Principal. It shows she wrote 'my door is always open' in direct response to something Aarav mentioned in class, not because she was prying."
+    ],
+    "p6_folded_note": [
+      "Think about who this note belongs to and what reading it without permission means — even if the information inside might help someone.",
+      "Both choices have real consequences. Reading it may reveal a clue but raises a question about privacy. Leaving it folded respects privacy but means you act on incomplete information. Neither choice is simply right or wrong.",
+      "(No 'solution' — this puzzle is interpretive.)"
+    ],
+    "evidence_board": [
+      "Try sorting what you have into three groups: things the Principal would say happened, things you believe actually happened based on the full picture, and anything that does not quite fit either story.",
+      "The complaint letter and the transfer notice belong to the principal's version of events. The voicemails, emails, and Aarav's drawing and notebook note belong to what actually happened. The staff-room key is a practical item — it does not tell you anything about the complaint.",
+      "Correct groupings: complaint_letter and transfer_notice go into 'principal_says'. The voicemail transcripts (especially 2 and 3), the email sequence, child_drawing, and notebook_note go into 'actually_happened'. The staff_room_key goes into 'irrelevant' — it was useful for access but is not evidence about Ms. Banerjee's transfer."
+    ]
+  },
+  "epilogues": {
+    "compliant_bystander": {
+      "image": "/uploads/mystery/the-substitute-teacher/epilogues/compliant_bystander.png",
+      "title": "You Walked Away",
+      "paragraphs": [
+        "You slip out of the staff room before Principal Sharma reaches the corridor. The door clicks shut behind you. You walk home through the school gate, the evidence still turning over in your mind. No one saw you. No one knows what you found.",
+        "The next morning, a substitute teacher stands at the front of Ms. Banerjee's classroom. Her name is written in neat capitals on the board. At lunch, you see Aarav sitting alone at the end of a table, staring at his food. He does not eat.",
+        "Some things stay with you even when you do nothing. This is one of them. There is no shame in choosing safety — but the question of what you could have done will sit with you for a while."
+      ],
+      "soft_skill_named": "Self-awareness"
+    },
+    "cautious_investigator": {
+      "image": "/uploads/mystery/the-substitute-teacher/epilogues/cautious_investigator.png",
+      "title": "You Passed It On",
+      "paragraphs": [
+        "You find your class teacher the next morning and tell them, carefully, that you think something is not right about Ms. Banerjee's transfer. You do not mention breaking in. You do not name Aarav. You just say: 'I think someone needs to look into it.'",
+        "Your teacher nods slowly and says they will look into it. Maybe they will. You watch the next few weeks for signs — a meeting, a change, anything. The substitute teacher stays. Aarav seems quieter than usual but not worse.",
+        "Passing information up the chain is a reasonable thing to do when you are not sure what to do with it yourself. You flagged it. Whether adults act on it is now in their hands — and outside yours."
+      ],
+      "soft_skill_named": "Critical thinking"
+    },
+    "quiet_protector": {
+      "image": "/uploads/mystery/the-substitute-teacher/epilogues/quiet_protector.png",
+      "title": "You Helped from the Shadows",
+      "paragraphs": [
+        "You find a sheet of paper and write Mrs. Iyer's name on the envelope — you remember it from the voicemail. You write two short lines: 'Aarav needs support. Ms. Banerjee was not wrong.' You fold it, slide it under the door of the staff room closest to Mrs. Iyer's name on the noticeboard, and walk away.",
+        "Two weeks later, you notice Aarav walking to school with Mrs. Iyer's class for a visit to the school garden. He is talking. His shoulders look less tight. Ms. Banerjee does not come back — but something changed.",
+        "You did not confront anyone. You did not put yourself at risk. But you made sure the right person had the right information. That kind of quiet care has its own strength — it is called empathy in action."
+      ],
+      "soft_skill_named": "Empathy"
+    },
+    "whistleblower": {
+      "image": "/uploads/mystery/the-substitute-teacher/epilogues/whistleblower.png",
+      "title": "You Spoke the Truth",
+      "paragraphs": [
+        "You knock on Principal Sharma's door. She opens it, startled to see a student. You place the evidence on her desk — the emails in sequence, the notebook note, the drawing. You say: 'I think Ms. Banerjee was transferred because she was trying to protect a student. I think that was wrong.' Your voice shakes, but you do not stop.",
+        "Principal Sharma asks how you got in. You tell her. She calls your parents. It is uncomfortable and frightening and takes several weeks to resolve. But the District Board reviews the case. Ms. Banerjee is reinstated three weeks later. Aarav's family is referred to the school counsellor.",
+        "At school, some students say you got a teacher in trouble. Others quietly say thank you. The pushback is real. But so is the outcome. Courage does not mean having no fear — it means going ahead despite the fear. You did that today."
+      ],
+      "soft_skill_named": "Courage"
+    }
+  }
 }
