@@ -1768,6 +1768,7 @@ _PUBLIC_GAME_TYPES = {
     'client_meeting', 'conflict_mediation', 'public_speaking',
     'stakeholder_update', 'ai_discussion',
     'story_branching',
+    'mystery_room',
 }
 
 
