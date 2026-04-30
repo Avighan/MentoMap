@@ -1,0 +1,81 @@
+{
+  "id": "the-substitute-teacher",
+  "title": "The Substitute Teacher",
+  "type": "mystery_room",
+  "grade": "8",
+  "target_grade": "8",
+  "duration_minutes": 15,
+  "description": "Your favorite teacher has been suddenly transferred. After hours, you slip into the empty staff room to find out why.",
+  "ai_image_config": {"image_style": "semi-realistic"},
+  "feature_flag": "mystery_room_enabled",
+  "skill_tags": ["empathy", "ethical_reasoning", "critical_thinking", "courage", "resilience"],
+  "rooms": [
+    {
+      "id": "staff_room",
+      "name": "The Staff Room",
+      "background_image": "/uploads/mystery/the-substitute-teacher/staff_room.png",
+      "ambient_sound": "/uploads/mystery/the-substitute-teacher/ambient_staff.mp3",
+      "hotspots": [
+        {"id": "complaint_letter", "label": "Letter on the principal's pigeonhole",
+         "bbox": [0.42, 0.18, 0.56, 0.30], "puzzle_id": "p1_complaint",
+         "skill_tags_on_examine": ["critical_thinking"]},
+        {"id": "staff_phone", "label": "Staff phone with three messages",
+         "bbox": [0.10, 0.48, 0.22, 0.62], "puzzle_id": "p2_voicemails",
+         "skill_tags_on_examine": ["empathy"]},
+        {"id": "scattered_emails", "label": "Stack of printed emails",
+         "bbox": [0.30, 0.62, 0.50, 0.78], "puzzle_id": "p3_email_thread",
+         "skill_tags_on_examine": ["critical_thinking"]},
+        {"id": "coffee_mug", "label": "A half-finished cup of chai",
+         "bbox": [0.62, 0.60, 0.70, 0.70], "yields_item": "staff_room_key",
+         "skill_tags_on_examine": ["strategic_thinking"]},
+        {"id": "transfer_notice", "label": "Notice on the board",
+         "bbox": [0.74, 0.20, 0.92, 0.40],
+         "skill_tags_on_examine": ["critical_thinking"]}
+      ],
+      "exits": [
+        {"to": "classroom", "label": "Down the corridor to Ms. Banerjee's classroom",
+         "bbox": [0.93, 0.40, 1.00, 0.72]}
+      ]
+    },
+    {
+      "id": "classroom",
+      "name": "Ms. Banerjee's Classroom",
+      "background_image": "/uploads/mystery/the-substitute-teacher/classroom.png",
+      "ambient_sound": "/uploads/mystery/the-substitute-teacher/ambient_classroom.mp3",
+      "hotspots": [
+        {"id": "bookshelf", "label": "A bookshelf with something behind it",
+         "bbox": [0.05, 0.22, 0.22, 0.70], "yields_item": "child_drawing",
+         "skill_tags_on_examine": ["empathy"]},
+        {"id": "graded_notebook", "label": "Aarav's homework notebook",
+         "bbox": [0.42, 0.55, 0.58, 0.68], "puzzle_id": "p5_notebook",
+         "skill_tags_on_examine": ["critical_thinking", "empathy"]},
+        {"id": "folded_note", "label": "A folded note on a desk",
+         "bbox": [0.66, 0.60, 0.74, 0.66], "puzzle_id": "p6_folded_note",
+         "skill_tags_on_examine": ["empathy"]},
+        {"id": "blackboard", "label": "A half-erased blackboard",
+         "bbox": [0.30, 0.10, 0.78, 0.38],
+         "skill_tags_on_examine": ["critical_thinking"]}
+      ],
+      "exits": [
+        {"to": "staff_room", "label": "Back down the corridor",
+         "bbox": [0.00, 0.40, 0.05, 0.72]}
+      ]
+    }
+  ],
+  "items": [
+    {"id": "staff_room_key", "name": "Staff-Room Key",
+     "icon": "/uploads/mystery/the-substitute-teacher/items/key.png",
+     "is_evidence": false,
+     "skill_tags_on_pickup": ["strategic_thinking"]},
+    {"id": "child_drawing", "name": "Aarav's Drawing",
+     "icon": "/uploads/mystery/the-substitute-teacher/items/drawing.png",
+     "is_evidence": true,
+     "puzzle_on_examine": "p4_drawing",
+     "skill_tags_on_pickup": ["empathy"]}
+  ],
+  "puzzles": [],
+  "evidence_board": {"buckets": [], "correct_groupings": {}},
+  "climax": {"options": []},
+  "hints": {},
+  "epilogues": {}
+}
