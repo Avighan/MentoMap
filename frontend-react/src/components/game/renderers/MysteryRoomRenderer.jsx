@@ -11,6 +11,7 @@
  */
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { getRunState, submitMysteryAction } from '../../../api/games';
+import HotspotLayer from '../mystery/HotspotLayer';
 
 const MysteryRoomRenderer = ({
   gameData,
@@ -99,10 +100,21 @@ const MysteryRoomRenderer = ({
     );
   }
 
-  // Placeholder action invocation example (so `action` isn't tree-shaken
-  // before later tasks wire it in). The real callers are HotspotLayer /
-  // InventoryDrawer / PuzzleModal.
-  void action;
+  // ── Hotspot callbacks ──────────────────────────────────────────────────
+  const handleExamine = useCallback((spot) => {
+    if (!spot) return;
+    if (spot.yields_item) {
+      action({ action: 'pickup', target: `hotspot:${spot.id}` });
+    } else {
+      action({ action: 'examine', target: `hotspot:${spot.id}` });
+      if (spot.puzzle_id) setOpenPuzzleId(spot.puzzle_id);
+    }
+  }, [action]);
+
+  const handleMoveTo = useCallback((to) => {
+    if (!to) return;
+    action({ action: 'move_to_room', target: to });
+  }, [action]);
 
   // ── 16:9 stage with full-bleed room background ─────────────────────────
   return (
@@ -134,8 +146,13 @@ const MysteryRoomRenderer = ({
           🤔 I'm stuck
         </button>
 
-        {/* Hotspot layer placeholder (replaced in Task 17) */}
-        <div data-testid="hotspot-layer" className="absolute inset-0 z-10" />
+        {/* Hotspot + exit layer */}
+        <HotspotLayer
+          hotspots={room.hotspots || []}
+          exits={room.exits || []}
+          onExamine={handleExamine}
+          onMoveTo={handleMoveTo}
+        />
       </div>
     </div>
   );
