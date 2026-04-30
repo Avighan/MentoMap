@@ -6756,6 +6756,20 @@ def run_report(run_id):
     except Exception as _os_err:
         logger.debug("scaling snapshot failed: %s", _os_err)
 
+    # mystery_room: surface escape-room-specific fields
+    if game.get("game_type") == "mystery_room":
+        try:
+            report_core["outcome_label"] = r.get("outcome_label")
+            report_core["knowledge_score"] = r.get("knowledge_score", 0)
+            report_core["evidence_collected"] = r.get("evidence_collected", [])
+            report_core["evidence_board_state"] = r.get("evidence_board_state", {})
+            report_core["fingerprint"] = _ESCAPE_ROOM_ENGINE.compute_fingerprint(r)
+            report_core["hints_used"] = r.get("hints_used", {})
+            epilogues = game.get("epilogues", {})
+            report_core["epilogue"] = epilogues.get(r.get("outcome_label", ""), None)
+        except Exception as _mr_err:
+            logger.warning("mystery_room report block failed: %s", _mr_err)
+
     # Mark run as completed and persist full report to disk (survives restart)
     try:
         r["completed"] = True
