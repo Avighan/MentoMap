@@ -16,6 +16,7 @@ class EscapeRoomEngine:
         if not rooms:
             raise ValueError("mystery_room game must define at least one room")
         run_state["current_room"] = rooms[0]["id"]
+        run_state["rooms_visited"] = [rooms[0]["id"]]
         run_state["inventory"] = []
         run_state["evidence_collected"] = []
         run_state["evidence_board_state"] = {}
@@ -172,6 +173,10 @@ class EscapeRoomEngine:
         if exit_match is None:
             raise ValueError(f"no exit from {current} to {target_room}")
         run_state["current_room"] = target_room
+        if "rooms_visited" not in run_state:
+            run_state["rooms_visited"] = [current]
+        if target_room not in run_state["rooms_visited"]:
+            run_state["rooms_visited"].append(target_room)
         return run_state, {"skill_tags": [], "knowledge_delta": 0, "events": [{"type": "room_change", "from": current, "to": target_room}]}
 
     def _climax_choose(self, run_state, game_def, action):

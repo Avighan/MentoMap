@@ -15,6 +15,7 @@ import HotspotLayer from '../mystery/HotspotLayer';
 import InventoryDrawer from '../mystery/InventoryDrawer';
 import PuzzleModal from '../mystery/PuzzleModal';
 import EvidenceBoardModal from '../mystery/EvidenceBoardModal';
+import ClimaxModal from '../mystery/ClimaxModal';
 
 const MysteryRoomRenderer = ({
   gameData,
@@ -35,6 +36,9 @@ const MysteryRoomRenderer = ({
   // Evidence board modal state (Task 20)
   const [boardOpen, setBoardOpen] = useState(false);
   const [boardResult, setBoardResult] = useState(null);
+
+  // Climax modal state (Task 21)
+  const [climaxOpen, setClimaxOpen] = useState(false);
 
   // Stable label map for evidence items (used by EvidenceBoardModal).
   const evidenceLabels = useMemo(() => {
@@ -72,7 +76,16 @@ const MysteryRoomRenderer = ({
   //    `events` / `climax_unlocked` / etc.
   const action = useCallback(async (payload) => {
     const resp = await submitMysteryAction(runId, payload);
-    if (resp?.state) setRunState(resp.state);
+    if (resp?.state) {
+      // The backend returns `climax_unlocked` alongside `state` (it's
+      // computed from gating_status, not stored on the run). Merge it in
+      // so the renderer can read runState.climax_unlocked uniformly.
+      const merged = { ...resp.state };
+      if (Array.isArray(resp.climax_unlocked)) {
+        merged.climax_unlocked = resp.climax_unlocked;
+      }
+      setRunState(merged);
+    }
     return resp;
   }, [runId]);
 
@@ -96,10 +109,24 @@ const MysteryRoomRenderer = ({
     }
   }, [action]);
 
+  // Climax trigger gating: when the player has visited every required room
+  // and has not already chosen an outcome, the next move attempt opens the
+  // climax modal instead of moving rooms.
+  const visitedRooms = runState?.rooms_visited || [];
+  const requiredVisits = gameData?.climax?.trigger?.must_visit || [];
+  const canTriggerClimax =
+    requiredVisits.length > 0 &&
+    requiredVisits.every((r) => visitedRooms.includes(r)) &&
+    !runState?.outcome_label;
+
   const handleMoveTo = useCallback((to) => {
     if (!to) return;
+    if (canTriggerClimax) {
+      setClimaxOpen(true);
+      return;
+    }
     action({ action: 'move_to_room', target: to });
-  }, [action]);
+  }, [action, canTriggerClimax]);
 
   // ── Inventory item click → log examine event server-side; if the item
   //    has a puzzle attached, queue it up for the puzzle modal (Task 19).
@@ -205,6 +232,19 @@ const MysteryRoomRenderer = ({
         inventory={runState?.inventory || []}
         onItemClick={handleItemClick}
       />
+
+      {/* Climax modal (Task 21) */}
+      {climaxOpen && (
+        <ClimaxModal
+          climax={gameData?.climax}
+          unlocked={runState?.climax_unlocked || []}
+          onClose={() => setClimaxOpen(false)}
+          onChoose={async (choice) => {
+            await action({ action: 'climax_choose', choice });
+            setClimaxOpen(false);
+          }}
+        />
+      )}
 
       {/* Evidence board modal (Task 20) */}
       {boardOpen && (

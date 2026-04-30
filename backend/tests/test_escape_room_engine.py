@@ -25,6 +25,7 @@ def test_start_initializes_state():
     engine = EscapeRoomEngine()
     state = engine.start(run_state={}, game_def=_minimal_game_def())
     assert state["current_room"] == "staff_room"
+    assert state["rooms_visited"] == ["staff_room"]
     assert state["inventory"] == []
     assert state["evidence_collected"] == []
     assert state["evidence_board_state"] == {}
@@ -289,6 +290,19 @@ def test_move_to_room_changes_current_room():
     new_state, deltas = engine.handle_action(state, g, {"action": "move_to_room", "target": "classroom"})
     assert new_state["current_room"] == "classroom"
     assert {"type": "room_change", "from": "staff_room", "to": "classroom"} in deltas["events"]
+
+
+def test_move_appends_to_rooms_visited():
+    g = _minimal_game_def()
+    g["rooms"][0]["exits"] = [{"to": "classroom", "bbox": [0, 0, 0, 0]}]
+    engine = EscapeRoomEngine()
+    state = engine.start({}, g)
+    engine.handle_action(state, g, {"action": "move_to_room", "target": "classroom"})
+    assert state["rooms_visited"] == ["staff_room", "classroom"]
+    # Idempotent on re-visit
+    g["rooms"][1]["exits"] = [{"to": "staff_room", "bbox": [0, 0, 0, 0]}]
+    engine.handle_action(state, g, {"action": "move_to_room", "target": "staff_room"})
+    assert state["rooms_visited"] == ["staff_room", "classroom"]
 
 
 def test_move_to_room_invalid_exit_raises():
