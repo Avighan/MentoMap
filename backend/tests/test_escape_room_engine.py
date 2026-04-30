@@ -33,3 +33,33 @@ def test_start_initializes_state():
     assert state["knowledge_score"] == 0
     assert state["puzzles_solved"] == {}
     assert state["hints_used"] == {}
+    assert state["hotspots_examined"] == []
+
+
+def test_examine_logs_skill_tags_and_marks_seen():
+    game_def = _minimal_game_def()
+    game_def["rooms"][0]["hotspots"] = [
+        {
+            "id": "complaint_letter",
+            "bbox": [0.4, 0.3, 0.5, 0.4],
+            "skill_tags_on_examine": ["critical_thinking"],
+        }
+    ]
+    engine = EscapeRoomEngine()
+    state = engine.start({}, game_def)
+
+    new_state, deltas = engine.handle_action(
+        state, game_def, {"action": "examine", "target": "hotspot:complaint_letter"}
+    )
+
+    assert "complaint_letter" in new_state["hotspots_examined"]
+    assert deltas["skill_tags"] == ["critical_thinking"]
+    assert {"action": "examine", "target": "complaint_letter", "tags": ["critical_thinking"]} in new_state["skill_tag_log"]
+
+
+def test_examine_unknown_hotspot_raises():
+    import pytest
+    engine = EscapeRoomEngine()
+    state = engine.start({}, _minimal_game_def())
+    with pytest.raises(ValueError, match="unknown hotspot"):
+        engine.handle_action(state, _minimal_game_def(), {"action": "examine", "target": "hotspot:nope"})
