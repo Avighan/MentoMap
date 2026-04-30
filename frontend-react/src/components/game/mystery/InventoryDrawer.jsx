@@ -1,27 +1,40 @@
 /**
  * InventoryDrawer — sliding side panel listing the player's collected items.
  *
+ * Controlled component (Task 25): the parent owns the open/closed state so
+ * keyboard shortcuts (e.g. `I` to toggle, `Escape` to close) can be wired
+ * at the renderer level.
+ *
  * Props:
- *   - items:     Array<{ id, name, icon?, description?, puzzle_on_examine? }>
- *                Full item catalog from the game JSON.
- *   - inventory: string[]   IDs of items currently held (from runState.inventory).
+ *   - items:        Array<{ id, name, icon?, description?, puzzle_on_examine? }>
+ *                   Full item catalog from the game JSON.
+ *   - inventory:    string[]   IDs of items currently held (from runState.inventory).
  *   - onItemClick(item)
+ *   - open:         boolean    drawer visible?
+ *   - onOpenChange(next: boolean)   parent setter — invoked by the floating
+ *                   toggle button and the close (×) button.
  */
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const InventoryDrawer = ({ items = [], inventory = [], onItemClick }) => {
-  const [open, setOpen] = useState(false);
-
+const InventoryDrawer = ({
+  items = [],
+  inventory = [],
+  onItemClick,
+  open = false,
+  onOpenChange,
+}) => {
   const heldItems = (inventory || [])
     .map((id) => items.find((it) => it.id === id))
     .filter(Boolean);
+
+  const setOpen = (next) => onOpenChange?.(next);
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen(!open)}
         aria-label={`Toggle inventory (${heldItems.length} items)`}
         aria-expanded={open}
         className="fixed right-4 top-1/2 -translate-y-1/2 z-30 px-3 py-2 rounded-l-xl bg-amber-500 hover:bg-amber-600 text-white font-semibold shadow-lg flex items-center gap-2"

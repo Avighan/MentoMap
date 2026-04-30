@@ -41,6 +41,10 @@ const MysteryRoomRenderer = ({
   // Climax modal state (Task 21)
   const [climaxOpen, setClimaxOpen] = useState(false);
 
+  // Inventory drawer open state — lifted into the renderer so the global
+  // keyboard handler (Task 25: I=toggle, Esc=close) can drive it.
+  const [inventoryOpen, setInventoryOpen] = useState(false);
+
   // Hint ladder state (Task 23). Reset whenever the active puzzle changes
   // so a fresh puzzle starts at level 1.
   const [lastHint, setLastHint] = useState(null);
@@ -61,6 +65,39 @@ const MysteryRoomRenderer = ({
     }, autoPromptSeconds * 1000);
     return () => clearTimeout(timer);
   }, [openPuzzleId, autoPromptShown, autoPromptSeconds]);
+
+  // Page-level keyboard shortcuts (Task 25):
+  //   - `I` / `i`   → toggle inventory
+  //   - `Escape`    → close the topmost overlay (puzzle > board > climax > inventory)
+  // Native <button> elements already support Tab focus + Enter activation,
+  // which covers Tab navigation through hotspots and Enter to examine.
+  useEffect(() => {
+    const handler = (e) => {
+      // Don't intercept while typing in form fields.
+      const tag = e.target?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (e.target?.isContentEditable) return;
+
+      if (e.key === 'i' || e.key === 'I') {
+        setInventoryOpen((o) => !o);
+        return;
+      }
+      if (e.key === 'Escape') {
+        if (openPuzzleId) {
+          setOpenPuzzleId(null);
+          setLastPuzzleResult(null);
+        } else if (boardOpen) {
+          setBoardOpen(false);
+        } else if (climaxOpen) {
+          setClimaxOpen(false);
+        } else if (inventoryOpen) {
+          setInventoryOpen(false);
+        }
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [openPuzzleId, boardOpen, climaxOpen, inventoryOpen]);
 
   // Stable label map for evidence items (used by EvidenceBoardModal).
   const evidenceLabels = useMemo(() => {
@@ -255,6 +292,8 @@ const MysteryRoomRenderer = ({
         items={gameData?.items || []}
         inventory={runState?.inventory || []}
         onItemClick={handleItemClick}
+        open={inventoryOpen}
+        onOpenChange={setInventoryOpen}
       />
 
       {/* Climax modal (Task 21) */}
