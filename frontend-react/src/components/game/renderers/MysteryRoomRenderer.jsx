@@ -45,6 +45,18 @@ const MysteryRoomRenderer = ({
   // keyboard handler (Task 25: I=toggle, Esc=close) can drive it.
   const [inventoryOpen, setInventoryOpen] = useState(false);
 
+  // Mobile splash gate (Task 26). Mystery rooms rely on a 16:9 stage with
+  // small tap-targets; on narrow phones we show a friendly "best on bigger
+  // screen" interstitial instead.
+  const [isNarrow, setIsNarrow] = useState(
+    typeof window !== 'undefined' && window.innerWidth < 768
+  );
+  useEffect(() => {
+    const onResize = () => setIsNarrow(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   // Hint ladder state (Task 23). Reset whenever the active puzzle changes
   // so a fresh puzzle starts at level 1.
   const [lastHint, setLastHint] = useState(null);
@@ -200,6 +212,26 @@ const MysteryRoomRenderer = ({
   }, [action]);
 
   // ── Render guards ──────────────────────────────────────────────────────
+  if (isNarrow) {
+    return (
+      <div className="max-w-md mx-auto my-8 p-8 text-center bg-stone-900 text-stone-100 rounded-2xl shadow-xl">
+        <div className="text-5xl mb-3" aria-hidden>🖥️</div>
+        <h2 className="text-xl font-semibold mb-3">Best on a bigger screen</h2>
+        <p className="text-stone-300 mb-5">
+          Mystery rooms work best on a tablet or laptop. Try this game when
+          you&apos;re at a larger screen.
+        </p>
+        <button
+          type="button"
+          onClick={onBack || (() => window.history.back())}
+          className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black rounded font-semibold"
+        >
+          Back
+        </button>
+      </div>
+    );
+  }
+
   if (loading && !room) {
     return (
       <div className="flex items-center justify-center min-h-[60vh] text-gray-500">
