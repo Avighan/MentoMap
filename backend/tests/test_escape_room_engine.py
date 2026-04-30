@@ -260,3 +260,22 @@ def test_climax_choose_double_raises():
     engine.handle_action(state, g, {"action": "climax_choose", "choice": "cautious_investigator"})
     with pytest.raises(ValueError, match="already chosen"):
         engine.handle_action(state, g, {"action": "climax_choose", "choice": "compliant_bystander"})
+
+
+def test_move_to_room_changes_current_room():
+    g = _minimal_game_def()
+    g["rooms"][0]["exits"] = [{"to": "classroom", "bbox": [0.9, 0.4, 1.0, 0.7]}]
+    engine = EscapeRoomEngine()
+    state = engine.start({}, g)
+    new_state, deltas = engine.handle_action(state, g, {"action": "move_to_room", "target": "classroom"})
+    assert new_state["current_room"] == "classroom"
+    assert {"type": "room_change", "from": "staff_room", "to": "classroom"} in deltas["events"]
+
+
+def test_move_to_room_invalid_exit_raises():
+    import pytest
+    g = _minimal_game_def()  # no exits defined
+    engine = EscapeRoomEngine()
+    state = engine.start({}, g)
+    with pytest.raises(ValueError, match="no exit"):
+        engine.handle_action(state, g, {"action": "move_to_room", "target": "classroom"})

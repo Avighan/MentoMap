@@ -36,6 +36,7 @@ class EscapeRoomEngine:
             "solve_puzzle": self._solve_puzzle,
             "submit_synthesis": self._submit_synthesis,
             "climax_choose": self._climax_choose,
+            "move_to_room": self._move_to_room,
         }
         if verb not in dispatch:
             raise ValueError(f"unknown action verb: {verb}")
@@ -142,6 +143,18 @@ class EscapeRoomEngine:
             return 0
         correct = sum(1 for p in factual if run_state["puzzles_solved"].get(p["id"], {}).get("correct"))
         return round(correct / len(factual) * 100)
+
+    def _move_to_room(self, run_state, game_def, action):
+        target_room = action.get("target")
+        current = run_state["current_room"]
+        current_def = next((r for r in game_def["rooms"] if r["id"] == current), None)
+        if current_def is None:
+            raise ValueError(f"current room not found: {current}")
+        exit_match = next((e for e in current_def.get("exits", []) if e["to"] == target_room), None)
+        if exit_match is None:
+            raise ValueError(f"no exit from {current} to {target_room}")
+        run_state["current_room"] = target_room
+        return run_state, {"skill_tags": [], "knowledge_delta": 0, "events": [{"type": "room_change", "from": current, "to": target_room}]}
 
     def _climax_choose(self, run_state, game_def, action):
         if run_state.get("outcome_label"):
