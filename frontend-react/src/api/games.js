@@ -55,6 +55,14 @@ export const submitMysteryAction = async (runId, actionPayload) => {
 };
 
 /**
+ * Fetch the current run state (used by mystery_room renderer to sync after mount).
+ */
+export const getRunState = async (runId) => {
+  const response = await apiClient.get(`/api/run/${runId}/state`);
+  return response.data;
+};
+
+/**
  * Advance to next round (same as submitChoice for games without explicit choices)
  * @param {string} runId - Current run ID
  */
