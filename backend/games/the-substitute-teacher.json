@@ -73,8 +73,132 @@
      "puzzle_on_examine": "p4_drawing",
      "skill_tags_on_pickup": ["empathy"]}
   ],
-  "puzzles": [],
-  "evidence_board": {"buckets": [], "correct_groupings": {}},
+  "puzzles": [
+    {
+      "id": "p1_complaint",
+      "type": "factual",
+      "prompt": "You pick up the letter. It is addressed to the Principal. Look carefully at the signature block — who filed this complaint against Ms. Banerjee?",
+      "options": [
+        "A parent of a student in Ms. Banerjee's class",
+        "The school board or District Education Officer",
+        "It is anonymous — no name or signature"
+      ],
+      "correct": 0,
+      "skill_tags_correct": ["critical_thinking"],
+      "skill_tags_wrong": ["critical_thinking"],
+      "explanation_correct": "The letter is signed by Aarav's parent — a private individual, not the school board. The complaint was filed after Ms. Banerjee intervened in a home matter to protect Aarav. This is a key piece of evidence: the transfer was triggered by a parental complaint, not an official administrative decision.",
+      "explanation_wrong": "Look again at the bottom of the letter. There is a printed name and address — that belongs to a parent, not to any official body. Anonymous complaints would not carry the weight needed to force a transfer."
+    },
+    {
+      "id": "p2_voicemails",
+      "type": "factual",
+      "prompt": "The staff phone has three saved voicemails. Listen to each one. Which message best explains why Ms. Banerjee was transferred so suddenly?",
+      "audio_clips": [
+        "/uploads/mystery/the-substitute-teacher/audio/voicemail_1.mp3",
+        "/uploads/mystery/the-substitute-teacher/audio/voicemail_2.mp3",
+        "/uploads/mystery/the-substitute-teacher/audio/voicemail_3.mp3"
+      ],
+      "transcripts": [
+        "Voicemail 1 — Principal Sharma, dry and formal: 'Ms. Banerjee, your transfer order is effective this Friday. Please hand over class records to the front office by Thursday evening. That will be all.'",
+        "Voicemail 2 — Unknown parent voice, irritated: 'I spoke to Principal Sharma again today. I have made it very clear that my family's donations to this school come with certain expectations. What happens in my home is not a teacher's business. I expect this to be handled.'",
+        "Voicemail 3 — Mrs. Iyer, a fellow teacher, voice hushed and worried: 'Deepa — it's Sunita. I know about the complaint. I know why they're moving you. I tried to speak to Sharma but she wouldn't hear it. I'm worried about Aarav. Please call me before you leave. Don't let this just disappear.'"
+      ],
+      "options": [
+        "Voicemail 1 — Principal Sharma's transfer notice",
+        "Voicemail 2 — The parent's pressure on the school",
+        "Voicemail 3 — Mrs. Iyer's worried message about Aarav"
+      ],
+      "correct": 2,
+      "skill_tags_correct": ["critical_thinking", "empathy"],
+      "skill_tags_wrong": ["critical_thinking"],
+      "explanation_correct": "Mrs. Iyer's message is the most revealing. She confirms the complaint exists, suggests the principal refused to listen, and most importantly, she names Aarav directly and expresses worry about him. The other messages confirm the transfer happened and who pushed for it — but only this message tells you *why it matters* and that someone else already suspects it is wrong.",
+      "explanation_wrong": "That message tells you part of the story, but it is not the one that explains the full picture. Voicemail 3 from Mrs. Iyer is the most complete account — she names Aarav, confirms the complaint, and signals that the transfer is being treated as a quiet way to make a problem disappear."
+    },
+    {
+      "id": "p3_email_thread",
+      "type": "factual",
+      "_engine_todo": "ordering type not yet supported by engine — authored as factual with single-best-answer. True ordering data preserved in ordering_items for future engine upgrade.",
+      "prompt": "Five printed emails are scattered on the desk, out of order. Based on dates, references, and the tone of each message, which email came FIRST in this chain — the one that started everything?",
+      "ordering_items": [
+        {"id": "email_a", "text": "Email from Ms. Banerjee to Principal Sharma (Mon): 'I am writing to flag a concern regarding one of my students, Aarav. I have observed signs that may indicate stress at home. I would like to request a brief meeting to discuss appropriate support. — D. Banerjee'", "correct_position": 1},
+        {"id": "email_b", "text": "Email from Principal Sharma to Ms. Banerjee (Tue): 'Ms. Banerjee, I appreciate your concern, but I must caution you about overstepping. Parents are our stakeholders. Please focus on academics and allow pastoral matters to be handled through proper channels. — Principal Sharma'", "correct_position": 2},
+        {"id": "email_c", "text": "Email from Aarav's parent to Principal Sharma (Wed): 'I have been informed by my son that his class teacher, Ms. Banerjee, has been asking him personal questions about our family. This is completely unacceptable and a violation of our privacy. I expect immediate action. — [Parent's name]'", "correct_position": 3},
+        {"id": "email_d", "text": "Email from Principal Sharma to District Office (Thu): 'I wish to request a transfer for one of our teachers, Ms. Deepa Banerjee, effective end of this month. Reason: professional conduct concerns. I will provide documentation on request.'", "correct_position": 4},
+        {"id": "email_e", "text": "Email from District Office to Principal Sharma (Fri): 'Transfer approved. Ms. Banerjee to report to Government Senior Secondary School, Sector 14, effective next Monday. Please arrange handover of responsibilities.'", "correct_position": 5}
+      ],
+      "options": [
+        "Email A — Ms. Banerjee's concern about Aarav to the Principal",
+        "Email B — Principal Sharma's warning to Ms. Banerjee",
+        "Email C — The parent's complaint to the Principal",
+        "Email D — Principal Sharma's transfer request to the District Office",
+        "Email E — The District Office's approval of the transfer"
+      ],
+      "correct": 0,
+      "skill_tags_correct": ["critical_thinking", "strategic_thinking"],
+      "skill_tags_wrong": ["critical_thinking"],
+      "explanation_correct": "Ms. Banerjee's email to the Principal was the first. She noticed something concerning about Aarav and tried to raise it through official channels — the right thing to do. Everything else followed from that single act of care: the Principal's warning, the parent's complaint, the transfer request, the approval. The sequence is important: the transfer was not random or administrative, it was a direct response to Ms. Banerjee doing her job.",
+      "explanation_wrong": "That email was not the first. The chain started with Ms. Banerjee herself raising a safeguarding concern about Aarav with the Principal. Putting the emails in order — A, B, C, D, E — shows how one teacher's act of care was systematically reversed by pressure from a parent with influence."
+    },
+    {
+      "id": "p4_drawing",
+      "type": "interpretive",
+      "prompt": "You hold Aarav's drawing up to the light. It is a pencil sketch — a house, two adult figures, a smaller figure standing apart. The smaller figure's face has no expression. What does this drawing tell you?",
+      "options": [
+        "It is just a house — a typical drawing exercise from an art class",
+        "There is conflict at home — the adults look tense, the child looks isolated",
+        "This is a happy memory — Aarav drew the school building and his family visiting for an event"
+      ],
+      "skill_tags_per_option": [
+        ["strategic_thinking"],
+        ["empathy", "critical_thinking"],
+        ["empathy", "creativity"]
+      ]
+    },
+    {
+      "id": "p5_notebook",
+      "type": "factual",
+      "prompt": "Ms. Banerjee's handwritten comments fill the margins of Aarav's homework notebook. One comment directly contradicts what the complaint letter claims about her 'interference'. Which margin note is it?",
+      "options": [
+        "'Good effort on the essay, Aarav. Your writing is improving — keep practising the opening paragraph.' (Written in red ink, dated three weeks ago.)",
+        "'Aarav — you mentioned something in class today that I did not want to forget. My door is always open if you need to talk. — Ms. B' (Written in blue ink, dated the day before her first email to the Principal.)",
+        "'Please redo questions 4 and 5. Show your working. I know you can do better than this.' (Written in red ink, no date.)"
+      ],
+      "correct": 1,
+      "skill_tags_correct": ["critical_thinking", "empathy"],
+      "skill_tags_wrong": ["critical_thinking"],
+      "explanation_correct": "This note is dated the day before Ms. Banerjee wrote to the Principal. It shows she did not insert herself into Aarav's home life uninvited — she responded to something *Aarav himself said* in class. The complaint claimed she was prying; this note shows she was listening and following up with care. That is the contradiction.",
+      "explanation_wrong": "That note is about academics. Look for the note that is dated and personal — one that shows a connection between something Aarav said and Ms. Banerjee's decision to contact the Principal. The timing matters."
+    },
+    {
+      "id": "p6_folded_note",
+      "type": "interpretive",
+      "prompt": "A folded piece of paper sits on a desk near the back row. It looks like it was passed between students. Do you read it?",
+      "options": [
+        "Read it — understanding what is happening matters more than privacy right now",
+        "Leave it folded — it is not your note to read, no matter what is inside"
+      ],
+      "skill_tags_per_option": [
+        ["curiosity", "critical_thinking"],
+        ["ethical_reasoning", "resilience"]
+      ]
+    }
+  ],
+  "evidence_board": {
+    "buckets": ["principal_says", "actually_happened", "irrelevant"],
+    "correct_groupings": {
+      "complaint_letter": "principal_says",
+      "transfer_notice": "principal_says",
+      "voicemail_1_transcript": "principal_says",
+      "voicemail_2_transcript": "actually_happened",
+      "voicemail_3_transcript": "actually_happened",
+      "email_thread_sequence": "actually_happened",
+      "child_drawing": "actually_happened",
+      "notebook_note": "actually_happened",
+      "staff_room_key": "irrelevant"
+    },
+    "skill_tags_correct": ["critical_thinking"],
+    "skill_tags_partial": ["adaptability"]
+  },
   "climax": {"options": []},
   "hints": {},
   "epilogues": {}
