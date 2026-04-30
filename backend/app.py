@@ -1851,6 +1851,8 @@ def games_list():
 
     games_out = []
     is_privileged = _ctx_role in ("admin", "dev", "school_admin", "trainer")
+    # Resolve viewer's org for feature_flag gating
+    _viewer_org_id = (user_payload or {}).get("org_id", "default") if user_payload else "default"
     for g in BUNDLE["games"]:
         if g["game_id"] in hidden:
             continue
@@ -1861,6 +1863,10 @@ def games_list():
             continue
         # Non-privileged users only see public game types
         if not is_privileged and g.get("game_type", "rounds") not in _PUBLIC_GAME_TYPES:
+            continue
+        # Per-org feature flag gating: hide games whose feature_flag is not enabled
+        _ff = g.get("feature_flag")
+        if _ff and not org_module.get_org_feature(_viewer_org_id, _ff):
             continue
         # Hide baseline games from list once the user has completed their baseline
         if g["game_id"] in _BASELINE_IDS and _ctx_baseline_complete:
@@ -2009,6 +2015,19 @@ def run_start():
     game, err = get_game_or_400(game_id)
     if err:
         return err
+
+    # Per-org feature flag gating: refuse run-start when game requires a flag
+    # the viewer's org has not enabled.
+    _rs_ff = game.get("feature_flag")
+    if _rs_ff:
+        try:
+            _rs_token = get_token_from_request()
+            _rs_user = verify_token(_rs_token) if _rs_token else None
+            _rs_org_id = (_rs_user or {}).get("org_id", "default") if _rs_user else "default"
+        except Exception:
+            _rs_org_id = "default"
+        if not org_module.get_org_feature(_rs_org_id, _rs_ff):
+            return jsonify({"error": "Feature not enabled for your org."}), 403
 
     run_id = create_run(game_id, game["initial_state"], game)
 
@@ -19319,6 +19338,10 @@ def api_org_config():
     except Exception as _e:
         logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
     org = org_module.get_org(org_id) or org_module.get_default_org()
+    _features = org.get("features") if isinstance(org.get("features"), dict) else {}
+    # Merge over defaults so newly-added flags default to off without DB migration
+    _merged_features = org_module.default_features()
+    _merged_features.update(_features)
     return jsonify({
         "id": org["id"],
         "name": org["name"],
@@ -19326,6 +19349,7 @@ def api_org_config():
         "accent_color": org.get("accent_color", "#00B894"),
         "logo_url": org.get("logo_url", ""),
         "custom_dimensions": org.get("custom_dimensions"),
+        "features": _merged_features,
     })
 
 
