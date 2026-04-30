@@ -232,3 +232,31 @@ def test_climax_unlocked_top_tier_requires_synthesis():
     state["evidence_board_state"] = {"correct": True, "accuracy": 1.0, "attempts": 1, "groupings": {}}
     unlocked = engine.gating_status(state, g)
     assert "whistleblower" in unlocked
+
+
+def test_climax_choose_locked_option_raises():
+    import pytest
+    engine = EscapeRoomEngine()
+    g = _climax_game_def()
+    state = engine.start({}, g)
+    with pytest.raises(ValueError, match="locked"):
+        engine.handle_action(state, g, {"action": "climax_choose", "choice": "whistleblower"})
+
+
+def test_climax_choose_sets_outcome_label_and_emits_tags():
+    engine = EscapeRoomEngine()
+    g = _climax_game_def()
+    state = engine.start({}, g)
+    new_state, deltas = engine.handle_action(state, g, {"action": "climax_choose", "choice": "compliant_bystander"})
+    assert new_state["outcome_label"] == "compliant_bystander"
+    assert deltas["skill_tags"] == []
+
+
+def test_climax_choose_double_raises():
+    import pytest
+    engine = EscapeRoomEngine()
+    g = _climax_game_def()
+    state = engine.start({}, g)
+    engine.handle_action(state, g, {"action": "climax_choose", "choice": "cautious_investigator"})
+    with pytest.raises(ValueError, match="already chosen"):
+        engine.handle_action(state, g, {"action": "climax_choose", "choice": "compliant_bystander"})

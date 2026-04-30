@@ -35,6 +35,7 @@ class EscapeRoomEngine:
             "pickup": self._pickup,
             "solve_puzzle": self._solve_puzzle,
             "submit_synthesis": self._submit_synthesis,
+            "climax_choose": self._climax_choose,
         }
         if verb not in dispatch:
             raise ValueError(f"unknown action verb: {verb}")
@@ -141,6 +142,19 @@ class EscapeRoomEngine:
             return 0
         correct = sum(1 for p in factual if run_state["puzzles_solved"].get(p["id"], {}).get("correct"))
         return round(correct / len(factual) * 100)
+
+    def _climax_choose(self, run_state, game_def, action):
+        if run_state.get("outcome_label"):
+            raise ValueError("climax already chosen")
+        choice_id = action.get("choice")
+        unlocked = self.gating_status(run_state, game_def)
+        if choice_id not in unlocked:
+            raise ValueError(f"climax option locked: {choice_id}")
+        opt = next(o for o in game_def["climax"]["options"] if o["id"] == choice_id)
+        run_state["outcome_label"] = choice_id
+        tags = list(opt.get("skill_tags", []))
+        run_state["skill_tag_log"].append({"action": "climax_choose", "target": choice_id, "tags": tags})
+        return run_state, {"skill_tags": tags, "knowledge_delta": 0, "events": [{"type": "climax_chosen", "choice": choice_id}]}
 
     def gating_status(self, run_state: Dict[str, Any], game_def: Dict[str, Any]) -> List[str]:
         """Return the IDs of climax options the player has unlocked."""
