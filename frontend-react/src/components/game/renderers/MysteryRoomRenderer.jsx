@@ -12,6 +12,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { getRunState, submitMysteryAction } from '../../../api/games';
 import HotspotLayer from '../mystery/HotspotLayer';
+import InventoryDrawer from '../mystery/InventoryDrawer';
 
 const MysteryRoomRenderer = ({
   gameData,
@@ -68,6 +69,35 @@ const MysteryRoomRenderer = ({
     return rooms.find(r => r.id === currentRoomId) || null;
   }, [gameData, currentRoomId]);
 
+  // ── Hotspot / inventory callbacks (declared before any early return so
+  //    React's rules-of-hooks ordering is preserved). ─────────────────────
+  const handleExamine = useCallback((spot) => {
+    if (!spot) return;
+    if (spot.yields_item) {
+      action({ action: 'pickup', target: `hotspot:${spot.id}` });
+    } else {
+      action({ action: 'examine', target: `hotspot:${spot.id}` });
+      if (spot.puzzle_id) setOpenPuzzleId(spot.puzzle_id);
+    }
+  }, [action]);
+
+  const handleMoveTo = useCallback((to) => {
+    if (!to) return;
+    action({ action: 'move_to_room', target: to });
+  }, [action]);
+
+  // ── Inventory item click → log examine event server-side; if the item
+  //    has a puzzle attached, queue it up for the puzzle modal (Task 19).
+  const handleItemClick = useCallback((item) => {
+    if (!item) return;
+    if (item.puzzle_on_examine) setOpenPuzzleId(item.puzzle_on_examine);
+    action({
+      action: 'examine',
+      target: `item:${item.id}`,
+      openPuzzle: item.puzzle_on_examine || null,
+    });
+  }, [action]);
+
   // ── Render guards ──────────────────────────────────────────────────────
   if (loading && !room) {
     return (
@@ -99,22 +129,6 @@ const MysteryRoomRenderer = ({
       </div>
     );
   }
-
-  // ── Hotspot callbacks ──────────────────────────────────────────────────
-  const handleExamine = useCallback((spot) => {
-    if (!spot) return;
-    if (spot.yields_item) {
-      action({ action: 'pickup', target: `hotspot:${spot.id}` });
-    } else {
-      action({ action: 'examine', target: `hotspot:${spot.id}` });
-      if (spot.puzzle_id) setOpenPuzzleId(spot.puzzle_id);
-    }
-  }, [action]);
-
-  const handleMoveTo = useCallback((to) => {
-    if (!to) return;
-    action({ action: 'move_to_room', target: to });
-  }, [action]);
 
   // ── 16:9 stage with full-bleed room background ─────────────────────────
   return (
@@ -154,6 +168,12 @@ const MysteryRoomRenderer = ({
           onMoveTo={handleMoveTo}
         />
       </div>
+
+      <InventoryDrawer
+        items={gameData?.items || []}
+        inventory={runState?.inventory || []}
+        onItemClick={handleItemClick}
+      />
     </div>
   );
 };
