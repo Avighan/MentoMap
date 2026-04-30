@@ -96,3 +96,49 @@ def test_pickup_twice_is_idempotent():
     engine.handle_action(state, game_def, {"action": "pickup", "target": "hotspot:key_spot"})
     engine.handle_action(state, game_def, {"action": "pickup", "target": "hotspot:key_spot"})
     assert state["inventory"].count("k1") == 1
+
+
+def test_solve_factual_puzzle_correct_increments_knowledge():
+    game_def = _minimal_game_def()
+    game_def["puzzles"] = [
+        {"id": "p1", "type": "factual", "options": ["a","b","c"], "correct": 1,
+         "skill_tags_correct": ["critical_thinking"], "skill_tags_wrong": []}
+    ]
+    engine = EscapeRoomEngine()
+    state = engine.start({}, game_def)
+
+    new_state, deltas = engine.handle_action(
+        state, game_def, {"action": "solve_puzzle", "puzzle_id": "p1", "answer": 1}
+    )
+    assert new_state["puzzles_solved"]["p1"] == {"answer": 1, "correct": True, "attempts": 1}
+    assert new_state["knowledge_score"] == 100  # 1/1 factual puzzles correct = 100
+    assert deltas["skill_tags"] == ["critical_thinking"]
+
+
+def test_solve_factual_puzzle_wrong_then_right():
+    game_def = _minimal_game_def()
+    game_def["puzzles"] = [
+        {"id": "p1", "type": "factual", "options": ["a","b","c"], "correct": 1,
+         "skill_tags_correct": ["critical_thinking"], "skill_tags_wrong": ["resilience"]}
+    ]
+    engine = EscapeRoomEngine()
+    state = engine.start({}, game_def)
+    engine.handle_action(state, game_def, {"action": "solve_puzzle", "puzzle_id": "p1", "answer": 0})
+    assert state["puzzles_solved"]["p1"]["correct"] is False
+    assert state["puzzles_solved"]["p1"]["attempts"] == 1
+    new_state, _ = engine.handle_action(state, game_def, {"action": "solve_puzzle", "puzzle_id": "p1", "answer": 1})
+    assert new_state["puzzles_solved"]["p1"]["correct"] is True
+    assert new_state["puzzles_solved"]["p1"]["attempts"] == 2
+
+
+def test_solve_interpretive_puzzle_emits_per_option_tags():
+    game_def = _minimal_game_def()
+    game_def["puzzles"] = [
+        {"id": "p4", "type": "interpretive", "options": ["a","b","c"],
+         "skill_tags_per_option": [["empathy"], ["empathy", "creativity"], ["creativity"]]}
+    ]
+    engine = EscapeRoomEngine()
+    state = engine.start({}, game_def)
+    new_state, deltas = engine.handle_action(state, game_def, {"action": "solve_puzzle", "puzzle_id": "p4", "answer": 1})
+    assert new_state["puzzles_solved"]["p4"] == {"answer": 1, "correct": None, "attempts": 1}
+    assert sorted(deltas["skill_tags"]) == ["creativity", "empathy"]

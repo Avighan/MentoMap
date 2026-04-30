@@ -33,6 +33,7 @@ class EscapeRoomEngine:
         dispatch = {
             "examine": self._examine,
             "pickup": self._pickup,
+            "solve_puzzle": self._solve_puzzle,
         }
         if verb not in dispatch:
             raise ValueError(f"unknown action verb: {verb}")
@@ -71,6 +72,39 @@ class EscapeRoomEngine:
         tags = list(hotspot.get("skill_tags_on_examine", []))
         run_state["skill_tag_log"].append({"action": "examine", "target": hotspot_id, "tags": tags})
         return run_state, {"skill_tags": tags, "knowledge_delta": 0, "events": []}
+
+    def _solve_puzzle(self, run_state, game_def, action):
+        puzzle_id = action.get("puzzle_id")
+        answer = action.get("answer")
+        puzzle = next((p for p in game_def.get("puzzles", []) if p["id"] == puzzle_id), None)
+        if puzzle is None:
+            raise ValueError(f"unknown puzzle: {puzzle_id}")
+
+        prev = run_state["puzzles_solved"].get(puzzle_id, {"attempts": 0})
+        attempts = prev["attempts"] + 1
+
+        if puzzle["type"] == "factual":
+            correct = (answer == puzzle["correct"])
+            tags = list(puzzle["skill_tags_correct"]) if correct else list(puzzle.get("skill_tags_wrong", []))
+            run_state["puzzles_solved"][puzzle_id] = {"answer": answer, "correct": correct, "attempts": attempts}
+            if correct and not prev.get("correct"):
+                run_state["knowledge_score"] = self._compute_knowledge_score(run_state, game_def)
+        elif puzzle["type"] == "interpretive":
+            per_option = puzzle.get("skill_tags_per_option", [])
+            tags = list(per_option[answer]) if 0 <= answer < len(per_option) else []
+            run_state["puzzles_solved"][puzzle_id] = {"answer": answer, "correct": None, "attempts": attempts}
+        else:
+            raise ValueError(f"unknown puzzle type: {puzzle['type']}")
+
+        run_state["skill_tag_log"].append({"action": "solve_puzzle", "target": puzzle_id, "tags": tags})
+        return run_state, {"skill_tags": tags, "knowledge_delta": 0, "events": [{"type": "puzzle_result", "puzzle_id": puzzle_id, "correct": run_state["puzzles_solved"][puzzle_id].get("correct")}]}
+
+    def _compute_knowledge_score(self, run_state, game_def):
+        factual = [p for p in game_def.get("puzzles", []) if p["type"] == "factual"]
+        if not factual:
+            return 0
+        correct = sum(1 for p in factual if run_state["puzzles_solved"].get(p["id"], {}).get("correct"))
+        return round(correct / len(factual) * 100)
 
     def _find_hotspot(self, game_def, room_id, hotspot_id):
         for room in game_def.get("rooms", []):
