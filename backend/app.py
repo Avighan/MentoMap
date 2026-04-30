@@ -6,6 +6,7 @@ Serves frontend + API endpoints for game state, choices, and reports.
 import json
 import logging
 import os
+import time
 from pathlib import Path
 from flask import Flask, jsonify, request, send_from_directory, session, make_response
 from flask_cors import CORS
@@ -33,6 +34,36 @@ def _get_run_lock(run_id: str) -> _threading.Lock:
 def _api_error(message: str, code: int = 400, **extra):
     """Consistent error response helper."""
     return jsonify({"error": message, "code": code, **extra}), code
+
+
+def _log_mystery_event(game_id: str, action: str, payload: dict) -> None:
+    """Append a mystery_room analytics row to data/mystery_events.json.
+
+    Stored separately from choice_stats.json because that file uses a nested
+    counter schema ({game_id: {round_id: {choice_id: count}}}) for choice
+    dominance signals, while mystery-room actions are richer event rows.
+    """
+    try:
+        path = Path(os.path.dirname(__file__)) / "data" / "mystery_events.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        rows = []
+        if path.exists():
+            try:
+                rows = json.loads(path.read_text() or "[]")
+                if not isinstance(rows, list):
+                    rows = []
+            except json.JSONDecodeError:
+                rows = []
+        rows.append({
+            "ts": int(time.time()),
+            "game_id": game_id,
+            "type": "mystery_room",
+            "action": action,
+            **(payload or {}),
+        })
+        path.write_text(json.dumps(rows[-10000:]))  # cap at 10k rows
+    except Exception as _e:
+        logger.debug("Suppressed mystery event log: %s: %s", type(_e).__name__, _e)
 
 
 from schemas import validate_bundle
@@ -2601,6 +2632,30 @@ def run_choose(run_id):
         # log skill tags into existing aggregator
         for tag in deltas.get("skill_tags", []):
             r.setdefault("skill_tag_history", []).append(tag)
+        # Analytics: log mystery_room action
+        try:
+            _mr_user_id = None
+            try:
+                _mr_token = get_token_from_request()
+                _mr_user = verify_token(_mr_token) if _mr_token else None
+                if _mr_user:
+                    _mr_user_id = _mr_user.get("user_id")
+            except Exception:
+                _mr_user_id = None
+            _log_mystery_event(
+                game.get("game_id") or game.get("id") or r.get("game_id"),
+                payload.get("action"),
+                {
+                    "run_id": run_id,
+                    "user_id": _mr_user_id,
+                    "target": payload.get("target"),
+                    "puzzle_id": payload.get("puzzle_id"),
+                    "choice": payload.get("choice"),
+                    "events": deltas.get("events", []),
+                },
+            )
+        except Exception as _mr_e:
+            logger.debug("Suppressed mystery analytics: %s: %s", type(_mr_e).__name__, _mr_e)
         update_run(run_id, r)
         return jsonify({
             "state": r,
