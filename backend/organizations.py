@@ -8,6 +8,7 @@ import os
 import json
 import uuid
 from datetime import datetime, timezone
+from typing import Optional
 
 _ORGS_FILE = os.path.join(os.path.dirname(__file__), "data", "organizations.json")
 
@@ -49,7 +50,7 @@ def _save_orgs(orgs: list) -> None:
         json.dump({"orgs": orgs}, f, indent=2)
 
 
-def get_org(org_id: str) -> dict | None:
+def get_org(org_id: str) -> Optional[dict]:
     """Return org dict by id, or None if not found."""
     orgs = _load_orgs()
     return next((o for o in orgs if o["id"] == org_id), None)
@@ -87,7 +88,7 @@ def create_org(data: dict) -> dict:
     return org
 
 
-def update_org(org_id: str, data: dict) -> dict | None:
+def update_org(org_id: str, data: dict) -> Optional[dict]:
     """Update an existing org. Returns updated org or None if not found."""
     orgs = _load_orgs()
     for i, o in enumerate(orgs):
@@ -110,7 +111,7 @@ def update_org(org_id: str, data: dict) -> dict | None:
     return None
 
 
-def get_org_feature(org_id: str | None, flag: str) -> bool:
+def get_org_feature(org_id: Optional[str], flag: str) -> bool:
     """Return whether a feature flag is enabled for the given org.
 
     Falls back to _DEFAULT_FEATURES (default = disabled) for unknown orgs
