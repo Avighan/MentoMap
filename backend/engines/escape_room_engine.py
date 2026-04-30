@@ -142,6 +142,23 @@ class EscapeRoomEngine:
         correct = sum(1 for p in factual if run_state["puzzles_solved"].get(p["id"], {}).get("correct"))
         return round(correct / len(factual) * 100)
 
+    def gating_status(self, run_state: Dict[str, Any], game_def: Dict[str, Any]) -> List[str]:
+        """Return the IDs of climax options the player has unlocked."""
+        unlocked = []
+        evidence_count = len(run_state.get("evidence_collected", []))
+        synthesis_correct = run_state.get("evidence_board_state", {}).get("correct", False)
+        for opt in game_def.get("climax", {}).get("options", []):
+            gating = opt.get("gating")
+            if gating is None:
+                unlocked.append(opt["id"])
+                continue
+            if evidence_count < gating.get("evidence_min", 0):
+                continue
+            if gating.get("synthesis_correct") and not synthesis_correct:
+                continue
+            unlocked.append(opt["id"])
+        return unlocked
+
     def _find_hotspot(self, game_def, room_id, hotspot_id):
         for room in game_def.get("rooms", []):
             if room["id"] != room_id:

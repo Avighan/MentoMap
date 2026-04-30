@@ -184,3 +184,51 @@ def test_submit_synthesis_partial_then_correct():
     assert new_state["evidence_board_state"]["attempts"] == 2
     # adaptability awarded for re-arranging after wrong attempt
     assert "adaptability" in [t for entry in new_state["skill_tag_log"] for t in entry["tags"]]
+
+
+def _climax_game_def():
+    g = _minimal_game_def()
+    g["climax"] = {
+        "options": [
+            {"id": "compliant_bystander", "label": "Walk away", "gating": None,
+             "skill_tags": []},
+            {"id": "cautious_investigator", "label": "Tell teacher", "gating": None,
+             "skill_tags": ["critical_thinking"]},
+            {"id": "quiet_protector", "label": "Quiet help",
+             "gating": {"evidence_min": 4}, "skill_tags": ["empathy", "courage"]},
+            {"id": "whistleblower", "label": "Confront",
+             "gating": {"evidence_min": 7, "synthesis_correct": True},
+             "skill_tags": ["courage", "ethical_reasoning"]},
+        ]
+    }
+    return g
+
+
+def test_climax_unlocked_no_evidence_only_baseline():
+    engine = EscapeRoomEngine()
+    state = engine.start({}, _climax_game_def())
+    unlocked = engine.gating_status(state, _climax_game_def())
+    assert sorted(unlocked) == ["cautious_investigator", "compliant_bystander"]
+
+
+def test_climax_unlocked_mid_tier():
+    engine = EscapeRoomEngine()
+    state = engine.start({}, _climax_game_def())
+    state["evidence_collected"] = ["a", "b", "c", "d"]
+    unlocked = engine.gating_status(state, _climax_game_def())
+    assert "quiet_protector" in unlocked
+    assert "whistleblower" not in unlocked
+
+
+def test_climax_unlocked_top_tier_requires_synthesis():
+    engine = EscapeRoomEngine()
+    g = _climax_game_def()
+    state = engine.start({}, g)
+    state["evidence_collected"] = ["a","b","c","d","e","f","g"]
+    state["evidence_board_state"] = {"correct": False, "accuracy": 0.7, "attempts": 1, "groupings": {}}
+    unlocked = engine.gating_status(state, g)
+    assert "whistleblower" not in unlocked
+
+    state["evidence_board_state"] = {"correct": True, "accuracy": 1.0, "attempts": 1, "groupings": {}}
+    unlocked = engine.gating_status(state, g)
+    assert "whistleblower" in unlocked
