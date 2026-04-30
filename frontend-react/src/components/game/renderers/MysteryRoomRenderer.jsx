@@ -13,6 +13,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { getRunState, submitMysteryAction } from '../../../api/games';
 import HotspotLayer from '../mystery/HotspotLayer';
 import InventoryDrawer from '../mystery/InventoryDrawer';
+import PuzzleModal from '../mystery/PuzzleModal';
 
 const MysteryRoomRenderer = ({
   gameData,
@@ -26,10 +27,9 @@ const MysteryRoomRenderer = ({
   const [loading, setLoading] = useState(!gameState);
   const [error, setError] = useState(null);
 
-  // Will be wired in Task 19 (PuzzleModal). Tracked here so Task 17 / 18
-  // can already point puzzles at it.
-  // eslint-disable-next-line no-unused-vars
+  // Puzzle modal state (Task 19)
   const [openPuzzleId, setOpenPuzzleId] = useState(null);
+  const [lastPuzzleResult, setLastPuzzleResult] = useState(null);
 
   // ── Initial state fetch ────────────────────────────────────────────────
   useEffect(() => {
@@ -174,6 +174,24 @@ const MysteryRoomRenderer = ({
         inventory={runState?.inventory || []}
         onItemClick={handleItemClick}
       />
+
+      {/* Puzzle modal (Task 19) */}
+      {openPuzzleId && (() => {
+        const puzzle = (gameData?.puzzles || []).find((p) => p.id === openPuzzleId);
+        if (!puzzle) return null;
+        return (
+          <PuzzleModal
+            puzzle={puzzle}
+            lastResult={lastPuzzleResult}
+            onClose={() => { setOpenPuzzleId(null); setLastPuzzleResult(null); }}
+            onSubmit={async (pid, answer) => {
+              const resp = await action({ action: 'solve_puzzle', puzzle_id: pid, answer });
+              const ev = (resp?.events || []).find((e) => e.type === 'puzzle_result');
+              if (ev) setLastPuzzleResult({ puzzle_id: pid, correct: ev.correct });
+            }}
+          />
+        );
+      })()}
     </div>
   );
 };

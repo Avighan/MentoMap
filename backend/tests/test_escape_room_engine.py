@@ -131,6 +131,25 @@ def test_solve_factual_puzzle_wrong_then_right():
     assert new_state["puzzles_solved"]["p1"]["attempts"] == 2
 
 
+def test_solve_factual_ordering_puzzle():
+    g = _minimal_game_def()
+    g["puzzles"] = [{"id": "p3", "type": "factual",
+                     "ordering_items": [
+                         {"id": "a", "correct_position": 2},
+                         {"id": "b", "correct_position": 1},
+                         {"id": "c", "correct_position": 3}],
+                     "skill_tags_correct": ["critical_thinking"],
+                     "skill_tags_wrong": []}]
+    engine = EscapeRoomEngine()
+    state = engine.start({}, g)
+    new_state, _ = engine.handle_action(state, g, {"action": "solve_puzzle", "puzzle_id": "p3", "answer": ["b", "a", "c"]})
+    assert new_state["puzzles_solved"]["p3"]["correct"] is True
+    # Wrong order
+    state2 = engine.start({}, g)
+    new_state2, _ = engine.handle_action(state2, g, {"action": "solve_puzzle", "puzzle_id": "p3", "answer": ["a", "b", "c"]})
+    assert new_state2["puzzles_solved"]["p3"]["correct"] is False
+
+
 def test_solve_interpretive_puzzle_emits_per_option_tags():
     game_def = _minimal_game_def()
     game_def["puzzles"] = [

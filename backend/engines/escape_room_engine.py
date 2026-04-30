@@ -88,7 +88,13 @@ class EscapeRoomEngine:
         attempts = prev["attempts"] + 1
 
         if puzzle["type"] == "factual":
-            correct = (answer == puzzle["correct"])
+            ordering = puzzle.get("ordering_items")
+            if ordering:
+                expected = sorted(ordering, key=lambda x: x["correct_position"])
+                expected_ids = [it["id"] for it in expected]
+                correct = list(answer) == expected_ids
+            else:
+                correct = (answer == puzzle["correct"])
             tags = list(puzzle["skill_tags_correct"]) if correct else list(puzzle.get("skill_tags_wrong", []))
             run_state["puzzles_solved"][puzzle_id] = {"answer": answer, "correct": correct, "attempts": attempts}
             if correct and not prev.get("correct"):
