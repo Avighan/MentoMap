@@ -142,3 +142,45 @@ def test_solve_interpretive_puzzle_emits_per_option_tags():
     new_state, deltas = engine.handle_action(state, game_def, {"action": "solve_puzzle", "puzzle_id": "p4", "answer": 1})
     assert new_state["puzzles_solved"]["p4"] == {"answer": 1, "correct": None, "attempts": 1}
     assert sorted(deltas["skill_tags"]) == ["creativity", "empathy"]
+
+
+def test_submit_synthesis_correct():
+    game_def = _minimal_game_def()
+    game_def["evidence_board"] = {
+        "buckets": ["a", "b", "irrelevant"],
+        "correct_groupings": {"item1": "a", "item2": "b"},
+        "skill_tags_correct": ["critical_thinking"],
+        "skill_tags_partial": ["adaptability"],
+    }
+    engine = EscapeRoomEngine()
+    state = engine.start({}, game_def)
+    new_state, deltas = engine.handle_action(
+        state, game_def,
+        {"action": "submit_synthesis", "groupings": {"item1": "a", "item2": "b"}},
+    )
+    assert new_state["evidence_board_state"]["correct"] is True
+    assert new_state["evidence_board_state"]["accuracy"] == 1.0
+    assert new_state["evidence_board_state"]["attempts"] == 1
+    assert deltas["skill_tags"] == ["critical_thinking"]
+
+
+def test_submit_synthesis_partial_then_correct():
+    game_def = _minimal_game_def()
+    game_def["evidence_board"] = {
+        "buckets": ["a", "b", "irrelevant"],
+        "correct_groupings": {"item1": "a", "item2": "b"},
+        "skill_tags_correct": ["critical_thinking"],
+        "skill_tags_partial": ["adaptability"],
+    }
+    engine = EscapeRoomEngine()
+    state = engine.start({}, game_def)
+    engine.handle_action(state, game_def,
+        {"action": "submit_synthesis", "groupings": {"item1": "b", "item2": "b"}})
+    assert state["evidence_board_state"]["correct"] is False
+    assert state["evidence_board_state"]["accuracy"] == 0.5
+    new_state, deltas = engine.handle_action(state, game_def,
+        {"action": "submit_synthesis", "groupings": {"item1": "a", "item2": "b"}})
+    assert new_state["evidence_board_state"]["correct"] is True
+    assert new_state["evidence_board_state"]["attempts"] == 2
+    # adaptability awarded for re-arranging after wrong attempt
+    assert "adaptability" in [t for entry in new_state["skill_tag_log"] for t in entry["tags"]]

@@ -34,6 +34,7 @@ class EscapeRoomEngine:
             "examine": self._examine,
             "pickup": self._pickup,
             "solve_puzzle": self._solve_puzzle,
+            "submit_synthesis": self._submit_synthesis,
         }
         if verb not in dispatch:
             raise ValueError(f"unknown action verb: {verb}")
@@ -98,6 +99,41 @@ class EscapeRoomEngine:
 
         run_state["skill_tag_log"].append({"action": "solve_puzzle", "target": puzzle_id, "tags": tags})
         return run_state, {"skill_tags": tags, "knowledge_delta": 0, "events": [{"type": "puzzle_result", "puzzle_id": puzzle_id, "correct": run_state["puzzles_solved"][puzzle_id].get("correct")}]}
+
+    def _submit_synthesis(self, run_state, game_def, action):
+        groupings = action.get("groupings", {})
+        board = game_def.get("evidence_board", {})
+        correct_map = board.get("correct_groupings", {})
+        if not correct_map:
+            raise ValueError("evidence_board.correct_groupings is required")
+        total = len(correct_map)
+        matches = sum(1 for k, v in correct_map.items() if groupings.get(k) == v)
+        accuracy = matches / total if total else 0
+        is_correct = matches == total
+
+        prev_attempts = run_state["evidence_board_state"].get("attempts", 0)
+        prev_correct = run_state["evidence_board_state"].get("correct", False)
+        attempts = prev_attempts + 1
+
+        run_state["evidence_board_state"] = {
+            "correct": is_correct,
+            "accuracy": accuracy,
+            "attempts": attempts,
+            "groupings": dict(groupings),
+        }
+
+        if is_correct and prev_attempts > 0 and not prev_correct:
+            # correct after a failed attempt — award both correct and partial (adaptability)
+            tags = list(board.get("skill_tags_correct", [])) + list(board.get("skill_tags_partial", []))
+        elif is_correct:
+            tags = list(board.get("skill_tags_correct", []))
+        elif prev_attempts > 0 and not prev_correct:
+            # re-arranging after a failed attempt = adaptability
+            tags = list(board.get("skill_tags_partial", []))
+        else:
+            tags = []
+        run_state["skill_tag_log"].append({"action": "submit_synthesis", "target": "evidence_board", "tags": tags})
+        return run_state, {"skill_tags": tags, "knowledge_delta": 0, "events": [{"type": "synthesis_result", "correct": is_correct, "accuracy": accuracy}]}
 
     def _compute_knowledge_score(self, run_state, game_def):
         factual = [p for p in game_def.get("puzzles", []) if p["type"] == "factual"]
