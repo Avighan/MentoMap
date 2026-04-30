@@ -16,6 +16,7 @@ import InventoryDrawer from '../mystery/InventoryDrawer';
 import PuzzleModal from '../mystery/PuzzleModal';
 import EvidenceBoardModal from '../mystery/EvidenceBoardModal';
 import ClimaxModal from '../mystery/ClimaxModal';
+import HintButton from '../mystery/HintButton';
 
 const MysteryRoomRenderer = ({
   gameData,
@@ -39,6 +40,11 @@ const MysteryRoomRenderer = ({
 
   // Climax modal state (Task 21)
   const [climaxOpen, setClimaxOpen] = useState(false);
+
+  // Hint ladder state (Task 23). Reset whenever the active puzzle changes
+  // so a fresh puzzle starts at level 1.
+  const [lastHint, setLastHint] = useState(null);
+  useEffect(() => { setLastHint(null); }, [openPuzzleId]);
 
   // Stable label map for evidence items (used by EvidenceBoardModal).
   const evidenceLabels = useMemo(() => {
@@ -192,15 +198,17 @@ const MysteryRoomRenderer = ({
           </div>
         )}
 
-        {/* Stuck button (placeholder — real wiring in Task 23) */}
-        <button
-          type="button"
-          className="absolute top-3 left-3 z-20 px-3 py-1.5 rounded-full bg-white/90 hover:bg-white text-sm font-semibold shadow"
-          aria-label="I'm stuck — get a hint"
-          onClick={() => { /* Task 23 */ }}
-        >
-          🤔 I'm stuck
-        </button>
+        {/* Hint ladder (Task 23) */}
+        <HintButton
+          activePuzzleId={openPuzzleId}
+          lastHint={lastHint}
+          onRequestHint={async () => {
+            if (!openPuzzleId) return;
+            const resp = await action({ action: 'request_hint', puzzle_id: openPuzzleId });
+            const ev = (resp?.events || []).find((e) => e.type === 'hint');
+            if (ev) setLastHint({ level: ev.level, text: ev.text });
+          }}
+        />
 
         {/* Evidence Board trigger (Task 20) */}
         <button
