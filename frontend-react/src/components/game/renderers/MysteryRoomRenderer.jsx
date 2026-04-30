@@ -14,6 +14,7 @@ import { getRunState, submitMysteryAction } from '../../../api/games';
 import HotspotLayer from '../mystery/HotspotLayer';
 import InventoryDrawer from '../mystery/InventoryDrawer';
 import PuzzleModal from '../mystery/PuzzleModal';
+import EvidenceBoardModal from '../mystery/EvidenceBoardModal';
 
 const MysteryRoomRenderer = ({
   gameData,
@@ -30,6 +31,20 @@ const MysteryRoomRenderer = ({
   // Puzzle modal state (Task 19)
   const [openPuzzleId, setOpenPuzzleId] = useState(null);
   const [lastPuzzleResult, setLastPuzzleResult] = useState(null);
+
+  // Evidence board modal state (Task 20)
+  const [boardOpen, setBoardOpen] = useState(false);
+  const [boardResult, setBoardResult] = useState(null);
+
+  // Stable label map for evidence items (used by EvidenceBoardModal).
+  const evidenceLabels = useMemo(() => {
+    const labels = {};
+    (gameData?.items || []).forEach((it) => { labels[it.id] = it.name || it.label || it.id; });
+    (gameData?.puzzles || []).forEach((p) => {
+      if (p.evidence_id) labels[p.evidence_id] = (p.prompt || '').slice(0, 80) || p.evidence_id;
+    });
+    return labels;
+  }, [gameData]);
 
   // ── Initial state fetch ────────────────────────────────────────────────
   useEffect(() => {
@@ -160,6 +175,22 @@ const MysteryRoomRenderer = ({
           🤔 I'm stuck
         </button>
 
+        {/* Evidence Board trigger (Task 20) */}
+        <button
+          type="button"
+          onClick={() => setBoardOpen(true)}
+          disabled={(runState?.evidence_collected || []).length < 3}
+          className="absolute top-3 right-3 z-20 px-3 py-1.5 rounded-full bg-emerald-500 text-black text-sm font-semibold shadow hover:bg-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed"
+          title={
+            (runState?.evidence_collected || []).length < 3
+              ? 'Collect at least 3 pieces of evidence first'
+              : 'Open the evidence board'
+          }
+          aria-label="Open evidence board"
+        >
+          📋 Evidence Board ({(runState?.evidence_collected || []).length})
+        </button>
+
         {/* Hotspot + exit layer */}
         <HotspotLayer
           hotspots={room.hotspots || []}
@@ -174,6 +205,22 @@ const MysteryRoomRenderer = ({
         inventory={runState?.inventory || []}
         onItemClick={handleItemClick}
       />
+
+      {/* Evidence board modal (Task 20) */}
+      {boardOpen && (
+        <EvidenceBoardModal
+          board={gameData?.evidence_board}
+          evidenceCollected={runState?.evidence_collected || []}
+          evidenceLabels={evidenceLabels}
+          lastResult={boardResult}
+          onClose={() => setBoardOpen(false)}
+          onSubmit={async (groupings) => {
+            const resp = await action({ action: 'submit_synthesis', groupings });
+            const ev = (resp?.events || []).find((e) => e.type === 'synthesis_result');
+            if (ev) setBoardResult({ correct: ev.correct, accuracy: ev.accuracy });
+          }}
+        />
+      )}
 
       {/* Puzzle modal (Task 19) */}
       {openPuzzleId && (() => {
