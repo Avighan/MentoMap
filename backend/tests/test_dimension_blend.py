@@ -89,3 +89,54 @@ def test_blend_returns_only_authored_keys():
     out = blend_authored_behavioral({"strategic_thinking": 50}, {"empathy": 80}, 0.5, 0.5)
     assert "empathy" not in out
     assert "strategic_thinking" in out
+
+
+def test_rounds_scores_emit_v1_v2_and_ci():
+    """_compute_rounds_dimension_scores must return {score_v1, score_v2, ci}.
+
+    - score_v1 == legacy authored-only flat dict (back-compat).
+    - score_v2 == 50/50 blend with behavioral signals.
+    - ci has per-dimension {low, high} with low<=high and 0<=v<=100 across the board.
+    """
+    from app import _compute_rounds_dimension_scores
+
+    state = {
+        "choice_history": [
+            {"time_to_decide_ms": 5000, "deltas": {"money": 10},
+             "risk_level": "low", "skill_tags": ["empathy"]},
+            {"time_to_decide_ms": 6000, "deltas": {"money": -5},
+             "risk_level": "high", "skill_tags": ["risk_tolerance"]},
+            {"time_to_decide_ms": 4000, "deltas": {"money": 20},
+             "risk_level": "low", "skill_tags": ["strategic_thinking"]},
+        ],
+        "rounds_completed": [1, 2, 3],
+        "total_rounds": 3,
+        "resource_trajectory": [
+            {"money": 100}, {"money": 110}, {"money": 105}, {"money": 125},
+        ],
+    }
+    result = _compute_rounds_dimension_scores(state)
+
+    assert isinstance(result, dict)
+    assert "score_v1" in result
+    assert "score_v2" in result
+    assert "ci" in result
+
+    v1 = result["score_v1"]
+    v2 = result["score_v2"]
+    ci = result["ci"]
+
+    # score_v1 must contain the canonical six dimensions
+    for dim in ("strategic_thinking", "risk_tolerance", "delayed_gratification",
+                "adaptability", "resilience", "empathy"):
+        assert dim in v1, f"score_v1 missing {dim}"
+        assert 0 <= v1[dim] <= 100, f"score_v1[{dim}] out of bounds: {v1[dim]}"
+        assert dim in v2, f"score_v2 missing {dim}"
+        assert 0 <= v2[dim] <= 100, f"score_v2[{dim}] out of bounds: {v2[dim]}"
+        assert dim in ci, f"ci missing {dim}"
+        assert "low" in ci[dim] and "high" in ci[dim]
+        assert ci[dim]["low"] <= ci[dim]["high"], (
+            f"ci[{dim}]: low {ci[dim]['low']} > high {ci[dim]['high']}"
+        )
+        assert 0 <= ci[dim]["low"] <= 100
+        assert 0 <= ci[dim]["high"] <= 100

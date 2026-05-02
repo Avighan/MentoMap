@@ -98,6 +98,11 @@ from engines.realtime_multiplayer_engine import create_session as rt_create, get
 from engines.sim_ux_enrichment import build_ux_payload, snapshot_state, annotate_choices_with_dynamic_cost
 from engines.executive_ux import build_executive_payload as _build_executive_payload
 from engines.escape_room_engine import EscapeRoomEngine
+from engines.dimension_utils import (
+    aggregate_behavioral_signals,
+    blend_authored_behavioral,
+    compute_dimension_ci,
+)
 _ESCAPE_ROOM_ENGINE = EscapeRoomEngine()
 
 load_dotenv()
@@ -5705,7 +5710,10 @@ def run_report(run_id):
             if not _rounds_state.get("rounds_completed"):
                 _rounds_state["rounds_completed"] = [x.get("round_id") for x in r["log"] if x.get("round_id")]
             _rounds_state["total_rounds"] = max(len(game.get("rounds", [])), len(r["log"]))
-            dimension_scores = _compute_rounds_dimension_scores(_rounds_state, game=game)
+            dimension_scores = _canonical_scores(
+                _compute_rounds_dimension_scores(_rounds_state, game=game),
+                score_version=1,
+            )
             for sid, sv in dimension_scores.items():
                 setattr(st_obj, sid, sv)
             st_obj.dimension_scores = dimension_scores
@@ -5743,7 +5751,10 @@ def run_report(run_id):
             if not _sim_state.get("rounds_completed"):
                 _sim_state["rounds_completed"] = [x.get("round_id") for x in r["log"] if x.get("round_id")]
             _sim_state["total_rounds"] = max(len(game.get("rounds", [])), len(r["log"]))
-            dimension_scores = _compute_rounds_dimension_scores(_sim_state, game=game)
+            dimension_scores = _canonical_scores(
+                _compute_rounds_dimension_scores(_sim_state, game=game),
+                score_version=1,
+            )
             for sid, sv in dimension_scores.items():
                 setattr(st_obj, sid, sv)
             st_obj.dimension_scores = dimension_scores
@@ -20108,8 +20119,8 @@ def admin_validate_branching(game_id):
 # ADMIN: Dimension scoring helpers for rounds and story
 # ============================================================
 
-def _compute_rounds_dimension_scores(state, game=None):
-    """Compute dimension scores from rounds game state.
+def _compute_rounds_dimension_scores_authored_only(state, game=None):
+    """Authored-formula dimension scores for rounds games (legacy v1).
 
     Supports per-game customisation via game JSON:
         "dimension_scoring_weights": {
@@ -20121,6 +20132,9 @@ def _compute_rounds_dimension_scores(state, game=None):
             "empathy":             {"base": 30, "tag_bonus": 9}
         }
     Any missing keys fall back to the built-in defaults.
+
+    This function is the FROZEN v1 scorer. It must remain byte-for-byte identical
+    to the pre-Task-5 implementation so the snapshot regression suite stays green.
     """
     w = (game or {}).get("dimension_scoring_weights", {})
 
@@ -20193,6 +20207,60 @@ def _compute_rounds_dimension_scores(state, game=None):
         if cnt > 0:
             scores[exec_dim] = min(100, _w(exec_dim, "base", 30) + cnt * _w(exec_dim, "tag_bonus", 9))
     return scores
+
+
+def _build_per_round_dimension_samples(state, final_authored, game=None):
+    """Build per-dimension samples by replaying the choice_history prefix-by-prefix.
+
+    For each k in 1..N, recompute authored scores using only the first k choices.
+    Yields, per dimension, a list of N values that bootstrap_dimension_ci can use
+    to estimate uncertainty around the final authored score.
+    """
+    history = state.get("choice_history", []) or []
+    samples = {dim: [] for dim in final_authored}
+    if not history:
+        return samples
+    for k in range(1, len(history) + 1):
+        partial_state = {**state, "choice_history": history[:k]}
+        partial = _compute_rounds_dimension_scores_authored_only(partial_state, game)
+        for dim in final_authored:
+            samples[dim].append(partial.get(dim, final_authored[dim]))
+    return samples
+
+
+def _compute_rounds_dimension_scores(state, game=None):
+    """Compute v1 (authored) and v2 (50/50 authored+behavioral) dimension scores.
+
+    Returns a dict with three keys:
+      - score_v1: legacy authored-only flat dict (back-compat).
+      - score_v2: 50/50 blend of authored with behavioral signals.
+      - ci:       per-dimension {low, high} bootstrap 90% CI from per-round samples.
+
+    All existing callers should wrap the return with `_canonical_scores(...)` to
+    extract the flat dict shape they expect (defaults to v1).
+    """
+    authored = _compute_rounds_dimension_scores_authored_only(state, game)
+    behavioral = aggregate_behavioral_signals(state)
+    blended = blend_authored_behavioral(
+        authored, behavioral, w_authored=0.5, w_behavioral=0.5
+    )
+    per_round_samples = _build_per_round_dimension_samples(state, authored, game)
+    ci = {}
+    for dim in blended:
+        samples = per_round_samples.get(dim) or [blended[dim]]
+        low, high = compute_dimension_ci(samples)
+        ci[dim] = {"low": low, "high": high}
+    return {"score_v1": authored, "score_v2": blended, "ci": ci}
+
+
+def _canonical_scores(result, score_version=1):
+    """Extract a flat dimension dict from the v1/v2 envelope returned by
+    _compute_rounds_dimension_scores. Legacy callers stay on score_version=1
+    so end-user surfaces are unchanged.
+    """
+    if not isinstance(result, dict) or "score_v1" not in result:
+        return result
+    return result["score_v1"] if score_version == 1 else result["score_v2"]
 
 
 def _compute_strategy_dimension_scores(state):
