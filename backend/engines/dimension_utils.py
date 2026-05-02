@@ -420,6 +420,51 @@ def build_teachable_moment(dimension: str, choice_label: str = "", net_delta: fl
     }
 
 
+from engines.behavioral_analytics import (
+    compute_timing_stats,
+    detect_risk_averse_streak,
+    detect_recovery_pattern,
+    detect_consistency_pattern,
+    score_consistency,
+    score_recovery_ability,
+    score_risk_seeking,
+    score_grit,
+)
+
+
+def aggregate_behavioral_signals(state):
+    """Roll behavioral signals from behavioral_analytics into per-dimension 0-100 scores.
+
+    Returns a dict with keys matching STANDARD_DIMENSIONS.
+    Returns 50 (neutral) for any dimension with insufficient signal.
+    """
+    history = state.get("choice_history", []) or []
+    trajectory = state.get("resource_trajectory", []) or []
+    if not history:
+        return {d: 50 for d in (
+            "strategic_thinking", "risk_tolerance", "delayed_gratification",
+            "adaptability", "resilience", "empathy"
+        )}
+
+    timing = compute_timing_stats(history)
+    consistency = score_consistency(history, trajectory)
+    recovery = score_recovery_ability(trajectory)
+    risk_seek = score_risk_seeking(history, trajectory)
+    grit = score_grit(trajectory, history)
+
+    mean_ms = (timing or {}).get("mean_ms", 5000)
+    deliberation_score = max(0, min(100, ((mean_ms - 2000) / 80)))
+
+    return {
+        "strategic_thinking": int(0.6 * consistency * 100 + 0.4 * deliberation_score),
+        "risk_tolerance": int(risk_seek * 100),
+        "delayed_gratification": int(deliberation_score),
+        "adaptability": int(0.5 * consistency * 100 + 0.5 * recovery * 100),
+        "resilience": int(0.7 * recovery * 100 + 0.3 * grit * 100),
+        "empathy": 50,
+    }
+
+
 def adjust_scores_for_timing(raw_scores: Dict[str, Any], timing_stats: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     """
     Adjust dimension scores based on timing data.
