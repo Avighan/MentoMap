@@ -9,9 +9,9 @@ from engines.dimension_utils import aggregate_behavioral_signals
 def test_aggregate_behavioral_signals_returns_dict_per_dimension():
     state = {
         "choice_history": [
-            {"decision_time_ms": 8000, "deltas": {"money": 10}, "risk_level": "low"},
-            {"decision_time_ms": 7500, "deltas": {"money": -5}, "risk_level": "low"},
-            {"decision_time_ms": 12000, "deltas": {"money": 20}, "risk_level": "high"},
+            {"time_to_decide_ms": 8000, "deltas": {"money": 10}, "risk_level": "low"},
+            {"time_to_decide_ms": 7500, "deltas": {"money": -5}, "risk_level": "low"},
+            {"time_to_decide_ms": 12000, "deltas": {"money": 20}, "risk_level": "high"},
         ],
         "resource_trajectory": [
             {"money": 100},
@@ -37,7 +37,7 @@ def test_aggregate_with_empty_history_returns_neutral():
 
 def test_recovery_pattern_increases_resilience():
     state = {
-        "choice_history": [{"decision_time_ms": 5000, "deltas": {"money": -50}, "risk_level": "low"}] * 5,
+        "choice_history": [{"time_to_decide_ms": 5000, "deltas": {"money": -50}, "risk_level": "low"}] * 5,
         "resource_trajectory": [
             {"money": 100}, {"money": 50}, {"money": 60}, {"money": 80}, {"money": 95},
         ],

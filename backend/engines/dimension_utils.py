@@ -420,11 +420,14 @@ def build_teachable_moment(dimension: str, choice_label: str = "", net_delta: fl
     }
 
 
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Behavioral signal aggregation (Task 2 — P0 plan)
+# Wired into _compute_*_dimension_scores in Tasks 5–7 for the 50/50 authored+
+# behavioral scoring blend.
+# ──────────────────────────────────────────────────────────────────────────────
 from engines.behavioral_analytics import (
     compute_timing_stats,
-    detect_risk_averse_streak,
-    detect_recovery_pattern,
-    detect_consistency_pattern,
     score_consistency,
     score_recovery_ability,
     score_risk_seeking,
@@ -461,6 +464,8 @@ def aggregate_behavioral_signals(state):
         "delayed_gratification": int(deliberation_score),
         "adaptability": int(0.5 * consistency * 100 + 0.5 * recovery * 100),
         "resilience": int(0.7 * recovery * 100 + 0.3 * grit * 100),
+        # TODO(Task 5): empathy is hardcoded neutral until authored empathy deltas
+        # are blended in. Behavioral analytics has no empathy proxy today.
         "empathy": 50,
     }
 
