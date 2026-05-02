@@ -470,6 +470,29 @@ def aggregate_behavioral_signals(state):
     }
 
 
+# Bootstrap CI for dimension scores (Task 3 — P0 plan; alpha=0.10 = 90%)
+def compute_dimension_ci(samples, alpha=0.10, B=1000):
+    """Bootstrap CI for a list of dimension scores (one per round or per sub-event).
+    Returns (ci_low, ci_high) clipped to [0, 100].
+    alpha=0.10 → 90% CI by default.
+    """
+    import random
+    if not samples:
+        return (50, 50)
+    if len(samples) == 1:
+        v = max(0, min(100, samples[0]))
+        return (v, v)
+    means = []
+    n = len(samples)
+    for _ in range(B):
+        resample = [samples[random.randint(0, n - 1)] for _ in range(n)]
+        means.append(sum(resample) / n)
+    means.sort()
+    lo_idx = int((alpha / 2) * B)
+    hi_idx = int((1 - alpha / 2) * B) - 1
+    return (max(0, min(100, means[lo_idx])), max(0, min(100, means[hi_idx])))
+
+
 def adjust_scores_for_timing(raw_scores: Dict[str, Any], timing_stats: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     """
     Adjust dimension scores based on timing data.

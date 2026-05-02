@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pytest
-from engines.dimension_utils import aggregate_behavioral_signals
+from engines.dimension_utils import aggregate_behavioral_signals, compute_dimension_ci
 
 
 def test_aggregate_behavioral_signals_returns_dict_per_dimension():
@@ -44,3 +44,22 @@ def test_recovery_pattern_increases_resilience():
     }
     out = aggregate_behavioral_signals(state)
     assert out["resilience"] > 50, f"Expected resilience > 50 with recovery pattern, got {out['resilience']}"
+
+
+def test_compute_dimension_ci_returns_low_high():
+    samples = [60, 62, 58, 65, 61, 59, 63, 60, 62, 58]
+    ci_low, ci_high = compute_dimension_ci(samples, alpha=0.10, B=200)
+    assert ci_low < ci_high
+    assert 50 < ci_low < 60
+    assert 60 < ci_high < 70
+
+
+def test_compute_dimension_ci_handles_single_sample():
+    ci_low, ci_high = compute_dimension_ci([75], alpha=0.10, B=200)
+    assert ci_low == ci_high == 75
+
+
+def test_compute_dimension_ci_clips_to_0_100():
+    ci_low, ci_high = compute_dimension_ci([95, 99, 100, 98, 97], alpha=0.10, B=200)
+    assert ci_high <= 100
+    assert ci_low >= 0
