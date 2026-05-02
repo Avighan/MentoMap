@@ -493,6 +493,24 @@ def compute_dimension_ci(samples, alpha=0.10, B=1000):
     return (max(0, min(100, means[lo_idx])), max(0, min(100, means[hi_idx])))
 
 
+# Authored × behavioral blend (Task 4 — P0 plan)
+def blend_authored_behavioral(authored, behavioral, w_authored=0.5, w_behavioral=0.5):
+    """Blend authored (tag-based) and behavioral scores per dimension.
+
+    For dimensions present in `authored` but missing from `behavioral`,
+    return the authored value unchanged (preserves back-compat).
+    """
+    out = {}
+    for dim, a_score in (authored or {}).items():
+        a = max(0, min(100, a_score))
+        if dim in (behavioral or {}):
+            b = max(0, min(100, behavioral[dim]))
+            out[dim] = int(w_authored * a + w_behavioral * b)
+        else:
+            out[dim] = int(a)
+    return out
+
+
 def adjust_scores_for_timing(raw_scores: Dict[str, Any], timing_stats: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     """
     Adjust dimension scores based on timing data.

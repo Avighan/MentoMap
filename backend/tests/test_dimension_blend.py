@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pytest
-from engines.dimension_utils import aggregate_behavioral_signals, compute_dimension_ci
+from engines.dimension_utils import aggregate_behavioral_signals, compute_dimension_ci, blend_authored_behavioral
 
 
 def test_aggregate_behavioral_signals_returns_dict_per_dimension():
@@ -63,3 +63,29 @@ def test_compute_dimension_ci_clips_to_0_100():
     ci_low, ci_high = compute_dimension_ci([95, 99, 100, 98, 97], alpha=0.10, B=200)
     assert ci_high <= 100
     assert ci_low >= 0
+
+
+def test_blend_50_50():
+    authored = {"strategic_thinking": 80, "empathy": 60}
+    behavioral = {"strategic_thinking": 40, "empathy": 80}
+    out = blend_authored_behavioral(authored, behavioral, w_authored=0.5, w_behavioral=0.5)
+    assert out["strategic_thinking"] == 60
+    assert out["empathy"] == 70
+
+
+def test_blend_clips_to_0_100():
+    authored = {"strategic_thinking": 120}
+    behavioral = {"strategic_thinking": -20}
+    out = blend_authored_behavioral(authored, behavioral, 0.5, 0.5)
+    assert 0 <= out["strategic_thinking"] <= 100
+
+
+def test_blend_uses_authored_when_behavioral_missing():
+    out = blend_authored_behavioral({"empathy": 70}, {}, 0.5, 0.5)
+    assert out["empathy"] == 70
+
+
+def test_blend_returns_only_authored_keys():
+    out = blend_authored_behavioral({"strategic_thinking": 50}, {"empathy": 80}, 0.5, 0.5)
+    assert "empathy" not in out
+    assert "strategic_thinking" in out
