@@ -20269,8 +20269,12 @@ def _canonical_scores(result, score_version=1):
     return result["score_v1"] if score_version == 1 else result["score_v2"]
 
 
-def _compute_strategy_dimension_scores(state):
-    """Compute dimension scores from strategy/chess_strategy game state."""
+def _compute_strategy_dimension_scores_authored_only(state):
+    """Authored-formula dimension scores for strategy/chess_strategy gameplay (legacy v1).
+
+    This function is the FROZEN v1 scorer. It must remain byte-for-byte identical
+    to the pre-Task-7 implementation so the snapshot regression suite stays green.
+    """
     moves = state.get("moves_made", state.get("total_moves", 0))
     score = state.get("score", state.get("final_score", 50))
     resources = state.get("resources", {})
@@ -20285,6 +20289,68 @@ def _compute_strategy_dimension_scores(state):
         "resilience": min(100, 35 + int(score * 0.35)),
         "empathy": 50,
     }
+
+
+def _build_per_choice_strategy_dimension_samples(state, final_authored):
+    """Build per-dimension samples by replaying the strategy choice_history prefix-by-prefix.
+
+    For each k in 1..N, recompute authored strategy scores using only the first k
+    entries of choice_history (with resource_trajectory sliced to k+1 to keep
+    aligned). Yields per-dim sample lists for bootstrap CI.
+    """
+    history = state.get("choice_history") or []
+    trajectory = state.get("resource_trajectory") or []
+    samples = {dim: [] for dim in final_authored}
+    if not history:
+        return samples
+    for k in range(1, len(history) + 1):
+        partial_state = {
+            **state,
+            "choice_history": history[:k],
+            "resource_trajectory": trajectory[: k + 1],
+            # Authored scorer uses moves_made/total_moves; reflect prefix length
+            "moves_made": k,
+        }
+        partial = _compute_strategy_dimension_scores_authored_only(partial_state)
+        for dim in final_authored:
+            samples[dim].append(partial.get(dim, final_authored[dim]))
+    return samples
+
+
+def _compute_strategy_dimension_scores(state):
+    """Compute v1 (authored) and v2 (50/50 authored+behavioral) dimension scores
+    for strategy/chess_strategy gameplay.
+
+    Returns a dict with three keys:
+      - score_v1: legacy authored-only flat dict (back-compat).
+      - score_v2: 50/50 blend of authored with behavioral signals.
+      - ci:       per-dimension {low, high} bootstrap 90% CI from per-choice samples.
+
+    All existing callers should wrap the return with `_canonical_scores(...)` to
+    extract the flat dict shape they expect (defaults to v1).
+    """
+    authored = _compute_strategy_dimension_scores_authored_only(state)
+    try:
+        behavioral = aggregate_behavioral_signals(state)
+        blended = blend_authored_behavioral(
+            authored, behavioral, w_authored=0.5, w_behavioral=0.5
+        )
+        per_choice_samples = _build_per_choice_strategy_dimension_samples(state, authored)
+        ci = {}
+        for dim in blended:
+            samples = per_choice_samples.get(dim) or [blended[dim]]
+            low, high = compute_dimension_ci(samples)
+            ci[dim] = {"low": low, "high": high}
+    except Exception as e:
+        logger.warning(f"Strategy dimension blend/CI failed, falling back: {e}")
+        # Match the consistent fallback semantics from the story scorer (cb85e4e):
+        # neutral 0.5*authored + 0.5*50 blend, CI collapsed to the blended value.
+        neutral_behavioral = {dim: 50 for dim in authored}
+        blended = blend_authored_behavioral(
+            authored, neutral_behavioral, w_authored=0.5, w_behavioral=0.5
+        )
+        ci = {dim: {"low": v, "high": v} for dim, v in blended.items()}
+    return {"score_v1": authored, "score_v2": blended, "ci": ci}
 
 
 def _compute_story_dimension_scores_authored_only(state_or_log, ending_type="standard"):

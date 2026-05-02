@@ -218,3 +218,29 @@ def test_story_scores_v1_unchanged_for_minimal_behavioral():
         v2 = out["score_v2"][dim]
         expected_v2 = int(0.5 * v1 + 0.5 * 50)
         assert abs(v2 - expected_v2) <= 2, f"{dim}: v2={v2} vs expected {expected_v2}"
+
+
+def test_strategy_scores_emit_v1_v2_and_ci():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from app import _compute_strategy_dimension_scores
+
+    state = {
+        "moves_made": 24,
+        "final_score": 1450,
+        "resources": {"territory": 18, "captures": 4, "blunders": 2},
+        "choice_history": [
+            {"decision_time_ms": 7500, "deltas": {"territory": +1}, "risk_level": "low"},
+        ] * 24,
+        "resource_trajectory": [{"territory": i} for i in range(25)],
+    }
+    out = _compute_strategy_dimension_scores(state)
+    assert "score_v1" in out
+    assert "score_v2" in out
+    assert "ci" in out
+    for dim in ("strategic_thinking", "risk_tolerance", "delayed_gratification",
+                "adaptability", "resilience", "empathy"):
+        assert dim in out["score_v1"]
+        assert 0 <= out["score_v2"][dim] <= 100
+        assert out["ci"][dim]["low"] <= out["ci"][dim]["high"]
