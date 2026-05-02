@@ -184,11 +184,11 @@ def test_story_scores_emit_v1_v2_and_ci():
 
     state = {
         "choice_history": [
-            {"skill_tags": ["empathy", "ethical_reasoning"], "delta": +5,
+            {"skill_tags": ["empathy", "ethical_reasoning"], "delta": {"trust": 5},
              "decision_time_ms": 9000, "risk_level": "low"},
-            {"skill_tags": ["adaptability"], "delta": -2,
+            {"skill_tags": ["adaptability"], "delta": {"morale": -2},
              "decision_time_ms": 6000, "risk_level": "medium"},
-            {"skill_tags": ["empathy"], "delta": +3,
+            {"skill_tags": ["empathy"], "delta": {"trust": 3},
              "decision_time_ms": 8500, "risk_level": "low"},
         ],
         "resource_trajectory": [],

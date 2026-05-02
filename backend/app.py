@@ -20459,7 +20459,13 @@ def _compute_story_dimension_scores(state_or_log, ending_type="standard"):
             ci[dim] = {"low": low, "high": high}
     except Exception as e:
         logger.warning(f"Story dimension blend/CI failed, falling back: {e}")
-        blended = dict(authored)
+        # Match the no-signal path semantics: neutral 0.5*authored + 0.5*50 blend.
+        # This avoids a silent score_v2 == score_v1 leak that would otherwise
+        # mislead future v2 consumers.
+        neutral_behavioral = {dim: 50 for dim in authored}
+        blended = blend_authored_behavioral(
+            authored, neutral_behavioral, w_authored=0.5, w_behavioral=0.5
+        )
         ci = {dim: {"low": v, "high": v} for dim, v in blended.items()}
     return {"score_v1": authored, "score_v2": blended, "ci": ci}
 
