@@ -12959,6 +12959,76 @@ def _compute_strategy_tier(score):
     if score >= 200: return "Intermediate"
     return "Novice"
 
+# ─── Leaderboard population stats cache (Task 8 — P0 plan) ───────────────────
+# Per-game-type Z-score normalization uses pop_stats[game_type][dim] = {mean,std}.
+# Recomputed daily by _recompute_leaderboard_pop_stats() in _run_scheduler().
+_LB_POP_STATS_CACHE = {"loaded_at": 0.0, "mtime": 0.0, "stats": {}}
+_LB_POP_STATS_TTL = 300  # 5 min
+
+
+def _leaderboard_pop_stats_path():
+    return os.path.join(os.path.dirname(__file__), "data", "leaderboard_pop_stats.json")
+
+
+def _load_leaderboard_pop_stats():
+    """Load pop stats with mtime+TTL caching. Returns {} on any failure."""
+    import time as _time_lb
+    try:
+        path = _leaderboard_pop_stats_path()
+        try:
+            mtime = os.path.getmtime(path)
+        except OSError:
+            mtime = 0.0
+        now = _time_lb.time()
+        cache = _LB_POP_STATS_CACHE
+        # Invalidate when file changes OR after TTL — whichever comes first.
+        if (
+            cache["stats"]
+            and cache["mtime"] == mtime
+            and (now - cache["loaded_at"]) < _LB_POP_STATS_TTL
+        ):
+            return cache["stats"]
+        try:
+            with open(path, "r") as _f:
+                data = json.load(_f)
+                if not isinstance(data, dict):
+                    data = {}
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {}
+        cache["stats"] = data
+        cache["mtime"] = mtime
+        cache["loaded_at"] = now
+        return data
+    except Exception as _e:
+        logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
+        return {}
+
+
+def _normalize_entry_for_leaderboard(entry, game_type):
+    """Add `score_normalized` (dict) to entry without replacing `score`.
+
+    Source dims come from entry['final_metrics']['dimension_scores'] when
+    present, else from entry['dimension_scores']. Falls back silently on
+    any error — leaderboard write must never fail because of normalization.
+    """
+    try:
+        from engines.dimension_utils import zscore_normalize_for_leaderboard
+        dims = None
+        fm = entry.get("final_metrics") or {}
+        if isinstance(fm, dict) and isinstance(fm.get("dimension_scores"), dict):
+            dims = fm["dimension_scores"]
+        elif isinstance(entry.get("dimension_scores"), dict):
+            dims = entry["dimension_scores"]
+        if not dims:
+            return entry
+        pop_all = _load_leaderboard_pop_stats() or {}
+        pop_for_gt = pop_all.get(game_type) or {}
+        entry["score_normalized"] = zscore_normalize_for_leaderboard(dims, pop_for_gt)
+    except Exception as _e:
+        logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
+    return entry
+
+
 def _save_strategy_leaderboard(game_id, game_title, entry):
     """Save score to game-specific leaderboard file."""
     lb_file = os.path.join('game_sessions', f'leaderboard_{game_id}.json')
@@ -12999,9 +13069,18 @@ def _submit_strategy_leaderboard(run_id, game_id, game_title, summary, game_type
             "final_metrics": {k: v for k, v in summary.items() if isinstance(v, (int, float)) and k != "dimension_scores"},
             "achievement_score": ach_score,
             "total_points": ach_score,
+            "score": ach_score,  # explicit alias for back-compat readers (Task 8)
             "tier": _compute_strategy_tier(ach_score),
             "achievements": [],
+            "game_type": game_type,
         }
+        # Preserve raw dimension_scores on the entry for analytics + Z-score
+        # normalization. Back-compat: legacy readers still use `score`.
+        if isinstance(summary.get("dimension_scores"), dict):
+            entry["dimension_scores"] = summary["dimension_scores"]
+        # Add `score_normalized` (Task 8 — per-game-type Z-score normalization).
+        # Defensive: failure here MUST NOT block the write.
+        _normalize_entry_for_leaderboard(entry, game_type)
         _save_strategy_leaderboard(game_id, game_title, entry)
         logger.info(f"Leaderboard entry saved for {user_id} on {game_id} ({game_type}): score={ach_score}")
     except Exception as e:
@@ -21541,11 +21620,68 @@ def _run_scheduler():
             except Exception as _e:
                 logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
 
+        def _recompute_leaderboard_pop_stats():
+            """Daily 3am: recompute per-game-type dimension mean/std across all
+            leaderboard entries. Skips game_types with n<5 (insufficient pop).
+            Writes to data/leaderboard_pop_stats.json. Defensive: never crashes
+            the scheduler.
+            """
+            try:
+                import math as _math_lb
+                import glob as _glob_lb
+                lb_dir = os.path.join(os.path.dirname(__file__), "game_sessions")
+                pattern = os.path.join(lb_dir, "leaderboard_*.json")
+                # accumulator: per_gt[game_type][dim] -> list of values
+                per_gt = {}
+                for fp in _glob_lb.glob(pattern):
+                    try:
+                        with open(fp, "r") as _flb:
+                            lb = json.load(_flb)
+                    except Exception:
+                        continue
+                    for ent in (lb or {}).get("entries", []) or []:
+                        if not isinstance(ent, dict):
+                            continue
+                        gt = ent.get("game_type") or "unknown"
+                        dims = None
+                        fm = ent.get("final_metrics") or {}
+                        if isinstance(fm, dict) and isinstance(fm.get("dimension_scores"), dict):
+                            dims = fm["dimension_scores"]
+                        elif isinstance(ent.get("dimension_scores"), dict):
+                            dims = ent["dimension_scores"]
+                        if not dims:
+                            continue
+                        gt_bucket = per_gt.setdefault(gt, {})
+                        for d, v in dims.items():
+                            if isinstance(v, (int, float)):
+                                gt_bucket.setdefault(d, []).append(float(v))
+                out = {}
+                for gt, dims_map in per_gt.items():
+                    gt_out = {}
+                    for d, vals in dims_map.items():
+                        n = len(vals)
+                        if n < 5:
+                            continue  # insufficient sample → fall back to raw
+                        mean = sum(vals) / n
+                        var = sum((x - mean) ** 2 for x in vals) / n
+                        std = _math_lb.sqrt(var)
+                        gt_out[d] = {"mean": mean, "std": std, "n": n}
+                    if gt_out:
+                        out[gt] = gt_out
+                pop_path = os.path.join(os.path.dirname(__file__), "data", "leaderboard_pop_stats.json")
+                os.makedirs(os.path.dirname(pop_path), exist_ok=True)
+                with open(pop_path, "w") as _fout:
+                    json.dump(out, _fout, indent=2)
+                logger.info(f"Recomputed leaderboard pop stats for {len(out)} game_types")
+            except Exception as _e:
+                logger.warning(f"Leaderboard pop stats recompute failed: {_e}")
+
         _scheduler = BackgroundScheduler()
         _scheduler.add_job(_daily_streak_check, 'cron', hour=9, minute=0, id='streak_check')
         _scheduler.add_job(_daily_cleanup, 'cron', hour=2, minute=0, id='cleanup')
         _scheduler.add_job(_check_cohort_sessions, 'interval', minutes=10, id='cohort_sessions')
         _scheduler.add_job(_MULTIPLAYER_ENGINE.cleanup_stale_sessions, 'interval', minutes=5, id='multiplayer_cleanup', replace_existing=True)
+        _scheduler.add_job(_recompute_leaderboard_pop_stats, 'cron', hour=3, minute=0, id='leaderboard_pop_stats')
         _scheduler.start()
     except ImportError:
         pass  # APScheduler not installed, skip

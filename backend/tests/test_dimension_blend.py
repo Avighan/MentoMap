@@ -244,3 +244,35 @@ def test_strategy_scores_emit_v1_v2_and_ci():
         assert dim in out["score_v1"]
         assert 0 <= out["score_v2"][dim] <= 100
         assert out["ci"][dim]["low"] <= out["ci"][dim]["high"]
+
+
+def test_zscore_normalize_uses_game_type_distribution():
+    from engines.dimension_utils import zscore_normalize_for_leaderboard
+    raw = {"strategic_thinking": 75}
+    pop_stats = {"strategic_thinking": {"mean": 60, "std": 10}}
+    out = zscore_normalize_for_leaderboard(raw, pop_stats)
+    # z=(75-60)/10=1.5 → 50+15*1.5 = 72.5 → int = 72
+    assert 70 <= out["strategic_thinking"] <= 75
+
+
+def test_zscore_normalize_handles_missing_population_stats():
+    from engines.dimension_utils import zscore_normalize_for_leaderboard
+    out = zscore_normalize_for_leaderboard({"strategic_thinking": 75}, {})
+    assert out["strategic_thinking"] == 75
+
+
+def test_zscore_normalize_clips_to_0_100():
+    from engines.dimension_utils import zscore_normalize_for_leaderboard
+    raw = {"a": 100, "b": 0}
+    pop = {"a": {"mean": 0, "std": 1}, "b": {"mean": 100, "std": 1}}
+    out = zscore_normalize_for_leaderboard(raw, pop)
+    assert out["a"] == 100  # huge positive z clipped
+    assert out["b"] == 0    # huge negative z clipped
+
+
+def test_zscore_normalize_handles_zero_std():
+    from engines.dimension_utils import zscore_normalize_for_leaderboard
+    raw = {"a": 75}
+    pop = {"a": {"mean": 60, "std": 0}}
+    out = zscore_normalize_for_leaderboard(raw, pop)
+    assert out["a"] == 75  # zero std → passthrough

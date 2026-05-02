@@ -511,6 +511,38 @@ def blend_authored_behavioral(authored, behavioral, w_authored=0.5, w_behavioral
     return out
 
 
+def zscore_normalize_for_leaderboard(raw_scores, population_stats):
+    """Convert raw 0-100 dimension scores to game-type-normalized 0-100.
+
+    Uses per-game-type population stats: maps z = (v-mean)/std to a 0-100
+    score with target distribution mean=50, std=15. Clips to [0, 100].
+    Falls back to raw value when stats are missing or std is zero.
+
+    Args:
+        raw_scores: Dict of {dim_name: score} where each score is 0-100.
+        population_stats: Dict of {dim_name: {"mean": float, "std": float}}
+                          for the target game_type's population.
+
+    Returns:
+        Dict of {dim_name: int 0-100} with normalized scores. Dims with
+        missing/invalid stats pass through unchanged.
+    """
+    out = {}
+    for dim, v in (raw_scores or {}).items():
+        stats = (population_stats or {}).get(dim) or {}
+        mean = stats.get("mean")
+        std = stats.get("std")
+        if mean is None or std is None or std == 0:
+            out[dim] = v
+            continue
+        try:
+            z = (v - mean) / std
+            out[dim] = max(0, min(100, int(50 + 15 * z)))
+        except (TypeError, ZeroDivisionError):
+            out[dim] = v
+    return out
+
+
 def adjust_scores_for_timing(raw_scores: Dict[str, Any], timing_stats: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     """
     Adjust dimension scores based on timing data.
