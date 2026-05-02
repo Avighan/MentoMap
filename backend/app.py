@@ -21681,7 +21681,7 @@ def _run_scheduler():
         _scheduler.add_job(_daily_cleanup, 'cron', hour=2, minute=0, id='cleanup')
         _scheduler.add_job(_check_cohort_sessions, 'interval', minutes=10, id='cohort_sessions')
         _scheduler.add_job(_MULTIPLAYER_ENGINE.cleanup_stale_sessions, 'interval', minutes=5, id='multiplayer_cleanup', replace_existing=True)
-        _scheduler.add_job(_recompute_leaderboard_pop_stats, 'cron', hour=3, minute=0, id='leaderboard_pop_stats')
+        _scheduler.add_job(_recompute_leaderboard_pop_stats, 'cron', hour=3, minute=0, id='leaderboard_pop_stats', replace_existing=True)
         _scheduler.start()
     except ImportError:
         pass  # APScheduler not installed, skip
