@@ -1,7 +1,12 @@
-"""Strip delayed_gratification skill_tags from timed_challenge games; add adaptability.
+"""Strip delayed_gratification from timed_challenge games and re-key to adaptability.
 
 Reasoning: timed quizzes test the OPPOSITE of delayed gratification (speed over
 deliberation). The audit (§9 step 6) flags this as a tag-mechanic mismatch.
+
+Strips delayed_gratification from THREE structural locations:
+  1. skill_tags arrays (replace with adaptability).
+  2. dimension_scoring_weights dict (re-key dg -> adaptability, summing weights).
+  3. psychological_skills (list[str|dict] or dict) — drop dg entry/key.
 
 Note: in this codebase the timed-challenge marker lives at
 ``minigame_config.subtype == "timed_challenge"`` (the wrapping ``game_type`` is
@@ -28,18 +33,69 @@ def is_timed_challenge(game):
     return False
 
 
+def _merge_dg_value_into_adaptability(adapt_val, dg_val):
+    """Best-effort merge of two values. Numbers sum (clamped to [0,100]); dicts merge value field clamped to max."""
+    # numeric + numeric -> sum, clamped to [0,100]
+    if isinstance(adapt_val, (int, float)) and isinstance(dg_val, (int, float)):
+        return round(max(0.0, min(100.0, float(adapt_val) + float(dg_val))), 3)
+    # both dicts: keep adapt_val structure, sum 'value' clamped to [min,max] if present
+    if isinstance(adapt_val, dict) and isinstance(dg_val, dict):
+        merged = dict(adapt_val)
+        if isinstance(adapt_val.get("value"), (int, float)) and isinstance(dg_val.get("value"), (int, float)):
+            lo = float(adapt_val.get("min", 0)) if isinstance(adapt_val.get("min"), (int, float)) else 0.0
+            hi = float(adapt_val.get("max", 100)) if isinstance(adapt_val.get("max"), (int, float)) else 100.0
+            merged["value"] = round(max(lo, min(hi, float(adapt_val["value"]) + float(dg_val["value"]))), 3)
+        return merged
+    # one missing/null
+    if adapt_val is None:
+        return dg_val
+    return adapt_val  # prefer existing
+
+
+def _rekey_dg_in_dict(d):
+    """If dict has 'delayed_gratification' key, re-key to 'adaptability' (merging if needed). Returns True if mutated."""
+    if not isinstance(d, dict) or "delayed_gratification" not in d:
+        return False
+    dg_val = d.pop("delayed_gratification")
+    if "adaptability" in d:
+        d["adaptability"] = _merge_dg_value_into_adaptability(d["adaptability"], dg_val)
+    else:
+        d["adaptability"] = dg_val
+    return True
+
+
 def strip_dg_in_obj(obj):
-    """Recursively walk obj; replace 'delayed_gratification' with 'adaptability' in skill_tags arrays."""
+    """Recursively walk obj; remove 'delayed_gratification' from all known structural locations.
+
+    Handles:
+      - skill_tags arrays: replace 'delayed_gratification' string with 'adaptability'.
+      - any dict with a 'delayed_gratification' key: re-key to 'adaptability' (merge with smart strategy).
+      - any list of skill-descriptor dicts where item['id'] == 'delayed_gratification': re-id to 'adaptability'
+        if no sibling already has that id, else drop the dg item entirely.
+    """
     changed = False
     if isinstance(obj, dict):
-        for k, v in obj.items():
-            if k == "skill_tags" and isinstance(v, list):
-                if "delayed_gratification" in v:
-                    obj[k] = [t if t != "delayed_gratification" else "adaptability" for t in v]
+        if _rekey_dg_in_dict(obj):
+            changed = True
+        for v in obj.values():
+            if isinstance(v, list):
+                # special: skill_tags list[str]
+                if all(isinstance(x, str) for x in v) and "delayed_gratification" in v:
+                    v[:] = [t if t != "delayed_gratification" else "adaptability" for t in v]
                     changed = True
-            else:
-                if strip_dg_in_obj(v):
+                    continue
+                # special: list[dict] with id field — re-id or drop dg entries
+                sibling_ids = {x.get("id") for x in v if isinstance(x, dict)}
+                if "delayed_gratification" in sibling_ids:
+                    if "adaptability" in sibling_ids:
+                        v[:] = [x for x in v if not (isinstance(x, dict) and x.get("id") == "delayed_gratification")]
+                    else:
+                        for x in v:
+                            if isinstance(x, dict) and x.get("id") == "delayed_gratification":
+                                x["id"] = "adaptability"
                     changed = True
+            if strip_dg_in_obj(v):
+                changed = True
     elif isinstance(obj, list):
         for item in obj:
             if strip_dg_in_obj(item):
