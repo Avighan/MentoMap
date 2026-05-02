@@ -20292,14 +20292,17 @@ def _compute_strategy_dimension_scores_authored_only(state):
 
 
 def _build_per_choice_strategy_dimension_samples(state, final_authored):
-    """Build per-dimension samples by replaying the strategy choice_history prefix-by-prefix.
+    """Build per-prefix authored-score samples for bootstrap CI.
 
-    For each k in 1..N, recompute authored strategy scores using only the first k
-    entries of choice_history (with resource_trajectory sliced to k+1 to keep
-    aligned). Yields per-dim sample lists for bootstrap CI.
+    NOTE: The strategy authored scorer reads aggregate counters (moves_made,
+    score, resources) — it does NOT consume per-move log data. So today the
+    prefix replay only varies `moves_made` (=k), making strategic_thinking
+    the only dimension with meaningful CI variance. The other dims will
+    report low==high CIs until the authored formula is upgraded to consume
+    choice_history per-move signals (deltas, decision_time_ms, risk_level).
+    This is a known limitation, not a bug in this helper.
     """
     history = state.get("choice_history") or []
-    trajectory = state.get("resource_trajectory") or []
     samples = {dim: [] for dim in final_authored}
     if not history:
         return samples
@@ -20307,7 +20310,6 @@ def _build_per_choice_strategy_dimension_samples(state, final_authored):
         partial_state = {
             **state,
             "choice_history": history[:k],
-            "resource_trajectory": trajectory[: k + 1],
             # Authored scorer uses moves_made/total_moves; reflect prefix length
             "moves_made": k,
         }
