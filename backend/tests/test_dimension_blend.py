@@ -140,3 +140,37 @@ def test_rounds_scores_emit_v1_v2_and_ci():
         )
         assert 0 <= ci[dim]["low"] <= 100
         assert 0 <= ci[dim]["high"] <= 100
+
+
+def test_canonical_scores_returns_v1_by_default():
+    from app import _canonical_scores
+    envelope = {
+        "score_v1": {"strategic_thinking": 70, "empathy": 60},
+        "score_v2": {"strategic_thinking": 65, "empathy": 55},
+        "ci": {"strategic_thinking": {"low": 60, "high": 80}},
+    }
+    out = _canonical_scores(envelope)
+    assert out == {"strategic_thinking": 70, "empathy": 60}
+
+
+def test_canonical_scores_returns_v2_when_requested():
+    from app import _canonical_scores
+    envelope = {
+        "score_v1": {"strategic_thinking": 70},
+        "score_v2": {"strategic_thinking": 65},
+        "ci": {},
+    }
+    out = _canonical_scores(envelope, score_version=2)
+    assert out == {"strategic_thinking": 65}
+
+
+def test_canonical_scores_passes_through_flat_dict():
+    from app import _canonical_scores
+    flat = {"strategic_thinking": 50, "empathy": 70}
+    assert _canonical_scores(flat) == flat
+
+
+def test_canonical_scores_passes_through_non_dict():
+    from app import _canonical_scores
+    assert _canonical_scores(None) is None
+    assert _canonical_scores([1, 2, 3]) == [1, 2, 3]
