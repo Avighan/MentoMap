@@ -10576,6 +10576,12 @@ def api_skill_leaderboard():
             except Exception:
                 continue
 
+        # Task 9 — this aggregator averages a single dimension across multiple runs
+        # so per-entry ci_low isn't meaningful here (CI is per-run from the score
+        # envelope). Continue ranking by the aggregated `best` score; CI-aware
+        # ranking applies to the per-game leaderboards (api_get_leaderboard).
+        # TODO: thread per-run ci_low into the aggregation (e.g., min-of-runs) so
+        # this skill leaderboard can also rank by CI lower bound.
         ranked = sorted(player_scores.items(), key=lambda x: x[1]["best"], reverse=True)
         entries = [
             {"rank": i + 1, "user_id": uid, "name": info["name"],
@@ -10778,7 +10784,8 @@ def api_get_leaderboard_all():
                     all_entries.append(entry)
             except Exception as _e:
                 logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
-        all_entries.sort(key=lambda x: x.get("score", 0), reverse=True)
+        # Task 9 — rank by CI-lower-bound when present; legacy entries fall back to score.
+        all_entries.sort(key=_leaderboard_sort_key, reverse=True)
         return jsonify({"leaderboard": all_entries[:limit], "entries": all_entries[:limit]})
     except Exception as e:
         logger.error(f"Failed to get leaderboard: {e}")
@@ -10814,9 +10821,19 @@ def api_get_leaderboard(game_id):
     try:
         limit = int(request.args.get("limit", 10))
         limit = min(limit, 100)  # Max 100 entries
-        
-        leaderboard_data = get_leaderboard(game_id, limit)
-        
+
+        # Pull a wider slice from storage so we can re-rank with the CI-aware sort
+        # before truncating to `limit`. Storage already pre-sorts at write time but
+        # legacy files may pre-date Task 9's _leaderboard_sort_key.
+        leaderboard_data = get_leaderboard(game_id, limit=max(limit, 100))
+        try:
+            entries = leaderboard_data.get("entries") or []
+            entries = sorted(entries, key=_leaderboard_sort_key, reverse=True)
+            leaderboard_data["entries"] = entries[:limit]
+        except Exception as _e:
+            logger.debug("Suppressed %s in leaderboard re-sort: %s", type(_e).__name__, _e)
+            leaderboard_data["entries"] = (leaderboard_data.get("entries") or [])[:limit]
+
         return jsonify(leaderboard_data)
     except Exception as e:
         logger.error(f"Failed to get leaderboard: {e}")
@@ -13029,6 +13046,71 @@ def _normalize_entry_for_leaderboard(entry, game_type):
     return entry
 
 
+def _leaderboard_sort_key(entry):
+    """Sort key for leaderboard ranking (Task 9 — P0 plan).
+
+    Primary:   ci_low (90% CI lower bound from dimension scoring envelope).
+    Secondary: score (legacy back-compat).
+
+    Returns a tuple so that, when used with sorted(..., reverse=True):
+      - entries WITH ci_low rank above entries WITHOUT ci_low (when scores equal),
+      - within entries with ci_low: sorted by ci_low DESC then score DESC,
+      - within legacy entries: sorted by score DESC.
+    """
+    if not isinstance(entry, dict):
+        return (0, 0, 0)
+    score = entry.get("score") or entry.get("achievement_score") or 0
+    try:
+        score = float(score)
+    except (TypeError, ValueError):
+        score = 0
+    ci_low = entry.get("ci_low")
+    has_ci = ci_low is not None
+    try:
+        ci_low_val = float(ci_low) if has_ci else 0
+    except (TypeError, ValueError):
+        ci_low_val = 0
+        has_ci = False
+    return (1 if has_ci else 0, ci_low_val, score)
+
+
+def _attach_ci_to_entry(entry, score_envelope):
+    """Attach ci_low/ci_high/ranked_by to a leaderboard entry from the score envelope.
+
+    Envelope shape (from `_compute_*_dimension_scores` helpers):
+      {"score_v1": {...}, "score_v2": {...}, "ci": {dim: {"low": int, "high": int}}}
+
+    Aggregate strategy: average `low`/`high` across all dims that report CI.
+    Defensive: missing/malformed envelope leaves the entry untouched (sets only
+    `ranked_by` = "score" for clarity). Never raises.
+    """
+    try:
+        if not isinstance(entry, dict):
+            return entry
+        ci = (score_envelope or {}).get("ci") if isinstance(score_envelope, dict) else None
+        if not isinstance(ci, dict):
+            entry.setdefault("ranked_by", "score")
+            return entry
+        ci_lows = [
+            v.get("low") for v in ci.values()
+            if isinstance(v, dict) and isinstance(v.get("low"), (int, float))
+        ]
+        ci_highs = [
+            v.get("high") for v in ci.values()
+            if isinstance(v, dict) and isinstance(v.get("high"), (int, float))
+        ]
+        if ci_lows:
+            entry["ci_low"] = int(round(sum(ci_lows) / len(ci_lows)))
+            if ci_highs:
+                entry["ci_high"] = int(round(sum(ci_highs) / len(ci_highs)))
+            entry["ranked_by"] = "ci_low"
+        else:
+            entry["ranked_by"] = "score"
+    except Exception as _e:
+        logger.debug("Suppressed %s in _attach_ci_to_entry: %s", type(_e).__name__, _e)
+    return entry
+
+
 def _save_strategy_leaderboard(game_id, game_title, entry):
     """Save score to game-specific leaderboard file."""
     lb_file = os.path.join('game_sessions', f'leaderboard_{game_id}.json')
@@ -13038,15 +13120,24 @@ def _save_strategy_leaderboard(game_id, game_title, entry):
     except (FileNotFoundError, json.JSONDecodeError):
         lb = {"game_id": game_id, "game_title": game_title, "entries": [], "last_updated": ""}
     lb["entries"].append(entry)
-    lb["entries"].sort(key=lambda x: (x.get("achievement_score", 0), x.get("total_points", 0)), reverse=True)
+    # Task 9 — sort by ci_low primary, score secondary; legacy entries fall back
+    # cleanly because _leaderboard_sort_key returns (0, 0, score) when ci_low absent.
+    lb["entries"].sort(key=_leaderboard_sort_key, reverse=True)
     lb["entries"] = lb["entries"][:100]
     lb["last_updated"] = entry.get("timestamp", "")
     os.makedirs('game_sessions', exist_ok=True)
     with open(lb_file, 'w') as f:
         json.dump(lb, f, indent=2)
 
-def _submit_strategy_leaderboard(run_id, game_id, game_title, summary, game_type):
-    """Extract user, compute score, submit to leaderboard. Safe to call from any /complete endpoint."""
+def _submit_strategy_leaderboard(run_id, game_id, game_title, summary, game_type, score_envelope=None):
+    """Extract user, compute score, submit to leaderboard. Safe to call from any /complete endpoint.
+
+    Task 9 — `score_envelope` is the optional output of `_compute_*_dimension_scores`
+    (shape: {score_v1, score_v2, ci}). When provided, ci_low/ci_high are attached to
+    the entry and used for ranking (CI-lower-bound first, score as tiebreaker).
+    Legacy callers that pass only `summary` continue to work — entry will rank by
+    `score` alone.
+    """
     try:
         user_id = None
         auth_header = request.headers.get('Authorization', '')
@@ -13081,6 +13172,12 @@ def _submit_strategy_leaderboard(run_id, game_id, game_title, summary, game_type
         # Add `score_normalized` (Task 8 — per-game-type Z-score normalization).
         # Defensive: failure here MUST NOT block the write.
         _normalize_entry_for_leaderboard(entry, game_type)
+        # Task 9 — attach ci_low/ci_high/ranked_by from score envelope when available.
+        # If callers don't yet pass the envelope, this is a no-op (ranked_by="score").
+        # TODO: thread `_compute_strategy_dimension_scores(state)` envelope through the
+        # six strategy /complete handlers (chess, go, reversi, tower_defense,
+        # puzzle_match, strategy_grid) so CI-lower-bound ranking activates for them.
+        _attach_ci_to_entry(entry, score_envelope)
         _save_strategy_leaderboard(game_id, game_title, entry)
         logger.info(f"Leaderboard entry saved for {user_id} on {game_id} ({game_type}): score={ach_score}")
     except Exception as e:

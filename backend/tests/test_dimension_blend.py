@@ -276,3 +276,38 @@ def test_zscore_normalize_handles_zero_std():
     pop = {"a": {"mean": 60, "std": 0}}
     out = zscore_normalize_for_leaderboard(raw, pop)
     assert out["a"] == 75  # zero std → passthrough
+
+
+def test_leaderboard_sort_prefers_ci_low_over_score():
+    # Pure unit test for the sort key — no app import needed
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from app import _leaderboard_sort_key
+
+    entries = [
+        {"player": "A", "score": 90, "ci_low": 60},   # high score, wide CI
+        {"player": "B", "score": 80, "ci_low": 75},   # lower score but tight CI
+        {"player": "C", "score": 70},                 # legacy: no ci_low
+    ]
+    sorted_entries = sorted(entries, key=_leaderboard_sort_key, reverse=True)
+    # B should win (ci_low=75 > 60), A second (ci_low=60), C last (no ci_low → fallback to score=70 but ci_low=0 makes it last)
+    assert sorted_entries[0]["player"] == "B"
+    assert sorted_entries[1]["player"] == "A"
+    assert sorted_entries[2]["player"] == "C"
+
+
+def test_leaderboard_sort_falls_back_to_score_when_no_ci_low_anywhere():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from app import _leaderboard_sort_key
+
+    entries = [
+        {"player": "A", "score": 70},
+        {"player": "B", "score": 90},
+        {"player": "C", "score": 50},
+    ]
+    sorted_entries = sorted(entries, key=_leaderboard_sort_key, reverse=True)
+    # All legacy: pure score order
+    assert [e["player"] for e in sorted_entries] == ["B", "A", "C"]
