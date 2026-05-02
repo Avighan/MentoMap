@@ -174,3 +174,47 @@ def test_canonical_scores_passes_through_non_dict():
     from app import _canonical_scores
     assert _canonical_scores(None) is None
     assert _canonical_scores([1, 2, 3]) == [1, 2, 3]
+
+
+def test_story_scores_emit_v1_v2_and_ci():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from app import _compute_story_dimension_scores
+
+    state = {
+        "choice_history": [
+            {"skill_tags": ["empathy", "ethical_reasoning"], "delta": +5,
+             "decision_time_ms": 9000, "risk_level": "low"},
+            {"skill_tags": ["adaptability"], "delta": -2,
+             "decision_time_ms": 6000, "risk_level": "medium"},
+            {"skill_tags": ["empathy"], "delta": +3,
+             "decision_time_ms": 8500, "risk_level": "low"},
+        ],
+        "resource_trajectory": [],
+    }
+    out = _compute_story_dimension_scores(state, ending_type="growth")
+    assert "score_v1" in out
+    assert "score_v2" in out
+    assert "ci" in out
+    for dim in out["score_v1"]:
+        assert 0 <= out["score_v1"][dim] <= 100
+        assert 0 <= out["score_v2"][dim] <= 100
+        ci = out["ci"][dim]
+        assert ci["low"] <= ci["high"]
+
+
+def test_story_scores_v1_unchanged_for_minimal_behavioral():
+    """When choice_history has no timing/risk data, behavioral is neutral; v2 ≈ 0.5*v1+0.5*50."""
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from app import _compute_story_dimension_scores
+
+    state = {"choice_history": [{"skill_tags": ["empathy"], "delta": +5}], "resource_trajectory": []}
+    out = _compute_story_dimension_scores(state, ending_type="standard")
+    for dim in out["score_v1"]:
+        v1 = out["score_v1"][dim]
+        v2 = out["score_v2"][dim]
+        expected_v2 = int(0.5 * v1 + 0.5 * 50)
+        assert abs(v2 - expected_v2) <= 2, f"{dim}: v2={v2} vs expected {expected_v2}"

@@ -5725,7 +5725,10 @@ def run_report(run_id):
     if game.get("game_type") == "story_branching" and r["log"]:
         try:
             ending_type = r.get("ending_type") or final_state.get("ending_type", "standard")
-            dimension_scores = _compute_story_dimension_scores(final_state, ending_type)
+            dimension_scores = _canonical_scores(
+                _compute_story_dimension_scores(final_state, ending_type),
+                score_version=1,
+            )
             for sid, sv in dimension_scores.items():
                 setattr(st_obj, sid, sv)
             st_obj.dimension_scores = dimension_scores
@@ -14875,9 +14878,12 @@ def story_branching_choice(run_id):
 
                     # Compute interim dimension scores from current log
                     log_for_scoring = r.get("log", [])
-                    interim_scores = _compute_story_dimension_scores(
-                        {"log": log_for_scoring, "dimension_scores": state_to_dict(r["state"]).get("dimension_scores", {})},
-                        ending_type=ending_type if is_ending else "standard"
+                    interim_scores = _canonical_scores(
+                        _compute_story_dimension_scores(
+                            {"log": log_for_scoring, "dimension_scores": state_to_dict(r["state"]).get("dimension_scores", {})},
+                            ending_type=ending_type if is_ending else "standard"
+                        ),
+                        score_version=1,
                     )
 
                     # XP: 20 per chapter, 40 for final ending
@@ -20281,9 +20287,13 @@ def _compute_strategy_dimension_scores(state):
     }
 
 
-def _compute_story_dimension_scores(state_or_log, ending_type="standard"):
-    """Compute dimension scores from story_branching gameplay.
+def _compute_story_dimension_scores_authored_only(state_or_log, ending_type="standard"):
+    """Authored-formula dimension scores for story_branching gameplay (legacy v1).
+
     Uses actual choice deltas and skill_tags — not just choice count.
+
+    This function is the FROZEN v1 scorer. It must remain byte-for-byte identical
+    to the pre-Task-6 implementation so the snapshot regression suite stays green.
     """
     state = state_or_log if isinstance(state_or_log, dict) else {}
     log = state.get("log", []) if isinstance(state, dict) else (state_or_log if isinstance(state_or_log, list) else [])
@@ -20342,6 +20352,116 @@ def _compute_story_dimension_scores(state_or_log, ending_type="standard"):
             scores[exec_dim] = min(100, 30 + tag_counts[exec_dim] * 8 + quality_bonus)
 
     return scores
+
+
+def _build_per_choice_story_dimension_samples(state, ending_type, final_authored):
+    """Build per-dimension samples by replaying the story choice_history prefix-by-prefix.
+
+    For each k in 1..N, recompute authored story scores using only the first k
+    entries of the log/choice_history. Yields per-dim sample lists for bootstrap CI.
+    """
+    history = state.get("choice_history", []) or state.get("log", []) or []
+    samples = {dim: [] for dim in final_authored}
+    if not history:
+        return samples
+    for k in range(1, len(history) + 1):
+        partial_state = {
+            **state,
+            "log": history[:k],
+            "choice_history": history[:k],
+        }
+        partial = _compute_story_dimension_scores_authored_only(partial_state, ending_type)
+        for dim in final_authored:
+            samples[dim].append(partial.get(dim, final_authored[dim]))
+    return samples
+
+
+def _compute_story_dimension_scores(state_or_log, ending_type="standard"):
+    """Compute v1 (authored) and v2 (50/50 authored+behavioral) dimension scores
+    for story_branching gameplay.
+
+    Returns a dict with three keys:
+      - score_v1: legacy authored-only flat dict (back-compat).
+      - score_v2: 50/50 blend of authored with behavioral signals.
+      - ci:       per-dimension {low, high} bootstrap 90% CI from per-choice samples.
+
+    Accepts EITHER a state dict OR a bare list (legacy choice_log) for back-compat.
+    All existing callers should wrap the return with `_canonical_scores(...)` to
+    extract the flat dict shape they expect (defaults to v1).
+    """
+    # Normalize bare list to a state dict so behavioral signals receive a usable
+    # shape (and so the authored-only helper still sees a "log" entry).
+    if isinstance(state_or_log, list):
+        state = {
+            "log": state_or_log,
+            "choice_history": state_or_log,
+            "resource_trajectory": [],
+        }
+    elif isinstance(state_or_log, dict):
+        state = dict(state_or_log)
+        # Ensure both legacy ("log") and behavioral ("choice_history") keys exist
+        if "choice_history" not in state and "log" in state:
+            state["choice_history"] = state.get("log") or []
+        if "log" not in state and "choice_history" in state:
+            state["log"] = state.get("choice_history") or []
+        if "resource_trajectory" not in state:
+            state["resource_trajectory"] = []
+    else:
+        state = {"log": [], "choice_history": [], "resource_trajectory": []}
+
+    # Defensive: the frozen authored-only body iterates `entry["delta"].values()`,
+    # so any non-dict delta would raise. Normalize each entry's delta to a dict
+    # WITHOUT mutating the caller's objects. This affects neither v1 byte-equality
+    # for production-shaped inputs (which already use dict deltas) nor v2/CI.
+    def _normalized_entries(entries):
+        out = []
+        for e in entries or []:
+            if not isinstance(e, dict):
+                out.append(e)
+                continue
+            d = e.get("delta")
+            if d is None or isinstance(d, dict):
+                out.append(e)
+            else:
+                out.append({**e, "delta": {}})
+        return out
+    state["log"] = _normalized_entries(state.get("log") or [])
+    state["choice_history"] = _normalized_entries(state.get("choice_history") or [])
+
+    authored = _compute_story_dimension_scores_authored_only(state, ending_type)
+    try:
+        # If there are no behavioral signals (timing/risk) on any entry, treat
+        # behavioral as neutral (50 across the standard six dims). Story games
+        # historically don't capture per-choice timing, so this avoids spurious
+        # bias from compute_timing_stats' 5000ms default.
+        history = state.get("choice_history") or []
+        has_signal = any(
+            ("decision_time_ms" in e) or ("time_to_decide_ms" in e) or ("risk_level" in e)
+            for e in history if isinstance(e, dict)
+        )
+        if has_signal:
+            behavioral = aggregate_behavioral_signals(state)
+        else:
+            behavioral = {d: 50 for d in (
+                "strategic_thinking", "risk_tolerance", "delayed_gratification",
+                "adaptability", "resilience", "empathy",
+            )}
+        blended = blend_authored_behavioral(
+            authored, behavioral, w_authored=0.5, w_behavioral=0.5
+        )
+        per_choice_samples = _build_per_choice_story_dimension_samples(
+            state, ending_type, authored
+        )
+        ci = {}
+        for dim in blended:
+            samples = per_choice_samples.get(dim) or [blended[dim]]
+            low, high = compute_dimension_ci(samples)
+            ci[dim] = {"low": low, "high": high}
+    except Exception as e:
+        logger.warning(f"Story dimension blend/CI failed, falling back: {e}")
+        blended = dict(authored)
+        ci = {dim: {"low": v, "high": v} for dim, v in blended.items()}
+    return {"score_v1": authored, "score_v2": blended, "ci": ci}
 
 
 # ============================================================
