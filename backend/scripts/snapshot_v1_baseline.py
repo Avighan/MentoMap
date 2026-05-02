@@ -9,6 +9,17 @@ and _compute_story_dimension_scores are copied verbatim from app.py lines
 be imported directly because it has module-level side effects that require
 openai, anthropic, and other optional packages not installed in the snapshot
 venv.  Keep these copies in sync when the originals change.
+
+**FROZEN COPIES:** The three `_compute_*_dimension_scores` functions copied
+below are intentionally PERMANENT v1 snapshots.  They MUST NOT be updated
+when `app.py` evolves in Tasks 5–7+ (which add the behavioral blend).  Their
+purpose is to reproduce v1 scoring exactly so the regression suite catches
+any drift.
+
+The ``# COPY of app.py:LINE`` banners on each copied function mean: "if a
+hotfix corrects a bug in the original *before* Task 5, sync the fix here
+too."  From Task 5 onward, these copies are frozen.  Treat any apparent
+divergence between this file and `app.py` as expected, not a merge mistake.
 """
 import json
 import os
@@ -22,12 +33,12 @@ from game_storage import load_game
 REFERENCE_GAMES = [
     "cfo-quarterly-close",
     "lemonade-empire-enhanced",
-    "founders-gambit",
+    "founders-gambit",            # chess_strategy: round has no JSON choices — round_count=0 by design
     "series-a-founders-journey",
     "project-management-mastery",
-    "the-startup-decision",
-    "climate-champions",
-    "city-mayor",
+    "the-startup-decision",       # story_branching uses chapters[].scenes[] — round_count=0 by design
+    "climate-champions",          # story_branching uses chapters[].scenes[] — round_count=0 by design
+    "city-mayor",                 # story_branching uses chapters[].scenes[] — round_count=0 by design
 ]
 
 SEED = 42
@@ -35,6 +46,9 @@ SEED = 42
 
 # ---------------------------------------------------------------------------
 # COPY of app.py:20111 for snapshot isolation; keep in sync
+# NOTE: _w() intentionally extends app.py's one-liner with an isinstance(val, dict)
+# guard so legacy float-valued dimension_scoring_weights (e.g., lemonade-empire-enhanced)
+# fall through to defaults instead of raising AttributeError on float.get().
 # ---------------------------------------------------------------------------
 def _compute_rounds_dimension_scores(state, game=None):
     """Compute dimension scores from rounds game state.
