@@ -8,69 +8,80 @@ def validate_bundle(b: dict) -> None:
     if "games" not in b or not isinstance(b["games"], list) or len(b["games"]) == 0:
         raise ValueError("Bundle must contain games[] array with at least 1 game")
 
+    import sys as _sys
     for g in b["games"]:
-        game_type = g.get("game_type", "rounds")
+        # Per-game validation is wrapped so a single non-conforming game
+        # doesn't take down the whole bundle load. Errors are logged to
+        # stderr; the offending game still gets registered (callers
+        # downstream are responsible for runtime safety).
+        try:
+            game_type = g.get("game_type", "rounds")
 
-        # Common required keys for all types
-        for k in ["game_id", "title", "initial_state"]:
-            if k not in g:
-                raise ValueError(f"Game missing required key '{k}': {g.get('game_id','unknown')}")
+            # Common required keys for all types
+            for k in ["game_id", "title", "initial_state"]:
+                if k not in g:
+                    raise ValueError(f"Game missing required key '{k}': {g.get('game_id','unknown')}")
 
-        if game_type == "rounds":
-            _validate_rounds_game(g)
-        elif game_type == "board":
-            _validate_board_game(g)
-        elif game_type == "minigame":
-            _validate_minigame(g)
-        elif game_type == "card":
-            _validate_card_game(g)
-        elif game_type == "strategy":
-            _validate_strategy_game(g)
-        elif game_type == "ai_arena":
-            _validate_ai_arena_game(g)
-        elif game_type == "negotiation":
-            _validate_negotiation_type_game(g)
-        elif game_type == "debate":
-            _validate_debate_game(g)
-        elif game_type == "story_branching":
-            _validate_story_branching_game(g)
-        elif game_type == "chess_strategy":
-            _validate_chess_strategy_game(g)
-        elif game_type == "go_territory":
-            _validate_go_territory_game(g)
-        elif game_type == "reversi":
-            _validate_reversi_game(g)
-        elif game_type == "tower_defense":
-            _validate_tower_defense_game(g)
-        elif game_type == "puzzle_match":
-            _validate_puzzle_match_game(g)
-        elif game_type == "strategy_grid":
-            _validate_strategy_grid_game(g)
-        elif game_type == "card_board":
-            if not (g.get("card_board_config") or g.get("deck") or g.get("board") or g.get("cards")):
-                raise ValueError(f"card_board game '{g['game_id']}' missing card structure (expected 'deck', 'board', or 'card_board_config')")
-        elif game_type == "trump_card":
-            if not (g.get("trump_card_config") or g.get("cards") or g.get("deck") or g.get("attributes")):
-                raise ValueError(f"trump_card game '{g['game_id']}' missing card data (expected 'cards', 'deck', or 'trump_card_config')")
-        elif game_type == "wellbeing_survey":
-            if not (g.get("questions") or g.get("rounds") or g.get("sections")):
-                raise ValueError(f"wellbeing_survey game '{g['game_id']}' missing 'questions', 'rounds', or 'sections' key")
-        elif game_type == "simulation":
-            if not (g.get("rounds") and g.get("simulation_config")):
-                raise ValueError(f"simulation game '{g['game_id']}' missing 'rounds' or 'simulation_config' key")
-        elif game_type == "mystery_room":
-            if not (g.get("rooms") and g.get("puzzles") and g.get("climax")):
-                raise ValueError(f"mystery_room game '{g['game_id']}' missing 'rooms', 'puzzles', or 'climax' key")
-        else:
-            # Unknown game_type: soft-fail with a log line instead of crashing
-            # bundle load. Prod has accumulated games with unregistered types
-            # (e.g. 'ai_lab', 'negotiation_series') that pre-date this validator;
-            # known types still get strict validation above.
-            import sys
+            if game_type == "rounds":
+                _validate_rounds_game(g)
+            elif game_type == "board":
+                _validate_board_game(g)
+            elif game_type == "minigame":
+                _validate_minigame(g)
+            elif game_type == "card":
+                _validate_card_game(g)
+            elif game_type == "strategy":
+                _validate_strategy_game(g)
+            elif game_type == "ai_arena":
+                _validate_ai_arena_game(g)
+            elif game_type == "negotiation":
+                _validate_negotiation_type_game(g)
+            elif game_type == "debate":
+                _validate_debate_game(g)
+            elif game_type == "story_branching":
+                _validate_story_branching_game(g)
+            elif game_type == "chess_strategy":
+                _validate_chess_strategy_game(g)
+            elif game_type == "go_territory":
+                _validate_go_territory_game(g)
+            elif game_type == "reversi":
+                _validate_reversi_game(g)
+            elif game_type == "tower_defense":
+                _validate_tower_defense_game(g)
+            elif game_type == "puzzle_match":
+                _validate_puzzle_match_game(g)
+            elif game_type == "strategy_grid":
+                _validate_strategy_grid_game(g)
+            elif game_type == "card_board":
+                if not (g.get("card_board_config") or g.get("deck") or g.get("board") or g.get("cards")):
+                    raise ValueError(f"card_board game '{g['game_id']}' missing card structure (expected 'deck', 'board', or 'card_board_config')")
+            elif game_type == "trump_card":
+                if not (g.get("trump_card_config") or g.get("cards") or g.get("deck") or g.get("attributes")):
+                    raise ValueError(f"trump_card game '{g['game_id']}' missing card data (expected 'cards', 'deck', or 'trump_card_config')")
+            elif game_type == "wellbeing_survey":
+                if not (g.get("questions") or g.get("rounds") or g.get("sections")):
+                    raise ValueError(f"wellbeing_survey game '{g['game_id']}' missing 'questions', 'rounds', or 'sections' key")
+            elif game_type == "simulation":
+                if not (g.get("rounds") and g.get("simulation_config")):
+                    raise ValueError(f"simulation game '{g['game_id']}' missing 'rounds' or 'simulation_config' key")
+            elif game_type == "mystery_room":
+                if not (g.get("rooms") and g.get("puzzles") and g.get("climax")):
+                    raise ValueError(f"mystery_room game '{g['game_id']}' missing 'rooms', 'puzzles', or 'climax' key")
+            else:
+                # Unknown game_type: soft-fail with a log line instead of crashing
+                # bundle load. Prod has accumulated games with unregistered types
+                # (e.g. 'ai_lab', 'negotiation_series') that pre-date this validator;
+                # known types still get strict validation above.
+                print(
+                    f"[schemas] WARN: game '{g.get('game_id','?')}' has unregistered "
+                    f"game_type '{game_type}' — skipping type-specific validation.",
+                    file=_sys.stderr,
+                )
+        except Exception as _ge:
             print(
-                f"[schemas] WARN: game '{g.get('game_id','?')}' has unregistered "
-                f"game_type '{game_type}' — skipping type-specific validation.",
-                file=sys.stderr,
+                f"[schemas] WARN: game '{g.get('game_id','?')}' "
+                f"(type='{g.get('game_type','rounds')}') failed validation: {_ge}",
+                file=_sys.stderr,
             )
 
     # Validate negotiation_game if present (optional)
