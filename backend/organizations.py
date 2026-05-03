@@ -31,6 +31,13 @@ _DEFAULT_ORG = {
     "custom_dimensions": None,
     "game_ids": None,
     "features": dict(_DEFAULT_FEATURES),
+    # P0 Task 22: per-org scoring rollout flag.
+    # 1 = legacy authored-only scoring (default).
+    # 2 = blended authored + behavioral scoring with confidence intervals.
+    # The run report endpoint always returns both v1 and v2 in the payload so
+    # the frontend can render a methodology preview, but only the version
+    # selected here is treated as the canonical user-facing score.
+    "score_version": 1,
     "created_at": "2026-01-01T00:00:00+00:00"
 }
 
@@ -72,6 +79,13 @@ def create_org(data: dict) -> dict:
     _features = dict(_DEFAULT_FEATURES)
     if isinstance(data.get("features"), dict):
         _features.update({k: v for k, v in data["features"].items() if k in _DEFAULT_FEATURES})
+    # Coerce score_version to {1, 2}; default to 1 for new orgs.
+    try:
+        _sv = int(data.get("score_version", 1))
+    except (TypeError, ValueError):
+        _sv = 1
+    if _sv not in (1, 2):
+        _sv = 1
     org = {
         "id": str(uuid.uuid4())[:8],
         "name": data.get("name", "New Organisation"),
@@ -81,6 +95,7 @@ def create_org(data: dict) -> dict:
         "custom_dimensions": data.get("custom_dimensions"),  # None or list of strings
         "game_ids": data.get("game_ids"),  # None = all games visible
         "features": _features,
+        "score_version": _sv,
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     orgs.append(org)
@@ -98,6 +113,15 @@ def update_org(org_id: str, data: dict) -> Optional[dict]:
             for key in allowed:
                 if key in data:
                     orgs[i][key] = data[key]
+            # score_version is integer-coerced and clamped to {1, 2}.
+            if "score_version" in data:
+                try:
+                    _sv = int(data["score_version"])
+                except (TypeError, ValueError):
+                    _sv = 1
+                if _sv not in (1, 2):
+                    _sv = 1
+                orgs[i]["score_version"] = _sv
             # Merge feature flags (only known flags, preserve untouched ones)
             if isinstance(data.get("features"), dict):
                 current = dict(_DEFAULT_FEATURES)
@@ -109,6 +133,26 @@ def update_org(org_id: str, data: dict) -> Optional[dict]:
             _save_orgs(orgs)
             return orgs[i]
     return None
+
+
+def get_org_score_version(org_id: Optional[str]) -> int:
+    """Return the canonical score_version for an org (1 or 2).
+
+    Defaults to 1 (legacy authored scoring) for unknown orgs, missing field,
+    or malformed data. P0 Task 22 — used by the run report endpoint to
+    decide which scoring lens is treated as canonical for the user.
+    """
+    org = get_org(org_id) if org_id else None
+    if org is None:
+        org = get_default_org()
+    if not isinstance(org, dict):
+        return 1
+    raw = org.get("score_version", 1)
+    try:
+        sv = int(raw)
+    except (TypeError, ValueError):
+        return 1
+    return 2 if sv == 2 else 1
 
 
 def get_org_feature(org_id: Optional[str], flag: str) -> bool:

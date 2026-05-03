@@ -5528,6 +5528,21 @@ def run_report(run_id):
     st_obj = r["state"]
     final_state = state_to_dict(st_obj)
 
+    # P0 Task 22 — resolve the canonical score_version for this run's owner
+    # so the auto-finalize blocks below can pick the right scoring lens.
+    # `_score_envelope` keeps the full {score_v1, score_v2, ci} dict so the
+    # response can always include both v1 and v2 (methodology preview).
+    _score_envelope = None
+    try:
+        _rr_token = get_token_from_request()
+        _rr_user = verify_token(_rr_token) if _rr_token else None
+        _rr_org_id = (_rr_user or {}).get("org_id", "default") if _rr_user else "default"
+        from organizations import get_org_score_version as _get_org_sv
+        _score_version_used = _get_org_sv(_rr_org_id)
+    except Exception as _sv_err:
+        logger.debug("score_version resolution failed: %s", _sv_err)
+        _score_version_used = 1
+
     # Psychological focus summary (deterministic)
     psychological_focus_summary = _compute_psychological_summary(game, final_state)
 
@@ -5773,9 +5788,10 @@ def run_report(run_id):
             if not _rounds_state.get("rounds_completed"):
                 _rounds_state["rounds_completed"] = [x.get("round_id") for x in r["log"] if x.get("round_id")]
             _rounds_state["total_rounds"] = max(len(game.get("rounds", [])), len(r["log"]))
+            _score_envelope = _compute_rounds_dimension_scores(_rounds_state, game=game)
             dimension_scores = _canonical_scores(
-                _compute_rounds_dimension_scores(_rounds_state, game=game),
-                score_version=1,
+                _score_envelope,
+                score_version=_score_version_used,
             )
             for sid, sv in dimension_scores.items():
                 setattr(st_obj, sid, sv)
@@ -5788,9 +5804,10 @@ def run_report(run_id):
     if game.get("game_type") == "story_branching" and r["log"]:
         try:
             ending_type = r.get("ending_type") or final_state.get("ending_type", "standard")
+            _score_envelope = _compute_story_dimension_scores(final_state, ending_type)
             dimension_scores = _canonical_scores(
-                _compute_story_dimension_scores(final_state, ending_type),
-                score_version=1,
+                _score_envelope,
+                score_version=_score_version_used,
             )
             for sid, sv in dimension_scores.items():
                 setattr(st_obj, sid, sv)
@@ -5817,9 +5834,10 @@ def run_report(run_id):
             if not _sim_state.get("rounds_completed"):
                 _sim_state["rounds_completed"] = [x.get("round_id") for x in r["log"] if x.get("round_id")]
             _sim_state["total_rounds"] = max(len(game.get("rounds", [])), len(r["log"]))
+            _score_envelope = _compute_rounds_dimension_scores(_sim_state, game=game)
             dimension_scores = _canonical_scores(
-                _compute_rounds_dimension_scores(_sim_state, game=game),
-                score_version=1,
+                _score_envelope,
+                score_version=_score_version_used,
             )
             for sid, sv in dimension_scores.items():
                 setattr(st_obj, sid, sv)
@@ -6729,6 +6747,19 @@ def run_report(run_id):
         report_core["avg_choice_time_ms"] = _avg_choice_time_ms
 
     result = {"report_core": report_core, "narrative": narrative, "mentoPercentile": result_percentile}
+
+    # P0 Task 22 — always expose both score_v1 and score_v2 (and the per-dim
+    # CI envelope) when we have one, regardless of which one is canonical.
+    # The frontend can use this to render a "methodology preview" toggle for
+    # orgs still on v1, or anchor confidence-interval bars to the live score.
+    if isinstance(_score_envelope, dict) and "score_v1" in _score_envelope:
+        result["score_version_used"] = _score_version_used
+        result["score_v1"] = _score_envelope.get("score_v1") or {}
+        result["score_v2"] = _score_envelope.get("score_v2") or {}
+        result["confidence_intervals"] = _score_envelope.get("ci") or {}
+        # Surface CI on report_core too so existing front-end consumers
+        # (PostGameInsights, ModuleReport) that read off report_core get them.
+        report_core["confidence_intervals"] = _score_envelope.get("ci") or {}
     # Surface final executive snapshot for exec-tier post-game section (dormant for non-exec games).
     try:
         from engines.executive_ux import build_executive_payload as _bep_for_report
