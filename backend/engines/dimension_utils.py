@@ -458,7 +458,7 @@ def aggregate_behavioral_signals(state):
     mean_ms = (timing or {}).get("mean_ms", 5000)
     deliberation_score = max(0, min(100, ((mean_ms - 2000) / 80)))
 
-    return {
+    result = {
         "strategic_thinking": int(0.6 * consistency * 100 + 0.4 * deliberation_score),
         "risk_tolerance": int(risk_seek * 100),
         "delayed_gratification": int(deliberation_score),
@@ -468,6 +468,20 @@ def aggregate_behavioral_signals(state):
         # are blended in. Behavioral analytics has no empathy proxy today.
         "empathy": 50,
     }
+
+    # Task 12 (P0): fold reflection signals (-10..+10 per dim) into per-dim
+    # behavioral score, clipped to [0, 100]. Pre-existing behavior is preserved
+    # when state has no reflection_signals.
+    reflection_signals = state.get("reflection_signals") or {}
+    if isinstance(reflection_signals, dict):
+        for dim, delta in reflection_signals.items():
+            if dim in result:
+                try:
+                    result[dim] = max(0, min(100, int(result[dim]) + int(delta)))
+                except (TypeError, ValueError):
+                    continue
+
+    return result
 
 
 # Bootstrap CI for dimension scores (Task 3 — P0 plan; alpha=0.10 = 90%)

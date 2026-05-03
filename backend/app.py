@@ -4128,6 +4128,69 @@ def upload_drawing(run_id):
     })
 
 
+# ───────── Reflection scoring channel (Task 12 — P0 plan) ─────────
+@app.route("/api/run/<run_id>/reflection", methods=["POST"])
+def api_submit_reflection(run_id):
+    """Grade a player's reflection rationale and attach the signal to the run.
+
+    Body: { round_id?: str, choice_id?: str, rationale: str, dimension_focus?: list[str] }
+    Returns: { ok: True, score: int, dim_signals: dict[dim, int -10..+10],
+               strengths: list[str], improvements: list[str] }
+    """
+    payload = request.get_json(silent=True) or {}
+    rationale = (payload.get("rationale") or "").strip()
+    if not rationale:
+        return jsonify({"error": "rationale_required"}), 400
+
+    try:
+        run = get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "run_not_found"}), 404
+    if not run:
+        return jsonify({"error": "run_not_found"}), 404
+
+    # Determine focus dimensions: payload > game-level focus_dimensions > default pair
+    focus = payload.get("dimension_focus")
+    if not focus:
+        focus = ((run.get("game") or {}).get("focus_dimensions")
+                 or ["empathy", "strategic_thinking"])
+
+    import llm  # late import to allow monkeypatch on llm.grade_reflection_text in tests
+    graded = llm.grade_reflection_text(rationale, dimension_focus=focus)
+
+    reflections = run.setdefault("reflections", [])
+    reflections.append({
+        "round_id": payload.get("round_id"),
+        "choice_id": payload.get("choice_id"),
+        "rationale": rationale[:2000],   # cap stored size
+        "graded": graded,
+        "ts": int(time.time()),
+    })
+
+    # Mirror dim_signals onto state so aggregate_behavioral_signals can pick them up
+    state = run.get("state")
+    if isinstance(state, dict):
+        rs = state.setdefault("reflection_signals", {})
+        for dim, delta in (graded.get("dim_signals") or {}).items():
+            try:
+                rs[dim] = max(-10, min(10, int(rs.get(dim, 0)) + int(delta)))
+            except (TypeError, ValueError):
+                continue
+
+    try:
+        update_run(run_id, run)
+    except Exception as e:
+        logger.warning("update_run failed in reflection endpoint: %s", e)
+
+    return jsonify({
+        "ok": True,
+        "score": graded.get("score", 0),
+        "dim_signals": graded.get("dim_signals", {}),
+        "strengths": graded.get("strengths", []),
+        "improvements": graded.get("improvements", []),
+    })
+
+
 # ───────── Inbox interrupt endpoint (timed event responses) ─────────
 @app.post("/api/run/<run_id>/inbox")
 @limiter.limit("60 per minute")
