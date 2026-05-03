@@ -62,7 +62,16 @@ def validate_bundle(b: dict) -> None:
             if not (g.get("rooms") and g.get("puzzles") and g.get("climax")):
                 raise ValueError(f"mystery_room game '{g['game_id']}' missing 'rooms', 'puzzles', or 'climax' key")
         else:
-            raise ValueError(f"Game {g['game_id']}: invalid game_type '{game_type}'")
+            # Unknown game_type: soft-fail with a log line instead of crashing
+            # bundle load. Prod has accumulated games with unregistered types
+            # (e.g. 'ai_lab', 'negotiation_series') that pre-date this validator;
+            # known types still get strict validation above.
+            import sys
+            print(
+                f"[schemas] WARN: game '{g.get('game_id','?')}' has unregistered "
+                f"game_type '{game_type}' — skipping type-specific validation.",
+                file=sys.stderr,
+            )
 
     # Validate negotiation_game if present (optional)
     if "negotiation_game" in b:
