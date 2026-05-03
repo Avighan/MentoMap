@@ -195,6 +195,7 @@ def _empty_progress(module_id: str) -> Dict[str, Any]:
         "game_runs": {},       # lesson_id -> [run_id]
         "lesson_meta": {},     # lesson_id -> {time_spent_seconds}
         "field_missions": {},  # lesson_id -> {entries: [...], submitted_at}
+        "rubrics": {},         # lesson_id -> {score, strengths, improvements, dim_signals}
     }
 
 
@@ -421,6 +422,24 @@ def complete_lesson(
         user_block[module_id] = prog
         _save_progress(data)
         return prog
+
+
+def persist_rubric(
+    user_id: str,
+    module_id: str,
+    lesson_id: str,
+    rubric_result: Dict[str, Any],
+) -> None:
+    """Persist a rubric grading result into prog['rubrics'][lesson_id]."""
+    with _FILE_LOCK:
+        data = _load_progress()
+        users = data.setdefault("users", {})
+        user_block = users.setdefault(str(user_id), {})
+        prog = user_block.get(module_id) or _empty_progress(module_id)
+        prog.setdefault("rubrics", {})[lesson_id] = rubric_result
+        prog["last_active_at"] = _now_iso()
+        user_block[module_id] = prog
+        _save_progress(data)
 
 
 def save_worksheet(

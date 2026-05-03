@@ -25395,6 +25395,53 @@ def api_module_lesson_complete(module_id, lesson_id):
             except Exception as _e:
                 logger.debug("evaluate_module_submission suppressed: %s", _e)
 
+        # ── Worksheet rubric grading for textarea-heavy schema types ────────
+        # Runs on first completion only for worksheet/reflection lessons whose
+        # schema.type is one of the textarea-heavy discriminators.  Result is
+        # persisted in prog["rubrics"][lesson_id] and returned as "rubric".
+        _TEXTAREA_SCHEMA_TYPES = frozenset(
+            ("reflection", "pitch_builder", "customer_profile", "idea_scorecard")
+        )
+        rubric_result = None
+        if (
+            active_lesson
+            and active_lesson.get("type") in ("worksheet", "reflection")
+            and not was_already_complete
+            and isinstance(payload.get("answers"), dict)
+            and payload.get("answers")
+        ):
+            schema = (active_lesson.get("schema") or {})
+            schema_type = schema.get("type") or ""
+            if schema_type in _TEXTAREA_SCHEMA_TYPES:
+                try:
+                    from llm import grade_worksheet_freetext  # noqa: WPS433
+                    # Flatten all string answer values into a single text block.
+                    text_parts = [
+                        str(v) for v in payload["answers"].values()
+                        if isinstance(v, str) and v.strip()
+                    ]
+                    combined_text = "\n\n".join(text_parts)
+                    lesson_meta = {
+                        "id": lesson_id,
+                        "type": schema_type,
+                    }
+                    rubric_def = schema.get("rubric") or {}
+                    rubric_result = grade_worksheet_freetext(
+                        combined_text, lesson_meta, rubric_def
+                    )
+                    # Persist into progress file and update the in-memory dict.
+                    if rubric_result:
+                        try:
+                            _modules_engine.persist_rubric(
+                                uid, module_id, lesson_id, rubric_result
+                            )
+                        except Exception as _pe:
+                            logger.debug("persist_rubric suppressed: %s", _pe)
+                        # Always update the in-memory progress for the response.
+                        progress.setdefault("rubrics", {})[lesson_id] = rubric_result
+                except Exception as _e:
+                    logger.debug("grade_worksheet_freetext suppressed: %s", _e)
+
         # ── Module-completion XP + badge (one-shot) ─────────────────────────
         new_badges = []
         if summary.get("completed"):
@@ -25415,6 +25462,7 @@ def api_module_lesson_complete(module_id, lesson_id):
             "coaching_message": coaching_message,
             "skill_gains": skill_gains,
             "ai_feedback": ai_feedback,
+            "rubric": rubric_result,
             "already_completed": was_already_complete,
         })
     except ValueError as e:
