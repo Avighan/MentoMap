@@ -315,7 +315,7 @@ def select_quiz_questions_irt(
     present so that existing modules continue to work without modification.
 
     Args:
-        lesson: Lesson dict (may use ``lesson_id`` or ``id`` key).
+        lesson: Lesson dict (must carry ``lesson_id``).
         prog:   Per-user module progress dict.
         n:      Number of questions to return.
 
@@ -328,8 +328,9 @@ def select_quiz_questions_irt(
         # Legacy fallback
         return (quiz.get("questions") or [])[:n]
 
-    # Resolve lesson key — prefer lesson_id, fall back to id.
-    lid = lesson.get("lesson_id") or lesson.get("id") or ""
+    # Standardise on lesson_id — same key used by complete_lesson and
+    # update_quiz_theta — to avoid theta read/write mismatch.
+    lid = lesson.get("lesson_id") or ""
 
     theta: float = (prog.get("quiz_theta") or {}).get(lid, 0.0)
 
@@ -464,8 +465,10 @@ def complete_lesson(
             }
             # IRT theta update — runs on every attempt (pass or fail) so the
             # difficulty calibration improves even when the student retries.
-            _items_correct = int(score) if max_score else 0
-            _items_total = int(max_score) if max_score else 0
+            # round() so partial-credit float scores (e.g. 4.5/5) don't
+            # silently truncate and skew the calibration pessimistically.
+            _items_correct = round(score) if max_score else 0
+            _items_total = round(max_score) if max_score else 0
             _seen_ids = (
                 payload.get("seen_ids")
                 or list((payload.get("answers") or {}).keys())

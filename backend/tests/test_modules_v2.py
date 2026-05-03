@@ -311,3 +311,14 @@ def test_update_quiz_theta_persists_seen_ids():
                              seen_ids=["q1", "q2"])
     assert "quiz_seen_ids" in prog
     assert set(prog["quiz_seen_ids"]["L1"]) == {"q1", "q2"}
+
+
+def test_seen_ids_capped_at_100_fifo():
+    """quiz_seen_ids should cap at 100, evicting oldest entries (FIFO)."""
+    prog = {"quiz_seen_ids": {"L1": [f"q{i}" for i in range(100)]}}
+    prog = update_quiz_theta(prog, "L1", items_correct=5, items_total=5,
+                             seen_ids=["q_new"])
+    seen = prog["quiz_seen_ids"]["L1"]
+    assert len(seen) == 100
+    assert seen[-1] == "q_new"
+    assert "q0" not in seen  # oldest evicted

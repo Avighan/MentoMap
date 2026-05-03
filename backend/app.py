@@ -25309,6 +25309,10 @@ def api_module_lesson_quiz_questions(module_id, lesson_id):
             return jsonify({"error": "Lesson is not a quiz or assessment"}), 400
 
         prog = _modules_engine.get_user_progress(uid, module_id) or {}
+        # Respect the same lock gating as completing a lesson — don't leak
+        # questions for weeks the learner hasn't unlocked yet.
+        if not _modules_engine._is_lesson_unlocked(prog, module, lesson_id):
+            return jsonify({"error": "Lesson is locked", "locked": True}), 403
         quiz = lesson.get("quiz") or {}
         n = int(quiz.get("n_questions_per_attempt") or 5)
         questions = _modules_engine.select_quiz_questions_irt(lesson, prog, n=n)
