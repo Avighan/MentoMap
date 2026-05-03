@@ -35,6 +35,7 @@ import ProjectDashboardWidget from './ProjectDashboardWidget';
 import ScorecardWidget from './ScorecardWidget';
 import CalibrationStrip from './CalibrationStrip';
 import MarketActorsTimeline from './MarketActorsTimeline';
+import CompetitorBoardWidget from './CompetitorBoardWidget';
 
 // ── Content-presence predicates ──────────────────────────────────────────
 // Each widget has its own internal "return null when sparse" guard. To avoid
@@ -134,6 +135,11 @@ const hasScorecardContent = (scorecard) => {
   return Array.isArray(scorecard.dimensions) && scorecard.dimensions.length > 0;
 };
 
+const hasCompetitorBoardContent = (cb) => {
+  if (!cb || typeof cb !== 'object') return false;
+  return Array.isArray(cb.competitors) && cb.competitors.length > 0;
+};
+
 // Empty-state fallback for any tab whose widget unexpectedly renders nothing.
 const TabEmpty = ({ label }) => (
   <div
@@ -167,6 +173,7 @@ const ExecutivePanel = ({ payload, currency = 'USD', bands = null, className = '
   const stochastic  = payload.stochastic || null;
   const actors      = payload.market_actors || null;
   const scorecard   = payload.scorecard || null;
+  const competitorBoard = payload.competitor_board || null;
 
   // Build tabs in priority order — only include subsystems that have content.
   const tabs = useMemo(() => {
@@ -174,6 +181,7 @@ const ExecutivePanel = ({ payload, currency = 'USD', bands = null, className = '
     if (hasFinanceContent(finance))         list.push({ id: 'finance',      label: 'Finance',      icon: '💰' });
     if (hasMarketContent(market))           list.push({ id: 'market',       label: 'Market',       icon: '📈' });
     if (hasActorsContent(actors))           list.push({ id: 'competitors',  label: 'Competitors',  icon: '⚔️' });
+    if (hasCompetitorBoardContent(competitorBoard)) list.push({ id: 'rivals', label: 'Rivals', icon: '🎯' });
     if (hasOrgContent(org))                 list.push({ id: 'org',          label: 'Team',         icon: '👥' });
     if (hasBoardContent(board))             list.push({ id: 'board',        label: 'Board',        icon: '🏛️' });
     if (hasStakeholderContent(stakeholder)) list.push({ id: 'stakeholders', label: 'Stakeholders', icon: '🎯' });
@@ -184,7 +192,7 @@ const ExecutivePanel = ({ payload, currency = 'USD', bands = null, className = '
     if (hasForecastContent(stochastic))     list.push({ id: 'forecast',     label: 'Forecast',     icon: '🎯' });
     if (hasScorecardContent(scorecard))     list.push({ id: 'scorecard',    label: 'Scorecard',    icon: '📊' });
     return list;
-  }, [finance, market, actors, org, board, stakeholder, compliance, intra, projectMgmt, decision, stochastic, scorecard]);
+  }, [finance, market, actors, org, board, stakeholder, compliance, intra, projectMgmt, decision, stochastic, scorecard, competitorBoard]);
 
   const [activeTab, setActiveTab] = useState(tabs[0]?.id || null);
   // Keep activeTab valid as games progress and subsystems light up
@@ -253,6 +261,9 @@ const ExecutivePanel = ({ payload, currency = 'USD', bands = null, className = '
         break;
       case 'scorecard':
         node = <ScorecardWidget payload={scorecard} />;
+        break;
+      case 'rivals':
+        node = <CompetitorBoardWidget payload={competitorBoard} />;
         break;
       default:
         node = null;

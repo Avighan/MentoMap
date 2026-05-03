@@ -64,6 +64,86 @@ DEFAULT_PERSONAS: Dict[str, Dict[str, float]] = {
 }
 
 
+# ---- Config / payload helpers ----------------------------------------------
+
+def get_competitor_config(game: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Return simulation_config.competitor_ai or None when not opted in.
+
+    Schema:
+        simulation_config:
+          competitor_ai:
+            firms:
+              - {id: "atlas",  name: "Atlas Innovate",  persona: "aggressive_rd",
+                 starting_market_share: 0.34, starting_price: 110, starting_marketing: 1500000,
+                 starting_rd_alloc: 0.30}
+              - {id: "beacon", name: "Beacon Trust",   persona: "defensive_cost_leader", ...}
+              - {id: "cygnus", name: "Cygnus Forge",   persona: "fast_follower", ...}
+            seed: 42                # optional — for deterministic snapshots
+    """
+    sim = (game or {}).get("simulation_config") or {}
+    cfg = sim.get("competitor_ai")
+    if not isinstance(cfg, dict):
+        return None
+    if not cfg.get("firms"):
+        return None
+    return cfg
+
+
+def build_competitor_payload(state: Any, game: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Build a competitor-board payload from state + game config.
+
+    Reads:
+      - state._competitor_runtime: latest tick output (competitors[], moves[],
+        player share). Populated by core/rounds.py after a player_move.
+      - state.competitors / state.player: fallback when no tick has run yet
+        (round 0 / preview).
+      - game.simulation_config.competitor_ai.firms: starting roster.
+
+    Returns None when no competitor_ai config is declared.
+    Always-non-None when configured, so the tab lights up immediately.
+    """
+    cfg = get_competitor_config(game)
+    if not cfg:
+        return None
+
+    runtime = getattr(state, "_competitor_runtime", None)
+    if isinstance(runtime, dict) and runtime.get("competitors"):
+        return {
+            "competitors": runtime.get("competitors", []),
+            "player": runtime.get("player", {}),
+            "moves": runtime.get("competitor_moves", []),
+            "personas_in_play": sorted({
+                c.get("persona", "neutral") for c in runtime.get("competitors", [])
+            }),
+        }
+
+    # Fallback: synthesise initial board from declared firms (round 0)
+    firms_in: List[Dict[str, Any]] = list(cfg.get("firms") or [])
+    competitors: List[Dict[str, Any]] = []
+    for f in firms_in:
+        competitors.append({
+            "id": f.get("id"),
+            "name": f.get("name") or f.get("id", "Firm"),
+            "persona": f.get("persona", "neutral"),
+            "market_share": float(f.get("starting_market_share", 0.25) or 0.25),
+            "price": float(f.get("starting_price", 100.0) or 100.0),
+            "marketing_spend": float(f.get("starting_marketing", 1_000_000) or 1_000_000),
+            "r_and_d_alloc": float(f.get("starting_rd_alloc", 0.20) or 0.20),
+        })
+    player = {
+        "market_share": float(getattr(state, "player_market_share", 0.0) or 0.0),
+        "price": float(getattr(state, "price", 100.0) or 100.0),
+        "marketing_spend": float(getattr(state, "marketing_spend", 0) or 0),
+        "r_and_d_alloc": float(getattr(state, "r_and_d_alloc", 0.20) or 0.20),
+    }
+    return {
+        "competitors": competitors,
+        "player": player,
+        "moves": [],
+        "personas_in_play": sorted({c.get("persona", "neutral") for c in competitors}),
+    }
+
+
 # ---- Engine -----------------------------------------------------------------
 
 class CompetitorAIEngine:
