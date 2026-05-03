@@ -578,6 +578,31 @@ def save_worksheet(
         return prog["worksheets"][lesson_id]
 
 
+def _moderate_field_mission_text(entry: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Run text moderation on the human-readable parts of a field-mission entry.
+
+    Returns ``None`` when the entry has no text to moderate. Otherwise returns
+    the moderation result dict (with ``flagged``, ``score``, ``categories``).
+    Imported lazily so test seams can patch ``ContentModerator.moderate_text``.
+    """
+    text_parts: List[str] = []
+    for key in ("text", "note", "complaint", "transcript"):
+        v = entry.get(key)
+        if isinstance(v, str) and v.strip():
+            text_parts.append(v)
+    if not text_parts:
+        return None
+    try:
+        from ai.content_moderator import ContentModerator
+        return ContentModerator(use_ai_moderation=False).moderate_text(
+            "\n".join(text_parts)
+        )
+    except Exception:
+        # Moderation failures must never block legitimate captures; fall back to
+        # treating the entry as un-moderated (callers can still publish it).
+        return None
+
+
 def add_field_mission_entry(
     user_id: str,
     module_id: str,
@@ -589,9 +614,29 @@ def add_field_mission_entry(
     `entry` is a free-form dict — typically {complaint, person, frequency,
     capture_type, photo_url|voice_url|note}. The function adds an `entry_id`
     and `created_at` and returns the full lesson record (for client preview).
+
+    Text content is run through :class:`ContentModerator` before persistence:
+    a moderation score >= 0.85 (or any explicit ``flagged`` flag) **blocks**
+    the capture and returns ``{"status": "blocked", ...}`` without writing to
+    disk. Borderline scores (0.5–0.85) are tagged ``moderation_status =
+    "needs_review"`` so a teacher can sign off, while clean text is tagged
+    ``"ok"``. Captures with no text bypass moderation entirely.
     """
     if not isinstance(entry, dict):
         raise ValueError("entry must be an object")
+
+    # Moderation is run *before* taking the file lock so a slow moderator
+    # never holds up other writers. Result is attached to the cleaned entry
+    # below (or short-circuits the whole function on a block).
+    mod_result = _moderate_field_mission_text(entry)
+    if mod_result is not None:
+        score = float(mod_result.get("score", 0.0))
+        if mod_result.get("flagged") or score >= 0.85:
+            return {
+                "status": "blocked",
+                "moderation_score": score,
+                "categories": list(mod_result.get("categories", []) or []),
+            }
 
     with _FILE_LOCK:
         data = _load_progress()
@@ -608,6 +653,13 @@ def add_field_mission_entry(
         clean = dict(entry)
         clean["entry_id"] = entry_id
         clean["created_at"] = _now_iso()
+        if mod_result is not None:
+            score = float(mod_result.get("score", 0.0))
+            clean["moderation_score"] = score
+            clean["moderation_status"] = "needs_review" if score >= 0.5 else "ok"
+            cats = list(mod_result.get("categories", []) or [])
+            if cats:
+                clean["moderation_categories"] = cats
         entries.append(clean)
 
         fm[lesson_id] = record

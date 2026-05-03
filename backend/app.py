@@ -25616,6 +25616,17 @@ def api_module_field_mission_add_entry(module_id, lesson_id):
 
     try:
         rec = _modules_engine.add_field_mission_entry(uid, module_id, lesson_id, entry)
+        # Engine returns {"status": "blocked", ...} when content moderation
+        # rejects the text. Surface as 422 so the client can show feedback
+        # without retrying.
+        if isinstance(rec, dict) and rec.get("status") == "blocked":
+            return jsonify({
+                "ok": False,
+                "blocked": True,
+                "moderation_score": rec.get("moderation_score"),
+                "categories": rec.get("categories", []),
+                "error": "Content was flagged by moderation",
+            }), 422
         return jsonify({"ok": True, "record": rec, "ai_feedback": photo_feedback})
     except Exception as e:
         logger.exception("api_module_field_mission_add_entry failed")

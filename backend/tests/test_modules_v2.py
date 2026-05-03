@@ -313,6 +313,112 @@ def test_update_quiz_theta_persists_seen_ids():
     assert set(prog["quiz_seen_ids"]["L1"]) == {"q1", "q2"}
 
 
+# ---------------------------------------------------------------------------
+# Task 17 — Field-mission content moderation
+# ---------------------------------------------------------------------------
+
+
+def test_field_mission_blocks_toxic_text(monkeypatch, tmp_path):
+    """Score >= 0.85 → engine returns status=blocked, no entry persisted."""
+    import modules_engine as _me
+    from ai.content_moderator import ContentModerator
+
+    monkeypatch.setattr(
+        ContentModerator, "moderate_text",
+        lambda self, text: {"flagged": True, "categories": ["toxicity"], "score": 0.92},
+    )
+    # isolate progress file
+    monkeypatch.setattr(_me, "PROGRESS_FILE", str(tmp_path / "p.json"))
+
+    out = _me.add_field_mission_entry(
+        "u_block", "mod1", "lesson1", {"text": "hateful content here"},
+    )
+    assert out["status"] == "blocked"
+    assert "moderation_score" in out
+    assert out["moderation_score"] >= 0.85
+
+    # Nothing should have been persisted.
+    rec = _me.get_field_mission_record("u_block", "mod1", "lesson1")
+    assert rec["entries"] == []
+
+
+def test_field_mission_borderline_flags_for_teacher_review(monkeypatch, tmp_path):
+    """0.5 <= score < 0.85 → entry stored with moderation_status=needs_review."""
+    import modules_engine as _me
+    from ai.content_moderator import ContentModerator
+
+    monkeypatch.setattr(
+        ContentModerator, "moderate_text",
+        lambda self, text: {"flagged": False, "categories": [], "score": 0.55},
+    )
+    monkeypatch.setattr(_me, "PROGRESS_FILE", str(tmp_path / "p.json"))
+
+    rec = _me.add_field_mission_entry(
+        "u_border", "mod1", "lesson1", {"text": "edgy borderline"},
+    )
+    # Returns the lesson record (not the blocked sentinel)
+    assert "entries" in rec
+    assert rec["entries"]
+    e = rec["entries"][0]
+    assert e["moderation_status"] == "needs_review"
+    assert 0.5 <= e["moderation_score"] < 0.85
+
+
+def test_field_mission_clean_text_marked_ok(monkeypatch, tmp_path):
+    """Score < 0.5 → entry stored with moderation_status=ok."""
+    import modules_engine as _me
+    from ai.content_moderator import ContentModerator
+
+    monkeypatch.setattr(
+        ContentModerator, "moderate_text",
+        lambda self, text: {"flagged": False, "categories": [], "score": 0.0},
+    )
+    monkeypatch.setattr(_me, "PROGRESS_FILE", str(tmp_path / "p.json"))
+
+    rec = _me.add_field_mission_entry(
+        "u_ok", "mod1", "lesson1",
+        {"text": "I noticed a broken streetlamp on Main Street."},
+    )
+    e = rec["entries"][0]
+    assert e["moderation_status"] == "ok"
+    assert e["moderation_score"] == 0.0
+
+
+def test_field_mission_no_text_skips_moderation(monkeypatch, tmp_path):
+    """Photo-only / voice-only entries (no text) bypass moderation."""
+    import modules_engine as _me
+    from ai.content_moderator import ContentModerator
+
+    called = []
+    monkeypatch.setattr(
+        ContentModerator, "moderate_text",
+        lambda self, text: called.append(text) or {"flagged": False, "score": 0.0, "categories": []},
+    )
+    monkeypatch.setattr(_me, "PROGRESS_FILE", str(tmp_path / "p.json"))
+
+    rec = _me.add_field_mission_entry(
+        "u_photo", "mod1", "lesson1",
+        {"capture_type": "photo", "photo_url": "http://x/y.jpg"},
+    )
+    assert rec["entries"]  # persisted
+    assert called == []    # moderator never invoked
+    assert "moderation_status" not in rec["entries"][0]
+
+
+def test_moderate_text_detects_violence_keywords():
+    """Smoke test of the ContentModerator.moderate_text scoring directly."""
+    from ai.content_moderator import ContentModerator
+    m = ContentModerator(use_ai_moderation=False)
+
+    clean = m.moderate_text("I learned about civic responsibility today.")
+    assert clean["flagged"] is False
+    assert clean["score"] < 0.5
+
+    toxic = m.moderate_text("I will kill them all, this is murder.")
+    assert toxic["score"] > clean["score"]
+    assert "toxicity" in toxic["categories"]
+
+
 def test_seen_ids_capped_at_100_fifo():
     """quiz_seen_ids should cap at 100, evicting oldest entries (FIFO)."""
     prog = {"quiz_seen_ids": {"L1": [f"q{i}" for i in range(100)]}}
