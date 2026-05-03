@@ -25,6 +25,7 @@ from . import market_actors_engine
 from . import scorecard_engine
 from . import competitor_ai_engine
 from . import industry_report_engine
+from . import decision_panel_engine
 
 
 def build_executive_payload(
@@ -50,6 +51,7 @@ def build_executive_payload(
         "scorecard": scorecard_engine.build_scorecard_payload(state, game),
         "competitor_board": competitor_ai_engine.build_competitor_payload(state, game),
         "industry_report": industry_report_engine.build_industry_report_payload(state, game),
+        "decision_panel": decision_panel_engine.build_decision_panel_payload(state, current_round),
     }
     # Quick "any executive subsystem active" flag for the frontend
     payload["any_executive_subsystem_active"] = any([
@@ -67,6 +69,7 @@ def build_executive_payload(
         bool(scorecard_engine.get_scorecard_config(game)),
         bool(competitor_ai_engine.get_competitor_config(game)),
         bool(industry_report_engine.get_industry_report_config(game)),
+        bool(decision_panel_engine.get_decision_panel_config(current_round)),
     ])
     return payload
 

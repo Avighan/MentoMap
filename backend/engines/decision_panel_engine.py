@@ -32,7 +32,7 @@ in a later phase when callers in app.py adopt it.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Dict, Optional
 
 
 _FLOAT_TOL = 1e-6
@@ -199,3 +199,98 @@ class DecisionPanelEngine:
         }
 
         return {"state": state, "drift": drift, "applied": applied}
+
+
+# ────────────────────────────────────────────────────────────────────
+# Phase B payload bridge — opt-in via current_round.decision_panel
+# ────────────────────────────────────────────────────────────────────
+
+def get_decision_panel_config(current_round: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Return current_round.decision_panel or None when not opted in.
+
+    Decision panels are PER-ROUND (not per-game) — each round can declare
+    its own controls, expert picks, and applies_to paths.
+    """
+    if not isinstance(current_round, dict):
+        return None
+    cfg = current_round.get("decision_panel")
+    if not isinstance(cfg, dict):
+        return None
+    controls = cfg.get("controls")
+    if not isinstance(controls, list) or not controls:
+        return None
+    return cfg
+
+
+def build_decision_panel_payload(
+    state: Any,
+    current_round: Optional[Dict[str, Any]],
+) -> Optional[Dict[str, Any]]:
+    """Build the decision-panel payload for the current round.
+
+    Reads:
+      - current_round.decision_panel.controls: per-round control definitions
+      - state._decision_panel_submission: optional dict
+        ``{round_id: {control_id: value}}`` of player-submitted values
+
+    For each control returns:
+      {id, type, label, value, default, min, max, step, options, expert_pick,
+       applies_to, drift_pct, drift_label}
+
+    `value` is the player's submitted value if present, else the default.
+    `drift_*` is computed only when a submission exists for that control.
+    `payload.locked` is True once a submission has been recorded.
+
+    Returns None when no decision_panel config is declared on the round.
+    """
+    cfg = get_decision_panel_config(current_round)
+    if not cfg:
+        return None
+
+    controls = cfg.get("controls") or []
+    round_id = current_round.get("id") if isinstance(current_round, dict) else None
+
+    submissions_by_round = getattr(state, "_decision_panel_submission", None) or {}
+    submission: Dict[str, Any] = {}
+    if isinstance(submissions_by_round, dict) and round_id is not None:
+        submission = submissions_by_round.get(round_id) or {}
+
+    engine = DecisionPanelEngine()
+    drift_map: Dict[str, Dict[str, Any]] = {}
+    if submission:
+        drift_map = engine.compute_drift(controls, submission)
+
+    out_controls = []
+    for ctrl in controls:
+        cid = ctrl.get("id")
+        if not cid:
+            continue
+        value = submission.get(cid, ctrl.get("default"))
+        entry = {
+            "id": cid,
+            "type": ctrl.get("type", "slider"),
+            "label": ctrl.get("label", cid),
+            "description": ctrl.get("description"),
+            "value": value,
+            "default": ctrl.get("default"),
+            "min": ctrl.get("min"),
+            "max": ctrl.get("max"),
+            "step": ctrl.get("step"),
+            "options": ctrl.get("options"),
+            "expert_pick": ctrl.get("expert_pick"),
+            "applies_to": ctrl.get("applies_to"),
+            "unit": ctrl.get("unit"),
+        }
+        d = drift_map.get(cid)
+        if d:
+            entry["drift_pct"] = d.get("drift_pct")
+            entry["drift_label"] = d.get("drift_label")
+        out_controls.append(entry)
+
+    return {
+        "round_id": round_id,
+        "title": cfg.get("title", "Decision Panel"),
+        "subtitle": cfg.get("subtitle"),
+        "locked": bool(submission),
+        "controls": out_controls,
+    }

@@ -37,6 +37,7 @@ import CalibrationStrip from './CalibrationStrip';
 import MarketActorsTimeline from './MarketActorsTimeline';
 import CompetitorBoardWidget from './CompetitorBoardWidget';
 import IndustryReportWidget from './IndustryReportWidget';
+import DecisionPanelWidget from './DecisionPanelWidget';
 
 // ── Content-presence predicates ──────────────────────────────────────────
 // Each widget has its own internal "return null when sparse" guard. To avoid
@@ -147,6 +148,11 @@ const hasIndustryReportContent = (ir) => {
   return !!ir.business_model || !!ir.title || !!ir.report;
 };
 
+const hasDecisionPanelContent = (dp) => {
+  if (!dp || typeof dp !== 'object') return false;
+  return Array.isArray(dp.controls) && dp.controls.length > 0;
+};
+
 // Empty-state fallback for any tab whose widget unexpectedly renders nothing.
 const TabEmpty = ({ label }) => (
   <div
@@ -163,7 +169,7 @@ const TabEmpty = ({ label }) => (
   </div>
 );
 
-const ExecutivePanel = ({ payload, currency = 'USD', bands = null, className = '', runId = null, onArtifactGraded = null }) => {
+const ExecutivePanel = ({ payload, currency = 'USD', bands = null, className = '', runId = null, onArtifactGraded = null, onDecisionPanelSubmit = null }) => {
   if (!payload || !payload.any_executive_subsystem_active) return null;
 
   const finance     = payload.finance || null;
@@ -182,10 +188,13 @@ const ExecutivePanel = ({ payload, currency = 'USD', bands = null, className = '
   const scorecard   = payload.scorecard || null;
   const competitorBoard = payload.competitor_board || null;
   const industryReport  = payload.industry_report || null;
+  const decisionPanel   = payload.decision_panel || null;
 
   // Build tabs in priority order — only include subsystems that have content.
   const tabs = useMemo(() => {
     const list = [];
+    // Decision panel goes first — it's the round's primary input
+    if (hasDecisionPanelContent(decisionPanel)) list.push({ id: 'decision-panel', label: 'Decide', icon: '🎛️' });
     if (hasFinanceContent(finance))         list.push({ id: 'finance',      label: 'Finance',      icon: '💰' });
     if (hasMarketContent(market))           list.push({ id: 'market',       label: 'Market',       icon: '📈' });
     if (hasActorsContent(actors))           list.push({ id: 'competitors',  label: 'Competitors',  icon: '⚔️' });
@@ -201,7 +210,7 @@ const ExecutivePanel = ({ payload, currency = 'USD', bands = null, className = '
     if (hasForecastContent(stochastic))     list.push({ id: 'forecast',     label: 'Forecast',     icon: '🎯' });
     if (hasScorecardContent(scorecard))     list.push({ id: 'scorecard',    label: 'Scorecard',    icon: '📊' });
     return list;
-  }, [finance, market, actors, org, board, stakeholder, compliance, intra, projectMgmt, decision, stochastic, scorecard, competitorBoard, industryReport]);
+  }, [finance, market, actors, org, board, stakeholder, compliance, intra, projectMgmt, decision, stochastic, scorecard, competitorBoard, industryReport, decisionPanel]);
 
   const [activeTab, setActiveTab] = useState(tabs[0]?.id || null);
   // Keep activeTab valid as games progress and subsystems light up
@@ -276,6 +285,9 @@ const ExecutivePanel = ({ payload, currency = 'USD', bands = null, className = '
         break;
       case 'industry':
         node = <IndustryReportWidget payload={industryReport} />;
+        break;
+      case 'decision-panel':
+        node = <DecisionPanelWidget payload={decisionPanel} onSubmit={onDecisionPanelSubmit} />;
         break;
       default:
         node = null;
