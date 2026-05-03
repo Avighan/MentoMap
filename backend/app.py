@@ -25878,6 +25878,32 @@ def api_module_report(module_id):
     })
 
 
+@app.get("/api/modules/<module_id>/report-v2")
+@require_auth
+def api_module_report_v2(module_id):
+    """Module composite v2 — 5-channel scoring + per-dimension delta.
+
+    See modules_engine.compute_module_composite_v2 for channel definitions.
+    Lighter response than /report; intended for the new ModuleReportPage v2 UI
+    and for clients that want just the headline composite + channel breakdown.
+    """
+    uid = _module_user_id()
+    if not uid:
+        return jsonify({"error": "Authentication required"}), 401
+    module = _modules_engine.get_module(module_id)
+    if not module:
+        return jsonify({"error": "Module not found"}), 404
+    prog = _modules_engine.get_user_progress(uid, module_id) or {}
+    composite = _modules_engine.compute_module_composite_v2(prog, module)
+    return jsonify({
+        "module_id": module_id,
+        "composite": composite,
+        "started_at": prog.get("started_at"),
+        "completed_at": prog.get("completed_at"),
+        "last_active_at": prog.get("last_active_at"),
+    })
+
+
 @app.get("/api/modules/mine")
 @require_auth
 def api_modules_mine():
