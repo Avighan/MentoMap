@@ -34,6 +34,7 @@ import WorksheetRenderer from '../components/module/worksheets';
 import FieldMissionRenderer from '../components/module/FieldMissionRenderer';
 import VoiceLessonRenderer from '../components/module/VoiceLessonRenderer';
 import WorksheetRubricResult from '../components/module/WorksheetRubricResult';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import CoinCounter from '../components/ui/CoinCounter';
 import NotificationCenter from '../components/ui/NotificationCenter';
@@ -615,6 +616,7 @@ export default function ModuleDetailPage() {
   const { moduleId } = useParams();
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { t } = useTranslation();
 
   const [module, setModule] = useState(null);
   const [progress, setProgress] = useState(null);
@@ -963,7 +965,7 @@ export default function ModuleDetailPage() {
         <div className="fixed bottom-6 right-6 z-[55] w-80 shadow-2xl rounded-2xl overflow-hidden">
           <div className="flex items-center justify-between px-4 py-2"
             style={{ background: 'linear-gradient(90deg, #6366f1, #8b5cf6)', color: '#fff' }}>
-            <span className="text-sm font-black">Rubric Feedback</span>
+            <span className="text-sm font-black">{t('worksheet.rubric_feedback', 'Rubric Feedback')}</span>
             <button
               onClick={() => setRubric(null)}
               className="text-white/80 hover:text-white text-lg leading-none"

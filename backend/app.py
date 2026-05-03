@@ -25429,18 +25429,26 @@ def api_module_lesson_complete(module_id, lesson_id):
                     rubric_result = grade_worksheet_freetext(
                         combined_text, lesson_meta, rubric_def
                     )
-                    # Persist into progress file and update the in-memory dict.
+                    # Persist into progress file and refresh the in-memory dict
+                    # from disk so the response reflects any concurrent writes
+                    # made between complete_lesson and persist_rubric.
                     if rubric_result:
                         try:
                             _modules_engine.persist_rubric(
                                 uid, module_id, lesson_id, rubric_result
                             )
+                            refreshed = _modules_engine.get_user_progress(
+                                uid, module_id
+                            )
+                            if refreshed:
+                                progress = refreshed
                         except Exception as _pe:
-                            logger.debug("persist_rubric suppressed: %s", _pe)
-                        # Always update the in-memory progress for the response.
-                        progress.setdefault("rubrics", {})[lesson_id] = rubric_result
+                            logger.warning("persist_rubric failed: %s", _pe)
+                            # Persistence failed — still surface the rubric
+                            # in the response from the in-memory snapshot.
+                            progress.setdefault("rubrics", {})[lesson_id] = rubric_result
                 except Exception as _e:
-                    logger.debug("grade_worksheet_freetext suppressed: %s", _e)
+                    logger.warning("grade_worksheet_freetext failed: %s", _e)
 
         # ── Module-completion XP + badge (one-shot) ─────────────────────────
         new_badges = []
