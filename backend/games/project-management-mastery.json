@@ -972,7 +972,82 @@
           "counterfactual_feedback": "Serial design protects quality but eats every day of your float. Schedule risk is irreversible; rework risk is recoverable."
         }
       ],
-      "expert_pick": "fast_track_design"
+      "expert_pick": "fast_track_design",
+      "decision_panel": {
+        "title": "Sprint 2 — Critical Path Levers",
+        "subtitle": "11 days of float, 79-day critical path. Choose what to spend, where, and when to freeze design.",
+        "controls": [
+          {
+            "id": "fast_track_overlap_pct",
+            "type": "slider",
+            "label": "Build_core parallel-start overlap",
+            "description": "% of build_core stubs to start before arch_design freezes.",
+            "min": 0,
+            "max": 50,
+            "step": 5,
+            "default": 20,
+            "expert_pick": 30,
+            "applies_to": "delivery.fast_track_overlap_pct",
+            "unit": "%"
+          },
+          {
+            "id": "rework_risk_budget_pct",
+            "type": "slider",
+            "label": "Accepted rework risk budget",
+            "description": "Calibrated upper bound. Above 20% and you're recklessly parallel.",
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "default": 10,
+            "expert_pick": 15,
+            "applies_to": "delivery.rework_risk_budget_pct",
+            "unit": "%"
+          },
+          {
+            "id": "design_freeze_day",
+            "type": "slider",
+            "label": "Design freeze gate (project day)",
+            "description": "Day at which arch_design is locked to enable build_core scaling.",
+            "min": 14,
+            "max": 35,
+            "step": 1,
+            "default": 26,
+            "expert_pick": 25,
+            "applies_to": "delivery.design_freeze_day",
+            "unit": "d"
+          },
+          {
+            "id": "architect_count",
+            "type": "slider",
+            "label": "Architects on the build",
+            "description": "Brooks's Law lurks above 3 on a 90-day knowledge-work project.",
+            "min": 1,
+            "max": 4,
+            "step": 1,
+            "default": 2,
+            "expert_pick": 2,
+            "applies_to": "delivery.architect_count"
+          }
+        ]
+      },
+      "expert_debrief": {
+        "title": "Why we'd fast-track 30% — not crash, not stay serial",
+        "body": "The critical path has 79 days of work and you have 11 days of float — that's a 12% buffer on a regulatory-locked deadline, which is below what PMI calls the 'safe corridor' for novel architecture work. Fast-tracking 30% of build_core stubs in parallel buys back ~14 days of schedule float in exchange for a ~15% rework probability — a defensible asymmetric trade. Crashing the schedule by hiring two architects is the textbook violation of Brooks's Law: ramp-up cost on knowledge work means you'll pay $120K and recover only 2 days. Staying serial is the most expensive choice — it eats 9 of your 11 float days before Sprint 3, leaving you no buffer for the vendor delay coming in Round 3 (which the RAID register already flagged).",
+        "expert_voice": "Frederick Brooks, Mythical Man-Month + PMI Practice Standard for Scheduling",
+        "tags": [
+          "critical_path_thinking",
+          "risk_management",
+          "decision_quality"
+        ],
+        "citations": [
+          {
+            "label": "The Mythical Man-Month (Brooks, 2nd ed)"
+          },
+          {
+            "label": "PMI Practice Standard for Scheduling, 2nd Ed"
+          }
+        ]
+      }
     },
     {
       "id": "r3_vendor_delay",
@@ -1127,7 +1202,85 @@
           "counterfactual_feedback": "Descoping the vendor integration to Phase 2 violates the compliance gate. The audit team finds it during pre-prod and you're back in week-3 negotiations in week 8."
         }
       ],
-      "expert_pick": "build_internal_stub"
+      "expert_pick": "build_internal_stub",
+      "decision_panel": {
+        "title": "Sprint 3 — Vendor Risk Response",
+        "subtitle": "DataMesh slipped 3 weeks. The dependency was on the critical path. Choose your hedge.",
+        "controls": [
+          {
+            "id": "stub_dev_days",
+            "type": "slider",
+            "label": "Days to invest in internal SDK stub",
+            "description": "Enough to unblock build_integrations without competing with vendor's real SDK.",
+            "min": 0,
+            "max": 15,
+            "step": 1,
+            "default": 5,
+            "expert_pick": 8,
+            "applies_to": "delivery.stub_dev_days",
+            "unit": "d"
+          },
+          {
+            "id": "vendor_escalation_intensity",
+            "type": "dropdown",
+            "label": "Vendor escalation level",
+            "description": "Too low = ignored. Too high = relationship damage.",
+            "options": [
+              "none",
+              "low",
+              "medium",
+              "high"
+            ],
+            "default": "low",
+            "expert_pick": "medium",
+            "applies_to": "comms.vendor_escalation"
+          },
+          {
+            "id": "parallel_vendor_track",
+            "type": "dropdown",
+            "label": "Keep vendor track live in parallel?",
+            "description": "Dual-track de-risking: build internal stub AND keep vendor integration warm.",
+            "options": [
+              "yes",
+              "no"
+            ],
+            "default": "yes",
+            "expert_pick": "yes",
+            "applies_to": "delivery.parallel_vendor_track"
+          },
+          {
+            "id": "raid_review_cadence_days",
+            "type": "slider",
+            "label": "RAID review cadence",
+            "description": "How often you re-walk the risk register. Stale RAID = surprise crisis.",
+            "min": 3,
+            "max": 14,
+            "step": 1,
+            "default": 7,
+            "expert_pick": 7,
+            "applies_to": "delivery.raid_review_cadence_days",
+            "unit": "d"
+          }
+        ]
+      },
+      "expert_debrief": {
+        "title": "Why we'd dual-track: build the stub AND keep the vendor warm",
+        "body": "The vendor delay was a known risk on your RAID register — the test isn't whether you saw it coming, it's whether your mitigation was pre-positioned. An internal stub at 8 days is a calibrated investment: enough to unblock build_integrations without becoming a parallel product. Keeping the vendor track live in parallel is the dual-track move HBR cases call 'optionality preservation' — you're not betting against the vendor, you're insuring against their slip. Descoping the integration to Phase 2 trades a known short-term cost for an unknown long-term one (technical debt, customer-feature gap). Waiting for the vendor with no stub is the failure mode the RAID register exists to prevent — you logged the risk and then behaved as if it wouldn't happen.",
+        "expert_voice": "HBR — 'Vendor Risk Management for the Modern PM' (paraphrased)",
+        "tags": [
+          "risk_management",
+          "stakeholder_communication",
+          "decision_quality"
+        ],
+        "citations": [
+          {
+            "label": "HBR — Real Options in Project Risk Management"
+          },
+          {
+            "label": "PMBOK 7 — Risk Response Strategies"
+          }
+        ]
+      }
     },
     {
       "id": "r4_scope_creep",
@@ -1290,7 +1443,83 @@
           ]
         }
       ],
-      "expert_pick": "scope_change_memo"
+      "expert_pick": "scope_change_memo",
+      "decision_panel": {
+        "title": "Sprint 4 — Scope-Schedule-Cost Triangle",
+        "subtitle": "Two new asks at 92% utilization. Set the iron triangle now or watch your team burn.",
+        "controls": [
+          {
+            "id": "scope_increase_days",
+            "type": "slider",
+            "label": "New scope to absorb without renegotiation",
+            "description": "Above 0 means absorbing the COO's asks silently. Sustainability ceiling: 0.",
+            "min": 0,
+            "max": 20,
+            "step": 1,
+            "default": 10,
+            "expert_pick": 0,
+            "applies_to": "delivery.scope_increase_days",
+            "unit": "d"
+          },
+          {
+            "id": "target_utilization_pct",
+            "type": "slider",
+            "label": "Target team utilization",
+            "description": "85% is the sustainable ceiling on knowledge work. Above 95% = burnout in 2 sprints.",
+            "min": 60,
+            "max": 110,
+            "step": 1,
+            "default": 92,
+            "expert_pick": 80,
+            "applies_to": "delivery.target_utilization_pct",
+            "unit": "%"
+          },
+          {
+            "id": "sponsor_escalation_threshold_days",
+            "type": "slider",
+            "label": "Slip days before sponsor escalation",
+            "description": "Pre-emptive disclosure beats reactive damage control.",
+            "min": 1,
+            "max": 15,
+            "step": 1,
+            "default": 7,
+            "expert_pick": 5,
+            "applies_to": "comms.escalation_threshold_days",
+            "unit": "d"
+          },
+          {
+            "id": "feature_swap_offered",
+            "type": "dropdown",
+            "label": "Offer feature swap?",
+            "description": "Swap proposes a trade. Memo presents the trade-off. Both honor the iron triangle.",
+            "options": [
+              "yes",
+              "no"
+            ],
+            "default": "no",
+            "expert_pick": "no",
+            "applies_to": "delivery.feature_swap_offered"
+          }
+        ]
+      },
+      "expert_debrief": {
+        "title": "Why we'd write the scope-change memo before swapping anything",
+        "body": "Scope creep at 92% utilization is not a scope problem — it's a renegotiation problem. The scope-change memo is the explicit move HBR teaches: surface the iron triangle ('+15 days OR drop hypercare — pick'), force the COO to own the trade-off, and create the paper trail your team needs to operate at sustainable pace. Absorbing the work quietly is the failure mode McKinsey research links to a 3x burnout rate and a 40% drop in defect quality by Sprint 6 — you don't save schedule, you trade it for downstream rework. Offering a swap (SSO for analytics) is tactically clever but strategically wrong here: it concedes the principle that scope is negotiable on the COO's terms. Memo first, swap second only if memo gets dismissed.",
+        "expert_voice": "HBR — 'Managing Up the Scope Conversation' (paraphrased)",
+        "tags": [
+          "scope_discipline",
+          "stakeholder_communication",
+          "team_leadership"
+        ],
+        "citations": [
+          {
+            "label": "HBR — Saying No to Your Sponsor"
+          },
+          {
+            "label": "McKinsey — Sustainable Pace in Knowledge Work, 2022"
+          }
+        ]
+      }
     },
     {
       "id": "r5_uat_failure",
@@ -1428,7 +1657,80 @@
           "counterfactual_feedback": "A clean 2-week delay is sometimes right — but only if your sponsor map is aligned. At week 5 with no pre-emptive brief, this becomes a no-confidence event."
         }
       ],
-      "expert_pick": "structured_recovery"
+      "expert_pick": "structured_recovery",
+      "decision_panel": {
+        "title": "Sprint 5 — Recovery Posture",
+        "subtitle": "12 critical defects, schedule slipping, sponsor wants a plan Friday. Calibrate the recovery.",
+        "controls": [
+          {
+            "id": "sponsor_disclosure_lag_days",
+            "type": "slider",
+            "label": "Days between learning bad news and disclosing to sponsor",
+            "description": "Kerzner: every day of lag doubles the political cost of disclosure.",
+            "min": 0,
+            "max": 7,
+            "step": 1,
+            "default": 3,
+            "expert_pick": 1,
+            "applies_to": "comms.disclosure_lag_days",
+            "unit": "d"
+          },
+          {
+            "id": "critical_defect_go_threshold",
+            "type": "slider",
+            "label": "Critical defects acceptable at go-live",
+            "description": "Zero is not aspirational — it's the contract for a regulatory cutover.",
+            "min": 0,
+            "max": 5,
+            "step": 1,
+            "default": 2,
+            "expert_pick": 0,
+            "applies_to": "delivery.critical_defect_go_threshold"
+          },
+          {
+            "id": "hypercare_team_size",
+            "type": "slider",
+            "label": "Hypercare team headcount",
+            "description": "Too small = oncall burnout. Too large = build team starves.",
+            "min": 3,
+            "max": 10,
+            "step": 1,
+            "default": 4,
+            "expert_pick": 6,
+            "applies_to": "delivery.hypercare_team_size"
+          },
+          {
+            "id": "fix_and_retest_sprints",
+            "type": "slider",
+            "label": "Fix-and-retest sprints before go-live",
+            "description": "Each sprint adds 1 week schedule but ~3x defect kill rate.",
+            "min": 0,
+            "max": 3,
+            "step": 1,
+            "default": 1,
+            "expert_pick": 1,
+            "applies_to": "delivery.fix_and_retest_sprints"
+          }
+        ]
+      },
+      "expert_debrief": {
+        "title": "Why we'd take the 1-week slip — not ship dirty, not delay 2",
+        "body": "UAT failure with 12 critical defects on a regulatory-locked cutover is the moment Kerzner's 'Project Recovery' framework was written for. Three rules apply: First, disclose to the sponsor within 24 hours — every additional day of lag doubles the political cost (Kerzner's empirical finding across 600 troubled projects). Second, 0 critical defects at go-live is non-negotiable for a regulatory cutover; the 'ship dirty, fix in hypercare' choice costs 3-5x more in customer trust than a 1-week slip. Third, structured recovery — triage, freeze, fix-and-retest — is the only posture that compresses defect-kill cadence from typical 1.2x/sprint to ~3x/sprint. The 2-week delay Marco wants is over-correction: it preserves quality but costs you sponsor credibility for the rest of hypercare and beyond.",
+        "expert_voice": "Harold Kerzner — Project Recovery (paraphrased)",
+        "tags": [
+          "risk_management",
+          "stakeholder_communication",
+          "decision_quality"
+        ],
+        "citations": [
+          {
+            "label": "Kerzner — Project Recovery, 2nd Ed"
+          },
+          {
+            "label": "PMI — Pulse of the Profession 2024 (recovery patterns)"
+          }
+        ]
+      }
     },
     {
       "id": "r6_go_live_call",
@@ -1550,7 +1852,81 @@
           "counterfactual_feedback": "GO with no workaround because 'we'll hot-fix in production' is how data gets lost during the cutover window. The runbook isn't optional."
         }
       ],
-      "expert_pick": "go_with_workaround"
+      "expert_pick": "go_with_workaround",
+      "decision_panel": {
+        "title": "Sprint 6 — Go/No-Go Decision Posture",
+        "subtitle": "1 minor edge case, 0.3% blast radius. Calibrate the rollback envelope and oncall posture.",
+        "controls": [
+          {
+            "id": "rollback_decision_window_minutes",
+            "type": "slider",
+            "label": "Rollback decision window during cutover",
+            "description": "Time-boxed go/no-go reassessment after cutover starts.",
+            "min": 5,
+            "max": 60,
+            "step": 5,
+            "default": 30,
+            "expert_pick": 15,
+            "applies_to": "delivery.rollback_decision_window_minutes",
+            "unit": "min"
+          },
+          {
+            "id": "workaround_runbook_pages",
+            "type": "slider",
+            "label": "Workaround runbook depth",
+            "description": "Ops needs enough to execute under pressure. Too long = nobody reads it.",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "default": 4,
+            "expert_pick": 6,
+            "applies_to": "delivery.workaround_runbook_pages"
+          },
+          {
+            "id": "oncall_size_week_one",
+            "type": "slider",
+            "label": "Hypercare oncall team size (week 1)",
+            "description": "Week 1 oncall is 50% triage, 50% pattern recognition.",
+            "min": 3,
+            "max": 8,
+            "step": 1,
+            "default": 4,
+            "expert_pick": 6,
+            "applies_to": "delivery.oncall_size_week_one"
+          },
+          {
+            "id": "go_no_go_quorum_pct",
+            "type": "slider",
+            "label": "Go/no-go quorum threshold",
+            "description": "% of voting members required for GO. ITIL Major Change recommends ≥80%.",
+            "min": 60,
+            "max": 100,
+            "step": 5,
+            "default": 75,
+            "expert_pick": 80,
+            "applies_to": "delivery.go_no_go_quorum_pct",
+            "unit": "%"
+          }
+        ]
+      },
+      "expert_debrief": {
+        "title": "Why we'd GO with a workaround — not chase zero-defect perfection",
+        "body": "0.3% blast radius with a documented workaround is the textbook GO posture in ITIL Major Change Management. Three calibrations make this responsible: First, a 15-minute rollback decision window is the discipline that prevents 'sunk cost' GO calls — if reality diverges from runbook in the first 15 min, you reverse without ego. Second, a 6-page runbook is the McKinsey-validated sweet spot for ops execution under pressure (10+ pages = unread; 1-2 pages = under-specified). Third, an 80% quorum threshold means the call has consensus authority, not pluralities. Delaying for a perfect rollback script (NO-GO) is the failure mode every change-management textbook warns against: it converts a managed 0.3% risk into an unmanaged sponsor-credibility loss. Going without a workaround trades known risk for unknown — exactly the opposite of what mature PM discipline trains for.",
+        "expert_voice": "ITIL 4 Major Change Management + McKinsey Cutover Playbook (paraphrased)",
+        "tags": [
+          "decision_quality",
+          "risk_management",
+          "stakeholder_communication"
+        ],
+        "citations": [
+          {
+            "label": "ITIL 4 — Change Enablement Practice"
+          },
+          {
+            "label": "McKinsey — Tech Cutover Playbook 2023"
+          }
+        ]
+      }
     }
   ],
   "score_bands": {
