@@ -6,6 +6,7 @@ Safe JSON parsing with fallbacks.
 import os
 import re
 import json
+import hashlib
 from typing import Dict, Any
 from openai import OpenAI
 
@@ -6290,16 +6291,11 @@ def grade_reflection_text(text, dimension_focus=None):
                 continue
             dim_signals[dim] = max(-10, min(10, v))
 
-    def _str_list(v):
-        if not isinstance(v, list):
-            return []
-        return [str(x) for x in v if isinstance(x, (str, int, float))][:5]
-
     return {
         "score": score,
         "dim_signals": dim_signals,
-        "strengths": _str_list(raw.get("strengths")),
-        "improvements": _str_list(raw.get("improvements")),
+        "strengths": _grader_str_list(raw.get("strengths")),
+        "improvements": _grader_str_list(raw.get("improvements")),
     }
 
 
@@ -6307,11 +6303,16 @@ def grade_reflection_text(text, dimension_focus=None):
 # Worksheet rubric grader (Task 14)
 # -----------------------------------------------------------------------------
 
-import hashlib as _hashlib
-
 # Content-hash cache: key = sha256(text|lesson_id|rubric_version) -> graded dict
 _WORKSHEET_GRADE_CACHE: dict = {}
 _WORKSHEET_CACHE_MAX = 2000
+
+
+def _grader_str_list(v):
+    """Coerce a value to a sanitized list of up to 5 short strings."""
+    if not isinstance(v, list):
+        return []
+    return [str(x) for x in v if isinstance(x, (str, int, float))][:5]
 
 # Allowed dimensions a rubric grader may emit. Reuse reflection allowlist plus
 # a few business/exec dimensions worksheets typically score on.
@@ -6324,11 +6325,14 @@ _WORKSHEET_ALLOWED_DIMS = set(_REFLECTION_ALLOWED_DIMS) | {
 
 
 def _worksheet_cache_key(text: str, lesson_id: str, rubric_version: str) -> str:
-    h = _hashlib.sha256()
+    # Use a null-byte separator: decoded UTF-8 strings cannot contain \x00,
+    # so field boundaries are unambiguous and "a|b" + "c" cannot collide
+    # with "a" + "b|c".
+    h = hashlib.sha256()
     h.update((text or "").encode("utf-8", errors="ignore"))
-    h.update(b"|")
+    h.update(b"\x00")
     h.update((lesson_id or "").encode("utf-8", errors="ignore"))
-    h.update(b"|")
+    h.update(b"\x00")
     h.update((rubric_version or "v0").encode("utf-8", errors="ignore"))
     return h.hexdigest()
 
@@ -6340,7 +6344,11 @@ def grade_worksheet_freetext(text, lesson, rubric):
       text: student's free-text answer.
       lesson: dict with at least 'id' and 'type' (e.g. idea_scorecard, reflection).
       rubric: dict with 'anchors' (novice/capable/strong/exec), 'signals' list,
-              and optional 'version' (used as cache discriminator).
+              and optional 'version'. The cache key includes only
+              (text, lesson_id, rubric_version) — callers MUST bump 'version'
+              whenever anchor text changes, otherwise stale results will be
+              returned. Rubrics with no 'version' field share the default 'v0'
+              cache partition.
 
     Returns:
       {
@@ -6416,15 +6424,10 @@ def grade_worksheet_freetext(text, lesson, rubric):
                 continue
             dim_signals[dim] = max(-10, min(10, v))
 
-    def _str_list(v):
-        if not isinstance(v, list):
-            return []
-        return [str(x) for x in v if isinstance(x, (str, int, float))][:5]
-
     result = {
         "score": score,
-        "strengths": _str_list(raw.get("strengths")),
-        "improvements": _str_list(raw.get("improvements")),
+        "strengths": _grader_str_list(raw.get("strengths")),
+        "improvements": _grader_str_list(raw.get("improvements")),
         "dim_signals": dim_signals,
     }
 
