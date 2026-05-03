@@ -1,7 +1,8 @@
-"""Tests for module composite v2 (Task 13) and worksheet grader (Task 14)."""
+"""Tests for module composite v2 (Task 13), worksheet grader (Task 14),
+and IRT quiz item bank (Task 16)."""
 import pytest
 
-from modules_engine import compute_module_composite_v2
+from modules_engine import compute_module_composite_v2, select_quiz_questions_irt, update_quiz_theta
 from llm import grade_worksheet_freetext, _WORKSHEET_GRADE_CACHE
 
 
@@ -216,3 +217,97 @@ def test_grade_worksheet_rubric_version_invalidates_cache(monkeypatch):
     grade_worksheet_freetext("identical text", {"id": "L1", "type": "reflection"},
                              {"anchors": {}, "signals": [], "version": "v2"})
     assert call_count["n"] == 2, "Different rubric_version should bypass cache"
+
+
+# ---- Task 16: IRT quiz item bank ---------------------------------------------
+
+def _irt_bank():
+    """Five-item bank at integer difficulties -2 to 2."""
+    return [
+        {"id": "q1", "difficulty": -2.0, "text": "Q1"},
+        {"id": "q2", "difficulty": -1.0, "text": "Q2"},
+        {"id": "q3", "difficulty":  0.0, "text": "Q3"},
+        {"id": "q4", "difficulty":  1.0, "text": "Q4"},
+        {"id": "q5", "difficulty":  2.0, "text": "Q5"},
+    ]
+
+
+def test_select_quiz_irt_picks_closest_to_theta():
+    """theta=1.5, n=2 → items closest to 1.5 are difficulty 1 and 2."""
+    lesson = {"lesson_id": "L1_quiz", "quiz": {"bank": _irt_bank()}}
+    prog = {"quiz_theta": {"L1_quiz": 1.5}, "quiz_seen_ids": {}}
+    selected = select_quiz_questions_irt(lesson, prog, n=2)
+    diffs = sorted(q["difficulty"] for q in selected)
+    assert diffs == [1.0, 2.0], f"Expected [1.0, 2.0], got {diffs}"
+
+
+def test_select_quiz_irt_excludes_seen():
+    """theta=0, seen_ids contains q3 (difficulty 0) → next-closest unseen are q2 and q4."""
+    lesson = {"lesson_id": "L2_quiz", "quiz": {"bank": _irt_bank()}}
+    prog = {
+        "quiz_theta": {"L2_quiz": 0.0},
+        "quiz_seen_ids": {"L2_quiz": ["q3"]},
+    }
+    selected = select_quiz_questions_irt(lesson, prog, n=2)
+    ids = {q["id"] for q in selected}
+    assert "q3" not in ids, "Seen item q3 should be excluded"
+    assert len(selected) == 2
+    # Closest to 0 after excluding q3 are q2 (diff=-1) and q4 (diff=1)
+    assert ids == {"q2", "q4"}, f"Expected {{q2, q4}}, got {ids}"
+
+
+def test_select_quiz_irt_falls_back_to_legacy_questions():
+    """No bank present → falls back to quiz.questions[:n]."""
+    legacy_qs = [{"id": f"lq{i}", "text": f"Q{i}"} for i in range(6)]
+    lesson = {"lesson_id": "L3_quiz", "quiz": {"questions": legacy_qs}}
+    prog = {}
+    selected = select_quiz_questions_irt(lesson, prog, n=3)
+    assert len(selected) == 3
+    assert selected == legacy_qs[:3]
+
+
+def test_select_quiz_irt_pads_when_few_unseen():
+    """If all items in the bank are seen, fall back to seen items to pad to n."""
+    small_bank = [
+        {"id": "qa", "difficulty": 0.0, "text": "A"},
+        {"id": "qb", "difficulty": 1.0, "text": "B"},
+    ]
+    lesson = {"lesson_id": "L4_quiz", "quiz": {"bank": small_bank}}
+    prog = {
+        "quiz_theta": {"L4_quiz": 0.5},
+        "quiz_seen_ids": {"L4_quiz": ["qa", "qb"]},
+    }
+    # Requesting n=2 when all 2 are seen should return both (padded from seen)
+    selected = select_quiz_questions_irt(lesson, prog, n=2)
+    assert len(selected) == 2
+
+
+def test_update_quiz_theta_increases_on_correct_majority():
+    """4/5 correct (80%) → delta = (0.8-0.5)*1.0 = +0.3 → theta goes 0.0 → 0.3."""
+    prog = {}
+    prog = update_quiz_theta(prog, "L1", items_correct=4, items_total=5)
+    theta = prog["quiz_theta"]["L1"]
+    assert abs(theta - 0.3) < 1e-9, f"Expected 0.3, got {theta}"
+
+
+def test_update_quiz_theta_clamps_at_bounds():
+    """Starting at 2.9 with 5/5 correct → delta=+0.5 → clamped at 3.0."""
+    prog = {"quiz_theta": {"L1": 2.9}}
+    prog = update_quiz_theta(prog, "L1", items_correct=5, items_total=5)
+    assert prog["quiz_theta"]["L1"] == 3.0
+
+
+def test_update_quiz_theta_zero_total_is_noop():
+    """items_total=0 → prog unchanged."""
+    prog = {"quiz_theta": {"L1": 1.5}}
+    prog2 = update_quiz_theta(prog, "L1", items_correct=0, items_total=0)
+    assert prog2["quiz_theta"]["L1"] == 1.5
+
+
+def test_update_quiz_theta_persists_seen_ids():
+    """Passing seen_ids should populate prog['quiz_seen_ids'][lesson_id]."""
+    prog = {}
+    prog = update_quiz_theta(prog, "L1", items_correct=3, items_total=5,
+                             seen_ids=["q1", "q2"])
+    assert "quiz_seen_ids" in prog
+    assert set(prog["quiz_seen_ids"]["L1"]) == {"q1", "q2"}

@@ -25267,6 +25267,58 @@ def api_module_progress(module_id):
     })
 
 
+@app.get("/api/modules/<module_id>/lessons/<lesson_id>/quiz-questions")
+@require_auth
+def api_module_lesson_quiz_questions(module_id, lesson_id):
+    """Return IRT-selected quiz questions for the current user.
+
+    Picks ``n_questions_per_attempt`` (default 5) questions from the lesson's
+    ``quiz.bank``, prioritising items whose difficulty is closest to the user's
+    current Rasch theta estimate.  Falls back to the legacy ``quiz.questions``
+    list when no bank is present so that existing modules work unchanged.
+
+    Response shape::
+
+        {
+            "questions": [...],   // list of question dicts
+            "n": int,             // len(questions)
+            "theta": float        // current ability estimate for this lesson
+        }
+    """
+    uid = _module_user_id()
+    if not uid:
+        return jsonify({"error": "Authentication required"}), 401
+    try:
+        module = _modules_engine.get_module(module_id)
+        if not module:
+            return jsonify({"error": "Module not found"}), 404
+
+        # Locate the lesson within the module.
+        lesson = None
+        for w in module.get("weeks", []) or []:
+            for l in (w.get("lessons") or []):
+                if l.get("lesson_id") == lesson_id:
+                    lesson = l
+                    break
+            if lesson:
+                break
+        if not lesson:
+            return jsonify({"error": "Lesson not found in module"}), 404
+
+        if lesson.get("type") not in ("quiz", "assessment"):
+            return jsonify({"error": "Lesson is not a quiz or assessment"}), 400
+
+        prog = _modules_engine.get_user_progress(uid, module_id) or {}
+        quiz = lesson.get("quiz") or {}
+        n = int(quiz.get("n_questions_per_attempt") or 5)
+        questions = _modules_engine.select_quiz_questions_irt(lesson, prog, n=n)
+        theta = (prog.get("quiz_theta") or {}).get(lesson_id, 0.0)
+        return jsonify({"questions": questions, "n": len(questions), "theta": theta})
+    except Exception:
+        logger.exception("api_module_lesson_quiz_questions failed")
+        return jsonify({"error": "Internal server error"}), 500
+
+
 @app.post("/api/modules/<module_id>/lessons/<lesson_id>/save")
 @require_auth
 def api_module_lesson_save(module_id, lesson_id):

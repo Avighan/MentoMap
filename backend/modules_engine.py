@@ -196,6 +196,8 @@ def _empty_progress(module_id: str) -> Dict[str, Any]:
         "lesson_meta": {},     # lesson_id -> {time_spent_seconds}
         "field_missions": {},  # lesson_id -> {entries: [...], submitted_at}
         "rubrics": {},         # lesson_id -> {score, strengths, improvements, dim_signals}
+        "quiz_theta": {},      # lesson_id -> float  (Rasch ability estimate, clamped to [-3, 3])
+        "quiz_seen_ids": {},   # lesson_id -> list[str]  (question IDs already shown, capped at 100)
     }
 
 
@@ -299,6 +301,101 @@ def _next_lesson(module: Dict[str, Any], current_lesson_id: Optional[str]) -> Op
     return None
 
 
+# ---------- IRT / Rasch quiz item bank ----------
+
+def select_quiz_questions_irt(
+    lesson: Dict[str, Any],
+    prog: Dict[str, Any],
+    n: int = 5,
+) -> List[Dict[str, Any]]:
+    """Select *n* questions from lesson.quiz.bank at difficulty closest to the
+    player's current theta (Rasch ability estimate).
+
+    Falls back to the legacy ``lesson.quiz.questions`` list when no bank is
+    present so that existing modules continue to work without modification.
+
+    Args:
+        lesson: Lesson dict (may use ``lesson_id`` or ``id`` key).
+        prog:   Per-user module progress dict.
+        n:      Number of questions to return.
+
+    Returns:
+        A list of question dicts, length ≤ n.
+    """
+    quiz = lesson.get("quiz", {}) or {}
+    bank: List[Dict[str, Any]] = quiz.get("bank") or []
+    if not bank:
+        # Legacy fallback
+        return (quiz.get("questions") or [])[:n]
+
+    # Resolve lesson key — prefer lesson_id, fall back to id.
+    lid = lesson.get("lesson_id") or lesson.get("id") or ""
+
+    theta: float = (prog.get("quiz_theta") or {}).get(lid, 0.0)
+
+    # Sort bank by absolute distance from theta.
+    bank_sorted = sorted(bank, key=lambda q: abs((q.get("difficulty") or 0.0) - theta))
+
+    seen: set = set((prog.get("quiz_seen_ids") or {}).get(lid, []))
+
+    fresh = [q for q in bank_sorted if q.get("id") not in seen][:n]
+    if len(fresh) < n:
+        # Pad with already-seen items when the fresh pool is exhausted.
+        already_seen = [q for q in bank_sorted if q.get("id") in seen]
+        fresh = fresh + already_seen[: n - len(fresh)]
+
+    return fresh
+
+
+def update_quiz_theta(
+    prog: Dict[str, Any],
+    lesson_id: str,
+    items_correct: int,
+    items_total: int,
+    seen_ids: Optional[List[str]] = None,
+) -> Dict[str, Any]:
+    """Naive Rasch theta update: shift by (pct_correct - 0.5) × 1.0 per attempt.
+
+    At 80% correct the delta is +0.3; at 40% correct it is -0.1, etc.
+    The estimate is clamped to [-3.0, 3.0].
+
+    Also persists *seen_ids* (the question IDs shown this attempt) so that
+    ``select_quiz_questions_irt`` can deprioritise already-seen items.
+    The seen list is capped at 100 entries (oldest evicted first) to avoid
+    unbounded growth.
+
+    Args:
+        prog:          Per-user module progress dict (mutated in place).
+        lesson_id:     Lesson identifier string.
+        items_correct: Number of correct answers in this attempt.
+        items_total:   Total number of questions attempted.
+        seen_ids:      List of question IDs presented this attempt (optional).
+
+    Returns:
+        The mutated *prog* dict.
+    """
+    if items_total == 0:
+        return prog
+
+    pct = items_correct / items_total
+    delta = (pct - 0.5) * 1.0  # ±0.5 for 100 % or 0 % correct
+
+    th = prog.setdefault("quiz_theta", {})
+    th[lesson_id] = max(-3.0, min(3.0, th.get(lesson_id, 0.0) + delta))
+
+    # Persist seen question IDs.
+    if seen_ids:
+        seen_map = prog.setdefault("quiz_seen_ids", {})
+        existing: List[str] = list(seen_map.get(lesson_id, []))
+        for qid in seen_ids:
+            if qid not in existing:
+                existing.append(qid)
+        # Cap at 100 entries — evict oldest.
+        seen_map[lesson_id] = existing[-100:]
+
+    return prog
+
+
 def complete_lesson(
     user_id: str,
     module_id: str,
@@ -365,6 +462,20 @@ def complete_lesson(
                 "attempts": attempts,
                 "saved_at": _now_iso(),
             }
+            # IRT theta update — runs on every attempt (pass or fail) so the
+            # difficulty calibration improves even when the student retries.
+            _items_correct = int(score) if max_score else 0
+            _items_total = int(max_score) if max_score else 0
+            _seen_ids = (
+                payload.get("seen_ids")
+                or list((payload.get("answers") or {}).keys())
+            )
+            update_quiz_theta(
+                prog, lesson_id,
+                items_correct=_items_correct,
+                items_total=_items_total,
+                seen_ids=_seen_ids,
+            )
             if not passed:
                 # Save attempt but DO NOT mark complete or advance.
                 prog["last_active_at"] = _now_iso()
