@@ -1,7 +1,8 @@
-"""Tests for module composite v2 — Task 13 of P0 plan."""
+"""Tests for module composite v2 (Task 13) and worksheet grader (Task 14)."""
 import pytest
 
 from modules_engine import compute_module_composite_v2
+from llm import grade_worksheet_freetext, _WORKSHEET_GRADE_CACHE
 
 
 def _sample_module():
@@ -124,3 +125,94 @@ def test_time_on_task_normalized():
     out = compute_module_composite_v2(_sample_progress(), _sample_module())
     val = out["channels"]["time_on_task"]
     assert 80 <= val <= 100, f"got {val}"
+
+
+# ---- Task 14: Worksheet LLM grader ------------------------------------------
+
+@pytest.fixture(autouse=True)
+def _clear_worksheet_cache():
+    """Each worksheet test starts with an empty cache."""
+    _WORKSHEET_GRADE_CACHE.clear()
+    yield
+    _WORKSHEET_GRADE_CACHE.clear()
+
+
+def test_grade_worksheet_returns_expected_shape(monkeypatch):
+    def fake_call(system_prompt, user_prompt, **kwargs):
+        return {
+            "score": 78,
+            "strengths": ["Clear customer profile", "Specific metrics"],
+            "improvements": ["Validate willingness to pay"],
+            "dim_signals": {"creativity": 5, "commercial_acumen": 6},
+        }
+    monkeypatch.setattr("llm._call_llm_json", fake_call)
+    rubric = {
+        "anchors": {
+            "novice": "Vague problem statement",
+            "capable": "Specific user, specific pain",
+            "strong": "Specific user + specific pain + measurable size",
+            "exec": "All of strong, plus differentiated wedge",
+        },
+        "signals": ["mentions specific user", "quantifies pain"],
+    }
+    out = grade_worksheet_freetext(
+        text="Working parents struggle to find affordable after-school tutoring; market is ~$2B.",
+        lesson={"id": "lesson_idea_scorecard", "type": "idea_scorecard"},
+        rubric=rubric,
+    )
+    assert out["score"] == 78
+    assert "Validate willingness to pay" in out["improvements"]
+    assert "Clear customer profile" in out["strengths"]
+
+
+def test_grade_worksheet_caches_by_content_hash(monkeypatch):
+    call_count = {"n": 0}
+    def fake_call(system_prompt, user_prompt, **kwargs):
+        call_count["n"] += 1
+        return {"score": 70, "strengths": [], "improvements": [], "dim_signals": {}}
+    monkeypatch.setattr("llm._call_llm_json", fake_call)
+    rubric = {"anchors": {}, "signals": []}
+    grade_worksheet_freetext("same text", {"id": "L1", "type": "reflection"}, rubric)
+    grade_worksheet_freetext("same text", {"id": "L1", "type": "reflection"}, rubric)
+    assert call_count["n"] == 1, "Second identical call should hit cache"
+
+
+def test_grade_worksheet_handles_empty_text():
+    out = grade_worksheet_freetext("", {"id": "L1", "type": "reflection"}, {"anchors": {}, "signals": []})
+    assert out["score"] == 0
+    assert out["dim_signals"] == {}
+    assert out["strengths"] == []
+    assert out["improvements"] == []
+
+
+def test_grade_worksheet_clamps_score_and_signals(monkeypatch):
+    def fake_call(system_prompt, user_prompt, **kwargs):
+        return {
+            "score": 250,
+            "strengths": ["a"],
+            "improvements": [],
+            "dim_signals": {"creativity": 100, "commercial_acumen": -100},
+        }
+    monkeypatch.setattr("llm._call_llm_json", fake_call)
+    out = grade_worksheet_freetext(
+        "Some answer text here.",
+        {"id": "L2", "type": "reflection"},
+        {"anchors": {}, "signals": []},
+    )
+    assert 0 <= out["score"] <= 100
+    for v in out["dim_signals"].values():
+        assert -10 <= v <= 10
+
+
+def test_grade_worksheet_rubric_version_invalidates_cache(monkeypatch):
+    """Different rubric versions should produce different cache keys."""
+    call_count = {"n": 0}
+    def fake_call(system_prompt, user_prompt, **kwargs):
+        call_count["n"] += 1
+        return {"score": 60, "strengths": [], "improvements": [], "dim_signals": {}}
+    monkeypatch.setattr("llm._call_llm_json", fake_call)
+    grade_worksheet_freetext("identical text", {"id": "L1", "type": "reflection"},
+                             {"anchors": {}, "signals": [], "version": "v1"})
+    grade_worksheet_freetext("identical text", {"id": "L1", "type": "reflection"},
+                             {"anchors": {}, "signals": [], "version": "v2"})
+    assert call_count["n"] == 2, "Different rubric_version should bypass cache"

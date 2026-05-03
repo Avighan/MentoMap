@@ -6301,3 +6301,139 @@ def grade_reflection_text(text, dimension_focus=None):
         "strengths": _str_list(raw.get("strengths")),
         "improvements": _str_list(raw.get("improvements")),
     }
+
+
+# -----------------------------------------------------------------------------
+# Worksheet rubric grader (Task 14)
+# -----------------------------------------------------------------------------
+
+import hashlib as _hashlib
+
+# Content-hash cache: key = sha256(text|lesson_id|rubric_version) -> graded dict
+_WORKSHEET_GRADE_CACHE: dict = {}
+_WORKSHEET_CACHE_MAX = 2000
+
+# Allowed dimensions a rubric grader may emit. Reuse reflection allowlist plus
+# a few business/exec dimensions worksheets typically score on.
+_WORKSHEET_ALLOWED_DIMS = set(_REFLECTION_ALLOWED_DIMS) | {
+    "commercial_acumen",
+    "execution",
+    "communication",
+    "analytical_rigor",
+}
+
+
+def _worksheet_cache_key(text: str, lesson_id: str, rubric_version: str) -> str:
+    h = _hashlib.sha256()
+    h.update((text or "").encode("utf-8", errors="ignore"))
+    h.update(b"|")
+    h.update((lesson_id or "").encode("utf-8", errors="ignore"))
+    h.update(b"|")
+    h.update((rubric_version or "v0").encode("utf-8", errors="ignore"))
+    return h.hexdigest()
+
+
+def grade_worksheet_freetext(text, lesson, rubric):
+    """Grade a worksheet free-text answer against an anchor-driven rubric.
+
+    Args:
+      text: student's free-text answer.
+      lesson: dict with at least 'id' and 'type' (e.g. idea_scorecard, reflection).
+      rubric: dict with 'anchors' (novice/capable/strong/exec), 'signals' list,
+              and optional 'version' (used as cache discriminator).
+
+    Returns:
+      {
+        "score": int 0-100,
+        "strengths": list[str],
+        "improvements": list[str],
+        "dim_signals": dict[dimension, int -10..+10],
+      }
+    Empty input returns a zero result without touching the LLM.
+    Cached by SHA256(text|lesson_id|rubric_version).
+    """
+    empty_result = {"score": 0, "strengths": [], "improvements": [], "dim_signals": {}}
+    text = (text or "").strip()
+    if not text:
+        return empty_result
+
+    lesson = lesson or {}
+    rubric = rubric or {}
+    lesson_id = str(lesson.get("id") or "")
+    rubric_version = str(rubric.get("version") or "v0")
+
+    cache_key = _worksheet_cache_key(text, lesson_id, rubric_version)
+    cached = _WORKSHEET_GRADE_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    anchors = rubric.get("anchors") or {}
+    signals = rubric.get("signals") or []
+    anchor_lines = []
+    for level in ("novice", "capable", "strong", "exec"):
+        if anchors.get(level):
+            anchor_lines.append(f"- {level}: {anchors[level]}")
+    anchor_block = "\n".join(anchor_lines) if anchor_lines else "(no anchors provided)"
+    signal_block = ", ".join(str(s) for s in signals) if signals else "(none specified)"
+
+    sys_prompt = (
+        f"You are grading a student worksheet answer for lesson '{lesson_id}' "
+        f"(type: {lesson.get('type', 'worksheet')}). "
+        f"Use this rubric:\n{anchor_block}\n"
+        f"Signals to look for: {signal_block}.\n"
+        f"Return JSON with fields: score (0-100, calibrated to anchors: novice~30, "
+        f"capable~60, strong~78, exec~92), strengths (array of short strings), "
+        f"improvements (array of short strings), dim_signals (object mapping "
+        f"competency dimensions to integer -10..+10)."
+    )
+
+    try:
+        raw = _call_llm_json(sys_prompt, text, purpose="worksheet_grade")
+    except Exception as e:  # pragma: no cover — defensive
+        logging.getLogger(__name__).warning("worksheet grader call failed: %s", e)
+        return empty_result
+
+    if not isinstance(raw, dict):
+        return empty_result
+
+    # Clamp score to 0-100
+    try:
+        score = int(raw.get("score", 0))
+    except (TypeError, ValueError):
+        score = 0
+    score = max(0, min(100, score))
+
+    # Filter dim_signals to allowlist, clamp to [-10, 10]
+    raw_signals = raw.get("dim_signals") or {}
+    dim_signals = {}
+    if isinstance(raw_signals, dict):
+        for dim, val in raw_signals.items():
+            if dim not in _WORKSHEET_ALLOWED_DIMS:
+                continue
+            try:
+                v = int(val)
+            except (TypeError, ValueError):
+                continue
+            dim_signals[dim] = max(-10, min(10, v))
+
+    def _str_list(v):
+        if not isinstance(v, list):
+            return []
+        return [str(x) for x in v if isinstance(x, (str, int, float))][:5]
+
+    result = {
+        "score": score,
+        "strengths": _str_list(raw.get("strengths")),
+        "improvements": _str_list(raw.get("improvements")),
+        "dim_signals": dim_signals,
+    }
+
+    # Cache with simple FIFO eviction when full
+    if len(_WORKSHEET_GRADE_CACHE) >= _WORKSHEET_CACHE_MAX:
+        try:
+            first_key = next(iter(_WORKSHEET_GRADE_CACHE))
+            _WORKSHEET_GRADE_CACHE.pop(first_key, None)
+        except StopIteration:
+            pass
+    _WORKSHEET_GRADE_CACHE[cache_key] = result
+    return result
