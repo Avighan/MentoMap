@@ -29,6 +29,66 @@ import os
 from typing import Any, Dict, List, Optional, Tuple
 
 
+def get_scorecard_config(game: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Return simulation_config.scorecard or None when not opted in.
+
+    Schema:
+        simulation_config:
+          scorecard:
+            business_model: "saas_smb"
+            weights:
+              gross_margin_pct: 0.3
+              ltv_to_cac: 0.3
+              monthly_churn_pct: 0.2
+              nrr_pct: 0.2
+            show_when:        # optional gate — defaults to end-of-game
+              round_index_gte: -1   # -1 = final round only
+    """
+    sim = (game or {}).get("simulation_config") or {}
+    cfg = sim.get("scorecard")
+    if not isinstance(cfg, dict):
+        return None
+    return cfg
+
+
+def build_scorecard_payload(state: Any, game: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Build a scorecard payload from `simulation_config.scorecard` + state.
+
+    Returns None when:
+      - no scorecard config on the game
+      - the gating predicate (show_when) hasn't been met yet
+
+    Pulls KPI values directly from state attrs matching the weight keys.
+    """
+    cfg = get_scorecard_config(game)
+    if not cfg:
+        return None
+
+    weights = cfg.get("weights") or {}
+    if not isinstance(weights, dict) or not weights:
+        return None
+    business_model = cfg.get("business_model") or "saas_smb"
+
+    # Build a state snapshot dict from attrs matching the weight keys
+    state_kpis: Dict[str, Any] = {}
+    for kpi in weights.keys():
+        if hasattr(state, kpi):
+            val = getattr(state, kpi)
+            if val is not None:
+                state_kpis[kpi] = val
+
+    if not state_kpis:
+        return None  # nothing to score yet
+
+    eng = ScorecardEngine()
+    card = eng.build_scorecard(
+        state=state_kpis,
+        weights=weights,
+        business_model=business_model,
+    )
+    return card
+
+
 _DEFAULT_BENCHMARKS_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "data",
