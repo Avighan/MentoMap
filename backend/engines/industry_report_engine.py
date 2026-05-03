@@ -39,7 +39,7 @@ in a later phase when callers in app.py adopt it.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Dict, Optional
 
 
 _FINANCE_KEYS = ("revenue", "gross_margin", "net_income")
@@ -233,3 +233,69 @@ class IndustryReportEngine:
                 }
             )
         return out
+
+
+# ────────────────────────────────────────────────────────────────────
+# Phase B payload bridge — opt-in via simulation_config.industry_report
+# ────────────────────────────────────────────────────────────────────
+
+def get_industry_report_config(game: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Return simulation_config.industry_report or None when not opted in.
+
+    Schema:
+        simulation_config:
+          industry_report:
+            title: "Atlas Industry Pulse"
+            business_model: "saas_smb"     # for benchmark band lookup
+            kpis:
+              - {id: "nps", label: "NPS", source: "nps",
+                 prior_source: "prior_nps", format: "int"}
+    """
+    sim = (game or {}).get("simulation_config") or {}
+    cfg = sim.get("industry_report")
+    if not isinstance(cfg, dict):
+        return None
+    return cfg
+
+
+def build_industry_report_payload(state: Any, game: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Build the between-rounds Atlas Industry Pulse payload.
+
+    Reads:
+      - state._industry_runtime: dict-state for IndustryReportEngine
+        (market.firms, market.segments, finance, prior_market_share, etc.).
+        Populated by core/rounds.py once the engine is wired into the loop.
+      - state._finance_period_index: optional int for period label.
+      - game.simulation_config.industry_report: KPI defs + title + biz model.
+
+    Returns None when no industry_report config is declared. When configured
+    but no runtime present yet (round 0), returns a payload whose engine
+    output has empty market_share_table — the widget can still render the
+    title/business_model strip.
+    """
+    cfg = get_industry_report_config(game)
+    if not cfg:
+        return None
+
+    runtime = getattr(state, "_industry_runtime", None) or {}
+    period_index = getattr(state, "_finance_period_index", None)
+
+    # Bridge: inject __kpi_defs from cfg into the engine state if not present
+    eng_state = dict(runtime) if isinstance(runtime, dict) else {}
+    if "__kpi_defs" not in eng_state and isinstance(cfg.get("kpis"), list):
+        eng_state["__kpi_defs"] = cfg["kpis"]
+
+    period_label = cfg.get("period_label_template", "Q{n}").replace(
+        "{n}", str(period_index) if period_index is not None else "1"
+    )
+
+    report = IndustryReportEngine().build_report(eng_state, period_label=period_label)
+
+    payload: Dict[str, Any] = {
+        "title": cfg.get("title", "Industry Pulse"),
+        "business_model": cfg.get("business_model"),
+        "report": report,
+    }
+    if period_index is not None:
+        payload["period_index"] = period_index
+    return payload
