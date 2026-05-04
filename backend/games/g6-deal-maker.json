@@ -1,0 +1,2423 @@
+{
+  "game_id": "g6-deal-maker",
+  "title": "Deal Maker: The Art of Getting to Yes",
+  "theme": "Negotiation & Conflict Resolution",
+  "icon": "🤝",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are a Grade 6 student navigating 12 real-life negotiation challenges — from pocket money talks with parents to resolving friendship feuds. Learn the art of persuasion, active listening, and finding win-win solutions. Every conversation is a deal waiting to happen!",
+  "target_audience": "Ages 11-12",
+  "target_age": "11-12",
+  "grade": "6",
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You face 12 different negotiation scenarios from everyday student life.",
+    "Each round presents a situation where you must negotiate, persuade, or mediate.",
+    "Your choices affect 8 resources: persuasion, trust, relationships, fairness, wins, confidence, listening, and energy.",
+    "NPCs like your parents, best friend, and school counselor react to your negotiation style.",
+    "Random events will test your skills — surprise conflicts, betrayals, and challenges.",
+    "Aim for win-win outcomes — being fair AND persuasive leads to the best endings!"
+  ],
+  "learning_objectives": [
+    "Understand core negotiation principles like BATNA, win-win, and active listening",
+    "Practice resolving conflicts through communication rather than confrontation",
+    "Develop empathy by considering others' perspectives in negotiations",
+    "Build confidence in expressing needs while respecting boundaries",
+    "Learn that fairness and persuasion work better together than apart"
+  ],
+  "tags": [
+    "negotiation",
+    "communication",
+    "grade-6",
+    "conflict-resolution",
+    "social-skills"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Communication",
+    "Critical Thinking",
+    "Social-Emotional Learning",
+    "Collaboration"
+  ],
+  "cultural_context": "Global student life, family negotiations, school social dynamics",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.15,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.2,
+    "ethical_reasoning": 0.2
+  },
+  "initial_state": {
+    "persuasion_skill": {
+      "value": 30,
+      "label": "Persuasion Skill",
+      "icon": "🗣️",
+      "min": 0,
+      "max": 100
+    },
+    "trust_level": {
+      "value": 50,
+      "label": "Trust Level",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "relationship_score": {
+      "value": 60,
+      "label": "Relationships",
+      "icon": "💛",
+      "min": 0,
+      "max": 100
+    },
+    "fairness_reputation": {
+      "value": 50,
+      "label": "Fairness Reputation",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "negotiation_wins": {
+      "value": 0,
+      "label": "Negotiation Wins",
+      "icon": "🏆",
+      "min": 0,
+      "max": 20
+    },
+    "confidence": {
+      "value": 40,
+      "label": "Confidence",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "listening_skill": {
+      "value": 30,
+      "label": "Listening Skill",
+      "icon": "👂",
+      "min": 0,
+      "max": 100
+    },
+    "energy": {
+      "value": 80,
+      "label": "Energy",
+      "icon": "⚡",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Scenario",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "communication",
+        "label": "Communication",
+        "icon": "🗣️",
+        "color": "#6366F1",
+        "initial_health": 30,
+        "health_formula": "min(100, max(0, persuasion_skill * 0.5 + listening_skill * 0.5))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "relationships",
+        "label": "Relationships",
+        "icon": "💛",
+        "color": "#F59E0B",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, trust_level * 0.5 + relationship_score * 0.5))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "reputation",
+        "label": "Reputation",
+        "icon": "⭐",
+        "color": "#10B981",
+        "initial_health": 45,
+        "health_formula": "min(100, max(0, fairness_reputation * 0.6 + confidence * 0.4))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "negotiation_mastery",
+        "label": "Negotiation Mastery",
+        "icon": "🏆",
+        "color": "#EF4444",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, negotiation_wins * 5 + persuasion_skill * 0.2 + listening_skill * 0.2 + confidence * 0.1))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "negotiator_rating",
+        "label": "Negotiator Rating",
+        "icon": "📊",
+        "formula": "(persuasion_skill * 0.25 + listening_skill * 0.25 + confidence * 0.2 + fairness_reputation * 0.15 + trust_level * 0.15)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "trust_index",
+        "label": "Trust Index",
+        "icon": "🤝",
+        "formula": "(trust_level * 0.55 + fairness_reputation * 0.45)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "win_win_score",
+        "label": "Win-Win Score",
+        "icon": "🎯",
+        "formula": "(relationship_score * 0.5 + fairness_reputation * 0.5)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 30,
+          "warning": 50,
+          "good": 70
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "energy_recovery",
+        "label": "Rest & Recharge",
+        "effects": [
+          {
+            "resource": "energy",
+            "formula": "min(100, energy + 5)"
+          }
+        ],
+        "description": "You recover a bit of energy between scenarios."
+      },
+      {
+        "id": "trust_decay",
+        "label": "Trust Erosion",
+        "condition": {
+          "resource": "fairness_reputation",
+          "op": "<",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "trust_level",
+            "formula": "max(0, trust_level - 3)"
+          }
+        ],
+        "description": "When your fairness reputation is low, people start trusting you less."
+      },
+      {
+        "id": "confidence_growth",
+        "label": "Growing Confidence",
+        "condition": {
+          "resource": "negotiation_wins",
+          "op": ">",
+          "value": 3
+        },
+        "effects": [
+          {
+            "resource": "confidence",
+            "formula": "min(100, confidence + 2)"
+          }
+        ],
+        "description": "Winning negotiations builds your confidence over time."
+      },
+      {
+        "id": "skill_compound",
+        "label": "Skills Reinforce Each Other",
+        "condition": {
+          "and": [
+            {
+              "resource": "listening_skill",
+              "op": ">=",
+              "value": 40
+            },
+            {
+              "resource": "persuasion_skill",
+              "op": ">=",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "listening_skill",
+            "formula": "min(100, listening_skill + 1)"
+          },
+          {
+            "resource": "persuasion_skill",
+            "formula": "min(100, persuasion_skill + 1)"
+          }
+        ],
+        "description": "Good listeners become better persuaders, and vice versa."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "trust_builds_persuasion",
+        "from_subsystem": "relationships",
+        "to_subsystem": "communication",
+        "label": "Trust Aids Persuasion",
+        "condition": {
+          "resource": "trust_level",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "persuasion_skill",
+            "formula": "min(100, persuasion_skill + (trust_level - 65) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When people trust you, they are more open to your ideas."
+      },
+      {
+        "id": "low_fairness_hurts_relationships",
+        "from_subsystem": "reputation",
+        "to_subsystem": "relationships",
+        "label": "Unfairness Damages Bonds",
+        "condition": {
+          "resource": "fairness_reputation",
+          "op": "<",
+          "value": 35
+        },
+        "effects": [
+          {
+            "resource": "relationship_score",
+            "formula": "max(0, relationship_score - (35 - fairness_reputation) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Being seen as unfair pushes friends and family away."
+      },
+      {
+        "id": "confidence_boosts_negotiation",
+        "from_subsystem": "reputation",
+        "to_subsystem": "negotiation_mastery",
+        "label": "Confidence Fuels Wins",
+        "condition": {
+          "resource": "confidence",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "persuasion_skill",
+            "formula": "min(100, persuasion_skill + (confidence - 60) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Confident negotiators are more convincing."
+      },
+      {
+        "id": "listening_builds_trust",
+        "from_subsystem": "communication",
+        "to_subsystem": "relationships",
+        "label": "Listening Earns Trust",
+        "condition": {
+          "resource": "listening_skill",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "trust_level",
+            "formula": "min(100, trust_level + (listening_skill - 50) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "People trust those who truly listen to them."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "energy",
+        "equilibrium": 60,
+        "rate": 0.05,
+        "direction": "toward"
+      },
+      {
+        "resource": "confidence",
+        "equilibrium": 40,
+        "rate": 0.02,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "surprise_conflict",
+        "label": "Hallway Argument",
+        "icon": "😤",
+        "description": "Two of your classmates are arguing loudly in the hallway. Everyone is watching. They look at you for help.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "listening_skill",
+              "op": ">=",
+              "value": 25
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "energy",
+            "delta": -8
+          },
+          {
+            "resource": "listening_skill",
+            "delta": 5
+          },
+          {
+            "resource": "relationship_score",
+            "delta": 3
+          },
+          {
+            "resource": "fairness_reputation",
+            "delta": 4
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "You helped mediate a hallway argument! Classmates notice your calm approach.",
+        "ai_image_prompt": "Cartoon school hallway, two diverse students arguing, a third student stepping in to mediate, other kids watching, colorful school setting"
+      },
+      {
+        "id": "teacher_negotiation",
+        "label": "Class Rules Challenge",
+        "icon": "📋",
+        "description": "Your teacher asks the class to negotiate new rules for phone use during lunch. They want YOU to lead the discussion!",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "confidence",
+              "op": ">=",
+              "value": 35
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "confidence",
+            "delta": 6
+          },
+          {
+            "resource": "persuasion_skill",
+            "delta": 4
+          },
+          {
+            "resource": "energy",
+            "delta": -5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "You led a class discussion on new phone rules! The teacher was impressed.",
+        "ai_image_prompt": "Cartoon classroom, diverse student standing at front leading a discussion, teacher smiling, students raising hands, whiteboard with rules"
+      },
+      {
+        "id": "parent_challenge",
+        "label": "Parent's Pop Quiz",
+        "icon": "🏠",
+        "description": "Your parent overheard you negotiating with a friend and is impressed. They challenge you: 'Convince me why you deserve an extra hour of screen time this weekend.'",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "persuasion_skill",
+              "op": ">=",
+              "value": 35
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "persuasion_skill",
+            "delta": 5
+          },
+          {
+            "resource": "trust_level",
+            "delta": 3
+          },
+          {
+            "resource": "negotiation_wins",
+            "delta": 1
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Your parent gave you a bonus negotiation challenge at home — and you passed!",
+        "ai_image_prompt": "Cartoon living room, parent and child having a friendly debate at kitchen table, warm lighting, family setting, smiles"
+      },
+      {
+        "id": "friend_betrayal",
+        "label": "Deal Breaker",
+        "icon": "💔",
+        "description": "A classmate you made a deal with broke their promise. They were supposed to save you a seat at the school event but gave it to someone else instead.",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "trust_level",
+              "op": ">=",
+              "value": 30
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "trust_level",
+            "delta": -8
+          },
+          {
+            "resource": "relationship_score",
+            "delta": -5
+          },
+          {
+            "resource": "resilience",
+            "delta": 4
+          },
+          {
+            "resource": "energy",
+            "delta": -6
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "A classmate broke a deal with you. It stings, but you learn that not every deal sticks.",
+        "ai_image_prompt": "Cartoon school auditorium, disappointed student seeing their saved seat taken, another student looking guilty, colorful school event backdrop"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "parent_figure",
+        "name": "Mom / Dad",
+        "role": "Parent",
+        "icon": "👨‍👩‍👧",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "fairness_reputation",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "I'm proud of how fair you've been. That's real maturity!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "persuasion_skill",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "impressed",
+            "message": "You've become quite the persuasive speaker! Just remember — use your powers for good.",
+            "mood_change": "happy",
+            "satisfaction_delta": 4
+          },
+          {
+            "condition": {
+              "resource": "fairness_reputation",
+              "op": "<",
+              "value": 30
+            },
+            "action": "warn",
+            "message": "I've been hearing that you're not playing fair with others. That's not how we raised you.",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "trust_level",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 3
+                }
+              ]
+            },
+            "action": "grounding",
+            "message": "We need to have a serious talk. Your friends' parents have been calling, and it sounds like trust has broken down completely. We're putting a pause on sleepovers until you sort this out.",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "energy",
+                "delta": -10
+              },
+              {
+                "resource": "confidence",
+                "delta": -5
+              }
+            ],
+            "trigger_round": "crisis_trust_broken"
+          }
+        ]
+      },
+      {
+        "id": "best_friend",
+        "name": "Sam / Priya",
+        "role": "Best Friend",
+        "icon": "👫",
+        "initial_mood": "friendly",
+        "initial_satisfaction": 65,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "relationship_score",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "loyal",
+            "message": "You're the best negotiator I know! I always feel heard when we talk things out.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "trust_level",
+              "op": "<",
+              "value": 35
+            },
+            "action": "distant",
+            "message": "I don't know if I can trust what you say anymore. You keep changing the deal...",
+            "mood_change": "sad",
+            "satisfaction_delta": -7
+          },
+          {
+            "condition": {
+              "resource": "listening_skill",
+              "op": ">=",
+              "value": 55
+            },
+            "action": "grateful",
+            "message": "Thanks for actually listening to me. Most people just wait for their turn to talk.",
+            "mood_change": "happy",
+            "satisfaction_delta": 4
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "relationship_score",
+                  "op": "<",
+                  "value": 30
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "friendship_crisis",
+            "message": "I think we need a break. You haven't been a good friend lately, and I need space.",
+            "mood_change": "angry",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "trust_level",
+                "delta": -8
+              },
+              {
+                "resource": "confidence",
+                "delta": -6
+              }
+            ],
+            "trigger_round": "crisis_reputation_hit"
+          }
+        ]
+      },
+      {
+        "id": "coach_rivera",
+        "name": "Coach Rivera",
+        "role": "School Counselor",
+        "icon": "🧑‍🏫",
+        "initial_mood": "encouraging",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "listening_skill",
+              "op": ">=",
+              "value": 50
+            },
+            "action": "teach",
+            "message": "Excellent listening skills! Remember: the best negotiators spend 70% of the time listening and only 30% talking.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "negotiation_wins",
+              "op": ">=",
+              "value": 5
+            },
+            "action": "celebrate",
+            "message": "Five wins already! You're becoming a real deal maker. I might nominate you for the peer mediation team.",
+            "mood_change": "proud",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "fairness_reputation",
+                  "op": "<",
+                  "value": 30
+                },
+                {
+                  "resource": "persuasion_skill",
+                  "op": ">=",
+                  "value": 50
+                }
+              ]
+            },
+            "action": "counsel",
+            "message": "You're persuasive, but persuasion without fairness is just manipulation. Let's talk about ethical negotiation.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "negotiation_wins",
+          "op": ">=",
+          "value": 3
+        },
+        "icon": "🏆",
+        "text": "Deal Maker Alert: You've won {negotiation_wins} negotiations so far!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "persuasion_skill",
+              "op": ">=",
+              "value": 60
+            },
+            {
+              "resource": "listening_skill",
+              "op": ">=",
+              "value": 60
+            }
+          ]
+        },
+        "icon": "⭐",
+        "text": "Communication Star: Your persuasion AND listening skills are both above 60!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "trust_level",
+          "op": "<",
+          "value": 30
+        },
+        "icon": "⚠️",
+        "text": "Trust Warning: People are starting to doubt your word. Rebuild trust!",
+        "severity": "warning"
+      }
+    ],
+    "ai_scene_prompt_template": "A colorful cartoon school and neighborhood scene. A {target_age}-year-old diverse student navigating everyday negotiations. Trust level {trust_level}%, confidence {confidence}%, {negotiation_wins} wins so far. Mood: {'upbeat' if confidence > 60 else 'nervous' if confidence < 30 else 'determined'}. Cartoon style, bright colors, relatable school and family settings."
+  },
+  "rounds": [
+    {
+      "round_id": "scenario_1_pocket_money",
+      "round_title": "Scenario 1: The Pocket Money Negotiation",
+      "situation": "Your weekly allowance is $5, but you've been eyeing a new book that costs $8. You want to convince your parents to increase your allowance. They're open to listening, but they want a good reason — not just 'everyone else gets more.'",
+      "goal": "Negotiate a fair allowance increase by presenting a strong case to your parents.",
+      "coaching_moment": "Preparation is key: The best negotiators come to the table with reasons, not just requests. Think about what you can OFFER in return.",
+      "reflection_prompt": "What makes a request more convincing — emotion or logic?",
+      "ai_image_prompt": "Cartoon family kitchen scene, 11-year-old student at table with parent, piggy bank and coins on table, warm lighting, friendly negotiation, cartoon style vivid colors",
+      "choices": [
+        {
+          "id": "s1_win_win",
+          "label": "A. Offer a Deal",
+          "description": "Propose doing extra chores (dishes, laundry) in exchange for $3 more per week. Show a written plan of which chores you'll take on.",
+          "delta": {
+            "persuasion_skill": 8,
+            "trust_level": 5,
+            "fairness_reputation": 8,
+            "negotiation_wins": 1,
+            "confidence": 5,
+            "listening_skill": 3,
+            "energy": -5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "skill_explanation": {
+            "strategic_thinking": "Creating a written chore plan shows you prepared a structured proposal before asking.",
+            "empathy": "Offering something in return shows you considered what your parents value.",
+            "ethical_reasoning": "Proposing a fair exchange rather than just demanding more is honest negotiation."
+          },
+          "feedback": "Brilliant win-win! By offering something in return, you showed your parents you understand that negotiation is about creating value for both sides. This is called a 'value-creating negotiation.'"
+        },
+        {
+          "id": "s1_emotional",
+          "label": "B. Make an Emotional Appeal",
+          "description": "Explain how much the book means to you and that reading is important for school. Use your best puppy eyes.",
+          "delta": {
+            "persuasion_skill": 5,
+            "trust_level": 2,
+            "fairness_reputation": 2,
+            "confidence": 3,
+            "energy": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "risk_tolerance"
+          ],
+          "skill_explanation": {
+            "empathy": "Sharing how the book matters to you opens up about your feelings and needs.",
+            "risk_tolerance": "Relying on emotion alone is a gamble since your parents may not be swayed."
+          },
+          "feedback": "Emotional appeals can work, but they're one-time moves. Your parents gave in this time, but they might not next time. Stronger deals come from offering something in return."
+        },
+        {
+          "id": "s1_compare",
+          "label": "C. Compare with Friends",
+          "description": "Tell your parents that all your friends get $10 per week and it's embarrassing to have less.",
+          "delta": {
+            "persuasion_skill": 2,
+            "trust_level": -5,
+            "fairness_reputation": -3,
+            "confidence": 2,
+            "relationship_score": -3,
+            "energy": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "skill_explanation": {
+            "risk_tolerance": "Using peer pressure on your parents is a bold gamble that could easily backfire."
+          },
+          "feedback": "Comparing with others is a weak negotiation tactic. Your parents felt pressured rather than persuaded. Tip: Focus on YOUR situation, not what others have."
+        },
+        {
+          "id": "s1_save",
+          "label": "D. Propose a Savings Match",
+          "description": "Offer to save half of any increase yourself. For every $1 you save, ask parents to add $1. Shows responsibility!",
+          "delta": {
+            "persuasion_skill": 7,
+            "trust_level": 8,
+            "fairness_reputation": 6,
+            "negotiation_wins": 1,
+            "confidence": 6,
+            "energy": -5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "skill_explanation": {
+            "delayed_gratification": "Saving half now to earn a match later means accepting less today for more tomorrow.",
+            "strategic_thinking": "A savings-match proposal uses a clever incentive structure to win parental support."
+          },
+          "feedback": "A savings match shows incredible maturity! You demonstrated delayed gratification — giving up something now for more later. Your parents are genuinely impressed."
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_2_sharing",
+      "round_title": "Scenario 2: Sharing Is Hard",
+      "situation": "You and your sibling both want to use the family tablet. There's one tablet, two people, and a whole Saturday afternoon. Your sibling wants to watch videos; you want to play a game. Mom says: 'Figure it out yourselves.'",
+      "goal": "Find a fair way to share the tablet with your sibling without a fight.",
+      "coaching_moment": "Splitting the difference: Sometimes the best deal isn't 50/50 — it's finding out what each person values MOST and trading on that.",
+      "reflection_prompt": "Is 'fair' always the same as 'equal'?",
+      "ai_image_prompt": "Cartoon living room, two siblings arguing over a tablet, one wants to watch videos one wants to play games, mom in background arms crossed, bright cartoon style",
+      "choices": [
+        {
+          "id": "s2_time_split",
+          "label": "A. Split Time Equally",
+          "description": "Propose alternating every 30 minutes. Fair and simple — you get the tablet for games, then they get it for videos.",
+          "delta": {
+            "fairness_reputation": 6,
+            "trust_level": 3,
+            "relationship_score": 4,
+            "listening_skill": 3,
+            "energy": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "skill_explanation": {
+            "ethical_reasoning": "Proposing equal time shows you believe both of you deserve fair access.",
+            "empathy": "Giving your sibling a guaranteed turn acknowledges their needs matter too."
+          },
+          "feedback": "Fair and clean! Splitting time equally is a classic negotiation move called 'splitting the pie.' It's fair, but is it the BEST possible deal for both of you?"
+        },
+        {
+          "id": "s2_creative_trade",
+          "label": "B. Find a Creative Trade",
+          "description": "Discover your sibling actually wants to watch videos with headphones on the couch. Suggest they use Mom's phone for videos while you get the tablet for games.",
+          "delta": {
+            "persuasion_skill": 7,
+            "trust_level": 5,
+            "relationship_score": 7,
+            "fairness_reputation": 5,
+            "negotiation_wins": 1,
+            "listening_skill": 6,
+            "confidence": 4,
+            "energy": -4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability",
+            "empathy"
+          ],
+          "skill_explanation": {
+            "strategic_thinking": "Identifying that Mom's phone solves the video need unlocks a win-win option.",
+            "adaptability": "Thinking beyond the tablet to find an alternative device shows flexible problem-solving.",
+            "empathy": "Asking what your sibling actually wants reveals you care about their real need."
+          },
+          "feedback": "Outstanding! You found an 'expanding the pie' solution by asking WHAT your sibling actually needed. They wanted videos, not specifically the tablet. Both of you got 100% of what you wanted!"
+        },
+        {
+          "id": "s2_grab_first",
+          "label": "C. Grab It First",
+          "description": "Race to the tablet and claim it. First come, first served!",
+          "delta": {
+            "persuasion_skill": -2,
+            "trust_level": -8,
+            "relationship_score": -10,
+            "fairness_reputation": -8,
+            "confidence": 3,
+            "energy": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "skill_explanation": {
+            "risk_tolerance": "Grabbing the tablet first is a high-stakes move that risks a fight with your sibling."
+          },
+          "feedback": "Grabbing might give you the tablet now, but it destroyed trust and your relationship. Your sibling is upset, and Mom is disappointed. Aggressive tactics almost always backfire."
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_3_group_project",
+      "round_title": "Scenario 3: The Group Project Dilemma",
+      "situation": "Your teacher assigned a group project worth 20% of your grade. You're in a group of four. Everyone wants to do the 'fun' part (the presentation), but nobody wants to do the research. The deadline is in two weeks.",
+      "goal": "Negotiate roles and workload so the project gets done well AND fairly.",
+      "coaching_moment": "Interest-based negotiation: Instead of arguing over WHO does WHAT, find out what each person is good at. Match skills to tasks!",
+      "reflection_prompt": "How can you make sure everyone contributes equally in a team?",
+      "ai_image_prompt": "Cartoon school library, four diverse students around a table with books and laptops, one student mediating, project poster board, bright colorful cartoon",
+      "choices": [
+        {
+          "id": "s3_skill_match",
+          "label": "A. Match Skills to Tasks",
+          "description": "Ask everyone what they're BEST at — one person loves research, another is great at design. Assign roles based on strengths, not preferences.",
+          "delta": {
+            "persuasion_skill": 6,
+            "trust_level": 5,
+            "relationship_score": 6,
+            "fairness_reputation": 7,
+            "negotiation_wins": 1,
+            "listening_skill": 8,
+            "confidence": 4,
+            "energy": -6
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy",
+            "adaptability"
+          ],
+          "skill_explanation": {
+            "strategic_thinking": "Matching people to tasks by strength maximizes the group's overall output.",
+            "empathy": "Asking each teammate what they are best at shows you value their individual abilities.",
+            "adaptability": "Shifting from 'who wants what' to 'who is good at what' reframes the problem creatively."
+          },
+          "feedback": "You played to everyone's strengths! This is called 'interest-based negotiation' — finding out what people CAN do well, not just what they WANT to do. The project turned out amazing."
+        },
+        {
+          "id": "s3_volunteer_research",
+          "label": "B. Volunteer for Research Yourself",
+          "description": "Take the 'boring' research task yourself to avoid conflict. Let others fight over the fun parts.",
+          "delta": {
+            "fairness_reputation": 4,
+            "trust_level": 4,
+            "relationship_score": 3,
+            "energy": -10,
+            "confidence": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "skill_explanation": {
+            "empathy": "Volunteering for the boring task so others are happy puts their comfort first.",
+            "resilience": "Taking on tedious work without complaint builds your ability to push through difficulty."
+          },
+          "feedback": "Noble, but risky! You avoided conflict by sacrificing your own interests. Good negotiators find solutions where EVERYONE is satisfied — including themselves."
+        },
+        {
+          "id": "s3_lottery",
+          "label": "C. Random Draw",
+          "description": "Suggest picking tasks out of a hat. It's random, so it's technically fair — no one can complain.",
+          "delta": {
+            "fairness_reputation": 5,
+            "trust_level": 2,
+            "confidence": 2,
+            "energy": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning"
+          ],
+          "skill_explanation": {
+            "ethical_reasoning": "Using a random draw ensures no one gets special treatment, prioritizing equal fairness."
+          },
+          "feedback": "Random is 'fair' but not 'smart.' Someone who hates writing might get the essay. Real negotiation finds the best fit, not just a fair one. Fair and effective are different things!"
+        },
+        {
+          "id": "s3_boss_mode",
+          "label": "D. Take Charge and Assign",
+          "description": "You know what's best. Assign tasks yourself — you're the natural leader here.",
+          "delta": {
+            "persuasion_skill": 3,
+            "confidence": 5,
+            "trust_level": -4,
+            "relationship_score": -5,
+            "fairness_reputation": -6,
+            "energy": -4
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "skill_explanation": {
+            "risk_tolerance": "Assigning tasks unilaterally risks alienating teammates who feel ignored.",
+            "strategic_thinking": "Taking charge can speed up decisions, but only if your assignments are smart."
+          },
+          "feedback": "Taking charge shows confidence, but assigning tasks without asking others feels controlling. Leadership in negotiation means GUIDING the discussion, not dictating the outcome."
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_trust_broken",
+      "id": "crisis_trust_broken",
+      "round_title": "CRISIS: Trust Broken",
+      "situation": "Things have gotten bad. Your best friend told everyone that you can't be trusted because you've broken too many promises. Other kids are whispering in the hallway. Even your parents heard about it. You need to fix this — fast.",
+      "goal": "Rebuild broken trust before you lose more friends.",
+      "coaching_moment": "Trust repair: Trust is built slowly but destroyed quickly. To rebuild it, you need consistent actions, not just words. Apologize sincerely and follow through.",
+      "reflection_prompt": "What's harder — building trust for the first time, or rebuilding it after it's broken?",
+      "ai_image_prompt": "Cartoon school hallway, sad student sitting alone on bench, other kids whispering in groups, broken trust visual metaphor, muted cartoon colors, emotional scene",
+      "condition": {
+        "resource": "trust_level",
+        "operator": "<",
+        "value": 30
+      },
+      "choices": [
+        {
+          "id": "crisis1_sincere_apology",
+          "label": "A. Sincere Apology Tour",
+          "description": "Go to each person you've let down, apologize face-to-face, and ask what you can do to make it right. No excuses.",
+          "delta": {
+            "trust_level": 12,
+            "relationship_score": 8,
+            "fairness_reputation": 6,
+            "confidence": -3,
+            "energy": -10,
+            "listening_skill": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "That took real courage. Apologizing face-to-face is the hardest but most effective way to rebuild trust. People respect honesty, especially when it's uncomfortable.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "crisis1_prove_it",
+          "label": "B. Actions Over Words",
+          "description": "Don't just say sorry — DO something. Help your friend with their homework, keep every small promise perfectly, be extra reliable for a week.",
+          "delta": {
+            "trust_level": 10,
+            "relationship_score": 6,
+            "fairness_reputation": 8,
+            "confidence": 4,
+            "energy": -12
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Smart approach! Trust is rebuilt through consistent actions, not grand gestures. By keeping small promises, you showed that your word means something again.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "crisis1_deflect",
+          "label": "C. Blame Others",
+          "description": "Insist it wasn't your fault. Tell everyone that the situation was misunderstood and others are exaggerating.",
+          "delta": {
+            "trust_level": -5,
+            "relationship_score": -8,
+            "fairness_reputation": -10,
+            "confidence": 2,
+            "energy": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Deflecting blame made things worse. Everyone saw through it, and now they trust you even less. Owning mistakes is a sign of strength, not weakness.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_5_lunchroom",
+      "round_title": "Scenario 5: The Lunchroom Standoff",
+      "situation": "Your friend group always sits at the same table. Today, another group took your table. Your friends want to confront them angrily. The lunch monitor is watching. What do you do?",
+      "goal": "Resolve the seating conflict without creating drama or getting in trouble.",
+      "coaching_moment": "BATNA (Best Alternative To a Negotiated Agreement): Before negotiating, know your backup plan. What happens if talking doesn't work?",
+      "reflection_prompt": "Why is it important to have a backup plan before you start negotiating?",
+      "ai_image_prompt": "Cartoon school cafeteria, two groups of diverse students facing off over a lunch table, lunch monitor in background, trays of food, bright cafeteria colors",
+      "choices": [
+        {
+          "id": "s5_negotiate",
+          "label": "A. Friendly Negotiation",
+          "description": "Walk over calmly and say: 'Hey, we usually sit here. Could we share the table, or maybe switch tomorrow?' Smile and be friendly.",
+          "delta": {
+            "persuasion_skill": 6,
+            "trust_level": 4,
+            "relationship_score": 5,
+            "fairness_reputation": 6,
+            "negotiation_wins": 1,
+            "listening_skill": 4,
+            "confidence": 4,
+            "energy": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Perfect approach! Starting friendly keeps the door open. The other group agreed to share, and now both groups are mixing. You turned a conflict into a new friendship opportunity!",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "s5_alternative",
+          "label": "B. Use Your BATNA",
+          "description": "Instead of confronting them, scout a BETTER table by the window. Tell your friends: 'Actually, that table has more space AND better light.'",
+          "delta": {
+            "persuasion_skill": 4,
+            "confidence": 6,
+            "relationship_score": 3,
+            "adaptability": 3,
+            "energy": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Smart! You used your BATNA — Best Alternative To a Negotiated Agreement. Sometimes the best negotiation is finding a better option. Your friends loved the new spot!",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "s5_confront",
+          "label": "C. Demand the Table Back",
+          "description": "March over and firmly tell them: 'This is OUR table. We sit here every day. You need to move.'",
+          "delta": {
+            "persuasion_skill": 2,
+            "trust_level": -4,
+            "relationship_score": -5,
+            "fairness_reputation": -6,
+            "confidence": 3,
+            "energy": -8
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Demanding creates hostility. The other group got defensive, the lunch monitor stepped in, and now everyone's upset. Aggressive negotiation rarely works, especially over low-stakes issues.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_6_school_play",
+      "round_title": "Scenario 6: The School Play Audition",
+      "situation": "You and your best friend both want the lead role in the school play. There's only one lead, and the drama teacher says you're both equally talented. Your friend is getting nervous that you'll take 'their' role.",
+      "goal": "Handle the competition fairly without damaging your friendship.",
+      "coaching_moment": "Separating people from the problem: You can compete for something AND still be friends. The negotiation is about the role, not your friendship.",
+      "reflection_prompt": "Can you compete with someone and still be their friend? How?",
+      "ai_image_prompt": "Cartoon school stage, two friends standing under spotlight, drama masks on wall, scripts in hand, nervous but supportive expressions, colorful theater setting",
+      "choices": [
+        {
+          "id": "s6_both_audition",
+          "label": "A. Both Audition, Best Person Wins",
+          "description": "Tell your friend: 'Let's both give our best audition. Whoever gets it, the other person cheers them on. Deal?' Shake on it.",
+          "delta": {
+            "trust_level": 6,
+            "relationship_score": 5,
+            "fairness_reputation": 8,
+            "confidence": 5,
+            "persuasion_skill": 3,
+            "negotiation_wins": 1,
+            "energy": -5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Mature and fair! By agreeing to compete honestly and support each other, you separated the competition from the friendship. This is called 'separating people from the problem.'",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "s6_step_aside",
+          "label": "B. Step Aside for Your Friend",
+          "description": "You can tell your friend means more than a role. Withdraw your audition and support them instead.",
+          "delta": {
+            "relationship_score": 8,
+            "trust_level": 5,
+            "fairness_reputation": 3,
+            "confidence": -6,
+            "energy": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Generous, but at what cost? You prioritized the friendship, which is admirable. But good negotiators find solutions where BOTH sides can pursue their goals. Could you have found a creative alternative?",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "s6_campaign",
+          "label": "C. Campaign for the Role",
+          "description": "Lobby the drama teacher privately, practice extra, and subtly suggest you'd be better for the part.",
+          "delta": {
+            "persuasion_skill": 5,
+            "confidence": 4,
+            "trust_level": -6,
+            "relationship_score": -7,
+            "fairness_reputation": -5,
+            "energy": -8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "You got the role, but your friend found out about the private lobbying and feels betrayed. Behind-the-scenes tactics might win battles but lose relationships.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "s6_co_lead",
+          "label": "D. Propose Co-Leads",
+          "description": "Suggest to the drama teacher that the play could have TWO leads — one for Act 1, one for Act 2. A creative solution!",
+          "delta": {
+            "persuasion_skill": 8,
+            "trust_level": 5,
+            "relationship_score": 7,
+            "fairness_reputation": 6,
+            "negotiation_wins": 1,
+            "confidence": 5,
+            "listening_skill": 4,
+            "energy": -6
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Creative genius! You 'expanded the pie' by proposing a solution nobody thought of. The teacher loved the idea, and both of you shine. This is what master negotiators do!",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_7_swap_meet",
+      "round_title": "Scenario 7: The Swap Meet",
+      "situation": "Your school is hosting a collectibles swap meet. You have a rare holographic card that everyone wants. A classmate offers you three common cards for it. You know your card is worth much more, but they're being very persuasive.",
+      "goal": "Make a fair trade that reflects the true value of your card without being greedy.",
+      "coaching_moment": "Anchoring: The first offer in a negotiation sets the 'anchor.' If someone starts low, don't accept it as the starting point — reset the anchor!",
+      "reflection_prompt": "How do you decide what something is truly worth in a trade?",
+      "ai_image_prompt": "Cartoon school gym swap meet, diverse kids trading collectible cards, one kid holding a shiny holographic card, tables with collections, excited atmosphere, vivid cartoon",
+      "choices": [
+        {
+          "id": "s7_counter_offer",
+          "label": "A. Counter with a Fair Price",
+          "description": "Politely say: 'Thanks, but this card is really rare. I'd need at least five cards including one of your rares. What do you think?'",
+          "delta": {
+            "persuasion_skill": 7,
+            "trust_level": 3,
+            "fairness_reputation": 6,
+            "negotiation_wins": 1,
+            "confidence": 5,
+            "energy": -4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Smart counter-offer! You reset the 'anchor' to a fair price. By explaining WHY your card is worth more, you educated the other person instead of just saying no.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "s7_accept_lowball",
+          "label": "B. Accept Their Offer",
+          "description": "They seem really nice and you don't want to be difficult. Accept the three common cards.",
+          "delta": {
+            "relationship_score": 3,
+            "fairness_reputation": -2,
+            "confidence": -4,
+            "trust_level": 1,
+            "energy": -2
+          },
+          "skill_tags": [
+            "empathy"
+          ],
+          "feedback": "You were kind but undervalued yourself. In negotiation, accepting a bad deal to avoid conflict is called 'accommodation.' It works for relationships but not for fair outcomes.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "s7_refuse_trade",
+          "label": "C. Refuse to Trade",
+          "description": "Say 'No thanks, I'm keeping it' and walk away. Your card, your rules.",
+          "delta": {
+            "confidence": 3,
+            "persuasion_skill": 1,
+            "relationship_score": -3,
+            "energy": -2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Walking away is a valid negotiation move — but you missed an opportunity. The best negotiators keep the conversation going to find a deal that works for everyone.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "s7_auction",
+          "label": "D. Create an Auction",
+          "description": "Announce to the room: 'I'm trading my holographic card. Best offer wins!' Let competition drive the price up.",
+          "delta": {
+            "persuasion_skill": 5,
+            "confidence": 6,
+            "negotiation_wins": 1,
+            "fairness_reputation": -3,
+            "trust_level": -2,
+            "relationship_score": -2,
+            "energy": -6
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "requires": {
+            "resource": "confidence",
+            "op": ">=",
+            "value": 45,
+            "label": "Requires Confidence >= 45"
+          },
+          "feedback": "Bold move! The auction got you a great deal, but the classmate who originally wanted to trade feels embarrassed. Sometimes maximizing your gain damages relationships.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_reputation_hit",
+      "id": "crisis_reputation_hit",
+      "round_title": "CRISIS: Reputation Hit",
+      "situation": "Word has spread that you only care about winning and don't play fair. Kids are choosing other partners for projects. Your best friend is keeping their distance. Even the school counselor wants to talk to you. Your reputation is in trouble.",
+      "goal": "Repair your reputation and show everyone you value fairness over winning.",
+      "coaching_moment": "Reputation recovery: In negotiation, your reputation is your currency. People only make deals with people they respect. Rebuilding takes humility and consistency.",
+      "reflection_prompt": "Why is reputation so important in negotiation? Can you win deals but lose respect?",
+      "ai_image_prompt": "Cartoon school yard, a student standing alone while groups of kids avoid them, thought bubble showing scales of fairness, hopeful expression, redemption theme",
+      "condition": {
+        "resource": "fairness_reputation",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "crisis2_fairness_pledge",
+          "label": "A. Public Fairness Pledge",
+          "description": "Stand up in class and say: 'I've been focusing too much on winning. From now on, I want every deal to be fair for everyone. Hold me to it.'",
+          "delta": {
+            "fairness_reputation": 15,
+            "trust_level": 8,
+            "relationship_score": 6,
+            "confidence": -2,
+            "persuasion_skill": 3,
+            "energy": -8
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Incredibly brave! Public commitments are powerful because now everyone will help you stay accountable. Your classmates respect the honesty and give you another chance.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "crisis2_mentor_help",
+          "label": "B. Ask Coach Rivera for Help",
+          "description": "Go to Coach Rivera privately and ask: 'I think I've been negotiating the wrong way. Can you teach me how to be fair AND effective?'",
+          "delta": {
+            "fairness_reputation": 10,
+            "listening_skill": 8,
+            "trust_level": 5,
+            "confidence": 3,
+            "energy": -6
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "Seeking help shows wisdom, not weakness. Coach Rivera teaches you about principled negotiation — being hard on the problem, soft on the people. A game-changing lesson.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "crisis2_ignore",
+          "label": "C. Wait It Out",
+          "description": "People have short memories. Just keep your head down, don't negotiate anything for a while, and let it blow over.",
+          "delta": {
+            "fairness_reputation": 2,
+            "trust_level": -2,
+            "confidence": -5,
+            "energy": 5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Avoiding the problem doesn't fix it. Weeks pass and your reputation barely improves. Active repair works much faster than passive waiting. Address problems head-on!",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_9_big_favor",
+      "round_title": "Scenario 9: The Big Favor",
+      "situation": "You desperately need to borrow your older cousin's expensive camera for a school project. Your cousin is protective of it and has said no before. You need to convince them while making them feel safe about lending it.",
+      "goal": "Convince your cousin to lend the camera by addressing their concerns.",
+      "coaching_moment": "Address concerns first: Great negotiators don't just push their request — they figure out what the other person is WORRIED about and solve that problem first.",
+      "reflection_prompt": "When someone says 'no,' what are they really saying? What's the fear behind the refusal?",
+      "ai_image_prompt": "Cartoon teenager's room, younger student talking to older cousin, expensive camera on shelf, the younger one presenting a plan on paper, trust-building moment, cartoon style",
+      "choices": [
+        {
+          "id": "s9_address_fears",
+          "label": "A. Address Every Concern",
+          "description": "Say: 'I know you're worried it might get damaged. I'll use a protective case, never leave it unattended, return it the same day, AND I'll pay for any damage from my savings.'",
+          "delta": {
+            "persuasion_skill": 8,
+            "trust_level": 7,
+            "negotiation_wins": 1,
+            "listening_skill": 6,
+            "confidence": 5,
+            "energy": -6
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Masterful! By addressing every possible concern BEFORE they raised it, you showed empathy and preparation. Your cousin felt safe saying yes. This is 'interest-based negotiation' at its best.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "s9_trade",
+          "label": "B. Offer Something Valuable in Return",
+          "description": "Offer to do your cousin's chore for a week AND let them borrow your gaming console while you have the camera.",
+          "delta": {
+            "persuasion_skill": 5,
+            "trust_level": 4,
+            "negotiation_wins": 1,
+            "fairness_reputation": 5,
+            "energy": -8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Good trade! You created a balanced exchange. But did you find out what your cousin actually WANTS? The best trades come from understanding their interests, not just offering 'stuff.'",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "s9_guilt_trip",
+          "label": "C. Guilt Trip",
+          "description": "Say: 'If you don't lend it, I'll fail my project. You'd really let your own family member fail?'",
+          "delta": {
+            "persuasion_skill": 2,
+            "trust_level": -6,
+            "relationship_score": -5,
+            "fairness_reputation": -4,
+            "energy": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Guilt trips are a form of emotional manipulation. Your cousin felt pressured, not persuaded. Even if they lend it, the relationship is damaged. Persuasion should feel good for BOTH sides.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "s9_written_contract",
+          "label": "D. Write a Borrowing Contract",
+          "description": "Create a written agreement with dates, conditions, and a damage clause. Professional and transparent!",
+          "delta": {
+            "persuasion_skill": 6,
+            "trust_level": 8,
+            "fairness_reputation": 7,
+            "negotiation_wins": 1,
+            "confidence": 4,
+            "listening_skill": 3,
+            "energy": -7
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning",
+            "delayed_gratification"
+          ],
+          "requires": {
+            "resource": "persuasion_skill",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Persuasion Skill >= 40"
+          },
+          "feedback": "Professional-level move! A written contract shows seriousness and protects both sides. Your cousin was so impressed they said you can borrow it anytime. Contracts build trust!",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_10_class_election",
+      "round_title": "Scenario 10: The Class Election",
+      "situation": "You're running for class representative. Your opponent is popular and promising free pizza parties. You need to win votes, but you want to run an honest campaign. The election is in three days.",
+      "goal": "Win votes through persuasion and real promises, not empty ones.",
+      "coaching_moment": "Credibility over charisma: Promises you can't keep destroy trust permanently. The best negotiators and leaders under-promise and over-deliver.",
+      "reflection_prompt": "Is it better to promise big and maybe fail, or promise small and definitely deliver?",
+      "ai_image_prompt": "Cartoon school hallway with campaign posters, two candidates — one with flashy pizza poster, the other with a thoughtful plan poster, students voting, cartoon election scene",
+      "choices": [
+        {
+          "id": "s10_real_promises",
+          "label": "A. Run on Real Promises",
+          "description": "Campaign on things you can ACTUALLY deliver: a class suggestion box, study buddy program, and talking to the principal about longer recess. Honest and doable.",
+          "delta": {
+            "persuasion_skill": 6,
+            "trust_level": 7,
+            "fairness_reputation": 8,
+            "negotiation_wins": 1,
+            "confidence": 5,
+            "energy": -7
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "You won! Students appreciated real, achievable promises. Your opponent's pizza party never happened, and everyone remembered who was honest. Credibility beats charisma every time.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "s10_coalition",
+          "label": "B. Build a Coalition",
+          "description": "Instead of going alone, team up with other interested students. Promise THEM roles (social media manager, event planner) if you win. Negotiate alliances!",
+          "delta": {
+            "persuasion_skill": 7,
+            "relationship_score": 6,
+            "negotiation_wins": 1,
+            "confidence": 6,
+            "listening_skill": 4,
+            "trust_level": 3,
+            "energy": -8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability",
+            "empathy"
+          ],
+          "requires": {
+            "resource": "relationship_score",
+            "op": ">=",
+            "value": 50,
+            "label": "Requires Relationships >= 50"
+          },
+          "feedback": "Brilliant political strategy! You built a team, gave others a stake in your success, and won with a strong coalition. This is how real-world leaders win — by bringing people along.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "s10_match_promises",
+          "label": "C. Out-Promise Your Opponent",
+          "description": "Promise pizza parties AND movie days AND no homework Fridays. If they promise big, you promise bigger!",
+          "delta": {
+            "persuasion_skill": 3,
+            "confidence": 3,
+            "trust_level": -8,
+            "fairness_reputation": -7,
+            "relationship_score": -3,
+            "energy": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "You won the election but couldn't deliver on your promises. Within a week, classmates were angry and felt tricked. Empty promises are the fastest way to destroy credibility.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "s10_debate",
+          "label": "D. Challenge Your Opponent to a Debate",
+          "description": "Propose a public debate where both candidates explain HOW they'll deliver their promises. Let the facts speak!",
+          "delta": {
+            "persuasion_skill": 8,
+            "confidence": 7,
+            "trust_level": 5,
+            "fairness_reputation": 5,
+            "listening_skill": 5,
+            "negotiation_wins": 1,
+            "energy": -9
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "requires": {
+            "resource": "confidence",
+            "op": ">=",
+            "value": 50,
+            "label": "Requires Confidence >= 50"
+          },
+          "feedback": "Debate master! When your opponent couldn't explain HOW they'd get free pizza, the class saw through the hype. You won on substance. Debates reward preparation and honesty.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_11_mediation",
+      "round_title": "Scenario 11: Mediation Challenge",
+      "situation": "Two of your friends are in a massive fight. One accused the other of spreading a rumor. Neither will talk to the other. They've both asked YOU to pick a side. The school counselor wants someone to mediate before it gets worse.",
+      "goal": "Help your two friends resolve their conflict without picking sides.",
+      "coaching_moment": "The Mediator's Role: A mediator doesn't pick sides or judge. They help both people feel heard, find common ground, and create a solution together.",
+      "reflection_prompt": "How is being a mediator different from being a judge? Why is neutrality important?",
+      "ai_image_prompt": "Cartoon school counselor's office, two upset students on opposite sides of a couch, a third student in the middle mediating, tissue box on table, calming poster on wall",
+      "choices": [
+        {
+          "id": "s11_active_listening",
+          "label": "A. Use Active Listening",
+          "description": "Meet each friend separately first. Let them vent fully without interrupting. Repeat back what you heard to make sure you understand. Then bring them together.",
+          "delta": {
+            "listening_skill": 10,
+            "trust_level": 6,
+            "relationship_score": 7,
+            "fairness_reputation": 8,
+            "negotiation_wins": 1,
+            "persuasion_skill": 4,
+            "confidence": 5,
+            "energy": -10
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Textbook mediation! By listening to each person separately first, you understood both sides. When you brought them together, you could translate their feelings to each other. Both friends felt heard and found a resolution.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "s11_pick_side",
+          "label": "B. Pick the Side You Believe",
+          "description": "You have a gut feeling about who's right. Tell the other friend they need to apologize.",
+          "delta": {
+            "confidence": 3,
+            "relationship_score": -6,
+            "trust_level": -4,
+            "fairness_reputation": -5,
+            "energy": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Picking sides destroyed your neutrality. The friend you sided against now resents you, and the other friend wonders if you'd ever side against THEM. Mediators stay neutral — always.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "s11_avoid",
+          "label": "C. Stay Out of It",
+          "description": "Tell both friends: 'This is between you two. I don't want to get involved.'",
+          "delta": {
+            "energy": 5,
+            "relationship_score": -4,
+            "trust_level": -2,
+            "confidence": -2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Staying out of it feels safe, but both friends needed you and felt abandoned. Sometimes the bravest negotiation is stepping INTO a conflict to help others resolve it.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "s11_common_ground",
+          "label": "D. Find What They Agree On",
+          "description": "Bring both friends together and start with: 'You both agree that your friendship matters, right?' Build from what they share, not what divides them.",
+          "delta": {
+            "listening_skill": 7,
+            "trust_level": 5,
+            "relationship_score": 6,
+            "fairness_reputation": 6,
+            "negotiation_wins": 1,
+            "persuasion_skill": 5,
+            "confidence": 4,
+            "energy": -8
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Finding common ground is a powerful mediation technique! By starting with what they agree on, you reminded them that they care about each other. The argument seemed smaller after that.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_12_final_deal",
+      "round_title": "Scenario 12: The Final Deal",
+      "situation": "Your school is organizing a big inter-school cultural festival. You've been chosen to lead the planning committee, but you have to negotiate with the principal for budget, with other schools for performance slots, and with your own team about who does what. This is the biggest negotiation of your life — all your skills will be tested.",
+      "goal": "Successfully negotiate all three fronts to make the festival a hit.",
+      "coaching_moment": "Multi-party negotiation: When negotiating with multiple parties at once, you need to find solutions that satisfy everyone. This is the ultimate test of a deal maker!",
+      "reflection_prompt": "What's the most important negotiation skill you've learned? How would you use it in real life?",
+      "ai_image_prompt": "Cartoon school auditorium decorated for festival, student leader coordinating with principal, other school reps, and team members, clipboard in hand, colorful festival decorations, triumphant scene",
+      "choices": [
+        {
+          "id": "s12_master_plan",
+          "label": "A. The Master Negotiation Plan",
+          "description": "Prepare thoroughly: research what each party wants, create a written proposal for the principal, offer fair performance slots to other schools, and match your team members to tasks they enjoy. Address everyone's interests!",
+          "delta": {
+            "persuasion_skill": 10,
+            "trust_level": 8,
+            "relationship_score": 8,
+            "fairness_reputation": 10,
+            "negotiation_wins": 2,
+            "confidence": 8,
+            "listening_skill": 6,
+            "energy": -15
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy",
+            "ethical_reasoning",
+            "adaptability"
+          ],
+          "requires": {
+            "resource": "listening_skill",
+            "op": ">=",
+            "value": 45,
+            "label": "Requires Listening Skill >= 45"
+          },
+          "feedback": "A true master negotiator! You prepared for every conversation, addressed everyone's interests, and created a plan where every party won. The festival was a massive success, and the principal asked you to lead next year too!",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "s12_delegate",
+          "label": "B. Delegate and Empower",
+          "description": "You can't negotiate everything alone. Assign your best persuader to talk to the principal, your most diplomatic friend to coordinate with other schools, and focus on managing your own team.",
+          "delta": {
+            "persuasion_skill": 5,
+            "trust_level": 6,
+            "relationship_score": 7,
+            "fairness_reputation": 5,
+            "negotiation_wins": 1,
+            "confidence": 6,
+            "listening_skill": 4,
+            "energy": -8
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Smart leadership! You recognized that great negotiators don't do everything themselves — they build teams and delegate. The festival went well because everyone contributed their strengths.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "s12_do_it_all",
+          "label": "C. Handle Everything Yourself",
+          "description": "You're the committee leader — you should handle all three negotiations personally. You've got this!",
+          "delta": {
+            "persuasion_skill": 4,
+            "confidence": 2,
+            "trust_level": -2,
+            "relationship_score": -4,
+            "energy": -18,
+            "negotiation_wins": 1
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "You burned out trying to do everything. The principal meeting went well, but you were too tired for the other school meeting and snapped at your team. Lesson: Even the best negotiator can't do it all alone.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "s12_collaborative",
+          "label": "D. Collaborative Open Meeting",
+          "description": "Invite the principal, other school reps, AND your team to one big meeting. Let everyone voice their needs and negotiate together transparently.",
+          "delta": {
+            "persuasion_skill": 6,
+            "trust_level": 5,
+            "relationship_score": 5,
+            "fairness_reputation": 7,
+            "negotiation_wins": 1,
+            "listening_skill": 7,
+            "confidence": 5,
+            "energy": -10
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning",
+            "adaptability"
+          ],
+          "requires": {
+            "resource": "fairness_reputation",
+            "op": ">=",
+            "value": 45,
+            "label": "Requires Fairness Reputation >= 45"
+          },
+          "feedback": "Transparent and democratic! The open meeting was chaotic at first, but with your facilitation skills, everyone found common ground. The festival plan is something ALL parties are excited about.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "master_negotiator",
+      "label": "Master Negotiator",
+      "condition": "negotiation_wins >= 8 and persuasion_skill >= 60",
+      "icon": "🏆"
+    },
+    {
+      "id": "empathy_champion",
+      "label": "Empathy Champion",
+      "condition": "listening_skill >= 60 and relationship_score >= 70",
+      "icon": "💛"
+    },
+    {
+      "id": "trust_builder",
+      "label": "Trust Builder",
+      "condition": "trust_level >= 75 and fairness_reputation >= 70",
+      "icon": "🤝"
+    },
+    {
+      "id": "confident_communicator",
+      "label": "Confident Communicator",
+      "condition": "confidence >= 70 and persuasion_skill >= 60",
+      "icon": "🗣️"
+    },
+    {
+      "id": "win_win_wizard",
+      "label": "Win-Win Wizard",
+      "condition": "fairness_reputation >= 70 and negotiation_wins >= 6",
+      "icon": "⭐"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "BATNA",
+      "definition": "Best Alternative To a Negotiated Agreement — your backup plan if the negotiation fails. Knowing your BATNA gives you power."
+    },
+    {
+      "term": "Win-Win",
+      "definition": "A negotiation outcome where both sides feel they gained something valuable. The best deals are win-win."
+    },
+    {
+      "term": "Anchoring",
+      "definition": "The first number or offer in a negotiation that sets the reference point. Whoever anchors first often shapes the final deal."
+    },
+    {
+      "term": "Active Listening",
+      "definition": "Fully concentrating on what someone says, understanding their message, and responding thoughtfully — not just waiting for your turn to talk."
+    },
+    {
+      "term": "Interest-Based Negotiation",
+      "definition": "Focusing on what people actually NEED (their interests) rather than what they SAY they want (their positions)."
+    },
+    {
+      "term": "Expanding the Pie",
+      "definition": "Finding creative solutions that give both parties more of what they want, instead of just splitting a fixed resource."
+    },
+    {
+      "term": "Mediation",
+      "definition": "A process where a neutral third party helps two sides in a conflict find a resolution without taking sides."
+    },
+    {
+      "term": "Credibility",
+      "definition": "Being trusted and believed by others. Built by keeping promises and being consistent over time."
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3,
+        "description": "Learn the basics of negotiation — making deals, sharing fairly, and working in groups."
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4,
+        "description": "Apply your skills in tougher situations — lunchroom standoffs, school plays, swap meets, and reputation crises."
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5,
+        "description": "Prove you are a true Deal Maker — borrowing favors, elections, mediation, and multi-party negotiations."
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "checkpoint_id": "checkpoint_basics",
+      "title": "Negotiation Basics Check",
+      "description": "Let's see what you've learned about making deals and resolving conflicts!",
+      "review_summary": "In the first five scenarios, you learned that great negotiation is about finding solutions where both sides feel they gained something. You practiced making fair offers, sharing creatively, working in teams, rebuilding trust, and using your BATNA. Remember: preparation and empathy beat aggression every time!",
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "You want your friend to trade lunch snacks with you, but they seem unsure. What is the BEST first step?",
+          "choices": [
+            {
+              "id": "cp1_q1_a",
+              "text": "Tell them your snack is obviously better and they should just agree.",
+              "correct": false,
+              "explanation": "Pushing your opinion without listening makes the other person feel pressured, not persuaded."
+            },
+            {
+              "id": "cp1_q1_b",
+              "text": "Ask them what snack they actually want and see if you can make a trade that works for both of you.",
+              "correct": true,
+              "explanation": "Finding out what the other person really wants is the heart of interest-based negotiation. When you match their need with yours, you create a win-win!"
+            },
+            {
+              "id": "cp1_q1_c",
+              "text": "Grab their snack quickly before they decide.",
+              "correct": false,
+              "explanation": "Taking something without agreement destroys trust and is not negotiation at all."
+            }
+          ]
+        },
+        {
+          "id": "cp1_q2",
+          "question": "What does BATNA stand for, and why is it important?",
+          "choices": [
+            {
+              "id": "cp1_q2_a",
+              "text": "Best Alternative To a Negotiated Agreement — it is your backup plan if the deal does not work out.",
+              "correct": true,
+              "explanation": "Knowing your BATNA gives you confidence. If you have a good backup plan, you will not feel desperate to accept a bad deal."
+            },
+            {
+              "id": "cp1_q2_b",
+              "text": "Best Argument To Negotiate Anything — it means having the strongest argument in every debate.",
+              "correct": false,
+              "explanation": "BATNA is about your alternatives, not your arguments. It is your Plan B, not your best speech."
+            },
+            {
+              "id": "cp1_q2_c",
+              "text": "Being Able To Negotiate Alone — it means you do not need anyone else's help.",
+              "correct": false,
+              "explanation": "Good negotiators often work with others. BATNA is about knowing your options, not going it alone."
+            }
+          ]
+        },
+        {
+          "id": "cp1_q3",
+          "question": "Your group project teammates all want the easy task. What is the smartest way to divide the work?",
+          "choices": [
+            {
+              "id": "cp1_q3_a",
+              "text": "Just do all the hard work yourself so nobody argues.",
+              "correct": false,
+              "explanation": "Sacrificing yourself avoids conflict but is not fair to you. Good negotiators find solutions that work for everyone, including themselves."
+            },
+            {
+              "id": "cp1_q3_b",
+              "text": "Pick names out of a hat so it is completely random.",
+              "correct": false,
+              "explanation": "Random is fair, but not smart. Someone who is bad at writing might get the essay. Matching skills to tasks gives a better result."
+            },
+            {
+              "id": "cp1_q3_c",
+              "text": "Ask each person what they are good at and match tasks to their strengths.",
+              "correct": true,
+              "explanation": "This is interest-based negotiation! When you assign tasks based on strengths, everyone does their best work and the project shines."
+            }
+          ]
+        },
+        {
+          "id": "cp1_q4",
+          "question": "You broke a promise to a friend and they are upset. What is the best way to rebuild trust?",
+          "choices": [
+            {
+              "id": "cp1_q4_a",
+              "text": "Wait a few weeks — they will probably forget about it.",
+              "correct": false,
+              "explanation": "Ignoring broken trust does not fix it. People remember broken promises, and waiting only makes it worse."
+            },
+            {
+              "id": "cp1_q4_b",
+              "text": "Blame someone else so your friend does not stay mad at you.",
+              "correct": false,
+              "explanation": "Deflecting blame destroys trust even further. People respect those who own their mistakes."
+            },
+            {
+              "id": "cp1_q4_c",
+              "text": "Apologize sincerely, then prove you have changed by keeping every small promise going forward.",
+              "correct": true,
+              "explanation": "Trust is rebuilt through consistent actions, not just words. A sincere apology followed by reliable behavior shows you have truly learned."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "after_round": 10,
+      "checkpoint_id": "checkpoint_advanced",
+      "title": "Advanced Negotiation Check",
+      "description": "You have faced tough deals, reputation crises, and competitive situations. Time to test your advanced skills!",
+      "review_summary": "In scenarios 6 through 10, you tackled more complex negotiations — competing with friends, trading at fair value, repairing your reputation, addressing concerns to borrow things, and running honest campaigns. You learned about anchoring, expanding the pie, separating people from problems, and building credibility. These are skills used by real-world negotiators, mediators, and leaders!",
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "Someone offers you a bad deal for your valuable item. They say 'three common cards for your rare one.' What negotiation concept should you use?",
+          "choices": [
+            {
+              "id": "cp2_q1_a",
+              "text": "Anchoring — reset the starting point by counter-offering with a fair price instead of accepting their low anchor.",
+              "correct": true,
+              "explanation": "The first offer sets the anchor. If someone starts low, do not let that number define the negotiation. Counter with a fair price and explain why your item is worth more."
+            },
+            {
+              "id": "cp2_q1_b",
+              "text": "Accept it quickly before they change their mind — any deal is better than no deal.",
+              "correct": false,
+              "explanation": "Accepting a bad deal just to avoid awkwardness means you undervalue yourself. Good negotiators know when to counter-offer."
+            },
+            {
+              "id": "cp2_q1_c",
+              "text": "Refuse to trade at all and walk away permanently.",
+              "correct": false,
+              "explanation": "Walking away is sometimes valid, but first try to negotiate a fair price. You might miss a great deal by leaving too early."
+            }
+          ]
+        },
+        {
+          "id": "cp2_q2",
+          "question": "You and your best friend both want the lead role in a school play. How can you compete without ruining the friendship?",
+          "choices": [
+            {
+              "id": "cp2_q2_a",
+              "text": "Secretly lobby the teacher to pick you — winning is more important than friendship.",
+              "correct": false,
+              "explanation": "Behind-the-scenes tactics might win the role but will destroy trust when your friend finds out. Relationships outlast any single competition."
+            },
+            {
+              "id": "cp2_q2_b",
+              "text": "Separate the person from the problem — agree to both audition fairly and support each other no matter who wins.",
+              "correct": true,
+              "explanation": "This is a key negotiation principle: separate people from the problem. The competition is about the role, not your friendship. You can compete honestly and still be great friends."
+            },
+            {
+              "id": "cp2_q2_c",
+              "text": "Give up and let your friend have the role to avoid any conflict.",
+              "correct": false,
+              "explanation": "Giving up your own goals to avoid conflict is generous but unfair to yourself. The best negotiators find solutions where both sides can pursue their interests."
+            }
+          ]
+        },
+        {
+          "id": "cp2_q3",
+          "question": "You are running for class representative. Your opponent promises free pizza parties every week. What is the smartest strategy?",
+          "choices": [
+            {
+              "id": "cp2_q3_a",
+              "text": "Promise even bigger things — pizza AND movie days AND no homework.",
+              "correct": false,
+              "explanation": "Out-promising with things you cannot deliver destroys your credibility. When you fail to follow through, trust is gone forever."
+            },
+            {
+              "id": "cp2_q3_b",
+              "text": "Campaign on real, achievable promises and let your honesty stand out against empty hype.",
+              "correct": true,
+              "explanation": "Credibility beats charisma! When your opponent cannot deliver the pizza, everyone remembers who was honest. Under-promise and over-deliver is a winning strategy."
+            },
+            {
+              "id": "cp2_q3_c",
+              "text": "Drop out of the race since you cannot compete with pizza promises.",
+              "correct": false,
+              "explanation": "Do not assume you will lose! Voters often see through empty promises. Stand on substance and let the truth speak for itself."
+            }
+          ]
+        },
+        {
+          "id": "cp2_q4",
+          "question": "You need to borrow something valuable from a family member who is worried it might get damaged. What is the BEST approach?",
+          "choices": [
+            {
+              "id": "cp2_q4_a",
+              "text": "Say 'Trust me, I will be careful' and hope they agree.",
+              "correct": false,
+              "explanation": "Vague promises do not address specific concerns. The other person needs to hear exactly HOW you will protect their item."
+            },
+            {
+              "id": "cp2_q4_b",
+              "text": "Make them feel guilty by saying you will fail without their help.",
+              "correct": false,
+              "explanation": "Guilt trips are emotional manipulation. Even if they work, the other person feels pressured, not happy about the deal."
+            },
+            {
+              "id": "cp2_q4_c",
+              "text": "Address every concern directly — explain your protection plan, set a return date, and offer to cover any damage from your own savings.",
+              "correct": true,
+              "explanation": "Great negotiators solve the other person's worries BEFORE being asked. When you address every concern, you make it easy and safe for them to say yes."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "master_negotiator_ending",
+      "title": "Master Negotiator",
+      "icon": "🏆",
+      "message": "You've earned the title of Master Negotiator! With powerful persuasion skills and an impressive win record, you've proven that preparation, creativity, and confidence are the keys to getting to YES. Teachers, parents, and friends all know: when there's a deal to be made, you're the one to call. Your future is bright — whether in business, law, or any career that values communication!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "negotiation_wins",
+            "operator": ">=",
+            "value": 8
+          },
+          {
+            "resource": "persuasion_skill",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "trusted_friend_ending",
+      "title": "Trusted Friend",
+      "icon": "💛",
+      "message": "You've become the most trusted person in your circle! Your friends know that when you make a deal, you keep it. When there's a conflict, you're the first person people turn to. Your negotiation superpower isn't persuasion — it's trust. And trust, as you've learned, is the most valuable currency of all.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "trust_level",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "relationship_score",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "fair_player_ending",
+      "title": "Fair Player",
+      "icon": "⚖️",
+      "message": "You've earned a reputation as the fairest deal maker in school! Everyone knows that a negotiation with you will be honest, transparent, and respectful. You've proven that you don't need tricks or manipulation to get what you want — just fairness and good listening. Coach Rivera has nominated you for the school's Peer Mediation Team!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "fairness_reputation",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "listening_skill",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "conflict_resolver_ending",
+      "title": "Conflict Resolver",
+      "icon": "🕊️",
+      "message": "You've discovered your true calling: resolving conflicts! You learned that the best negotiations aren't about winning — they're about helping everyone find a solution they can live with. Your listening skills and relationship-building have made you the go-to mediator among your friends. The world needs more peacemakers like you!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "listening_skill",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "relationship_score",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "growing_communicator_ending",
+      "title": "Growing Communicator",
+      "icon": "🌱",
+      "message": "You're on your way! You've learned that negotiation isn't about tricks or winning arguments — it's about communication, empathy, and finding solutions together. Some deals went great, others taught you tough lessons. But every scenario made you a better communicator. Keep practicing, and one day you'll be a Master Negotiator!",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

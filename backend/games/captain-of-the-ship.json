@@ -1,0 +1,1630 @@
+{
+  "game_id": "captain-of-the-ship",
+  "title": "Captain of the Ship: The Southern Ocean",
+  "game_type": "story_branching",
+  "visible": true,
+  "description": "When the captain is injured in a storm, you — a sixteen-year-old crew member — must navigate a damaged research vessel through the Southern Ocean to safety. With limited supplies, a frightened crew, and 800 miles of open ocean, every decision is life or death.",
+  "theme": "Crisis leadership and survival at sea",
+  "difficulty": "advanced",
+  "duration_minutes": 50,
+  "target_audience": "students",
+  "icon": "⛵",
+  "cover_image_prompt": "A 16-year-old Indian boy standing at the helm of a research vessel in the Southern Ocean, stormy seas, determined expression, crew visible behind him, vibrant watercolor illustration, age 10-18 friendly",
+  "learning_objectives": [
+    "Practice making critical decisions with limited information under extreme pressure",
+    "Learn to build and maintain trust with people who may not initially follow you",
+    "Understand resource management when supplies are scarce and consequences are severe",
+    "Develop the ability to balance compassion with tough decisions in survival situations",
+    "Explore what it means to lead when you are not the most experienced person in the room"
+  ],
+  "learning_concept": "The sea does not choose captains. The captain is whoever the sea cannot break — and that person is defined not by their age or title, but by their character under pressure.",
+  "psychological_framework": "Crisis Leadership (Boin & Hart) — decision-making under extreme uncertainty; Followership Theory (Kelley) — understanding why people choose to follow; Survival Psychology — managing fear and maintaining function in life-threatening situations",
+  "ai_image_config": {
+    "style": "vibrant watercolor illustration, Southern Ocean research vessel, storms and open water, dramatic maritime setting, age 10-18 friendly",
+    "provider": "dalle",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/story_branching"
+  },
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "The Accident",
+      "icon": "🌊",
+      "teaser": "The wave hits. The captain falls. {player_name} must step up.",
+      "always_unlocked": true,
+      "color": "#ef4444"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "Taking Command",
+      "icon": "🧭",
+      "teaser": "A sixteen-year-old at the helm. The crew is watching.",
+      "unlocks_after": "ch1",
+      "color": "#f97316"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "First Storm",
+      "icon": "⛈️",
+      "teaser": "The weather turns. The ship is damaged. Can it survive another blow?",
+      "unlocks_after": "ch2",
+      "color": "#10b981"
+    },
+    {
+      "chapter_id": "ch4",
+      "number": 4,
+      "title": "Crew Rebellion",
+      "icon": "💢",
+      "teaser": "Raj refuses to follow orders. Authority must be earned.",
+      "unlocks_after": "ch3",
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch5",
+      "number": 5,
+      "title": "Rationing Food",
+      "icon": "🍞",
+      "teaser": "The supplies will not last. Hard choices about who gets what.",
+      "unlocks_after": "ch4",
+      "color": "#ec4899"
+    },
+    {
+      "chapter_id": "ch6",
+      "number": 6,
+      "title": "The Distress Signal",
+      "icon": "📡",
+      "teaser": "Another ship in trouble. Help them and risk your own crew?",
+      "unlocks_after": "ch5",
+      "color": "#8b5cf6"
+    },
+    {
+      "chapter_id": "ch7",
+      "number": 7,
+      "title": "The Rescue Dilemma",
+      "icon": "🆘",
+      "teaser": "Survivors spotted. Eight mouths to feed instead of six.",
+      "unlocks_after": "ch6",
+      "color": "#0ea5e9"
+    },
+    {
+      "chapter_id": "ch8",
+      "number": 8,
+      "title": "Land Sighting",
+      "icon": "🏝️",
+      "teaser": "An island on radar. Uncharted. Safe haven or deadly trap?",
+      "unlocks_after": "ch7",
+      "color": "#f59e0b"
+    },
+    {
+      "chapter_id": "ch9",
+      "number": 9,
+      "title": "The Final Storm",
+      "icon": "🌀",
+      "teaser": "The biggest test yet. Everything built over fourteen days is put to the trial.",
+      "unlocks_after": "ch8",
+      "color": "#14b8a6"
+    },
+    {
+      "chapter_id": "ch10",
+      "number": 10,
+      "title": "Safe Harbour",
+      "icon": "⚓",
+      "teaser": "Port lights on the horizon. The journey's end — and the beginning of something new.",
+      "unlocks_after": "ch9",
+      "color": "#f59e0b"
+    }
+  ],
+  "initial_state": {
+    "authority": {
+      "value": 35,
+      "label": "Authority",
+      "icon": "👑",
+      "min": 0,
+      "max": 100
+    },
+    "crew_morale": {
+      "value": 50,
+      "label": "Crew Morale",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "supplies": {
+      "value": 60,
+      "label": "Supplies",
+      "icon": "📦",
+      "min": 0,
+      "max": 100
+    },
+    "navigation": {
+      "value": 40,
+      "label": "Navigation",
+      "icon": "🧭",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "title": "The Accident",
+        "narrative": "The Southern Ocean was no place for mistakes. The research vessel Sagar Mitra — sixty metres of steel and science — had been charting currents for the Indian Antarctic Programme when the rogue wave hit.\n\nOne moment, Captain Mehta was standing at the helm. The next, he was on the deck with a broken leg, his head bleeding, being dragged to the medical bay by Dr. Sonia. The first mate had been swept overboard and rescued, but was in shock and hypothermic.\n\n{player_name} stood on the bridge, rain streaming down the windows, alarms screaming, and realized with a cold certainty: at sixteen, he was the most experienced person still standing. Three years of sailing with his father. Two seasons on this vessel. Enough to know the instruments, the protocols, and the terrifying truth: nobody was coming to help them for at least forty-eight hours.\n\nKeiko, the Japanese exchange student who served as navigator, appeared at the bridge door. 'Arjun — the radio is damaged. We have no long-range communications. What do we do?'",
+        "image_prompt": "A teenager standing on the bridge of a research vessel in a storm, rain-streaked windows, alarms flashing, the weight of sudden command visible on his face, Southern Ocean waves crashing, watercolor illustration",
+        "coaching_moment": "Leadership is sometimes thrust upon you not because you are ready, but because you are there — and being there when it matters is its own qualification.",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Take the helm — someone needs to steer through this storm",
+            "description": "Arjun grabs the wheel and begins navigating the ship through the remaining storm, using his father's training.",
+            "delta": {
+              "authority": 12,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch1_s2",
+            "consequence_hint": "Taking command immediately shows strength — but the crew may question a sixteen-year-old's authority.",
+            "memory_tags": [
+              "took_command"
+            ]
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Check on Captain Mehta first — get his guidance before acting",
+            "description": "Arjun rushes to the medical bay to assess the captain's condition and get whatever instructions he can before the sedatives take effect.",
+            "delta": {
+              "authority": 8,
+              "crew_morale": 5,
+              "supplies": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch1_s2",
+            "consequence_hint": "Getting the captain's input is wise — but the ship still needs someone at the helm right now.",
+            "memory_tags": [
+              "consulted_captain"
+            ]
+          },
+          {
+            "id": "ch1_s1_c",
+            "label": "Rally the crew — we face this together",
+            "description": "Arjun sounds the general assembly alarm and gathers everyone to the bridge for an honest assessment of the situation.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "navigation": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_scene": "ch1_s2",
+            "consequence_hint": "Transparency builds trust — but admitting the gravity of the situation could trigger panic."
+          }
+        ],
+        "transitions_to_gameplay": true
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "Taking Stock",
+        "narrative": "The storm passed by evening, leaving the Sagar Mitra battered but floating. Arjun gathered what he knew:\n\n- Captain Mehta: broken leg, concussion, sedated. Dr. Sonia's assessment: he would be lucid intermittently but could not command.\n- First mate: hypothermic, recovering but weak.\n- Radio: long-range transmitter destroyed. Short-range VHF working but range limited to 30 nautical miles.\n- Crew: six people total — Arjun, Keiko, Raj (engineer, terrified), Dr. Sonia, the cook Balaji, and the rescued fisherman they had picked up two days ago.\n- Position: approximately 800 nautical miles from the nearest port in Mauritius. No shipping lanes nearby.\n- Supplies: food for two weeks, fuel for one week at cruising speed, water for ten days.\n\n{player_name} looked at the numbers. They had enough to reach Mauritius — barely — if everything went right. But in the Southern Ocean, nothing ever went entirely right.",
+        "image_prompt": "A teenager studying a navigation chart spread on the bridge table, crew members in the background in various states of worry and recovery, the ship rocking gently after the storm, supplies listed on a whiteboard, watercolor illustration",
+        "coaching_moment": "The first job of any leader in a crisis is to understand exactly where you stand — even when the truth is uncomfortable.",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Set course for Mauritius immediately — every hour of fuel matters",
+            "description": "Arjun plots the most direct course and begins heading toward port at optimal fuel-saving speed.",
+            "delta": {
+              "navigation": 12,
+              "supplies": -5,
+              "crew_morale": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch1_s3",
+            "consequence_hint": "Direct action preserves resources — but the most direct route goes through rougher waters."
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Wait 12 hours — repair what we can, rest the crew, then move",
+            "description": "Arjun orders a repair and rest period before setting out, knowing that a functional ship and rested crew travel safer.",
+            "delta": {
+              "crew_morale": 12,
+              "supplies": -3,
+              "authority": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "next_scene": "ch1_s3",
+            "consequence_hint": "Preparation before a long journey is wise — but every stationary hour burns supplies without progress."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "title": "The Captain's Words",
+        "narrative": "Captain Mehta had a lucid moment. Dr. Sonia allowed Arjun five minutes at his bedside.\n\n'Arjun,' the captain said, voice thin but steady. 'The crew will test you. Not because they are bad — because they are scared. A scared crew needs two things: someone who knows where they are going, and someone who cares about them. Be both.'\n\nHe gripped Arjun's hand. 'And one more thing. The fisherman we rescued — he knows these waters. He may not speak much Hindi, but he reads the ocean. Trust him.'\n\nThe sedatives pulled the captain back under. Arjun stood in the medical bay, feeling the ship sway, and repeated the captain's words to himself: know where you are going. Care about your crew.\n\n{player_name} walked back to the bridge with those two principles and the weight of six lives on his shoulders.",
+        "image_prompt": "A teenage boy at the bedside of an injured captain in a ship's medical bay, the captain gripping his hand and giving advice, medical equipment beeping, Dr. Sonia watching from the doorway, watercolor illustration, passing of command",
+        "coaching_moment": "The best leadership advice often comes in simple words from people who have led before — listen to experience, even when it whispers.",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "Seek out the fisherman — follow the captain's advice",
+            "description": "Arjun finds the fisherman on the deck and tries to communicate, learning about ocean currents and weather patterns.",
+            "delta": {
+              "navigation": 15,
+              "authority": 5,
+              "crew_morale": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch2",
+            "consequence_hint": "Indigenous knowledge of the sea can save your life — wisdom does not always come from books.",
+            "memory_tags": [
+              "trusted_fisherman"
+            ]
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "Address the crew as a group — establish authority clearly",
+            "description": "Arjun calls the crew together and lays out the plan: destination, timeline, roles, and chain of command.",
+            "delta": {
+              "authority": 15,
+              "crew_morale": 8,
+              "navigation": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch2",
+            "consequence_hint": "Clear authority prevents chaos — but authority must be earned, not just claimed."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "First Orders",
+        "narrative": "Day two. The ship was under way, heading northwest toward Mauritius. Arjun stood at the helm, feeling the strange mix of terror and focus that comes from being responsible for something much bigger than yourself.\n\nThe crew watched him. Not with open defiance — but with the measuring look of people deciding whether to trust. Keiko followed his navigation decisions without question, her trust in data making her the most straightforward crew member. Raj, the engineer, muttered complaints about the engine room. The cook, Balaji, simply made meals and said nothing.\n\n{player_name} knew that trust was not given — it was earned through competent decisions, one at a time.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — first orders, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Take the strategic approach",
+            "description": "Arjun analyzes the situation carefully before deciding, weighing every option against the resources available.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch2_s2",
+            "consequence_hint": "Strategy preserves resources — but the sea does not always wait for analysis."
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Trust your instincts and act",
+            "description": "Arjun goes with his gut feeling, developed through years of sailing and sharpened by two weeks of crisis command.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch2_s2",
+            "consequence_hint": "Instinct is fast and often right — but in unfamiliar waters, it can lead you astray."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "The Navigation Plan",
+        "narrative": "Keiko spread the charts on the navigation table. Two possible routes to Mauritius: the northern route, longer but calmer, or the southern route, shorter but cutting through an area known for unpredictable weather.\n\nThe fuel calculation was tight. The northern route would use almost all their fuel, leaving no margin for error. The southern route saved fuel but risked encountering storms that could damage the already-weakened ship.\n\n{player_name} studied both routes and thought about Captain Mehta's words: know where you are going.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the navigation plan, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Prioritize crew safety above all else",
+            "description": "Arjun makes the conservative choice, ensuring no one is put at unnecessary risk even if it costs time or resources.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch2_s3",
+            "consequence_hint": "Safety-first leadership builds deep trust — but excessive caution can cost opportunities."
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Push forward — the mission requires calculated risks",
+            "description": "Arjun accepts a measured risk, trusting the crew's skills and the ship's resilience to handle the challenge.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch2_s3",
+            "consequence_hint": "Calculated risks are the engine of progress — but miscalculation at sea has no margin for error."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "title": "Earning Respect",
+        "narrative": "Small moments built trust. When Arjun helped Raj repair a leaking gasket in the engine room — getting his hands dirty alongside the engineer — Raj's attitude shifted slightly. When he asked Balaji's opinion on water rationing, the cook's silence became something warmer.\n\nThe fisherman, who spoke fragments of Tamil and communicated mostly through gestures, pointed at the sky one evening and shook his head. Bad weather coming. Arjun adjusted course based on the fisherman's reading of the clouds — and when the squall hit exactly where they would have been, the crew took notice.\n\n{player_name} was learning the hardest lesson of leadership: authority comes not from the title, but from the accumulation of right decisions made under pressure.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — earning respect, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "Consolidate and strengthen before the next challenge",
+            "description": "Arjun uses the breathing room to repair, rest, and reinforce — preparation is the best protection.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch3",
+            "consequence_hint": "Preparation in calm moments determines survival in crisis moments."
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "Maintain momentum — keep moving toward port",
+            "description": "Arjun pushes the crew and ship forward, knowing that every nautical mile covered is a mile closer to safety.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "next_chapter": "ch3",
+            "consequence_hint": "Forward motion builds hope — but fatigue and worn equipment have limits."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "Storm Warning",
+        "narrative": "The barometer dropped sharply on day three. Keiko's weather models showed a significant storm system developing in their path. The fisherman confirmed it — gesturing at the darkening horizon with concern.\n\nArjun had two options: alter course significantly to avoid the storm, adding two days to the journey and stretching fuel reserves dangerously thin, or maintain course and ride through it, trusting the ship to hold.\n\n{player_name} remembered something his father once said: 'The sea tests every captain. The question is not whether the storm comes — it is whether you prepared for it.'",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — storm warning, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Take the strategic approach",
+            "description": "Arjun analyzes the situation carefully before deciding, weighing every option against the resources available.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch3_s2",
+            "consequence_hint": "Strategy preserves resources — but the sea does not always wait for analysis."
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Trust your instincts and act",
+            "description": "Arjun goes with his gut feeling, developed through years of sailing and sharpened by two weeks of crisis command.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch3_s2",
+            "consequence_hint": "Instinct is fast and often right — but in unfamiliar waters, it can lead you astray."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "The Decision",
+        "narrative": "Whatever course Arjun chose, the storm found them. Not a monster like the one that injured Captain Mehta, but a sustained blow — thirty-knot winds, four-metre swells, driving rain for twelve straight hours.\n\nThe ship groaned. Raj reported a minor hull leak in the engine room — manageable if they kept the pump running. Dr. Sonia was treating the fisherman for seasickness. Keiko held the navigation steady with quiet precision.\n\n{player_name} stood on the bridge for eleven of those twelve hours, refusing to leave, watching the compass, listening to the ship, talking to the crew through the intercom: 'We are doing well. Keep the pump running. Hot chai at the end of this.'",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the decision, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Prioritize crew safety above all else",
+            "description": "Arjun makes the conservative choice, ensuring no one is put at unnecessary risk even if it costs time or resources.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch3_s3",
+            "consequence_hint": "Safety-first leadership builds deep trust — but excessive caution can cost opportunities."
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Push forward — the mission requires calculated risks",
+            "description": "Arjun accepts a measured risk, trusting the crew's skills and the ship's resilience to handle the challenge.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch3_s3",
+            "consequence_hint": "Calculated risks are the engine of progress — but miscalculation at sea has no margin for error."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "title": "Through the Waves",
+        "narrative": "The storm passed. The ship survived. The hull leak was patched. Everyone was exhausted but uninjured.\n\nCaptain Mehta, in another lucid moment, said from his bed: 'You sound different on the intercom now. You sound like a captain.'\n\nArjun did not feel like a captain. He felt like a very tired sixteen-year-old who wanted to go home. But he understood something: the crew had seen him stay on the bridge for eleven hours. They had heard his calm voice when the waves were high. Trust was being built, wave by wave.\n\n{player_name} allowed himself four hours of sleep — his first real rest in three days.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — through the waves, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "Consolidate and strengthen before the next challenge",
+            "description": "Arjun uses the breathing room to repair, rest, and reinforce — preparation is the best protection.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch4",
+            "consequence_hint": "Preparation in calm moments determines survival in crisis moments."
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "Maintain momentum — keep moving toward port",
+            "description": "Arjun pushes the crew and ship forward, knowing that every nautical mile covered is a mile closer to safety.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "next_chapter": "ch4",
+            "consequence_hint": "Forward motion builds hope — but fatigue and worn equipment have limits."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s1",
+        "chapter": "ch4",
+        "title": "Raj Breaks Down",
+        "narrative": "Day five. Raj cornered Arjun outside the engine room. 'I have fifteen years at sea. Fifteen years! And I am taking orders from a child. This is not right. I should be commanding this ship.'\n\nArjun looked at Raj. The engineer was competent at his job — the engines were running despite damage. But he was also impulsive, emotional, and had frozen during the initial emergency while Arjun had acted.\n\n{player_name} faced the oldest challenge in leadership: someone who has more experience but less composure questioning your authority.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — raj breaks down, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch4_s1_a",
+            "label": "Take the strategic approach",
+            "description": "Arjun analyzes the situation carefully before deciding, weighing every option against the resources available.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch4_s2",
+            "consequence_hint": "Strategy preserves resources — but the sea does not always wait for analysis."
+          },
+          {
+            "id": "ch4_s1_b",
+            "label": "Trust your instincts and act",
+            "description": "Arjun goes with his gut feeling, developed through years of sailing and sharpened by two weeks of crisis command.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch4_s2",
+            "consequence_hint": "Instinct is fast and often right — but in unfamiliar waters, it can lead you astray."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch4_s2",
+        "chapter": "ch4",
+        "title": "The Confrontation",
+        "narrative": "The confrontation escalated. Raj stopped following orders — not dramatically, but through small acts of defiance. Delayed engine adjustments. Ignored maintenance schedules. A pointed refusal to attend the morning briefing.\n\nKeiko warned Arjun: 'If Raj openly defies you and you do not respond, the rest of the crew will start to wonder who is really in charge.'\n\nBut Dr. Sonia offered a different view: 'Raj is scared. He is expressing fear as anger. Punishing him will not help — understanding him might.'\n\n{player_name} had to choose between asserting authority and showing empathy — or finding a way to do both.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the confrontation, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch4_s2_a",
+            "label": "Prioritize crew safety above all else",
+            "description": "Arjun makes the conservative choice, ensuring no one is put at unnecessary risk even if it costs time or resources.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch4_s3",
+            "consequence_hint": "Safety-first leadership builds deep trust — but excessive caution can cost opportunities."
+          },
+          {
+            "id": "ch4_s2_b",
+            "label": "Push forward — the mission requires calculated risks",
+            "description": "Arjun accepts a measured risk, trusting the crew's skills and the ship's resilience to handle the challenge.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch4_s3",
+            "consequence_hint": "Calculated risks are the engine of progress — but miscalculation at sea has no margin for error."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch4_s3",
+        "chapter": "ch4",
+        "title": "Resolution",
+        "narrative": "Arjun found a way. He went to the engine room alone and sat with Raj. Not to give orders. To listen.\n\nRaj talked for an hour. About his family in Vizag. About his son who was Arjun's age. About the fear that he would not see them again. About the shame of being afraid when a teenager was calm.\n\nArjun listened. Then he said: 'I am not calm, Raj. I am terrified. But I cannot show it because the crew needs me to be steady. I need YOU to be steady too. Not because I am your boss — because we need each other to survive.'\n\nRaj was quiet for a long time. Then he nodded. It was not instant transformation. But it was a start.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — resolution, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch4_s3_a",
+            "label": "Consolidate and strengthen before the next challenge",
+            "description": "Arjun uses the breathing room to repair, rest, and reinforce — preparation is the best protection.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch5",
+            "consequence_hint": "Preparation in calm moments determines survival in crisis moments."
+          },
+          {
+            "id": "ch4_s3_b",
+            "label": "Maintain momentum — keep moving toward port",
+            "description": "Arjun pushes the crew and ship forward, knowing that every nautical mile covered is a mile closer to safety.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "next_chapter": "ch5",
+            "consequence_hint": "Forward motion builds hope — but fatigue and worn equipment have limits."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch5_s1",
+        "chapter": "ch5",
+        "title": "The Count",
+        "narrative": "Day seven. The mid-journey supply check was brutal. Keiko's calculations: water for four more days at current consumption. Food for six days. Fuel for five days of cruising. Mauritius was still six days away at optimal speed.\n\nThe math did not work. They were going to run short on water by at least two days. Food would be extremely tight. Fuel depended on wind and current.\n\n{player_name} stared at the numbers and faced the reality that every survival captain knows: you cannot create resources that do not exist. You can only distribute what you have as wisely as possible.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the count, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch5_s1_a",
+            "label": "Take the strategic approach",
+            "description": "Arjun analyzes the situation carefully before deciding, weighing every option against the resources available.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch5_s2",
+            "consequence_hint": "Strategy preserves resources — but the sea does not always wait for analysis."
+          },
+          {
+            "id": "ch5_s1_b",
+            "label": "Trust your instincts and act",
+            "description": "Arjun goes with his gut feeling, developed through years of sailing and sharpened by two weeks of crisis command.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch5_s2",
+            "consequence_hint": "Instinct is fast and often right — but in unfamiliar waters, it can lead you astray."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch5_s2",
+        "chapter": "ch5",
+        "title": "The Distribution",
+        "narrative": "Arjun presented the rationing plan to the crew. Water: reduced from 3 litres to 1.5 litres per person per day. Food: two meals instead of three, with protein portions halved. Engine speed: reduced by twenty percent to extend fuel.\n\nRaj objected: 'Slower speed means more days at sea, which means MORE water needed.' It was a valid point. But Arjun had calculated: the fuel savings from slower speed outweighed the extra water consumption from two more days.\n\nThe fisherman, understanding through context if not language, offered something unexpected: he could catch fish. A fishing line, a hook, and time — fresh protein from the ocean itself.\n\n{player_name} accepted the offer and realized: every crisis contains hidden resources if you are willing to see them.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the distribution, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch5_s2_a",
+            "label": "Prioritize crew safety above all else",
+            "description": "Arjun makes the conservative choice, ensuring no one is put at unnecessary risk even if it costs time or resources.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch5_s3",
+            "consequence_hint": "Safety-first leadership builds deep trust — but excessive caution can cost opportunities."
+          },
+          {
+            "id": "ch5_s2_b",
+            "label": "Push forward — the mission requires calculated risks",
+            "description": "Arjun accepts a measured risk, trusting the crew's skills and the ship's resilience to handle the challenge.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch5_s3",
+            "consequence_hint": "Calculated risks are the engine of progress — but miscalculation at sea has no margin for error."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch5_s3",
+        "chapter": "ch5",
+        "title": "Hunger and Hope",
+        "narrative": "The rationing was hard. Hunger made people irritable. Thirst made them quiet. But the fisherman's catches — two tuna on the second day, a magnificent mahi-mahi on the third — transformed both the nutrition and the morale.\n\nBalaji, the cook, turned raw fish into something that tasted like hope. He improvised sashimi for Keiko, curry for the Indians, and a simple grilled piece for the fisherman who had caught it.\n\nAround the evening meal, the crew sat together. Not just as survivors, but as a community. The rationing had forced them to share, and sharing had built something stronger than any order could.\n\n{player_name} watched the crew eating together and thought: scarcity can divide people or unite them. The difference is how the leader handles it.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — hunger and hope, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch5_s3_a",
+            "label": "Consolidate and strengthen before the next challenge",
+            "description": "Arjun uses the breathing room to repair, rest, and reinforce — preparation is the best protection.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch6",
+            "consequence_hint": "Preparation in calm moments determines survival in crisis moments."
+          },
+          {
+            "id": "ch5_s3_b",
+            "label": "Maintain momentum — keep moving toward port",
+            "description": "Arjun pushes the crew and ship forward, knowing that every nautical mile covered is a mile closer to safety.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "next_chapter": "ch6",
+            "consequence_hint": "Forward motion builds hope — but fatigue and worn equipment have limits."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch6_s1",
+        "chapter": "ch6",
+        "title": "The Signal",
+        "narrative": "Day nine. The VHF radio crackled with a faint signal — a distress call from another vessel. The signal was weak, intermittent, and coming from roughly thirty nautical miles northeast. That was off their course — a detour that would cost fuel and time they could barely afford.\n\nKeiko plotted the source. 'If we divert, we add approximately fourteen hours to our journey. That puts us into the critical zone for water — we would need to find rain or make port earlier than Mauritius.'\n\nRaj said: 'We cannot afford it. We have six lives to protect.'\n\nDr. Sonia said: 'We cannot ignore a distress call. Maritime law requires —'\n\n'Maritime law does not apply when following it kills your own crew,' Raj shot back.\n\n{player_name} listened to both sides and felt the weight of the decision: help strangers at potential cost to his own crew, or preserve his crew at the cost of abandoning strangers.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the signal, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch6_s1_a",
+            "label": "Take the strategic approach",
+            "description": "Arjun analyzes the situation carefully before deciding, weighing every option against the resources available.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch6_s2",
+            "consequence_hint": "Strategy preserves resources — but the sea does not always wait for analysis."
+          },
+          {
+            "id": "ch6_s1_b",
+            "label": "Trust your instincts and act",
+            "description": "Arjun goes with his gut feeling, developed through years of sailing and sharpened by two weeks of crisis command.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch6_s2",
+            "consequence_hint": "Instinct is fast and often right — but in unfamiliar waters, it can lead you astray."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch6_s2",
+        "chapter": "ch6",
+        "title": "The Debate",
+        "narrative": "The debate was fierce. The fisherman, who had himself been rescued from the sea, sat silently, his expression unreadable. When Arjun asked him through gestures what he thought, the fisherman simply pointed to himself, then to the ship, then to his heart. The meaning was clear: someone saved me. Now we save others.\n\nKeiko provided analysis: 'If we divert and find a rain squall, we can replenish water. Weather patterns suggest there may be precipitation on the northeast route. It is not guaranteed, but it is possible.'\n\nThe crew was split. Arjun had to decide.\n\n{player_name} closed his eyes and thought of Captain Mehta's words: know where you are going, and care about your crew. But what about caring for people who are not your crew?",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the debate, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch6_s2_a",
+            "label": "Prioritize crew safety above all else",
+            "description": "Arjun makes the conservative choice, ensuring no one is put at unnecessary risk even if it costs time or resources.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch6_s3",
+            "consequence_hint": "Safety-first leadership builds deep trust — but excessive caution can cost opportunities."
+          },
+          {
+            "id": "ch6_s2_b",
+            "label": "Push forward — the mission requires calculated risks",
+            "description": "Arjun accepts a measured risk, trusting the crew's skills and the ship's resilience to handle the challenge.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch6_s3",
+            "consequence_hint": "Calculated risks are the engine of progress — but miscalculation at sea has no margin for error."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch6_s3",
+        "chapter": "ch6",
+        "title": "The Decision",
+        "narrative": "Arjun made the decision. Whether he diverted or continued, the choice defined what kind of leader — what kind of person — he was becoming.\n\nThe crew followed the decision. Not all of them agreed. But they followed, because over nine days, Arjun had built something that mattered more than agreement: trust.\n\nAs the ship turned (or continued), {player_name} stood on the bridge alone for a moment and thought: this is what command means. Not having all the answers. Having the courage to choose when every option costs something.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the decision, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch6_s3_a",
+            "label": "Consolidate and strengthen before the next challenge",
+            "description": "Arjun uses the breathing room to repair, rest, and reinforce — preparation is the best protection.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch7",
+            "consequence_hint": "Preparation in calm moments determines survival in crisis moments."
+          },
+          {
+            "id": "ch6_s3_b",
+            "label": "Maintain momentum — keep moving toward port",
+            "description": "Arjun pushes the crew and ship forward, knowing that every nautical mile covered is a mile closer to safety.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "next_chapter": "ch7",
+            "consequence_hint": "Forward motion builds hope — but fatigue and worn equipment have limits."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch7_s1",
+        "chapter": "ch7",
+        "title": "Survivors Spotted",
+        "narrative": "Whether or not the ship diverted, the journey continued. On day eleven, Keiko spotted something on the horizon — an overturned lifeboat with two figures clinging to it. Closer inspection through binoculars: two people, alive but barely.\n\nDr. Sonia assessed from the bridge: 'They look hypothermic and dehydrated. If we do not pick them up, they will not survive the night.'\n\nRaj was quieter this time. He looked at the two figures and said nothing about fuel or water. Something about seeing actual people in the water — not a radio signal, but human faces — changed the calculation.\n\n{player_name} ordered the rescue without hesitation. Some decisions are not about logistics. They are about who you are.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — survivors spotted, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch7_s1_a",
+            "label": "Take the strategic approach",
+            "description": "Arjun analyzes the situation carefully before deciding, weighing every option against the resources available.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch7_s2",
+            "consequence_hint": "Strategy preserves resources — but the sea does not always wait for analysis."
+          },
+          {
+            "id": "ch7_s1_b",
+            "label": "Trust your instincts and act",
+            "description": "Arjun goes with his gut feeling, developed through years of sailing and sharpened by two weeks of crisis command.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch7_s2",
+            "consequence_hint": "Instinct is fast and often right — but in unfamiliar waters, it can lead you astray."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch7_s2",
+        "chapter": "ch7",
+        "title": "The Calculation",
+        "narrative": "The two survivors were Indonesian fishermen whose vessel had sunk in a storm three days ago. They were hypothermic, dehydrated, and malnourished. Dr. Sonia began treatment immediately.\n\nBut their rescue added two more mouths to an already stretched supply system. Eight people now, with water for three more days and port still four days away.\n\nThe fisherman — the original rescued stranger — immediately shared his day's catch with the new arrivals. Without being asked. Without hesitation.\n\nArjun watched and thought: generosity in scarcity is the most powerful form of leadership. It does not come from the captain. It comes from the crew.\n\n{player_name} revised the rationing plan — tighter again, but survivable — and the crew accepted it without complaint.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the calculation, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch7_s2_a",
+            "label": "Prioritize crew safety above all else",
+            "description": "Arjun makes the conservative choice, ensuring no one is put at unnecessary risk even if it costs time or resources.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch7_s3",
+            "consequence_hint": "Safety-first leadership builds deep trust — but excessive caution can cost opportunities."
+          },
+          {
+            "id": "ch7_s2_b",
+            "label": "Push forward — the mission requires calculated risks",
+            "description": "Arjun accepts a measured risk, trusting the crew's skills and the ship's resilience to handle the challenge.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch7_s3",
+            "consequence_hint": "Calculated risks are the engine of progress — but miscalculation at sea has no margin for error."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch7_s3",
+        "chapter": "ch7",
+        "title": "Hearts vs Numbers",
+        "narrative": "That night, the Indonesian fishermen recovered enough to share their story. Through Keiko's basic Indonesian and a lot of gesturing, they described the storm that took their boat and the three days drifting.\n\nOne of them looked at Arjun and said something that Keiko translated: 'He says you are very young to be a captain. He says in Indonesia, young captains are considered lucky — the sea respects their innocence.'\n\nArjun smiled for the first time in days. 'Tell him the sea has been testing this young captain's luck every single day.'\n\nThe crew laughed — all of them, together, including Raj. It was the first real laughter since the wave hit. {player_name} held onto that sound like a compass bearing.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — hearts vs numbers, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch7_s3_a",
+            "label": "Consolidate and strengthen before the next challenge",
+            "description": "Arjun uses the breathing room to repair, rest, and reinforce — preparation is the best protection.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch8",
+            "consequence_hint": "Preparation in calm moments determines survival in crisis moments."
+          },
+          {
+            "id": "ch7_s3_b",
+            "label": "Maintain momentum — keep moving toward port",
+            "description": "Arjun pushes the crew and ship forward, knowing that every nautical mile covered is a mile closer to safety.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "next_chapter": "ch8",
+            "consequence_hint": "Forward motion builds hope — but fatigue and worn equipment have limits."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch8_s1",
+        "chapter": "ch8",
+        "title": "The Horizon",
+        "narrative": "Day twelve. Keiko suddenly looked up from the chart table. 'Arjun — I am seeing land on radar. Bearing two-seven-zero, approximately forty nautical miles.'\n\nThe bridge erupted. But Keiko raised her hand: 'Wait. It is not Mauritius. It is a small island — possibly uninhabited. It is not on our direct course, but it is much closer than Mauritius.'\n\nThe island could offer fresh water, shelter, and rest. But it would also mean a diversion, and they had no charts for the approach — reefs, shallows, and currents were unknown.\n\n{player_name} faced a new calculation: the safety of a nearby island against the certainty of a known port that was still two days away.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the horizon, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch8_s1_a",
+            "label": "Take the strategic approach",
+            "description": "Arjun analyzes the situation carefully before deciding, weighing every option against the resources available.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch8_s2",
+            "consequence_hint": "Strategy preserves resources — but the sea does not always wait for analysis."
+          },
+          {
+            "id": "ch8_s1_b",
+            "label": "Trust your instincts and act",
+            "description": "Arjun goes with his gut feeling, developed through years of sailing and sharpened by two weeks of crisis command.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch8_s2",
+            "consequence_hint": "Instinct is fast and often right — but in unfamiliar waters, it can lead you astray."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch8_s2",
+        "chapter": "ch8",
+        "title": "False Hope",
+        "narrative": "The fisherman gestured excitedly when he heard about the island. Through gestures and fragments of shared words, he indicated he knew these waters — or waters like them. He could guide them through the reefs.\n\nKeiko was cautious: 'We have no chart data. Reefs can tear the hull open. One mistake and we are all in the water.'\n\nBut Dr. Sonia countered: 'The Indonesian survivors need fresh water urgently. Another two days might be too long for them.'\n\nArjun looked at the fisherman. The man who was once a stranger they rescued was now potentially their best guide. Captain Mehta had told him to trust this man.\n\n{player_name} weighed the risks: an uncharted island guided by instinct, or two more hard days to a charted port.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — false hope, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch8_s2_a",
+            "label": "Prioritize crew safety above all else",
+            "description": "Arjun makes the conservative choice, ensuring no one is put at unnecessary risk even if it costs time or resources.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch8_s3",
+            "consequence_hint": "Safety-first leadership builds deep trust — but excessive caution can cost opportunities."
+          },
+          {
+            "id": "ch8_s2_b",
+            "label": "Push forward — the mission requires calculated risks",
+            "description": "Arjun accepts a measured risk, trusting the crew's skills and the ship's resilience to handle the challenge.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch8_s3",
+            "consequence_hint": "Calculated risks are the engine of progress — but miscalculation at sea has no margin for error."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch8_s3",
+        "chapter": "ch8",
+        "title": "Real Hope",
+        "narrative": "Whatever Arjun chose, the journey continued with renewed hope. The crew worked with an energy that the first week had lacked — not adrenaline, but purpose. They had survived storms, rebellion, rationing, and rescue. They were not the same people who left port.\n\nCaptain Mehta, increasingly lucid as Dr. Sonia's treatment progressed, called Arjun to his bedside. 'I have been listening through the intercom,' he said. 'I heard every decision, every crisis, every argument. You have my ship and my crew.'\n\nHe paused. 'And you have my respect.'\n\n{player_name} nodded, unable to speak. From a captain, there was no higher honour.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — real hope, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch8_s3_a",
+            "label": "Consolidate and strengthen before the next challenge",
+            "description": "Arjun uses the breathing room to repair, rest, and reinforce — preparation is the best protection.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch9",
+            "consequence_hint": "Preparation in calm moments determines survival in crisis moments."
+          },
+          {
+            "id": "ch8_s3_b",
+            "label": "Maintain momentum — keep moving toward port",
+            "description": "Arjun pushes the crew and ship forward, knowing that every nautical mile covered is a mile closer to safety.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "next_chapter": "ch9",
+            "consequence_hint": "Forward motion builds hope — but fatigue and worn equipment have limits."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch9_s1",
+        "chapter": "ch9",
+        "title": "Darkening Skies",
+        "narrative": "Day thirteen. The weather turned again — darker, faster, meaner than before. Keiko's instruments showed a developing cyclonic system. Not a direct hit, but close enough to generate severe conditions.\n\nThis was different from the earlier storms. The ship was weaker — patched hull, stressed engine, depleted fuel. The crew was weaker — tired, hungry, emotionally strained. And there were eight of them now, not six.\n\nArjun knew that this storm would test everything they had built. Every relationship, every repair, every ounce of remaining strength.\n\n{player_name} looked at the darkening sky and made a choice: fear or focus. He chose focus.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — darkening skies, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch9_s1_a",
+            "label": "Take the strategic approach",
+            "description": "Arjun analyzes the situation carefully before deciding, weighing every option against the resources available.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch9_s2",
+            "consequence_hint": "Strategy preserves resources — but the sea does not always wait for analysis."
+          },
+          {
+            "id": "ch9_s1_b",
+            "label": "Trust your instincts and act",
+            "description": "Arjun goes with his gut feeling, developed through years of sailing and sharpened by two weeks of crisis command.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch9_s2",
+            "consequence_hint": "Instinct is fast and often right — but in unfamiliar waters, it can lead you astray."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch9_s2",
+        "chapter": "ch9",
+        "title": "All Hands",
+        "narrative": "All hands on deck. Arjun assigned every person a role. Keiko on navigation. Raj in the engine room. Dr. Sonia securing patients and supplies. Balaji lashing down everything loose. The fisherman watching the sea. The Indonesian survivors helping wherever they could.\n\nThe storm hit at 3 AM. Waves bigger than anything they had faced. The ship rolled thirty degrees — a terrifying angle. Water came over the bow.\n\nArjun held the wheel with both hands, correcting every roll, riding every wave, talking to the crew through the intercom: 'We have been through this before. We know what to do. Every one of you is doing exactly what we need. Stay steady.'\n\n{player_name} had never been more frightened. He had also never been more focused.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — all hands, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch9_s2_a",
+            "label": "Prioritize crew safety above all else",
+            "description": "Arjun makes the conservative choice, ensuring no one is put at unnecessary risk even if it costs time or resources.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch9_s3",
+            "consequence_hint": "Safety-first leadership builds deep trust — but excessive caution can cost opportunities."
+          },
+          {
+            "id": "ch9_s2_b",
+            "label": "Push forward — the mission requires calculated risks",
+            "description": "Arjun accepts a measured risk, trusting the crew's skills and the ship's resilience to handle the challenge.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch9_s3",
+            "consequence_hint": "Calculated risks are the engine of progress — but miscalculation at sea has no margin for error."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch9_s3",
+        "chapter": "ch9",
+        "title": "The Eye",
+        "narrative": "The storm's eye passed nearby — a brief period of eerie calm where stars were visible through the gap in the clouds. Arjun stepped onto the bridge wing and looked up.\n\nThe fisherman was there too. He pointed at the stars and traced a pattern with his finger. Navigation by stars — a skill older than any instrument. He pointed in a direction and nodded: that way. Port.\n\nArjun looked at the GPS, then at the fisherman's stars, then back at the GPS. They agreed. The fisherman smiled — the first real smile Arjun had seen from him.\n\nThe second half of the storm hit, but somehow it felt different. Not weaker — they were stronger. The ship groaned but held. The crew held. The captain — the real one and the makeshift one — held.\n\n{player_name} brought the ship through the storm as dawn broke, golden and warm, on the horizon.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the eye, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch9_s3_a",
+            "label": "Consolidate and strengthen before the next challenge",
+            "description": "Arjun uses the breathing room to repair, rest, and reinforce — preparation is the best protection.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch10",
+            "consequence_hint": "Preparation in calm moments determines survival in crisis moments."
+          },
+          {
+            "id": "ch9_s3_b",
+            "label": "Maintain momentum — keep moving toward port",
+            "description": "Arjun pushes the crew and ship forward, knowing that every nautical mile covered is a mile closer to safety.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "next_chapter": "ch10",
+            "consequence_hint": "Forward motion builds hope — but fatigue and worn equipment have limits."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch10_s1",
+        "chapter": "ch10",
+        "title": "Port Lights",
+        "narrative": "Day fourteen. Port Louis, Mauritius. The harbour appeared through the morning mist like a promise kept.\n\nKeiko's voice cracked as she read the bearing: 'Port dead ahead. Twelve nautical miles.' She started to say something else but stopped, pressing her hand to her mouth.\n\nRaj came up from the engine room with oil on his face and tears in his eyes. 'Engine held. The old girl held.' He patted the bulkhead like it was a living thing.\n\nThe fisherman stood at the bow, watching the land approach, his face unreadable. The Indonesian survivors held each other and wept.\n\n{player_name} stood at the helm and watched the port grow closer, feeling something he could not name. Not triumph. Not relief. Something quieter. Something like gratitude.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — port lights, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch10_s1_a",
+            "label": "Take the strategic approach",
+            "description": "Arjun analyzes the situation carefully before deciding, weighing every option against the resources available.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch10_s2",
+            "consequence_hint": "Strategy preserves resources — but the sea does not always wait for analysis."
+          },
+          {
+            "id": "ch10_s1_b",
+            "label": "Trust your instincts and act",
+            "description": "Arjun goes with his gut feeling, developed through years of sailing and sharpened by two weeks of crisis command.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch10_s2",
+            "consequence_hint": "Instinct is fast and often right — but in unfamiliar waters, it can lead you astray."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch10_s2",
+        "chapter": "ch10",
+        "title": "The Arrival",
+        "narrative": "The Sagar Mitra entered Port Louis harbour to find a coast guard escort waiting — someone had picked up their VHF signal in the last twelve hours. The dock was crowded: Indian embassy officials, maritime authorities, reporters, and — to Arjun's shock — his father.\n\nHis father ran along the dock as the ship was mooring, shouting his name. When the gangplank was lowered, he was the first person aboard. He grabbed Arjun and held him so tight that Arjun could not breathe.\n\n'I heard on the radio,' his father said, voice breaking. 'They said a sixteen-year-old was commanding the ship. I knew it was you. I knew it.'\n\nCaptain Mehta was carried off on a stretcher, conscious and smiling. As he passed Arjun, he said: 'My report to the Indian Maritime Authority will recommend you for a commendation. You earned it.'\n\n{player_name} stood on the dock, surrounded by his crew — his crew — and let himself feel what he had held back for fourteen days.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — the arrival, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch10_s2_a",
+            "label": "Prioritize crew safety above all else",
+            "description": "Arjun makes the conservative choice, ensuring no one is put at unnecessary risk even if it costs time or resources.",
+            "delta": {
+              "crew_morale": 12,
+              "authority": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch10_s3",
+            "consequence_hint": "Safety-first leadership builds deep trust — but excessive caution can cost opportunities."
+          },
+          {
+            "id": "ch10_s2_b",
+            "label": "Push forward — the mission requires calculated risks",
+            "description": "Arjun accepts a measured risk, trusting the crew's skills and the ship's resilience to handle the challenge.",
+            "delta": {
+              "authority": 10,
+              "crew_morale": 8,
+              "navigation": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch10_s3",
+            "consequence_hint": "Calculated risks are the engine of progress — but miscalculation at sea has no margin for error."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      },
+      {
+        "scene_id": "ch10_s3",
+        "chapter": "ch10",
+        "title": "What Was Learned",
+        "narrative": "A week later, after debriefs, medical checks, and more hugs from his father than Arjun could count, the Maritime Authority held a small ceremony at the Indian High Commission in Mauritius.\n\nThe fisherman was there — cleaned up, healthy, smiling. Through a translator, he told Arjun: 'Where I come from, we say: the sea does not choose captains. The captain is whoever the sea cannot break.'\n\nKeiko gave Arjun a small compass — Japanese-made, engraved with both their names. Raj shook his hand and said: 'I would sail with you again.' Coming from Raj, it was the greatest compliment possible.\n\nDr. Sonia said: 'You need to eat more. And sleep. In that order.'\n\nArjun's father watched all of this and said nothing. He did not need to. His face said everything.\n\n{player_name} held the compass and looked out at the ocean — calm today, blue and infinite. Somewhere out there, the Southern Ocean was already preparing its next storm. But today, the harbour was safe, the crew was whole, and the captain was sixteen years old.",
+        "image_prompt": "A scene aboard a research vessel in the Southern Ocean — what was learned, a teenage captain navigating challenges, crew working together, ocean and sky visible, watercolor illustration",
+        "coaching_moment": "Leadership at sea teaches the same lessons as leadership on land: know where you are going, care about your people, and never stop adapting.",
+        "choices": [
+          {
+            "id": "ch10_s3_a",
+            "label": "Accept the compass and look to the horizon — the sea will call again",
+            "description": "Arjun holds Keiko's compass and knows: this was not the end of his life at sea. It was the beginning.",
+            "delta": {
+              "authority": 20,
+              "crew_morale": 18,
+              "navigation": 15
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "is_ending": true,
+            "ending_type": "born_captain",
+            "ending_message": "Arjun became the youngest person to receive the Indian Maritime Authority's Special Service Commendation. He returned to sea at eighteen, joining the merchant navy with Captain Mehta's recommendation. Keiko sent postcards from Tokyo. Raj called every New Year. The fisherman — whose name, they finally learned, was Selvam — returned to his village a hero, with a story about a sixteen-year-old Indian captain that his grandchildren never tired of hearing. And every time Arjun held Keiko's compass, he remembered: the sea does not choose captains. The captain is whoever the sea cannot break."
+          },
+          {
+            "id": "ch10_s3_b",
+            "label": "Hug your father and go home — you have earned solid ground",
+            "description": "Arjun walks off the dock with his father, feeling the land steady beneath his feet for the first time in two weeks.",
+            "delta": {
+              "crew_morale": 20,
+              "authority": 15,
+              "navigation": 15
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "is_ending": true,
+            "ending_type": "safe_harbour",
+            "ending_message": "Arjun slept for fourteen hours straight in the hotel in Port Louis. When he woke, his father was sitting in a chair by the bed, watching him. 'I was so afraid,' his father said quietly. 'But I was also so proud.' Arjun went on to study marine engineering, combining his love of the sea with the technical knowledge he wished he had during those fourteen days. He kept Keiko's compass on his desk throughout university. And he never forgot what Selvam the fisherman taught him: that the most advanced navigation technology in the world cannot replace a man who reads the stars with his bare eyes and the sea with his bare feet."
+          }
+        ],
+        "narrative_variants": {
+          "trusted_fisherman": "The fisherman Selvam had become an integral part of the crew — his ocean wisdom proving invaluable again and again.",
+          "took_command": "Arjun's early decision to take the helm immediately had set the tone for the entire voyage — decisive action in the first moment."
+        }
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "helm",
+      "definition": "The steering apparatus of a ship — and by extension, the position of leadership and command."
+    },
+    {
+      "term": "nautical_mile",
+      "definition": "A unit of distance at sea, approximately 1.852 kilometres — used for navigation and measuring distances on water."
+    },
+    {
+      "term": "VHF_radio",
+      "definition": "Very High Frequency radio — used for short-range communication at sea, typically up to 30 nautical miles."
+    },
+    {
+      "term": "rationing",
+      "definition": "The controlled distribution of limited resources to ensure they last as long as needed."
+    },
+    {
+      "term": "barometer",
+      "definition": "An instrument that measures atmospheric pressure — falling pressure often indicates approaching storms."
+    },
+    {
+      "term": "bearing",
+      "definition": "The direction from one point to another, measured in degrees from north — essential for navigation."
+    },
+    {
+      "term": "triage",
+      "definition": "The process of prioritizing treatment or resources when demand exceeds supply."
+    },
+    {
+      "term": "hypothermia",
+      "definition": "A dangerous drop in body temperature caused by prolonged exposure to cold — common in maritime emergencies."
+    },
+    {
+      "term": "chain_of_command",
+      "definition": "The hierarchy of authority in an organization — at sea, knowing who gives orders and who follows them can mean life or death."
+    },
+    {
+      "term": "maritime_law",
+      "definition": "International laws governing conduct at sea, including the obligation to assist vessels in distress."
+    },
+    {
+      "term": "morale",
+      "definition": "The emotional state and confidence of a group — high morale keeps people functional under stress."
+    },
+    {
+      "term": "dead_reckoning",
+      "definition": "Navigation by estimating position based on speed, direction, and time — used when instruments fail."
+    },
+    {
+      "term": "commendation",
+      "definition": "An official award recognizing exceptional service or bravery — in maritime contexts, given for actions that saved lives."
+    },
+    {
+      "term": "squall",
+      "definition": "A sudden, violent gust of wind, often accompanied by rain — common and dangerous at sea."
+    },
+    {
+      "term": "galley",
+      "definition": "The kitchen on a ship — where food is prepared and, often, where the crew gathers for conversation."
+    },
+    {
+      "term": "draft",
+      "definition": "The depth of water a ship needs to float — critical when approaching unknown coastlines or reefs."
+    }
+  ],
+  "dimension_scoring_weights": {
+    "resilience": 0.25,
+    "strategic_thinking": 0.25,
+    "adaptability": 0.2,
+    "empathy": 0.15,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.05
+  },
+  "coaching_moment": "The sea does not choose captains. The captain is whoever the sea cannot break.",
+  "estimated_duration": "45-55 minutes",
+  "target_age": "10-18",
+  "tags": [
+    "story",
+    "survival",
+    "leadership",
+    "ocean",
+    "crisis",
+    "teamwork",
+    "life-skills"
+  ],
+  "cultural_context": "indian",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "critical_thinking",
+    "leadership",
+    "communication",
+    "social_emotional_learning"
+  ],
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}

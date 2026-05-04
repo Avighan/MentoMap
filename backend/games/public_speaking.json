@@ -1,0 +1,528 @@
+{
+  "session_game": {
+    "game_type": "public_speaking",
+    "title": "Public Speaking Arena",
+    "description": "Present to an AI audience. Handle Q&A, manage stage fright, and master the art of speaking with confidence.",
+    "route": "/speaking",
+    "icon": "🎤",
+    "badge_text": "AI Audience",
+    "gradient": [
+      "#EC4899",
+      "#DB2777"
+    ],
+    "help_content": {
+      "what_is": "A public speaking simulator where you present to an AI audience that reacts in real-time. Each audience member has a different personality — from supportive listeners to tough questioners. Practice presentations, handle Q&A, and build confidence.",
+      "tips": [
+        "Start with a hook — a story, question, or surprising fact",
+        "Structure your talk: Introduction, 3 key points, Conclusion",
+        "Use the 'rule of three' — group ideas in threes",
+        "Pause for emphasis — silence is powerful",
+        "End with a clear call to action",
+        "Practice your opening and closing — they matter most"
+      ]
+    },
+    "initial_state": {
+      "performance_score": 0,
+      "audience_engagement": 50,
+      "confidence_level": 0,
+      "questions_handled": 0
+    },
+    "session_phases": [
+      "Opening Hook",
+      "Core Message",
+      "Supporting Points",
+      "Q&A",
+      "Closing"
+    ],
+    "scoring_rubric": {
+      "content_structure": {
+        "weight": 0.2,
+        "description": "Was the presentation well-organized with clear structure?"
+      },
+      "delivery_confidence": {
+        "weight": 0.2,
+        "description": "Was the delivery confident, natural, and engaging?"
+      },
+      "audience_engagement": {
+        "weight": 0.15,
+        "description": "Did they keep the audience interested throughout?"
+      },
+      "clarity_simplicity": {
+        "weight": 0.15,
+        "description": "Were complex ideas explained simply and clearly?"
+      },
+      "qa_handling": {
+        "weight": 0.15,
+        "description": "How well did they handle questions from the audience?"
+      },
+      "memorable_impact": {
+        "weight": 0.15,
+        "description": "Would the audience remember this talk?"
+      }
+    },
+    "persona_pool": [
+      {
+        "id": "curious_student",
+        "name": "Ishaan Patel",
+        "archetype": "Curious Student",
+        "focus": "understanding, learning, asking clarifying questions",
+        "personality": "Genuinely curious and eager to learn. Asks innocent but sometimes surprisingly deep questions. Represents the audience member who wants to understand your topic.",
+        "tough_question_style": "That's interesting, but can you explain how that actually works in practice?",
+        "voice": "echo",
+        "avatar_emoji": "🙋",
+        "difficulty_weight": 1,
+        "friendly_weight": 5
+      },
+      {
+        "id": "tough_questioner",
+        "name": "Prof. Raman Iyer",
+        "archetype": "Tough Questioner",
+        "focus": "challenging claims, testing knowledge depth, finding holes",
+        "personality": "Academic and rigorous. Asks tough questions to test whether the speaker truly knows their topic. Not hostile — genuinely testing competence. Respects well-defended points.",
+        "tough_question_style": "You cited a 2019 study, but more recent research contradicts that. How do you reconcile?",
+        "voice": "onyx",
+        "avatar_emoji": "🎓",
+        "difficulty_weight": 5,
+        "friendly_weight": 1
+      },
+      {
+        "id": "bored_audience",
+        "name": "Rhea Malhotra",
+        "archetype": "Disengaged Listener",
+        "focus": "relevance, entertainment value, personal connection",
+        "personality": "Starts out uninterested. Checks phone frequently. Tests whether you can re-engage a disengaged audience. Will perk up if you tell a good story or make it relevant to her.",
+        "tough_question_style": "Sorry, I zoned out. Can you summarize why this matters to me?",
+        "voice": "shimmer",
+        "avatar_emoji": "😴",
+        "difficulty_weight": 3,
+        "friendly_weight": 2
+      },
+      {
+        "id": "supportive_mentor",
+        "name": "Dr. Kavita Nayak",
+        "archetype": "Supportive Mentor",
+        "focus": "encouragement, constructive feedback, building confidence",
+        "personality": "Warm and encouraging. Nods along, asks supportive questions. But also gives honest constructive feedback. The audience member every speaker wants.",
+        "tough_question_style": "Great point! Can you elaborate on the practical implications of that?",
+        "voice": "alloy",
+        "avatar_emoji": "💪",
+        "difficulty_weight": 1,
+        "friendly_weight": 5
+      },
+      {
+        "id": "heckler",
+        "name": "Sameer Thakur",
+        "archetype": "The Heckler",
+        "focus": "disruption, challenging authority, seeking attention",
+        "personality": "Disruptive and attention-seeking. Makes sarcastic comments, challenges your credibility, and tries to throw you off. Tests your composure and ability to handle disruption gracefully.",
+        "tough_question_style": "Come on, you can't seriously believe that. Do you even have experience in this field?",
+        "voice": "fable",
+        "avatar_emoji": "🎭",
+        "difficulty_weight": 5,
+        "friendly_weight": 1
+      },
+      {
+        "id": "practical_thinker",
+        "name": "Anjali Krishnamurthy",
+        "archetype": "Practical Thinker",
+        "focus": "implementation, real-world application, feasibility, next steps",
+        "personality": "Highly practical. Wants to know how to apply what you're saying. Not interested in theory alone. Asks 'so what?' and 'how do I use this?' questions.",
+        "tough_question_style": "Interesting theory. But how would a small business actually implement this tomorrow?",
+        "voice": "nova",
+        "avatar_emoji": "🛠️",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "industry_expert",
+        "name": "Rajat Saxena",
+        "archetype": "Industry Expert",
+        "focus": "domain knowledge, trends, competitive landscape, nuance",
+        "personality": "Deep domain expertise. Tests whether you're surface-level or truly knowledgeable. Will call out oversimplifications but respects nuanced perspectives.",
+        "tough_question_style": "You're oversimplifying. The reality in this industry is much more complex because...",
+        "voice": "echo",
+        "avatar_emoji": "🏆",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "emotional_connector",
+        "name": "Maya Desai",
+        "archetype": "Story Lover",
+        "focus": "stories, personal connection, emotional impact, authenticity",
+        "personality": "Connects through stories and emotions. Loves speakers who share personal experiences. Gets moved by authenticity. Will call out speakers who feel robotic or scripted.",
+        "tough_question_style": "The data is fine, but do you have a personal story that shows why this matters to you?",
+        "voice": "shimmer",
+        "avatar_emoji": "📖",
+        "difficulty_weight": 2,
+        "friendly_weight": 4
+      }
+    ],
+    "scenarios": [
+      {
+        "scenario_id": "college_presentation",
+        "title": "College Presentation — Final Year Project",
+        "description": "Present your final year project to a panel of professors and classmates. You have 10 minutes to showcase months of work. Make it count.",
+        "industry": "Academic",
+        "difficulty": "beginner",
+        "setting": "A college auditorium. Your slides are up on the projector. 50 classmates sit in the audience, and 3 professors are in the front row with evaluation sheets.",
+        "session_topic": "Presenting a final year engineering/MBA project to academic panel",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "curious_student",
+          "tough_questioner",
+          "supportive_mentor"
+        ],
+        "avoid_persona_types": [
+          "heckler"
+        ],
+        "coaching_tips": [
+          "Start with the problem you solved, not the technology you used",
+          "Prepare for technical deep-dive questions"
+        ],
+        "learning_objectives": [
+          "Structure a technical presentation",
+          "Handle academic Q&A"
+        ],
+        "storybook_pages": [
+          {
+            "title": "Months of Work",
+            "text": "Six months of coding, testing, and debugging. Your final year project is ready. Now you have 10 minutes to present it to the panel. Everything rides on this presentation.",
+            "icon": "💻",
+            "image_prompt": "Indian engineering student preparing presentation slides late at night, laptop with project code, scattered notes, determined, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_college_presentation/round_storybook_p0.png"
+          },
+          {
+            "title": "The Auditorium",
+            "text": "50 classmates fill the seats. Three professors sit in front with evaluation sheets. Your slides load on the projector. The clicker feels heavy in your hand.",
+            "icon": "🏛️",
+            "image_prompt": "Indian college auditorium, student at podium, professors in front row with clipboards, classmates in audience, presentation slides on screen, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_college_presentation/round_storybook_p1.png"
+          },
+          {
+            "title": "You're On",
+            "text": "The professor nods: 'You may begin.' Deep breath. Click to the first slide. Your voice fills the room. This is your moment.",
+            "icon": "🎯",
+            "image_prompt": "Indian student at podium beginning presentation, first slide visible, audience attentive, college auditorium, spotlight moment, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_college_presentation/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "ted_style_talk",
+        "title": "TED-Style Talk — Share Your Idea",
+        "description": "Give a 5-minute talk about an idea worth spreading. No slides, just you and your words. Engage, inspire, and leave the audience thinking.",
+        "industry": "Public Speaking",
+        "difficulty": "intermediate",
+        "setting": "A round red carpet on a small stage. A single spotlight. 200 people in the audience. No podium, no slides — just you and a microphone.",
+        "session_topic": "Delivering a TED-style talk about an idea worth spreading",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "emotional_connector",
+          "bored_audience",
+          "practical_thinker"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Tell a personal story that connects to a bigger idea",
+          "No jargon — speak so anyone can understand"
+        ],
+        "learning_objectives": [
+          "Craft a compelling narrative",
+          "Speak without slides"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Red Carpet",
+            "text": "A round red carpet. A single spotlight. 200 faces looking at you. No slides to hide behind. No podium to grip. Just you, a microphone, and an idea worth spreading.",
+            "icon": "🔴",
+            "image_prompt": "TED-style stage with red circular carpet, single spotlight, Indian speaker stepping into light, audience silhouettes, inspirational atmosphere, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_ted_style_talk/round_storybook_p0.png"
+          },
+          {
+            "title": "Your Idea",
+            "text": "Everyone has one big idea. Something they've learned, experienced, or discovered that could change how people think. Tonight, you share yours in 5 minutes.",
+            "icon": "💡",
+            "image_prompt": "Indian speaker with lightbulb visualization above head, inspirational pose, warm stage lighting, thought bubbles forming, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_ted_style_talk/round_storybook_p1.png"
+          },
+          {
+            "title": "The First Word",
+            "text": "The host introduces you. Applause fades. Silence. 200 people wait for your first word. Make it count — the opening defines the talk.",
+            "icon": "🎤",
+            "image_prompt": "Close-up of Indian speaker at microphone, stage lights, expectant audience in background, powerful moment of beginning, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_ted_style_talk/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "conference_keynote",
+        "title": "Industry Conference — Keynote Address",
+        "description": "You're the keynote speaker at a major industry conference. 500 professionals expect insights, not fluff. Deliver value or lose the room.",
+        "industry": "Professional Conference",
+        "difficulty": "advanced",
+        "setting": "A large conference hall. 500 industry professionals, live streaming, and press coverage. Your company's reputation is on the line.",
+        "session_topic": "Delivering a keynote address at a major industry conference",
+        "conversation_turns": 12,
+        "preferred_persona_types": [
+          "industry_expert",
+          "tough_questioner",
+          "practical_thinker"
+        ],
+        "avoid_persona_types": [
+          "curious_student"
+        ],
+        "coaching_tips": [
+          "Lead with insights, not introductions",
+          "Have clear takeaways the audience can act on"
+        ],
+        "learning_objectives": [
+          "Handle large audience presentations",
+          "Manage expert-level Q&A"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Big Stage",
+            "text": "500 professionals. Live streaming to thousands more. Three journalists in the front row. Your CEO texted: 'Don't mess this up.' No pressure.",
+            "icon": "🎪",
+            "image_prompt": "Large Indian tech conference hall, 500 attendees, massive screen behind stage, cameras recording, keynote speaker about to go on, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_conference_keynote/round_storybook_p0.png"
+          },
+          {
+            "title": "The Expectations",
+            "text": "Last year's keynote went viral — for the wrong reasons. The speaker rambled for 45 minutes with no substance. The bar is low, but the expectations are high.",
+            "icon": "📈",
+            "image_prompt": "Backstage at Indian conference, speaker reviewing notes, stage manager giving countdown, energy and pressure visible, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_conference_keynote/round_storybook_p1.png"
+          },
+          {
+            "title": "Command the Room",
+            "text": "The lights dim. Your name appears on the screen behind you. You walk to the center of the stage. 500 faces turn toward you. Own this room.",
+            "icon": "🌟",
+            "image_prompt": "Indian professional walking onto conference stage, name displayed on massive screen, audience applauding, confident stride, spotlights, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_conference_keynote/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "wedding_toast",
+        "title": "Best Friend's Wedding — The Toast",
+        "description": "Your best friend is getting married and you're giving the toast. 300 guests, emotional families, and one chance to make it perfect. No pressure.",
+        "industry": "Personal / Social",
+        "difficulty": "beginner",
+        "setting": "A beautifully decorated wedding reception hall. 300 guests at tables. All eyes turn to you as you stand up with the microphone.",
+        "session_topic": "Delivering a heartfelt and entertaining wedding toast",
+        "conversation_turns": 8,
+        "preferred_persona_types": [
+          "emotional_connector",
+          "supportive_mentor",
+          "curious_student"
+        ],
+        "avoid_persona_types": [
+          "heckler",
+          "tough_questioner"
+        ],
+        "coaching_tips": [
+          "Balance humor with heart",
+          "Keep it under 3 minutes — shorter is better"
+        ],
+        "learning_objectives": [
+          "Speak with emotion and authenticity",
+          "Balance humor with sincerity"
+        ],
+        "storybook_pages": [
+          {
+            "title": "Your Best Friend",
+            "text": "You've been friends since school. Shared lunches, survived exams, celebrated first jobs together. Now they're getting married, and they asked you to give the toast.",
+            "icon": "🤝",
+            "image_prompt": "Montage of Indian friendship memories - school days, college, first jobs, leading to wedding, warm nostalgic digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_wedding_toast/round_storybook_p0.png"
+          },
+          {
+            "title": "The Reception",
+            "text": "300 guests at beautifully decorated tables. Grandparents, cousins, college friends, office colleagues. The DJ hands you the microphone. The room goes quiet.",
+            "icon": "🎊",
+            "image_prompt": "Beautiful Indian wedding reception, decorated hall with flowers and lights, 300 guests at tables, person standing up with microphone, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_wedding_toast/round_storybook_p1.png"
+          },
+          {
+            "title": "Speak from the Heart",
+            "text": "Your friend looks at you from the head table and smiles. Their partner squeezes their hand. This isn't about being perfect — it's about being real. Go.",
+            "icon": "❤️",
+            "image_prompt": "Indian wedding toast moment, speaker holding microphone, bride and groom smiling from head table, warm golden lighting, emotional atmosphere, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_wedding_toast/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "crisis_address",
+        "title": "Crisis Communication — Addressing the Team",
+        "description": "Bad news has hit your company. Layoffs, product failure, or a PR crisis. You must address 100 anxious employees and maintain morale while being honest.",
+        "industry": "Corporate Leadership",
+        "difficulty": "advanced",
+        "setting": "A company all-hands meeting room. 100 employees sit with worried faces. Rumors have been flying for days. You're the one who has to tell the truth.",
+        "session_topic": "Addressing employees during a company crisis with honesty and empathy",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "tough_questioner",
+          "emotional_connector",
+          "practical_thinker"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Be honest — people can handle truth better than uncertainty",
+          "Acknowledge emotions before delivering facts"
+        ],
+        "learning_objectives": [
+          "Communicate during crisis",
+          "Balance transparency with reassurance"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Crisis",
+            "text": "The news dropped yesterday. Your company's biggest client pulled out. Revenue dropped 40%. The board decided on restructuring. 100 employees are about to hear news that changes their lives.",
+            "icon": "⚡",
+            "image_prompt": "Indian corporate office, emergency meeting being called, worried employees checking phones, hushed conversations, tense atmosphere, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_crisis_address/round_storybook_p0.png"
+          },
+          {
+            "title": "The Responsibility",
+            "text": "As the leader, it's your job to tell the truth. Not sugarcoat it, not dodge questions. Stand up there and be honest, while somehow keeping this team together.",
+            "icon": "🛡️",
+            "image_prompt": "Indian leader standing alone in empty meeting room, preparing remarks, weight of responsibility visible, corporate office at night, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_crisis_address/round_storybook_p1.png"
+          },
+          {
+            "title": "Face the Team",
+            "text": "100 faces look at you. Some angry, some scared, some resigned. They need honesty, clarity, and hope — in that order. You step to the front. 'I owe you the truth.'",
+            "icon": "🗣️",
+            "image_prompt": "Indian corporate town hall, leader at front facing 100 anxious employees, serious but compassionate expression, crisis meeting atmosphere, digital art",
+            "image_url": "/uploads/media/images/story/public_speaking_crisis_address/round_storybook_p2.png"
+          }
+        ]
+      }
+    ]
+  },
+  "learning_concept": "Consequence Thinking & Resource Management",
+  "coach_mode_default": true,
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "game_type": "debate",
+  "achievements": [
+    {
+      "id": "compelling_orator",
+      "name": "Compelling Orator",
+      "description": "Delivered a persuasive, well-structured argument",
+      "condition": "persuasiveness_score >= 80",
+      "xp_reward": 200,
+      "icon": "🎤"
+    },
+    {
+      "id": "fact_finder",
+      "name": "Fact Finder",
+      "description": "Used strong evidence in every argument",
+      "condition": "evidence_count >= 5",
+      "xp_reward": 150,
+      "icon": "🔍"
+    },
+    {
+      "id": "debate_complete",
+      "name": "Debate Champion",
+      "description": "Completed the debate challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "🏆"
+    }
+  ],
+  "title": "Public Speaking",
+  "initial_state": {
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_counter_strength": 0.5,
+      "round_limit": 4,
+      "hint_mode": true
+    },
+    "medium": {
+      "ai_counter_strength": 0.75,
+      "round_limit": 5,
+      "hint_mode": false
+    },
+    "hard": {
+      "ai_counter_strength": 1.0,
+      "round_limit": 6,
+      "hint_mode": false
+    }
+  },
+  "description": "Face a virtual audience and practise the structure, delivery, and presence that make a speech memorable. From opening hook to closing call-to-action — own the room.",
+  "game_id": "public_speaking",
+  "dimension_scoring_weights": {
+    "adaptability": 0.35,
+    "resilience": 0.3,
+    "strategic_thinking": 0.25,
+    "empathy": 0.1
+  },
+  "coaching_moment": "Face a virtual audience and practise the structure, delivery, and presence that make a speech memorable. From opening hook to closing call-to-action — own the room.",
+  "tags": [
+    "adaptability",
+    "communication",
+    "debate"
+  ],
+  "cultural_context": "Public speaking confidence is among the most consistently cited skill gaps in India's graduate workforce. From college campus placements to TED-style conferences, the ability to speak with clarity and conviction opens doors across India's professional landscape.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "adaptability",
+    "social-emotional-learning",
+    "critical-thinking"
+  ],
+  "estimated_duration": 20,
+  "target_age": "14-20",
+  "learning_objectives": [
+    "Develop critical thinking through debate gameplay",
+    "Practice decision-making in realistic scenarios",
+    "Build self-awareness about your strengths and areas for growth"
+  ],
+  "reflection_prompt": "Which argument from the other side actually made you reconsider? Why?"
+}

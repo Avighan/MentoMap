@@ -1,0 +1,3078 @@
+{
+  "game_id": "survival-island-adventure",
+  "title": "Survival Island: Stranded",
+  "game_type": "rounds",
+  "theme": "Stranded on a tropical island after a shipwreck",
+  "description": "Your cargo ship has gone down in a storm. You have washed ashore on an uncharted island with two fellow survivors. With no radio, no rescue guarantee, and dwindling supplies, every decision you make could mean the difference between survival and catastrophe. Choose wisely: help may be farther away than you think.",
+  "difficulty": "intermediate",
+  "duration_minutes": 80,
+  "target_audience": "Ages 13-18",
+  "icon_svg_id": "anchor",
+  "nep_tags": [
+    "critical_thinking",
+    "resource_management",
+    "decision_making",
+    "teamwork",
+    "risk_assessment",
+    "resilience",
+    "environmental_awareness"
+  ],
+  "learning_objectives": [
+    "Understand how to evaluate risk versus reward in high-stakes situations with incomplete information",
+    "Practice resource management by balancing competing priorities under scarcity",
+    "Learn how group dynamics, morale, and cooperation affect survival outcomes",
+    "Develop strategic thinking by planning multiple steps ahead rather than reacting impulsively",
+    "Explore how knowledge and skill-building compound over time to improve long-term outcomes"
+  ],
+  "how_to_play": {
+    "title": "How to Play",
+    "steps": [
+      "You are a survivor washed ashore on an uncharted tropical island after your cargo ship sank",
+      "Each round presents a new survival challenge requiring a strategic decision",
+      "Monitor your seven resources: Health, Energy, Food, Water, Shelter Quality, Morale, and Knowledge",
+      "Your choices affect not only the current round but echo through later rounds via callbacks",
+      "At three major branch points (Rounds 4, 8, and 12) your decision opens a different path",
+      "Reach the final rounds with enough resources to attempt rescue signaling"
+    ],
+    "tips": [
+      "Water is the most critical resource -- dehydration kills faster than starvation",
+      "Knowledge compounds -- investing time to learn skills pays off in later rounds",
+      "Alex and Sam represent different survival philosophies; observe their outcomes",
+      "High energy enables bolder actions; exhaustion leads to poor choices",
+      "Morale affects how well you and your companions work together"
+    ]
+  },
+  "ai_image_config": {
+    "style": "cinematic digital painting, realistic survival drama, tropical island setting, dramatic lighting",
+    "provider": "dalle",
+    "size": "1024x1024",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/survival_island"
+  },
+  "initial_state": {
+    "health": {
+      "icon": "heart",
+      "label": "Health",
+      "value": 100,
+      "min": 0,
+      "max": 100
+    },
+    "energy": {
+      "icon": "zap",
+      "label": "Energy",
+      "value": 80,
+      "min": 0,
+      "max": 100
+    },
+    "food": {
+      "icon": "package",
+      "label": "Food",
+      "value": 60,
+      "min": 0,
+      "max": 100
+    },
+    "water": {
+      "icon": "droplets",
+      "label": "Water",
+      "value": 60,
+      "min": 0,
+      "max": 100
+    },
+    "shelter_quality": {
+      "icon": "home",
+      "label": "Shelter Quality",
+      "value": 0,
+      "min": 0,
+      "max": 100
+    },
+    "morale": {
+      "icon": "smile",
+      "label": "Morale",
+      "value": 70,
+      "min": 0,
+      "max": 100
+    },
+    "knowledge": {
+      "icon": "book-open",
+      "label": "Knowledge",
+      "value": 0,
+      "min": 0,
+      "max": 100
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "Story & Narrative"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "competitors": [
+    {
+      "id": "alex",
+      "name": "Alex",
+      "personality": "aggressive",
+      "archetype": "risk-taker",
+      "description": "Alex moves fast and takes bold gambles. High risk, high reward -- but sometimes at a cost.",
+      "avatar": "person-standing",
+      "strategy_tags": [
+        "bold",
+        "impulsive",
+        "physical",
+        "competitive"
+      ]
+    },
+    {
+      "id": "sam",
+      "name": "Sam",
+      "personality": "cautious",
+      "archetype": "balanced",
+      "description": "Sam plans carefully, rarely acts without thinking twice. Slower gains but fewer disasters.",
+      "avatar": "person-standing",
+      "strategy_tags": [
+        "methodical",
+        "conservative",
+        "collaborative",
+        "patient"
+      ]
+    }
+  ],
+  "thresholds": [
+    {
+      "resource": "health",
+      "condition": "below",
+      "value": 20,
+      "severity": "critical",
+      "message": "Your health is dangerously low. One more misstep could be fatal.",
+      "ui_effect": "pulse_red"
+    },
+    {
+      "resource": "water",
+      "condition": "below",
+      "value": 10,
+      "severity": "critical",
+      "message": "You are severely dehydrated. Finding water is now your only priority.",
+      "ui_effect": "pulse_red"
+    },
+    {
+      "resource": "morale",
+      "condition": "below",
+      "value": 20,
+      "severity": "warning",
+      "message": "Group morale is collapsing. Without unity, survival becomes nearly impossible.",
+      "ui_effect": "dim_yellow"
+    }
+  ],
+  "halftime_config": {
+    "trigger_after_round": "r10",
+    "title": "Halfway Through Your Ordeal",
+    "reflection_question": "You have survived ten days on this island. Looking back at your decisions, which choice are you most proud of -- and which would you change if you could?",
+    "stat_summary": true,
+    "image_prompt": "A survivor sitting alone on a tropical beach at sunset, journal open in their lap, looking reflective, warm orange light, dramatic sky"
+  },
+  "psychological_framework": {
+    "name": "Survival Psychology and Decision Science",
+    "skills": [
+      {
+        "id": "risk_assessment",
+        "label": "Risk Assessment",
+        "description": "Evaluating the probability and magnitude of negative outcomes before acting"
+      },
+      {
+        "id": "resource_triage",
+        "label": "Resource Triage",
+        "description": "Prioritizing the most critical needs when everything feels urgent"
+      },
+      {
+        "id": "adaptive_planning",
+        "label": "Adaptive Planning",
+        "description": "Adjusting your strategy as new information and circumstances emerge"
+      },
+      {
+        "id": "group_dynamics",
+        "label": "Group Dynamics",
+        "description": "Managing relationships, conflict, and cooperation under extreme stress"
+      },
+      {
+        "id": "stress_inoculation",
+        "label": "Stress Inoculation",
+        "description": "Using past hardships to build psychological resilience for future challenges"
+      }
+    ]
+  },
+  "glossary": [
+    {
+      "term": "Triage",
+      "definition": "The process of sorting and prioritizing needs or casualties based on urgency and available resources."
+    },
+    {
+      "term": "Caloric Deficit",
+      "definition": "When you consume fewer calories than your body burns, leading to weight loss and eventually weakness."
+    },
+    {
+      "term": "Potable Water",
+      "definition": "Water that is safe to drink -- free of harmful bacteria, parasites, and contaminants."
+    },
+    {
+      "term": "Signal-to-Noise Ratio",
+      "definition": "In survival, the ability to broadcast a clear rescue signal (fire, mirror flash, radio) that stands out from background noise."
+    },
+    {
+      "term": "Shelter Microclimate",
+      "definition": "The localized climate conditions inside or immediately around your shelter, which you can actively manage for warmth or cooling."
+    },
+    {
+      "term": "Opportunity Cost",
+      "definition": "The value of the next-best option you give up when you choose a particular course of action."
+    },
+    {
+      "term": "Dehydration",
+      "definition": "A condition caused by insufficient water intake; even mild dehydration impairs judgment and physical performance."
+    },
+    {
+      "term": "Foraging",
+      "definition": "Searching for and collecting wild food sources such as fruits, roots, insects, and shellfish."
+    }
+  ],
+  "rounds": [
+    {
+      "id": "r1",
+      "title": "Day 1 Morning: Washed Ashore",
+      "story": "Salt water burns your throat as you claw your way up the sand. The cargo ship MV Meridian is gone -- swallowed by last night's storm in minutes. Around you, waves deposit splintered wood, tangled rope, and the occasional sealed container. Two other survivors, Alex and Sam, are already on their feet. Alex is hauling a heavy cargo case out of the surf. Sam is scanning the treeline with sharp, measuring eyes.\n\nYou have the clothes on your back, a waterproof lighter that miraculously still works, and perhaps twenty minutes before the rising tide swallows your access to the wreckage. Every second you spend here is a second the debris floats farther out of reach.\n\nThis is day one. The choices you make in the next hour will shape every day that follows.",
+      "setting": "A sandy cove flanked by volcanic rock. The wreckage of MV Meridian bobs two hundred metres offshore. Jungle begins twenty metres from the high-tide line.",
+      "challenge": "Maximize what you salvage from the wreck before the tide rises and debris disperses.",
+      "goal": "Secure critical supplies from the shipwreck debris before the opportunity is gone.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "beach",
+        "location": "Sandy cove with volcanic rock outcrops",
+        "time": "early morning, post-storm",
+        "weather": "overcast, waves still choppy",
+        "objects": "ship wreckage debris, cargo containers, driftwood, tangled rope, foam coolers",
+        "character_positions": "survivor standing knee-deep in surf, two others working nearby",
+        "mood": "desperate urgency, raw survival instinct"
+      },
+      "choices": [
+        {
+          "id": "r1_a",
+          "label": "Swim to the Wreckage",
+          "description": "Risk the choppy surf to reach the ship's hull and grab sealed supplies before they sink.",
+          "delta": {
+            "health": -10,
+            "energy": -20,
+            "food": 25,
+            "water": 15,
+            "morale": 5,
+            "risk_tolerance": 5,
+            "resilience": 4
+          },
+          "memory_tag": "swam_to_wreck",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Jackpot from the Deep!",
+            "description": "A sealed emergency kit: protein bars, a water filtration straw, flares, and a folding knife. The risk paid off."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r1_b",
+          "label": "Collect Debris on the Shore",
+          "description": "Stay on the beach and systematically collect everything washing in -- rope, wood, containers.",
+          "delta": {
+            "energy": -10,
+            "food": 10,
+            "water": 5,
+            "shelter_quality": 10,
+            "morale": 5,
+            "knowledge": 5,
+            "impulse_control": 5,
+            "strategic_thinking": 3
+          },
+          "memory_tag": "collected_debris",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Smart Salvage!",
+            "description": "Solid timber, rope, a tarp, and a dented but usable metal pot. Not glamorous, but exactly what shelter-building needs."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r1_c",
+          "label": "Scout the Jungle Edge",
+          "description": "Let Alex and Sam handle the debris while you assess the island and look for fresh water immediately.",
+          "delta": {
+            "energy": -5,
+            "water": 20,
+            "knowledge": 15,
+            "morale": -5,
+            "strategic_thinking": 5,
+            "delayed_gratification": 4
+          },
+          "memory_tag": "scouted_jungle_early",
+          "consequence_scene": {
+            "animation_type": "twist",
+            "headline": "You Found a Stream!",
+            "description": "A freshwater stream just inside the treeline. Critical knowledge -- but Alex eyes you with suspicion. 'Glad you were so helpful with the salvage,' they say flatly."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "risk_tolerance",
+          "impulse_control"
+        ]
+      },
+      "image_prompt": "a desolate beach at dawn, waves lapping at splintered wood and tangled ropes, two figures searching the shoreline, a heavy cargo case partially submerged in the surf, golden sunlight breaking through clouds",
+      "coaching_moment": "Consider how this choice affects your long-term resources, not just the immediate gain.",
+      "reflection_prompt": "What tradeoff did this decision reveal? What did you gain, and what did you give up?",
+      "expert_pick": {
+        "choice_id": "r1_a",
+        "reason": "Resilience research shows that processing setbacks openly builds stronger teams."
+      }
+    },
+    {
+      "id": "r2",
+      "title": "Day 1 Afternoon: The First Camp",
+      "story": "The sun is climbing and the island heat is punishing. You have a rough pile of salvage on the beach but no shelter, no fire, and the jungle is beginning to make sounds you cannot identify. Alex wants to build a big signal fire on the beach immediately -- 'Get rescued today,' they insist. Sam disagrees: 'We need shelter and water first. A fire won't matter if we're dead from exposure.'\n\nYou look at the sky. Clouds are building on the horizon. If it rains tonight without shelter, hypothermia is a real risk even in the tropics. But if there is a passing ship or aircraft, a fire today might be your best chance at early rescue.\n\nThe group looks at you. Someone has to decide.",
+      "setting": "Open beach near the cove. Salvage is piled on the sand. Jungle is close. Dark clouds building in the west.",
+      "challenge": "Allocate the group's limited afternoon energy between shelter, fire, or water.",
+      "goal": "Set the group's survival priorities before nightfall.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "beach",
+        "location": "Open beach with salvage pile",
+        "time": "midday, bright harsh sun",
+        "weather": "sunny with threatening clouds building on horizon",
+        "objects": "salvage pile, driftwood, palm trees, small rock formations",
+        "character_positions": "three survivors in discussion around the salvage pile, one pointing at jungle, one pointing at sea",
+        "mood": "tense group debate, urgency of survival decisions"
+      },
+      "choices": [
+        {
+          "id": "r2_a",
+          "label": "Build Shelter First",
+          "description": "Spend the afternoon constructing a basic lean-to from the salvaged tarp and timber.",
+          "delta": {
+            "energy": -20,
+            "shelter_quality": 25,
+            "morale": 10,
+            "health": 5,
+            "delayed_gratification": 5,
+            "strategic_thinking": 4
+          },
+          "memory_tag": "built_shelter_first",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Shelter Before Sundown!",
+            "description": "A solid lean-to is ready before the first raindrops fall. When the downpour hits at midnight, you stay dry. Alex admits it was the right call."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r2_b",
+          "label": "Light a Signal Fire",
+          "description": "Use the lighter to build a large smoke fire on the beach -- maximize visibility to passing vessels.",
+          "delta": {
+            "energy": -15,
+            "morale": 15,
+            "food": -5,
+            "shelter_quality": 0,
+            "risk_tolerance": 6,
+            "resilience": 3
+          },
+          "memory_tag": "lit_signal_fire_day1",
+          "consequence_scene": {
+            "animation_type": "warning",
+            "headline": "Smoke Seen -- But No One Comes",
+            "description": "A distant vessel appears on the horizon but changes course. The rain at night soaks everyone. Morale from the false hope, however, keeps spirits up through the miserable night."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "delayed_gratification"
+          ]
+        },
+        {
+          "id": "r2_c",
+          "label": "Divide and Conquer",
+          "description": "Send Alex to build shelter, Sam to fetch water, and you to gather firewood and food from the jungle edge.",
+          "delta": {
+            "energy": -15,
+            "shelter_quality": 15,
+            "water": 10,
+            "food": 10,
+            "morale": 10,
+            "strategic_thinking": 6,
+            "emotional_regulation": 4
+          },
+          "memory_tag": "teamwork_day1",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "A Functioning Camp!",
+            "description": "The group pulls together beautifully. By dusk you have shelter, water, a small fire, and coconuts. Sam raises an eyebrow: 'We might actually be okay.'"
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "emotional_regulation"
+        ]
+      },
+      "image_prompt": "a sun-drenched beach with a chaotic pile of salvage, looming dark clouds on the horizon, two figures debating urgently, tall jungle trees whispering ominously nearby, tension in the air",
+      "coaching_moment": "Think about trade-offs: what are you giving up to get this benefit?",
+      "expert_pick": {
+        "choice_id": "r2_c",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r3",
+      "title": "Day 2: Message in a Bottle",
+      "story": "Morning light filters through the palm fronds. Sam wakes you before dawn, holding something extraordinary: a glass bottle with a cork stopper and a rolled sheet of paper inside. It must have washed in during last night's rain. The handwriting is hurried but legible.",
+      "setting": "Your camp on the beach, early morning. The bottle sits on a flat rock by the camp fire.",
+      "challenge": "Interpret and act on the information in the mysterious message.",
+      "goal": "Use the message's information to improve your chances of survival or rescue.",
+      "scene_type": "newspaper",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "beach_camp",
+        "location": "Small camp with lean-to shelter, morning mist",
+        "time": "pre-dawn to sunrise",
+        "weather": "calm, dewy, post-rain freshness",
+        "objects": "glass bottle with paper inside, campfire embers, palm-frond shelter, makeshift log seats",
+        "character_positions": "two survivors leaning over a rock examining the bottle, one reading by firelight",
+        "mood": "mysterious hope, cautious curiosity"
+      },
+      "newspaper_content": {
+        "headline": "Message in a Bottle",
+        "subheadline": "Found washed ashore -- Day 2 morning",
+        "body": "To anyone who finds this: I was stranded on this island for 31 days in 2019. There is a freshwater lagoon 3 km northeast of the main cove. The eastern cliffs have caves -- dry, safe from storms. Rescue ships pass the southern reef on Thursdays. BUILD A HIGH SIGNAL FIRE on the southern cliffs on Wednesday night. Good luck. -- J. Torres",
+        "timestamp": "Undated"
+      },
+      "choices": [
+        {
+          "id": "r3_a",
+          "label": "Head Northeast for the Lagoon",
+          "description": "Trust the message and make the trek to secure a reliable freshwater source.",
+          "delta": {
+            "energy": -20,
+            "water": 30,
+            "knowledge": 15,
+            "food": 5,
+            "morale": 10,
+            "delayed_gratification": 5,
+            "growth_mindset": 4
+          },
+          "memory_tag": "found_lagoon",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "The Lagoon Is Real!",
+            "description": "A crystal-clear freshwater lagoon, ringed with fruit trees. Your water crisis is solved indefinitely. The message was real -- and trustworthy."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "delayed_gratification",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r3_b",
+          "label": "Scout the Eastern Caves",
+          "description": "Relocate camp to the cave system for permanent storm-proof shelter.",
+          "delta": {
+            "energy": -25,
+            "shelter_quality": 30,
+            "morale": 5,
+            "knowledge": 10,
+            "strategic_thinking": 5,
+            "resilience": 3
+          },
+          "memory_tag": "found_caves",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Cave Shelter Secured!",
+            "description": "The caves are exactly as described -- dry, elevated, with a view of the sea. Moving camp here fundamentally improves your long-term odds."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking",
+            "delayed_gratification"
+          ]
+        },
+        {
+          "id": "r3_c",
+          "label": "Plan for Thursday's Rescue Ship",
+          "description": "Focus all energy on preparing a massive Wednesday night signal fire on the southern cliffs.",
+          "delta": {
+            "energy": -15,
+            "food": -10,
+            "morale": 20,
+            "knowledge": 5,
+            "risk_tolerance": 6,
+            "impulse_control": 3
+          },
+          "memory_tag": "planned_signal_fire",
+          "consequence_scene": {
+            "animation_type": "warning",
+            "headline": "Today Is Monday -- Three Days Away",
+            "description": "You have time to prepare but must survive until then. The others agree to focus on building a massive fire cache. Hope is high -- but three days is a long time."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "delayed_gratification",
+          "risk_tolerance"
+        ]
+      },
+      "image_prompt": "a serene beach at dawn, soft morning light filtering through palm fronds, a young person holding a glass bottle with a cork, gentle waves lapping at the shore",
+      "coaching_moment": "How might your team react to this decision? What about your customers?",
+      "reflection_prompt": "Why did you choose this option? What were you trying to protect or grow?",
+      "expert_pick": {
+        "choice_id": "r3_a",
+        "reason": "Calculated risk-taking is what separates growth-oriented leaders from status-quo managers."
+      }
+    },
+    {
+      "id": "r4",
+      "title": "Day 3: The Fork in the Path",
+      "story": "On your third morning, the island reveals itself more clearly. From a rocky overlook you can see three distinct zones: a dense interior jungle, a sheltered southern bay with the cliffs the message mentioned, and a reef-ringed northern coast where you spotted what looked like a fishing vessel in the distance. Alex has already made their mind up: head north, try to flag the boat. Sam wants to go south and begin systematic rescue prep at the cliffs. You could also stay and spend the day fortifying camp and gathering resources.\n\nThis is the moment your survival strategy truly branches. Where you invest your energy today will determine the shape of the days to come.",
+      "setting": "A rocky overlook with a panoramic view of the island and surrounding sea. Wind is picking up.",
+      "challenge": "Choose the strategic direction that will define your survival path for the next several days.",
+      "goal": "Commit to a survival strategy at a critical decision point.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "island_overlook",
+        "location": "Rocky volcanic ridge, panoramic ocean view",
+        "time": "morning, golden hour",
+        "weather": "clear and windy, good visibility",
+        "objects": "volcanic rock ridge, distant fishing vessel on horizon, jungle canopy below, southern cliffs visible",
+        "character_positions": "three survivors standing on ridge looking out in different directions, tension between them",
+        "mood": "pivotal moment, dramatic fork in the road, hope and uncertainty"
+      },
+      "choices": [
+        {
+          "id": "r4_a",
+          "label": "Go North: Signal the Fishing Vessel",
+          "description": "Race to the northern coast to try to flag down the distant boat -- your best immediate rescue chance.",
+          "delta": {
+            "energy": -25,
+            "health": -5,
+            "morale": 15,
+            "food": -10,
+            "risk_tolerance": 8,
+            "resilience": 4
+          },
+          "memory_tag": "chose_north_path",
+          "consequence_scene": {
+            "animation_type": "twist",
+            "headline": "The Boat Is Gone -- But You Mapped the Coast",
+            "description": "By the time you reach the northern reef, the vessel has moved on. But you now have a detailed mental map of the northern coast and spotted a coconut grove."
+          },
+          "next_round_id": "r5_north",
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r4_b",
+          "label": "Go South: Establish Rescue Post",
+          "description": "Head to the southern cliffs and begin systematic preparation for the Thursday rescue ship.",
+          "delta": {
+            "energy": -20,
+            "shelter_quality": 15,
+            "knowledge": 10,
+            "morale": 10,
+            "strategic_thinking": 7,
+            "delayed_gratification": 5
+          },
+          "memory_tag": "chose_south_path",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Rescue Post Established!",
+            "description": "The southern cliffs are perfect. You begin a cache of dry wood for Wednesday night's fire. Sam builds a reflective signal mirror from salvage. Thursday feels achievable."
+          },
+          "next_round_id": "r5_south",
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r4_c",
+          "label": "Stay: Fortify Camp and Gather Resources",
+          "description": "Invest the day in camp improvement, food gathering, and tool-making before committing to any direction.",
+          "delta": {
+            "energy": -15,
+            "shelter_quality": 20,
+            "food": 20,
+            "knowledge": 15,
+            "morale": 5,
+            "strategic_thinking": 5,
+            "impulse_control": 7
+          },
+          "memory_tag": "chose_fortify_path",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "A Stronger Base",
+            "description": "Your camp is now genuinely comfortable. Alex is frustrated -- 'We're not here to live here!' -- but Sam nods. 'A good base means every future expedition starts stronger.'"
+          },
+          "next_round_id": "r5_fortify",
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "risk_tolerance"
+        ]
+      },
+      "image_prompt": "a rocky overlook with a panoramic view of a dense jungle, a tranquil southern bay with steep cliffs, and a distant northern coast featuring a fishing vessel, bright sunlight illuminating the scene",
+      "coaching_moment": "Look at your current resource levels — which constraint are you trying to address?",
+      "expert_pick": {
+        "choice_id": "r4_c",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r5_north",
+      "title": "Day 4: The Northern Coast (Aggressive Path)",
+      "story": "The northern coast is dramatic -- towering sea stacks, crashing surf, and a coconut grove so dense it seems designed for castaways. Alex is exhilarated, already climbing a palm tree barefoot at alarming speed. You found three useful items washed into a sea cave: a partially intact life raft (deflated but repairable), a flare gun with one cartridge, and a dented metal tin of biscuits.\n\nAlex wants to repair the raft and sail it around the reef to intercept passing vessels -- a bold, dangerous plan. You could also use this day to harvest the coconut grove thoroughly and cache food for the group. Or spend time studying the currents and tides to make any future water-based escape safer.",
+      "setting": "Northern coast -- dramatic sea stacks, crashing surf, dense coconut grove, sea cave with salvage.",
+      "challenge": "Decide how to use the opportunity and salvage you found on the northern coast.",
+      "goal": "Make the most of the northern coast's resources without taking fatal risks.",
+      "scene_type": "default",
+      "reflection_prompt": "You have now survived four full days. What has surprised you most about what it takes to survive? What resources -- physical or mental -- have you relied on most?",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "northern_coastline",
+        "location": "Rocky northern coast with sea stacks and coconut grove",
+        "time": "midday",
+        "weather": "sunny, surf crashing, sea wind",
+        "objects": "deflated life raft, flare gun, tin of biscuits, coconut palms, sea cave entrance",
+        "character_positions": "one survivor examining the life raft, another in a coconut palm, third studying the sea",
+        "mood": "adventurous but tense, bold optimism mixed with calculated risk"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "found_lagoon",
+          "round_ref": "Round 3",
+          "text_if_chosen": "Your lagoon knowledge means you know water is secured -- you can focus entirely on the raft and food here.",
+          "text_if_not": "Without a confirmed water source, every hour you spend here is an hour your water supply drops."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r5n_a",
+          "label": "Repair the Life Raft",
+          "description": "Spend the day patching the raft for a potential sea escape or inter-island signaling.",
+          "delta": {
+            "energy": -25,
+            "health": -5,
+            "knowledge": 20,
+            "morale": 10,
+            "risk_tolerance": 8,
+            "resilience": 5
+          },
+          "memory_tag": "repaired_raft",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Raft Partially Repaired!",
+            "description": "It holds air for about two hours. Not enough for open ocean, but useful for coastal signaling. Alex is buzzing with excitement. You burned a lot of energy."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r5n_b",
+          "label": "Harvest the Coconut Grove",
+          "description": "Spend the day systematically harvesting coconuts -- food and hydration in one.",
+          "delta": {
+            "energy": -20,
+            "food": 30,
+            "water": 20,
+            "morale": 15,
+            "delayed_gratification": 5,
+            "strategic_thinking": 4
+          },
+          "memory_tag": "harvested_coconuts",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "The Coconut Cache!",
+            "description": "Forty coconuts cached at camp. Food and water problems are eased for days. Sam is visibly relieved. Alex grumbles about missed rescue opportunities."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r5n_c",
+          "label": "Study the Currents",
+          "description": "Use the day to observe tide patterns, current direction, and sea traffic for future planning.",
+          "delta": {
+            "energy": -10,
+            "knowledge": 25,
+            "morale": 5,
+            "strategic_thinking": 8,
+            "delayed_gratification": 6
+          },
+          "memory_tag": "studied_currents",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Critical Navigation Knowledge!",
+            "description": "You observe that a southerly current runs past the reef every evening between 5-7 PM. Any raft or signal should be deployed then. Sam marks it in a makeshift journal."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "risk_tolerance",
+          "delayed_gratification"
+        ]
+      },
+      "image_prompt": "a rugged northern coast with towering sea stacks and crashing waves, a dense coconut grove in the background, sunlight glinting off the surf, excitement in the air as someone climbs a palm tree",
+      "coaching_moment": "Sometimes the bold choice carries risk, but also the highest reward. Weigh carefully.",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r5n_b",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r5_south",
+      "title": "Day 4: The Southern Cliffs (Strategic Path)",
+      "story": "The southern cliffs are everything the bottle message promised. A broad flat-topped rock juts out over the sea -- a natural signal platform. The view is extraordinary: on a clear day you could see a ship fifteen kilometres out. Sam is already calculating the optimal wood arrangement for maximum smoke visibility, speaking quietly but with precision that you are beginning to trust.\n\nBut as you explore the clifftop, you discover something unexpected: a rusted metal lockbox wedged in a rock crevice. Old, but solid. Inside, protected by decades of salt corrosion, is a hand-drawn map of the island -- more detailed than anything you could have made yourself -- and a small waterproof notebook filled with survival observations from a previous castaway.",
+      "setting": "Southern clifftop with dramatic ocean views. Flat rock platform. Rusted lockbox in a crevice.",
+      "challenge": "Balance rescue preparation with the new intelligence from the mysterious lockbox.",
+      "goal": "Set up the rescue signal post while extracting maximum value from the discovered artifacts.",
+      "scene_type": "diary",
+      "reflection_prompt": "You chose the patient, methodical path. What does this say about how you approach uncertain situations in your own life?",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "clifftop",
+        "location": "Southern clifftop with ocean panorama",
+        "time": "afternoon, golden light",
+        "weather": "clear, moderate wind, dramatic clouds on horizon",
+        "objects": "rusted lockbox, hand-drawn map, waterproof notebook, signal fire wood cache, signal mirror",
+        "character_positions": "one survivor reading notebook intently, another arranging signal wood, third staring at the ocean",
+        "mood": "discovery, quiet hope, methodical determination"
+      },
+      "diary_content": {
+        "author": "Unknown Castaway",
+        "date_found": "Day 4",
+        "entries": [
+          {
+            "day": 5,
+            "text": "Found freshwater. Key: follow the bird calls at dawn -- they lead to the lagoon northeast of main cove."
+          },
+          {
+            "day": 12,
+            "text": "Observed Thursday ship pattern. It appears between 0800-1000 from the south. Signal must be visible by 0700 to be safe."
+          },
+          {
+            "day": 28,
+            "text": "Caves on east coast are safe from all weather. Built permanent fire pit at cliff. Wood cache in the long hollow tree NW of platform."
+          }
+        ]
+      },
+      "callbacks": [
+        {
+          "memory_tag": "planned_signal_fire",
+          "round_ref": "Round 3",
+          "text_if_chosen": "Your earlier planning perfectly aligns with what the notebook confirms. You have a head start.",
+          "text_if_not": "The notebook gives you the rescue ship timing you didn't know you needed. Wednesday night preparation is now locked in."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r5s_a",
+          "label": "Decode the Map -- Explore the Whole Island",
+          "description": "Use the map to systematically survey island resources you didn't know existed.",
+          "delta": {
+            "energy": -20,
+            "knowledge": 30,
+            "food": 10,
+            "water": 10,
+            "morale": 10,
+            "strategic_thinking": 8,
+            "growth_mindset": 5
+          },
+          "memory_tag": "decoded_map",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Full Island Intelligence!",
+            "description": "The map reveals a freshwater spring, a fruit orchard, and two more caves. You now know this island better than most people know their own neighbourhood."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "r5s_b",
+          "label": "Build the Signal Fire Cache Now",
+          "description": "Prioritize the rescue mission -- spend the full day building an enormous signal fire cache.",
+          "delta": {
+            "energy": -25,
+            "shelter_quality": 10,
+            "morale": 15,
+            "food": -5,
+            "delayed_gratification": 6,
+            "resilience": 5
+          },
+          "memory_tag": "built_signal_cache",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Signal Cache Complete!",
+            "description": "A bonfire's worth of dry wood, coconut husks, and green branches (for black smoke) is cached and ready. Thursday is locked in. Sam calls it 'engineering hope.'"
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r5s_c",
+          "label": "Copy the Notebook and Return It",
+          "description": "Carefully transcribe all the key survival data into your own notes, preserving the original in the box for future castaways.",
+          "delta": {
+            "energy": -10,
+            "knowledge": 20,
+            "morale": 10,
+            "self_awareness": 5,
+            "ethical_reasoning": 5,
+            "growth_mindset": 4
+          },
+          "memory_tag": "transcribed_notebook",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Knowledge Preserved",
+            "description": "You have the data. And whoever comes after you -- if they need it -- will find the notebook intact. It's a small act that feels enormously human. Sam nods quietly: 'Good call.'"
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "ethical_reasoning"
+        ]
+      },
+      "image_prompt": "a breathtaking clifftop overlooking a sparkling sea, with a broad flat-topped rock extending over the edge; a weathered lockbox nestled in a crevice, sunlight glinting off its rusted surface",
+      "coaching_moment": "Consider how this choice affects your long-term resources, not just the immediate gain.",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r5s_a",
+        "reason": "Calculated risk-taking is what separates growth-oriented leaders from status-quo managers."
+      }
+    },
+    {
+      "id": "r5_fortify",
+      "title": "Day 4: Building a Real Camp (Fortify Path)",
+      "story": "While Alex and Sam took their separate gambles on the coast, you stayed and transformed the camp into something real. By midday, it has a proper raised sleeping platform off the wet ground, a food cache hanging from a tree to deter insects, a rain-catchment system using the tarp funneled into the metal pot, and a designated cooking fire with wind-break stones.\n\nWhen Alex and Sam return at sunset -- Alex frustrated, Sam cautiously optimistic -- they stop and stare. 'You built a home,' Sam says quietly. Alex shakes their head but chooses the best sleeping spot without a word. Tonight, everyone sleeps in genuine comfort for the first time. Small victories matter enormously when you have no idea how long this ordeal will last.",
+      "setting": "The base camp, now significantly improved. Raised platform, rain catchment, food cache, proper cooking area.",
+      "challenge": "Leverage your well-built camp to address the group's next most critical need.",
+      "goal": "Use the camp's stability as a foundation for the group's next strategic move.",
+      "scene_type": "default",
+      "reflection_prompt": "You chose to invest in the foundation rather than chase immediate opportunities. What were the tradeoffs? Would you make the same choice again?",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "jungle_camp",
+        "location": "Well-organized jungle camp with raised platform shelter",
+        "time": "late afternoon, golden hour",
+        "weather": "clear, warm, post-exertion calm",
+        "objects": "raised timber sleeping platform, tarp rain catchment, hanging food cache, stone windbreak cooking fire, organized tool pile",
+        "character_positions": "two survivors returning to camp looking surprised, one resident survivor gesturing proudly at the improvements",
+        "mood": "quiet pride, group cohesion, practical achievement"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "built_shelter_first",
+          "round_ref": "Round 2",
+          "text_if_chosen": "Your early shelter instinct was right, and now that philosophy has built something that might last weeks.",
+          "text_if_not": "Today you converted the scrappy first-night camp into something genuinely resilient. It took longer but may matter more."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r5f_a",
+          "label": "Organize a Food Expedition Tomorrow",
+          "description": "With camp secured, plan a structured food-gathering mission into the jungle.",
+          "delta": {
+            "energy": -10,
+            "food": 25,
+            "knowledge": 10,
+            "morale": 10,
+            "strategic_thinking": 5,
+            "impulse_control": 4
+          },
+          "memory_tag": "planned_food_expedition",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Pantry Stocked!",
+            "description": "Papaya, wild yams, and a termite mound (high protein, Sam assures you). The group eats well. Morale climbs sharply when people aren't hungry."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r5f_b",
+          "label": "Start a Medical Knowledge Session",
+          "description": "Pool everyone's first-aid knowledge and identify which island plants are medicinal or toxic.",
+          "delta": {
+            "energy": -10,
+            "health": 10,
+            "knowledge": 25,
+            "morale": 5,
+            "growth_mindset": 6,
+            "self_awareness": 4
+          },
+          "memory_tag": "learned_first_aid",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Island Pharmacopeia!",
+            "description": "Sam knows that broad-leaf plantain reduces inflammation. Alex knows how to make a splint. You identify three plant species that are safe to eat. Knowledge now lives in the group, not just one person."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r5f_c",
+          "label": "Work on a Distress Signal System",
+          "description": "Create a mirror signal from salvage metal and mark the camp with beach art visible from the air.",
+          "delta": {
+            "energy": -15,
+            "knowledge": 15,
+            "morale": 15,
+            "shelter_quality": 5,
+            "strategic_thinking": 5,
+            "resilience": 4
+          },
+          "memory_tag": "built_signal_system",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "S.O.S. Carved in Stone",
+            "description": "A ten-metre S-O-S of white stones on the dark beach. Visible from a low-flying aircraft. And a polished metal signal mirror that can flash over 10 km. Hope made visible."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking",
+            "delayed_gratification"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "delayed_gratification",
+          "strategic_thinking"
+        ]
+      },
+      "image_prompt": "a vibrant coastal campsite at sunset, featuring a sturdy raised sleeping platform, a food cache hanging from a tree, and a cooking fire surrounded by smooth stones, warm golden light illuminating the scene",
+      "coaching_moment": "Think about trade-offs: what are you giving up to get this benefit?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r5f_a",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r6",
+      "title": "Day 5: The Injury",
+      "story": "Alex slips on a wet rock while gathering firewood and lets out a sharp cry. When you reach them, their ankle is swollen -- possibly sprained, possibly fractured. Alex's face is a mask of frustration and barely concealed panic. 'I'm fine,' they insist through clenched teeth, trying to stand and failing. Sam kneels, examines the ankle with careful hands, and looks at you steadily.\n\nA serious injury changes everything. It reduces the group's work capacity, increases food and water needs for the injured person, and creates an emotional burden that affects morale. How you respond now will shape the group's trust dynamics for the remainder of your time on this island.",
+      "setting": "Rocky area near the treeline where Alex fell. Afternoon, hot and humid.",
+      "challenge": "Respond to Alex's injury in a way that balances immediate care with group sustainability.",
+      "goal": "Manage a group medical emergency with limited resources.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "jungle_edge_rocks",
+        "location": "Wet rocky area at jungle edge where accident occurred",
+        "time": "afternoon",
+        "weather": "humid, partly cloudy, recent rain making rocks slick",
+        "objects": "wet moss-covered rocks, scattered firewood, medical supplies laid out, improvised splint materials",
+        "character_positions": "injured person sitting against rock holding ankle, one survivor kneeling examining injury, third standing watching with concern",
+        "mood": "anxious concern, group vulnerability, test of compassion under pressure"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "learned_first_aid",
+          "round_ref": "Round 5",
+          "text_if_chosen": "Your medical knowledge session pays off immediately. You know how to assess the injury and construct a proper splint.",
+          "text_if_not": "You do your best with improvised techniques, but better medical preparation would have made this far easier."
+        },
+        {
+          "memory_tag": "teamwork_day1",
+          "round_ref": "Round 2",
+          "text_if_chosen": "The group trust you built on Day 1 means Alex actually accepts your help rather than pushing you away.",
+          "text_if_not": "Alex's stubborn independence makes giving care harder. Group dynamics matter in moments like these."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r6_a",
+          "label": "Full Rest -- Alex Does Nothing for Two Days",
+          "description": "Insist on complete rest for Alex, redistributing their workload across the group.",
+          "delta": {
+            "health": 15,
+            "energy": -20,
+            "food": -10,
+            "morale": 10,
+            "emotional_regulation": 6,
+            "ethical_reasoning": 5
+          },
+          "memory_tag": "gave_alex_full_rest",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Alex Recovers Properly",
+            "description": "Two days of forced rest and Alex's ankle is functional again. The group is exhausted from carrying extra work -- but Alex is visibly grateful. 'I owe you,' they say quietly."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "empathy"
+          ]
+        },
+        {
+          "id": "r6_b",
+          "label": "Light Duties -- Alex Directs, Not Carries",
+          "description": "Let Alex contribute mentally -- navigation, planning, camp tasks that don't require walking.",
+          "delta": {
+            "health": 5,
+            "energy": -10,
+            "morale": 15,
+            "knowledge": 10,
+            "emotional_regulation": 5,
+            "self_awareness": 4
+          },
+          "memory_tag": "alex_light_duties",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Alex the Strategist",
+            "description": "Forced to think instead of act, Alex turns out to have a surprisingly good mind for logistics. They redesign the food storage system. The injury accidentally revealed a hidden strength."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "empathy"
+          ]
+        },
+        {
+          "id": "r6_c",
+          "label": "Push Through -- Group Needs Everyone",
+          "description": "Let Alex decide their own pain threshold and keep working at reduced capacity.",
+          "delta": {
+            "health": -10,
+            "energy": -5,
+            "food": -5,
+            "morale": -10,
+            "risk_tolerance": 5,
+            "resilience": 3
+          },
+          "memory_tag": "alex_pushed_through",
+          "consequence_scene": {
+            "animation_type": "warning",
+            "headline": "The Injury Worsens",
+            "description": "Alex works through the pain but the ankle deteriorates. Two days later it is significantly worse. Sam gives you a long, quiet look. Some costs compound with time."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "emotional_regulation",
+          "ethical_reasoning"
+        ]
+      },
+      "image_prompt": "a forest clearing with towering trees and dappled sunlight filtering through leaves, Alex grimacing on the ground beside a pile of firewood, Sam kneeling beside them, concern etched on their face",
+      "coaching_moment": "How might your team react to this decision? What about your customers?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r6_b",
+        "reason": "Goleman's EQ framework rates empathetic responses as the highest-impact leadership move."
+      }
+    },
+    {
+      "id": "r7",
+      "title": "Day 6: Storm Warning",
+      "story": "A crackling, distorted signal -- barely recognizable as human voice -- emerges from a radio salvaged from the wreckage and finally coaxed into partial function by Sam. Through the static, one phrase repeats clearly enough to understand: 'Tropical depression... strengthening... landfall possible... forty-eight hours...'\n\nSam and you exchange a look. A storm -- potentially a significant one -- in forty-eight hours. Your current shelter may or may not survive it depending on what 'strengthening' means. Alex, ankle still bandaged, is already on their feet. 'We move to the caves,' Alex says. 'Now.' Sam holds up a hand: 'Let's think first.'",
+      "setting": "Camp. Late afternoon. The salvaged radio crackles on a flat rock. The sky to the northeast has an unusual yellow quality.",
+      "challenge": "Prepare for a potentially severe storm within a tight 48-hour window.",
+      "goal": "Optimize your storm preparation given limited time and energy.",
+      "scene_type": "breaking_news",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "beach_camp",
+        "location": "Camp with salvaged radio on rock",
+        "time": "late afternoon, eerie yellowing sky",
+        "weather": "deceptively calm, unusual yellow atmospheric tint, distant dark clouds building",
+        "objects": "crackling salvaged radio, emergency supply pile, tarp shelter, signal mirror, rising wind moving palm fronds",
+        "character_positions": "three survivors clustered around radio with urgent body language, one pointing at darkening sky",
+        "mood": "urgent alarm, time pressure, nature's power looming"
+      },
+      "breaking_news_content": {
+        "ticker": "BREAKING: Tropical depression intensifying -- possible Category 1 landfall in 48-72 hours",
+        "bulletin": "Maritime advisory issued for the region. All vessels advised to seek safe harbor immediately. Island residents warned to prepare for heavy rain, high winds, and storm surge.",
+        "source": "Fragmentary radio signal -- accuracy uncertain"
+      },
+      "choices": [
+        {
+          "id": "r7_a",
+          "label": "Relocate Entirely to the Caves",
+          "description": "Abandon the beach camp and move everything to the eastern cave system for guaranteed storm shelter.",
+          "delta": {
+            "energy": -25,
+            "shelter_quality": 35,
+            "health": 10,
+            "food": -5,
+            "morale": 5,
+            "strategic_thinking": 6,
+            "delayed_gratification": 5
+          },
+          "memory_tag": "moved_to_caves",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Caves Weather the Storm",
+            "description": "The storm hits hard. Outside, trees bend and break. Inside the cave, you are bone-dry and safe. The right call -- made at the right time."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r7_b",
+          "label": "Reinforce Current Shelter",
+          "description": "Stay and significantly upgrade your existing shelter with every available material.",
+          "delta": {
+            "energy": -20,
+            "shelter_quality": 20,
+            "food": -5,
+            "morale": 0,
+            "resilience": 5,
+            "risk_tolerance": 5
+          },
+          "memory_tag": "reinforced_shelter",
+          "consequence_scene": {
+            "animation_type": "warning",
+            "headline": "Shelter Survives -- Barely",
+            "description": "The storm is brutal. One wall collapses and everyone gets soaked before you can repair it. But you endure. At dawn, you look at the wreckage and are grateful it wasn't worse."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "delayed_gratification"
+          ]
+        },
+        {
+          "id": "r7_c",
+          "label": "Stockpile Supplies and Weather It Together",
+          "description": "Focus on water and food stockpiling before the storm rather than infrastructure -- survival resources outlast bad weather.",
+          "delta": {
+            "energy": -15,
+            "food": 20,
+            "water": 20,
+            "health": -10,
+            "morale": 5,
+            "impulse_control": 5,
+            "strategic_thinking": 4
+          },
+          "memory_tag": "stockpiled_before_storm",
+          "consequence_scene": {
+            "animation_type": "warning",
+            "headline": "Supplies Saved, Bodies Battered",
+            "description": "Everyone gets soaked and cold -- health takes a hit from exposure. But your food and water supply is untouched by the storm. A painful but possibly correct tradeoff."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "resilience"
+        ]
+      },
+      "image_prompt": "a rugged coastal landscape under a darkening sky, jagged cliffs rising above crashing waves, wind howling through trees as three figures prepare to move toward ominous caves in the distance",
+      "coaching_moment": "Look at your current resource levels — which constraint are you trying to address?",
+      "reflection_prompt": "How did this choice reflect your personal values or priorities?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r7_a",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r8",
+      "title": "Day 8: The Second Major Fork",
+      "story": "The storm passed. It was fierce but brief -- a glancing blow rather than a direct hit. In its aftermath, the island looks scrubbed clean and raw. And it has delivered something completely unexpected: a large sealed shipping container has washed directly onto the southern beach, courtesy of the storm surge. It is brightly colored -- clearly from a commercial vessel.\n\nInside, once Alex forces the latch, you find an extraordinary array of options: a working emergency beacon (EPIRB) with battery life estimated at 72 hours, a cache of MREs (Meals Ready to Eat) and water pouches, a full first aid kit, and a solar-powered emergency communication device that might be able to contact the outside world if you can get it to elevated ground. One person cannot carry everything -- and the beacon, once activated, begins a 72-hour countdown during which a rescue signal will be transmitted. If rescue doesn't come in 72 hours, it goes silent forever.",
+      "setting": "Southern beach. A large orange shipping container sits on the sand, its door hanging open, contents exposed.",
+      "challenge": "Make a critical resource allocation decision with life-changing consequences.",
+      "goal": "Choose what to prioritize from a windfall of survival resources when you cannot have everything.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "southern_beach",
+        "location": "Southern beach post-storm with shipping container",
+        "time": "morning, post-storm golden light",
+        "weather": "clear skies after storm, waves still elevated, washed debris everywhere",
+        "objects": "large orange shipping container with open door, EPIRB beacon, MRE packages, first aid kit, solar communication device, scattered storm debris",
+        "character_positions": "three survivors gathered around open container examining contents with expressions of disbelief and excitement",
+        "mood": "dramatic windfall, overwhelming choice, pivotal moment of survival story"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "built_signal_cache",
+          "round_ref": "Round 5",
+          "text_if_chosen": "Your pre-built signal cache on the cliffs means the EPIRB can be combined with a visual fire signal for a much stronger rescue message.",
+          "text_if_not": "The EPIRB alone is powerful, but you have no backup visual signal. If ships are out of electronic range, you need something they can see."
+        },
+        {
+          "memory_tag": "gave_alex_full_rest",
+          "round_ref": "Round 6",
+          "text_if_chosen": "Alex is fully recovered and can carry the heaviest equipment to the clifftop. The rest investment pays forward.",
+          "text_if_not": "Alex is still moving carefully. You will have to redistribute the carrying load."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r8_a",
+          "label": "Activate the EPIRB -- Call for Rescue Now",
+          "description": "Trigger the emergency beacon immediately -- 72 hours begins now. Everything else is secondary.",
+          "delta": {
+            "morale": 25,
+            "food": 10,
+            "water": 10,
+            "energy": -10,
+            "risk_tolerance": 8,
+            "resilience": 4
+          },
+          "memory_tag": "activated_epirb",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "Beacon Activated! 72 Hours Starts Now!",
+            "description": "The beacon blinks red. Somewhere, a maritime rescue coordination center has received your signal. Alex whoops. Sam closes their eyes in relief. The countdown has begun."
+          },
+          "next_round_id": "r9_beacon_path",
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r8_b",
+          "label": "Carry the Comm Device to High Ground First",
+          "description": "Before activating anything, get the communication device to the clifftop for maximum range.",
+          "delta": {
+            "energy": -20,
+            "knowledge": 15,
+            "morale": 15,
+            "food": 15,
+            "strategic_thinking": 8,
+            "delayed_gratification": 6
+          },
+          "memory_tag": "comm_device_to_cliff",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Communication Established!",
+            "description": "From the clifftop, the solar comm device connects to a satellite relay. A rescue coordinator's voice -- calm and professional -- asks for your coordinates. You have actual two-way contact."
+          },
+          "next_round_id": "r9_comm_path",
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r8_c",
+          "label": "Secure All Supplies -- Wait for Thursday",
+          "description": "Load everything back to camp, and use the EPIRB Thursday morning to maximize rescue ship overlap.",
+          "delta": {
+            "energy": -25,
+            "food": 20,
+            "water": 20,
+            "health": 10,
+            "shelter_quality": 10,
+            "strategic_thinking": 7,
+            "impulse_control": 7
+          },
+          "memory_tag": "waited_for_thursday",
+          "consequence_scene": {
+            "animation_type": "warning",
+            "headline": "Supplies Secured -- But the Wait Is Hard",
+            "description": "Sam supports the plan. Alex is barely controlling frustration. You now have excellent resources but two days of knowing rescue is possible yet choosing to wait. It takes a particular kind of discipline."
+          },
+          "next_round_id": "r9_wait_path",
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "risk_tolerance",
+          "impulse_control"
+        ]
+      },
+      "image_prompt": "a vibrant southern beach with bright blue skies after a storm, a large sealed shipping container washed ashore, sand glistening, scattered debris, and gentle waves lapping nearby",
+      "coaching_moment": "Sometimes the bold choice carries risk, but also the highest reward. Weigh carefully.",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r8_c",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r9_beacon_path",
+      "title": "Day 9: The 72-Hour Wait (Beacon Path)",
+      "story": "The beacon blinks. Hours pass. You find yourself checking it every twenty minutes -- still blinking, still transmitting. Alex has planted themselves on the highest dune, eyes on the horizon, refusing to eat. Sam quietly suggests that maintaining normal survival routines will make the wait psychologically bearable and physically sustainable. The irony is not lost on you: you may be rescued today, or the beacon's battery may die in 72 hours without anyone coming at all.\n\nOn hour 36, a radio crackle. A coastguard vessel is in the region investigating the signal but cannot reach your position until tomorrow due to reef navigation risks at night. Hold tight. They are coming.",
+      "setting": "Camp and beach. The EPIRB beacon blinks steadily on a rock. Everyone waits.",
+      "challenge": "Maintain physical and psychological stability during a tense rescue wait.",
+      "goal": "Keep the group functional and healthy during the uncertainty of the rescue window.",
+      "scene_type": "text_message",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "beach_camp",
+        "location": "Camp with beacon on rock, eyes on horizon",
+        "time": "day turning to night, anxious vigil",
+        "weather": "clear post-storm, excellent visibility, nervous calm",
+        "objects": "blinking EPIRB beacon on flat rock, survivor watching from dune, camp activities in background, distant horizon empty but hopeful",
+        "character_positions": "one survivor alone on high dune watching horizon obsessively, two others maintaining camp with distracted energy",
+        "mood": "suspended tension, agonizing hope, psychological endurance test"
+      },
+      "text_message_content": {
+        "sender": "Coastguard Radio -- Freq 156.8MHz",
+        "timestamp": "Hour 36 of beacon activation",
+        "message": "MAYDAY RELAY: Vessel MV Kestrel acknowledging EPIRB signal. Your position confirmed. Reef navigation prevents approach until 0700 local. Maintain beacon. Acknowledge if able.",
+        "signal_quality": "Weak but consistent"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "studied_currents",
+          "round_ref": "Round 5",
+          "text_if_chosen": "Your current knowledge lets you guide the Kestrel around the dangerous reef shoals via your radio. The navigator is impressed.",
+          "text_if_not": "The Kestrel has to navigate the reef on their own charts. You hear them expressing uncertainty about the approach route."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r9b_a",
+          "label": "Keep Normal Routines -- Food, Rest, Watch Rotations",
+          "description": "Insist the group maintains normal camp life to stay healthy and sane during the wait.",
+          "delta": {
+            "health": 10,
+            "energy": 10,
+            "food": -5,
+            "morale": 15,
+            "emotional_regulation": 7,
+            "delayed_gratification": 5
+          },
+          "memory_tag": "maintained_routine_wait",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Disciplined and Ready",
+            "description": "When the Kestrel appears at dawn, the group is rested, hydrated, and coherent -- ready to communicate clearly and help with the rescue approach. Routine was the right medicine."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "delayed_gratification",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r9b_b",
+          "label": "Prepare a Massive Visual Signal for Tomorrow Morning",
+          "description": "Spend the night building a giant fire on the cliffs to be visible at first light.",
+          "delta": {
+            "energy": -20,
+            "morale": 20,
+            "health": -5,
+            "food": -5,
+            "resilience": 6,
+            "risk_tolerance": 4
+          },
+          "memory_tag": "built_dawn_fire",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "Fire Visible at Dawn!",
+            "description": "The Kestrel's captain radios: 'We see your fire. Outstanding signal work.' The visual confirmation helps them navigate around the reef approach with confidence."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r9b_c",
+          "label": "Rest Completely -- Conserve for Rescue Day",
+          "description": "Force everyone to rest so the group is fully functional for tomorrow's rescue operation.",
+          "delta": {
+            "energy": 20,
+            "health": 10,
+            "morale": 5,
+            "food": -5,
+            "impulse_control": 6,
+            "self_awareness": 4
+          },
+          "memory_tag": "conserved_for_rescue",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Well-Rested and Alert",
+            "description": "The group sleeps in shifts, watches the beacon, and wakes sharp and ready. When the rescue boat needs help with a tricky approach, everyone is clear-headed and effective."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "emotional_regulation",
+          "delayed_gratification"
+        ]
+      },
+      "image_prompt": "a vast desert landscape under a scorching sun, with rolling sand dunes and a distant shimmering horizon, a lone figure atop a dune scanning the distance, tension in the air",
+      "coaching_moment": "Consider how this choice affects your long-term resources, not just the immediate gain.",
+      "reflection_prompt": "If you could replay this round, would you choose differently? Why or why not?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r9b_a",
+        "reason": "Research shows that patience-based decisions lead to 3x better long-term outcomes."
+      }
+    },
+    {
+      "id": "r9_comm_path",
+      "title": "Day 9: Direct Contact (Comm Path)",
+      "story": "The solar communication device connects. A calm, professional voice -- a maritime rescue coordinator named Chen -- walks you through the situation. There is a coastguard vessel 180 kilometres away. It can reach you in approximately 20 hours if it departs now. But Chen has a question: there is also a medical evacuation helicopter available if needed, which can reach you in 4 hours -- but it can only carry one person, and its use would delay the ship departure for the vessel.\n\nAlex's ankle is still a concern. Sam has a wound from the storm that is showing early signs of infection. And all of you have lost significant body weight. Is anyone in critical medical need right now?",
+      "setting": "Clifftop with the solar communication device. Clear skies. The device's screen glows against the late afternoon light.",
+      "challenge": "Make a medical triage decision with real rescue resource implications.",
+      "goal": "Accurately assess group medical needs and make the fairest, most effective rescue coordination decision.",
+      "scene_type": "text_message",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "clifftop_comm",
+        "location": "Clifftop with solar communication device, ocean panorama",
+        "time": "late afternoon, clear sky",
+        "weather": "beautiful clear post-storm weather, excellent visibility",
+        "objects": "solar communication device with glowing screen, clifftop rock platform, signal fire ready to light, binoculars, vast ocean horizon",
+        "character_positions": "one survivor speaking into device looking intense, others listening with expressions of hope and anxiety",
+        "mood": "hope materializing, complex decision-making under emotional weight, imminent rescue"
+      },
+      "text_message_content": {
+        "sender": "Maritime Rescue Coordinator Chen",
+        "timestamp": "Real-time satellite communication",
+        "message": "We have your coordinates. Option A: Medical helo arrives in 4 hours, carries 1 person, delays ship by 6 hours. Option B: Ship departs now, arrives in 20 hours, takes all 3. Please advise on medical status of your group.",
+        "signal_quality": "Clear satellite link"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "alex_pushed_through",
+          "round_ref": "Round 6",
+          "text_if_chosen": "Alex's ankle was not properly rested. The injury is now significantly worse -- a genuine medical case for the helicopter.",
+          "text_if_not": "Alex's ankle is well on its way to healed. No emergency evacuation required. The decision is simpler."
+        },
+        {
+          "memory_tag": "gave_alex_full_rest",
+          "round_ref": "Round 6",
+          "text_if_chosen": "Alex is mobile and functional. Sam's wound is the main concern. You have clear information to give Coordinator Chen.",
+          "text_if_not": ""
+        }
+      ],
+      "choices": [
+        {
+          "id": "r9c_a",
+          "label": "Request the Medical Helicopter for Sam",
+          "description": "Sam's infection is worsening -- prioritize immediate medical care over group solidarity.",
+          "delta": {
+            "health": 20,
+            "morale": 10,
+            "ethical_reasoning": 7,
+            "emotional_regulation": 5
+          },
+          "memory_tag": "requested_helo_for_sam",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Sam Airlifted to Safety",
+            "description": "The helicopter arrives. Sam clasps your hand before being lifted away. 'See you on the other side,' they say. You and Alex wait 26 hours. But Sam's infection is treated in time. The right call."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "empathy"
+          ]
+        },
+        {
+          "id": "r9c_b",
+          "label": "Decline Helicopter -- Wait for the Ship Together",
+          "description": "No one is in immediate danger. Keep the group together and have the ship come to all three.",
+          "delta": {
+            "morale": 20,
+            "health": -5,
+            "strategic_thinking": 6,
+            "ethical_reasoning": 6
+          },
+          "memory_tag": "waited_together",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "We Wait Together",
+            "description": "Alex squeezes your shoulder. 'Good call.' Twenty hours later, the ship arrives. Sam's wound is cleaned and bandaged well enough -- it was the right read. Group solidarity mattered."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r9c_c",
+          "label": "Exaggerate Conditions to Get Faster Response",
+          "description": "Tell Coordinator Chen everyone is in critical condition to prioritize your rescue above others.",
+          "delta": {
+            "morale": -5,
+            "health": 15,
+            "ethical_reasoning": -10,
+            "risk_tolerance": 3,
+            "self_awareness": -5
+          },
+          "memory_tag": "exaggerated_condition",
+          "consequence_scene": {
+            "animation_type": "warning",
+            "headline": "Faster Rescue -- But at a Cost",
+            "description": "Resources are diverted from a genuine emergency elsewhere. When Chen arrives and assesses your actual condition, the look on their face is something you will not forget easily."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "ethical_reasoning",
+          "emotional_regulation"
+        ]
+      },
+      "image_prompt": "a rugged coastal cliff with crashing waves below, a bright blue sky with fluffy clouds, a distant coastguard vessel on the horizon, urgency in the air as a rescue plan unfolds",
+      "coaching_moment": "Think about trade-offs: what are you giving up to get this benefit?",
+      "reflection_prompt": "Why did you choose this option? What were you trying to protect or grow?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r9c_a",
+        "reason": "Goleman's EQ framework rates empathetic responses as the highest-impact leadership move."
+      }
+    },
+    {
+      "id": "r9_wait_path",
+      "title": "Day 9: Holding the Line (Wait Path)",
+      "story": "Two days until Thursday. Two days with the EPIRB unactivated, the comm device uncharged, and rescue tantalizingly deferred. Sam's strategic logic is airtight: Thursday's ship combined with the EPIRB signal and the clifftop fire is your strongest possible rescue scenario. But logic and emotion are different languages, and Alex is speaking emotion.\n\n'We have a beacon,' Alex says, voice cracking. 'We have a device. And we're sitting here like idiots.' Sam stays quiet. You are the deciding vote in a two-one group dynamic -- and your decision must hold for two more days of island life.",
+      "setting": "Camp. Evening. Everyone is well-fed and healthy -- but the emotional tension is at its peak.",
+      "challenge": "Maintain group cohesion and morale during a strategically correct but psychologically difficult wait.",
+      "goal": "Keep the group unified and functional through the toughest psychological stretch of the ordeal.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "jungle_camp_evening",
+        "location": "Camp by firelight, evening",
+        "time": "evening, two days before Thursday",
+        "weather": "calm clear night, stars visible, fire crackling",
+        "objects": "unactivated EPIRB on rock, campfire, MRE supplies organized, signal fire cache visible in background, tense body language",
+        "character_positions": "three survivors around fire in tense discussion, two facing each other, third caught between them",
+        "mood": "emotional peak, psychological pressure, group dynamics at breaking point"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "teamwork_day1",
+          "round_ref": "Round 2",
+          "text_if_chosen": "The group trust from Day 1 means Alex's frustration doesn't collapse into hostility. You can have this argument and survive it.",
+          "text_if_not": "The underlying lack of group cohesion makes this argument dangerous. One wrong word could break the team entirely."
+        },
+        {
+          "memory_tag": "planned_signal_fire",
+          "round_ref": "Round 3",
+          "text_if_chosen": "You can show Alex the notebook evidence for Thursday's ship pattern. Concrete proof makes abstract strategy believable.",
+          "text_if_not": "You are asking Alex to trust a plan based on feeling rather than evidence. It is a harder sell."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r9w_a",
+          "label": "Hold the Plan -- Present Your Evidence to Alex",
+          "description": "Lay out all the information calmly and let Alex make their own informed choice to comply.",
+          "delta": {
+            "morale": 15,
+            "knowledge": 5,
+            "energy": -5,
+            "strategic_thinking": 7,
+            "emotional_regulation": 6
+          },
+          "memory_tag": "persuaded_alex",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Reluctant Agreement",
+            "description": "Alex listens. Really listens. Sits silently for a long minute. Then: 'Fine. Two days. But I'm lighting that beacon myself Thursday morning.' You nod. It's enough."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r9w_b",
+          "label": "Compromise -- Activate Comm Device, Hold EPIRB",
+          "description": "Split the difference: use the comm device to make contact but save the EPIRB for Thursday.",
+          "delta": {
+            "morale": 20,
+            "energy": -10,
+            "knowledge": 10,
+            "risk_tolerance": 5,
+            "adaptability": 6
+          },
+          "memory_tag": "compromise_comm_only",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Two-Way Contact Established!",
+            "description": "The comm device links to a satellite relay. A rescue coordinator logs your position. Alex is satisfied. Sam nods. You have contact but preserved the EPIRB. A real compromise."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r9w_c",
+          "label": "Let Alex Decide -- Step Back from Leadership",
+          "description": "You are tired of being the deciding vote. Give Alex the choice: they know the risk.",
+          "delta": {
+            "morale": 5,
+            "energy": 5,
+            "food": 10,
+            "self_awareness": 5,
+            "emotional_regulation": 4,
+            "risk_tolerance": 5
+          },
+          "memory_tag": "delegated_to_alex",
+          "consequence_scene": {
+            "animation_type": "warning",
+            "headline": "Alex Activates the EPIRB",
+            "description": "Alex triggers the beacon. The 72-hour countdown begins Wednesday morning. If rescue doesn't come by Friday morning, it goes silent. The Thursday ship timing is now outside your control."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "emotional_regulation",
+          "adaptability"
+        ]
+      },
+      "image_prompt": "a rugged island landscape with steep cliffs overlooking a turbulent sea, dramatic clouds overhead, a flickering campfire casting warm light on two anxious figures deep in discussion",
+      "coaching_moment": "How might your team react to this decision? What about your customers?",
+      "reflection_prompt": "How might the people affected by this choice experience the outcome?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r9w_b",
+        "reason": "The most effective leaders adapt their approach based on the situation — not habit."
+      }
+    },
+    {
+      "id": "r10",
+      "title": "Day 10: Reflection at Midpoint",
+      "story": "Ten days. You have survived ten full days on an uncharted island with no professional survival training and two people you barely knew before the shipwreck. Your body has adapted -- you move more efficiently, your eyes pick out edible plants automatically now, you sleep through sounds that terrified you on day one. Something has changed inside you too. You are quieter. More deliberate. Less certain of everything and more comfortable with uncertainty.\n\nSam is writing in a small notebook with a pencil stub. Alex, who you once thought incapable of stillness, is sitting at the water's edge watching a school of fish with what can only be called patience. The island has taught each of you something the other could not have. There is a strange gratitude in that -- complicated, honest, and real.",
+      "setting": "A quiet spot by the lagoon or cliffs, depending on the path taken. Midday. Peaceful, for once.",
+      "challenge": "Take stock of the journey so far and what you have learned about yourself and others.",
+      "goal": "Reflect meaningfully on the survival experience and its lessons before the final push.",
+      "scene_type": "diary",
+      "reflection_prompt": "Ten days into survival -- what has this experience changed about how you think? What decision are you most proud of? What would you do differently if you started again today?",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "lagoon_peaceful",
+        "location": "Peaceful lagoon or clifftop, quiet midday",
+        "time": "midday, warm sun, peaceful",
+        "weather": "perfect clear weather, calm water",
+        "objects": "survivor writing in notebook, another watching fish with patience, simple camp elements in background, natural island beauty",
+        "character_positions": "survivors separated but in visual range, each in a moment of quiet introspection, not interacting",
+        "mood": "contemplative peace, earned rest, psychological depth, midpoint of a journey"
+      },
+      "diary_content": {
+        "author": "Your survival journal",
+        "date_found": "Day 10",
+        "entries": [
+          {
+            "day": 10,
+            "text": "I thought survival was about the body. It turns out it is mostly about the mind. The body will do remarkable things if the mind doesn't give up first."
+          },
+          {
+            "day": 10,
+            "text": "Alex and Sam taught me things I did not know I needed to learn. Alex taught me that speed matters sometimes. Sam taught me that thinking before moving almost always matters more."
+          },
+          {
+            "day": 10,
+            "text": "I miss people. I miss noise. I miss choice. But I also notice I am making better decisions than I did ten days ago. Maybe that is the gift inside the ordeal."
+          }
+        ]
+      },
+      "choices": [
+        {
+          "id": "r10_a",
+          "label": "Write Your Own Survival Guide Page",
+          "description": "Spend an hour writing down your most important survival lessons for any future castaway.",
+          "delta": {
+            "knowledge": 15,
+            "morale": 10,
+            "energy": -5,
+            "growth_mindset": 7,
+            "self_awareness": 6
+          },
+          "memory_tag": "wrote_survival_guide",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Wisdom Crystallized",
+            "description": "You fill three pages with hard-won knowledge. Sam reads it later and adds two notes of their own. Alex reads it in silence and puts it back without comment -- which, you have learned, means they approve."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r10_b",
+          "label": "Talk Honestly with Alex About the Tension",
+          "description": "Use this quiet moment to clear the air about any unresolved conflict with Alex.",
+          "delta": {
+            "morale": 20,
+            "energy": -5,
+            "emotional_regulation": 7,
+            "self_awareness": 6,
+            "resilience": 4
+          },
+          "memory_tag": "cleared_air_with_alex",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "The Real Conversation",
+            "description": "Alex is surprised you came. Then open. It turns out the aggression masks real anxiety -- they are as scared as anyone. The conversation changes the remaining days. You face whatever comes next as a genuine team."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r10_c",
+          "label": "Take an Inventory and Plan the Final Push",
+          "description": "Use the quiet time strategically -- assess all remaining resources and plan the optimal rescue strategy.",
+          "delta": {
+            "knowledge": 20,
+            "energy": 5,
+            "food": -5,
+            "strategic_thinking": 8,
+            "delayed_gratification": 5
+          },
+          "memory_tag": "planned_final_push",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Strategic Clarity",
+            "description": "You map out the next five days in precise detail. Resources, timings, contingencies. Sam raises an eyebrow: 'You sound like someone who's done this before.' You almost smile. Maybe you have, now."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "self_awareness",
+          "growth_mindset"
+        ]
+      },
+      "image_prompt": "a serene beach at sunset, soft waves lapping at the shore, a small campfire flickering nearby, Sam scribbling in a notebook while Alex gazes thoughtfully at the ocean, warm golden light bathing the scene.",
+      "coaching_moment": "Look at your current resource levels — which constraint are you trying to address?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r10_c",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r11",
+      "title": "Day 11: The Unexpected Visitor",
+      "story": "You smell the campfire before you see the person. On the far side of the southern bay, a small fire burns. Someone is already on this island. You approach cautiously. Crouched at the fire is an elderly man -- weathered, lean, clearly comfortable outdoors. He introduces himself as Manu, a fisherman whose boat engine failed five days ago. He has been surviving alone on the eastern side of the island and thought he was alone.\n\nManu has skills none of you possess: he can read weather from cloud formations, knows which reef fish are safe to eat, and has built a small but elegant fish trap that has been feeding him adequately. But he is elderly and his knee is swollen and painful from a fall. He cannot walk long distances. He could teach you. And he needs your help.",
+      "setting": "Southern bay. A small, well-made campfire. An elderly fisherman sits comfortably in front of it.",
+      "challenge": "Decide how to integrate an unexpected new group member and what the relationship will look like.",
+      "goal": "Build the best possible alliance with Manu given the group's circumstances.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "southern_bay_encounter",
+        "location": "Southern bay with unexpected campfire",
+        "time": "late morning",
+        "weather": "warm and clear, peaceful",
+        "objects": "neat small campfire with fish cooking, fish trap in shallow water, weathered fishing equipment, simple but effective survival setup",
+        "character_positions": "elderly fisherman sitting calmly, three approaching survivors with surprised expressions, moment of first contact",
+        "mood": "unexpected discovery, cautious hope, mutual assessment, potential alliance"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "cleared_air_with_alex",
+          "round_ref": "Round 10",
+          "text_if_chosen": "The honest conversation with Alex means the group approaches Manu as a unified team rather than with underlying tension.",
+          "text_if_not": "The unresolved group tension is visible to Manu, who watches your group dynamics with quiet, experienced eyes."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r11_a",
+          "label": "Invite Manu to Join Your Camp Fully",
+          "description": "Combine camps, share all resources, and integrate Manu as an equal group member.",
+          "delta": {
+            "food": 20,
+            "knowledge": 25,
+            "morale": 20,
+            "health": 5,
+            "energy": -10,
+            "growth_mindset": 6,
+            "adaptability": 5
+          },
+          "memory_tag": "integrated_manu",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "The Group of Four",
+            "description": "Manu moves to your camp that afternoon. Within 24 hours he has shown you three fish species you had avoided (edible), fixed the rain catchment with a brilliant reed modification, and read the coming weather correctly twice. He is worth a thousand supply drops."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r11_b",
+          "label": "Exchange Knowledge -- Stay in Separate Camps",
+          "description": "Learn Manu's skills and share your resources, but maintain separate camps for flexibility.",
+          "delta": {
+            "food": 10,
+            "knowledge": 20,
+            "morale": 10,
+            "energy": -5,
+            "strategic_thinking": 5,
+            "adaptability": 4
+          },
+          "memory_tag": "allied_with_manu",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Alliance of Camps",
+            "description": "A daily information exchange over a shared meal. Manu teaches, you supply. It works. Alex still wants to know: 'Why didn't we just combine? More efficient.' Sometimes efficiency isn't the point."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r11_c",
+          "label": "Focus on Manu's Rescue First",
+          "description": "Redirect your rescue resources toward getting Manu -- the most vulnerable person -- off the island first.",
+          "delta": {
+            "morale": 15,
+            "health": -5,
+            "energy": -15,
+            "knowledge": 10,
+            "ethical_reasoning": 8,
+            "emotional_regulation": 5
+          },
+          "memory_tag": "prioritized_manu_rescue",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Manu's Family Is Waiting",
+            "description": "You use your communication device to relay Manu's position to the rescue coordinator. His family gets a distress call that night. Manu weeps quietly. 'I thought I would die here,' he says. 'Thank you.'"
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "adaptability",
+          "ethical_reasoning"
+        ]
+      },
+      "image_prompt": "a serene southern bay at dusk, with a crackling campfire casting warm light on a weathered elderly fisherman crouched by the flames, surrounded by lush greenery and distant waves",
+      "coaching_moment": "Sometimes the bold choice carries risk, but also the highest reward. Weigh carefully.",
+      "reflection_prompt": "Looking back, do you think this was the best use of your resources?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r11_a",
+        "reason": "The most effective leaders adapt their approach based on the situation — not habit."
+      }
+    },
+    {
+      "id": "r12",
+      "title": "Day 12: The Final Branch",
+      "story": "Rescue is close -- you can feel it in the quality of the coastguard radio transmissions, in Coordinator Chen's increasingly specific questions about your exact location and the reef approach route. It could be tomorrow. It could be in three days. The question now is not whether you will be rescued, but how you use the remaining time and what you carry with you when you leave.\n\nThree distinct paths forward present themselves, each representing a different philosophy about what the final chapter of a survival story should look like. Alex wants action. Sam wants precision. Manu watches all of you with the quiet smile of a man who has already made peace with the island.",
+      "setting": "The clifftop signal post. Sunset. The rescue is imminent but not yet here.",
+      "challenge": "Choose how to conduct the final phase of your rescue operation.",
+      "goal": "Complete the rescue operation in the way that reflects everything you have learned about survival and decision-making.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "clifftop_sunset",
+        "location": "Southern clifftop signal post at sunset",
+        "time": "sunset, golden hour",
+        "weather": "dramatic sunset, clear skies, perfect visibility",
+        "objects": "large signal fire burning brightly, coastguard radio cracking with communication, survival group together for first time as complete unit, ocean horizon glowing orange",
+        "character_positions": "all four survivors together at clifftop edge, looking out to sea, fire behind them, silhouetted against sunset",
+        "mood": "triumphant hope, earned solidarity, the eve of rescue, emotional culmination"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "wrote_survival_guide",
+          "round_ref": "Round 10",
+          "text_if_chosen": "Your written survival guide is three pages of hard-won wisdom. Manu reads it and nods slowly: 'You understood this place.'",
+          "text_if_not": ""
+        },
+        {
+          "memory_tag": "integrated_manu",
+          "round_ref": "Round 11",
+          "text_if_chosen": "Manu has been with you for two days now. His weather reading this morning confirmed the rescue window is perfect.",
+          "text_if_not": "Manu is nearby but not fully part of the team. His skills remain partly untapped."
+        },
+        {
+          "memory_tag": "swam_to_wreck",
+          "round_ref": "Round 1",
+          "text_if_chosen": "The emergency flares you grabbed from the wreck on Day 1 are still with you -- a final card to play.",
+          "text_if_not": "You didn't have flares from the wreck. You'll have to rely on fire and the EPIRB alone."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r12_a",
+          "label": "Execute a Full Coordinated Rescue Signal",
+          "description": "Activate every signal simultaneously: fire, EPIRB, comm device, and flares if available.",
+          "delta": {
+            "morale": 25,
+            "energy": -20,
+            "food": -10,
+            "knowledge": 10,
+            "strategic_thinking": 7,
+            "resilience": 5
+          },
+          "memory_tag": "full_signal_rescue",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "Maximum Signal! Rescue Confirmed!",
+            "description": "Every channel fires at once. The coastguard vessel locks your position with certainty. 'We have you. ETA 4 hours.' Alex punches the air. Sam sits down quietly and finally, finally cries."
+          },
+          "next_round_id": "r13_rescue_path",
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r12_b",
+          "label": "Guide the Rescue Vessel Through the Reef",
+          "description": "Use your knowledge of the currents and reef to actively navigate the rescue ship to a safe approach.",
+          "delta": {
+            "knowledge": 20,
+            "morale": 20,
+            "health": 5,
+            "energy": -15,
+            "strategic_thinking": 8,
+            "growth_mindset": 6
+          },
+          "memory_tag": "guided_rescue_vessel",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "You Became the Navigator",
+            "description": "Your knowledge of the reef, tides, and currents becomes the difference. The vessel captain radios: 'Your reef guidance was exceptional. Most castaways can barely speak. You coordinated a rescue operation.'"
+          },
+          "next_round_id": "r13_navigator_path",
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "r12_c",
+          "label": "Document Everything First",
+          "description": "Before rescue arrives, spend the time ensuring every survival lesson is recorded for others who might need it.",
+          "delta": {
+            "knowledge": 25,
+            "morale": 15,
+            "energy": -10,
+            "food": -5,
+            "self_awareness": 8,
+            "growth_mindset": 7
+          },
+          "memory_tag": "documented_survival",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "A Legacy Written in Survival",
+            "description": "Seventeen pages. Manu contributes a fisherman's section. Alex sketches the reef approach. Sam adds the psychological observations. When it is done, you all sign the bottom. You leave something real behind."
+          },
+          "next_round_id": "r13_legacy_path",
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "growth_mindset"
+        ]
+      },
+      "image_prompt": "a vibrant tropical beach at sunset, three distinct paths diverging through lush greenery, with soft golden light casting long shadows, a sense of anticipation in the air",
+      "coaching_moment": "Consider how this choice affects your long-term resources, not just the immediate gain.",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r12_b",
+        "reason": "Calculated risk-taking is what separates growth-oriented leaders from status-quo managers."
+      }
+    },
+    {
+      "id": "r13_rescue_path",
+      "title": "Day 13: Rescue Dawn (Signal Path)",
+      "story": "Four hours. That is how long you wait after the confirmation, watching the horizon with the kind of focused attention you now understand is the most human instinct there is: the will to reconnect. At 5:47 AM, a light appears on the horizon. Then another. Then a searchlight sweeps the beach in a slow arc -- methodical, professional, looking for exactly where you are standing.\n\nThe coastguard vessel MV Kestrel navigates carefully through the reef channel. A dinghy is deployed. Three crew members approach the beach. The first one steps out, looks at the four of you, and says simply: 'We've got you.'",
+      "setting": "Southern beach in pre-dawn darkness. A coastguard vessel's lights on the horizon. A dinghy approaching shore.",
+      "challenge": "Coordinate the final rescue operation to get all four survivors safely aboard.",
+      "goal": "Successfully complete the rescue and ensure everyone -- including Manu -- gets off the island.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "pre_dawn_beach",
+        "location": "Southern beach in pre-dawn darkness",
+        "time": "pre-dawn, 5 AM",
+        "weather": "clear night turning to dawn, stars still visible",
+        "objects": "signal fire dying down, coastguard vessel lights on horizon, rescue dinghy approaching through dark surf, searchlight sweeping the beach",
+        "character_positions": "four survivors standing at water's edge watching rescue approach, emotional tableau",
+        "mood": "overwhelming relief, earned rescue, emotional payoff of 13 days of survival"
+      },
+      "choices": [
+        {
+          "id": "r13rp_a",
+          "label": "Get Manu on the Dinghy First",
+          "description": "Insist that the most vulnerable member evacuates first.",
+          "delta": {
+            "morale": 20,
+            "health": 5,
+            "ethical_reasoning": 8,
+            "self_awareness": 4
+          },
+          "memory_tag": "manu_first",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "The Elder Goes First",
+            "description": "The crew takes Manu carefully. He looks back from the dinghy at the island -- his island for five days -- with an expression that contains a whole story. You will remember that look."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "empathy"
+          ]
+        },
+        {
+          "id": "r13rp_b",
+          "label": "Brief the Crew Completely Before Boarding",
+          "description": "Give the rescue crew a full situational briefing before anyone boards.",
+          "delta": {
+            "knowledge": 10,
+            "morale": 15,
+            "energy": -5,
+            "strategic_thinking": 6,
+            "self_awareness": 5
+          },
+          "memory_tag": "briefed_rescue_crew",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Professional Handover",
+            "description": "The crew medic later tells you: 'Best situational report I've ever received from a castaway. Most people just run for the dinghy.' You handed over information. They handed over safety."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "ethical_reasoning",
+          "self_awareness"
+        ]
+      },
+      "image_prompt": "a serene beach at dawn with soft waves lapping at the shore, a coastguard vessel navigating through a rocky reef, searchlights illuminating the sand, anticipation in the air",
+      "coaching_moment": "Think about trade-offs: what are you giving up to get this benefit?",
+      "reflection_prompt": "What tradeoff did this decision reveal? What did you gain, and what did you give up?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r13rp_b",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r13_navigator_path",
+      "title": "Day 13: The Reef Navigation (Navigator Path)",
+      "story": "The coastguard captain's voice is steady but careful: the reef approach is the most dangerous part. You have fourteen days of watching these waters. You know the southerly evening current, the submerged rock shelf at 40 metres off the eastern promontory, the safe channel that runs between two sea stacks at the northern edge. What you learned because you had nothing else to do is now the most valuable knowledge on this radio channel.\n\nFor forty-five minutes, you guide a professional vessel through waters that most captains would refuse to enter in the dark. 'Left ten degrees. Watch the submerged shelf at your two o'clock. The channel is narrow -- maybe eighteen metres -- between those two rock formations. You are through.'",
+      "setting": "Clifftop with radio. A coastguard vessel visible in the distance, cautiously approaching through the reef.",
+      "challenge": "Use your island knowledge to actively guide the rescue vessel through the dangerous reef approach.",
+      "goal": "Successfully navigate the rescue vessel to a safe approach -- the ultimate application of your accumulated knowledge.",
+      "scene_type": "text_message",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "clifftop_night_navigation",
+        "location": "Clifftop at night with coastguard vessel visible",
+        "time": "night, pre-dawn",
+        "weather": "clear starry night, good visibility, calm sea",
+        "objects": "radio handset, binoculars, hand-drawn reef chart, coastguard vessel lights in distance navigating carefully, tense body language",
+        "character_positions": "survivor speaking urgently into radio while watching vessel with binoculars, others anxiously observing",
+        "mood": "intense concentration, knowledge becoming action, the culmination of island learning"
+      },
+      "text_message_content": {
+        "sender": "MV Kestrel Captain Rodriguez",
+        "timestamp": "Night navigation, 0340 local",
+        "message": "We are at the reef perimeter. Our charts show this area as unnavigable. We understand you have direct knowledge of approach routes. Please guide us. Over.",
+        "signal_quality": "Strong and clear"
+      },
+      "choices": [
+        {
+          "id": "r13np_a",
+          "label": "Guide Them Through the Northern Channel",
+          "description": "Use your observed route -- the eighteen-metre northern channel between sea stacks.",
+          "delta": {
+            "knowledge": 15,
+            "morale": 25,
+            "health": 5,
+            "strategic_thinking": 8,
+            "resilience": 5
+          },
+          "memory_tag": "guided_northern_channel",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "Perfect Navigation!",
+            "description": "The vessel threads through the channel without touching rock. Captain Rodriguez's voice is warm with respect: 'Outstanding. I have fifteen years on these waters and I would not have found that channel.' You did."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r13np_b",
+          "label": "Advise Waiting for Dawn and Better Visibility",
+          "description": "Your knowledge says daylight navigation is safer -- recommend waiting two hours.",
+          "delta": {
+            "knowledge": 10,
+            "morale": 15,
+            "health": 10,
+            "impulse_control": 8,
+            "strategic_thinking": 6
+          },
+          "memory_tag": "advised_dawn_approach",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Wisdom Over Speed",
+            "description": "The captain agrees. Two hours later, in morning light, the reef approach is almost graceful. Rodriguez says: 'Good call. We had one incident last year from a night approach. You may have saved us another.'"
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "impulse_control"
+        ]
+      },
+      "image_prompt": "a dark, moody ocean at twilight, with jagged rocks silhouetted against the fading light, a lighthouse beam cutting through the mist, waves crashing ominously around a navigating vessel",
+      "coaching_moment": "How might your team react to this decision? What about your customers?",
+      "reflection_prompt": "How did this choice reflect your personal values or priorities?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r13np_a",
+        "reason": "Resilience research shows that processing setbacks openly builds stronger teams."
+      }
+    },
+    {
+      "id": "r13_legacy_path",
+      "title": "Day 13: The Document (Legacy Path)",
+      "story": "Seventeen pages. In the hours before rescue arrives, the four of you fill them. Manu draws the fish species, the tide charts, the edible plant markers. Alex -- suddenly practical when given a creative problem -- sketches the reef approach with the eye of someone who ran across it at speed. Sam annotates everything with precision: distances, timings, resource calculations. And you write the introduction, the philosophy of it.\n\nWhen the coastguard dinghy reaches the beach at dawn and the crew member steps out, you do something unexpected. Before boarding, you walk to the lockbox on the southern cliff and place the document inside alongside the original notebook. Two castaways have now contributed their knowledge to this island. Whoever comes after will not start from zero.",
+      "setting": "Beach at dawn, then the clifftop lockbox. A rescue dinghy just arrived.",
+      "challenge": "Complete the legacy document and ensure it will survive for future castaways.",
+      "goal": "Leave a meaningful legacy before departure -- knowledge that could save a future life.",
+      "scene_type": "diary",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "dawn_beach_and_cliff",
+        "location": "Beach at dawn with rescue dinghy, then clifftop with lockbox",
+        "time": "dawn, golden morning light",
+        "weather": "clear beautiful sunrise, calm sea, perfect morning",
+        "objects": "filled document pages, four contributors' handwriting, lockbox on cliff, rescue dinghy on beach, crew waiting patiently",
+        "character_positions": "survivor at clifftop placing document in lockbox, others watching from beach, rescue crew standing respectfully by dinghy",
+        "mood": "completion and transcendence, leaving something behind, the most human of survival acts"
+      },
+      "diary_content": {
+        "author": "Four Survivors Collective",
+        "date_found": "Day 13 -- Rescue Morning",
+        "entries": [
+          {
+            "day": 13,
+            "text": "To whoever finds this: the lagoon is 3 km northeast. The caves are east. The rescue ship passes south on Thursdays 0800-1000. The island is survivable. We know because we survived it."
+          },
+          {
+            "day": 13,
+            "text": "Skills that mattered most: water first, always. Shelter before comfort. Team before ego. Knowledge compounds -- learn something every day."
+          },
+          {
+            "day": 13,
+            "text": "We are leaving now. The island kept us. But it also taught us. We are grateful for both."
+          }
+        ]
+      },
+      "choices": [
+        {
+          "id": "r13lp_a",
+          "label": "Place the Document in the Lockbox",
+          "description": "Seal the legacy document in the existing lockbox on the southern cliff for future castaways.",
+          "delta": {
+            "morale": 20,
+            "knowledge": 10,
+            "ethical_reasoning": 8,
+            "growth_mindset": 6
+          },
+          "memory_tag": "legacy_sealed",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "The Chain of Knowledge Continues",
+            "description": "The lockbox closes. The cliff holds it. The island holds the cliff. Somewhere in the future, someone who needs it will find it. The crew member who watched the whole thing says nothing -- just nods slowly, once."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r13lp_b",
+          "label": "Give the Document to the Coastguard",
+          "description": "Hand it to the rescue crew for official maritime safety records.",
+          "delta": {
+            "morale": 15,
+            "knowledge": 15,
+            "strategic_thinking": 6,
+            "self_awareness": 5
+          },
+          "memory_tag": "legacy_official",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Official Maritime Record",
+            "description": "The captain accepts it with formality. 'This will be logged with the maritime authority. Reef approach data alone could prevent accidents.' Your knowledge enters official record. A different kind of legacy."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "ethical_reasoning",
+          "growth_mindset"
+        ]
+      },
+      "image_prompt": "a tranquil beach at dawn, golden light spilling over the waves, four friends gathered around a makeshift table filled with sketches and notes, focused expressions as they work together",
+      "coaching_moment": "Look at your current resource levels — which constraint are you trying to address?",
+      "reflection_prompt": "If you could replay this round, would you choose differently? Why or why not?",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r13lp_a",
+        "reason": "Calculated risk-taking is what separates growth-oriented leaders from status-quo managers."
+      }
+    },
+    {
+      "id": "r14",
+      "title": "Day 14: Aboard the Kestrel",
+      "story": "The dinghy rocks across the calm morning sea toward the MV Kestrel. You sit in the bow and watch the island shrink. It is smaller than it felt from inside it. It always is. The crew has given each of you a foil blanket, a bottle of clean water, and a bowl of something hot and deliberately unseasoned. You drink the water in long, careful swallows that feel like the best thing you have ever tasted.\n\nIn the medical bay, a nurse examines each of you with practiced efficiency. Manu's knee gets attention. Alex's ankle is assessed. Sam's wound is cleaned and properly dressed. When she gets to you, she looks over her clipboard and says: 'Vital signs are surprisingly stable. You took care of yourself out there. That's less common than you'd think.'",
+      "setting": "Aboard MV Kestrel. Medical bay, main deck, and bow with island receding behind you.",
+      "challenge": "Process the transition from survival mode back to the normal world.",
+      "goal": "Complete the physical and psychological transition out of survival mode with clarity and intention.",
+      "scene_type": "default",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "coastguard_vessel",
+        "location": "Coastguard vessel deck and medical bay",
+        "time": "morning, receding island on horizon",
+        "weather": "perfect clear morning, calm sea, island shrinking in distance",
+        "objects": "foil thermal blankets, water bottles, medical equipment, vessel deck, island visible and shrinking on horizon",
+        "character_positions": "survivors on vessel deck wrapped in foil blankets, medical assessment in progress, island visible in distance",
+        "mood": "relief, decompression, quiet exhaustion, the strange grief of leaving something that changed you"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "swam_to_wreck",
+          "round_ref": "Round 1",
+          "text_if_chosen": "The nurse notes the healed abrasions from your Day 1 swim. 'You went into the water after the wreck? Bold.' You nod. It feels like a lifetime ago.",
+          "text_if_not": ""
+        },
+        {
+          "memory_tag": "cleared_air_with_alex",
+          "round_ref": "Round 10",
+          "text_if_chosen": "Alex catches your eye across the medical bay and gives you a small, genuine nod. The conversation on Day 10 changed something between you that is still changed.",
+          "text_if_not": "Alex and you sit at opposite ends of the medical bay, each quiet with your own thoughts. Some distances survive rescue."
+        }
+      ],
+      "choices": [
+        {
+          "id": "r14_a",
+          "label": "Sleep -- Your Body Has Earned It",
+          "description": "Accept the crew's offer of a bunk and sleep for the first time in genuine safety.",
+          "delta": {
+            "health": 20,
+            "energy": 25,
+            "morale": 15,
+            "self_awareness": 4,
+            "emotional_regulation": 5
+          },
+          "memory_tag": "rested_on_kestrel",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Eight Hours of Real Sleep",
+            "description": "You wake as the Kestrel enters harbor. Everything hurts less. Your mind is clear. Sam is already sitting up, writing in the notebook. Alex is at the porthole, watching the coastline. It is over."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "empathy"
+          ]
+        },
+        {
+          "id": "r14_b",
+          "label": "Talk to the Captain About the Island",
+          "description": "Use the transit time to share everything you know about the island's location and resources with official records.",
+          "delta": {
+            "knowledge": 15,
+            "morale": 10,
+            "energy": -10,
+            "strategic_thinking": 5,
+            "growth_mindset": 5
+          },
+          "memory_tag": "briefed_captain",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Island Officially Charted",
+            "description": "Captain Rodriguez takes careful notes. 'We'll flag this location for maritime safety. Your reef data alone is valuable.' The island will appear on future charts -- with your observations contributing to its description."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "r14_c",
+          "label": "Sit With Manu and Hear His Story",
+          "description": "Use the journey to learn from Manu's life -- the fisherman who knows things textbooks never will.",
+          "delta": {
+            "knowledge": 20,
+            "morale": 20,
+            "energy": -5,
+            "growth_mindset": 7,
+            "adaptability": 5
+          },
+          "memory_tag": "heard_manus_story",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Manu's Fifty Years on the Water",
+            "description": "Manu talks for three hours. Storms he survived. Fish that think. The way the sea changes smell before bad weather. When he finishes, you realize you received something that cannot be taught in any classroom."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance",
+            "empathy"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "self_awareness",
+          "growth_mindset"
+        ]
+      },
+      "image_prompt": "a tranquil morning sea with gentle waves reflecting the sun, a small dinghy gliding toward the MV Kestrel, crew members handing out foil blankets and water bottles.",
+      "coaching_moment": "Sometimes the bold choice carries risk, but also the highest reward. Weigh carefully.",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r14_a",
+        "reason": "Goleman's EQ framework rates empathetic responses as the highest-impact leadership move."
+      }
+    },
+    {
+      "id": "r15",
+      "title": "Day 15: The Debrief and What Comes Next",
+      "story": "The harbor is full of noise: gulls, machinery, human voices, traffic from the road beyond the dock wall. You have forgotten how loud the normal world is. A maritime authority officer and a counselor meet you at the dock. After the formal debrief -- questions about the MV Meridian's last known position, the wreck site, the island coordinates -- the counselor asks each of you a question that cuts right through the professional veneer of the whole event.\n\n'What did you learn about yourself that you didn't know before?' Alex goes first. Sam goes second. Then it is your turn. You think about every decision, every night, every argument, every coconut, every star you learned to navigate by and every moment you chose patience over panic. The answer is longer than you expected. And more honest.",
+      "setting": "Harbor dock, then a coastguard office conference room. Daylight, noise, the world reasserting itself.",
+      "challenge": "Articulate the real lessons of the experience and decide how to carry them forward.",
+      "goal": "Complete the journey with a clear, meaningful understanding of what survival taught you.",
+      "scene_type": "default",
+      "reflection_prompt": "After everything -- what is the single most important decision you made on the island? Not the most dramatic one: the most important one. And what does your answer reveal about your values?",
+      "media": {
+        "ai_generate": true
+      },
+      "scene_hint": {
+        "env_type": "harbor_and_office",
+        "location": "Harbor dock and maritime authority conference room",
+        "time": "midday, bright normal world",
+        "weather": "bright sunny normal day, busy harbor",
+        "objects": "official debrief table, notebooks, cups of water and coffee, window looking out on harbor and sea, debriefing officers",
+        "character_positions": "survivors and officials around a conference table, counselor leaning forward asking the final question",
+        "mood": "return to civilization, honest reckoning, integration of experience, quiet triumph"
+      },
+      "callbacks": [
+        {
+          "memory_tag": "teamwork_day1",
+          "round_ref": "Round 2",
+          "text_if_chosen": "The counselor notes that your group's survival rate correlates strongly with early cooperative behavior. 'The data on stranded groups consistently shows that early teamwork is the highest predictor of outcome.'",
+          "text_if_not": ""
+        },
+        {
+          "memory_tag": "integrated_manu",
+          "round_ref": "Round 11",
+          "text_if_chosen": "Manu's family is at the dock. His granddaughter runs to him across the concrete. You watch that reunion and feel something clarify inside you.",
+          "text_if_not": ""
+        },
+        {
+          "memory_tag": "exaggerated_condition",
+          "round_ref": "Round 9",
+          "text_if_chosen": "The officer pauses at one point in the debrief and asks a careful question about the initial rescue resource request. You answer honestly. It is uncomfortable. It is also right.",
+          "text_if_not": ""
+        }
+      ],
+      "choices": [
+        {
+          "id": "r15_a",
+          "label": "Share Your Story Publicly -- Write About It",
+          "description": "Commit to documenting the experience to help others understand survival psychology and decision-making.",
+          "delta": {
+            "knowledge": 20,
+            "morale": 20,
+            "growth_mindset": 8,
+            "self_awareness": 7,
+            "resilience": 5
+          },
+          "memory_tag": "committed_to_share",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "A Story Worth Telling",
+            "description": "Six months later, your account is read by survival training instructors, school groups, and maritime safety organizations. Three people contact you to say they made different decisions in difficult moments because of what you wrote. The island's lessons multiply."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "empathy"
+          ]
+        },
+        {
+          "id": "r15_b",
+          "label": "Return to Normal Life -- But Changed",
+          "description": "Go home, recover, and carry the lessons quietly -- changed but private about it.",
+          "delta": {
+            "health": 15,
+            "energy": 15,
+            "morale": 15,
+            "emotional_regulation": 7,
+            "self_awareness": 8
+          },
+          "memory_tag": "private_change",
+          "consequence_scene": {
+            "animation_type": "gain",
+            "headline": "Quietly Different",
+            "description": "Your friends notice it within a week. You are slower to react, quicker to listen. You don't explain why. Some things are changed by experience and need no words. You carry the island inside you now."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "empathy"
+          ]
+        },
+        {
+          "id": "r15_c",
+          "label": "Train in Wilderness Survival -- Turn Experience Into Expertise",
+          "description": "Enroll in formal survival and wilderness first aid training to formalize what you learned the hard way.",
+          "delta": {
+            "knowledge": 25,
+            "health": 10,
+            "energy": 10,
+            "growth_mindset": 8,
+            "resilience": 6,
+            "strategic_thinking": 5
+          },
+          "memory_tag": "trained_formally",
+          "consequence_scene": {
+            "animation_type": "celebration",
+            "headline": "Expertise Earned Twice",
+            "description": "Your survival course instructor pauses when you demonstrate a skill. 'Where did you learn that?' You tell her. She is quiet for a moment. 'Most students learn survival as theory. You have something different -- muscle memory of necessity.' You do."
+          },
+          "next_round_id": null,
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance",
+            "strategic_thinking"
+          ]
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "growth_mindset",
+          "self_awareness"
+        ]
+      },
+      "image_prompt": "a bustling harbor filled with boats and cargo, gulls soaring overhead, busy workers unloading crates, the sun glinting off the water, an air of anticipation and reflection",
+      "coaching_moment": "Consider how this choice affects your long-term resources, not just the immediate gain.",
+      "time_limit_seconds": 30,
+      "expert_pick": {
+        "choice_id": "r15_c",
+        "reason": "Resilience research shows that processing setbacks openly builds stronger teams."
+      }
+    }
+  ],
+  "scoring_criteria": [
+    {
+      "id": "resource_management",
+      "label": "Resource Management",
+      "weight": 0.25,
+      "description": "How effectively you balanced competing resource needs throughout the ordeal"
+    },
+    {
+      "id": "risk_assessment",
+      "label": "Risk Assessment",
+      "weight": 0.2,
+      "description": "Quality of decisions when evaluating high-stakes uncertain outcomes"
+    },
+    {
+      "id": "teamwork",
+      "label": "Teamwork and Leadership",
+      "weight": 0.2,
+      "description": "How well you managed group dynamics, conflict, and collective decision-making"
+    },
+    {
+      "id": "knowledge_building",
+      "label": "Knowledge Building",
+      "weight": 0.2,
+      "description": "Investment in learning and how effectively you applied acquired knowledge"
+    },
+    {
+      "id": "ethical_choices",
+      "label": "Ethical Decision-Making",
+      "weight": 0.15,
+      "description": "Whether your choices reflected integrity, fairness, and consideration for others"
+    }
+  ],
+  "end_screen": {
+    "title": "Survival Complete",
+    "summary_prompt": "You survived 15 days on an uncharted island after a shipwreck. Reflect on the decisions that shaped your journey.",
+    "achievement_tiers": [
+      {
+        "id": "master_survivor",
+        "label": "Master Survivor",
+        "condition": "all_resources_above_40",
+        "description": "You maintained all resources above critical levels throughout. Exceptional balance and judgment."
+      },
+      {
+        "id": "knowledge_keeper",
+        "label": "Knowledge Keeper",
+        "condition": "knowledge_above_80",
+        "description": "You prioritized learning and expertise above all else. Your island knowledge could save another life."
+      },
+      {
+        "id": "team_anchor",
+        "label": "Team Anchor",
+        "condition": "morale_above_70_end",
+        "description": "You kept the group unified and functional through extraordinary pressure. Leadership under fire."
+      },
+      {
+        "id": "bold_survivor",
+        "label": "Bold Survivor",
+        "condition": "high_risk_choices_majority",
+        "description": "You took the aggressive path and made it work. High risk, high reward -- and you earned every bit of it."
+      },
+      {
+        "id": "survivor",
+        "label": "Survivor",
+        "condition": "completed_game",
+        "description": "You made it. That alone is something. Not everyone does."
+      }
+    ]
+  },
+  "coach_mode_default": true,
+  "learning_concept": "Consequence Thinking & Resource Management",
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Opportunity Cost",
+      "definition": "The value of the next best alternative you give up when making a decision.",
+      "example": "Choosing to spend ₹10,000 on marketing means you can't spend it on hiring staff.",
+      "deep_dive": "Every resource has competing uses. Smart decision-makers always ask: 'What am I giving up?'",
+      "real_world_example": "A student choosing to study for an exam gives up time for leisure — that leisure is the opportunity cost."
+    },
+    {
+      "term": "Risk-Reward Trade-off",
+      "definition": "The balance between potential gain and the possibility of loss in any decision.",
+      "example": "A bold marketing campaign might attract many new customers — or backfire and damage reputation.",
+      "deep_dive": "Higher potential rewards usually come with higher risk. The key skill is accurately assessing both sides.",
+      "real_world_example": "Entrepreneurs take calculated risks when starting businesses, accepting uncertainty for the chance of success."
+    },
+    {
+      "term": "Delayed Gratification",
+      "definition": "Resisting an immediate reward in favor of a larger, later reward.",
+      "example": "Investing profits back into training instead of taking them as income now.",
+      "deep_dive": "Research shows people who delay gratification tend to achieve better outcomes. It requires self-control and long-term thinking.",
+      "real_world_example": "Saving money instead of spending it gives you more buying power in the future."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "decisive_leader",
+      "name": "Decisive Leader",
+      "description": "Made 5+ bold decisions that moved the needle",
+      "condition": "bold_choices >= 5",
+      "xp_reward": 100,
+      "icon": "🎯"
+    },
+    {
+      "id": "balanced_thinker",
+      "name": "Balanced Thinker",
+      "description": "Maintained balanced scores across all dimensions",
+      "condition": "all_dimensions_above_50",
+      "xp_reward": 150,
+      "icon": "⚖️"
+    },
+    {
+      "id": "game_complete",
+      "name": "Mission Complete",
+      "description": "Finished the challenge from start to end",
+      "condition": "rounds_completed == total_rounds",
+      "xp_reward": 200,
+      "icon": "🏆"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "delta_multiplier": 1.3,
+      "crisis_chance": 0.1,
+      "time_pressure": false
+    },
+    "medium": {
+      "delta_multiplier": 1.0,
+      "crisis_chance": 0.25,
+      "time_pressure": false
+    },
+    "hard": {
+      "delta_multiplier": 0.75,
+      "crisis_chance": 0.45,
+      "time_pressure": true
+    }
+  },
+  "dimension_scoring_weights": {
+    "resilience": 0.35,
+    "adaptability": 0.3,
+    "risk_tolerance": 0.2,
+    "strategic_thinking": 0.15
+  },
+  "estimated_duration": 80,
+  "target_age": "Ages 13-18",
+  "tags": [
+    "creativity",
+    "decision-making",
+    "intermediate",
+    "resilience",
+    "scenario",
+    "teamwork"
+  ],
+  "cultural_context": "India experiences recurring natural disasters — cyclones, floods, earthquakes — that test both institutional and individual resilience. Survival Island: Stranded builds the adaptive decision-making and crisis management skills needed in these high-stakes situations.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "social-emotional-learning",
+    "adaptability",
+    "entrepreneurial-thinking"
+  ],
+  "coaching_moment": "Setbacks are not failures — they are lessons. Bouncing back stronger is what truly matters.",
+  "icon": "🏝️",
+  "visible": false,
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          16
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          17,
+          21
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Survival Island: Stranded Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Survival Island: Stranded. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Survival Island: Stranded Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Survival Island: Stranded. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which decision in this run shifted your outcome the most? What signal told you it was the right call?"
+}

@@ -1,0 +1,1321 @@
+{
+  "game_id": "city_builder_strategy",
+  "title": "City Architect: Build Your Dream City",
+  "game_type": "strategy",
+  "description": "Step into the role of a city planner and build a thriving metropolis from the ground up! Zone districts, lay infrastructure, manage resources, and outpace a rival city planner to create the most livable, sustainable, and prosperous city. Learn real urban planning concepts as you balance budgets, population happiness, and environmental impact.",
+  "theme": "Urban Planning, City Building & Resource Management",
+  "icon_svg_id": "building",
+  "difficulty": "intermediate",
+  "target_audience": "13-18",
+  "duration_minutes": 25,
+  "learning_objectives": [
+    "Understand zoning principles: residential, commercial, and industrial land use and why cities separate them",
+    "Learn infrastructure planning: how roads, power, water, and public services form the backbone of a city",
+    "Practice budget management and resource allocation for public works projects",
+    "Explore sustainability concepts: green spaces, pollution control, and environmental impact of urban development",
+    "Develop spatial reasoning by optimizing building placement on a constrained grid",
+    "Understand the relationship between public services (schools, hospitals) and population happiness",
+    "Learn traffic management basics: how road networks and zoning proximity reduce congestion",
+    "Experience trade-offs between rapid industrial growth and long-term environmental health"
+  ],
+  "how_to_play": {
+    "title": "How to Play",
+    "steps": [
+      "You are a city planner building on an 8x10 grid -- your City Hall is at the bottom-left, the rival planner's HQ is at the top-right",
+      "Each turn, select one of your units (Builder, Engineer, Planner, or Heavy Machine) and choose to Move or Build/Act",
+      "Move units within their move_range to reach empty land tiles where you want to construct new buildings",
+      "Build structures by placing your unit on an empty_land tile and selecting a building type (residential, commercial, industrial, park, school, hospital, power_plant, or road)",
+      "Each structure costs budget to build -- residential zones attract population, commercial zones generate revenue, industrial zones boost production but create pollution",
+      "Roads must connect your districts to City Hall for them to function -- isolated buildings produce no benefit",
+      "Parks and green spaces improve environment_score and happiness, countering industrial pollution",
+      "Schools and hospitals are public services that dramatically boost population_happiness but cost ongoing budget",
+      "The rival planner is also building -- they will compete for the best land and try to outgrow your city",
+      "After 20 turns, the city with the highest combined score (budget efficiency + population_happiness + environment_score) wins!"
+    ],
+    "tips": [
+      "Zone strategically: place residential areas away from industrial zones to avoid pollution penalties to happiness",
+      "Build roads early -- they are cheap and unlock connectivity bonuses for all adjacent structures",
+      "Parks are inexpensive and provide happiness and environment buffs to all buildings within 2 tiles",
+      "Do not neglect public services -- a city without schools and hospitals will see happiness plummet after turn 10",
+      "Industrial zones generate the most revenue but tank your environment_score -- balance them with parks and green buffers",
+      "Use your Planner unit to scout the map first -- they move fast and can identify the best building locations",
+      "The Engineer can repair and upgrade existing structures for less cost than building new ones",
+      "Watch the rival planner's movements -- if they are racing toward prime land, send your Cavalry Planner to claim it first",
+      "Power plants are expensive but essential -- buildings more than 4 tiles from a power source operate at half efficiency",
+      "Cluster complementary buildings: a school next to residential zones gives a double happiness bonus"
+    ]
+  },
+  "initial_state": {
+    "score": 0,
+    "budget": 50000,
+    "population_happiness": 60,
+    "environment_score": 50,
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "strategy_config": {
+    "grid_size": {
+      "rows": 8,
+      "cols": 10
+    },
+    "max_turns": 20,
+    "terrain_effects": {
+      "empty_land": {
+        "defense_bonus": 0,
+        "move_cost": 1,
+        "buildable": true,
+        "description": "Vacant land ready for development. Move a unit here and choose what to build."
+      },
+      "residential": {
+        "defense_bonus": 1,
+        "move_cost": 1,
+        "happiness_bonus": 5,
+        "population_gain": 200,
+        "build_cost": 3000,
+        "revenue_per_turn": 100,
+        "description": "Housing zones where citizens live. Generates population and small tax revenue. Happiness drops if placed near industrial zones."
+      },
+      "commercial": {
+        "defense_bonus": 1,
+        "move_cost": 1,
+        "happiness_bonus": 3,
+        "revenue_per_turn": 500,
+        "build_cost": 4000,
+        "description": "Shops, offices, and markets. Generates strong revenue and moderate happiness. Best placed between residential and industrial zones."
+      },
+      "industrial": {
+        "defense_bonus": 2,
+        "move_cost": 1,
+        "revenue_per_turn": 800,
+        "pollution": 10,
+        "build_cost": 5000,
+        "description": "Factories and production facilities. Highest revenue but generates pollution that lowers environment_score and nearby happiness."
+      },
+      "park": {
+        "defense_bonus": 0,
+        "move_cost": 1,
+        "happiness_bonus": 8,
+        "environment_bonus": 10,
+        "build_cost": 1500,
+        "radius_effect": 2,
+        "description": "Green spaces and recreation areas. Boosts happiness and environment for all buildings within 2 tiles. The lungs of your city."
+      },
+      "water": {
+        "passable": false,
+        "buildable": false,
+        "environment_bonus": 3,
+        "description": "Rivers and lakes that block construction and movement. Natural water features improve nearby environment scores."
+      },
+      "road": {
+        "defense_bonus": 0,
+        "move_cost": 0.5,
+        "build_cost": 500,
+        "connectivity_bonus": true,
+        "description": "Transportation routes that connect districts. Buildings must be road-connected to City Hall to function. Units move faster on roads."
+      },
+      "power_plant": {
+        "defense_bonus": 3,
+        "move_cost": 1,
+        "build_cost": 8000,
+        "power_radius": 4,
+        "pollution": 5,
+        "description": "Generates electricity for surrounding buildings within 4 tiles. Essential infrastructure but produces some pollution."
+      },
+      "school": {
+        "defense_bonus": 1,
+        "move_cost": 1,
+        "build_cost": 6000,
+        "happiness_bonus": 12,
+        "education_bonus": 15,
+        "upkeep_per_turn": 300,
+        "description": "Educational facilities that dramatically boost happiness and population growth. Has ongoing upkeep costs each turn."
+      },
+      "hospital": {
+        "defense_bonus": 1,
+        "move_cost": 1,
+        "build_cost": 7000,
+        "happiness_bonus": 15,
+        "health_bonus": 20,
+        "upkeep_per_turn": 400,
+        "description": "Healthcare facilities providing essential public services. Highest happiness bonus but most expensive to maintain."
+      }
+    },
+    "terrain": [
+      {
+        "row": 7,
+        "col": 0,
+        "type": "base",
+        "label": "City Hall (Your HQ)",
+        "icon": "🏛️"
+      },
+      {
+        "row": 0,
+        "col": 9,
+        "type": "enemy_base",
+        "label": "Rival Planner HQ",
+        "icon": "🏗️"
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "type": "water",
+        "label": "Central River",
+        "icon": "🌊"
+      },
+      {
+        "row": 3,
+        "col": 5,
+        "type": "water",
+        "label": "Central River",
+        "icon": "🌊"
+      },
+      {
+        "row": 3,
+        "col": 6,
+        "type": "water",
+        "label": "Central River",
+        "icon": "🌊"
+      },
+      {
+        "row": 4,
+        "col": 6,
+        "type": "water",
+        "label": "River Bend South",
+        "icon": "💧"
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "type": "water",
+        "label": "River Bend North",
+        "icon": "💧"
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "type": "water",
+        "label": "Northern Lake",
+        "icon": "🌊"
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "type": "water",
+        "label": "Northern Lake",
+        "icon": "🌊"
+      },
+      {
+        "row": 7,
+        "col": 8,
+        "type": "water",
+        "label": "Southern Pond",
+        "icon": "💧"
+      },
+      {
+        "row": 7,
+        "col": 1,
+        "type": "road",
+        "label": "Main Street",
+        "icon": "🛤️"
+      },
+      {
+        "row": 7,
+        "col": 2,
+        "type": "road",
+        "label": "Main Street",
+        "icon": "🛤️"
+      },
+      {
+        "row": 6,
+        "col": 0,
+        "type": "road",
+        "label": "City Hall Avenue",
+        "icon": "🛤️"
+      },
+      {
+        "row": 5,
+        "col": 0,
+        "type": "road",
+        "label": "City Hall Avenue",
+        "icon": "🛤️"
+      },
+      {
+        "row": 0,
+        "col": 8,
+        "type": "road",
+        "label": "Rival Access Road",
+        "icon": "🛤️"
+      },
+      {
+        "row": 1,
+        "col": 9,
+        "type": "road",
+        "label": "Rival Boulevard",
+        "icon": "🛤️"
+      },
+      {
+        "row": 6,
+        "col": 2,
+        "type": "park",
+        "label": "Founders Park",
+        "icon": "🌳"
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "type": "park",
+        "label": "Northern Green",
+        "icon": "🌲"
+      },
+      {
+        "row": 5,
+        "col": 1,
+        "type": "residential",
+        "label": "Starter Housing Block",
+        "icon": "🏘️"
+      },
+      {
+        "row": 6,
+        "col": 1,
+        "type": "commercial",
+        "label": "Corner Market",
+        "icon": "🏪"
+      },
+      {
+        "row": 0,
+        "col": 7,
+        "type": "industrial",
+        "label": "Rival Steel Works",
+        "icon": "🏭"
+      },
+      {
+        "row": 1,
+        "col": 8,
+        "type": "residential",
+        "label": "Rival Worker Housing",
+        "icon": "🏠"
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "type": "empty_land",
+        "label": "Westside Plot A",
+        "icon": "🟫"
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "type": "empty_land",
+        "label": "Westside Plot B",
+        "icon": "🟫"
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "type": "empty_land",
+        "label": "Central Plot West",
+        "icon": "🟫"
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "type": "empty_land",
+        "label": "Central Plot",
+        "icon": "🟫"
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "type": "empty_land",
+        "label": "Northwest Lot A",
+        "icon": "🟫"
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "type": "empty_land",
+        "label": "Northwest Lot B",
+        "icon": "🟫"
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "type": "empty_land",
+        "label": "Northwest Lot C",
+        "icon": "🟫"
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "type": "empty_land",
+        "label": "Riverside North",
+        "icon": "🟫"
+      },
+      {
+        "row": 5,
+        "col": 4,
+        "type": "empty_land",
+        "label": "Riverside South A",
+        "icon": "🟫"
+      },
+      {
+        "row": 5,
+        "col": 5,
+        "type": "empty_land",
+        "label": "Riverside South B",
+        "icon": "🟫"
+      },
+      {
+        "row": 6,
+        "col": 5,
+        "type": "empty_land",
+        "label": "Southeast Plot A",
+        "icon": "🟫"
+      },
+      {
+        "row": 6,
+        "col": 6,
+        "type": "empty_land",
+        "label": "Southeast Plot B",
+        "icon": "🟫"
+      },
+      {
+        "row": 6,
+        "col": 7,
+        "type": "empty_land",
+        "label": "Southeast Plot C",
+        "icon": "🟫"
+      },
+      {
+        "row": 7,
+        "col": 3,
+        "type": "empty_land",
+        "label": "South Central Plot",
+        "icon": "🟫"
+      },
+      {
+        "row": 7,
+        "col": 4,
+        "type": "empty_land",
+        "label": "South Central Plot B",
+        "icon": "🟫"
+      },
+      {
+        "row": 5,
+        "col": 2,
+        "type": "empty_land",
+        "label": "Midtown Lot A",
+        "icon": "🟫"
+      },
+      {
+        "row": 5,
+        "col": 3,
+        "type": "empty_land",
+        "label": "Midtown Lot B",
+        "icon": "🟫"
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "type": "empty_land",
+        "label": "Lakeside Lot",
+        "icon": "🟫"
+      },
+      {
+        "row": 1,
+        "col": 5,
+        "type": "empty_land",
+        "label": "North Central Lot",
+        "icon": "🟫"
+      },
+      {
+        "row": 1,
+        "col": 6,
+        "type": "empty_land",
+        "label": "Northeast Lot A",
+        "icon": "🟫"
+      },
+      {
+        "row": 0,
+        "col": 5,
+        "type": "empty_land",
+        "label": "Far North Plot",
+        "icon": "🟫"
+      },
+      {
+        "row": 0,
+        "col": 6,
+        "type": "empty_land",
+        "label": "Far North Plot B",
+        "icon": "🟫"
+      }
+    ],
+    "units": [
+      {
+        "id": "u_builder",
+        "name": "Builder",
+        "icon": "👷",
+        "type": "melee",
+        "row": 7,
+        "col": 0,
+        "max_hp": 100,
+        "attack": 20,
+        "defense": 5,
+        "move_range": 2,
+        "attack_range": 1,
+        "build_types": [
+          "residential",
+          "commercial",
+          "road",
+          "park"
+        ],
+        "description": "Your primary construction worker. Can build standard structures -- residential zones, commercial districts, roads, and parks. Solid in disputes over contested land. The workhorse of your city-building operation."
+      },
+      {
+        "id": "u_engineer",
+        "name": "Engineer",
+        "icon": "🔧",
+        "type": "ranged",
+        "row": 7,
+        "col": 1,
+        "max_hp": 60,
+        "attack": 18,
+        "defense": 2,
+        "move_range": 2,
+        "attack_range": 3,
+        "build_types": [
+          "power_plant",
+          "school",
+          "hospital"
+        ],
+        "description": "A specialized technician who constructs advanced public service buildings -- power plants, schools, and hospitals. Can also repair damaged structures from a distance. Fragile but invaluable for city infrastructure."
+      },
+      {
+        "id": "u_planner",
+        "name": "Planner",
+        "icon": "📋",
+        "type": "cavalry",
+        "row": 7,
+        "col": 2,
+        "max_hp": 70,
+        "attack": 15,
+        "defense": 3,
+        "move_range": 4,
+        "attack_range": 1,
+        "survey_bonus": true,
+        "description": "A fast-moving urban surveyor who can cover vast ground each turn. Perfect for scouting available land, claiming prime building sites before the rival, and surveying terrain for optimal placement. Reveals hidden land quality bonuses."
+      },
+      {
+        "id": "u_heavy_machine",
+        "name": "Heavy Machine",
+        "icon": "🚜",
+        "type": "siege",
+        "row": 7,
+        "col": 0,
+        "max_hp": 50,
+        "attack": 35,
+        "defense": 4,
+        "move_range": 1,
+        "attack_range": 4,
+        "build_types": [
+          "industrial",
+          "power_plant"
+        ],
+        "description": "A massive construction vehicle for heavy-duty projects. Builds industrial complexes and power plants at reduced cost. Extremely slow but powerful -- can demolish rival structures from long range. Protect it while it works."
+      }
+    ],
+    "enemy_units": [
+      {
+        "id": "e_rival_builder",
+        "name": "Rival Builder",
+        "icon": "👷‍♂️",
+        "type": "melee",
+        "row": 0,
+        "col": 9,
+        "max_hp": 80,
+        "attack": 18,
+        "defense": 4,
+        "move_range": 2,
+        "attack_range": 1,
+        "ai_behavior": "aggressive",
+        "description": "The rival's primary construction worker. Aggressively pushes into contested land to build residential and commercial zones before you can claim them. Will fight your units for control of prime real estate."
+      },
+      {
+        "id": "e_rival_engineer",
+        "name": "Rival Engineer",
+        "icon": "🔩",
+        "type": "ranged",
+        "row": 0,
+        "col": 8,
+        "max_hp": 50,
+        "attack": 16,
+        "defense": 1,
+        "move_range": 2,
+        "attack_range": 3,
+        "ai_behavior": "defensive",
+        "description": "The rival's infrastructure specialist. Stays close to already-built rival structures, repairing and upgrading them while taking potshots at your nearby units. Hard to engage due to range advantage."
+      },
+      {
+        "id": "e_rival_surveyor",
+        "name": "Rival Surveyor",
+        "icon": "🔭",
+        "type": "cavalry",
+        "row": 1,
+        "col": 9,
+        "max_hp": 65,
+        "attack": 14,
+        "defense": 2,
+        "move_range": 4,
+        "attack_range": 1,
+        "ai_behavior": "strategic",
+        "description": "A fast-moving rival scout who races to claim the most valuable empty land tiles. Prioritizes high-value central plots and riverfront property. Will try to block your expansion routes."
+      },
+      {
+        "id": "e_rival_foreman",
+        "name": "Rival Foreman",
+        "icon": "🦺",
+        "type": "melee",
+        "row": 0,
+        "col": 7,
+        "max_hp": 110,
+        "attack": 12,
+        "defense": 7,
+        "move_range": 1,
+        "attack_range": 1,
+        "ai_behavior": "guardian",
+        "description": "A tough defensive unit that guards the rival's key buildings. Extremely hard to push through but very slow. Positioned to protect the rival's industrial core from disruption."
+      },
+      {
+        "id": "e_rival_director",
+        "name": "Rival City Director",
+        "icon": "🎩",
+        "type": "commander",
+        "row": 0,
+        "col": 5,
+        "max_hp": 90,
+        "attack": 20,
+        "defense": 5,
+        "move_range": 3,
+        "attack_range": 2,
+        "ai_behavior": "strategic",
+        "description": "The rival's master planner. Makes intelligent decisions about where to expand, which of your buildings to target, and when to retreat. Coordinates the other rival units for maximum city growth."
+      }
+    ],
+    "building_rules": {
+      "adjacency_bonuses": [
+        {
+          "building_a": "residential",
+          "building_b": "park",
+          "bonus": {
+            "happiness_bonus": 5,
+            "description": "Residents love living near green spaces"
+          }
+        },
+        {
+          "building_a": "residential",
+          "building_b": "school",
+          "bonus": {
+            "happiness_bonus": 8,
+            "population_growth": 50,
+            "description": "Families move to neighborhoods with good schools"
+          }
+        },
+        {
+          "building_a": "residential",
+          "building_b": "hospital",
+          "bonus": {
+            "happiness_bonus": 6,
+            "description": "Access to healthcare increases resident satisfaction"
+          }
+        },
+        {
+          "building_a": "commercial",
+          "building_b": "residential",
+          "bonus": {
+            "revenue_bonus": 200,
+            "description": "Shops near housing attract more customers"
+          }
+        },
+        {
+          "building_a": "commercial",
+          "building_b": "road",
+          "bonus": {
+            "revenue_bonus": 100,
+            "description": "Road access increases foot traffic to businesses"
+          }
+        },
+        {
+          "building_a": "industrial",
+          "building_b": "road",
+          "bonus": {
+            "revenue_bonus": 150,
+            "description": "Logistics connectivity boosts factory output"
+          }
+        }
+      ],
+      "adjacency_penalties": [
+        {
+          "building_a": "residential",
+          "building_b": "industrial",
+          "penalty": {
+            "happiness_penalty": -10,
+            "description": "Factory noise and pollution make residents unhappy"
+          }
+        },
+        {
+          "building_a": "park",
+          "building_b": "industrial",
+          "penalty": {
+            "environment_penalty": -5,
+            "description": "Industrial pollution damages nearby green spaces"
+          }
+        },
+        {
+          "building_a": "school",
+          "building_b": "industrial",
+          "penalty": {
+            "happiness_penalty": -8,
+            "description": "Parents do not want schools near factories"
+          }
+        }
+      ],
+      "connectivity_requirement": "All buildings must be connected to City Hall via roads to generate full benefits. Unconnected buildings operate at 50% efficiency.",
+      "power_requirement": "Buildings more than 4 tiles from a power_plant operate at 50% output. Ensure power coverage across your city."
+    },
+    "objectives": [
+      {
+        "id": "obj_build_thriving_city",
+        "type": "score_threshold",
+        "description": "Achieve a combined city score of 500 or more (budget efficiency + happiness + environment)",
+        "reward_score": 200,
+        "primary": true
+      },
+      {
+        "id": "obj_build_5_residential",
+        "type": "build_count",
+        "target": "residential",
+        "count": 5,
+        "description": "Build at least 5 residential zones to house your growing population",
+        "reward_score": 100
+      },
+      {
+        "id": "obj_build_school_hospital",
+        "type": "build_all",
+        "targets": [
+          "school",
+          "hospital"
+        ],
+        "description": "Build both a school and a hospital to provide essential public services",
+        "reward_score": 150
+      },
+      {
+        "id": "obj_connect_all_buildings",
+        "type": "connectivity",
+        "description": "Connect all your buildings to City Hall via a road network",
+        "reward_score": 100
+      },
+      {
+        "id": "obj_environment_70",
+        "type": "stat_threshold",
+        "stat": "environment_score",
+        "threshold": 70,
+        "description": "Raise your environment score to 70 or above through parks and sustainable planning",
+        "reward_score": 100
+      },
+      {
+        "id": "obj_happiness_80",
+        "type": "stat_threshold",
+        "stat": "population_happiness",
+        "threshold": 80,
+        "description": "Achieve 80% population happiness through public services and smart zoning",
+        "reward_score": 100
+      },
+      {
+        "id": "obj_outgrow_rival",
+        "type": "defeat_rival",
+        "description": "Finish with a higher total city score than the rival planner",
+        "reward_score": 150
+      }
+    ],
+    "win_condition": {
+      "type": "any_of",
+      "conditions": [
+        {
+          "type": "score_threshold",
+          "score": 500,
+          "description": "Achieve a combined city score of 500+ across all metrics"
+        },
+        {
+          "type": "outgrow_rival",
+          "description": "Have a higher total city score than the rival planner after 20 turns"
+        },
+        {
+          "type": "build_all_services",
+          "required": [
+            "residential",
+            "commercial",
+            "industrial",
+            "park",
+            "school",
+            "hospital",
+            "power_plant"
+          ],
+          "description": "Build at least one of every building type for a perfectly balanced city"
+        }
+      ]
+    },
+    "lose_condition": {
+      "type": "any_of",
+      "conditions": [
+        {
+          "type": "all_units_defeated",
+          "description": "All your construction units are put out of commission by the rival"
+        },
+        {
+          "type": "budget_bankrupt",
+          "threshold": 0,
+          "description": "Your city goes bankrupt -- budget drops to zero from overspending on upkeep"
+        },
+        {
+          "type": "happiness_collapse",
+          "threshold": 20,
+          "description": "Population happiness drops below 20% causing mass exodus -- your city is abandoned"
+        },
+        {
+          "type": "turn_limit_exceeded",
+          "max_turns": 20,
+          "description": "Time runs out after 20 turns with the rival having a higher score"
+        }
+      ]
+    },
+    "turn_economy": {
+      "base_revenue_per_turn": 500,
+      "tax_rate_options": [
+        {
+          "rate": "low",
+          "revenue_multiplier": 0.8,
+          "happiness_bonus": 5,
+          "description": "Low taxes keep citizens happy but reduce income"
+        },
+        {
+          "rate": "medium",
+          "revenue_multiplier": 1.0,
+          "happiness_bonus": 0,
+          "description": "Standard tax rate with no happiness effect"
+        },
+        {
+          "rate": "high",
+          "revenue_multiplier": 1.3,
+          "happiness_bonus": -8,
+          "description": "High taxes maximize revenue but citizens become unhappy"
+        }
+      ],
+      "pollution_decay": "Environment score decreases by 2 per industrial building each turn unless offset by parks",
+      "happiness_decay": "Happiness decreases by 1 per turn if no public services (school or hospital) exist after turn 10"
+    }
+  },
+  "glossary_terms": [
+    {
+      "term": "Zoning",
+      "definition": "The practice of dividing a city into different areas (zones) for specific uses such as residential, commercial, or industrial. Proper zoning separates incompatible land uses to improve quality of life.",
+      "example": "In the game, placing residential zones far from industrial zones avoids the -10 happiness penalty from pollution.",
+      "remember_tip": "Zoning = Zones for different purposes. Homes here, factories there, shops in between.",
+      "deep_dive": "Zoning formalised in New York City in 1916 after the Equitable Building blocked sunlight from 7 acres of streets. Modern zoning balances separation of incompatible uses against the vibrancy Jane Jacobs identified in mixed-use neighbourhoods.",
+      "real_world_example": "Houston, Texas is the only major US city without zoning laws—it uses deed restrictions and market forces instead. It's become a natural experiment showing both the efficiency gains and neighbourhood fragmentation that result."
+    },
+    {
+      "term": "Infrastructure",
+      "definition": "The fundamental systems and facilities that a city needs to function: roads, power lines, water supply, sewage, and public transportation. Without infrastructure, buildings cannot operate efficiently.",
+      "example": "Roads connecting buildings to City Hall are essential infrastructure -- unconnected buildings only work at 50% efficiency.",
+      "remember_tip": "Infrastructure = the skeleton of a city. Everything else is built on top of it.",
+      "deep_dive": "Infrastructure follows Metcalfe's Law—its value grows with the number of users it connects. Under-investment creates bottlenecks that compound: a broken road slows supply chains, raises prices, and discourages business investment in the area.",
+      "real_world_example": "The American Society of Civil Engineers grades US infrastructure C- annually. Aging water pipes lose 6 billion gallons per day—equivalent to 1 in every 6 glasses filled never reaching its destination."
+    },
+    {
+      "term": "Sustainability",
+      "definition": "Planning development that meets present needs without compromising the ability of future generations to meet their own needs. In urban planning, this means balancing economic growth with environmental protection.",
+      "example": "Building parks next to industrial zones helps offset pollution, keeping your environment_score sustainable over 20 turns.",
+      "remember_tip": "Sustainability = Build for today AND tomorrow. Do not sacrifice the future for short-term gains.",
+      "deep_dive": "Sustainability in cities means designing for the triple bottom line: people, planet, and prosperity. The UN's Sustainable Development Goal 11 specifically targets 'Sustainable Cities and Communities'. Copenhagen became the world's first carbon-neutral capital city by 2025 through combining cycling infrastructure, district heating, and offshore wind.",
+      "real_world_example": "Curitiba, Brazil pioneered Bus Rapid Transit (BRT) in the 1970s when it couldn't afford a metro. Today its integrated transport system moves 2.3 million daily passengers at a fraction of metro costs, and has been copied across 200 cities worldwide."
+    },
+    {
+      "term": "Mixed-Use Development",
+      "definition": "A type of urban planning where residential, commercial, and sometimes light industrial uses are combined in one area. This reduces commute times and creates vibrant neighborhoods.",
+      "example": "Placing commercial zones adjacent to residential zones earns a +200 revenue bonus because shops near housing attract more customers.",
+      "remember_tip": "Mixed-use = Live, work, and shop all in the same neighborhood.",
+      "deep_dive": "Jane Jacobs argued in 'The Death and Life of Great American Cities' (1961) that mixed-use blocks generate 'eyes on the street' — natural surveillance that reduces crime. Towers-in-parks (the opposite model) destroy this by separating uses and eliminating street activity. Modern New Urbanism builds on Jacobs's insight.",
+      "real_world_example": "Tokyo's neighbourhoods mix apartments, shops, restaurants and offices on the same block. This contributes to Tokyo having one of the lowest urban crime rates of any major world city despite its density of 14,000 people per km²."
+    },
+    {
+      "term": "Urban Sprawl",
+      "definition": "The uncontrolled expansion of a city into surrounding areas, often resulting in inefficient land use, long commutes, and environmental degradation. Good planning prevents sprawl through compact, connected development.",
+      "example": "Building scattered, unconnected structures wastes road budget and leaves buildings at half efficiency -- that is urban sprawl.",
+      "remember_tip": "Sprawl = spreading out too thin. Keep your city compact and connected instead.",
+      "deep_dive": "Urban sprawl refers to low-density development that spreads across large areas, increasing car dependency and infrastructure costs. The US loses 2,000 acres of farmland per day to sprawl. Sprawling cities spend 2–3× more per resident on infrastructure than compact cities because pipes, roads, and utilities must service a much larger area.",
+      "real_world_example": "Atlanta and Barcelona have roughly the same population, but Atlanta covers 26× more land area. Atlanta residents drive an average of 34 miles per day; Barcelona residents drive 12 miles. This difference in form shapes everything from air quality to obesity rates."
+    },
+    {
+      "term": "Public Services",
+      "definition": "Essential services provided by a city government for the well-being of residents, including education (schools), healthcare (hospitals), emergency services, and public parks.",
+      "example": "Schools give +12 happiness and hospitals give +15 happiness -- neglecting public services after turn 10 causes happiness to decay.",
+      "remember_tip": "Public services = What the government provides so citizens can thrive: schools, hospitals, parks.",
+      "deep_dive": "Public services follow the concept of positive externalities — services that benefit society beyond the direct user. A vaccinated person protects their neighbours (herd immunity). An educated child raises productivity for future employers. This is why markets under-provide them, and why government must step in to reach the socially optimal level.",
+      "real_world_example": "Finland tops global education rankings consistently. Its system has no private schools, no standardised testing before age 18, and teachers require a master's degree. This investment in public education correlates with Finland having one of the world's highest innovation indexes."
+    },
+    {
+      "term": "Traffic Management",
+      "definition": "The planning and control of road networks to ensure smooth movement of people and goods. Includes road layout, connectivity, and managing the relationship between where people live and where they work.",
+      "example": "Roads in the game cost only 500 budget but give connectivity bonuses and allow units to move faster (0.5 move cost).",
+      "remember_tip": "Traffic management = Making sure people can get from A to B without gridlock.",
+      "deep_dive": "Braess's Paradox shows that adding road capacity can paradoxically worsen traffic: more lanes attract more drivers, increasing total delay. This is why many cities have found that removing roads — not building them — reduces congestion. Smart traffic signals using AI can cut delays by 25% in a city with no new construction.",
+      "real_world_example": "When the Cheonggyecheon Expressway was removed in Seoul (2003) and replaced with a river park, surrounding traffic improved significantly rather than worsening, as Braess's Paradox predicted. Property values within 50m rose 300%."
+    },
+    {
+      "term": "Green Buffer Zone",
+      "definition": "A strip of parks, gardens, or natural land placed between incompatible land uses (like residential and industrial areas) to reduce the negative impact of noise, pollution, and visual blight.",
+      "example": "Placing a park between your residential and industrial zones eliminates the -10 happiness penalty and adds +8 happiness and +10 environment instead.",
+      "remember_tip": "Green buffer = A park wall between homes and factories. Nature is the best noise canceller.",
+      "deep_dive": "Green buffer zones serve multiple functions simultaneously: they reduce noise and air pollution from industrial zones, provide biodiversity corridors, manage stormwater runoff, and improve mental health for nearby residents. Urban trees reduce street temperatures by up to 8°C through evapotranspiration — critical as cities warm faster than rural areas.",
+      "real_world_example": "Singapore's 'City in a Garden' strategy mandates green buffers around all expressways and industrial zones. This policy has increased tree canopy from 36% to 47% of the city's land area since 2010, reducing urban heat island effect measurably."
+    }
+  ],
+  "layout_config": {
+    "layout_type": "dashboard",
+    "theme": {
+      "primary_color": "#1565C0",
+      "secondary_color": "#2E7D32",
+      "accent_color": "#FF8F00",
+      "font_family": "Nunito, sans-serif"
+    },
+    "status_bar": {
+      "displays": [
+        "budget",
+        "population_happiness",
+        "environment_score",
+        "turn_counter"
+      ],
+      "budget_icon": "💰",
+      "happiness_icon": "😊",
+      "environment_icon": "🌿",
+      "turn_icon": "⏳"
+    }
+  },
+  "result_deltas": {
+    "perfect": {
+      "score": 500,
+      "urban_planning": 30,
+      "resource_management": 25,
+      "strategic_thinking": 20,
+      "environmental_awareness": 15,
+      "spatial_reasoning": 15
+    },
+    "good": {
+      "score": 300,
+      "urban_planning": 18,
+      "resource_management": 15,
+      "strategic_thinking": 12,
+      "environmental_awareness": 10,
+      "spatial_reasoning": 10
+    },
+    "poor": {
+      "score": 100,
+      "urban_planning": 8,
+      "resource_management": 6,
+      "strategic_thinking": 5,
+      "environmental_awareness": 4,
+      "spatial_reasoning": 4
+    }
+  },
+  "achievements": [
+    {
+      "id": "ach_speed_builder",
+      "title": "Speed Developer",
+      "description": "Build 10 or more structures within the first 12 turns",
+      "condition": {
+        "type": "build_count_by_turn",
+        "count": 10,
+        "turn": 12
+      },
+      "reward": {
+        "score": 150
+      },
+      "icon": "⚡",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_green_city",
+      "title": "Eco Champion",
+      "description": "Achieve an environment score of 90 or higher by the end of the game",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "environment_score",
+        "threshold": 90
+      },
+      "reward": {
+        "score": 200
+      },
+      "icon": "🌿",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_happy_citizens",
+      "title": "Beloved Mayor",
+      "description": "Reach 95% population happiness at any point during the game",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "population_happiness",
+        "threshold": 95
+      },
+      "reward": {
+        "score": 200
+      },
+      "icon": "🎉",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_balanced_city",
+      "title": "Master Planner",
+      "description": "Build at least one of every building type (residential, commercial, industrial, park, school, hospital, power_plant)",
+      "condition": {
+        "type": "build_all_types",
+        "types": [
+          "residential",
+          "commercial",
+          "industrial",
+          "park",
+          "school",
+          "hospital",
+          "power_plant"
+        ]
+      },
+      "reward": {
+        "score": 250
+      },
+      "icon": "🏆",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_no_pollution",
+      "title": "Clean Air Award",
+      "description": "Win the game without ever letting environment_score drop below 40",
+      "condition": {
+        "type": "stat_never_below",
+        "stat": "environment_score",
+        "threshold": 40
+      },
+      "reward": {
+        "score": 175
+      },
+      "icon": "🌬️",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_budget_surplus",
+      "title": "Fiscal Genius",
+      "description": "Finish the game with more than 30000 budget remaining",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "budget",
+        "threshold": 30000
+      },
+      "reward": {
+        "score": 150
+      },
+      "icon": "💰",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_rival_defeated",
+      "title": "City Supremacy",
+      "description": "Outscore the rival planner by more than 200 points",
+      "condition": {
+        "type": "outscore_rival",
+        "margin": 200
+      },
+      "reward": {
+        "score": 200
+      },
+      "icon": "🏅",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_connected_city",
+      "title": "Infrastructure Pro",
+      "description": "Have every building connected to City Hall via roads by turn 15",
+      "condition": {
+        "type": "full_connectivity_by_turn",
+        "turn": 15
+      },
+      "reward": {
+        "score": 125
+      },
+      "icon": "🛤️",
+      "xp_reward": 100
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "ethical_reasoning",
+        "name": "Ethical Reasoning",
+        "icon": "⚖️",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "emotional_regulation",
+        "name": "Emotional Regulation",
+        "icon": "🧘",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "self_awareness",
+        "name": "Self Awareness",
+        "icon": "🪞",
+        "brain_region": "occipital_posterior"
+      },
+      {
+        "id": "growth_mindset",
+        "name": "Growth Mindset",
+        "icon": "🌱",
+        "brain_region": "occipital_posterior"
+      }
+    ]
+  },
+  "board_config": {
+    "card_pool": [
+      {
+        "id": "zoning_permit",
+        "name": "Zoning Permit",
+        "icon": "🏗️",
+        "rarity": "rare",
+        "effect_description": "+25 infrastructure, +10 economy",
+        "play_effect": {
+          "infrastructure": 25,
+          "economy": 10
+        },
+        "is_playable": true,
+        "stackable": false,
+        "knowledge": "Jane Jacobs proved mixed-use zoning creates vibrant, safe cities. Singapore's disciplined zoning helped GDP grow from $500 to $65,000 per capita since 1965."
+      },
+      {
+        "id": "green_initiative",
+        "name": "Green Initiative",
+        "icon": "🌿",
+        "rarity": "rare",
+        "effect_description": "+30 sustainability, +15 happiness",
+        "play_effect": {
+          "sustainability": 30,
+          "happiness": 15
+        },
+        "is_playable": true,
+        "stackable": false,
+        "knowledge": "OECD 2022: cities with strong sustainability policies spend 30% less on infrastructure costs over 20 years. Green investment is fiscal sense."
+      },
+      {
+        "id": "tax_relief",
+        "name": "Tax Relief",
+        "icon": "🏛️",
+        "rarity": "common",
+        "effect_description": "+20 economy, +10 happiness",
+        "play_effect": {
+          "economy": 20,
+          "happiness": 10
+        },
+        "is_playable": true,
+        "stackable": true,
+        "knowledge": "The Laffer Curve shows lower tax rates can increase total revenue by stimulating economic activity. The optimal rate maximises both growth and collection."
+      },
+      {
+        "id": "emergency_fund",
+        "name": "Emergency Fund",
+        "icon": "🚨",
+        "rarity": "legendary",
+        "effect_description": "Negate next negative event (passively activates)",
+        "play_effect": {
+          "infrastructure": 15,
+          "economy": 15
+        },
+        "is_playable": true,
+        "stackable": false,
+        "knowledge": "15 US cities declared bankruptcy in the 2008 crisis. Every municipality needs a 10–20% rainy-day reserve. Resilience is built in quiet times.",
+        "min_progress_pct": 50
+      }
+    ],
+    "max_cards": 6
+  },
+  "coach_mode_default": true,
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "You allocated limited resources across competing city needs.",
+      "real_world": "Apply Jane Jacobs' 'mixed use' principle to your own schedule: are you over-specialised in one area at the expense of others?",
+      "challenge": "Draw a 'city map' of your current project: zones for deep work, collaboration, admin, and learning. Are they balanced?"
+    },
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "You invested in infrastructure before seeing immediate returns.",
+      "real_world": "Identify one 'infrastructure investment' in your life you've been postponing (a skill, a relationship, a system). Schedule 1 hour for it this week.",
+      "challenge": "For your next big decision, calculate the 20-year cost of NOT deciding—what does inaction compound into?"
+    },
+    {
+      "skill_tag": "adaptability",
+      "game_context": "Budget shocks and citizen complaints required policy pivots.",
+      "real_world": "Review a plan you made 3 months ago. What has changed? Update it with 3 specific adjustments based on new information.",
+      "challenge": "Practice 'inverse thinking': for your biggest current challenge, ask 'what would make this definitely fail?' Then eliminate those factors."
+    }
+  ],
+  "learning_concept": "Systems Thinking & Resource Optimization",
+  "difficulty_modifiers": {
+    "easy": {
+      "resource_multiplier": 1.3,
+      "event_frequency": 0.15,
+      "opponent_strength": 0.6
+    },
+    "medium": {
+      "resource_multiplier": 1.0,
+      "event_frequency": 0.3,
+      "opponent_strength": 0.8
+    },
+    "hard": {
+      "resource_multiplier": 0.75,
+      "event_frequency": 0.5,
+      "opponent_strength": 1.0
+    }
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.45,
+    "adaptability": 0.3,
+    "risk_tolerance": 0.25
+  },
+  "coaching_moment": "Understand zoning principles: residential, commercial, and industrial land use and why cities separate them. Learn infrastructure planning: how roads, power, water, and public services form the backbone of a city.",
+  "estimated_duration": 25,
+  "target_age": "13-18",
+  "tags": [
+    "finance",
+    "intermediate",
+    "simulation",
+    "strategic-thinking",
+    "strategy",
+    "urban-planning"
+  ],
+  "cultural_context": "India is among the world's most climate-vulnerable nations. Environmental thinking is increasingly integrated into India's school curricula under NEP 2020, preparing students for the sustainability challenges of India's development.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "entrepreneurial-thinking"
+  ],
+  "reflection_prompt": "What's one thing you'll take from this game into a real-world situation this week?"
+}

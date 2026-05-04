@@ -1,0 +1,637 @@
+{
+  "investor_pitch_game": {
+    "title": "Investor Pitch Arena",
+    "description": "Pitch any idea to a dynamic panel of AI investors. Face tough questions, handle objections, and win funding.",
+    "help_content": {
+      "what_is": "An investor pitch is your chance to convince people with money to back your idea. You'll face a panel of AI investors — each with their own personality and focus. They'll ask hard questions, raise objections, and decide whether to invest.",
+      "tips": [
+        "Open with the problem, not the solution",
+        "Use specific numbers — investors love data",
+        "Know your market size (TAM, SAM, SOM)",
+        "Be honest about risks — investors respect transparency",
+        "Practice your 60-second elevator pitch until it's crisp",
+        "Have a clear 'ask' — how much money and for what"
+      ]
+    },
+    "initial_state": {
+      "pitch_score": 0,
+      "panel_confidence": 50,
+      "clarity_score": 0,
+      "objections_handled": 0,
+      "successful_pitches": 0
+    },
+    "pitch_phases": [
+      "Elevator Pitch",
+      "Deep Dive Q&A",
+      "Objection Round",
+      "The Ask"
+    ],
+    "scoring_rubric": {
+      "clarity_structure": {
+        "weight": 0.2,
+        "description": "Was the pitch clear, concise, and well-organized?"
+      },
+      "market_understanding": {
+        "weight": 0.2,
+        "description": "Does the pitcher understand the market, competition, and opportunity?"
+      },
+      "financial_viability": {
+        "weight": 0.15,
+        "description": "Are the numbers realistic? Is the revenue model sound?"
+      },
+      "confidence_delivery": {
+        "weight": 0.15,
+        "description": "Did they handle pressure? Speak with conviction?"
+      },
+      "objection_handling": {
+        "weight": 0.15,
+        "description": "How did they respond to tough questions and challenges?"
+      },
+      "investability": {
+        "weight": 0.15,
+        "description": "Would these investors actually put money in?"
+      }
+    },
+    "investor_pool": [
+      {
+        "id": "the_numbers_shark",
+        "name": "Kavita Sharma",
+        "archetype": "Financial Hawk",
+        "focus": "unit economics, margins, burn rate, CAC, LTV, runway",
+        "personality": "Sharp and precise. Interrupts if numbers are vague. Respects founders who know their metrics cold. Will reject brilliant ideas with bad economics.",
+        "tough_question_style": "What's your CAC and what's your 18-month runway at current burn?",
+        "voice": "nova",
+        "avatar_emoji": "📊",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "the_visionary",
+        "name": "Rohit Mehra",
+        "archetype": "Tech Visionary",
+        "focus": "scalability, technology moat, innovation, disruption potential",
+        "personality": "Gets excited about big ideas but probes deep on technical feasibility. Loves founders who think 10x. Impatient with incremental improvements.",
+        "tough_question_style": "What's your unfair advantage? Why can't Google build this in 6 months?",
+        "voice": "echo",
+        "avatar_emoji": "🚀",
+        "difficulty_weight": 3,
+        "friendly_weight": 4
+      },
+      {
+        "id": "the_skeptic",
+        "name": "Anand Krishnan",
+        "archetype": "Devil's Advocate",
+        "focus": "risk assessment, competitive threats, failure modes, market timing",
+        "personality": "Challenges every assumption. Plays devil's advocate on purpose. Tests how founders handle pressure. Secretly invests in founders who don't crack.",
+        "tough_question_style": "Three competitors failed at this exact thing. What makes you different?",
+        "voice": "onyx",
+        "avatar_emoji": "🔍",
+        "difficulty_weight": 5,
+        "friendly_weight": 1
+      },
+      {
+        "id": "the_domain_expert",
+        "name": "Sunita Patel",
+        "archetype": "Industry Insider",
+        "focus": "domain knowledge, regulatory landscape, industry partnerships, go-to-market",
+        "personality": "Deep industry experience. Tests whether founders really understand the space or just read blog posts. Values first-hand customer discovery.",
+        "tough_question_style": "Have you actually talked to 100 potential customers? What did they say?",
+        "voice": "alloy",
+        "avatar_emoji": "🏭",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "the_customer_advocate",
+        "name": "Priya Nair",
+        "archetype": "User Champion",
+        "focus": "user experience, customer pain points, retention, NPS, product-market fit",
+        "personality": "Cares deeply about whether real users actually need this. Asks about user research, retention curves, and why people would switch from existing solutions.",
+        "tough_question_style": "Show me one user who can't live without your product. What happens if you shut down?",
+        "voice": "shimmer",
+        "avatar_emoji": "💛",
+        "difficulty_weight": 2,
+        "friendly_weight": 4
+      },
+      {
+        "id": "the_market_analyst",
+        "name": "Vikram Desai",
+        "archetype": "Market Hawk",
+        "focus": "TAM, SAM, SOM, market trends, timing, competitive landscape",
+        "personality": "Lives and breathes market data. Wants to know if the market is big enough and growing. Skeptical of 'everyone is our customer' claims.",
+        "tough_question_style": "Your TAM slide says $50B. Walk me through how you get to your serviceable market.",
+        "voice": "fable",
+        "avatar_emoji": "📈",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "the_team_assessor",
+        "name": "Deepak Rao",
+        "archetype": "People Investor",
+        "focus": "founding team, domain expertise, execution capability, founder-market fit",
+        "personality": "Believes great teams beat great ideas. Asks about co-founder dynamics, past failures, and why THIS team is uniquely positioned. Warm but probing.",
+        "tough_question_style": "Why are you the right person to build this? What's your unfair insight?",
+        "voice": "echo",
+        "avatar_emoji": "👥",
+        "difficulty_weight": 2,
+        "friendly_weight": 4
+      },
+      {
+        "id": "the_impact_investor",
+        "name": "Meera Iyer",
+        "archetype": "Impact Investor",
+        "focus": "social impact, sustainability, mission alignment, ESG metrics",
+        "personality": "Invests for both returns and impact. Asks tough questions about measuring social outcomes. Excited by scalable solutions to real problems.",
+        "tough_question_style": "How do you measure impact beyond revenue? What changes if you succeed?",
+        "voice": "shimmer",
+        "avatar_emoji": "🌱",
+        "difficulty_weight": 2,
+        "friendly_weight": 5
+      },
+      {
+        "id": "the_serial_entrepreneur",
+        "name": "Arjun Malhotra",
+        "archetype": "Been There, Done That",
+        "focus": "execution strategy, pivots, early traction, scrappiness, hustle",
+        "personality": "Built and sold 3 companies. Speaks from experience. Tests whether founders are resourceful or just theoretical. Loves hustle stories.",
+        "tough_question_style": "What have you done in the last 30 days without any funding?",
+        "voice": "onyx",
+        "avatar_emoji": "🏆",
+        "difficulty_weight": 4,
+        "friendly_weight": 3
+      },
+      {
+        "id": "the_contrarian",
+        "name": "Nisha Gupta",
+        "archetype": "Contrarian Thinker",
+        "focus": "non-obvious insights, unconventional approaches, market inefficiencies",
+        "personality": "Always takes the opposite view. If everyone loves the idea, she'll find holes. If everyone hates it, she might invest. Tests conviction and independent thinking.",
+        "tough_question_style": "Everyone agrees this is a good idea. That worries me. What does the crowd get wrong?",
+        "voice": "nova",
+        "avatar_emoji": "🔄",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "the_patient_builder",
+        "name": "Ramesh Joshi",
+        "archetype": "Long-term Builder",
+        "focus": "10-year vision, compounding advantages, moats, network effects",
+        "personality": "Patient capital. Doesn't care about quick exits. Wants to know the 10-year vision. Asks about network effects, compounding advantages, and why this business gets stronger with time.",
+        "tough_question_style": "Forget next quarter. What does this look like in 10 years?",
+        "voice": "alloy",
+        "avatar_emoji": "🏗️",
+        "difficulty_weight": 2,
+        "friendly_weight": 4
+      },
+      {
+        "id": "the_growth_hacker",
+        "name": "Tanvi Shah",
+        "archetype": "Scale Obsessive",
+        "focus": "growth channels, virality, distribution, user acquisition strategy",
+        "personality": "Only cares about how you'll grow. Great product means nothing without distribution. Asks about growth loops, referral mechanics, and channel strategy.",
+        "tough_question_style": "Product is nice. How do you get your first 10,000 users without spending money?",
+        "voice": "fable",
+        "avatar_emoji": "📣",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "the_risk_assessor",
+        "name": "Karthik Venkatesh",
+        "archetype": "Downside Thinker",
+        "focus": "risk mitigation, failure scenarios, regulatory risk, key person risk",
+        "personality": "Thinks about everything that can go wrong. Not pessimistic — just thorough. Respects founders who've thought about risks before being asked.",
+        "tough_question_style": "What are the top 3 ways this company dies? What's your plan for each?",
+        "voice": "onyx",
+        "avatar_emoji": "⚠️",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "the_mentor_vc",
+        "name": "Lakshmi Sundaram",
+        "archetype": "Coaching VC",
+        "focus": "founder growth, learning speed, coachability, strategic thinking",
+        "personality": "Invests in people, not just ideas. Asks questions that teach, not just test. Watches how founders respond to feedback. Values coachability over confidence.",
+        "tough_question_style": "If I told you your business model is wrong, what would you do?",
+        "voice": "shimmer",
+        "avatar_emoji": "🎓",
+        "difficulty_weight": 1,
+        "friendly_weight": 5
+      },
+      {
+        "id": "the_deal_maker",
+        "name": "Rajesh Kapoor",
+        "archetype": "Term Sheet Ready",
+        "focus": "valuation, deal terms, cap table, exit strategy, return multiples",
+        "personality": "All business. Moves quickly to deal mechanics. Asks about valuation justification, dilution strategy, and exit scenarios. Respects founders who understand term sheets.",
+        "tough_question_style": "You're asking for ₹1 crore at ₹5 crore valuation. Walk me through how you justify 20% of your company is worth this.",
+        "voice": "echo",
+        "avatar_emoji": "💰",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      }
+    ],
+    "scenarios": [
+      {
+        "scenario_id": "edtech_startup",
+        "title": "EduLeap — AI Tutoring for Rural India",
+        "description": "You've built an AI-powered tutoring app that brings quality education to students in tier-3 cities and rural areas. It works offline, supports regional languages, and adapts to each student's learning pace.",
+        "industry": "EdTech",
+        "difficulty": "beginner",
+        "setting": "A buzzing demo day at a Mumbai coworking space. Sunlight streams through large glass windows. Three investors sit across a wooden table, your laptop open with the EduLeap demo ready.",
+        "pitch_topic": "EduLeap — AI-powered offline tutoring for rural Indian students",
+        "predefined_metrics": {
+          "users": "5,000 beta users across 3 districts",
+          "revenue": "Pre-revenue, freemium model planned",
+          "ask": "₹50 lakh seed round for 8% equity"
+        },
+        "preferred_investor_types": [
+          "the_customer_advocate",
+          "the_impact_investor",
+          "the_visionary"
+        ],
+        "avoid_investor_types": [],
+        "conversation_turns": 8,
+        "coaching_tips": [
+          "Lead with a specific student story — make the problem real",
+          "Explain how offline-first is your competitive moat",
+          "Show your pilot data from the 3 districts",
+          "Address the revenue model clearly — freemium needs volume"
+        ],
+        "learning_objectives": [
+          "Articulate a social impact business clearly",
+          "Handle questions about pre-revenue metrics",
+          "Balance mission with business viability"
+        ],
+        "storybook_pages": [
+          {
+            "icon": "🏫",
+            "title": "The Problem You Saw",
+            "text": "Six months ago, you visited your grandmother's village in rural Maharashtra. You watched kids huddled around a single smartphone, trying to learn math from a YouTube video that kept buffering. That's when the idea hit you — what if AI could teach when the internet couldn't?",
+            "image_prompt": "Indian village scene with children gathered around a single smartphone under a tree, struggling with poor internet, rural Maharashtra setting, warm sunset colors, emotional educational moment, illustration style"
+          },
+          {
+            "icon": "💡",
+            "title": "EduLeap Is Born",
+            "text": "You built EduLeap — an app that downloads smart lessons and works completely offline. It speaks Marathi, Hindi, and Tamil. In your pilot across 3 districts, 5,000 students are already using it. Math scores went up 34%. Now you need funding to scale.",
+            "image_prompt": "Indian student happily using a tablet app showing colorful math lessons, offline mode indicator visible, rural school background, diverse Indian students in the background, bright optimistic colors, illustration style"
+          },
+          {
+            "icon": "💼",
+            "title": "Demo Day",
+            "text": "The Mumbai coworking space is packed. You're the fourth pitch of the day. Three investors sit across the table — notebooks open, coffee cups half-empty. They've heard three pitches already. You have 8 minutes to convince them EduLeap is worth their money.",
+            "image_prompt": "Modern Mumbai coworking space with three diverse Indian investors at a table, young founder standing with laptop presenting, demo day banner in background, professional yet startup casual atmosphere, illustration style"
+          }
+        ]
+      },
+      {
+        "scenario_id": "food_delivery_app",
+        "title": "TiffinBox — Hyperlocal Home Food Delivery",
+        "description": "You're building a platform connecting home cooks with office workers who miss ghar ka khana. No restaurants, no cloud kitchens — just real home-cooked meals from verified aunties and uncles in the neighborhood.",
+        "industry": "FoodTech",
+        "difficulty": "intermediate",
+        "setting": "A startup accelerator's pitch night in Bangalore. The room is full of other founders and mentors. Your panel has three investors who've seen dozens of food delivery pitches.",
+        "pitch_topic": "TiffinBox — home-cooked meal marketplace connecting home cooks with nearby offices",
+        "predefined_metrics": {
+          "users": "1,200 daily orders in 2 Bangalore neighborhoods",
+          "revenue": "₹3.5 lakh/month, 18% commission",
+          "ask": "₹1.5 crore Series Seed for 12% equity"
+        },
+        "preferred_investor_types": [
+          "the_market_analyst",
+          "the_growth_hacker",
+          "the_serial_entrepreneur"
+        ],
+        "avoid_investor_types": [
+          "the_impact_investor"
+        ],
+        "conversation_turns": 10,
+        "coaching_tips": [
+          "Acknowledge the competitive landscape (Swiggy, Zomato) upfront",
+          "Emphasize the 'home-cooked' moat — no one else does this",
+          "Show unit economics per order clearly",
+          "Address supply-side quality control proactively"
+        ],
+        "learning_objectives": [
+          "Differentiate in a crowded market",
+          "Present unit economics and growth metrics",
+          "Handle competitive threat questions"
+        ],
+        "storybook_pages": [
+          {
+            "icon": "🍱",
+            "title": "Missing Home Food",
+            "text": "It started when your roommate Sneha, working 12-hour shifts at an IT park, broke down crying over another bad biryani from a cloud kitchen. 'I just want food that tastes like home,' she said. You looked around the office — 500 people, all feeling the same way.",
+            "image_prompt": "Indian office worker looking disappointed at takeaway food container, modern Bangalore IT park cafeteria setting, other workers in background also looking at mediocre food, relatable moment, illustration style"
+          },
+          {
+            "icon": "👩‍🍳",
+            "title": "The Aunty Network",
+            "text": "Three streets away, Lakshmi Aunty cooks the best dal chawal in Koramangala. She has time, she has skill, and she could use extra income. You connected her with 50 hungry techies. Word spread. Today, 200 home cooks serve 1,200 daily orders. TiffinBox was born.",
+            "image_prompt": "Warm Indian home kitchen with a smiling middle-aged Indian woman cooking multiple tiffin boxes, neatly packed lunch boxes ready for delivery, cozy kitchen with spices and utensils, illustration style"
+          },
+          {
+            "icon": "🎤",
+            "title": "Pitch Night",
+            "text": "Bangalore's startup accelerator is buzzing. The food is catered (ironically, from a cloud kitchen). Three investors who've seen every food delivery pitch in India are waiting. They know Swiggy's numbers by heart. Can you convince them that TiffinBox is different?",
+            "image_prompt": "Bangalore startup accelerator event space at night, stage with spotlight, three investors at a panel table, young founder approaching the stage, other founders in audience, energetic atmosphere, illustration style"
+          }
+        ]
+      },
+      {
+        "scenario_id": "college_club_funding",
+        "title": "TechFest — College Club Funding Pitch",
+        "description": "You're the president of your college's tech club. You need ₹2 lakh from the student council to organize TechFest — a three-day hackathon and tech conference. The council has a limited budget and 8 clubs competing for funds.",
+        "industry": "Education / Student Life",
+        "difficulty": "beginner",
+        "setting": "Your college's seminar hall. The student council president and two faculty advisors sit behind a desk. Other club presidents watch from the audience — this is competitive.",
+        "pitch_topic": "TechFest 2026 — A three-day college hackathon bringing industry speakers and 500+ students",
+        "predefined_metrics": {
+          "participants_expected": "500+ students from 15 colleges",
+          "sponsors_confirmed": "2 sponsors covering ₹80K already",
+          "ask": "₹2 lakh from student council fund"
+        },
+        "preferred_investor_types": [
+          "the_mentor_vc",
+          "the_customer_advocate",
+          "the_team_assessor"
+        ],
+        "avoid_investor_types": [
+          "the_numbers_shark",
+          "the_deal_maker"
+        ],
+        "conversation_turns": 8,
+        "coaching_tips": [
+          "Show how TechFest benefits ALL students, not just the tech club",
+          "Present your sponsorship efforts — you've already raised ₹80K",
+          "Address past events — what went well and what you improved",
+          "Have a clear budget breakdown ready"
+        ],
+        "learning_objectives": [
+          "Pitch to a budget committee with competing priorities",
+          "Justify spending with concrete impact metrics",
+          "Handle questions about ROI for the institution"
+        ],
+        "storybook_pages": [
+          {
+            "icon": "🎓",
+            "title": "The Annual Budget War",
+            "text": "It's that time of year again. Eight clubs, one student council, and a fixed budget. The drama club wants ₹1.5 lakh for their annual play. The sports club needs new equipment. And you — you need ₹2 lakh to pull off the biggest TechFest your college has ever seen.",
+            "image_prompt": "Indian college seminar hall with multiple student club representatives waiting with their proposals, budget allocation meeting setting, college campus visible through windows, nervous energy, illustration style"
+          },
+          {
+            "icon": "💻",
+            "title": "Your Vision for TechFest",
+            "text": "Last year's TechFest had 200 students and one keynote speaker. This year, you've dreamed bigger — 500 students, 15 colleges, industry mentors from Infosys and Flipkart, and a 36-hour hackathon. You've already convinced 2 sponsors to put in ₹80K. But you need the council's backing.",
+            "image_prompt": "Excited Indian college students at a tech hackathon, laptops open, coding together, colorful banners and tech company logos in background, energetic and creative atmosphere, illustration style"
+          },
+          {
+            "icon": "🎯",
+            "title": "Your Turn to Present",
+            "text": "The drama club just finished their pitch. The council president looks tired. The faculty advisor is checking her watch. You're up next. You have 8 minutes to make them believe TechFest deserves the biggest share of the budget.",
+            "image_prompt": "Indian college student standing up confidently from audience to approach a presentation podium, student council members at a desk looking expectant, seminar hall setting, moment of courage, illustration style"
+          }
+        ]
+      },
+      {
+        "scenario_id": "social_impact_ngo",
+        "title": "JalShakti — Clean Water for 1000 Villages",
+        "description": "You've developed a low-cost solar-powered water purification system. It costs ₹15,000 per unit and can serve a village of 500 people. You need impact investment to manufacture and deploy 1,000 units across drought-prone districts.",
+        "industry": "Social Impact / CleanTech",
+        "difficulty": "intermediate",
+        "setting": "An impact investment conference in Delhi. The panel includes investors who care about both returns and social outcomes. Your prototype sits on the table in front of you.",
+        "pitch_topic": "JalShakti — affordable solar-powered water purification for rural villages",
+        "predefined_metrics": {
+          "villages_served": "23 villages using prototypes (11,500 people)",
+          "cost_per_unit": "₹15,000 manufacturing cost, ₹30/month maintenance",
+          "ask": "₹2 crore impact investment for 1,000 units + distribution"
+        },
+        "preferred_investor_types": [
+          "the_impact_investor",
+          "the_domain_expert",
+          "the_patient_builder"
+        ],
+        "avoid_investor_types": [
+          "the_deal_maker"
+        ],
+        "conversation_turns": 10,
+        "coaching_tips": [
+          "Lead with the human cost of dirty water — make it visceral",
+          "Show your pilot results from 23 villages with real health data",
+          "Address the revenue model — who pays? Government, NGOs, or communities?",
+          "Be clear about impact metrics beyond just units deployed"
+        ],
+        "learning_objectives": [
+          "Balance social mission with financial sustainability",
+          "Present impact metrics alongside business metrics",
+          "Handle questions about scalability of social ventures"
+        ],
+        "storybook_pages": [
+          {
+            "icon": "💧",
+            "title": "The Water Crisis",
+            "text": "In Bundelkhand, women walk 3 km every morning to fetch water. The water is brown. Children get sick. Hospitals are far. Last monsoon, your engineering college sent a team to study the problem. You came back with a prototype that could change everything.",
+            "image_prompt": "Indian rural women carrying water pots on a dusty path in Bundelkhand region, dry landscape, brown water source visible in background, harsh sun, poignant and emotional scene, illustration style"
+          },
+          {
+            "icon": "☀️",
+            "title": "The Solar Solution",
+            "text": "Your JalShakti unit runs on solar power, costs ₹15,000 to build, and purifies 500 liters daily — enough for an entire village. In your pilot across 23 villages, waterborne diseases dropped 67%. The village panch loves it. Now you need to build 1,000 more.",
+            "image_prompt": "Solar-powered water purification unit installed in an Indian village, villagers filling clean water in containers, solar panels gleaming, green trees in background, hope and technology meeting rural India, illustration style"
+          },
+          {
+            "icon": "🎪",
+            "title": "Impact Investor Conference",
+            "text": "The Delhi conference hall smells like fresh carpet and ambition. Impact investors from across India have gathered. Your prototype sits on the table — small, solar-powered, and life-changing. Three investors lean forward. They want returns AND results. Can you deliver both?",
+            "image_prompt": "Modern Delhi conference hall with impact investment banners, three investors examining a small solar water purifier prototype on the table, young Indian founder presenting passionately, professional setting, illustration style"
+          }
+        ]
+      },
+      {
+        "scenario_id": "hardware_iot_product",
+        "title": "KrishiSense — Smart Agriculture Sensors",
+        "description": "You've built an IoT sensor kit that helps small farmers optimize irrigation, detect crop diseases early, and predict harvest timing. Each kit costs ₹3,000 and connects to a simple app that works in Hindi.",
+        "industry": "AgriTech / IoT",
+        "difficulty": "advanced",
+        "setting": "The final round of a national startup competition in Hyderabad. Prize: ₹50 lakh in funding. Your competitors are well-funded. The panel has three tough investors who've seen hundreds of agritech pitches.",
+        "pitch_topic": "KrishiSense — affordable IoT sensor kits for Indian smallholder farmers",
+        "predefined_metrics": {
+          "farmers_using": "800 farmers across Telangana and AP",
+          "yield_improvement": "22% average yield improvement in pilot",
+          "revenue": "₹8 lakh/month from sensor sales + ₹2 lakh from data subscriptions",
+          "ask": "₹50 lakh competition prize + ₹1 crore matching investment for 15% equity"
+        },
+        "preferred_investor_types": [
+          "the_numbers_shark",
+          "the_skeptic",
+          "the_serial_entrepreneur"
+        ],
+        "avoid_investor_types": [
+          "the_mentor_vc"
+        ],
+        "conversation_turns": 10,
+        "coaching_tips": [
+          "Hardware is hard — acknowledge the challenges upfront",
+          "Show your unit economics clearly (₹3K cost, margins, replacement cycle)",
+          "Explain how you handle farmer adoption (trust, simplicity, local language)",
+          "Address the competitive threat from government schemes and larger players"
+        ],
+        "learning_objectives": [
+          "Present a hardware + software business model",
+          "Handle skepticism about agritech adoption challenges",
+          "Defend against competitive and regulatory concerns",
+          "Articulate technology differentiation clearly"
+        ],
+        "storybook_pages": [
+          {
+            "icon": "🌾",
+            "title": "The Farmer's Gamble",
+            "text": "Ramu Kaka has 2 acres of cotton in Warangal. Every season is a gamble — too much water, too little, pests he can't see until it's too late. Last year, he lost 40% of his crop. He couldn't afford his daughter's school fees. Millions of Indian farmers share his story.",
+            "image_prompt": "Indian farmer looking worried at a struggling cotton crop field in Telangana, dry cracked soil, wilting plants, Indian rural farming landscape, emotional and gritty, illustration style"
+          },
+          {
+            "icon": "📡",
+            "title": "KrishiSense Changes the Game",
+            "text": "Your sensor kit costs ₹3,000 — affordable for a small farmer. Stick it in the soil, connect to the app (works in Hindi), and get real-time alerts: 'Irrigation needed in 6 hours.' 'Disease pattern detected — spray neem solution.' 800 farmers already swear by it. Yields are up 22%.",
+            "image_prompt": "Close-up of a small IoT sensor device planted in Indian farmland with a smartphone showing a Hindi app with crop health data, green healthy crops around the sensor, technology meets agriculture, illustration style"
+          },
+          {
+            "icon": "🏆",
+            "title": "The Final Round",
+            "text": "Hyderabad's HICC convention center. The national startup competition finals. Five startups. ₹50 lakh on the line. Three investors who've funded and buried agritech startups. The previous pitcher had slick slides but no traction. You have 800 real farmers. Let's go.",
+            "image_prompt": "Grand Hyderabad convention center stage with national startup competition setup, judges panel, large screen showing startup logos, young Indian founder walking to the stage confidently, competition atmosphere, illustration style"
+          }
+        ]
+      }
+    ]
+  },
+  "learning_concept": "Consequence Thinking & Resource Management",
+  "coach_mode_default": true,
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "game_type": "negotiation",
+  "achievements": [
+    {
+      "id": "deal_maker",
+      "name": "Deal Maker",
+      "description": "Reached a mutually beneficial agreement",
+      "condition": "agreement_reached and both_satisfied",
+      "xp_reward": 200,
+      "icon": "🤝"
+    },
+    {
+      "id": "master_negotiator",
+      "name": "Master Negotiator",
+      "description": "Secured the best possible terms",
+      "condition": "score >= 85",
+      "xp_reward": 250,
+      "icon": "💼"
+    },
+    {
+      "id": "negotiation_complete",
+      "name": "Negotiation Complete",
+      "description": "Completed the negotiation challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "✅"
+    }
+  ],
+  "title": "Investor Pitch",
+  "initial_state": {
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_concession_rate": 0.4,
+      "turn_limit": 12,
+      "relationship_boost": 20
+    },
+    "medium": {
+      "ai_concession_rate": 0.25,
+      "turn_limit": 10,
+      "relationship_boost": 0
+    },
+    "hard": {
+      "ai_concession_rate": 0.1,
+      "turn_limit": 8,
+      "relationship_boost": -10
+    }
+  },
+  "description": "Pitch your startup idea to a panel of tough, realistic investors. Refine your narrative, handle hard questions, and learn what separates a compelling pitch from a forgettable one.",
+  "game_id": "investor_pitch",
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.4,
+    "risk_tolerance": 0.3,
+    "adaptability": 0.2,
+    "resilience": 0.1
+  },
+  "coaching_moment": "Pitch your startup idea to a panel of tough, realistic investors. Refine your narrative, handle hard questions, and learn what separates a compelling pitch from a forgettable one.",
+  "tags": [
+    "communication",
+    "creativity",
+    "entrepreneurship",
+    "finance",
+    "negotiation",
+    "role-playing",
+    "strategic-thinking"
+  ],
+  "cultural_context": "India's booming venture capital ecosystem — with investors active in every sector from fintech to agritech — means more Indian founders are pitching investors than ever before. The ability to communicate vision, data, and conviction clearly is a foundational entrepreneurial skill.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "critical-thinking",
+    "entrepreneurial-thinking",
+    "adaptability"
+  ],
+  "estimated_duration": 20,
+  "target_age": "16-25",
+  "learning_objectives": [
+    "Develop critical thinking through negotiation gameplay",
+    "Practice decision-making in realistic scenarios",
+    "Build self-awareness about your strengths and areas for growth"
+  ],
+  "reflection_prompt": "Where did you give ground, and where did you hold it? What did the other side teach you about your own priorities?"
+}

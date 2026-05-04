@@ -1,0 +1,523 @@
+{
+  "game_id": "eco-warriors-vs-pollution",
+  "title": "Eco Warriors vs Pollution Empire",
+  "description": "Lead a team of environmental heroes against the forces of pollution in a tactical grid battle. Plant trees, deploy clean energy, and outmaneuver industrial polluters to save the planet before time runs out.",
+  "theme": "environment",
+  "icon": "🌍",
+  "game_type": "strategy_grid",
+  "age_category": "teens",
+  "nep_tags": [
+    "strategic-thinking",
+    "environmental-awareness",
+    "resource-allocation",
+    "decision-making",
+    "resilience"
+  ],
+  "learning_objectives": [
+    "Understand environmental challenges and strategic responses",
+    "Learn resource management with long-term consequences",
+    "Practice balancing urgent action vs sustainable planning",
+    "Develop adaptive strategies against growing threats"
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "🧠",
+        "description": "Multi-step planning and positional awareness (executive function)"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Assessment",
+        "icon": "⚡",
+        "description": "Evaluating risk vs reward in environmental decisions (prospect theory)"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Sustainability Patience",
+        "icon": "⏳",
+        "description": "Investing in long-term solutions over quick fixes (self-regulation)"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🔄",
+        "description": "Adjusting strategy to evolving environmental threats (cognitive flexibility)"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "description": "Continuing effective action after environmental setbacks (psychological resilience)"
+      }
+    ]
+  },
+  "how_to_play": [
+    "Select your green eco-warrior pieces to see where they can move",
+    "Green dots show safe moves, red highlights show polluters you can neutralize",
+    "Use special abilities like Tree Planting and Clean Energy Deployment",
+    "Capture the Pollution CEO or reach 50 Green Points to win!",
+    "Watch out for toxic zones — they drain your resources",
+    "Natural events like storms can change the battlefield!"
+  ],
+  "initial_state": {
+    "green_points": {
+      "value": 8,
+      "label": "Green Points",
+      "icon": "🌱"
+    },
+    "areas_cleaned": {
+      "value": 0,
+      "label": "Areas Cleaned",
+      "icon": "✨"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "strategy_grid_config": {
+    "grid_width": 8,
+    "grid_height": 8,
+    "max_turns": 35,
+    "starting_currency": 8,
+    "terrain_types": {
+      "plain": {
+        "label": "Grassland",
+        "icon": "",
+        "color": "#C8E6C9",
+        "passable": true
+      },
+      "reward": {
+        "label": "Solar Farm",
+        "icon": "☀️",
+        "color": "#FFF9C4",
+        "passable": true,
+        "effect": {
+          "stat": "currency",
+          "value": 3
+        }
+      },
+      "punishment": {
+        "label": "Toxic Waste",
+        "icon": "☢️",
+        "color": "#FFCC80",
+        "passable": true,
+        "effect": {
+          "stat": "currency",
+          "value": -2
+        }
+      },
+      "resource": {
+        "label": "Forest Reserve",
+        "icon": "🌳",
+        "color": "#A5D6A7",
+        "passable": true,
+        "generates": {
+          "currency": 2
+        }
+      },
+      "objective": {
+        "label": "Clean Water Source",
+        "icon": "💧",
+        "color": "#81D4FA",
+        "passable": true,
+        "is_objective": true
+      },
+      "neutral": {
+        "label": "Wildlife Sanctuary",
+        "icon": "🦋",
+        "color": "#E1BEE7",
+        "passable": true,
+        "no_capture": true
+      },
+      "blocked": {
+        "label": "Mountain",
+        "icon": "⛰️",
+        "color": "#8D6E63",
+        "passable": false
+      }
+    },
+    "player_pieces": [
+      {
+        "type_id": "eco_leader",
+        "label": "Eco Leader",
+        "icon": "🌟",
+        "count": 1,
+        "is_king": true,
+        "capture_reward": 0,
+        "description": "The visionary environmentalist. If captured, the movement fails. Inspires all nearby allies.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move",
+        "ability": {
+          "label": "Inspire Green Action",
+          "type": "buff_adjacent",
+          "stat": "range",
+          "value": 1,
+          "duration": 3,
+          "cost": 4,
+          "cooldown": 4
+        }
+      },
+      {
+        "type_id": "tree_planter",
+        "label": "Tree Planter",
+        "icon": "🌱",
+        "count": 2,
+        "capture_reward": 2,
+        "description": "Fast-moving activist who spreads green cover quickly across the land.",
+        "movement": {
+          "range": 3,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "scientist",
+        "label": "Scientist",
+        "icon": "🔬",
+        "count": 2,
+        "capture_reward": 3,
+        "description": "Moves diagonally and can freeze polluters with research breakthroughs.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "ranged",
+        "capture_range": 3,
+        "ability": {
+          "label": "Research Breakthrough",
+          "type": "freeze_target",
+          "duration": 2,
+          "cost": 5,
+          "cooldown": 4
+        }
+      },
+      {
+        "type_id": "volunteer",
+        "label": "Volunteer",
+        "icon": "💚",
+        "count": 3,
+        "capture_reward": 2,
+        "description": "Dedicated ground worker. Steady movement in all directions.",
+        "movement": {
+          "range": 1,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      }
+    ],
+    "ai_pieces": [
+      {
+        "type_id": "pollution_ceo",
+        "label": "Pollution CEO",
+        "icon": "🏭",
+        "count": 1,
+        "is_king": true,
+        "capture_reward": 0,
+        "description": "The head of the pollution empire. Capturing them saves the planet.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "oil_baron",
+        "label": "Oil Baron",
+        "icon": "🛢️",
+        "count": 2,
+        "capture_reward": 2,
+        "description": "Fast-moving industrialist who spreads pollution rapidly.",
+        "movement": {
+          "range": 3,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "lobbyist",
+        "label": "Corporate Lobbyist",
+        "icon": "💼",
+        "count": 2,
+        "capture_reward": 3,
+        "description": "Powerful diagonal mover that threatens from distance with legal pressure.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "factory_worker",
+        "label": "Factory Foreman",
+        "icon": "⚙️",
+        "count": 3,
+        "capture_reward": 2,
+        "description": "Reliable industrial enforcer with steady movement.",
+        "movement": {
+          "range": 1,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      }
+    ],
+    "win_conditions": [
+      {
+        "type": "eliminate_king",
+        "enabled": true
+      },
+      {
+        "type": "exhaustion",
+        "enabled": true,
+        "threshold": 1
+      },
+      {
+        "type": "resource_target",
+        "enabled": true,
+        "target": 50
+      }
+    ],
+    "external_events": [
+      {
+        "id": "climate_storm",
+        "label": "Climate Storm",
+        "narrative": "A massive storm hits the region! All units struggle to move through the devastation.",
+        "trigger": {
+          "type": "turn",
+          "value": 8
+        },
+        "effect": {
+          "type": "debuff_all",
+          "side": "both",
+          "stat": "range",
+          "value": -1,
+          "duration": 3
+        }
+      },
+      {
+        "id": "green_grant",
+        "label": "Green Grant",
+        "narrative": "An international organization awards emergency funding to the eco warriors!",
+        "trigger": {
+          "type": "piece_count",
+          "side": "player",
+          "threshold": 4
+        },
+        "effect": {
+          "type": "buff_all",
+          "side": "player",
+          "stat": "range",
+          "value": 1,
+          "duration": 4
+        }
+      },
+      {
+        "id": "regulation_crackdown",
+        "label": "EPA Crackdown",
+        "narrative": "New environmental regulations slow down all industrial activity!",
+        "trigger": {
+          "type": "turn",
+          "value": 18
+        },
+        "effect": {
+          "type": "debuff_all",
+          "side": "ai",
+          "stat": "range",
+          "value": -1,
+          "duration": 3
+        }
+      }
+    ],
+    "theme_config": {
+      "player_label": "Eco Warriors",
+      "ai_label": "Pollution Empire",
+      "currency_label": "Green Points",
+      "currency_icon": "🌱",
+      "domain": "environmental sustainability",
+      "move_tips": {
+        "capture": "Neutralizing polluters directly reduces environmental damage. In sustainability, removing sources of harm is as important as building clean alternatives.",
+        "resource": "Securing clean energy zones generates ongoing environmental value. In sustainability, renewable resources compound their benefits over time.",
+        "objective": "Holding key ecological zones protects biodiversity. In sustainability, preserving critical habitats prevents irreversible damage.",
+        "risk": "Moving through toxic zones costs resources but may save the ecosystem. In sustainability, short-term sacrifice for long-term health is often necessary.",
+        "reward": "Every cleaned area creates a ripple effect of improvement. In sustainability, positive environmental actions cascade through ecosystems.",
+        "center": "Controlling central areas gives you reach across the entire ecosystem. In sustainability, systemic approaches are more effective than isolated fixes."
+      }
+    }
+  },
+  "theme_colors": {
+    "primary": "#16A34A",
+    "secondary": "#059669",
+    "background": "#F0FDF4",
+    "text": "#14532D",
+    "accent": "#FBBF24"
+  },
+  "learning_concept": "Strategic Decision Making & Problem Solving",
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "first_completion",
+      "name": "First Completion",
+      "description": "Completed this game for the first time",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "⭐"
+    },
+    {
+      "id": "persistent_learner",
+      "name": "Persistent Learner",
+      "description": "Showed dedication by finishing the challenge",
+      "condition": "game_complete",
+      "xp_reward": 150,
+      "icon": "📚"
+    },
+    {
+      "id": "skill_builder",
+      "name": "Skill Builder",
+      "description": "Demonstrated improvement across all dimensions",
+      "condition": "all_dimensions_above_40",
+      "xp_reward": 200,
+      "icon": "🏆"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_strength": 0.5,
+      "resource_rate": 1.3,
+      "event_chance": 0.1
+    },
+    "medium": {
+      "ai_strength": 0.75,
+      "resource_rate": 1.0,
+      "event_chance": 0.25
+    },
+    "hard": {
+      "ai_strength": 1.0,
+      "resource_rate": 0.75,
+      "event_chance": 0.4
+    }
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.45,
+    "adaptability": 0.3,
+    "risk_tolerance": 0.25
+  },
+  "coaching_moment": "Understand environmental challenges and strategic responses. Learn resource management with long-term consequences.",
+  "tags": [
+    "environment",
+    "history",
+    "resource-management",
+    "strategic-thinking",
+    "strategy",
+    "teamwork"
+  ],
+  "cultural_context": "Understanding history builds the contextual thinking valued in India's competitive examinations (UPSC, CBSE, ICSE). Eco Warriors vs Pollution Empire develops the analytical reading of historical events that sharpens both academic performance and civic awareness.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "entrepreneurial-thinking"
+  ],
+  "estimated_duration": 20,
+  "target_age": "12-18",
+  "reflection_prompt": "Which move opened the board for you, and which closed your options? Why?"
+}

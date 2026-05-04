@@ -1,0 +1,1911 @@
+{
+  "game_id": "g6-phy-magnets",
+  "title": "🧲 Magnet Lab Explorer",
+  "theme": "Science — Magnets & Magnetism",
+  "icon": "🧲",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "Welcome to the Magnet Lab! You are a Grade 6 student stepping into an exciting world of invisible forces. Over 10 experiments, discover what magnets attract, how poles interact, build your own compass, and even create electromagnets. Can you master magnetism and design the ultimate magnetic separation machine?",
+  "target_audience": "Ages 11-12",
+  "target_age": "11-12",
+  "grade": "6",
+  "target_grade": "6",
+  "subject": "physics",
+  "topics": [
+    "magnets",
+    "magnetism",
+    "magnetic_poles",
+    "compass",
+    "electromagnet",
+    "magnetic_materials"
+  ],
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "estimated_duration_minutes": 20,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "visual_config": {
+    "theme_preset": "science_lab",
+    "palette": {
+      "primary": "#1E3A5F",
+      "secondary": "#DC2626",
+      "accent": "#2563EB",
+      "background": "#0F172A",
+      "surface": "#1E293B"
+    },
+    "labels": {
+      "subsystems": "Lab Stations",
+      "resources": "Experiment Supplies",
+      "news": "Lab Journal",
+      "stakeholders": "Lab Team",
+      "decision": "Your Experiment"
+    },
+    "icons": {
+      "subsystems": "🔬",
+      "resources": "🧲",
+      "news": "📓",
+      "stakeholders": "👩‍🔬",
+      "decision": "🧲",
+      "round": "🔬"
+    }
+  },
+  "animation_config": {
+    "enabled": true,
+    "intensity": "dramatic",
+    "scene_transitions": {
+      "type": "slide",
+      "duration_ms": 500,
+      "easing": "easeInOut"
+    },
+    "data_viz_animations": {
+      "counter_roll": true,
+      "sparkline_draw": true,
+      "threshold_pulse": true
+    },
+    "achievement_animations": {
+      "confetti": true,
+      "screen_shake": true,
+      "celebration": true
+    }
+  },
+  "how_to_play": [
+    "You are a Grade 6 student exploring magnets and magnetism through 10 hands-on experiments.",
+    "Each experiment presents a challenge — choose wisely to boost your Discovery Score and Knowledge.",
+    "Watch your dashboard: Lab Safety, Experiment Quality, Knowledge Mastery, and Equipment Care are interconnected.",
+    "NPCs like Dr. Polaris (teacher) and Ferrite (lab assistant robot) react to your decisions.",
+    "Random events like magnet mishaps and guest scientists will test your adaptability.",
+    "Keep your Equipment Health high — broken magnets mean broken experiments!"
+  ],
+  "learning_objectives": [
+    "Identify magnetic and non-magnetic materials through experimentation",
+    "Understand magnetic poles and the law of attraction/repulsion",
+    "Learn how a compass works and its connection to Earth's magnetism",
+    "Explore methods to make and destroy magnets",
+    "Understand the basics of electromagnets",
+    "Apply magnetic principles to solve real-world problems"
+  ],
+  "tags": [
+    "science",
+    "physics",
+    "grade-6",
+    "magnets",
+    "magnetism",
+    "experiments"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Scientific Temper",
+    "Problem Solving",
+    "Creativity",
+    "Critical Thinking"
+  ],
+  "cultural_context": "School science laboratory, hands-on STEM learning, discovery-based experimentation",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning",
+      "creativity"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.05,
+    "ethical_reasoning": 0.1,
+    "creativity": 0.2
+  },
+  "initial_state": {
+    "discovery_points": {
+      "value": 10,
+      "label": "Discovery Points",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "experiment_accuracy": {
+      "value": 50,
+      "label": "Experiment Accuracy",
+      "icon": "🎯",
+      "min": 0,
+      "max": 100
+    },
+    "knowledge_level": {
+      "value": 5,
+      "label": "Knowledge Level",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "equipment_health": {
+      "value": 100,
+      "label": "Equipment Health",
+      "icon": "🔬",
+      "min": 0,
+      "max": 100
+    },
+    "lab_reputation": {
+      "value": 50,
+      "label": "Lab Reputation",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "safety_awareness": {
+      "value": 60,
+      "label": "Safety Awareness",
+      "icon": "🛡️",
+      "min": 0,
+      "max": 100
+    },
+    "creativity_points": {
+      "value": 20,
+      "label": "Creativity Points",
+      "icon": "🎨",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50,
+      "creativity": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Experiment",
+      "start": 1,
+      "max": 10
+    },
+    "subsystems": [
+      {
+        "id": "lab_safety",
+        "label": "Lab Safety",
+        "icon": "🛡️",
+        "color": "#EF476F",
+        "initial_health": 60,
+        "health_formula": "min(100, max(0, safety_awareness * 0.5 + equipment_health * 0.3 + lab_reputation * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "experiment_quality",
+        "label": "Experiment Quality",
+        "icon": "🎯",
+        "color": "#FFD166",
+        "initial_health": 40,
+        "health_formula": "min(100, max(0, experiment_accuracy * 0.4 + knowledge_level * 0.3 + equipment_health * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "knowledge_mastery",
+        "label": "Knowledge Mastery",
+        "icon": "🧠",
+        "color": "#06D6A0",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, knowledge_level * 0.5 + discovery_points * 0.3 + experiment_accuracy * 0.2))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "equipment_care",
+        "label": "Equipment Care",
+        "icon": "🔬",
+        "color": "#118AB2",
+        "initial_health": 80,
+        "health_formula": "min(100, max(0, equipment_health * 0.5 + safety_awareness * 0.3 + lab_reputation * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "discovery_score",
+        "label": "Discoveries",
+        "icon": "⭐",
+        "formula": "(discovery_points * 0.4 + knowledge_level * 0.3 + experiment_accuracy * 0.2 + creativity_points * 0.1)",
+        "unit": "",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 60
+        }
+      },
+      {
+        "id": "accuracy_kpi",
+        "label": "Accuracy",
+        "icon": "🎯",
+        "formula": "(experiment_accuracy * 0.5 + knowledge_level * 0.25 + equipment_health * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 70
+        }
+      },
+      {
+        "id": "knowledge_kpi",
+        "label": "Knowledge",
+        "icon": "🧠",
+        "formula": "(knowledge_level * 0.5 + discovery_points * 0.3 + experiment_accuracy * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 15,
+          "warning": 35,
+          "good": 60
+        }
+      },
+      {
+        "id": "equipment_kpi",
+        "label": "Lab Equipment",
+        "icon": "🔬",
+        "formula": "(equipment_health * 0.5 + safety_awareness * 0.3 + lab_reputation * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 70
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "knowledge_fades",
+        "label": "Knowledge Fades Without Practice",
+        "condition": {
+          "resource": "knowledge_level",
+          "op": "<",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "knowledge_level",
+            "formula": "max(0, knowledge_level - 1)"
+          }
+        ],
+        "description": "Without practice, some magnet concepts start slipping away."
+      },
+      {
+        "id": "equipment_wear",
+        "label": "Equipment Wears Down",
+        "effects": [
+          {
+            "resource": "equipment_health",
+            "formula": "max(0, equipment_health - 2)"
+          }
+        ],
+        "description": "Lab magnets and tools degrade a little each experiment from regular use."
+      },
+      {
+        "id": "safety_drift",
+        "label": "Safety Habits Drift",
+        "condition": {
+          "resource": "safety_awareness",
+          "op": ">",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "safety_awareness",
+            "formula": "max(0, safety_awareness - 1)"
+          }
+        ],
+        "description": "Without reminders, safety habits slowly relax."
+      },
+      {
+        "id": "knowledge_boosts_discovery",
+        "label": "Knowledge Unlocks Discoveries",
+        "condition": {
+          "resource": "knowledge_level",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "discovery_points",
+            "formula": "min(100, discovery_points + 2)"
+          }
+        ],
+        "description": "Deeper knowledge helps you notice things others miss."
+      },
+      {
+        "id": "accuracy_boosts_reputation",
+        "label": "Good Results Build Reputation",
+        "condition": {
+          "resource": "experiment_accuracy",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "lab_reputation",
+            "formula": "min(100, lab_reputation + 2)"
+          }
+        ],
+        "description": "Consistent accurate results earn you respect in the lab."
+      },
+      {
+        "id": "low_safety_hurts_reputation",
+        "label": "Unsafe Habits Hurt Reputation",
+        "condition": {
+          "resource": "safety_awareness",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "lab_reputation",
+            "formula": "max(0, lab_reputation - 5)"
+          }
+        ],
+        "description": "Dr. Polaris notices when you skip safety steps."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "knowledge_improves_accuracy",
+        "from_subsystem": "knowledge_mastery",
+        "to_subsystem": "experiment_quality",
+        "label": "Knowledge Improves Experiments",
+        "condition": {
+          "resource": "knowledge_level",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "experiment_accuracy",
+            "formula": "min(100, experiment_accuracy + (knowledge_level - 40) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Understanding the theory helps you design better experiments."
+      },
+      {
+        "id": "safety_enables_experiments",
+        "from_subsystem": "lab_safety",
+        "to_subsystem": "experiment_quality",
+        "label": "Safety Enables Better Experiments",
+        "condition": {
+          "resource": "safety_awareness",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "experiment_accuracy",
+            "formula": "min(100, experiment_accuracy + (safety_awareness - 50) * 0.04)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Following proper procedures leads to cleaner, more reliable results."
+      },
+      {
+        "id": "poor_equipment_hurts_accuracy",
+        "from_subsystem": "equipment_care",
+        "to_subsystem": "experiment_quality",
+        "label": "Worn Equipment Hurts Results",
+        "condition": {
+          "resource": "equipment_health",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "experiment_accuracy",
+            "formula": "max(0, experiment_accuracy - 4)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Demagnetized or damaged equipment gives unreliable results."
+      },
+      {
+        "id": "discovery_boosts_creativity",
+        "from_subsystem": "knowledge_mastery",
+        "to_subsystem": "lab_safety",
+        "label": "Discoveries Inspire Creativity",
+        "condition": {
+          "resource": "discovery_points",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "creativity_points",
+            "formula": "min(100, creativity_points + (discovery_points - 40) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Each discovery sparks new creative ideas."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "creativity_points",
+        "equilibrium": 15,
+        "rate": 0.02,
+        "direction": "toward"
+      },
+      {
+        "resource": "lab_reputation",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "magnet_drops",
+        "label": "Magnet Drops!",
+        "icon": "💥",
+        "description": "Someone drops a strong magnet on the floor! It cracks and loses some of its magnetic strength. Equipment needs checking.",
+        "probability": 0.2,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 3
+        },
+        "effects": [
+          {
+            "resource": "equipment_health",
+            "delta": -12
+          },
+          {
+            "resource": "safety_awareness",
+            "delta": 5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "ALERT: Magnet dropped and cracked! Equipment check needed.",
+        "ai_image_prompt": "School science lab with a cracked bar magnet on the floor, iron filings scattered, student looking surprised, magnets and equipment on lab bench"
+      },
+      {
+        "id": "guest_scientist",
+        "label": "Guest Scientist Visit!",
+        "icon": "👩‍🔬",
+        "description": "A scientist from ISRO visits your class! She shows how magnets are used in satellites and space equipment. Everyone is inspired!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "knowledge_level",
+              "op": ">=",
+              "value": 20
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "knowledge_level",
+            "delta": 10
+          },
+          {
+            "resource": "creativity_points",
+            "delta": 8
+          },
+          {
+            "resource": "lab_reputation",
+            "delta": 5
+          }
+        ],
+        "cooldown": 6,
+        "max_occurrences": 1,
+        "news_text": "SPECIAL: ISRO scientist visits! Magnets in space technology demonstrated!",
+        "ai_image_prompt": "Female scientist in ISRO jacket showing satellite model with magnets to excited Grade 6 students in a school science lab"
+      },
+      {
+        "id": "supply_mix_up",
+        "label": "Supply Mix-Up!",
+        "icon": "📦",
+        "description": "The supply order got mixed up — you received aluminum bars instead of iron bars! Time to adapt your experiment plan.",
+        "probability": 0.18,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 4
+        },
+        "effects": [
+          {
+            "resource": "equipment_health",
+            "delta": -8
+          },
+          {
+            "resource": "creativity_points",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "NOTICE: Wrong supplies delivered. Aluminum instead of iron — adapt your plans!",
+        "ai_image_prompt": "Open supply box on lab bench with aluminum bars, confused student checking a checklist, magnets and iron filings nearby"
+      },
+      {
+        "id": "science_exhibition",
+        "label": "Science Exhibition Announced!",
+        "icon": "🏆",
+        "description": "The principal announces a Science Exhibition! Your magnet project could be a star exhibit. Motivation soars!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "discovery_points",
+              "op": ">=",
+              "value": 30
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "creativity_points",
+            "delta": 10
+          },
+          {
+            "resource": "lab_reputation",
+            "delta": 8
+          },
+          {
+            "resource": "discovery_points",
+            "delta": 5
+          }
+        ],
+        "cooldown": 8,
+        "max_occurrences": 1,
+        "news_text": "EXCITING: Science Exhibition announced! Best magnet project wins the Innovation Cup!",
+        "ai_image_prompt": "School hallway with colorful Science Exhibition banner, students discussing projects excitedly, trophy in glass case"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "dr_polaris",
+        "name": "Dr. Polaris",
+        "role": "Science Teacher",
+        "icon": "👨‍🏫",
+        "initial_mood": "encouraging",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "safety_awareness",
+              "op": "<",
+              "value": 30
+            },
+            "action": "warn",
+            "message": "Strong magnets can pinch fingers and damage electronics! Always handle them carefully and keep them away from phones and computers.",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "resource": "knowledge_level",
+              "op": "<",
+              "value": 20
+            },
+            "action": "advise",
+            "message": "Magnetism can seem invisible and mysterious. Come see me after class — I have some fun demonstrations that will make everything click!",
+            "mood_change": "concerned",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "knowledge_level",
+                  "op": ">=",
+                  "value": 65
+                },
+                {
+                  "resource": "safety_awareness",
+                  "op": ">=",
+                  "value": 60
+                }
+              ]
+            },
+            "action": "praise",
+            "message": "Outstanding work! Your understanding of magnetism is excellent and your lab technique is impeccable. I am nominating you for the Young Scientist award!",
+            "mood_change": "proud",
+            "satisfaction_delta": 10
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "discovery_points",
+                  "op": ">=",
+                  "value": 70
+                },
+                {
+                  "resource": "creativity_points",
+                  "op": ">=",
+                  "value": 50
+                }
+              ]
+            },
+            "action": "celebrate",
+            "message": "Your magnetic experiments are brilliant! You are thinking like a real physicist. I want to feature your work at the Science Exhibition!",
+            "mood_change": "excited",
+            "satisfaction_delta": 12
+          }
+        ]
+      },
+      {
+        "id": "ferrite",
+        "name": "Ferrite",
+        "role": "Lab Assistant Robot",
+        "icon": "🤖",
+        "initial_mood": "cheerful",
+        "initial_satisfaction": 70,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "equipment_health",
+              "op": "<",
+              "value": 40
+            },
+            "action": "alert",
+            "message": "Beep boop! Equipment alert! Some magnets are losing their strength and tools need repair. Time for a maintenance check!",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "safety_awareness",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "Bzzt! Safety warning! Strong magnets can snap together and trap fingers. Always slide magnets apart — never pull! And keep them away from electronics!",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -6
+          },
+          {
+            "condition": {
+              "resource": "equipment_health",
+              "op": ">=",
+              "value": 75
+            },
+            "action": "celebrate",
+            "message": "All magnets at full strength! Equipment in top condition! You are a responsible lab scientist — Ferrite approves!",
+            "mood_change": "delighted",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "safety_awareness",
+                  "op": ">=",
+                  "value": 50
+                },
+                {
+                  "resource": "equipment_health",
+                  "op": ">=",
+                  "value": 60
+                }
+              ]
+            },
+            "action": "approve",
+            "message": "All systems nominal! Lab is clean, magnets are stored properly, and experiments are running smoothly. Great teamwork, partner!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "knowledge_level",
+          "op": ">=",
+          "value": 70
+        },
+        "icon": "🧠",
+        "text": "Knowledge Level reaches {knowledge_level}! You are becoming a magnetism expert.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "safety_awareness",
+          "op": "<",
+          "value": 30
+        },
+        "icon": "⚠️",
+        "text": "Safety Rating critically low at {safety_awareness}. Dr. Polaris is concerned.",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "discovery_points",
+              "op": ">=",
+              "value": 60
+            },
+            {
+              "resource": "creativity_points",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        },
+        "icon": "💡",
+        "text": "Innovation breakthrough! Your creative magnet experiments are turning heads in the lab.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "equipment_health",
+          "op": "<",
+          "value": 25
+        },
+        "icon": "🔧",
+        "text": "Equipment health critical at {equipment_health}! Magnets losing strength — request replacements!",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "resource": "lab_reputation",
+          "op": ">=",
+          "value": 80
+        },
+        "icon": "⭐",
+        "text": "Dr. Polaris recommends you for the Young Scientist program. Outstanding lab work!",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A Grade 6 school science lab focused on magnets, knowledge level {knowledge_level}%, equipment health {equipment_health}%, discovery points {discovery_points}. Lab benches with bar magnets, horseshoe magnets, iron filings, compass needles, and electromagnet parts. Mood: {'thriving discovery lab' if knowledge_level > 60 else 'busy experimenting' if knowledge_level > 30 else 'just getting started'}."
+  },
+  "rounds": [
+    {
+      "round_id": "exp_1_what_sticks",
+      "round_title": "Experiment 1: What Sticks?",
+      "situation": "Your lab table has 8 mystery objects. Which ones will a magnet attract? 🧲",
+      "goal": "Discover which materials are magnetic and which are not.",
+      "coaching_moment": "Strategic thinking: A systematic approach to testing gives better results than random guessing.",
+      "reflection_prompt": "What do all the magnetic objects have in common?",
+      "image_prompt": "Grade 6 student holding a bar magnet near various objects on a lab table — iron nail, plastic ruler, copper coin, glass marble, key, wooden block, steel paperclip, rubber band",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "sort_materials",
+          "materials": [
+            "iron_nail",
+            "plastic_ruler",
+            "copper_coin",
+            "glass_marble",
+            "nickel_key",
+            "wooden_block",
+            "steel_clip",
+            "rubber_band"
+          ],
+          "show_field_lines": false
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e1_systematic",
+          "label": "A. Test metals first — iron, steel, and nickel should be magnetic; plastic, wood, glass, and rubber should not",
+          "is_correct": true,
+          "learning_concept": "Magnetic vs non-magnetic materials",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 12,
+            "experiment_accuracy": 10,
+            "knowledge_level": 10,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "feedback": "🎯 Perfect! Iron, steel, and nickel ARE magnetic. Copper, plastic, wood, glass, and rubber are NOT. Only certain metals are magnetic!",
+          "psychological_impact": "Builds systematic thinking and hypothesis-testing habits",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "e1_random",
+          "label": "B. Test every object one by one in random order and record what happens",
+          "is_correct": false,
+          "learning_concept": "Systematic vs random testing",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 5,
+            "experiment_accuracy": 3,
+            "knowledge_level": 4,
+            "creativity_points": 3
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "👍 You found the answer, but random testing is slower! Grouping by material type (metals vs non-metals) is more scientific.",
+          "psychological_impact": "Learns that organized approaches are more efficient",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "e1_appearance",
+          "label": "C. Group objects by appearance — shiny objects are probably magnetic, dull ones are not",
+          "is_correct": false,
+          "learning_concept": "Appearance does not determine magnetism",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "experiment_accuracy": -5,
+            "knowledge_level": 3,
+            "creativity_points": 2
+          },
+          "skill_tags": [
+            "creativity"
+          ],
+          "feedback": "❌ Careful! Copper coins are shiny but NOT magnetic. Shininess has nothing to do with magnetism — it depends on the TYPE of metal!",
+          "psychological_impact": "Learns not to rely on superficial characteristics",
+          "skill_explanation": {
+            "creativity": "Thinking outside the box leads to more original solutions."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_2_find_poles",
+      "round_title": "Experiment 2: Where's the Power?",
+      "situation": "A magnet's force isn't equal everywhere. Find the strongest spots! 💪",
+      "goal": "Discover that magnetic force is strongest at the poles.",
+      "coaching_moment": "Creativity: Designing your own experiment to test a hypothesis is real science.",
+      "reflection_prompt": "Why do you think magnets are strongest at their ends?",
+      "image_prompt": "Close-up of a bar magnet with iron filings clustering heavily at both ends (poles), less in the middle, student observing with magnifying glass",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "find_poles",
+          "magnet_type": "bar",
+          "show_field_lines": true
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e2_ends",
+          "label": "A. Test the ends (poles) — dip both ends into iron filings and see which attracts more",
+          "is_correct": true,
+          "learning_concept": "Magnetic poles are strongest points",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 12,
+            "experiment_accuracy": 10,
+            "knowledge_level": 10,
+            "equipment_health": -2
+          },
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "feedback": "🎯 Excellent! The POLES (ends) are where magnetic force is strongest. Iron filings cluster thickly at the poles but barely stick to the middle!",
+          "psychological_impact": "Reinforces observation-based learning",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "e2_middle",
+          "label": "B. Test the middle first — the center of the magnet probably has the most power stored up",
+          "is_correct": false,
+          "learning_concept": "Middle of magnet is weakest",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 4,
+            "experiment_accuracy": -5,
+            "knowledge_level": 5,
+            "equipment_health": -2
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ Surprise! The middle is actually the WEAKEST part. The magnetic force concentrates at the two ends — we call them poles (North and South).",
+          "psychological_impact": "Learns that intuition can be wrong — test it!",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "e2_all_around",
+          "label": "C. Test systematically — mark 5 spots along the magnet and count filings at each spot",
+          "is_correct": false,
+          "learning_concept": "Systematic measurement approach",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 8,
+            "experiment_accuracy": 8,
+            "knowledge_level": 8,
+            "equipment_health": -3,
+            "creativity_points": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "🔬 Great scientific method! You discovered that the ends attract the most filings. These strongest spots are called POLES. Thorough but used more supplies!",
+          "psychological_impact": "Values methodical approach over shortcuts",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "creativity": "Exploring an unconventional approach shows creative thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_3_push_or_pull",
+      "round_title": "Experiment 3: Push or Pull?",
+      "situation": "Two magnets near each other — sometimes they snap together, sometimes they push apart! 🤼",
+      "goal": "Discover the law of magnetic attraction and repulsion.",
+      "coaching_moment": "Adaptability: Understanding opposites attract helps in science AND in teamwork.",
+      "reflection_prompt": "Can you think of other examples in nature where opposites attract?",
+      "image_prompt": "Two bar magnets on a lab table, one pair snapping together (N-S), another pair pushing apart (N-N), visible field lines, student experimenting",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "pole_interaction",
+          "show_field_lines": true
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e3_opposites",
+          "label": "A. Opposite poles attract (N-S snap together), same poles repel (N-N push apart)",
+          "is_correct": true,
+          "learning_concept": "Law of magnetic poles",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 12,
+            "experiment_accuracy": 10,
+            "knowledge_level": 12,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "feedback": "🎯 Nailed it! N+S = ATTRACT 🧲❤️🧲 | N+N or S+S = REPEL 🧲💥🧲 — This is the fundamental law of magnetism!",
+          "psychological_impact": "Grasps fundamental principle through experimentation",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "e3_same_attract",
+          "label": "B. Same poles attract each other because they have the same type of magnetic energy",
+          "is_correct": false,
+          "learning_concept": "Common misconception about poles",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "experiment_accuracy": -8,
+            "knowledge_level": 3
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ Opposite! SAME poles REPEL (push away). Try holding two N poles together — you'll feel them fighting! Only OPPOSITE poles attract.",
+          "psychological_impact": "Corrects a common misconception through direct experience",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "e3_distance",
+          "label": "C. It depends on distance — close magnets attract, far magnets repel",
+          "is_correct": false,
+          "learning_concept": "Distance vs pole orientation",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 4,
+            "experiment_accuracy": -5,
+            "knowledge_level": 4,
+            "creativity_points": 2
+          },
+          "skill_tags": [
+            "creativity"
+          ],
+          "feedback": "❌ Distance affects STRENGTH, not direction! Attraction vs repulsion depends on WHICH POLES face each other, not how far apart they are.",
+          "psychological_impact": "Distinguishes between two different variables",
+          "skill_explanation": {
+            "creativity": "Looking at the problem from a new angle demonstrates creativity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_4_build_compass",
+      "round_title": "Experiment 4: Build a Compass",
+      "situation": "Lost in the forest! Can you magnetize a needle to find North? 🧭",
+      "goal": "Build a working compass from a needle, magnet, and water.",
+      "coaching_moment": "Delayed gratification: Careful preparation creates reliable tools. Rushing breaks needles.",
+      "reflection_prompt": "Why does a magnetized needle always point North-South?",
+      "image_prompt": "Student floating a magnetized needle on a leaf in a bowl of water, the needle pointing North, compass for comparison nearby, outdoor forest background",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "compass_builder"
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e4_stroke",
+          "label": "A. Stroke the needle with a magnet 30+ times in ONE direction, float it on water, and watch it point North",
+          "is_correct": true,
+          "learning_concept": "Making a compass by magnetization",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 14,
+            "experiment_accuracy": 10,
+            "knowledge_level": 12,
+            "creativity_points": 8,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "🧭 Perfect technique! Stroking in ONE direction aligns the needle's magnetic domains. Floating it lets it spin freely to point North!",
+          "psychological_impact": "Patience and precision lead to a working tool",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "e4_rub_random",
+          "label": "B. Rub the needle back and forth with the magnet, then balance it on your finger",
+          "is_correct": false,
+          "learning_concept": "Direction matters in magnetization",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 4,
+            "experiment_accuracy": -5,
+            "knowledge_level": 5,
+            "equipment_health": -3
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ Two mistakes! Back-and-forth rubbing CANCELS the magnetization. And a finger has too much friction. Stroke ONE direction only, then float on water!",
+          "psychological_impact": "Details matter in science experiments",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "e4_touch",
+          "label": "C. Just touch the needle to the magnet briefly — that should transfer enough magnetism",
+          "is_correct": false,
+          "learning_concept": "Temporary vs permanent magnetization",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "experiment_accuracy": -8,
+            "knowledge_level": 3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "❌ A brief touch gives VERY weak, temporary magnetism. You need repeated stroking in ONE direction to align the magnetic domains properly!",
+          "psychological_impact": "Shortcuts produce weak results",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_5_earth_magnet",
+      "round_title": "Experiment 5: Earth: The Giant Magnet",
+      "situation": "Earth itself is a huge magnet! That's why compasses work. 🌍",
+      "goal": "Understand Earth's magnetic field and geographic vs magnetic poles.",
+      "coaching_moment": "Strategic thinking: Earth's magnetic North is NOT the same as geographic North — precision matters!",
+      "reflection_prompt": "If Earth's magnetic poles flip (they have before!), what would happen to all compasses?",
+      "image_prompt": "Diagram showing Earth with magnetic field lines, a compass needle aligning with the field, North and South poles labeled, space background",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "earth_magnetism"
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e5_core",
+          "label": "A. Earth's magnetic field comes from its iron-nickel core — the compass North points toward Earth's magnetic South pole",
+          "is_correct": true,
+          "learning_concept": "Earth's magnetic field origin",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 12,
+            "experiment_accuracy": 8,
+            "knowledge_level": 14,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "feedback": "🌍 Brilliant! Earth's molten iron core creates its magnetic field. Fun twist: geographic North is actually near magnetic SOUTH — that's why the N pole of your compass points there!",
+          "psychological_impact": "Mind-expanding realization about planetary physics",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "e5_surface",
+          "label": "B. Earth's magnetic field comes from magnetic rocks on the surface, and magnetic North equals geographic North exactly",
+          "is_correct": false,
+          "learning_concept": "Source of Earth's magnetism",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 4,
+            "experiment_accuracy": -5,
+            "knowledge_level": 5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ The field comes from Earth's molten CORE, not surface rocks! Also, magnetic North and geographic North are slightly different — they are about 500 km apart!",
+          "psychological_impact": "Learns scale of planetary phenomena",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "e5_sun",
+          "label": "C. Compasses point North because of the Sun's gravitational pull on magnetic metals",
+          "is_correct": false,
+          "learning_concept": "Magnetism vs gravity confusion",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 2,
+            "experiment_accuracy": -8,
+            "knowledge_level": 3,
+            "lab_reputation": -3
+          },
+          "skill_tags": [
+            "creativity"
+          ],
+          "feedback": "❌ Gravity and magnetism are completely different forces! The Sun's gravity pulls everything equally — it doesn't make compasses point any direction. Earth's OWN magnetic field does that.",
+          "psychological_impact": "Distinguishes between different fundamental forces",
+          "skill_explanation": {
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_6_stroking_method",
+      "round_title": "Experiment 6: Making Magnets — Stroking",
+      "situation": "Can you turn ordinary iron into a magnet? Try the stroking method! ✨",
+      "goal": "Learn to make a magnet using the single-stroke and double-stroke methods.",
+      "coaching_moment": "Resilience: Making magnets requires patience — stroke after stroke in the same direction.",
+      "reflection_prompt": "Why must you stroke in only ONE direction? What happens if you go back and forth?",
+      "image_prompt": "Student stroking an iron bar with a magnet in one direction repeatedly, arrows showing direction, iron filings testing the result, lab bench setup",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "stroking_method"
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e6_one_direction",
+          "label": "A. Stroke the iron bar 40+ times in ONE direction, then lift and return — this aligns the magnetic domains",
+          "is_correct": true,
+          "learning_concept": "Single-stroke magnetization method",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 12,
+            "experiment_accuracy": 10,
+            "knowledge_level": 12,
+            "creativity_points": 5,
+            "equipment_health": -3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "🎯 Perfect! One-direction stroking aligns the tiny magnetic domains inside the iron. More strokes = stronger magnet. Patience pays off!",
+          "psychological_impact": "Repetitive careful effort produces measurable results",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "e6_back_forth",
+          "label": "B. Rub the magnet back and forth quickly to generate heat and magnetize the iron through friction",
+          "is_correct": false,
+          "learning_concept": "Back-and-forth cancels magnetization",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 3,
+            "experiment_accuracy": -8,
+            "knowledge_level": 5,
+            "equipment_health": -5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ Back-and-forth DESTROYS magnetization! Each reverse stroke misaligns the domains you just aligned. Heat from friction actually DE-magnetizes. One direction only!",
+          "psychological_impact": "Understands that more effort in wrong direction is counterproductive",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "e6_tap",
+          "label": "C. Tap the iron bar sharply with the magnet several times to knock the domains into alignment",
+          "is_correct": false,
+          "learning_concept": "Tapping weakens magnets",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 4,
+            "experiment_accuracy": -5,
+            "knowledge_level": 4,
+            "equipment_health": -8
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "❌ Tapping actually SCRAMBLES magnetic domains and can weaken magnets! It is used to DE-magnetize, not magnetize. Also, you just chipped the magnet! 💥",
+          "psychological_impact": "Force is not always the answer — gentle precision works better",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_7_electromagnet",
+      "round_title": "Experiment 7: Making Magnets — Electricity",
+      "situation": "Wrap wire around a nail, connect a battery — instant electromagnet! ⚡",
+      "goal": "Build an electromagnet and discover what makes it stronger or weaker.",
+      "coaching_moment": "Creativity: An electromagnet is a magnet you can turn ON and OFF. What could you use it for?",
+      "reflection_prompt": "How is an electromagnet different from a permanent magnet? When would you prefer each?",
+      "image_prompt": "Student wrapping insulated copper wire around a large iron nail, connected to a battery, electromagnet picking up paperclips, excited expression",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "electric_method"
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e7_more_coils",
+          "label": "A. More wire coils + bigger battery = stronger electromagnet. Test by counting how many paperclips it picks up",
+          "is_correct": true,
+          "learning_concept": "Electromagnet strength factors",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 14,
+            "experiment_accuracy": 10,
+            "knowledge_level": 14,
+            "creativity_points": 8,
+            "equipment_health": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "⚡ Brilliant! More coils = more magnetic field. Bigger battery = more current = stronger field. You made a magnet you can switch ON and OFF!",
+          "psychological_impact": "Connects multiple variables to an outcome",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "creativity": "Not settling for the obvious solution builds creative problem-solving."
+          }
+        },
+        {
+          "id": "e7_thick_wire",
+          "label": "B. Use thicker wire instead of more coils — thicker wire should be more magnetic",
+          "is_correct": false,
+          "learning_concept": "Number of coils matters most",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 5,
+            "experiment_accuracy": -3,
+            "knowledge_level": 6,
+            "equipment_health": -2
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "🤔 Wire thickness affects resistance but NOT magnetic strength much. What matters is NUMBER OF COILS and CURRENT. More turns around the nail = stronger magnet!",
+          "psychological_impact": "Learns to identify the right variable to change",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "e7_no_core",
+          "label": "C. Skip the iron nail — just coil the wire and connect the battery. The wire itself becomes magnetic",
+          "is_correct": false,
+          "learning_concept": "Role of the iron core",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 6,
+            "experiment_accuracy": -2,
+            "knowledge_level": 7,
+            "creativity_points": 3
+          },
+          "skill_tags": [
+            "creativity"
+          ],
+          "feedback": "🔬 Partially right! A coil of wire DOES create a weak magnetic field (called a solenoid). But the iron nail AMPLIFIES it 100x! The iron core is what makes it powerful.",
+          "psychological_impact": "Understanding that components work together for greater effect",
+          "skill_explanation": {
+            "creativity": "Thinking outside the box leads to more original solutions."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_8_demagnetize",
+      "round_title": "Experiment 8: Breaking Magnets",
+      "situation": "What destroys a magnet's power? Time to find out! 💥",
+      "goal": "Learn the three ways to demagnetize a magnet: heating, hammering, and dropping.",
+      "coaching_moment": "Ethical reasoning: Knowing what damages equipment helps you protect it — and understand magnetism deeper.",
+      "reflection_prompt": "If you accidentally demagnetize a magnet, can you re-magnetize it? How?",
+      "image_prompt": "Three-panel experiment: magnet being heated with a candle flame, magnet being tapped with a hammer, magnet being dropped from height, iron filings for testing",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "demagnetize"
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e8_all_three",
+          "label": "A. Heating, hammering, and dropping all scramble the magnetic domains — test all three and compare which is most effective",
+          "is_correct": true,
+          "learning_concept": "Three methods of demagnetization",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 14,
+            "experiment_accuracy": 10,
+            "knowledge_level": 12,
+            "creativity_points": 5,
+            "equipment_health": -10
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "🎯 Complete answer! 🔥 Heat → domains randomize. 🔨 Hammer → domains shake loose. 💥 Drop → same impact effect. Heating is most effective. But... you used 3 magnets! 🔬📉",
+          "psychological_impact": "Comprehensive understanding at the cost of resources",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "creativity": "Exploring an unconventional approach shows creative thinking."
+          }
+        },
+        {
+          "id": "e8_heat_only",
+          "label": "B. Heat is the only way — fire destroys everything, including magnetism",
+          "is_correct": false,
+          "learning_concept": "Multiple demagnetization methods exist",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 6,
+            "experiment_accuracy": -3,
+            "knowledge_level": 6,
+            "equipment_health": -4
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "🔥 Heat DOES demagnetize, but it's not the ONLY way! Hammering and dropping also work by physically shaking the magnetic domains out of alignment.",
+          "psychological_impact": "Realizes there are multiple causes for the same effect",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "e8_permanent",
+          "label": "C. Permanent magnets can never lose their magnetism — that's why they're called permanent",
+          "is_correct": false,
+          "learning_concept": "Permanent magnets CAN be demagnetized",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 2,
+            "experiment_accuracy": -8,
+            "knowledge_level": 4,
+            "lab_reputation": -3
+          },
+          "skill_tags": [
+            "resilience"
+          ],
+          "feedback": "❌ The name is misleading! 'Permanent' means they keep magnetism without electricity — unlike electromagnets. But heat, impact, and time CAN destroy their magnetism!",
+          "psychological_impact": "Learns to question terminology and test assumptions",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_9_compass_crisis",
+      "round_title": "Experiment 9: Compass Emergency! ⚠️",
+      "situation": "⚠️ Your compass broke on a mountain trek! Fix it before dark! 🏔️",
+      "goal": "Apply everything you know to build an emergency compass under pressure.",
+      "coaching_moment": "Resilience: Real scientists stay calm under pressure. Use what you know!",
+      "reflection_prompt": "How did your earlier experiments help you solve this crisis?",
+      "image_prompt": "Student on a mountain trail at sunset, broken compass in hand, looking at available materials — needle, magnet, water bottle cap, leaf, determined expression",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "fix_compass"
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e9_rebuild",
+          "label": "A. Magnetize a needle using the stroking method, float it on a leaf in water, and use it to find North",
+          "is_correct": true,
+          "learning_concept": "Applying magnetism knowledge in emergencies",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 16,
+            "experiment_accuracy": 12,
+            "knowledge_level": 10,
+            "creativity_points": 10,
+            "lab_reputation": 10,
+            "safety_awareness": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "🏆 AMAZING! You used everything you learned — stroking method + floating compass + Earth's magnetism! You found North and made it safely down the mountain! 🧭🌟",
+          "psychological_impact": "Deep satisfaction from applying learned knowledge in a real scenario",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "creativity": "Looking at the problem from a new angle demonstrates creativity."
+          }
+        },
+        {
+          "id": "e9_sun",
+          "label": "B. Forget the compass — use the Sun's position and shadows to find direction instead",
+          "is_correct": false,
+          "learning_concept": "Alternative navigation (valid but off-topic)",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 6,
+            "experiment_accuracy": 3,
+            "knowledge_level": 3,
+            "safety_awareness": 5,
+            "creativity_points": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "creativity"
+          ],
+          "feedback": "🌅 Smart survival thinking! Sun-based navigation works, but it's sunset — shadows are unreliable now! A magnetized needle would've been faster and more reliable.",
+          "psychological_impact": "Creative alternative but missed the chance to apply core knowledge",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking."
+          }
+        },
+        {
+          "id": "e9_panic",
+          "label": "C. Stay put and wait for help — trying to navigate without a proper compass is too risky",
+          "is_correct": false,
+          "learning_concept": "Applying knowledge vs waiting",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 2,
+            "experiment_accuracy": 0,
+            "knowledge_level": 2,
+            "safety_awareness": 8
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "🤔 Staying put IS safe advice normally, but you know HOW to build a compass! You learned the stroking method AND how Earth's magnetism works. Trust your knowledge!",
+          "psychological_impact": "Safety is important but so is confidence in your skills",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_10_separation",
+      "round_title": "Experiment 10: Magnetic Separation Machine",
+      "situation": "Design a system to separate iron from sand at the recycling plant! 🏭",
+      "goal": "Apply magnetic principles to solve a real-world industrial problem.",
+      "coaching_moment": "Creativity: The best scientists don't just learn — they BUILD solutions for the real world.",
+      "reflection_prompt": "Where else in daily life could magnetic separation be useful?",
+      "image_prompt": "Student presenting a model magnetic separation system — conveyor belt with electromagnet above it, iron pieces jumping up, clean sand falling through, recycling plant model",
+      "scene_widget": {
+        "type": "magnet_lab",
+        "props": {
+          "mode": "magnetic_separation"
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e10_conveyor",
+          "label": "A. Build a conveyor belt with a powerful electromagnet above it — iron jumps up, sand passes through. Add an ON/OFF switch to release collected iron",
+          "is_correct": true,
+          "learning_concept": "Industrial magnetic separation",
+          "mastery_level": "create",
+          "delta": {
+            "discovery_points": 16,
+            "experiment_accuracy": 10,
+            "knowledge_level": 12,
+            "creativity_points": 15,
+            "lab_reputation": 10
+          },
+          "skill_tags": [
+            "creativity",
+            "strategic_thinking"
+          ],
+          "feedback": "🏭🌟 GENIUS DESIGN! Electromagnet + conveyor = continuous separation! The ON/OFF switch lets you collect iron in a separate bin. This is exactly how real recycling plants work!",
+          "psychological_impact": "Peak creativity — designing a real-world solution",
+          "skill_explanation": {
+            "creativity": "Not settling for the obvious solution builds creative problem-solving.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "e10_hand",
+          "label": "B. Use a permanent magnet on a stick — drag it through the sand mixture by hand to collect iron",
+          "is_correct": false,
+          "learning_concept": "Manual vs automated separation",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 8,
+            "experiment_accuracy": 5,
+            "knowledge_level": 6,
+            "creativity_points": 3
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "👍 This works for small amounts! But a recycling plant processes TONS of material. A handheld magnet is too slow. Think bigger — electromagnets + automation!",
+          "psychological_impact": "Understands the need to scale solutions",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "e10_water",
+          "label": "C. Mix everything with water — iron sinks faster than sand, so you can skim the sand off the top",
+          "is_correct": false,
+          "learning_concept": "Magnetic vs density separation",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 5,
+            "experiment_accuracy": -5,
+            "knowledge_level": 4,
+            "creativity_points": 4,
+            "equipment_health": -3
+          },
+          "skill_tags": [
+            "creativity"
+          ],
+          "feedback": "💧 Creative but wrong principle! Iron and sand have similar densities — water separation won't work well. MAGNETIC separation is much more effective because ONLY iron is magnetic!",
+          "psychological_impact": "Learns to choose the right tool for the problem",
+          "skill_explanation": {
+            "creativity": "Thinking outside the box leads to more original solutions."
+          }
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "master_magnetist",
+      "title": "Master Magnetist",
+      "icon": "🧲",
+      "message": "You have achieved mastery in the Magnet Lab! Your understanding of magnetism is extraordinary, your experiments are precise, and your magnetic separation machine design has inspired the entire school. Dr. Polaris nominates you for the District Science Award! You have proven that curiosity and careful experimentation can unlock the invisible forces of nature!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "knowledge_level",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "discovery_points",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "creativity_points",
+            "operator": ">=",
+            "value": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "skilled_experimenter",
+      "title": "Skilled Experimenter",
+      "icon": "🔬",
+      "message": "You have become a skilled experimenter with solid knowledge of magnets and magnetism! Your compass works perfectly and your electromagnet is impressive. Dr. Polaris is proud and says you are ready for the advanced physics elective next year. Your future in science is bright!",
+      "type": "good",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "knowledge_level",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "experiment_accuracy",
+            "operator": ">=",
+            "value": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "lab_explorer",
+      "title": "Lab Explorer",
+      "icon": "🔍",
+      "message": "You completed the Magnet Lab with mixed results. Some experiments went great, others were tricky, but you stuck with it and learned the basics of magnetism. Dr. Polaris says there is always next semester to improve. Keep exploring — every scientist starts somewhere!",
+      "type": "neutral",
+      "rarity": "common",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "knowledge_level",
+            "operator": ">=",
+            "value": 35
+          },
+          {
+            "resource": "safety_awareness",
+            "operator": ">=",
+            "value": 30
+          }
+        ]
+      }
+    },
+    {
+      "id": "struggling_scientist",
+      "title": "Struggling Scientist",
+      "icon": "📚",
+      "message": "The Magnet Lab was tough for you. Many concepts were confusing and experiments did not always work. But you did not give up! Dr. Polaris arranges extra tutoring and says: 'The students who struggle most often understand deepest, because they had to fight for every insight.' Your journey continues!",
+      "type": "poor",
+      "rarity": "common",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "knowledge_level",
+            "operator": "<",
+            "value": 35
+          },
+          {
+            "resource": "safety_awareness",
+            "operator": ">=",
+            "value": 25
+          }
+        ]
+      }
+    },
+    {
+      "id": "equipment_crisis",
+      "title": "Equipment Crisis",
+      "icon": "⚠️",
+      "message": "Too many magnets were damaged, dropped, or demagnetized during your experiments. Dr. Polaris has restricted your lab access until you pass the Equipment Care certification. Ferrite the robot will tutor you personally. This setback is temporary — learn from it and come back stronger!",
+      "type": "decline",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "equipment_health",
+            "operator": "<",
+            "value": 20
+          }
+        ]
+      }
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          3
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          4,
+          7
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          8,
+          10
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: 🧲 Magnet Lab Explorer Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is the SI unit of force?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Newton (N)",
+              "correct": true
+            },
+            {
+              "id": "b",
+              "text": "Joule (J)",
+              "correct": false
+            },
+            {
+              "id": "c",
+              "text": "Watt (W)",
+              "correct": false
+            }
+          ],
+          "explanation": "Force is measured in Newtons (N), named after Sir Isaac Newton."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "What happens when balanced forces act on a stationary object?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "It accelerates",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "It stays still",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "It spins",
+              "correct": false
+            }
+          ],
+          "explanation": "Balanced forces cancel out, so the object remains stationary."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "Friction always acts in which direction?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Same as motion",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Opposite to motion",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Perpendicular to motion",
+              "correct": false
+            }
+          ],
+          "explanation": "Friction opposes the direction of motion or attempted motion."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of 🧲 Magnet Lab Explorer. Focus on the core principles and how they connect to real-world applications."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

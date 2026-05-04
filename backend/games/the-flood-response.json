@@ -1,0 +1,1640 @@
+{
+  "game_id": "the-flood-response",
+  "title": "The Flood Response Team",
+  "game_type": "story_branching",
+  "visible": true,
+  "description": "When floods devastate your town, you step up to lead the youth volunteer team. Every decision — who to save first, how to ration supplies, when to take risks — will test your leadership under the most extreme pressure imaginable.",
+  "theme": "Crisis leadership and humanitarian decision-making",
+  "difficulty": "intermediate",
+  "duration_minutes": 45,
+  "target_audience": "students",
+  "icon": "🌊",
+  "cover_image_prompt": "A 16-year-old Indian boy standing on a flooded street directing rescue volunteers, waist-deep muddy water, rain pouring, rescue boats in background, vibrant watercolor illustration, dramatic emergency lighting, age 10-18 friendly",
+  "learning_objectives": [
+    "Practice making rapid decisions with incomplete information under extreme pressure",
+    "Understand triage — how to prioritize when you cannot help everyone at once",
+    "Learn to maintain team morale when resources are scarce and stakes are high",
+    "Develop the ability to balance emotion with rational crisis management",
+    "Explore ethical dilemmas in humanitarian response"
+  ],
+  "learning_concept": "In a crisis, the leader who stays calm, thinks clearly, and cares for both the team and the victims is the one who saves the most lives.",
+  "psychological_framework": "Crisis Leadership (Boin & Hart) — decision-making under uncertainty; Triage Ethics — prioritizing resources when needs exceed capacity; Psychological First Aid — supporting people in acute distress",
+  "ai_image_config": {
+    "style": "vibrant watercolor illustration, Indian flood rescue setting, dramatic rain and water, emergency lighting, age 10-18 friendly, crisis leadership story aesthetic",
+    "provider": "dalle",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/story_branching"
+  },
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "The Warning",
+      "icon": "⚠️",
+      "teaser": "The river is rising. The authorities are slow. Someone needs to act.",
+      "always_unlocked": true,
+      "color": "#ef4444"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "Evacuation Begins",
+      "icon": "🏃",
+      "teaser": "Not everyone wants to leave. How do you convince them before the water arrives?",
+      "unlocks_after": "ch1",
+      "color": "#f97316"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "First Rescue",
+      "icon": "🚣",
+      "teaser": "A family is trapped. The current is strong. Your team is inexperienced.",
+      "unlocks_after": "ch2",
+      "color": "#10b981"
+    },
+    {
+      "chapter_id": "ch4",
+      "number": 4,
+      "title": "Resource Crisis",
+      "icon": "📦",
+      "teaser": "Supplies are running low. Who gets food, medicine, and shelter first?",
+      "unlocks_after": "ch3",
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch5",
+      "number": 5,
+      "title": "The Hospital Dilemma",
+      "icon": "🏥",
+      "teaser": "Dr. Meena needs help. The hospital is flooding. Patients cannot be moved easily.",
+      "unlocks_after": "ch4",
+      "color": "#ec4899"
+    },
+    {
+      "chapter_id": "ch6",
+      "number": 6,
+      "title": "Lost Contact",
+      "icon": "📡",
+      "teaser": "Communication is down. A group of volunteers is missing. Do you go find them?",
+      "unlocks_after": "ch5",
+      "color": "#8b5cf6"
+    },
+    {
+      "chapter_id": "ch7",
+      "number": 7,
+      "title": "The Bridge Decision",
+      "icon": "🌉",
+      "teaser": "The old bridge might hold. It might not. Fifty people need to cross.",
+      "unlocks_after": "ch6",
+      "color": "#0ea5e9"
+    },
+    {
+      "chapter_id": "ch8",
+      "number": 8,
+      "title": "Night Rescue",
+      "icon": "🌙",
+      "teaser": "Darkness falls. The water rises. Mrs. Chatterjee refuses to leave her home.",
+      "unlocks_after": "ch7",
+      "color": "#f59e0b"
+    },
+    {
+      "chapter_id": "ch9",
+      "number": 9,
+      "title": "Morning After",
+      "icon": "🌅",
+      "teaser": "The water recedes. The damage is immense. Now the real work begins.",
+      "unlocks_after": "ch8",
+      "color": "#14b8a6"
+    },
+    {
+      "chapter_id": "ch10",
+      "number": 10,
+      "title": "Heroes Recognized",
+      "icon": "🏅",
+      "teaser": "The town honours its rescuers. But {player_name} knows the real heroes.",
+      "unlocks_after": "ch9",
+      "color": "#f59e0b"
+    }
+  ],
+  "initial_state": {
+    "morale": {
+      "value": 50,
+      "label": "Team Morale",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "supplies": {
+      "value": 40,
+      "label": "Supplies",
+      "icon": "📦",
+      "min": 0,
+      "max": 100
+    },
+    "lives_saved": {
+      "value": 0,
+      "label": "Lives Saved",
+      "icon": "❤️",
+      "min": 0,
+      "max": 100
+    },
+    "team_strength": {
+      "value": 45,
+      "label": "Team Strength",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "transitions_to_gameplay": true,
+        "title": "The Rising River",
+        "narrative": "The Narmada had been rising all week. The monsoon was heavier than anyone predicted — three times the normal rainfall in four days. The district administration had issued a yellow alert, but yellow alerts came every year and nothing happened.\n\nUntil today. {player_name} was at the youth centre when Ravi burst through the door, soaking wet, eyes wide. 'The bund near Sector 7 is cracking. My uncle works at the dam office — he says they are releasing water in six hours. The low-lying areas will flood.'\n\nVikram looked at the clock. 4 PM. If the dam released at 10 PM, the water would reach the town by midnight. Eight hours to prepare. The authorities were still processing paperwork. The NDRF was 200 kilometres away.\n\nAnanya, who was studying for her biology exam at the centre, looked up. 'If nobody else is going to do something, should we?'",
+        "image_prompt": "A group of Indian teenagers at a youth centre looking alarmed as a soaking wet boy delivers urgent news, rain visible through windows, a clock showing 4 PM, maps and emergency supplies visible, watercolor illustration, the moment before crisis",
+        "coaching_moment": "In a crisis, the first person who says 'let us do something' becomes the leader — not by title, but by action.",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Start organizing immediately — divide into teams and assign tasks",
+            "description": "Vikram takes charge, creating rescue, supply, and communication teams from the youth centre volunteers.",
+            "delta": {
+              "team_strength": 10,
+              "morale": 8,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Quick organization saves time — but hasty plans may miss critical details.",
+            "memory_tags": [
+              "organized_early"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Call the authorities first — confirm the threat before panicking",
+            "description": "Vikram calls the municipal office and the dam authority to verify Ravi's information before mobilizing.",
+            "delta": {
+              "supplies": 5,
+              "team_strength": 5,
+              "morale": -3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Verification prevents false alarms — but every minute spent confirming is a minute not spent preparing.",
+            "memory_tags": [
+              "verified_first"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_c",
+            "label": "Go to the bund yourself — see the crack with your own eyes",
+            "description": "Vikram grabs a raincoat and heads to Sector 7 to assess the situation firsthand before deciding anything.",
+            "delta": {
+              "morale": 5,
+              "team_strength": -3,
+              "supplies": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Firsthand information is invaluable — but leaving the team without direction wastes precious time.",
+            "next_scene": "ch1_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "The Team Assembles",
+        "narrative": "Within an hour, word spread through WhatsApp and phone calls. Eighteen volunteers assembled at the youth centre — the oldest was Vikram at sixteen, the youngest was Ravi at thirteen. Ananya had medical training from a Red Cross course last summer. Two boys had boats.\n\nSub-Inspector Khan arrived, looking tired. 'The official response will not reach us before morning,' he said honestly. 'I have six constables. I can keep law and order, but rescue operations need people who know the terrain. That is you.'\n\nHe looked at Vikram. 'You grew up here. You know every lane and every family. I am asking you — will you lead the volunteer team?'\n\n{player_name} felt the weight of the question. Eighteen lives would depend on his decisions tonight. He was sixteen years old.",
+        "image_prompt": "A group of Indian teenagers and a police officer gathered around a table with a map of the town, rain hammering on the roof, flashlights and supplies visible, the police officer looking at a teenage boy with serious trust, watercolor illustration, the weight of responsibility",
+        "coaching_moment": "When circumstances demand more than your experience qualifies you for, the only question is: will you step up anyway?",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Accept the responsibility — 'I will lead, but we make decisions together'",
+            "description": "Vikram accepts but establishes a democratic framework — his word is final in emergencies, but the team discusses all major decisions.",
+            "delta": {
+              "team_strength": 12,
+              "morale": 10,
+              "lives_saved": 2
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Shared leadership builds trust and better decisions — but slows down response time.",
+            "next_scene": "ch1_s3"
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Accept and take full command — in a crisis, one clear voice prevents chaos",
+            "description": "Vikram takes decisive control, assigning roles and creating a clear chain of command immediately.",
+            "delta": {
+              "team_strength": 8,
+              "morale": 5,
+              "supplies": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Clear authority enables fast action — but team members may feel unheard when stakes are highest.",
+            "next_scene": "ch1_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "title": "The Map and the Plan",
+        "narrative": "Vikram spread a hand-drawn map of the town on the table. He marked the low-lying areas in red — Sector 7 near the bund, the old market area, and the lane behind the hospital where Mrs. Chatterjee and several elderly residents lived.\n\nAnanya pointed out the medical priorities: 'The hospital has patients on the ground floor who cannot be moved quickly. Dr. Meena will need help.'\n\nRavi added: 'My grandmother's neighbourhood has no paved road. Once the water rises above knee level, you cannot drive or even walk there. Boats only.'\n\n{player_name} looked at the map and made a critical calculation: eighteen volunteers, three priority zones, approximately 200 residents in danger zones. They could not be everywhere at once. Someone had to decide: where do you go first?",
+        "image_prompt": "Teenagers gathered around a hand-drawn map on a table, marking danger zones in red, rain-streaked windows visible, flashlights illuminating the map, a moment of critical planning before a flood rescue, watercolor illustration, strategic urgency",
+        "coaching_moment": "Triage is the hardest skill in crisis management — choosing who gets help first is not about who you care about most, but about where your actions can save the most lives.",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "Prioritize the hospital — patients are most vulnerable and hardest to move",
+            "description": "Vikram sends the main team to support Dr. Meena's hospital evacuation, reasoning that medical patients face the greatest immediate risk.",
+            "delta": {
+              "lives_saved": 10,
+              "morale": 5,
+              "team_strength": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Saving the most vulnerable first is medically sound — but other zones wait longer.",
+            "memory_tags": [
+              "hospital_first"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "Split into three teams — cover all zones simultaneously",
+            "description": "Vikram divides the volunteers into three smaller teams, one for each danger zone, spreading resources thin but wide.",
+            "delta": {
+              "lives_saved": 8,
+              "team_strength": -5,
+              "supplies": -5
+            },
+            "skill_tags": [
+              "adaptability",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Covering all zones prevents any area from being completely neglected — but smaller teams are weaker.",
+            "memory_tags": [
+              "split_teams"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_c",
+            "label": "Go to the bund area first — if the bund breaks, everything downstream floods faster",
+            "description": "Vikram sends the team to evacuate Sector 7, the area closest to the cracking bund, reasoning that speed matters most there.",
+            "delta": {
+              "lives_saved": 12,
+              "supplies": -3,
+              "morale": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Addressing the most time-sensitive area first is logical — but other zones may feel abandoned.",
+            "memory_tags": [
+              "bund_first"
+            ],
+            "next_chapter": "ch2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "Door to Door",
+        "narrative": "The rain was relentless. Vikram's team moved through the target zone, knocking on doors, shouting warnings. Most families were already anxious — they could hear the river. But some were not home. Some were sleeping. And some simply refused to leave.\n\nAn old man named Tiwari Uncle opened his door and said flatly: 'I have lived through six floods. The water never reaches the second floor. I am staying.'\n\nHis wife stood behind him, clearly frightened, but nodding along with her husband.\n\nAnanya whispered to Vikram: 'We cannot force them. But if the water is worse this time...' She left the sentence unfinished.\n\n{player_name} had to decide: how much time do you spend convincing one family when dozens of others still need warning?",
+        "image_prompt": "Indian teenagers in rain gear knocking on doors in a flooded lane, an elderly man stubbornly refusing to leave from his doorway, his wife looking scared behind him, rising water visible on the street, watercolor illustration, evacuation urgency",
+        "coaching_moment": "In evacuation, the tension between respecting autonomy and saving lives is real — you cannot force people, but you cannot abandon them either.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Spend five more minutes persuading — describe the specific danger clearly",
+            "description": "Vikram explains the bund crack and dam release timeline, giving Tiwari Uncle facts to change his mind.",
+            "delta": {
+              "lives_saved": 5,
+              "morale": 3,
+              "team_strength": -3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Spending time on the reluctant saves them — but delays help for willing evacuees.",
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Mark the house, note the location, and move on — come back if there is time",
+            "description": "Vikram records the address and promises to return, prioritizing the families who are ready to move.",
+            "delta": {
+              "lives_saved": 3,
+              "team_strength": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Triage means hard choices — marking and moving saves more people overall, but this family haunts you.",
+            "memory_tags": [
+              "marked_tiwari"
+            ],
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_c",
+            "label": "Leave Ravi here to keep persuading — take the rest of the team forward",
+            "description": "Vikram splits the difference, leaving the youngest volunteer to keep trying while the main team moves on.",
+            "delta": {
+              "lives_saved": 5,
+              "morale": 5,
+              "team_strength": -5
+            },
+            "skill_tags": [
+              "adaptability",
+              "empathy"
+            ],
+            "consequence_hint": "Splitting attention is creative — but leaving a 13-year-old alone in rising water is risky.",
+            "next_scene": "ch2_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "The First Boat",
+        "narrative": "By 8 PM, the water was at knee level in the lowest streets. Dinesh, one of the volunteers, brought his father's fishing boat — a small wooden vessel that could carry four people at a time.\n\nThree families were waiting at the pickup point — twelve people total, including a pregnant woman and two toddlers. The boat could make three trips, but each round trip took twenty minutes. An hour for all three families.\n\nAnanya, checking water marks on the walls, said: 'The water is rising about ten centimetres every thirty minutes. In an hour, this lane will be waist-deep. The pickup point will not be accessible.'\n\n{player_name} looked at the families, then at the boat, then at the water marks. Twelve people. One boat. Rising water. Mathematics that nobody teaches you in school.",
+        "image_prompt": "A small wooden boat in a flooded Indian street at dusk, families with children waiting to be evacuated, a teenager calculating trips, water rising on building walls with marks, watercolor illustration, urgent rescue logistics",
+        "coaching_moment": "When resources are less than needs, prioritization is not optional — it is the most important leadership skill you have.",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Pregnant woman and toddlers first — most vulnerable go first",
+            "description": "Vikram loads the boat with the most vulnerable people first, following medical triage principles.",
+            "delta": {
+              "lives_saved": 8,
+              "morale": 8,
+              "supplies": -3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Vulnerability-based triage is ethically sound — and the remaining adults can potentially wade if needed.",
+            "next_scene": "ch2_s3"
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Load maximum people per trip — squeeze five or six in to reduce trips",
+            "description": "Vikram overloads the boat slightly, calculating that faster evacuation outweighs the small stability risk.",
+            "delta": {
+              "lives_saved": 10,
+              "team_strength": -5,
+              "morale": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Overloading saves time — but if the boat capsizes in the current, everyone loses.",
+            "next_scene": "ch2_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "title": "The First Success",
+        "narrative": "The boat makes its trips. All twelve people reach the relief centre at the community hall — wet, shaken, but alive. The pregnant woman thanks Vikram with trembling hands. One toddler is already asleep on his mother's shoulder.\n\nAnanya sets up a basic first aid station. Ravi is handing out the biscuits and water bottles they collected. Sub-Inspector Khan has arranged battery-powered lights.\n\nFor a moment, {player_name} allows himself to feel something like pride. Twelve people safe. But the radio crackles with Dinesh's voice from the field: 'We have a family trapped on the second floor near the temple. Water is at first-floor level. Four people including two children. They are calling for help.'\n\nThe feeling of pride evaporates. The night has just begun.",
+        "image_prompt": "A community hall converted into a relief centre — wet families being cared for by teenage volunteers, blankets and first aid visible, a radio crackling with a new emergency call, hope mixed with ongoing urgency, watercolor illustration",
+        "coaching_moment": "In crisis response, every rescue leads to the next emergency — the key is celebrating small wins without losing focus on the work ahead.",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "Send the boat back immediately with fresh volunteers",
+            "description": "Vikram dispatches the boat to the temple area with two rested volunteers, keeping the momentum going.",
+            "delta": {
+              "lives_saved": 8,
+              "team_strength": 5,
+              "morale": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Quick response saves lives — but fatigued volunteers make more mistakes.",
+            "next_chapter": "ch3"
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "Take the boat yourself — you know the streets best",
+            "description": "Vikram goes personally, leading by example and using his knowledge of the terrain to navigate safely.",
+            "delta": {
+              "lives_saved": 10,
+              "morale": 8,
+              "team_strength": -5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Leading from the front inspires — but if the leader goes down, the whole operation is at risk.",
+            "memory_tags": [
+              "led_from_front"
+            ],
+            "next_chapter": "ch3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "The Temple Rescue",
+        "narrative": "The scene at the temple was worse than the radio described. The water was chest-deep in the ground floor. A family of four — a father, mother, and two children aged six and eight — were on the second floor of a house next to the temple, leaning out the window, calling for help.\n\nThe current between the boat and the building was strong. Debris — branches, plastic, furniture — was flowing past. Getting the boat close to the window would be dangerous.\n\nAnanya, who had come along, assessed the children: 'They are cold and scared but not injured. We need to get them into the boat without anyone falling into the water. The current could sweep a child away in seconds.'\n\n{player_name} looked at the gap between the boat and the window. About two metres of churning water. Two metres that could mean everything.",
+        "image_prompt": "A rescue boat approaching a house with a family leaning out a second-floor window in flood waters, debris flowing in the current, teenage rescuers evaluating the dangerous gap, night approaching, watercolor illustration, high-stakes rescue",
+        "coaching_moment": "The most dangerous moment in any rescue is the transfer — when you are between safety and danger. Planning that moment is everything.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Tie a rope between the boat and the window — create a safety line",
+            "description": "Vikram anchors a rope to the window grill, creating a guideline that keeps the boat close and gives everyone something to hold.",
+            "delta": {
+              "lives_saved": 10,
+              "team_strength": 8,
+              "morale": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Rope systems take time to set up but dramatically reduce risk — preparation saves lives.",
+            "memory_tags": [
+              "used_rope_system"
+            ],
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Have Vikram wade to the window and carry the children one by one",
+            "description": "Vikram goes into the water himself, physically carrying each child to the boat, using his body as the bridge.",
+            "delta": {
+              "lives_saved": 8,
+              "morale": 12,
+              "team_strength": -8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Personal bravery is inspiring — but if the current takes you, the whole rescue fails.",
+            "next_scene": "ch3_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "The Children",
+        "narrative": "The rescue works. The six-year-old screams the entire time. The eight-year-old is eerily silent. Their mother is shaking so badly she can barely grip the boat edge. The father is the last to leave, watching over his family until they are safe.\n\nIn the boat, heading back to the relief centre, the six-year-old suddenly stops screaming and looks at Vikram. 'Are you a superhero?' she asks, sniffling.\n\n{player_name} almost laughs. He is a wet, exhausted sixteen-year-old in a fishing boat. But he says: 'Today, everyone who helps is a superhero.'\n\nAnanya, soaked through, checks the children's temperatures and pulse. 'They are okay. Cold but okay.' She catches Vikram's eye and for a moment, despite everything, they both smile.\n\nThen the radio crackles again.",
+        "image_prompt": "A small rescue boat carrying a family of four back through flood waters, a little girl looking up at a teenage rescuer with wide eyes, another teenager checking the children medically, a brief moment of light amid crisis, watercolor illustration, human connection",
+        "coaching_moment": "In the worst moments, the smallest human connections — a child's question, a shared smile — remind you why the work matters.",
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Head straight to the next emergency — there is no time to rest",
+            "description": "Vikram drops the family at the centre and immediately turns the boat around, pushing through exhaustion.",
+            "delta": {
+              "lives_saved": 8,
+              "morale": -5,
+              "team_strength": -5
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Relentless action saves more lives — but burnout is a real danger for the whole team.",
+            "next_scene": "ch3_s3"
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Take fifteen minutes to regroup — check supplies, rest the team, reassess",
+            "description": "Vikram forces a short break, knowing that tired rescuers make fatal mistakes.",
+            "delta": {
+              "morale": 10,
+              "team_strength": 8,
+              "lives_saved": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Brief rests keep the team functional longer — but fifteen minutes in a flood can change everything.",
+            "next_scene": "ch3_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "title": "Ravi's Fear",
+        "narrative": "Back at the relief centre, Vikram notices Ravi sitting in a corner, knees pulled up, trembling. The youngest volunteer is cracking.\n\n'I cannot go back out there,' Ravi says, voice breaking. 'I keep seeing the water. What if the boat tips? What if I drown? I am not brave like you.'\n\nAnanya comes over. She has seen this before in her Red Cross training — acute stress reaction. It is not weakness. It is a normal response to an abnormal situation.\n\n{player_name} must handle this carefully. Ravi is only thirteen. Forcing him back out could traumatize him. But losing a volunteer hurts the team. And how he handles Ravi will affect every other volunteer's morale.",
+        "image_prompt": "A young teenage boy curled up in a corner of a relief centre trembling with fear, an older boy and a girl kneeling beside him with concern, other volunteers working in the background, the emotional toll of crisis work visible, watercolor illustration",
+        "coaching_moment": "A good leader never shames fear — they acknowledge it, honour it, and help the person find their strength in a different way.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "Give Ravi a different role — 'You are in charge of the relief centre. That is just as important.'",
+            "description": "Vikram reassigns Ravi to managing supplies and caring for evacuees — meaningful work that keeps him off the water.",
+            "delta": {
+              "morale": 12,
+              "team_strength": 5,
+              "supplies": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Finding the right role for each person maximizes the team — not everyone needs to be in the boat.",
+            "memory_tags": [
+              "reassigned_ravi"
+            ],
+            "next_chapter": "ch4"
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "Sit with Ravi for two minutes — 'It is okay to be scared. I am scared too.'",
+            "description": "Vikram shares his own fear honestly, normalizing it, and lets Ravi decide what he wants to do.",
+            "delta": {
+              "morale": 15,
+              "team_strength": 8,
+              "lives_saved": 2
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "A leader admitting fear does not weaken the team — it gives everyone permission to be human.",
+            "memory_tags": [
+              "shared_vulnerability"
+            ],
+            "next_chapter": "ch4"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s1",
+        "chapter": "ch4",
+        "title": "The Supply Count",
+        "narrative": "Midnight. The relief centre has forty-three evacuees. Ananya does a supply inventory:\n\n- Drinking water: enough for 30 people for 24 hours\n- Food (biscuits, chivda, bananas): enough for 20 people for 12 hours\n- Blankets: 15\n- First aid: one kit, half-used\n- Torch batteries: two sets remaining\n- Phone charge: three phones at less than 20%\n\nThe math is brutal. Forty-three people, supplies for much fewer. More evacuees will arrive. The army truck with supplies will not reach them until morning — IF the roads are passable.\n\n{player_name} stares at the inventory list and realizes that resource management in a crisis is not just logistics — it is ethics. Every decision about who gets what is a decision about whose needs matter most.",
+        "image_prompt": "A teenager and a girl looking at a supply inventory list in a dimly lit relief centre, the numbers clearly insufficient for the crowd visible behind them, worried expressions, battery-powered lamp light, watercolor illustration, resource scarcity",
+        "coaching_moment": "When resources are scarce, the leader who distributes fairly — explaining the reasoning openly — maintains trust even in impossible situations.",
+        "choices": [
+          {
+            "id": "ch4_s1_a",
+            "label": "Ration everything immediately — small portions for all, reserves for emergencies",
+            "description": "Vikram creates a strict rationing system: water priority for children and elderly, food in small portions, blankets shared.",
+            "delta": {
+              "supplies": 10,
+              "morale": -3,
+              "team_strength": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Early rationing extends supplies — but hungry, cold people are harder to keep calm.",
+            "memory_tags": [
+              "rationed_early"
+            ],
+            "next_scene": "ch4_s2"
+          },
+          {
+            "id": "ch4_s1_b",
+            "label": "Feed the children and elderly first — adults can wait",
+            "description": "Vikram prioritizes the most vulnerable for food and warmth, explaining to adults that they can handle discomfort better.",
+            "delta": {
+              "morale": 8,
+              "lives_saved": 5,
+              "supplies": -5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Protecting the vulnerable is right — but adults who feel neglected may lose trust in the system.",
+            "next_scene": "ch4_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s2",
+        "chapter": "ch4",
+        "title": "The Medicine Dilemma",
+        "narrative": "A new problem: among the evacuees, there is an elderly diabetic man who left his insulin at home. Without it, he could go into a diabetic crisis within hours. The pharmacy is three streets away — flooded, but possibly accessible by wading.\n\nAnanya says: 'I can try to get to the pharmacy. I know where the diabetic supplies are kept — I did my internship there. But the water is waist-deep and it is dark.'\n\nSub-Inspector Khan shakes his head: 'I cannot authorize a civilian going into floodwater at night. If something happens to you, I am responsible.'\n\n{player_name} looks at the diabetic man, whose blood sugar is dropping. Then at Ananya, willing to risk it. Then at Khan, bound by rules designed for normal situations. This is a crisis. Normal rules do not always apply — but they exist for reasons.",
+        "image_prompt": "A tense discussion in a relief centre — a teenage girl volunteering to wade to a pharmacy, a police officer shaking his head, an elderly man looking unwell, the conflict between safety rules and medical urgency, watercolor illustration",
+        "coaching_moment": "When rules designed for safety conflict with the need to save a life, the leader must decide which principle takes priority — and own the consequences.",
+        "choices": [
+          {
+            "id": "ch4_s2_a",
+            "label": "Let Ananya go — but with a rope, a buddy, and a time limit",
+            "description": "Vikram overrides the sub-inspector's caution with safety measures: rope line, two-person team, fifteen-minute check-in.",
+            "delta": {
+              "lives_saved": 8,
+              "morale": 5,
+              "team_strength": -5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Calculated risk with safety measures is responsible courage — but if anything goes wrong, it is on you.",
+            "memory_tags": [
+              "sent_ananya"
+            ],
+            "next_scene": "ch4_s3"
+          },
+          {
+            "id": "ch4_s2_b",
+            "label": "Find an alternative — is there any other source of insulin nearby?",
+            "description": "Vikram exhausts all safer options first: other evacuees with insulin, nearby homes with diabetic residents, the hospital.",
+            "delta": {
+              "morale": 3,
+              "team_strength": 5,
+              "supplies": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Creative problem-solving avoids unnecessary risk — but takes time the patient may not have.",
+            "next_scene": "ch4_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s3",
+        "chapter": "ch4",
+        "title": "The Night Deepens",
+        "narrative": "The insulin situation is resolved — through Ananya's bravery or creative alternatives. The diabetic man stabilizes. But the night is far from over.\n\nThe water continues to rise. Radio reports suggest the bund has partially collapsed — not a full breach, but enough to increase flow into the town. The army truck is now estimated to arrive at dawn, not midnight.\n\nIn the relief centre, people are starting to argue. A family wants their own corner. Two men are demanding more food. A woman is praying loudly, which calms some people and agitates others.\n\n{player_name} realizes that managing people's emotions in a crisis is as important as managing the water. Fear, hunger, cold, and uncertainty create a volatile mix.",
+        "image_prompt": "Inside a crowded relief centre at night — families arguing, a woman praying, children sleeping fitfully, teenagers trying to maintain order, dim battery light, the emotional pressure of prolonged crisis, watercolor illustration",
+        "coaching_moment": "In prolonged crisis, physical dangers are only half the challenge — the other half is managing the emotional health of everyone, including yourself.",
+        "choices": [
+          {
+            "id": "ch4_s3_a",
+            "label": "Address the group calmly — share the honest situation and the plan",
+            "description": "Vikram stands up and speaks to everyone: the water status, the supply situation, the army ETA. Honesty, not false comfort.",
+            "delta": {
+              "morale": 10,
+              "team_strength": 8,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Honest communication in crisis builds trust — people handle hard truth better than uncertainty.",
+            "next_chapter": "ch5"
+          },
+          {
+            "id": "ch4_s3_b",
+            "label": "Organize activities — stories for children, tasks for adults, rotate watch duties",
+            "description": "Vikram structures the night: storytelling corner for kids, adults take turns on watch, everyone has a role.",
+            "delta": {
+              "morale": 12,
+              "team_strength": 10,
+              "lives_saved": 2
+            },
+            "skill_tags": [
+              "adaptability",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Structured activity fights panic better than words — idle minds spiral, busy hands stay calm.",
+            "memory_tags": [
+              "organized_activities"
+            ],
+            "next_chapter": "ch5"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s1",
+        "chapter": "ch5",
+        "title": "Dr. Meena's Call",
+        "narrative": "At 2 AM, a call comes through on one of the remaining phones. It is Dr. Meena from the district hospital. 'The ground floor is flooded. We have moved patients to the first floor, but the water is still rising. I have twelve patients who cannot be moved easily — three on oxygen, two post-surgery, seven elderly.'\n\nHer voice is steady but strained. 'The hospital generator has four hours of fuel left. When it dies, the oxygen machines stop. I need either fuel or evacuation. I do not care which. I need it before 6 AM.'\n\n{player_name} looks at the clock. Four hours. The hospital is eight streets away. The water between here and there is now chest-deep with a strong current. Getting fuel there means a dangerous journey with heavy jerry cans.",
+        "image_prompt": "A teenager holding a phone with a grave expression while a doctor's voice is heard, a clock showing 2 AM, a map on the wall with the hospital marked, the weight of a life-or-death logistics problem, watercolor illustration",
+        "coaching_moment": "When the stakes are lives, the calculation is brutal but clear: risk must be weighed against the number of people who die if you do nothing.",
+        "choices": [
+          {
+            "id": "ch5_s1_a",
+            "label": "Send a team with fuel — the boat can carry jerry cans if we plan the route",
+            "description": "Vikram organizes a fuel delivery mission: two volunteers, the boat, two full jerry cans, using the safest water route.",
+            "delta": {
+              "lives_saved": 12,
+              "team_strength": -8,
+              "morale": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Fuel delivery is the most direct solution — but the journey is the most dangerous yet.",
+            "memory_tags": [
+              "fuel_mission"
+            ],
+            "next_scene": "ch5_s2"
+          },
+          {
+            "id": "ch5_s1_b",
+            "label": "Coordinate with the army — can they drop fuel or evacuate patients by helicopter?",
+            "description": "Vikram uses the remaining phone charge to contact the NDRF coordinator and request aerial support for the hospital.",
+            "delta": {
+              "lives_saved": 8,
+              "supplies": -3,
+              "morale": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Requesting professional help is wise — but response time is uncertain and the clock is ticking.",
+            "next_scene": "ch5_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s2",
+        "chapter": "ch5",
+        "title": "The Hospital Run",
+        "narrative": "Whatever solution Vikram chose, progress is being made toward the hospital. The situation there is dire — Dr. Meena has rigged a manual ventilation system for the most critical patients, with nurses hand-pumping air.\n\nAnanya reaches the hospital first. She reports back: 'Three patients are critical. The oxygen supply is the bottleneck. If we can get the generator running for three more hours, the army helicopter can evacuate them at dawn.'\n\nBut there is a complication: one of the hospital staff has gone missing. A nurse named Kavita went to check the ground floor supply room an hour ago and has not returned. The stairwell is flooded.\n\n{player_name} faces a terrible choice: allocate resources to finding one missing nurse, or focus entirely on keeping twelve patients alive.",
+        "image_prompt": "A flooded hospital interior — medical staff working under emergency lights, a teenager assessing the situation, patients on beds on an upper floor, water visible below through a stairwell, tense medical emergency, watercolor illustration",
+        "coaching_moment": "Triage forces you to face the cruelest question: when one life and many lives compete for the same resources, what do you choose?",
+        "choices": [
+          {
+            "id": "ch5_s2_a",
+            "label": "Send one person to find Kavita while the rest focus on patients",
+            "description": "Vikram splits the effort: Ananya searches for the nurse while others maintain the generator and patient care.",
+            "delta": {
+              "lives_saved": 10,
+              "morale": 8,
+              "team_strength": -3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Every life matters — but splitting attention in a crisis always has costs.",
+            "next_scene": "ch5_s3"
+          },
+          {
+            "id": "ch5_s2_b",
+            "label": "Focus all resources on the twelve patients — Kavita is a trained professional, she may be fine",
+            "description": "Vikram makes the hardest call: prioritize the greater number, trusting that Kavita's training will keep her safe.",
+            "delta": {
+              "lives_saved": 12,
+              "morale": -5,
+              "team_strength": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Numbers-based triage is rational — but it haunts you if the one person you did not help does not make it.",
+            "next_scene": "ch5_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s3",
+        "chapter": "ch5",
+        "title": "Dawn Approaches",
+        "narrative": "The generator holds. Kavita is found — she had been trapped on a landing between floors but managed to keep herself above water. All twelve patients survive the night.\n\nAs the first grey light of dawn appears through the hospital windows, the sound of helicopter rotors breaks through the rain. The army has arrived.\n\n{player_name} stands in the hospital corridor, wet and exhausted beyond anything he has ever felt. His phone is dead. His shoes are ruined. He has not eaten in twelve hours. But twelve patients are alive. Forty-three evacuees are safe. A diabetic man has his insulin. And a six-year-old girl thinks he is a superhero.\n\nThe night is over. But as light fills the corridor, Vikram can see the damage through the windows — and knows that the next phase will be just as hard.",
+        "image_prompt": "Dawn breaking through hospital windows, a helicopter visible through rain, an exhausted teenage boy leaning against a wall as medical staff tend to patients, the first light after the longest night, watercolor illustration, relief mixed with exhaustion",
+        "coaching_moment": "Surviving a crisis night does not end the crisis — it transitions you from rescue to recovery, which requires a completely different kind of strength.",
+        "choices": [
+          {
+            "id": "ch5_s3_a",
+            "label": "Brief the army commander on everything — hand over coordination properly",
+            "description": "Vikram provides a complete status report to the NDRF team, ensuring a smooth handover with no information lost.",
+            "delta": {
+              "team_strength": 10,
+              "morale": 8,
+              "lives_saved": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Professional handover saves lives — continuity of information is critical when leadership changes.",
+            "next_chapter": "ch6"
+          },
+          {
+            "id": "ch5_s3_b",
+            "label": "Rest for one hour — you are no good to anyone if you collapse",
+            "description": "Vikram forces himself to sleep for sixty minutes, knowing that sustainable leadership requires self-care.",
+            "delta": {
+              "morale": 12,
+              "team_strength": 10,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "consequence_hint": "Leaders who rest at the right moments last longer — burnout is a crisis within the crisis.",
+            "memory_tags": [
+              "took_rest"
+            ],
+            "next_chapter": "ch6"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s1",
+        "chapter": "ch6",
+        "title": "Missing Volunteers",
+        "narrative": "With daylight, Vikram does a headcount of his volunteer team. Sixteen of eighteen are accounted for. Two are missing — Dinesh, who was running the second boat near the market area, and a girl named Priti who had gone door-to-door in Sector 7.\n\nTheir phones are off. Nobody has seen them since 11 PM last night. The market area was one of the worst-hit zones.\n\n{player_name} feels a cold dread that is different from anything he has felt all night. These are HIS volunteers. He recruited them. He sent them into danger. If something happened to them, the responsibility is his.\n\nAnanya puts a hand on his shoulder. 'We will find them. But we need to think clearly, not panic.'",
+        "image_prompt": "A teenage boy checking a list of names with two names circled, worry etched on his face, a girl beside him looking at a map trying to trace the missing volunteers' last known route, morning light after flood, watercolor illustration",
+        "coaching_moment": "The weight of responsibility for people you sent into danger is the heaviest burden a leader carries — and it is also the most important to bear honestly.",
+        "choices": [
+          {
+            "id": "ch6_s1_a",
+            "label": "Organize a focused search with the army's help — trace their last known route",
+            "description": "Vikram coordinates with the NDRF, using his local knowledge to map the most likely locations of the missing volunteers.",
+            "delta": {
+              "team_strength": 10,
+              "morale": 5,
+              "lives_saved": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Systematic search is the most effective approach — but every hour of uncertainty weighs on the team.",
+            "next_scene": "ch6_s2"
+          },
+          {
+            "id": "ch6_s1_b",
+            "label": "Go search yourself — you cannot sit here while your people are missing",
+            "description": "Vikram takes a boat and heads to the market area personally, unable to delegate the search for his own team.",
+            "delta": {
+              "morale": 8,
+              "team_strength": -5,
+              "lives_saved": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Personal commitment to your team is admirable — but leaving the operation without its leader is risky.",
+            "memory_tags": [
+              "searched_personally"
+            ],
+            "next_scene": "ch6_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s2",
+        "chapter": "ch6",
+        "title": "Found",
+        "narrative": "The search finds them. Dinesh and Priti are on the roof of a shop in the market area. They had been rescuing a family when the boat broke free of its mooring and floated away. Stranded, they climbed to the highest point and waited.\n\nDinesh is grinning when the rescue boat arrives. 'We got the family out before the boat left. All four of them are at the temple shelter.' Priti is quieter — cold, shaken, but intact.\n\n{player_name} helps them into the rescue boat and feels something he did not expect: not just relief, but a deeper understanding of what it means to lead people into danger. Every person he sent out trusted him. That trust was not broken tonight. But it could have been.\n\nThe team is whole again. Eighteen volunteers, all accounted for.",
+        "image_prompt": "Two Indian teenagers being rescued from a shop rooftop in receding flood waters, the boy grinning and the girl looking relieved, a rescue boat approaching, morning sun breaking through clouds, watercolor illustration, reunion and relief",
+        "coaching_moment": "When your team comes back safely, the relief is personal in a way nothing else is — because you sent them there.",
+        "choices": [
+          {
+            "id": "ch6_s2_a",
+            "label": "Debrief the whole team — what worked, what did not, what to do differently",
+            "description": "Vikram gathers all eighteen volunteers for an honest review, learning from the night's successes and near-misses.",
+            "delta": {
+              "team_strength": 15,
+              "morale": 10,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Debriefing after crisis builds a stronger team — lessons learned save lives next time.",
+            "next_scene": "ch6_s3"
+          },
+          {
+            "id": "ch6_s2_b",
+            "label": "Let everyone rest and process — the debrief can wait",
+            "description": "Vikram recognizes that emotional processing needs to happen before analytical discussion.",
+            "delta": {
+              "morale": 15,
+              "team_strength": 8,
+              "lives_saved": 2
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Emotional recovery before analysis is clinically recommended — but time is still passing and the flood is not over.",
+            "next_scene": "ch6_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s3",
+        "chapter": "ch6",
+        "title": "The New Phase",
+        "narrative": "By noon, the immediate rescue phase is over. The army has taken charge of ongoing evacuations. The water has stabilized — still high, but no longer rising.\n\nThe new challenge is different: the relief centre has ninety-three evacuees. Supplies from the army truck have arrived but are not enough. Sanitation is becoming a problem. Two children have developed fevers. And the rain is not stopping — meteorologists predict another two days.\n\nSub-Inspector Khan formally thanks the volunteer team at a brief gathering. 'You saved at least sixty lives last night,' he says. 'The official responders could not have reached those people in time.'\n\n{player_name} accepts the thanks but knows the work is not done. Rescue was the sprint. Recovery will be the marathon.",
+        "image_prompt": "A noon scene at a relief centre — many evacuees, an army truck being unloaded, the police officer thanking teenage volunteers, the transition from rescue chaos to organized relief effort, watercolor illustration, the work continues",
+        "coaching_moment": "The heroes of a crisis are not just the ones who rescue in the night — they are the ones who stay to rebuild in the light.",
+        "choices": [
+          {
+            "id": "ch6_s3_a",
+            "label": "Volunteer for the recovery phase — shift from rescue to relief operations",
+            "description": "Vikram transitions his team from rescue to relief: managing supplies, supporting health, maintaining hygiene.",
+            "delta": {
+              "team_strength": 10,
+              "supplies": 8,
+              "morale": 5
+            },
+            "skill_tags": [
+              "adaptability",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Shifting from crisis to sustained operations requires a different mindset — patience replaces adrenaline.",
+            "next_chapter": "ch7"
+          },
+          {
+            "id": "ch6_s3_b",
+            "label": "Focus on specific needs — assign each volunteer to one evacuee family as a liaison",
+            "description": "Vikram creates a buddy system, pairing each volunteer with specific families to ensure personalized support.",
+            "delta": {
+              "morale": 12,
+              "team_strength": 8,
+              "lives_saved": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Personal connections prevent people from falling through the cracks — but they also increase emotional burden on volunteers.",
+            "memory_tags": [
+              "buddy_system"
+            ],
+            "next_chapter": "ch7"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s1",
+        "chapter": "ch7",
+        "title": "The Bridge Question",
+        "narrative": "Day two. The rain has eased. A critical decision arises: fifty people on the east side of town need to reach the main relief centre on the west side. The only connection is the old Narmada bridge — a structure that was flagged for maintenance last year but never repaired.\n\nThe bridge spans twenty metres of rushing water. Engineers have not inspected it. Sub-Inspector Khan says: 'The bridge has held for forty years. It will probably hold now.'\n\nAnanya pushes back: 'Probably is not good enough when fifty people are on it. One crack and they are in the river.'\n\n{player_name} looks at the bridge, then at the fifty people waiting on the other side — families with children, elderly people, a woman on crutches. The alternative route adds three hours through chest-deep water. The bridge would take five minutes.",
+        "image_prompt": "An old bridge spanning rushing flood waters, a large group of people waiting to cross on one side, a teenage boy evaluating the structure, cracks visible in the concrete, the terrible calculus of risk assessment, watercolor illustration",
+        "coaching_moment": "Risk assessment is not about eliminating all danger — it is about comparing the risks of action versus inaction.",
+        "choices": [
+          {
+            "id": "ch7_s1_a",
+            "label": "Cross in small groups of five — reduce the load, test the bridge incrementally",
+            "description": "Vikram allows the crossing but in small groups with spacing, reducing the structural load at any one time.",
+            "delta": {
+              "lives_saved": 10,
+              "morale": 8,
+              "team_strength": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Incremental testing is a smart compromise — but the last group crosses knowing the bridge has been stressed by all previous groups.",
+            "memory_tags": [
+              "crossed_bridge_carefully"
+            ],
+            "next_scene": "ch7_s2"
+          },
+          {
+            "id": "ch7_s1_b",
+            "label": "Take the longer route — three hours of discomfort is better than the risk of collapse",
+            "description": "Vikram says no to the bridge and organizes the longer water route with rope lines and boat support.",
+            "delta": {
+              "morale": -3,
+              "team_strength": -5,
+              "lives_saved": 8
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "The cautious choice protects everyone — but it costs time, energy, and tests patience severely.",
+            "next_scene": "ch7_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s2",
+        "chapter": "ch7",
+        "title": "The Crossing",
+        "narrative": "Whatever route Vikram chose, the crossing happens. It is tense, slow, and requires every ounce of the team's remaining energy. The woman on crutches is carried by two volunteers. Children are strapped to adults. Everyone is wet and cold.\n\nHalfway through the crossing, a new challenge: a child starts vomiting — early signs of waterborne illness. Ananya diagnoses it immediately: 'Contaminated water. We need to boil all drinking water from now on. And this child needs ORS solution — if we have any left.'\n\nThe medical needs are escalating. Clean water, sanitation, and disease prevention are now the biggest threats — replacing the water itself.\n\n{player_name} realizes the crisis has shifted from drowning to disease. The enemy has changed form but not intensity.",
+        "image_prompt": "People crossing through flood water in a line holding a rope, a child being carried, a teenage medic checking on a sick child, the shift from drowning danger to disease danger, watercolor illustration, the crisis evolving",
+        "coaching_moment": "Crises evolve — the leader who adapts to the changing nature of the threat is the one who keeps people alive longest.",
+        "choices": [
+          {
+            "id": "ch7_s2_a",
+            "label": "Make water purification the top priority — set up boiling stations immediately",
+            "description": "Vikram redirects the team to establish clean water infrastructure, knowing that disease can kill more than floods.",
+            "delta": {
+              "lives_saved": 10,
+              "supplies": 8,
+              "team_strength": 5
+            },
+            "skill_tags": [
+              "adaptability",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Shifting priorities to match evolving threats shows crisis intelligence — the best leaders are always one step ahead.",
+            "next_scene": "ch7_s3"
+          },
+          {
+            "id": "ch7_s2_b",
+            "label": "Call Dr. Meena for medical guidance — what diseases should we watch for?",
+            "description": "Vikram consults the hospital doctor to prepare for the most likely waterborne illnesses before they spread.",
+            "delta": {
+              "lives_saved": 8,
+              "morale": 5,
+              "supplies": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Expert guidance prevents mistakes — in medical emergencies, amateur heroism can do more harm than good.",
+            "next_scene": "ch7_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s3",
+        "chapter": "ch7",
+        "title": "The Community Response",
+        "narrative": "Something unexpected and beautiful happens. The evacuees start helping themselves. Tiwari Uncle — the old man who refused to leave — is now running a cooking station, making khichdi for eighty people with whatever ingredients are available. The pregnant woman's husband has organized a childcare corner. Three teenage girls from the evacuees have joined Vikram's volunteer team.\n\nThe relief centre is transforming from a shelter of helpless victims into a functioning community. People are assigning themselves roles, sharing resources, mediating disputes.\n\n{player_name} watches this and realizes something profound: the best crisis leadership does not create dependency — it creates agency. The people he helped are now helping themselves and each other.",
+        "image_prompt": "A relief centre where evacuees are actively helping — an old man cooking for everyone, women organizing childcare, new volunteers joining the team, a self-organizing community emerging from crisis, watercolor illustration, hope and human resilience",
+        "coaching_moment": "The highest form of leadership is making yourself unnecessary — building a community that can sustain itself.",
+        "choices": [
+          {
+            "id": "ch7_s3_a",
+            "label": "Formalize the community structure — assign roles, create a mini-council of evacuees",
+            "description": "Vikram creates a governance structure for the relief centre, with evacuee representatives sharing decision-making.",
+            "delta": {
+              "morale": 15,
+              "team_strength": 12,
+              "supplies": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Democratic structures in crisis create sustainability — but they also mean giving up some control.",
+            "memory_tags": [
+              "community_governance"
+            ],
+            "next_chapter": "ch8"
+          },
+          {
+            "id": "ch7_s3_b",
+            "label": "Step back and let it grow organically — do not impose structure on something working naturally",
+            "description": "Vikram trusts the community's self-organizing instinct and supports it without formalizing.",
+            "delta": {
+              "morale": 12,
+              "team_strength": 10,
+              "lives_saved": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Organic community formation is powerful — but without structure, it may not survive disagreements.",
+            "next_chapter": "ch8"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s1",
+        "chapter": "ch8",
+        "title": "Mrs. Chatterjee",
+        "narrative": "Night two. The water has dropped slightly but Mrs. Chatterjee — the elderly woman from the lane behind the hospital — still refuses to leave her home. She is alone, on the first floor, with her cat and a kerosene lamp.\n\nHer neighbour reports: 'She says her husband built that house. He died ten years ago. She says she will die there too before she leaves.'\n\nVikram has already tried to convince her twice. She is not confused or incapable — she is making a deliberate choice. A choice that is putting herself in danger and also putting potential rescuers at risk if the water rises again.\n\n{player_name} must decide: at what point does respecting someone's autonomy end and responsibility for their safety begin?",
+        "image_prompt": "A determined elderly Indian woman visible in a first-floor window of a flooded house, a cat in her lap, a kerosene lamp glowing, a teenage boy in a boat below trying to persuade her, night flood scene, watercolor illustration, the tension between autonomy and safety",
+        "coaching_moment": "Respecting someone's choice does not mean abandoning them — it means finding creative ways to keep them safe within their choice.",
+        "choices": [
+          {
+            "id": "ch8_s1_a",
+            "label": "Bring Mrs. Chatterjee's neighbour to talk to her — someone she trusts",
+            "description": "Vikram finds a familiar face — a trusted friend — to make the case for evacuation in a way a stranger cannot.",
+            "delta": {
+              "lives_saved": 5,
+              "morale": 8,
+              "team_strength": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Trusted voices reach where authority cannot — but even friends may not change a stubborn heart.",
+            "next_scene": "ch8_s2"
+          },
+          {
+            "id": "ch8_s1_b",
+            "label": "Respect her choice but position a rescue team nearby — be ready if the water rises",
+            "description": "Vikram accepts her autonomy but prepares for the worst, stationing a boat within minutes of her house.",
+            "delta": {
+              "team_strength": -5,
+              "morale": 5,
+              "lives_saved": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "resilience"
+            ],
+            "consequence_hint": "Contingency planning respects autonomy while preparing for the worst — but it ties up resources.",
+            "memory_tags": [
+              "stationed_rescue"
+            ],
+            "next_scene": "ch8_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s2",
+        "chapter": "ch8",
+        "title": "The Water Rises Again",
+        "narrative": "At midnight, the worst happens. More dam water is released upstream. The water level jumps thirty centimetres in twenty minutes. Mrs. Chatterjee's first floor begins to flood.\n\nThe rescue team — already positioned or quickly dispatched — reaches her house as water enters the room. Mrs. Chatterjee is standing on her bed, holding her cat, finally frightened.\n\n'Come, Aunty,' Vikram calls from the boat. 'Your husband built this house to last. It will be here when the water goes down. But right now, you need to come with us.'\n\nShe looks at him. Something in the gentle way he spoke about her husband's house — not dismissing her attachment but honoring it — breaks through her stubbornness.\n\n{player_name} helps her into the boat, cat and all, and realizes that every rescue is not just physical — it is emotional. You have to save the person's dignity alongside their body.",
+        "image_prompt": "A dramatic night rescue — a teenage boy helping an elderly woman from a flooding first-floor window into a boat, she is clutching a cat, water rising around the bed, the boy speaking gently, watercolor illustration, dignity in rescue",
+        "coaching_moment": "The best rescuers do not just save bodies — they save dignity. How you help someone matters as much as that you help them.",
+        "choices": [
+          {
+            "id": "ch8_s2_a",
+            "label": "Make sure Mrs. Chatterjee is comfortable at the relief centre — assign someone to stay with her",
+            "description": "Vikram ensures the elderly woman has a warm corner, a blanket, and a volunteer companion to ease her transition.",
+            "delta": {
+              "morale": 10,
+              "lives_saved": 5,
+              "team_strength": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Personal care for vulnerable evacuees prevents emotional deterioration — and builds community trust.",
+            "next_scene": "ch8_s3"
+          },
+          {
+            "id": "ch8_s2_b",
+            "label": "Return immediately for other potential holdouts — Mrs. Chatterjee may not be the only one",
+            "description": "Vikram uses the rising water as a trigger to sweep the area one more time for anyone else who refused earlier.",
+            "delta": {
+              "lives_saved": 10,
+              "team_strength": -5,
+              "morale": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "A final sweep in rising water is dangerous but potentially life-saving — the reluctant often change their minds too late.",
+            "next_scene": "ch8_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s3",
+        "chapter": "ch8",
+        "title": "The Longest Night",
+        "narrative": "The second night is harder than the first. The adrenaline has worn off. Volunteers are moving on willpower alone. Ananya has treated seventeen cases of skin infections, two fevers, and a panic attack. The children are restless. The adults are exhausted.\n\nAt 4 AM, Vikram finds a quiet corner and sits down. His legs shake. His eyes burn. For the first time in thirty-six hours, he lets himself feel the full weight of what he has been carrying.\n\nAnanya finds him there. She does not say anything. She just sits next to him, shoulder to shoulder, and says: 'You are doing an incredible job. Even when it does not feel like it.'\n\n{player_name} nods, too tired to speak. Sometimes the most important support is not a plan or a speech — it is someone who sits beside you in the dark.",
+        "image_prompt": "Two exhausted teenagers sitting side by side against a wall in a dimly lit relief centre at 4 AM, too tired to speak, other evacuees sleeping around them, the emotional toll of sustained crisis leadership, watercolor illustration, solidarity in exhaustion",
+        "coaching_moment": "Even leaders need someone to lean on — accepting support is not weakness, it is the thing that keeps you going.",
+        "choices": [
+          {
+            "id": "ch8_s3_a",
+            "label": "Rest for one hour — dawn will bring the next phase and you need to be functional",
+            "description": "Vikram finally allows himself to sleep, trusting Ananya to manage for sixty minutes.",
+            "delta": {
+              "morale": 12,
+              "team_strength": 10,
+              "lives_saved": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "consequence_hint": "Rest during crisis is an investment, not a luxury — it pays dividends in better decisions later.",
+            "next_chapter": "ch9"
+          },
+          {
+            "id": "ch8_s3_b",
+            "label": "Push through — do a final round checking on every evacuee before dawn",
+            "description": "Vikram finds energy from somewhere and walks through the centre, checking on each family one more time.",
+            "delta": {
+              "morale": 8,
+              "lives_saved": 5,
+              "team_strength": -5
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Going beyond your limits shows heart — but the body has limits that willpower alone cannot overcome.",
+            "next_chapter": "ch9"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s1",
+        "chapter": "ch9",
+        "title": "The Water Recedes",
+        "narrative": "Dawn of day three. The rain has stopped. The clouds are breaking. And for the first time, the water level is dropping — slowly, centimetre by centimetre, but definitively.\n\nThe town that emerges from the water is unrecognizable. Cars overturned. Houses with mud lines at first-floor level. Belongings scattered — photographs, furniture, toys — strewn across streets like the aftermath of a giant's tantrum.\n\nBut the people are alive. The official count: seventy-eight people evacuated by the youth volunteer team. Zero casualties from the volunteer-covered zones. Three minor injuries. One boat lost.\n\n{player_name} stands in the morning light, looking at the damaged town, and feels something complicated — pride, sadness, exhaustion, and a deep, abiding sense that something in him has permanently changed.",
+        "image_prompt": "A flood-damaged Indian town in early morning light — water receding, damage visible everywhere, but people emerging from shelters, a teenage boy standing in the light surveying the scene, a mix of devastation and hope, watercolor illustration",
+        "coaching_moment": "The morning after a crisis reveals both the damage and the resilience — and the leader's job shifts from saving lives to rebuilding hope.",
+        "choices": [
+          {
+            "id": "ch9_s1_a",
+            "label": "Start organizing cleanup crews — the sooner recovery begins, the sooner normalcy returns",
+            "description": "Vikram transitions the volunteer team to cleanup and repair, knowing that visible progress heals emotional wounds.",
+            "delta": {
+              "morale": 12,
+              "team_strength": 10,
+              "supplies": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Immediate action after crisis prevents hopelessness — people who are busy rebuilding do not have time to despair.",
+            "next_scene": "ch9_s2"
+          },
+          {
+            "id": "ch9_s1_b",
+            "label": "Organize a community gathering first — people need to process together before rebuilding",
+            "description": "Vikram arranges a moment for the whole community to come together, share stories, grieve losses, and find strength.",
+            "delta": {
+              "morale": 15,
+              "team_strength": 8,
+              "lives_saved": 2
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Emotional processing before physical rebuilding creates a stronger foundation — but impatient people want action.",
+            "memory_tags": [
+              "community_gathering"
+            ],
+            "next_scene": "ch9_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s2",
+        "chapter": "ch9",
+        "title": "The Damage Count",
+        "narrative": "As the water recedes, the full extent of damage becomes clear. Forty-seven homes are uninhabitable. The school building has structural damage. The market is destroyed. Mrs. Chatterjee's house — the one her husband built — is still standing, though the ground floor is gutted.\n\nThe government announces relief funds, but bureaucracy moves slowly. Insurance claims require documentation that was washed away. Many families have lost everything.\n\nAnanya has been coordinating with NGOs and getting medical supplies restocked. Ravi — the boy who was terrified of the water — has become the unofficial logistics manager of the relief centre, keeping track of every blanket and every biscuit.\n\n{player_name} looks at his team and marvels: crisis did not break them. It revealed them.",
+        "image_prompt": "A recovering town — cleanup crews working, NGO trucks arriving, teenagers coordinating relief efforts, damaged buildings being assessed, the slow work of rebuilding, watercolor illustration, resilience in action",
+        "coaching_moment": "Crisis does not build character — it reveals character. The people who step up in the worst moments are showing who they always were.",
+        "choices": [
+          {
+            "id": "ch9_s2_a",
+            "label": "Create a 'damage documentation' team — help families file insurance and relief claims",
+            "description": "Vikram assigns volunteers to help families with paperwork, photographs, and government forms — the unsexy but critical work.",
+            "delta": {
+              "lives_saved": 5,
+              "morale": 10,
+              "team_strength": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Administrative support is not glamorous — but it is often the difference between families recovering and families remaining destitute.",
+            "next_scene": "ch9_s3"
+          },
+          {
+            "id": "ch9_s2_b",
+            "label": "Advocate for faster government response — write to the district collector with the damage report",
+            "description": "Vikram uses his firsthand experience to push for quicker official action, attaching photos and testimony.",
+            "delta": {
+              "morale": 8,
+              "team_strength": 5,
+              "supplies": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Advocacy amplifies impact — but government machinery moves at its own pace regardless of urgency.",
+            "next_scene": "ch9_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s3",
+        "chapter": "ch9",
+        "title": "The Thank-You",
+        "narrative": "One week after the flood, Mrs. Chatterjee finds Vikram at the relief centre. She is carrying a small bundle wrapped in cloth. Inside is a steel plate of homemade laddoos — the first thing she cooked in her cleaned kitchen.\n\n'For the boy who respected my husband's house,' she says. 'And brought me out alive with my cat.'\n\nVikram takes the plate. The laddoos are slightly uneven, made with whatever ingredients she could find. They are the most beautiful thing he has seen all week.\n\n{player_name} shares the laddoos with the entire volunteer team. Everyone gets a piece. Ravi, Ananya, Dinesh, Priti — the eighteen teenagers who became a rescue team when no one else was there. They eat Mrs. Chatterjee's laddoos in a circle, and nobody says anything for a while. Some things are too big for words.",
+        "image_prompt": "An elderly Indian woman giving a plate of homemade laddoos to a teenage boy, both emotional, the boy sharing with his volunteer team in a circle, simple sweets after a week of crisis, watercolor illustration, gratitude and human connection",
+        "coaching_moment": "The rewards of service are never the ones you expect — a plate of laddoos from someone whose life you helped save is worth more than any medal.",
+        "choices": [
+          {
+            "id": "ch9_s3_a",
+            "label": "Promise Mrs. Chatterjee the team will help repair her house — it is not just a house, it is her husband's legacy",
+            "description": "Vikram commits the volunteer team to helping Mrs. Chatterjee's house specifically — honoring what the house means to her.",
+            "delta": {
+              "morale": 15,
+              "team_strength": 10,
+              "lives_saved": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Personal commitments after crisis build lasting bonds — the kind that define a community.",
+            "next_chapter": "ch10"
+          },
+          {
+            "id": "ch9_s3_b",
+            "label": "Thank her and redirect — every damaged home needs help, not just hers",
+            "description": "Vikram is grateful but fair, ensuring the volunteer effort is distributed across all affected families.",
+            "delta": {
+              "morale": 10,
+              "team_strength": 8,
+              "lives_saved": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Fairness in recovery is essential — favoritism undermines the community trust that the crisis built.",
+            "next_chapter": "ch10"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s1",
+        "chapter": "ch10",
+        "title": "The Recognition",
+        "narrative": "One month later, the district collector visits the town. The recovery is underway — slow, difficult, but real. Schools have reopened in temporary structures. The market is functioning from tents. Mrs. Chatterjee's house has a new first floor.\n\nThe collector holds a ceremony in the community hall — the same hall that was the relief centre. He calls the youth volunteer team to the stage.\n\n'Eighteen young people,' he says, 'aged thirteen to sixteen, saved seventy-eight lives in thirty-six hours. Without official mandate. Without training. Without pay. This is what citizenship looks like.'\n\n{player_name} stands on the stage with his team and feels something he cannot quite name. It is not pride exactly. It is more like recognition — not from the collector, but from himself. He knows now what he is capable of. And he knows he will never look at a crisis the same way again.",
+        "image_prompt": "A formal ceremony in a community hall — a government official presenting certificates to a group of teenage volunteers on stage, the same hall that was a relief centre now cleaned and decorated, the community watching, watercolor illustration, recognition and pride",
+        "coaching_moment": "Recognition matters not because leaders need awards — but because it tells the community: this is what we value, and these are the people we should follow.",
+        "choices": [
+          {
+            "id": "ch10_s1_a",
+            "label": "Use the moment to advocate — 'We need a permanent youth disaster response team'",
+            "description": "Vikram turns the ceremony into a policy moment, proposing that the volunteer team become a standing community resource.",
+            "delta": {
+              "team_strength": 15,
+              "morale": 10,
+              "lives_saved": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Turning a moment of recognition into a systemic change ensures the next crisis finds a prepared community.",
+            "memory_tags": [
+              "proposed_permanent_team"
+            ],
+            "next_scene": "ch10_s2"
+          },
+          {
+            "id": "ch10_s1_b",
+            "label": "Accept the certificate quietly and then hand it to the team — 'This belongs to all of us'",
+            "description": "Vikram deflects personal recognition, emphasizing that it was a team effort from first to last.",
+            "delta": {
+              "morale": 15,
+              "team_strength": 12,
+              "lives_saved": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Shared credit strengthens teams — leaders who take the stage alone eventually stand there alone.",
+            "next_scene": "ch10_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s2",
+        "chapter": "ch10",
+        "title": "The Legacy",
+        "narrative": "After the ceremony, Vikram walks through the recovering town. He passes the bund — now being reinforced with proper engineering. He passes the hospital — Dr. Meena waves from the window, her ground floor finally dry. He passes the market — where Tiwari Uncle is selling chai from a temporary stall, arguing cheerfully with a customer about the price of ginger.\n\nRavi catches up with him. 'I have been thinking,' the thirteen-year-old says. 'I want to train as a paramedic. After what Ananya did during the flood — I want to be able to do that.'\n\n{player_name} looks at Ravi — the boy who was trembling in a corner a month ago — and sees someone transformed. Not by the crisis, but by the choice he made within it: to keep going despite fear.\n\n'That is the best thing I have heard all month,' Vikram says. And he means it.",
+        "image_prompt": "A teenage boy walking through a recovering town, passing familiar landmarks being rebuilt, a younger boy catching up to share his career dream, the town healing, people waving, afternoon sunlight, watercolor illustration, the future emerging from the flood",
+        "coaching_moment": "The greatest legacy of crisis leadership is not the lives saved — it is the lives changed. The people who discovered what they are capable of.",
+        "narrative_variants": {
+          "reassigned_ravi": "Ravi's transformation from terrified volunteer to aspiring paramedic started the night Vikram gave him the relief centre role instead of forcing him back on the water.",
+          "shared_vulnerability": "Vikram's admission that he was scared too gave Ravi permission to be afraid — and then to be brave anyway."
+        },
+        "choices": [
+          {
+            "id": "ch10_s2_a",
+            "label": "Help Ravi research paramedic training programmes — support his dream concretely",
+            "description": "Vikram turns encouragement into action, helping Ravi find actual training options, applications, and funding.",
+            "delta": {
+              "team_strength": 12,
+              "morale": 10,
+              "lives_saved": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Supporting someone's dream with practical help is more meaningful than any inspirational speech.",
+            "next_scene": "ch10_s3"
+          },
+          {
+            "id": "ch10_s2_b",
+            "label": "Organize a first-aid training workshop for all volunteers — everyone should have basic skills",
+            "description": "Vikram builds on the flood experience to create a permanent training programme for the youth team.",
+            "delta": {
+              "team_strength": 15,
+              "lives_saved": 8,
+              "morale": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Systematic training turns ad-hoc heroism into sustainable capability — the next flood will find a prepared team.",
+            "next_scene": "ch10_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s3",
+        "chapter": "ch10",
+        "title": "The River Returns",
+        "narrative": "Six months later. The monsoon is approaching again. The bund has been reinforced. The hospital has moved its critical equipment to the first floor. The youth disaster response team — now official — has twenty-four trained members, emergency supplies, and a proper radio system.\n\nVikram stands at the Narmada bank. The river is calm today — blue-green, peaceful, beautiful. It is hard to imagine it as the destructive force that tore through the town. But he knows. The river giveth and the river taketh away. Next monsoon, it might rise again.\n\nBut this time, the town is ready. Not just with sandbags and sirens. With something more important: a community that learned, in the worst forty-eight hours of its life, that ordinary teenagers can be extraordinary when they choose to act.\n\n{player_name} watches the river and thinks: I was sixteen when I became a leader. Not because I was ready. Because someone needed help and I was there.",
+        "image_prompt": "A teenage boy standing at a peaceful riverbank six months after the flood, the river calm, a reinforced bund visible, disaster preparedness signs in the background, the same spot where it all began, golden afternoon light, watercolor illustration, full circle",
+        "coaching_moment": "Leadership is not about being ready. It is about being there — and choosing to act when action is needed.",
+        "choices": [
+          {
+            "id": "ch10_s3_a",
+            "label": "Walk away from the river smiling — the town is ready, and so are you",
+            "description": "Vikram turns from the river and walks toward the youth centre, where the team is already preparing for monsoon season.",
+            "delta": {
+              "morale": 20,
+              "team_strength": 18,
+              "lives_saved": 15
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "is_ending": true,
+            "ending_type": "prepared_leader",
+            "ending_message": "The next monsoon came and went without a single casualty in the town. The youth disaster response team — Vikram's team — was activated twice, evacuated thirty-one people smoothly, and stood down within six hours each time. The district collector cited it as the best community disaster preparedness programme in the state. Vikram went on to study emergency management. Ananya became a doctor. Ravi completed his paramedic training at seventeen. And Mrs. Chatterjee — eighty-three years old and fiercer than ever — became the unofficial morale officer of the relief centre, making laddoos every time the water rose. She never left her house again. But she always had the cat carrier ready."
+          },
+          {
+            "id": "ch10_s3_b",
+            "label": "Sit by the river for a moment — remember everyone you helped, and everyone who helped you",
+            "description": "Vikram takes a moment of quiet gratitude, honoring the experience and the people who made it through together.",
+            "delta": {
+              "morale": 18,
+              "lives_saved": 15,
+              "team_strength": 15
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "is_ending": true,
+            "ending_type": "grateful_hero",
+            "ending_message": "Every year on the anniversary of the flood, the town held a small gathering at the community hall. Vikram would always come, no matter where he was. Ananya would bring medical supplies for a free health check. Ravi would run the logistics. And Mrs. Chatterjee would make laddoos. It was not a celebration — it was a remembering. A remembering that ordinary people, given a reason and a leader who cared, could do extraordinary things. The six-year-old girl who called Vikram a superhero grew up to lead the youth disaster response team herself. When someone asked her why, she said: 'Because a boy in a fishing boat once told me that everyone who helps is a superhero.' She believed him. And she was right."
+          }
+        ]
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "triage",
+      "definition": "The process of deciding the order in which to treat patients or help people based on the severity of their condition — prioritizing when resources are limited."
+    },
+    {
+      "term": "evacuation",
+      "definition": "The organized movement of people away from a dangerous area to a place of safety."
+    },
+    {
+      "term": "relief_centre",
+      "definition": "A temporary facility set up to provide shelter, food, and medical care to people displaced by a disaster."
+    },
+    {
+      "term": "morale",
+      "definition": "The confidence, enthusiasm, and discipline of a group — in a crisis, maintaining morale is as important as managing supplies."
+    },
+    {
+      "term": "first_responder",
+      "definition": "The first person or team to arrive at an emergency and begin helping — often volunteers before official services arrive."
+    },
+    {
+      "term": "rationing",
+      "definition": "The controlled distribution of scarce resources to ensure everyone gets a fair share over time."
+    },
+    {
+      "term": "bund",
+      "definition": "An embankment or levee built along a river to prevent flooding — a critical piece of flood infrastructure."
+    },
+    {
+      "term": "NDRF",
+      "definition": "National Disaster Response Force — India's specialized force for disaster response and rescue operations."
+    },
+    {
+      "term": "crisis_leadership",
+      "definition": "The ability to make decisions, maintain calm, and guide others during emergencies when information is incomplete and stakes are high."
+    },
+    {
+      "term": "burnout",
+      "definition": "Physical and emotional exhaustion from prolonged stress — a serious risk for crisis responders that must be managed."
+    },
+    {
+      "term": "autonomy",
+      "definition": "A person's right to make their own decisions — in crisis, respecting autonomy while ensuring safety creates difficult dilemmas."
+    },
+    {
+      "term": "contingency_plan",
+      "definition": "A backup plan prepared for situations that might go wrong — essential in crisis management."
+    },
+    {
+      "term": "debrief",
+      "definition": "A structured discussion after an event or operation to review what happened, what worked, and what could be improved."
+    },
+    {
+      "term": "resilience",
+      "definition": "The ability to recover from setbacks and keep going — both for individuals and communities facing disaster."
+    },
+    {
+      "term": "psychological_first_aid",
+      "definition": "Initial support for people experiencing acute stress after a crisis — listening, comforting, and helping them feel safe."
+    },
+    {
+      "term": "community_resilience",
+      "definition": "A community's ability to prepare for, respond to, and recover from disasters using its own resources and social connections."
+    }
+  ],
+  "dimension_scoring_weights": {
+    "resilience": 0.25,
+    "strategic_thinking": 0.25,
+    "empathy": 0.2,
+    "adaptability": 0.15,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.05
+  },
+  "coaching_moment": "In a crisis, the leader who stays calm, thinks clearly, and cares for both the team and the victims is the one who saves the most lives.",
+  "estimated_duration": "40-50 minutes",
+  "target_age": "10-18",
+  "tags": [
+    "story",
+    "crisis-leadership",
+    "disaster-response",
+    "teamwork",
+    "courage",
+    "life-skills",
+    "india"
+  ],
+  "cultural_context": "indian",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "critical_thinking",
+    "leadership",
+    "social_emotional_learning",
+    "civic_participation",
+    "ethical_reasoning"
+  ],
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}

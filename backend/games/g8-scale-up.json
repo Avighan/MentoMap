@@ -1,0 +1,2327 @@
+{
+  "game_id": "g8-scale-up",
+  "title": "Scale Up: From Garage to Global",
+  "theme": "Entrepreneurship & Scaling Strategy",
+  "icon": "🚀",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "Your startup has product-market fit and early traction. Now comes the hardest part — scaling. Hire the right people, raise capital, expand into new markets, and manage the chaos of hypergrowth. Master unit economics, manage runway, and decide what kind of company you want to build. One wrong move and you burn through cash; play it too safe and competitors eat your lunch.",
+  "target_audience": "Ages 13-14",
+  "target_age": "13-14",
+  "grade": "8",
+  "difficulty": "advanced",
+  "duration_minutes": 30,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You are the CEO of a startup that just achieved product-market fit.",
+    "Each quarter presents a critical scaling decision — hiring, fundraising, market expansion, or product strategy.",
+    "Watch your dashboard — revenue, burn rate, runway, team size, and investor confidence are all interconnected.",
+    "NPCs (VC Partner, CTO, Early Customer) react to your decisions and may trigger crises.",
+    "Crises strike when resources hit danger zones — a cash crunch if runway drops below 2 months, or a tech debt crisis if quality collapses.",
+    "Balance growth speed with sustainability. The fastest scaler doesn't always win — the smartest one does."
+  ],
+  "learning_objectives": [
+    "Understand unit economics (CAC, LTV, burn rate) and why they matter for scaling",
+    "Practice balancing growth speed with financial sustainability",
+    "Develop strategic thinking about when and how to raise capital",
+    "Learn about team building, culture, and the challenges of hypergrowth",
+    "Build empathy for diverse stakeholders — employees, investors, and customers",
+    "Understand the trade-offs between different scaling strategies"
+  ],
+  "tags": [
+    "entrepreneurship",
+    "scaling",
+    "grade-8",
+    "startup",
+    "leadership"
+  ],
+  "nep_stage": "Secondary",
+  "nep_competencies": [
+    "Problem Solving",
+    "Financial Literacy",
+    "Leadership",
+    "Strategic Thinking"
+  ],
+  "cultural_context": "Global startup ecosystem, venture capital, technology entrepreneurship, scaling challenges",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.15,
+    "delayed_gratification": 0.15,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.1,
+    "ethical_reasoning": 0.15
+  },
+  "initial_state": {
+    "revenue": {
+      "value": 10000,
+      "label": "Monthly Revenue",
+      "icon": "💰",
+      "min": 0,
+      "max": 500000
+    },
+    "burn_rate": {
+      "value": 5000,
+      "label": "Monthly Burn Rate",
+      "icon": "🔥",
+      "min": 0,
+      "max": 50000
+    },
+    "team_size": {
+      "value": 5,
+      "label": "Team Size",
+      "icon": "👥",
+      "min": 1,
+      "max": 100
+    },
+    "market_share": {
+      "value": 5,
+      "label": "Market Share",
+      "icon": "📊",
+      "min": 0,
+      "max": 100
+    },
+    "product_quality": {
+      "value": 60,
+      "label": "Product Quality",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "customer_satisfaction": {
+      "value": 50,
+      "label": "Customer Satisfaction",
+      "icon": "😊",
+      "min": 0,
+      "max": 100
+    },
+    "investor_confidence": {
+      "value": 30,
+      "label": "Investor Confidence",
+      "icon": "📈",
+      "min": 0,
+      "max": 100
+    },
+    "company_culture": {
+      "value": 55,
+      "label": "Company Culture",
+      "icon": "🏠",
+      "min": 0,
+      "max": 100
+    },
+    "runway_months": {
+      "value": 6,
+      "label": "Runway (Months)",
+      "icon": "⏳",
+      "min": 0,
+      "max": 24
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Quarter",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "revenue_engine",
+        "label": "Revenue Engine",
+        "icon": "💰",
+        "color": "#10B981",
+        "initial_health": 40,
+        "health_formula": "min(100, max(0, min(revenue / 5000, 100) * 0.4 + market_share * 0.3 + customer_satisfaction * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "team_culture",
+        "label": "Team & Culture",
+        "icon": "👥",
+        "color": "#8B5CF6",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, company_culture * 0.5 + customer_satisfaction * 0.2 + product_quality * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "product_excellence",
+        "label": "Product Excellence",
+        "icon": "⭐",
+        "color": "#F59E0B",
+        "initial_health": 60,
+        "health_formula": "min(100, max(0, product_quality * 0.5 + customer_satisfaction * 0.3 + company_culture * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "market_position",
+        "label": "Market Position",
+        "icon": "🎯",
+        "color": "#3B82F6",
+        "initial_health": 30,
+        "health_formula": "min(100, max(0, market_share * 0.4 + investor_confidence * 0.3 + product_quality * 0.3))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "financial_health",
+        "label": "Financial Health",
+        "icon": "🏦",
+        "color": "#EF4444",
+        "initial_health": 45,
+        "health_formula": "min(100, max(0, runway_months * 4 + investor_confidence * 0.3 + min(revenue / 5000, 100) * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "growth_rate",
+        "label": "Growth Rate",
+        "icon": "📈",
+        "formula": "(min(revenue / 5000, 100) * 0.4 + market_share * 0.3 + team_size * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 65
+        }
+      },
+      {
+        "id": "unit_economics_health",
+        "label": "Unit Economics Health",
+        "icon": "🧮",
+        "formula": "(min(100, max(0, (revenue - burn_rate) / max(burn_rate, 1) * 100 + 50)) * 0.5 + customer_satisfaction * 0.3 + product_quality * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "company_valuation",
+        "label": "Company Valuation",
+        "icon": "💎",
+        "formula": "(min(revenue / 5000, 100) * 0.3 + market_share * 0.25 + investor_confidence * 0.2 + product_quality * 0.15 + team_size * 0.1)",
+        "unit": "",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "revenue_growth",
+        "label": "Organic Revenue Growth",
+        "condition": {
+          "resource": "customer_satisfaction",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "revenue",
+            "formula": "min(500000, int(revenue + revenue * 0.05 * (customer_satisfaction / 100)))"
+          }
+        ],
+        "description": "Satisfied customers drive organic revenue growth through retention and word-of-mouth."
+      },
+      {
+        "id": "burn_rate_adjustment",
+        "label": "Burn Rate Adjustment",
+        "effects": [
+          {
+            "resource": "burn_rate",
+            "formula": "min(50000, int(2000 + team_size * 400))"
+          }
+        ],
+        "description": "Burn rate scales with team size — each employee costs roughly $400/month in total."
+      },
+      {
+        "id": "runway_calculation",
+        "label": "Runway Recalculation",
+        "effects": [
+          {
+            "resource": "runway_months",
+            "formula": "min(24, max(0, int((revenue * 3 + runway_months * burn_rate) / max(burn_rate, 1))))"
+          }
+        ],
+        "description": "Runway is recalculated based on current revenue vs. burn rate."
+      },
+      {
+        "id": "culture_erosion",
+        "label": "Culture Under Pressure",
+        "condition": {
+          "resource": "team_size",
+          "op": ">",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "company_culture",
+            "formula": "max(0, company_culture - (team_size - 30) * 0.1)"
+          }
+        ],
+        "description": "Rapid team growth puts pressure on company culture."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "quality_revenue",
+        "from_subsystem": "product_excellence",
+        "to_subsystem": "revenue_engine",
+        "label": "Quality Drives Revenue",
+        "condition": {
+          "resource": "product_quality",
+          "op": ">=",
+          "value": 70
+        },
+        "effects": [
+          {
+            "resource": "revenue",
+            "formula": "min(500000, int(revenue + (product_quality - 70) * 50))",
+            "bounds": [
+              0,
+              500000
+            ]
+          }
+        ],
+        "description": "High product quality attracts premium customers and reduces churn."
+      },
+      {
+        "id": "culture_quality",
+        "from_subsystem": "team_culture",
+        "to_subsystem": "product_excellence",
+        "label": "Culture Drives Quality",
+        "condition": {
+          "resource": "company_culture",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "product_quality",
+            "formula": "min(100, product_quality + (company_culture - 65) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Strong company culture leads to higher product quality through engaged employees."
+      },
+      {
+        "id": "growth_culture_strain",
+        "from_subsystem": "revenue_engine",
+        "to_subsystem": "team_culture",
+        "label": "Growth Strains Culture",
+        "condition": {
+          "resource": "market_share",
+          "op": ">",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "company_culture",
+            "formula": "max(0, company_culture - (market_share - 40) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Aggressive growth can strain team morale and culture."
+      },
+      {
+        "id": "satisfaction_market",
+        "from_subsystem": "product_excellence",
+        "to_subsystem": "market_position",
+        "label": "Happy Customers Expand Market",
+        "condition": {
+          "resource": "customer_satisfaction",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "market_share",
+            "formula": "min(100, market_share + (customer_satisfaction - 60) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Satisfied customers become advocates and drive market expansion."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "product_quality",
+        "equilibrium": 45,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "customer_satisfaction",
+        "equilibrium": 40,
+        "rate": 0.04,
+        "direction": "toward"
+      },
+      {
+        "resource": "investor_confidence",
+        "equilibrium": 30,
+        "rate": 0.03,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "competitor_launch",
+        "label": "Competitor Launches Rival Product",
+        "icon": "⚔️",
+        "description": "A well-funded competitor has launched a product nearly identical to yours at a lower price point. Your sales team is panicking.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "market_share",
+              "op": ">=",
+              "value": 15
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "market_share",
+            "delta": -5
+          },
+          {
+            "resource": "customer_satisfaction",
+            "delta": -6
+          },
+          {
+            "resource": "investor_confidence",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "ALERT: Major competitor launches rival product at 30% lower price. Market disruption imminent.",
+        "ai_image_prompt": "Rival tech companies competing, two startup offices facing each other, battle imagery, corporate competition, dramatic lighting"
+      },
+      {
+        "id": "viral_moment",
+        "label": "Product Goes Viral",
+        "icon": "🌟",
+        "description": "A popular content creator featured your product and it's trending everywhere! Sign-ups are surging.",
+        "probability": 0.12,
+        "condition": {
+          "and": [
+            {
+              "resource": "product_quality",
+              "op": ">=",
+              "value": 55
+            },
+            {
+              "resource": "customer_satisfaction",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "revenue",
+            "delta": 8000
+          },
+          {
+            "resource": "market_share",
+            "delta": 6
+          },
+          {
+            "resource": "investor_confidence",
+            "delta": 8
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Your product is trending! User sign-ups surge 300% after viral social media moment.",
+        "ai_image_prompt": "Smartphone showing viral social media post about a tech product, notifications flooding in, excited team watching metrics spike"
+      },
+      {
+        "id": "key_employee_quits",
+        "label": "Key Engineer Quits",
+        "icon": "🚪",
+        "description": "Your lead engineer has accepted an offer from a tech giant. The team is shaken and product development slows.",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "company_culture",
+              "op": "<",
+              "value": 45
+            },
+            {
+              "resource": "team_size",
+              "op": ">=",
+              "value": 10
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "product_quality",
+            "delta": -8
+          },
+          {
+            "resource": "company_culture",
+            "delta": -6
+          },
+          {
+            "resource": "team_size",
+            "delta": -2
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "Key talent leaves for a competitor. Team morale takes a hit. Retention is critical.",
+        "ai_image_prompt": "Empty desk in a startup office, farewell card, remaining team looking concerned, modern open office space"
+      },
+      {
+        "id": "market_downturn",
+        "label": "Market Downturn",
+        "icon": "📉",
+        "description": "Economic headwinds hit the tech sector. VCs are tightening purse strings and customers are cutting budgets.",
+        "probability": 0.15,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 5
+        },
+        "effects": [
+          {
+            "resource": "investor_confidence",
+            "delta": -10
+          },
+          {
+            "resource": "revenue",
+            "delta": -5000
+          },
+          {
+            "resource": "market_share",
+            "delta": -3
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "BREAKING: Tech market correction underway. Venture funding drops 40%. Startups shift to survival mode.",
+        "ai_image_prompt": "Stock market screens showing red downward arrows, worried investors at monitors, financial crisis atmosphere, dark trading floor"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "vc_partner",
+        "name": "Priya Mehta (VC Partner)",
+        "role": "Lead Investor",
+        "icon": "💼",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 45,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "investor_confidence",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "Impressive metrics! I'm sharing your deck with our growth-stage fund. Keep this trajectory.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "investor_confidence",
+              "op": "<",
+              "value": 25
+            },
+            "action": "warn",
+            "message": "Your burn rate is alarming and growth has stalled. We need to see a path to profitability or I'll recommend pausing further investment.",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "runway_months",
+                  "op": "<",
+                  "value": 2
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 3
+                }
+              ]
+            },
+            "action": "emergency_session",
+            "message": "This is a crisis. You have less than 2 months of runway. I'm calling an emergency board meeting. Either we find cash or we shut down.",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "company_culture",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_cash_crunch"
+          }
+        ]
+      },
+      {
+        "id": "cto_cofounder",
+        "name": "Alex Chen (CTO & Co-founder)",
+        "role": "Technical Co-founder",
+        "icon": "💻",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "product_quality",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "praise",
+            "message": "Our architecture is solid and the team is shipping fast. Product reviews are glowing. Let's keep investing in engineering excellence.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "product_quality",
+              "op": "<",
+              "value": 40
+            },
+            "action": "warn",
+            "message": "We're accumulating massive tech debt. Bugs are piling up, the codebase is a mess, and engineers are frustrated. We need to slow down and fix this.",
+            "mood_change": "stressed",
+            "satisfaction_delta": -7
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "product_quality",
+                  "op": "<",
+                  "value": 30
+                },
+                {
+                  "resource": "team_size",
+                  "op": ">",
+                  "value": 20
+                }
+              ]
+            },
+            "action": "emergency_session",
+            "message": "CRITICAL: The product is falling apart. Two major outages this week, customers are churning, and three senior engineers just handed in their resignations. We need an engineering freeze NOW.",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "customer_satisfaction",
+                "delta": -10
+              }
+            ],
+            "trigger_round": "crisis_tech_debt"
+          }
+        ]
+      },
+      {
+        "id": "early_customer",
+        "name": "Jordan Blake (Early Customer)",
+        "role": "Loyal Power User",
+        "icon": "🤝",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "customer_satisfaction",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "praise",
+            "message": "I've been with you since day one and the product keeps getting better. I've already referred five companies. You've earned our loyalty.",
+            "mood_change": "happy",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "resource": "customer_satisfaction",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "We used to love your product, but the recent updates have been buggy and support is slow. My team is evaluating alternatives.",
+            "mood_change": "frustrated",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "resource": "customer_satisfaction",
+              "op": "<",
+              "value": 25
+            },
+            "action": "churn_warning",
+            "message": "I'm sorry, but we're switching to your competitor next month. The product has declined too much and our tickets go unanswered for days.",
+            "mood_change": "angry",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "revenue",
+                "delta": -3000
+              },
+              {
+                "resource": "market_share",
+                "delta": -3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "revenue",
+          "op": ">",
+          "value": 100000
+        },
+        "icon": "💰",
+        "text": "Revenue milestone! Your startup crosses ${revenue}/month. Investors take notice.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "team_size",
+          "op": ">",
+          "value": 50
+        },
+        "icon": "👥",
+        "text": "Your team crosses {team_size} employees! HR challenges intensify as the company scales.",
+        "severity": "info"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "market_share",
+              "op": ">=",
+              "value": 30
+            },
+            {
+              "resource": "investor_confidence",
+              "op": ">=",
+              "value": 60
+            }
+          ]
+        },
+        "icon": "🦄",
+        "text": "Unicorn watch! Analysts project your startup could hit $1B valuation within the year.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "runway_months",
+          "op": "<",
+          "value": 3
+        },
+        "icon": "⚠️",
+        "text": "CASH ALERT: Only {runway_months} months of runway remaining. Time to act fast.",
+        "severity": "warning"
+      }
+    ],
+    "ai_scene_prompt_template": "A modern startup office scaling from garage to corporate campus, team of {team_size} employees, {market_share}% market share, investor confidence at {investor_confidence}%, product quality {product_quality}%. Mood: {'thriving' if investor_confidence > 60 else 'tense' if runway_months < 3 else 'hustling'}. Modern tech workspace with whiteboards, monitors showing dashboards, open floor plan."
+  },
+  "rounds": [
+    {
+      "round_id": "q1_first_hire",
+      "round_title": "Quarter 1: The First Big Hire",
+      "situation": "Your five-person founding team is stretched thin. You need to grow, but your first hires will define the company's DNA. A rockstar engineer wants equity, a seasoned sales VP wants a big salary, and a friend from college is eager but inexperienced.",
+      "goal": "Make your first critical hiring decisions to set the company's direction.",
+      "coaching_moment": "Strategic thinking: Early hires shape company culture and capabilities for years to come. Choose for what you need, not just who's available.",
+      "reflection_prompt": "Should you hire for skill or for culture fit? Can you have both?",
+      "ai_image_prompt": "Small startup team in a garage office reviewing resumes, whiteboard with org chart, modern workspace, early stage startup atmosphere",
+      "choices": [
+        {
+          "id": "q1_engineer",
+          "label": "A. Hire the Rockstar Engineer",
+          "description": "She wants 3% equity but no salary cut. Her code could 10x your product. Expensive but transformative.",
+          "delta": {
+            "team_size": 1,
+            "product_quality": 12,
+            "burn_rate": 800,
+            "company_culture": 3,
+            "investor_confidence": 5,
+            "customer_satisfaction": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Engineering excellence compounds! A great first engineer attracts more great engineers and builds a product moat.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "q1_sales_vp",
+          "label": "B. Hire a Sales VP",
+          "description": "Experienced closer with a massive network. Costs $8K/month but promises to triple revenue in 6 months.",
+          "delta": {
+            "team_size": 1,
+            "revenue": 5000,
+            "burn_rate": 3000,
+            "market_share": 4,
+            "investor_confidence": 6,
+            "company_culture": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Revenue is oxygen for startups! But a sales-first culture can overshadow product quality. Watch the balance.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "q1_generalist",
+          "label": "C. Hire Three Hungry Generalists",
+          "description": "Recent graduates who'll wear many hats. Low salary, high energy, but need mentoring.",
+          "delta": {
+            "team_size": 3,
+            "burn_rate": 1200,
+            "company_culture": 8,
+            "product_quality": 3,
+            "revenue": 2000,
+            "customer_satisfaction": 4
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Building a culture of ownership! Generalists in early-stage startups often become future leaders. But mentoring takes time.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "q1_no_hire",
+          "label": "D. Hold Off — Optimize First",
+          "description": "Instead of hiring, invest in automation, tools, and processes. Do more with less.",
+          "delta": {
+            "product_quality": 6,
+            "burn_rate": -500,
+            "customer_satisfaction": 3,
+            "runway_months": 1,
+            "company_culture": 2
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Capital efficiency is underrated! Not every problem needs more people. Sometimes better systems beat bigger teams.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "q2_pricing_strategy",
+      "round_title": "Quarter 2: The Pricing Dilemma",
+      "situation": "Your early customers love the product, but you're undercharging. Unit economics don't work — your Customer Acquisition Cost (CAC) is higher than what each customer pays in their first year. You need a pricing strategy overhaul.",
+      "goal": "Fix your unit economics to build a sustainable business.",
+      "coaching_moment": "Financial literacy: Understanding CAC (Customer Acquisition Cost) and LTV (Lifetime Value) is the foundation of every scalable business. LTV must exceed CAC or you'll burn cash faster as you grow.",
+      "reflection_prompt": "Is it better to grow fast with bad economics or grow slowly with good ones?",
+      "ai_image_prompt": "Startup team at whiteboard with pricing tiers, graphs showing CAC vs LTV, financial planning session, modern office, calculators and charts",
+      "choices": [
+        {
+          "id": "q2_premium",
+          "label": "A. Go Premium — Raise Prices 3x",
+          "description": "Triple your prices. You'll lose some customers but each one becomes profitable. High risk, high reward.",
+          "delta": {
+            "revenue": 12000,
+            "customer_satisfaction": -10,
+            "market_share": -3,
+            "investor_confidence": 8,
+            "product_quality": 2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Bold pricing signals confidence in your product. You lost price-sensitive customers but attracted ones who value quality. Unit economics improve dramatically.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "q2_freemium",
+          "label": "B. Launch a Freemium Model",
+          "description": "Free basic tier with paid upgrades. Grow the user base fast, convert later.",
+          "delta": {
+            "market_share": 8,
+            "revenue": 3000,
+            "burn_rate": 2000,
+            "customer_satisfaction": 5,
+            "investor_confidence": 4,
+            "product_quality": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "Classic growth play! Free users become your marketing engine, but conversion rates are everything. Make sure the paid tier is compelling.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "q2_annual",
+          "label": "C. Push Annual Subscriptions",
+          "description": "Offer 30% discount for annual billing. Cash upfront improves runway, but locks in today's (low) price.",
+          "delta": {
+            "revenue": 8000,
+            "runway_months": 2,
+            "customer_satisfaction": 3,
+            "investor_confidence": 5,
+            "market_share": 2
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Cash upfront is powerful for startups. Annual subscriptions give you predictable revenue and longer runway. Smart financial move.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "q2_usage_based",
+          "label": "D. Usage-Based Pricing",
+          "description": "Charge per transaction or API call. Low barrier to entry, revenue grows as customers grow.",
+          "delta": {
+            "revenue": 5000,
+            "customer_satisfaction": 6,
+            "market_share": 4,
+            "investor_confidence": 3,
+            "product_quality": -2
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Fair pricing that aligns your success with your customers'. Small customers can start cheap and grow with you. But revenue can be unpredictable.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "q3_fundraising",
+      "round_title": "Quarter 3: The Fundraising Decision",
+      "situation": "A prominent VC firm wants to lead your Series A. They're offering $2M at a $10M valuation — but they want a board seat and monthly reporting. Meanwhile, a group of angel investors will give you $500K with zero strings attached. Or you could skip external funding entirely and bootstrap.",
+      "goal": "Decide how to fund your next phase of growth.",
+      "coaching_moment": "Risk tolerance: Venture capital accelerates growth but dilutes ownership and adds pressure. Bootstrapping preserves control but limits speed. There's no universally right answer.",
+      "reflection_prompt": "Is it worth giving up control of your company for faster growth?",
+      "ai_image_prompt": "Startup founder at conference table with VCs in suits, term sheet on table, modern glass boardroom, tense negotiation, dramatic lighting",
+      "choices": [
+        {
+          "id": "q3_series_a",
+          "label": "A. Take the Series A ($2M)",
+          "description": "Big money, big expectations. The VC wants 40% growth quarter over quarter. Board seat means less autonomy.",
+          "delta": {
+            "runway_months": 8,
+            "investor_confidence": 20,
+            "burn_rate": 3000,
+            "market_share": 3,
+            "company_culture": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Welcome to the VC-backed world! Growth expectations are real — you've traded money for accountability. Hit your targets or face tough board meetings.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "q3_angels",
+          "label": "B. Take Angel Money ($500K)",
+          "description": "Less money, more freedom. Angels are patient and won't push you to grow recklessly.",
+          "delta": {
+            "runway_months": 3,
+            "investor_confidence": 8,
+            "company_culture": 3,
+            "burn_rate": 500
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "Smart capital from supporters who believe in you. Less pressure, but you'll need to be capital-efficient. Every dollar counts more.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "q3_bootstrap",
+          "label": "C. Bootstrap — No Outside Money",
+          "description": "Fund growth from revenue alone. Full control, but slower scaling. You'll need to be profitable fast.",
+          "delta": {
+            "company_culture": 8,
+            "investor_confidence": -5,
+            "product_quality": 3,
+            "customer_satisfaction": 4,
+            "burn_rate": -1000
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "The bootstrapper's path! You keep 100% ownership and build a lean machine. But competitors with VC money may outspend you.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "q3_strategic",
+          "label": "D. Strategic Corporate Partnership",
+          "description": "A large corporation offers $1M for a co-development deal. Revenue + credibility, but you build what they need.",
+          "delta": {
+            "revenue": 10000,
+            "runway_months": 4,
+            "investor_confidence": 10,
+            "product_quality": -5,
+            "market_share": 5,
+            "company_culture": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Corporate money and credibility! But building for one big client can distract from your core product vision. Don't become a services company.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "q4_market_expansion",
+      "round_title": "Quarter 4: Crossing Borders",
+      "situation": "Your product is gaining traction domestically. An opportunity has emerged to expand internationally — but each market has different requirements, regulations, and customer expectations. Your team is excited but stretched.",
+      "goal": "Decide your market expansion strategy.",
+      "coaching_moment": "Adaptability: Scaling into new markets requires adapting your product, messaging, and operations while maintaining focus on what got you here.",
+      "reflection_prompt": "Is it better to dominate one market or spread across many?",
+      "ai_image_prompt": "World map with glowing connection lines between cities, startup team pointing at international markets, global expansion planning, modern war room",
+      "choices": [
+        {
+          "id": "q4_aggressive_global",
+          "label": "A. Launch in 5 Countries at Once",
+          "description": "Go big or go home. Hire country managers, localize the product, and flood every market simultaneously.",
+          "delta": {
+            "market_share": 12,
+            "burn_rate": 8000,
+            "team_size": 10,
+            "revenue": 15000,
+            "product_quality": -8,
+            "company_culture": -8,
+            "customer_satisfaction": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Blitzscaling! You're grabbing market share fast, but quality is suffering and your team is overwhelmed. Speed vs. excellence — the eternal startup tension.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "q4_one_market",
+          "label": "B. Deep-Dive into One New Market",
+          "description": "Pick the most promising market, adapt the product fully, and nail the playbook before expanding further.",
+          "delta": {
+            "market_share": 6,
+            "burn_rate": 2000,
+            "team_size": 3,
+            "revenue": 8000,
+            "product_quality": 3,
+            "customer_satisfaction": 4
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Focus wins! Perfecting your expansion playbook in one market creates a template for all future ones. Slow is smooth, smooth is fast.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "q4_partnerships",
+          "label": "C. Channel Partnerships",
+          "description": "Partner with local distributors and resellers in each market. Lower control, but faster and cheaper than going direct.",
+          "delta": {
+            "market_share": 8,
+            "revenue": 6000,
+            "burn_rate": 1000,
+            "investor_confidence": 5,
+            "customer_satisfaction": -3,
+            "product_quality": -2
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Leveraging local expertise is smart! Partners know their markets better than you. But you lose some control over customer experience.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "q4_domestic_dominate",
+          "label": "D. Double Down Domestically",
+          "description": "Forget international for now. Capture 30%+ of the home market first. International can wait.",
+          "delta": {
+            "market_share": 5,
+            "revenue": 10000,
+            "customer_satisfaction": 6,
+            "product_quality": 5,
+            "company_culture": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Dominate before you expand! A strong home base gives you the revenue and confidence to go global on your own terms.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "q5_product_pivot",
+      "round_title": "Quarter 5: Build vs. Buy vs. Partner",
+      "situation": "Customers are requesting features that would take your team 6 months to build. A smaller startup has built exactly what they need and is open to acquisition. Meanwhile, an enterprise platform offers an integration partnership.",
+      "goal": "Decide how to expand your product capabilities.",
+      "coaching_moment": "Strategic thinking: Build vs. buy vs. partner is one of the most important decisions in scaling. Each path has different costs, timelines, and risks.",
+      "reflection_prompt": "When should you build something yourself vs. buy a company that already has it?",
+      "ai_image_prompt": "Startup team debating at whiteboard with three paths drawn, build vs buy vs partner decision tree, modern office, intense discussion",
+      "choices": [
+        {
+          "id": "q5_acquire",
+          "label": "A. Acquire the Smaller Startup",
+          "description": "Buy their team and technology for $200K. Instant capability but integration is messy.",
+          "delta": {
+            "product_quality": 10,
+            "team_size": 8,
+            "burn_rate": 4000,
+            "customer_satisfaction": 6,
+            "company_culture": -7,
+            "runway_months": -2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Acquisitions accelerate product development but culture integration is the hidden cost. Two teams becoming one is harder than it looks.",
+          "requires": {
+            "resource": "runway_months",
+            "op": ">=",
+            "value": 4,
+            "label": "Requires Runway ≥ 4 months"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "q5_build",
+          "label": "B. Build It In-House",
+          "description": "Hire 4 engineers and build the features over 6 months. Full control, but slow and expensive.",
+          "delta": {
+            "team_size": 4,
+            "product_quality": 8,
+            "burn_rate": 2500,
+            "company_culture": 3,
+            "customer_satisfaction": -3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Building in-house preserves culture and control but customers are waiting. Can you afford the delay while competitors move fast?",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "q5_partner",
+          "label": "C. Integration Partnership",
+          "description": "Integrate with the enterprise platform. Quick, cheap, but you're dependent on their roadmap.",
+          "delta": {
+            "product_quality": 5,
+            "customer_satisfaction": 8,
+            "revenue": 5000,
+            "investor_confidence": 3,
+            "market_share": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Partnerships are the fastest path to capability! But dependency on another company's roadmap is a real risk. Have a backup plan.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "q5_minimal",
+          "label": "D. Ship a Minimal Version Fast",
+          "description": "Build a basic version in 4 weeks with your existing team. Not perfect, but ships now.",
+          "delta": {
+            "product_quality": -3,
+            "customer_satisfaction": 4,
+            "revenue": 3000,
+            "market_share": 2,
+            "company_culture": -2
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Ship fast, iterate later! The MVP approach works when speed matters more than polish. But don't let 'good enough' become permanent.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_cash_crunch",
+      "id": "crisis_cash_crunch",
+      "round_title": "CRISIS: Cash Crunch",
+      "situation": "Runway has dropped below 2 months. Payroll is in 3 weeks and the bank account is draining fast. Your VC partner Priya has called an emergency board meeting. Employees are worried. Three options are on the table — none of them easy.",
+      "goal": "Survive the cash crisis without destroying the company.",
+      "coaching_moment": "Resilience under pressure: Cash crises are when founders are truly tested. The decisions you make under extreme pressure define your character and your company's future.",
+      "reflection_prompt": "When survival is at stake, how do you decide what to sacrifice?",
+      "ai_image_prompt": "Tense boardroom emergency meeting, founder at head of table with worried investors, financial charts showing declining runway, dramatic red lighting",
+      "condition": {
+        "resource": "runway_months",
+        "operator": "<",
+        "value": 2
+      },
+      "choices": [
+        {
+          "id": "cc_emergency_raise",
+          "label": "A. Emergency Bridge Round",
+          "description": "Raise $500K at a 40% discount to your last valuation. Desperate, but it buys time.",
+          "delta": {
+            "runway_months": 4,
+            "investor_confidence": -8,
+            "company_culture": -3,
+            "burn_rate": -500
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "A down round hurts your pride and your cap table, but survival comes first. Live to fight another day.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "cc_layoffs",
+          "label": "B. Reduce Team by 40%",
+          "description": "Painful layoffs to cut burn rate immediately. Survivors carry the weight.",
+          "delta": {
+            "team_size": -8,
+            "burn_rate": -5000,
+            "runway_months": 3,
+            "company_culture": -15,
+            "product_quality": -6,
+            "customer_satisfaction": -4
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "The hardest decision a CEO makes. Every person laid off has a family. But if the company dies, everyone loses their job.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "cc_revenue_sprint",
+          "label": "C. Revenue Emergency Sprint",
+          "description": "All hands on deck — every employee focuses on closing deals for 30 days. Pause all product development.",
+          "delta": {
+            "revenue": 15000,
+            "runway_months": 2,
+            "product_quality": -8,
+            "customer_satisfaction": -3,
+            "company_culture": -5,
+            "market_share": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Revenue solves many problems! But pausing product development creates a debt you'll have to repay later.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "cc_pivot_offer",
+          "label": "D. Accept Acqui-Hire Offer",
+          "description": "A bigger company offers to acquire your team for $1M. Your product dies, but everyone gets jobs and equity in a stable company.",
+          "delta": {
+            "runway_months": 6,
+            "investor_confidence": -15,
+            "company_culture": -10,
+            "revenue": 8000,
+            "team_size": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Sometimes knowing when to take the off-ramp is wisdom, not weakness. Your team is taken care of, and your technology lives on.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_tech_debt",
+      "id": "crisis_tech_debt",
+      "round_title": "CRISIS: Tech Debt Meltdown",
+      "situation": "Product quality has collapsed. The app is crashing daily, data is corrupting, and your CTO Alex is threatening to quit. Three senior engineers already left. Customers are canceling subscriptions at alarming rates. Your rapid growth built on a fragile foundation — and it's crumbling.",
+      "goal": "Rescue the product before irreversible damage is done.",
+      "coaching_moment": "Ethical reasoning: Shipping broken software erodes trust. Technical integrity isn't just an engineering concern — it's a moral one when customers depend on your product.",
+      "reflection_prompt": "Is it ever acceptable to ship a product you know is broken just to hit growth targets?",
+      "ai_image_prompt": "Software crash screens on multiple monitors, frustrated engineers, error messages everywhere, server room with warning lights, crisis atmosphere",
+      "condition": {
+        "resource": "product_quality",
+        "operator": "<",
+        "value": 30
+      },
+      "choices": [
+        {
+          "id": "td_full_freeze",
+          "label": "A. Complete Feature Freeze — 8 Weeks",
+          "description": "Stop all new features. Entire engineering team rebuilds the core architecture from scratch.",
+          "delta": {
+            "product_quality": 25,
+            "customer_satisfaction": -5,
+            "revenue": -5000,
+            "company_culture": 8,
+            "market_share": -4
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "The right thing to do, even though it hurts. Alex stays, engineers rally, and the product emerges stronger. But competitors gained ground.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "td_hire_seniors",
+          "label": "B. Hire 5 Senior Engineers",
+          "description": "Throw money at the problem. Hire the best and rebuild while shipping.",
+          "delta": {
+            "team_size": 5,
+            "product_quality": 15,
+            "burn_rate": 5000,
+            "company_culture": -3,
+            "runway_months": -1
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Money can buy talent, but new engineers need months to understand your codebase. The mythical man-month strikes again.",
+          "requires": {
+            "resource": "runway_months",
+            "op": ">=",
+            "value": 3,
+            "label": "Requires Runway ≥ 3 months"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "td_outsource",
+          "label": "C. Outsource the Rebuild",
+          "description": "Hire a specialized dev shop to rebuild the backend while your team focuses on customer-facing features.",
+          "delta": {
+            "product_quality": 12,
+            "burn_rate": 3000,
+            "customer_satisfaction": 3,
+            "company_culture": -5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Outsourcing can work for specific technical challenges, but managing external teams adds coordination overhead.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "td_customer_first",
+          "label": "D. Fix Only Customer-Facing Bugs",
+          "description": "Triage ruthlessly — fix only what customers see. Leave technical debt for later. Ship stability patches.",
+          "delta": {
+            "product_quality": 8,
+            "customer_satisfaction": 6,
+            "revenue": 3000,
+            "company_culture": -4
+          },
+          "skill_tags": [
+            "resilience",
+            "adaptability"
+          ],
+          "feedback": "Pragmatic triage! Customers see improvement, but the underlying problems remain. This buys time, not a solution.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "q6_culture_at_scale",
+      "round_title": "Quarter 6: Culture at Scale",
+      "situation": "Your team has grown rapidly and the scrappy garage culture is fading. New hires don't know the founding story. Silos are forming between engineering, sales, and operations. Two early employees say it 'doesn't feel like the same company anymore.'",
+      "goal": "Preserve what makes your culture special while scaling the team.",
+      "coaching_moment": "Empathy in leadership: Culture doesn't scale automatically. It requires intentional design, just like your product.",
+      "reflection_prompt": "What makes a company's culture 'good'? Can it survive rapid growth?",
+      "ai_image_prompt": "Growing startup office with diverse team, some in small group meetings, company values on wall, mix of veteran and new employees, open floor plan",
+      "choices": [
+        {
+          "id": "q6_culture_doc",
+          "label": "A. Write a Culture Playbook",
+          "description": "Document your values, rituals, and decision-making principles. Required reading for all new hires.",
+          "delta": {
+            "company_culture": 10,
+            "product_quality": 3,
+            "customer_satisfaction": 3,
+            "burn_rate": 500
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Culture by design, not by accident! A playbook ensures every new hire understands the 'why' behind how you work.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "q6_flat_structure",
+          "label": "B. Stay Flat — No Managers",
+          "description": "Resist hierarchy. Self-organizing teams with elected leads. Everyone has a voice.",
+          "delta": {
+            "company_culture": 6,
+            "product_quality": -4,
+            "customer_satisfaction": 2,
+            "team_size": 0,
+            "burn_rate": -300
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Flat structures preserve startup energy but create coordination chaos past 20 people. Decisions slow down as everyone weighs in.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "q6_hire_vp_people",
+          "label": "C. Hire a VP of People",
+          "description": "Bring in an experienced people leader to build HR, onboarding, and engagement systems.",
+          "delta": {
+            "company_culture": 12,
+            "team_size": 1,
+            "burn_rate": 1500,
+            "product_quality": 2,
+            "customer_satisfaction": 4
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Investing in people infrastructure! A great VP of People is worth their weight in gold when scaling past 30 employees.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "q6_perks",
+          "label": "D. Launch Employee Perks & Equity Refresh",
+          "description": "Remote work options, learning budgets, and equity refreshers for early employees. Expensive but retentive.",
+          "delta": {
+            "company_culture": 8,
+            "burn_rate": 2000,
+            "product_quality": 4,
+            "customer_satisfaction": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "risk_tolerance"
+          ],
+          "feedback": "Perks attract and retain talent, but culture is more than free snacks. Make sure perks reflect values, not just spending.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "q7_competition",
+      "round_title": "Quarter 7: The Competitive Moat",
+      "situation": "A well-funded competitor has entered your market with a similar product and deeper pockets. They're offering customers a free trial and poaching your sales team. Your board wants a response — fast.",
+      "goal": "Build a competitive moat to protect your market position.",
+      "coaching_moment": "Strategic thinking: Sustainable competitive advantages come from things that are hard to copy — proprietary data, network effects, brand loyalty, or switching costs.",
+      "reflection_prompt": "What makes a business truly defensible against well-funded competitors?",
+      "ai_image_prompt": "Two rival startup booths at a tech conference, competing for attention, crowd of customers between them, exhibition hall, competitive atmosphere",
+      "choices": [
+        {
+          "id": "q7_price_war",
+          "label": "A. Start a Price War",
+          "description": "Match their free trial and undercut on pricing. Win on value. Burn cash to win market share.",
+          "delta": {
+            "market_share": 6,
+            "revenue": -8000,
+            "burn_rate": 3000,
+            "customer_satisfaction": 3,
+            "investor_confidence": -5,
+            "runway_months": -1
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Price wars destroy value for everyone. You might win customers, but at what cost to your business? It's a race to the bottom.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "q7_innovate",
+          "label": "B. Out-Innovate — Launch Killer Feature",
+          "description": "Invest heavily in R&D and ship a feature they can't easily copy. Proprietary AI, unique data, or a platform play.",
+          "delta": {
+            "product_quality": 12,
+            "burn_rate": 3000,
+            "team_size": 3,
+            "customer_satisfaction": 6,
+            "market_share": 4,
+            "investor_confidence": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Innovation is the ultimate moat! A feature competitors can't easily copy creates lasting differentiation. But execution is everything.",
+          "requires": {
+            "resource": "product_quality",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Product Quality ≥ 40"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "q7_lock_in",
+          "label": "C. Customer Lock-in Strategy",
+          "description": "Offer deep integrations, custom workflows, and multi-year contracts. Make switching painful.",
+          "delta": {
+            "revenue": 10000,
+            "customer_satisfaction": -4,
+            "market_share": 3,
+            "investor_confidence": 6,
+            "company_culture": -2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Lock-in protects revenue but can breed resentment. Customers stay because they can't leave, not because they love you.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "q7_community",
+          "label": "D. Build a Community Moat",
+          "description": "Invest in user community, open-source components, developer ecosystem, and customer advocacy program.",
+          "delta": {
+            "market_share": 5,
+            "customer_satisfaction": 10,
+            "company_culture": 5,
+            "burn_rate": 1500,
+            "investor_confidence": 4
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Community is the hardest moat to copy! When customers become advocates and contributors, you've built something money can't buy.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "q8_data_ethics",
+      "round_title": "Quarter 8: The Data Dilemma",
+      "situation": "Your product collects valuable user data. A major advertising company offers $200K/year to access anonymized user behavior data. Meanwhile, a privacy-focused investor wants you to become 'the most ethical company in your space.' Your data team says they could also use the data to build AI features customers would love.",
+      "goal": "Decide your stance on data usage, privacy, and ethics.",
+      "coaching_moment": "Ethical reasoning: How you handle user data reveals your values. Short-term revenue from data sales can destroy long-term trust. This is not just a business decision — it's a moral one.",
+      "reflection_prompt": "Who really owns user data — the company that collects it or the people who generate it?",
+      "ai_image_prompt": "Server room with glowing data streams, privacy shield icon vs dollar signs, ethical dilemma visualization, modern tech office",
+      "choices": [
+        {
+          "id": "q8_sell_data",
+          "label": "A. Sell Anonymized Data",
+          "description": "Take the advertising deal. 'Anonymized' data is standard practice. Easy revenue, no customer impact.",
+          "delta": {
+            "revenue": 15000,
+            "customer_satisfaction": -8,
+            "investor_confidence": -5,
+            "company_culture": -6,
+            "market_share": -2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "ethical_reasoning"
+          ],
+          "feedback": "Revenue is tempting, but 'anonymized' data can often be re-identified. If this leaks, trust is destroyed. Was it worth it?",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "q8_privacy_first",
+          "label": "B. Privacy-First Policy",
+          "description": "Publicly commit to never selling or sharing user data. Get privacy certifications. Market it as a feature.",
+          "delta": {
+            "customer_satisfaction": 12,
+            "company_culture": 8,
+            "investor_confidence": 5,
+            "market_share": 3,
+            "burn_rate": 1000
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "delayed_gratification"
+          ],
+          "feedback": "Privacy as a competitive advantage! In a world of data breaches, being trustworthy is increasingly rare and valuable.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "q8_ai_features",
+          "label": "C. Use Data for AI Product Features",
+          "description": "Build AI-powered features using your proprietary data. Customers get value, you get a moat. Data stays internal.",
+          "delta": {
+            "product_quality": 10,
+            "customer_satisfaction": 8,
+            "market_share": 4,
+            "burn_rate": 2000,
+            "investor_confidence": 7,
+            "team_size": 2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Using data to improve the product for users is the most aligned approach. Your AI features become a competitive moat that benefits everyone.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "q8_user_control",
+          "label": "D. Give Users Full Data Control",
+          "description": "Build a data dashboard where users can see, export, and delete all their data. True transparency.",
+          "delta": {
+            "customer_satisfaction": 10,
+            "company_culture": 6,
+            "product_quality": 4,
+            "burn_rate": 1500,
+            "investor_confidence": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Radical transparency! Giving users control builds deep trust. It's more work upfront but creates loyal advocates.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "q9_scaling_ops",
+      "round_title": "Quarter 9: Operational Scaling",
+      "situation": "You're growing at 30% quarter-over-quarter. Customer support tickets are up 5x. Onboarding new customers takes too long. Internal processes that worked at 10 people are breaking at 50. Everything feels like it's held together with duct tape.",
+      "goal": "Build the operational infrastructure for sustainable scale.",
+      "coaching_moment": "Adaptability: The systems that got you to this stage won't take you to the next one. Scaling operations means rebuilding processes while the plane is flying.",
+      "reflection_prompt": "Why do companies that grow fast often break internally before they break externally?",
+      "ai_image_prompt": "Busy startup operations center, support tickets flooding in, project management boards, team scaling meeting, controlled chaos",
+      "choices": [
+        {
+          "id": "q9_automate",
+          "label": "A. Automate Everything",
+          "description": "Invest heavily in automation — self-serve onboarding, AI customer support, automated billing, CI/CD pipelines.",
+          "delta": {
+            "product_quality": 6,
+            "customer_satisfaction": 5,
+            "burn_rate": 3000,
+            "revenue": 8000,
+            "company_culture": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Automation scales better than people for repetitive tasks. But automated systems need maintenance too. Don't automate broken processes.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "q9_hire_ops",
+          "label": "B. Hire an Operations Team",
+          "description": "Bring in a COO and 5 operations specialists. Humans solve human problems.",
+          "delta": {
+            "team_size": 6,
+            "burn_rate": 4000,
+            "customer_satisfaction": 8,
+            "company_culture": 4,
+            "product_quality": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "People-first operations! A great ops team can transform chaos into clockwork. But hiring takes time and the right COO is rare.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "q9_outsource_support",
+          "label": "C. Outsource Customer Support",
+          "description": "Hire a BPO for Tier 1 support. Your team handles escalations. Cheaper, but less personal.",
+          "delta": {
+            "burn_rate": 1000,
+            "customer_satisfaction": -3,
+            "revenue": 5000,
+            "company_culture": -2,
+            "product_quality": 2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Outsourcing support saves money but creates a gap between your company and your customers. Quality control is key.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "q9_slow_growth",
+          "label": "D. Slow Down Growth Deliberately",
+          "description": "Pause new customer acquisition. Fix internal systems first. Stabilize before accelerating.",
+          "delta": {
+            "product_quality": 8,
+            "customer_satisfaction": 6,
+            "company_culture": 7,
+            "revenue": -3000,
+            "market_share": -2,
+            "investor_confidence": -4
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Counterintuitive but wise! Slowing down to fix foundations can lead to faster sustainable growth later. But investors may not be patient.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "q10_endgame",
+      "round_title": "Quarter 10: The Endgame Decision",
+      "situation": "Your startup has reached a crossroads. A Fortune 500 company offers to acquire you for $50M. An IPO advisor says you could go public within 18 months. Your team wants to keep building independently. Your investors want their return. This is the decision that defines everything.",
+      "goal": "Choose the endgame for your startup — and the legacy you want to build.",
+      "coaching_moment": "Strategic thinking + Empathy: The biggest decisions in business affect many people — employees, investors, customers, and communities. There is no perfect answer, only trade-offs aligned with your values.",
+      "reflection_prompt": "Is building a company about the money, the mission, or the people? Can it be all three?",
+      "ai_image_prompt": "Founder standing at crossroads with three paths glowing ahead, city skyline behind, dramatic sunset, choices ahead, future uncertain but hopeful",
+      "choices": [
+        {
+          "id": "q10_acquisition",
+          "label": "A. Accept the $50M Acquisition",
+          "description": "Sell to the Fortune 500. Your team gets jobs, investors get returns, and you walk away with life-changing money. But your product becomes a feature in their platform.",
+          "delta": {
+            "revenue": 50000,
+            "investor_confidence": 20,
+            "company_culture": -12,
+            "product_quality": -5,
+            "customer_satisfaction": -5,
+            "market_share": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ],
+          "feedback": "A successful exit! Your investors are thrilled, your early employees are rewarded, and your technology reaches millions. But your independent vision ends.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "q10_ipo",
+          "label": "B. Pursue an IPO",
+          "description": "Go public. Massive capital, global credibility, but intense scrutiny and quarterly earnings pressure forever.",
+          "delta": {
+            "investor_confidence": 25,
+            "revenue": 30000,
+            "burn_rate": 5000,
+            "team_size": 10,
+            "market_share": 8,
+            "company_culture": -5,
+            "customer_satisfaction": 2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Going public is the ultimate scaling milestone! But public markets demand constant growth. Every quarter, Wall Street judges you.",
+          "requires": {
+            "resource": "investor_confidence",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Investor Confidence ≥ 40"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "q10_independent",
+          "label": "C. Stay Independent & Keep Building",
+          "description": "Reject all offers. Stay private, stay mission-driven, keep building the company you envisioned in that garage.",
+          "delta": {
+            "company_culture": 15,
+            "product_quality": 8,
+            "customer_satisfaction": 10,
+            "investor_confidence": -8,
+            "market_share": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "The founder's dream! Independence lets you build on your own terms. But growth will be slower and investors may exit.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "q10_social_enterprise",
+          "label": "D. Convert to a Social Enterprise",
+          "description": "Restructure as a benefit corporation. Prioritize social impact alongside profit. Attract mission-driven talent and customers.",
+          "delta": {
+            "company_culture": 12,
+            "customer_satisfaction": 12,
+            "investor_confidence": -10,
+            "product_quality": 5,
+            "market_share": 2,
+            "revenue": -5000
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Purpose over pure profit! B-corps attract passionate people and loyal customers. Not every company needs to be a unicorn.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "unicorn_status",
+      "label": "Unicorn Status",
+      "condition": "market_share >= 40 and investor_confidence >= 70 and revenue >= 200000",
+      "icon": "🦄"
+    },
+    {
+      "id": "profitable_machine",
+      "label": "Profitable Machine",
+      "condition": "revenue >= 100000 and runway_months >= 12",
+      "icon": "💰"
+    },
+    {
+      "id": "culture_champion",
+      "label": "Culture Champion",
+      "condition": "company_culture >= 75 and team_size >= 30",
+      "icon": "❤️"
+    },
+    {
+      "id": "customer_obsessed",
+      "label": "Customer Obsessed",
+      "condition": "customer_satisfaction >= 80 and product_quality >= 75",
+      "icon": "⭐"
+    },
+    {
+      "id": "lean_operator",
+      "label": "Lean Operator",
+      "condition": "runway_months >= 10 and burn_rate <= 10000 and revenue >= 50000",
+      "icon": "🧮"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Unit Economics",
+      "definition": "The revenue and costs associated with a single unit of your business (e.g., one customer). Healthy unit economics means each customer generates more revenue than they cost to acquire and serve."
+    },
+    {
+      "term": "CAC (Customer Acquisition Cost)",
+      "definition": "The total cost of acquiring a new customer, including marketing, sales, and onboarding expenses. Lower CAC means more efficient growth."
+    },
+    {
+      "term": "LTV (Lifetime Value)",
+      "definition": "The total revenue a company expects from a single customer over their entire relationship. For a sustainable business, LTV must be significantly higher than CAC."
+    },
+    {
+      "term": "Runway",
+      "definition": "The number of months a startup can continue operating at its current burn rate before running out of money. Runway = Cash / Monthly Burn Rate."
+    },
+    {
+      "term": "Burn Rate",
+      "definition": "The rate at which a startup spends money beyond what it earns. A high burn rate means the company is spending cash fast and needs either revenue growth or more funding."
+    },
+    {
+      "term": "Series A",
+      "definition": "The first significant round of venture capital financing, typically $2M-$15M, used to scale a startup that has proven product-market fit."
+    },
+    {
+      "term": "Blitzscaling",
+      "definition": "A strategy of prioritizing speed of growth above all else, even efficiency, to capture market share before competitors. High risk, high reward."
+    },
+    {
+      "term": "Technical Debt",
+      "definition": "The accumulated cost of shortcuts in software development. Like financial debt, tech debt must eventually be 'repaid' through refactoring or it compounds and slows future development."
+    }
+  ],
+  "endings": [
+    {
+      "id": "unicorn_builder",
+      "title": "Unicorn Builder",
+      "icon": "🦄",
+      "message": "Against all odds, your garage startup reached a $1 billion valuation! Your combination of aggressive market capture, smart fundraising, and relentless execution made you the envy of the startup world. Magazine covers, conference keynotes, and a team that believed in the impossible. Your legacy: proof that audacious vision backed by disciplined execution can change the world.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "market_share",
+            "operator": ">=",
+            "value": 35
+          },
+          {
+            "resource": "investor_confidence",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "revenue",
+            "operator": ">=",
+            "value": 100000
+          }
+        ]
+      }
+    },
+    {
+      "id": "sustainable_scaler",
+      "title": "Sustainable Scaler",
+      "icon": "📈",
+      "message": "You built something rare — a profitable, growing company that doesn't depend on outside capital. While competitors raised round after round and burned cash, you focused on unit economics, customer retention, and sustainable growth. Your company is a cash machine with a loyal customer base. Your legacy: proving that steady, profitable growth beats reckless blitzscaling.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "revenue",
+            "operator": ">=",
+            "value": 80000
+          },
+          {
+            "resource": "runway_months",
+            "operator": ">=",
+            "value": 8
+          },
+          {
+            "resource": "customer_satisfaction",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "people_first_ceo",
+      "title": "People-First CEO",
+      "icon": "❤️",
+      "message": "Your company became known as the best place to work in the industry. Top talent lined up to join, employee turnover was near zero, and your culture attracted customers who shared your values. You proved that treating people well isn't just the right thing to do — it's a competitive advantage. Your legacy: a company where humans came first, and success followed.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "company_culture",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "customer_satisfaction",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "team_size",
+            "operator": ">=",
+            "value": 25
+          }
+        ]
+      }
+    },
+    {
+      "id": "market_disruptor",
+      "title": "Market Disruptor",
+      "icon": "⚡",
+      "message": "You didn't just enter the market — you redefined it. Through bold product innovation, aggressive expansion, and a willingness to challenge the status quo, your startup became the company that every incumbent feared. Industry analysts call you 'the one that changed everything.' Your legacy: a company that proved disruption comes from courage, not just technology.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "market_share",
+            "operator": ">=",
+            "value": 40
+          },
+          {
+            "resource": "product_quality",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup_survivor",
+      "title": "Startup Survivor",
+      "icon": "🛡️",
+      "message": "The startup journey is brutal, and most companies don't make it. Yours did. Not a unicorn, not a household name — but a real business with real customers, real revenue, and a team that stuck together through the hard times. In a world where 90% of startups fail, survival is its own kind of victory. Your legacy: grit, perseverance, and a company that refused to quit.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Scale Up: From Garage to Global Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What does 'profit' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Total money spent",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Revenue minus costs",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Money borrowed from a bank",
+              "correct": false
+            }
+          ],
+          "explanation": "Profit is what remains after subtracting all costs from total revenue."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "What is a 'budget'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "A list of things to buy",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "A plan for how to spend money",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "A type of bank account",
+              "correct": false
+            }
+          ],
+          "explanation": "A budget is a financial plan that allocates income to different spending categories."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Scale Up: From Garage to Global. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Scale Up: From Garage to Global Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Scale Up: From Garage to Global. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

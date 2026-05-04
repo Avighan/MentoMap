@@ -1,0 +1,2363 @@
+{
+  "game_id": "g8-life-decisions",
+  "title": "Life Decisions: Money Under Pressure",
+  "theme": "Financial Literacy & Life Planning",
+  "icon": "💸",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are an 18-year-old stepping into adulthood. College or work? Save or spend? Invest or pay off debt? Every month brings real financial decisions with lasting consequences. Navigate opportunity costs, debt traps, compound interest, and financial emergencies to build a secure future — or learn the hard way why money management matters.",
+  "target_audience": "Ages 13-14",
+  "target_age": "13-14",
+  "grade": "8",
+  "difficulty": "advanced",
+  "duration_minutes": 30,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You play as an 18-year-old making real financial decisions over 12 months.",
+    "Each round presents a life choice with trade-offs across wealth, debt, stress, and satisfaction.",
+    "Watch the dashboard — your subsystems (Income, Debt, Investments, Insurance, Wellness) are interconnected.",
+    "Random events like medical emergencies, market crashes, and windfalls will test your resilience.",
+    "NPCs (Financial Advisor, College Recruiter, Best Friend) will influence your decisions.",
+    "Balance short-term desires with long-term financial security — poor choices compound over time!"
+  ],
+  "learning_objectives": [
+    "Understand opportunity cost and financial trade-offs in real-life decisions",
+    "Learn how debt accumulates through compound interest and minimum payments",
+    "Practice budgeting, saving, and investing under pressure",
+    "Recognize the importance of insurance, emergency funds, and credit scores",
+    "Develop financial resilience against unexpected emergencies and social pressure"
+  ],
+  "tags": [
+    "finance",
+    "life-decisions",
+    "grade-8",
+    "debt",
+    "investment"
+  ],
+  "nep_stage": "Secondary",
+  "nep_competencies": [
+    "Financial Literacy",
+    "Critical Thinking",
+    "Problem Solving",
+    "Ethical Reasoning"
+  ],
+  "cultural_context": "Global young adult financial planning, universal money decisions, career choices",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.15,
+    "delayed_gratification": 0.2,
+    "adaptability": 0.1,
+    "resilience": 0.15,
+    "empathy": 0.1,
+    "ethical_reasoning": 0.1
+  },
+  "initial_state": {
+    "total_wealth": {
+      "value": 25000,
+      "label": "Total Wealth",
+      "icon": "💰",
+      "min": -50000,
+      "max": 200000
+    },
+    "monthly_income": {
+      "value": 3000,
+      "label": "Monthly Income",
+      "icon": "💵",
+      "min": 0,
+      "max": 20000
+    },
+    "debt_level": {
+      "value": 0,
+      "label": "Debt Level",
+      "icon": "📉",
+      "min": 0,
+      "max": 100000
+    },
+    "financial_iq": {
+      "value": 30,
+      "label": "Financial IQ",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "stress_level": {
+      "value": 30,
+      "label": "Stress Level",
+      "icon": "😰",
+      "min": 0,
+      "max": 100
+    },
+    "credit_score": {
+      "value": 650,
+      "label": "Credit Score",
+      "icon": "📊",
+      "min": 300,
+      "max": 850
+    },
+    "insurance_coverage": {
+      "value": 10,
+      "label": "Insurance Coverage",
+      "icon": "🛡️",
+      "min": 0,
+      "max": 100
+    },
+    "savings_rate": {
+      "value": 15,
+      "label": "Savings Rate",
+      "icon": "🏦",
+      "min": 0,
+      "max": 100
+    },
+    "life_satisfaction": {
+      "value": 60,
+      "label": "Life Satisfaction",
+      "icon": "😊",
+      "min": 0,
+      "max": 100
+    },
+    "investment_portfolio": {
+      "value": 0,
+      "label": "Investment Portfolio",
+      "icon": "📈",
+      "min": 0,
+      "max": 100000
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Month",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "income_career",
+        "label": "Income & Career",
+        "icon": "💼",
+        "color": "#6366F1",
+        "initial_health": 40,
+        "health_formula": "min(100, max(0, monthly_income / 200 * 0.4 + financial_iq * 0.3 + (100 - stress_level) * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "debt_management",
+        "label": "Debt Management",
+        "icon": "📉",
+        "color": "#EF476F",
+        "initial_health": 80,
+        "health_formula": "min(100, max(0, 100 - (debt_level / 1000) + credit_score / 85 * 10))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "investment_portfolio_sub",
+        "label": "Investment Portfolio",
+        "icon": "📈",
+        "color": "#FFD166",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, investment_portfolio / 500 * 0.5 + savings_rate * 0.3 + financial_iq * 0.2))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "insurance_safety",
+        "label": "Insurance & Safety Net",
+        "icon": "🛡️",
+        "color": "#06D6A0",
+        "initial_health": 15,
+        "health_formula": "min(100, max(0, insurance_coverage * 0.5 + savings_rate * 0.3 + (100 - stress_level) * 0.2))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "financial_wellness",
+        "label": "Financial Wellness",
+        "icon": "🌟",
+        "color": "#118AB2",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, life_satisfaction * 0.3 + (100 - stress_level) * 0.3 + financial_iq * 0.2 + credit_score / 85 * 10 * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "net_worth_growth",
+        "label": "Net Worth Growth",
+        "icon": "💰",
+        "formula": "min(100, max(0, (total_wealth + investment_portfolio - debt_level) / 2000 + 50))",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "financial_stress_index",
+        "label": "Financial Stress Index",
+        "icon": "😰",
+        "formula": "min(100, max(0, stress_level * 0.4 + debt_level / 1000 * 0.3 + (100 - savings_rate) * 0.3))",
+        "unit": "",
+        "thresholds": {
+          "critical": 75,
+          "warning": 55,
+          "good": 35
+        }
+      },
+      {
+        "id": "future_security_score",
+        "label": "Future Security Score",
+        "icon": "🔮",
+        "formula": "min(100, max(0, savings_rate * 0.25 + insurance_coverage * 0.25 + investment_portfolio / 500 * 0.25 + financial_iq * 0.25))",
+        "unit": "",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 60
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "monthly_income_deposit",
+        "label": "Monthly Income",
+        "effects": [
+          {
+            "resource": "total_wealth",
+            "formula": "total_wealth + monthly_income"
+          }
+        ],
+        "description": "Your monthly income is deposited into your account."
+      },
+      {
+        "id": "debt_interest_accrual",
+        "label": "Debt Interest",
+        "condition": {
+          "resource": "debt_level",
+          "op": ">",
+          "value": 0
+        },
+        "effects": [
+          {
+            "resource": "debt_level",
+            "formula": "int(debt_level * 1.015)"
+          },
+          {
+            "resource": "total_wealth",
+            "formula": "int(total_wealth - debt_level * 0.015)"
+          }
+        ],
+        "description": "Debt accrues 1.5% interest monthly — the longer you carry it, the more you pay."
+      },
+      {
+        "id": "investment_returns",
+        "label": "Investment Returns",
+        "condition": {
+          "resource": "investment_portfolio",
+          "op": ">",
+          "value": 0
+        },
+        "effects": [
+          {
+            "resource": "investment_portfolio",
+            "formula": "int(investment_portfolio * 1.008)"
+          }
+        ],
+        "description": "Your investments grow at 0.8% monthly through compound returns."
+      },
+      {
+        "id": "savings_auto_deposit",
+        "label": "Auto Savings",
+        "condition": {
+          "resource": "savings_rate",
+          "op": ">",
+          "value": 0
+        },
+        "effects": [
+          {
+            "resource": "total_wealth",
+            "formula": "int(total_wealth + monthly_income * savings_rate / 100 * 0.1)"
+          }
+        ],
+        "description": "A portion of your income goes to savings based on your savings rate."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "debt_stress_spiral",
+        "from_subsystem": "debt_management",
+        "to_subsystem": "financial_wellness",
+        "label": "Debt Stress Spiral",
+        "condition": {
+          "resource": "debt_level",
+          "op": ">",
+          "value": 30000
+        },
+        "effects": [
+          {
+            "resource": "stress_level",
+            "formula": "min(100, stress_level + (debt_level - 30000) / 5000)",
+            "bounds": [
+              0,
+              100
+            ]
+          },
+          {
+            "resource": "life_satisfaction",
+            "formula": "max(0, life_satisfaction - (debt_level - 30000) / 10000)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "High debt causes mounting stress and reduces life satisfaction."
+      },
+      {
+        "id": "income_credit_boost",
+        "from_subsystem": "income_career",
+        "to_subsystem": "debt_management",
+        "label": "Income Builds Credit",
+        "condition": {
+          "resource": "monthly_income",
+          "op": ">=",
+          "value": 5000
+        },
+        "effects": [
+          {
+            "resource": "credit_score",
+            "formula": "min(850, credit_score + 2)",
+            "bounds": [
+              300,
+              850
+            ]
+          }
+        ],
+        "description": "Stable income gradually improves your credit score."
+      },
+      {
+        "id": "financial_iq_investment_boost",
+        "from_subsystem": "investment_portfolio_sub",
+        "to_subsystem": "income_career",
+        "label": "Knowledge Drives Returns",
+        "condition": {
+          "resource": "financial_iq",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "investment_portfolio",
+            "formula": "int(min(100000, investment_portfolio * 1.005))",
+            "bounds": [
+              0,
+              100000
+            ]
+          }
+        ],
+        "description": "Higher financial IQ means smarter investment decisions and better returns."
+      },
+      {
+        "id": "stress_career_impact",
+        "from_subsystem": "financial_wellness",
+        "to_subsystem": "income_career",
+        "label": "Stress Hurts Performance",
+        "condition": {
+          "resource": "stress_level",
+          "op": ">",
+          "value": 75
+        },
+        "effects": [
+          {
+            "resource": "monthly_income",
+            "formula": "max(0, int(monthly_income * 0.97))",
+            "bounds": [
+              0,
+              20000
+            ]
+          }
+        ],
+        "description": "Extreme stress impairs work performance and may cost you income."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "financial_iq",
+        "equilibrium": 25,
+        "rate": 0.02,
+        "direction": "toward"
+      },
+      {
+        "resource": "insurance_coverage",
+        "equilibrium": 5,
+        "rate": 0.03,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "medical_emergency",
+        "label": "Medical Emergency",
+        "icon": "🏥",
+        "description": "An unexpected medical emergency hits — a family member needs urgent treatment. Without insurance, this will drain your savings.",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "insurance_coverage",
+              "op": "<",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "total_wealth",
+            "delta": -8000
+          },
+          {
+            "resource": "stress_level",
+            "delta": 15
+          },
+          {
+            "resource": "life_satisfaction",
+            "delta": -10
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "ALERT: Unexpected medical bill wipes out savings. Insurance could have covered 80% of this cost.",
+        "ai_image_prompt": "Young adult in hospital waiting room looking worried, medical bills on phone screen, stress, semi-realistic"
+      },
+      {
+        "id": "market_crash",
+        "label": "Market Crash",
+        "icon": "📉",
+        "description": "Global markets tumble. Your investments lose value overnight. Panic selling or steady hands — what do you choose?",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "investment_portfolio",
+              "op": ">",
+              "value": 5000
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "investment_portfolio",
+            "delta": -3000
+          },
+          {
+            "resource": "stress_level",
+            "delta": 12
+          },
+          {
+            "resource": "life_satisfaction",
+            "delta": -5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "BREAKING: Global markets plunge 20%. Investment portfolios hit hard across all sectors.",
+        "ai_image_prompt": "Stock market screen showing red numbers falling, young investor looking at phone in shock, news headlines, dramatic"
+      },
+      {
+        "id": "surprise_windfall",
+        "label": "Surprise Windfall",
+        "icon": "🎉",
+        "description": "Good news! A forgotten savings bond from a relative matures, or you win a small contest prize.",
+        "probability": 0.12,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 2
+        },
+        "effects": [
+          {
+            "resource": "total_wealth",
+            "delta": 5000
+          },
+          {
+            "resource": "life_satisfaction",
+            "delta": 8
+          },
+          {
+            "resource": "stress_level",
+            "delta": -5
+          }
+        ],
+        "cooldown": 6,
+        "max_occurrences": 1,
+        "news_text": "Surprise! An unexpected windfall lands in your account. What will you do with it?",
+        "ai_image_prompt": "Happy young adult opening an envelope with a check, surprised expression, positive vibes, semi-realistic"
+      },
+      {
+        "id": "job_market_shift",
+        "label": "Job Market Shift",
+        "icon": "🔄",
+        "description": "The job market shifts — tech skills are booming, but traditional roles face cuts. Adaptability matters.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "financial_iq",
+              "op": "<",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "monthly_income",
+            "delta": -500
+          },
+          {
+            "resource": "stress_level",
+            "delta": 10
+          },
+          {
+            "resource": "life_satisfaction",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "Industry disruption! Workers without updated skills face pay cuts. Upskilling is the new survival strategy.",
+        "ai_image_prompt": "Job market news on laptop screen, young adult looking concerned, 'Layoffs' and 'Hiring' headlines side by side, modern office"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "financial_advisor",
+        "name": "Ms. Chen (Financial Advisor)",
+        "role": "Financial Guide",
+        "icon": "👩‍💼",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "savings_rate",
+              "op": "<",
+              "value": 10
+            },
+            "action": "warn",
+            "message": "Your savings rate is dangerously low. Even saving 10% of your income can change your future dramatically.",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "financial_iq",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "Your financial knowledge is really growing! You're making smarter decisions. Keep learning!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "credit_score",
+              "op": ">=",
+              "value": 750
+            },
+            "action": "praise",
+            "message": "Excellent credit score! This opens doors to better loan rates and financial opportunities.",
+            "mood_change": "happy",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "debt_level",
+                  "op": ">",
+                  "value": 20000
+                },
+                {
+                  "resource": "savings_rate",
+                  "op": "<",
+                  "value": 10
+                }
+              ]
+            },
+            "action": "urgent",
+            "message": "Red flag! You have high debt AND low savings. This is how debt spirals begin. We need an emergency plan.",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -10
+          }
+        ]
+      },
+      {
+        "id": "college_recruiter",
+        "name": "Dean Parker (College Recruiter)",
+        "role": "Education Sales",
+        "icon": "🎓",
+        "initial_mood": "enthusiastic",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "financial_iq",
+              "op": "<",
+              "value": 40
+            },
+            "action": "persuade",
+            "message": "A degree will double your earning potential! Student loans pay for themselves — everyone takes them.",
+            "mood_change": "pushy",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "resource": "debt_level",
+              "op": ">",
+              "value": 30000
+            },
+            "action": "dismiss",
+            "message": "Don't worry about the debt — graduates earn so much more! The numbers always work out... eventually.",
+            "mood_change": "nervous",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "debt_level",
+                  "op": ">",
+                  "value": 40000
+                },
+                {
+                  "resource": "monthly_income",
+                  "op": "<",
+                  "value": 4000
+                }
+              ]
+            },
+            "action": "crisis_trigger",
+            "message": "Dean Parker pushed expensive education loans, and now the debt is crushing your budget. The monthly payments exceed what you can afford!",
+            "mood_change": "guilty",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "stress_level",
+                "delta": 15
+              },
+              {
+                "resource": "credit_score",
+                "delta": -30
+              }
+            ],
+            "trigger_round": "crisis_debt_spiral"
+          }
+        ]
+      },
+      {
+        "id": "best_friend",
+        "name": "Jordan (Best Friend)",
+        "role": "Social Pressure",
+        "icon": "🤝",
+        "initial_mood": "happy",
+        "initial_satisfaction": 65,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "life_satisfaction",
+              "op": "<",
+              "value": 40
+            },
+            "action": "encourage",
+            "message": "Hey, you've been stressed lately. Let's go out and have some fun — you deserve it! Life isn't just about money.",
+            "mood_change": "supportive",
+            "satisfaction_delta": 3
+          },
+          {
+            "condition": {
+              "resource": "savings_rate",
+              "op": ">=",
+              "value": 40
+            },
+            "action": "tease",
+            "message": "You're saving way too much! We're young — when are you going to actually enjoy your money? YOLO!",
+            "mood_change": "playful",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "savings_rate",
+                  "op": "<",
+                  "value": 5
+                },
+                {
+                  "resource": "life_satisfaction",
+                  "op": ">",
+                  "value": 70
+                }
+              ]
+            },
+            "action": "lifestyle_trigger",
+            "message": "Jordan's been pushing you to live large — dining out, new gadgets, weekend trips. You've been spending everything and saving nothing. The lifestyle feels great... until the bills arrive.",
+            "mood_change": "worried",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "total_wealth",
+                "delta": -3000
+              },
+              {
+                "resource": "stress_level",
+                "delta": 10
+              }
+            ],
+            "trigger_round": "crisis_lifestyle_inflation"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "total_wealth",
+          "op": ">",
+          "value": 80000
+        },
+        "icon": "💰",
+        "text": "Your net worth crosses {total_wealth}! Financial independence is within reach.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "debt_level",
+              "op": ">",
+              "value": 50000
+            },
+            {
+              "resource": "stress_level",
+              "op": ">",
+              "value": 70
+            }
+          ]
+        },
+        "icon": "🚨",
+        "text": "WARNING: Debt exceeds {debt_level} with high stress. Seek financial counseling immediately.",
+        "severity": "critical"
+      }
+    ],
+    "ai_scene_prompt_template": "A young adult navigating financial decisions in modern life, wealth {total_wealth}, debt {debt_level}, stress level {stress_level}%, credit score {credit_score}. Modern apartment, laptop with financial apps, bills and statements. Mood: {'confident' if stress_level < 30 else 'anxious' if stress_level > 70 else 'focused'}."
+  },
+  "rounds": [
+    {
+      "round_id": "month_1_career_path",
+      "round_title": "Month 1: The Big Decision — College or Work?",
+      "situation": "You've just turned 18. Two paths lie ahead: a prestigious university program that requires student loans, or jumping straight into the workforce. Your parents can contribute a small amount, but the rest is on you. This single decision will shape your entire financial trajectory.",
+      "goal": "Choose your career path and understand the financial trade-offs.",
+      "coaching_moment": "Opportunity cost: Every choice means giving up something else. College builds earning potential but costs money now. Work earns money now but may limit future earnings.",
+      "reflection_prompt": "What hidden costs should you consider beyond just tuition or salary?",
+      "ai_image_prompt": "Young adult at a crossroads, university campus on one side and modern office building on the other, decision moment, dramatic lighting, semi-realistic",
+      "choices": [
+        {
+          "id": "m1_full_university",
+          "label": "A. Full University Program",
+          "description": "Enroll in a 4-year university. Take out student loans for tuition. Higher future income potential, but heavy debt.",
+          "delta": {
+            "debt_level": 25000,
+            "monthly_income": -1000,
+            "financial_iq": 10,
+            "life_satisfaction": 8,
+            "stress_level": 15,
+            "credit_score": -20
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "risk_tolerance"
+          ],
+          "feedback": "A bold investment in your future! Student debt is manageable IF your degree leads to high-paying work. But that's a big 'if' — the average graduate takes 10+ years to pay off loans.",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "m1_community_college",
+          "label": "B. Community College + Part-Time Work",
+          "description": "Attend affordable community college while working part-time. Less debt, slower career start, balanced approach.",
+          "delta": {
+            "debt_level": 5000,
+            "monthly_income": 500,
+            "financial_iq": 8,
+            "life_satisfaction": 5,
+            "stress_level": 5,
+            "savings_rate": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Smart and balanced! Community college gives you education without crushing debt. Many successful people started exactly this way.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "m1_direct_work",
+          "label": "C. Start Working Immediately",
+          "description": "Skip college entirely. Get a full-time entry-level job. Earn from day one, but your earning ceiling may be lower.",
+          "delta": {
+            "monthly_income": 2000,
+            "total_wealth": 2000,
+            "financial_iq": 3,
+            "life_satisfaction": 3,
+            "stress_level": -5,
+            "savings_rate": 10
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Immediate income and zero debt! You'll learn through experience. But be warned — without further education or skill-building, income growth may plateau.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "m1_trade_school",
+          "label": "D. Vocational/Trade School",
+          "description": "Learn a skilled trade (electrician, plumber, coding bootcamp). Short program, moderate cost, strong job prospects.",
+          "delta": {
+            "debt_level": 8000,
+            "monthly_income": 1000,
+            "financial_iq": 6,
+            "life_satisfaction": 5,
+            "stress_level": 5,
+            "credit_score": -5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Excellent return on investment! Skilled trades are in high demand. You'll earn well with manageable debt — a financially savvy choice.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_2_budgeting",
+      "round_title": "Month 2: Your First Budget",
+      "situation": "You've received your first few paychecks (or financial aid). Now you need to decide how to allocate your money each month. Rent, food, transport, entertainment — it all adds up faster than expected.",
+      "goal": "Create a monthly budget strategy that balances needs and wants.",
+      "coaching_moment": "The 50/30/20 rule: Financial experts suggest 50% for needs, 30% for wants, and 20% for savings. But can you stick to it under pressure?",
+      "reflection_prompt": "What's the difference between a need and a want? Is it always clear?",
+      "ai_image_prompt": "Young adult at kitchen table with laptop showing budget spreadsheet, receipts and bills spread out, thoughtful expression, apartment setting, semi-realistic",
+      "choices": [
+        {
+          "id": "m2_strict_budget",
+          "label": "A. Strict 50/30/20 Budget",
+          "description": "Follow the rule strictly: 50% needs, 30% wants, 20% savings. Disciplined but feels restrictive.",
+          "delta": {
+            "savings_rate": 15,
+            "total_wealth": 1500,
+            "financial_iq": 8,
+            "life_satisfaction": -5,
+            "stress_level": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Disciplined budgeting is the foundation of financial health! It feels restrictive now, but your future self will thank you. Compound interest works in your favor.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "m2_flexible_budget",
+          "label": "B. Flexible 60/30/10 Approach",
+          "description": "Spend more on needs and fun, save a little less. More comfortable but slower wealth building.",
+          "delta": {
+            "savings_rate": 5,
+            "total_wealth": 500,
+            "financial_iq": 5,
+            "life_satisfaction": 5,
+            "stress_level": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "A gentler approach. Saving 10% is better than saving nothing! The key is consistency, even if the amount is small.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "m2_yolo_spending",
+          "label": "C. Live for Today — Spend Freely",
+          "description": "You're young! Enjoy life now, worry about savings later. Spend on experiences, food, and fun.",
+          "delta": {
+            "savings_rate": -10,
+            "total_wealth": -2000,
+            "life_satisfaction": 15,
+            "stress_level": -10,
+            "financial_iq": -2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ],
+          "feedback": "Living in the moment feels amazing... until an emergency hits and you have no cushion. This is how lifestyle inflation begins — your spending rises to match your income.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "m2_extreme_saving",
+          "label": "D. Extreme Frugality — Save 40%+",
+          "description": "Eat cheaply, skip entertainment, share housing. Maximum savings but minimal lifestyle.",
+          "delta": {
+            "savings_rate": 30,
+            "total_wealth": 3000,
+            "financial_iq": 10,
+            "life_satisfaction": -12,
+            "stress_level": 10
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Extreme saving builds wealth fast, but burnout is real. Financial health includes mental health too. Finding balance is the true skill.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_3_first_investment",
+      "round_title": "Month 3: Your First Investment Decision",
+      "situation": "You've saved some money and a colleague mentions investing. The stock market is up, crypto is trending, and your bank offers fixed deposits. Where do you put your money to make it grow?",
+      "goal": "Make your first investment decision and understand risk vs. return.",
+      "coaching_moment": "Risk-return trade-off: Higher potential returns always come with higher risk. Diversification reduces risk. Time in the market beats timing the market.",
+      "reflection_prompt": "Why do people often lose money chasing 'get rich quick' investments?",
+      "ai_image_prompt": "Young adult looking at investment app on phone, stock charts visible, coffee shop setting, various financial news on screen, semi-realistic",
+      "choices": [
+        {
+          "id": "m3_index_fund",
+          "label": "A. Index Fund (Diversified Stocks)",
+          "description": "Invest in a broad market index fund. Moderate risk, historically 8-12% annual returns, requires patience.",
+          "delta": {
+            "investment_portfolio": 5000,
+            "total_wealth": -5000,
+            "financial_iq": 10,
+            "stress_level": 5,
+            "life_satisfaction": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "The classic wealth-building move! Warren Buffett himself recommends index funds for most investors. Patience is key — don't sell during dips.",
+          "requires": {
+            "resource": "total_wealth",
+            "op": ">=",
+            "value": 5000,
+            "label": "Requires Wealth >= 5,000"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "m3_fixed_deposit",
+          "label": "B. Bank Fixed Deposit",
+          "description": "Lock money in a fixed deposit. Low risk, guaranteed returns (4-6%), no excitement.",
+          "delta": {
+            "investment_portfolio": 3000,
+            "total_wealth": -3000,
+            "financial_iq": 5,
+            "stress_level": -5,
+            "credit_score": 10
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Safe and steady! Fixed deposits protect your capital. But with inflation at 5-7%, your real returns may be near zero. Safety has a hidden cost.",
+          "requires": {
+            "resource": "total_wealth",
+            "op": ">=",
+            "value": 3000,
+            "label": "Requires Wealth >= 3,000"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "m3_crypto_hype",
+          "label": "C. Cryptocurrency — Ride the Wave",
+          "description": "Put money into trending crypto coins. Could 10x your money... or lose it all.",
+          "delta": {
+            "investment_portfolio": 4000,
+            "total_wealth": -4000,
+            "financial_iq": 3,
+            "stress_level": 15,
+            "life_satisfaction": 8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "High risk, high reward — and high anxiety! Crypto is extremely volatile. Many people have lost their life savings chasing quick gains. Never invest more than you can afford to lose.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "m3_no_invest",
+          "label": "D. Keep Cash — Don't Invest Yet",
+          "description": "Hold your money in a savings account. Zero risk, but inflation erodes its value over time.",
+          "delta": {
+            "financial_iq": 2,
+            "stress_level": -3,
+            "life_satisfaction": 2
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Caution is valid when you're learning. But money sitting in a savings account actually loses value to inflation. Not investing is itself a financial decision with real costs.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_4_insurance",
+      "round_title": "Month 4: The Insurance Question",
+      "situation": "A colleague had a car accident and faces massive medical bills with no insurance. It's a wake-up call. Insurance seems like a waste of money when you're young and healthy — until it isn't. Can you afford NOT to be insured?",
+      "goal": "Decide on insurance coverage — protection vs. cost.",
+      "coaching_moment": "Risk management: Insurance is paying a small certain cost to avoid a potentially devastating uncertain cost. It's the opposite of gambling.",
+      "reflection_prompt": "Why do most young people skip insurance, and what happens when disaster strikes?",
+      "ai_image_prompt": "Young adult reviewing insurance documents at desk, comparison charts visible, concerned but focused expression, semi-realistic",
+      "choices": [
+        {
+          "id": "m4_full_insurance",
+          "label": "A. Comprehensive Coverage",
+          "description": "Health + accident + basic life insurance. Costs more monthly but covers almost everything.",
+          "delta": {
+            "insurance_coverage": 40,
+            "monthly_income": -500,
+            "total_wealth": -1500,
+            "financial_iq": 8,
+            "stress_level": -10,
+            "life_satisfaction": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Smart risk management! Insurance is the safety net that lets you take bigger career and investment risks. The peace of mind alone is worth it.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "m4_basic_health",
+          "label": "B. Basic Health Insurance Only",
+          "description": "Cover the most likely risk — medical emergencies. Skip accident and life insurance for now.",
+          "delta": {
+            "insurance_coverage": 20,
+            "monthly_income": -200,
+            "total_wealth": -600,
+            "financial_iq": 5,
+            "stress_level": -5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "A pragmatic middle ground. Health insurance covers the biggest financial risk for young adults. You can add more coverage as your income grows.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "m4_skip_insurance",
+          "label": "C. Skip Insurance — Save the Money",
+          "description": "You're young and healthy. Why pay for something you'll probably never use?",
+          "delta": {
+            "total_wealth": 1500,
+            "savings_rate": 3,
+            "financial_iq": -3,
+            "stress_level": -2,
+            "life_satisfaction": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Risky gamble! You save money now, but one medical emergency could cost 10-50x what insurance would have cost. This is the definition of penny wise, pound foolish.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "m4_employer_insurance",
+          "label": "D. Rely on Employer Insurance",
+          "description": "Your employer offers basic coverage. Supplement with a small personal policy for gaps.",
+          "delta": {
+            "insurance_coverage": 25,
+            "monthly_income": -100,
+            "total_wealth": -300,
+            "financial_iq": 6,
+            "stress_level": -7
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Leveraging employer benefits is smart! But remember — employer insurance vanishes if you lose your job. Having a personal backup policy is wise.",
+          "requires": {
+            "resource": "monthly_income",
+            "op": ">=",
+            "value": 3000,
+            "label": "Requires Income >= 3,000 (need employer)"
+          },
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_5_debt_decision",
+      "round_title": "Month 5: The Debt Dilemma",
+      "situation": "Your credit card bill is growing. You also have student loans (if applicable). A new car would make commuting easier and open better job opportunities, but it means more debt. Meanwhile, friends are buying things on EMI (monthly installments) like there's no tomorrow.",
+      "goal": "Navigate debt decisions — good debt vs. bad debt.",
+      "coaching_moment": "Good debt vs. bad debt: Debt for education or income-generating assets can be 'good.' Debt for depreciating luxuries is almost always 'bad.' The key question: will this debt make me MORE money than it costs?",
+      "reflection_prompt": "How do credit card companies make money off people who only pay minimum amounts?",
+      "ai_image_prompt": "Young adult looking at car dealership with 'Easy EMI' banners, credit card in hand, thinking expression, wants versus needs, semi-realistic",
+      "choices": [
+        {
+          "id": "m5_pay_off_debt",
+          "label": "A. Aggressive Debt Payoff",
+          "description": "Cut all non-essential spending and throw everything at paying down existing debt. The 'debt avalanche' method.",
+          "delta": {
+            "debt_level": -8000,
+            "total_wealth": -5000,
+            "savings_rate": -5,
+            "credit_score": 25,
+            "stress_level": -10,
+            "financial_iq": 8,
+            "life_satisfaction": -5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Debt freedom is priceless! Every dollar paid off stops accruing interest. The psychological relief alone improves your entire life. This is the financially optimal move.",
+          "requires": {
+            "resource": "debt_level",
+            "op": ">",
+            "value": 0,
+            "label": "Requires Existing Debt"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "m5_buy_car_loan",
+          "label": "B. Buy a Car on Loan",
+          "description": "Get a car loan for a reliable used car. Easier commute, better job access, but adds debt.",
+          "delta": {
+            "debt_level": 12000,
+            "monthly_income": 800,
+            "life_satisfaction": 10,
+            "stress_level": 5,
+            "credit_score": -10,
+            "financial_iq": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "A car can be 'good debt' if it genuinely increases your earning power. But remember — a car loses 20% of its value the moment you drive it off the lot. That's depreciation.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "m5_minimum_payments",
+          "label": "C. Pay Minimums — Keep Options Open",
+          "description": "Pay minimum amounts on all debts. Keep cash available for opportunities or emergencies.",
+          "delta": {
+            "debt_level": 2000,
+            "financial_iq": -3,
+            "stress_level": 5,
+            "life_satisfaction": 3,
+            "credit_score": -15
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Minimum payments are a debt trap! On a credit card charging 18% interest, paying minimums means you'll pay 2-3x the original amount. This is how credit card companies get rich.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "m5_consolidate",
+          "label": "D. Consolidate & Refinance",
+          "description": "Combine all debts into one lower-interest loan. Simpler payments, less total interest.",
+          "delta": {
+            "debt_level": -3000,
+            "credit_score": 10,
+            "financial_iq": 10,
+            "stress_level": -8,
+            "life_satisfaction": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Debt consolidation is a smart financial move! Lowering your interest rate means more of each payment goes to the actual debt, not the bank's profit. Financial IQ in action!",
+          "requires": {
+            "resource": "debt_level",
+            "op": ">",
+            "value": 5000,
+            "label": "Requires Debt > 5,000"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_6_tax_season",
+      "round_title": "Month 6: Tax Season Reality Check",
+      "situation": "It's tax season. You've been earning money but haven't thought much about taxes. Your first tax bill is a shock. You can file simply, or invest time in understanding deductions, tax-advantaged accounts, and legal tax-saving strategies.",
+      "goal": "Handle your taxes wisely and learn about legal tax optimization.",
+      "coaching_moment": "Tax literacy: Understanding taxes isn't just for accountants. Tax-advantaged investments (like retirement accounts) can save you thousands over a lifetime. Knowledge literally pays.",
+      "reflection_prompt": "What's the difference between tax evasion (illegal) and tax optimization (smart)?",
+      "ai_image_prompt": "Young adult surrounded by tax forms and calculator, laptop showing tax filing software, overwhelmed but determined, receipts scattered, semi-realistic",
+      "choices": [
+        {
+          "id": "m6_tax_accountant",
+          "label": "A. Hire a Tax Professional",
+          "description": "Pay an accountant to maximize deductions and file correctly. Costs money but finds hidden savings.",
+          "delta": {
+            "total_wealth": 3000,
+            "financial_iq": 12,
+            "stress_level": -8,
+            "monthly_income": -200,
+            "credit_score": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Professionals find deductions you'd never know about. The accountant's fee usually pays for itself 3-5x over. This is an investment in knowledge, not just a service.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "m6_self_file_learn",
+          "label": "B. Self-File & Learn Tax Strategy",
+          "description": "Spend weekends learning tax rules. File yourself using free software. Time-intensive but educational.",
+          "delta": {
+            "total_wealth": 1500,
+            "financial_iq": 15,
+            "stress_level": 8,
+            "life_satisfaction": -3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Tax knowledge is a lifelong asset! It's painful now, but understanding the tax code gives you an edge most people never develop. Your future savings will be enormous.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "m6_simple_file",
+          "label": "C. Quick Simple Filing",
+          "description": "File the basic return, take the standard deduction, don't bother with optimization. Fast but expensive.",
+          "delta": {
+            "total_wealth": -2000,
+            "financial_iq": 2,
+            "stress_level": -3,
+            "life_satisfaction": 2
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Easy, but you likely left money on the table. The average person overpays by 15-20% by not claiming legitimate deductions. Convenience has a price.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "m6_tax_saving_invest",
+          "label": "D. Open Tax-Advantaged Retirement Account",
+          "description": "Start a retirement account (401k/PPF) that reduces your tax bill AND builds long-term wealth. Double benefit.",
+          "delta": {
+            "total_wealth": -2000,
+            "investment_portfolio": 3000,
+            "financial_iq": 12,
+            "stress_level": 3,
+            "savings_rate": 5,
+            "life_satisfaction": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "The ultimate two-for-one: save on taxes TODAY while building wealth for TOMORROW. Compound interest plus tax savings is the most powerful force in personal finance.",
+          "requires": {
+            "resource": "monthly_income",
+            "op": ">=",
+            "value": 2500,
+            "label": "Requires Income >= 2,500"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_debt_spiral",
+      "id": "crisis_debt_spiral",
+      "round_title": "CRISIS: The Debt Spiral",
+      "situation": "Your debt has spiraled out of control. Monthly interest payments now eat most of your income. Creditors are calling. Your credit score is plummeting. You can't sleep, and the stress is affecting your work performance. Dean Parker's cheerful promises about 'loans paying for themselves' ring hollow now. You need an emergency plan.",
+      "goal": "Break the debt spiral before it destroys your financial future.",
+      "coaching_moment": "Compound interest works both ways: it builds wealth in investments, but it destroys finances in debt. When interest on debt exceeds your ability to pay, you're in a debt spiral — every month makes it worse.",
+      "reflection_prompt": "How could this situation have been prevented? What warning signs were missed?",
+      "ai_image_prompt": "Young adult at desk with head in hands, stack of bills and 'OVERDUE' notices, phone ringing, dark room, stress visible, dramatic lighting, semi-realistic",
+      "condition": {
+        "resource": "debt_level",
+        "operator": ">",
+        "value": 40000
+      },
+      "choices": [
+        {
+          "id": "ds_emergency_plan",
+          "label": "A. Emergency Debt Freeze Plan",
+          "description": "Contact creditors, negotiate lower interest rates, freeze non-essential spending for 3 months. Painful but effective.",
+          "delta": {
+            "debt_level": -10000,
+            "total_wealth": -5000,
+            "stress_level": -15,
+            "life_satisfaction": -8,
+            "financial_iq": 12,
+            "credit_score": 15
+          },
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking"
+          ],
+          "feedback": "Facing debt head-on takes courage. Creditors prefer negotiation over default — they'll often lower rates if you ask. This is the financially wisest response to a crisis.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "ds_second_job",
+          "label": "B. Take a Second Job",
+          "description": "Work nights and weekends to generate extra income for debt repayment. Exhausting but increases cash flow.",
+          "delta": {
+            "monthly_income": 2000,
+            "debt_level": -6000,
+            "stress_level": 15,
+            "life_satisfaction": -10,
+            "total_wealth": 2000
+          },
+          "skill_tags": [
+            "resilience",
+            "adaptability"
+          ],
+          "feedback": "Grit and hustle! A second job is brutal but effective. Many people have climbed out of debt this way. Just watch your health — burnout helps no one.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "ds_bankruptcy_consider",
+          "label": "C. Seek Debt Counseling",
+          "description": "Visit a certified credit counselor. They'll create a formal debt management plan with creditors.",
+          "delta": {
+            "debt_level": -8000,
+            "financial_iq": 15,
+            "stress_level": -10,
+            "credit_score": -20,
+            "life_satisfaction": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Seeking help is strength, not weakness. Credit counselors negotiate on your behalf and create structured plans. Your credit takes a short-term hit but you gain a clear path forward.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "ds_ignore_hope",
+          "label": "D. Ignore It and Hope for the Best",
+          "description": "Avoid creditor calls, keep living normally, hope something changes. Denial is comfortable.",
+          "delta": {
+            "debt_level": 5000,
+            "stress_level": 20,
+            "credit_score": -40,
+            "life_satisfaction": -5,
+            "financial_iq": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ],
+          "feedback": "Denial makes debt worse, never better. Interest keeps compounding, creditors escalate to collections, and your credit score craters. Avoidance is the most expensive financial strategy.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_7_side_hustle",
+      "round_title": "Month 7: The Side Hustle Opportunity",
+      "situation": "Everyone seems to have a side hustle. A friend offers you a partnership in a small online business. Meanwhile, you could freelance your skills, or invest the same time in upskilling for a promotion at your main job. Time is money — how do you spend yours?",
+      "goal": "Decide how to increase your income — entrepreneurship, freelancing, or career growth.",
+      "coaching_moment": "Active vs. passive income: A job trades time for money. A business or investment can eventually earn while you sleep. But building either takes significant upfront investment.",
+      "reflection_prompt": "What's worth more — an extra $500/month now, or skills that could earn $2000/month in two years?",
+      "ai_image_prompt": "Young adult working on laptop at night, split screen showing online store, freelance platform, and certification course, entrepreneurial energy, semi-realistic",
+      "choices": [
+        {
+          "id": "m7_online_business",
+          "label": "A. Start Online Business with Friend",
+          "description": "Invest money and time in the partnership. High risk, but potential for passive income if it works.",
+          "delta": {
+            "total_wealth": -5000,
+            "monthly_income": 1500,
+            "stress_level": 15,
+            "financial_iq": 8,
+            "life_satisfaction": 8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Entrepreneurship is the highest-risk, highest-reward path. 80% of small businesses fail in the first 2 years, but the 20% that succeed create generational wealth. Choose your partner wisely.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "m7_freelance",
+          "label": "B. Freelance Your Skills",
+          "description": "Take on freelance projects in evenings. Trade time for money, but at a higher rate than your day job.",
+          "delta": {
+            "monthly_income": 1000,
+            "stress_level": 10,
+            "financial_iq": 5,
+            "life_satisfaction": 3,
+            "total_wealth": 1000
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Freelancing builds skills and income simultaneously. But watch your energy — working two jobs is unsustainable long-term. Use freelance income strategically.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "m7_upskill",
+          "label": "C. Invest in Professional Certification",
+          "description": "Take an online course for a professional certification. No immediate income boost, but positions you for a major promotion.",
+          "delta": {
+            "total_wealth": -2000,
+            "financial_iq": 12,
+            "monthly_income": -200,
+            "life_satisfaction": 3,
+            "stress_level": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Investing in yourself is the highest-return investment there is. A single certification can increase your salary by 15-30%. Patience and skill-building win the long game.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "m7_rest_balance",
+          "label": "D. Focus on Work-Life Balance",
+          "description": "Your main job is enough. Use free time for health, relationships, and rest. Avoid burnout.",
+          "delta": {
+            "life_satisfaction": 12,
+            "stress_level": -15,
+            "financial_iq": 2,
+            "total_wealth": 500
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Rest IS productive. Burnout costs more than any side hustle earns. Mental health is a financial asset — stressed people make terrible money decisions. Balance is underrated.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_lifestyle_inflation",
+      "id": "crisis_lifestyle_inflation",
+      "round_title": "CRISIS: Lifestyle Inflation Trap",
+      "situation": "You've been living large — dining out, new gadgets, weekend trips, subscription services for everything. Your savings rate is near zero. You feel great... until your car breaks down and you realize you can't afford the repair. Your bank account is nearly empty despite earning decent money. Jordan sheepishly admits they're in the same boat. The lifestyle inflation trap has caught you.",
+      "goal": "Recognize and escape the lifestyle inflation cycle.",
+      "coaching_moment": "Lifestyle inflation: When spending rises to match (or exceed) income, you're stuck on a hedonic treadmill. Earning more doesn't help if you spend more. The gap between income and spending is what builds wealth.",
+      "reflection_prompt": "Why does earning more money NOT automatically make people wealthier?",
+      "ai_image_prompt": "Young adult staring at empty wallet with expensive purchases around them, broken car in background, reality check moment, contrast between luxury and crisis, semi-realistic",
+      "condition": {
+        "resource": "savings_rate",
+        "operator": "<",
+        "value": 5
+      },
+      "choices": [
+        {
+          "id": "li_spending_audit",
+          "label": "A. Complete Spending Audit & Reset",
+          "description": "Track every expense for 30 days. Cancel subscriptions, cut dining out, create a strict budget.",
+          "delta": {
+            "savings_rate": 20,
+            "total_wealth": 2000,
+            "financial_iq": 12,
+            "life_satisfaction": -10,
+            "stress_level": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "A spending audit is like a financial X-ray — it reveals where your money really goes. Most people are shocked to discover how much 'small' purchases add up. Awareness is the first step to control.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "li_automate_savings",
+          "label": "B. Automate Savings — Pay Yourself First",
+          "description": "Set up automatic transfers to savings BEFORE you can spend. Make saving the default, spending the effort.",
+          "delta": {
+            "savings_rate": 15,
+            "total_wealth": 1500,
+            "financial_iq": 10,
+            "life_satisfaction": -5,
+            "stress_level": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Automation is a behavioral hack! When savings happen automatically, you adjust your spending without willpower. This is how most wealthy people actually build wealth — quietly, automatically.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "li_downgrade",
+          "label": "C. Downgrade Lifestyle Intentionally",
+          "description": "Move to a cheaper apartment, sell the expensive phone, cook at home. Embrace 'living below your means.'",
+          "delta": {
+            "savings_rate": 25,
+            "total_wealth": 3000,
+            "monthly_income": 200,
+            "financial_iq": 8,
+            "life_satisfaction": -15,
+            "stress_level": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Radical, but effective. Living below your means is the #1 wealth-building habit across every study. It's not about deprivation — it's about choosing financial freedom over status.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "li_keep_going",
+          "label": "D. Earn More — Don't Cut Back",
+          "description": "The problem isn't spending, it's earning! Focus on getting a raise or new job instead of reducing lifestyle.",
+          "delta": {
+            "monthly_income": 1000,
+            "stress_level": 12,
+            "life_satisfaction": 5,
+            "financial_iq": -2,
+            "savings_rate": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Earning more helps, but without changing spending habits, you'll just inflate your lifestyle further. Studies show lottery winners often go broke because spending habits don't change with income.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_9_emergency_fund",
+      "round_title": "Month 9: Building an Emergency Fund",
+      "situation": "After recent scares, you realize the importance of a financial cushion. Financial experts recommend 3-6 months of expenses in an emergency fund. But saving that much means delaying other goals — a new apartment, a vacation, investment opportunities.",
+      "goal": "Build your safety net while balancing other financial priorities.",
+      "coaching_moment": "Emergency funds: Without a cushion, any unexpected expense becomes a crisis. With one, you can handle setbacks without going into debt. This is the foundation of financial resilience.",
+      "reflection_prompt": "Why do financial experts say an emergency fund should be the FIRST financial priority, before investing?",
+      "ai_image_prompt": "Young adult putting money into a labeled 'Emergency Fund' jar, safety net metaphor, organized desk with financial goals written on sticky notes, semi-realistic",
+      "choices": [
+        {
+          "id": "m9_full_emergency",
+          "label": "A. Build Full 6-Month Emergency Fund",
+          "description": "Save aggressively until you have 6 months of expenses set aside. Delay investing and lifestyle upgrades.",
+          "delta": {
+            "total_wealth": -8000,
+            "savings_rate": 15,
+            "insurance_coverage": 15,
+            "stress_level": -20,
+            "financial_iq": 10,
+            "life_satisfaction": -5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "The gold standard of financial security! A full emergency fund means you'll never need to borrow for unexpected expenses. This one decision prevents countless future crises.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "m9_starter_fund",
+          "label": "B. Starter Fund — 1 Month of Expenses",
+          "description": "Save one month's worth. It's not perfect, but it's better than nothing. Keep investing alongside.",
+          "delta": {
+            "total_wealth": -2000,
+            "savings_rate": 5,
+            "insurance_coverage": 5,
+            "stress_level": -8,
+            "financial_iq": 6,
+            "investment_portfolio": 1000
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "A good start! Even a small cushion prevents you from using credit cards for emergencies. You can build it up gradually while pursuing other goals.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "m9_invest_instead",
+          "label": "C. Skip Emergency Fund — Invest Instead",
+          "description": "Your investments ARE your emergency fund. If needed, you can sell stocks. Why let money sit idle?",
+          "delta": {
+            "investment_portfolio": 5000,
+            "total_wealth": -5000,
+            "financial_iq": 5,
+            "stress_level": 5,
+            "life_satisfaction": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Risky logic! Investments can lose value right when you need them most (markets crash during recessions when job losses spike). Selling investments during a downturn locks in losses. An emergency fund should be liquid and safe.",
+          "requires": {
+            "resource": "total_wealth",
+            "op": ">=",
+            "value": 5000,
+            "label": "Requires Wealth >= 5,000"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "m9_no_emergency",
+          "label": "D. I'll Build One Later — Other Priorities Now",
+          "description": "An emergency fund can wait. You want to travel, upgrade your apartment, and live a little.",
+          "delta": {
+            "life_satisfaction": 10,
+            "stress_level": -5,
+            "financial_iq": -2,
+            "total_wealth": -1000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ],
+          "feedback": "Procrastination is the enemy of financial security. 'Later' often never comes. The irony: people who skip emergency funds are the ones who need them most.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_10_compound_interest",
+      "round_title": "Month 10: The Power of Compound Interest",
+      "situation": "Ms. Chen, your financial advisor, shows you a chart: investing $5,000 now at 10% annual returns grows to $87,000 in 30 years — WITHOUT adding another dollar. Starting 10 years later with the same amount? Only $34,000. Time is the most powerful variable in finance. What do you do with this knowledge?",
+      "goal": "Harness compound interest for long-term wealth building.",
+      "coaching_moment": "Compound interest: Einstein supposedly called it 'the eighth wonder of the world.' The key insight: TIME matters more than AMOUNT. Starting early with small amounts beats starting late with large amounts.",
+      "reflection_prompt": "If time is the most important factor in investing, what's the real cost of 'waiting until you can afford it'?",
+      "ai_image_prompt": "Young adult looking at compound interest growth chart on whiteboard, exponential curve, financial advisor pointing, impressed expression, modern office, semi-realistic",
+      "choices": [
+        {
+          "id": "m10_max_invest",
+          "label": "A. Maximize Long-Term Investment",
+          "description": "Put every spare dollar into a diversified investment portfolio. Sacrifice now, become wealthy later.",
+          "delta": {
+            "investment_portfolio": 8000,
+            "total_wealth": -8000,
+            "financial_iq": 12,
+            "life_satisfaction": -5,
+            "savings_rate": 10,
+            "stress_level": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Maximum compound growth! At 10% annual returns, this investment could grow 17x over 30 years. Your future self is celebrating right now. Time + consistency = wealth.",
+          "requires": {
+            "resource": "total_wealth",
+            "op": ">=",
+            "value": 8000,
+            "label": "Requires Wealth >= 8,000"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "m10_balanced_invest",
+          "label": "B. Balanced Investment + Living",
+          "description": "Invest moderately while still enjoying life. Build wealth steadily without sacrificing everything.",
+          "delta": {
+            "investment_portfolio": 4000,
+            "total_wealth": -4000,
+            "financial_iq": 8,
+            "life_satisfaction": 3,
+            "savings_rate": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "Balance is sustainable! Consistent moderate investing beats erratic large investments. The habit of regular investing matters more than the amount.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "m10_pay_debt_first",
+          "label": "C. Pay Off All Debt Before Investing",
+          "description": "Clear all debts first, then start investing. Mathematically, high-interest debt costs more than investments earn.",
+          "delta": {
+            "debt_level": -10000,
+            "total_wealth": -5000,
+            "credit_score": 20,
+            "financial_iq": 10,
+            "stress_level": -10
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "If your debt charges 18% interest and investments earn 10%, paying off debt IS investing — at an 18% return! This is mathematically optimal for high-interest debt. But don't delay investing forever.",
+          "requires": {
+            "resource": "debt_level",
+            "op": ">",
+            "value": 5000,
+            "label": "Requires Debt > 5,000"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "m10_spend_youth",
+          "label": "D. Enjoy Youth — Invest When Older",
+          "description": "You'll earn more later and can invest bigger amounts then. Use money now for experiences and growth.",
+          "delta": {
+            "life_satisfaction": 12,
+            "total_wealth": -2000,
+            "financial_iq": -3,
+            "stress_level": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ],
+          "feedback": "This is the most common — and most costly — financial mistake young people make. Delaying investing by just 10 years can cost you 60% of your potential wealth. Time cannot be bought back.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_12_legacy_plan",
+      "round_title": "Month 12: Your Financial Legacy",
+      "situation": "A year of financial decisions behind you. Ms. Chen asks you to create a 10-year financial plan. What kind of financial life do you want to build? Your final decision reveals what you've truly learned about money, risk, and the future.",
+      "goal": "Define your long-term financial philosophy and legacy plan.",
+      "coaching_moment": "Financial identity: Your relationship with money reflects your values. Are you a saver, investor, giver, or spender? There's no single right answer — but there IS a right answer for YOUR life goals.",
+      "reflection_prompt": "Looking back at 12 months of decisions, what's the most important lesson about money you've learned?",
+      "ai_image_prompt": "Young adult confidently presenting financial plan on a board, charts showing growth trajectory, advisor nodding approvingly, bright future ahead, sunrise through window, semi-realistic",
+      "choices": [
+        {
+          "id": "m12_financial_freedom",
+          "label": "A. Path to Financial Independence",
+          "description": "Save and invest aggressively to retire early or have complete financial freedom by 40.",
+          "delta": {
+            "investment_portfolio": 5000,
+            "total_wealth": -3000,
+            "savings_rate": 20,
+            "financial_iq": 15,
+            "life_satisfaction": 5,
+            "stress_level": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "The FIRE (Financial Independence, Retire Early) movement! Aggressive saving + smart investing = freedom. It takes sacrifice now but gives you the ultimate luxury: control over your time.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "m12_build_wealth",
+          "label": "B. Build Diversified Wealth",
+          "description": "Create multiple income streams — job, investments, side business, rental property. Spread risk across assets.",
+          "delta": {
+            "investment_portfolio": 3000,
+            "monthly_income": 1000,
+            "total_wealth": -2000,
+            "financial_iq": 12,
+            "stress_level": 8,
+            "life_satisfaction": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Diversification isn't just for stocks — it's for your entire financial life. Multiple income streams mean no single failure can ruin you. This is how generational wealth is built.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "m12_give_back",
+          "label": "C. Financial Security + Giving Back",
+          "description": "Build a stable financial base, then dedicate 10% of income to causes you believe in. Wealth with purpose.",
+          "delta": {
+            "total_wealth": -3000,
+            "financial_iq": 10,
+            "life_satisfaction": 15,
+            "stress_level": -10,
+            "savings_rate": 5,
+            "insurance_coverage": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Money with meaning! Research shows that charitable giving actually increases life satisfaction more than spending on yourself. Financial security + generosity = a truly rich life.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "m12_experience_rich",
+          "label": "D. Experience-Rich Life",
+          "description": "Save enough for security, but prioritize experiences — travel, learning, relationships. Memories over material.",
+          "delta": {
+            "life_satisfaction": 15,
+            "total_wealth": -1000,
+            "financial_iq": 5,
+            "stress_level": -8,
+            "savings_rate": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Research supports this: spending on experiences creates more lasting happiness than spending on things. The key is maintaining enough savings for security while investing in a life well-lived.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "debt_free_champion",
+      "label": "Debt-Free Champion",
+      "condition": "debt_level <= 0 and financial_iq >= 50",
+      "icon": "🏆"
+    },
+    {
+      "id": "compound_master",
+      "label": "Compound Interest Master",
+      "condition": "investment_portfolio >= 30000",
+      "icon": "📈"
+    },
+    {
+      "id": "safety_net_pro",
+      "label": "Safety Net Pro",
+      "condition": "insurance_coverage >= 60 and savings_rate >= 25",
+      "icon": "🛡️"
+    },
+    {
+      "id": "financial_guru",
+      "label": "Financial Guru",
+      "condition": "financial_iq >= 80",
+      "icon": "🧠"
+    },
+    {
+      "id": "balanced_life",
+      "label": "Balanced Life",
+      "condition": "life_satisfaction >= 70 and stress_level <= 30 and savings_rate >= 15",
+      "icon": "⚖️"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Opportunity Cost",
+      "definition": "The value of the next best alternative you give up when making a choice. If you spend $1,000 on a phone, the opportunity cost is what that $1,000 could have earned invested."
+    },
+    {
+      "term": "Compound Interest",
+      "definition": "Interest calculated on both the initial principal and the accumulated interest from previous periods. It makes savings grow exponentially over time — and makes debt grow dangerously too."
+    },
+    {
+      "term": "Debt Spiral",
+      "definition": "A situation where debt grows faster than the ability to repay it, because interest charges keep increasing the balance. Minimum payments often can't keep up with interest accrual."
+    },
+    {
+      "term": "Lifestyle Inflation",
+      "definition": "The tendency to increase spending as income rises, so that no matter how much you earn, you never save more. Also called 'lifestyle creep.' It's the #1 reason high earners can still be broke."
+    },
+    {
+      "term": "Emergency Fund",
+      "definition": "Savings set aside specifically for unexpected expenses (medical bills, car repairs, job loss). Experts recommend 3-6 months of living expenses in a liquid, accessible account."
+    },
+    {
+      "term": "Credit Score",
+      "definition": "A numerical rating (300-850) that reflects your creditworthiness based on payment history, debt levels, and credit usage. Higher scores unlock better loan rates and financial opportunities."
+    },
+    {
+      "term": "Diversification",
+      "definition": "Spreading investments across different asset types (stocks, bonds, real estate) to reduce risk. The principle: don't put all your eggs in one basket."
+    },
+    {
+      "term": "Tax-Advantaged Account",
+      "definition": "Investment accounts (like 401k, IRA, PPF) where you get tax benefits — either pay less tax now or pay no tax on future gains. Using these is one of the simplest ways to build wealth faster."
+    }
+  ],
+  "endings": [
+    {
+      "id": "financial_freedom",
+      "title": "Financial Freedom",
+      "icon": "🏆",
+      "message": "You've achieved what most people only dream of — true financial freedom! Through disciplined saving, smart investing, and strategic debt management, your wealth is growing on autopilot. Compound interest is your best friend, and your emergency fund means you sleep soundly. You've mastered the art of making money work for you instead of working for money.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "total_wealth",
+            "operator": ">=",
+            "value": 80000
+          },
+          {
+            "resource": "debt_level",
+            "operator": "<=",
+            "value": 5000
+          },
+          {
+            "resource": "savings_rate",
+            "operator": ">=",
+            "value": 25
+          }
+        ]
+      }
+    },
+    {
+      "id": "wise_investor",
+      "title": "Wise Investor",
+      "icon": "📈",
+      "message": "Your investment portfolio is thriving! You understood compound interest early, invested consistently, and didn't panic during market dips. Your financial IQ is exceptional — you can read a balance sheet, understand tax implications, and spot both opportunities and scams. The future looks bright and prosperous.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "investment_portfolio",
+            "operator": ">=",
+            "value": 25000
+          },
+          {
+            "resource": "financial_iq",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "debt_free_champion",
+      "title": "Debt-Free Champion",
+      "icon": "💪",
+      "message": "Against all odds, you conquered your debt! While others are still making minimum payments, you attacked your loans with intensity and strategy. Your credit score is excellent, your stress is low, and you understand exactly how debt traps work — because you escaped one. You're now helping others avoid the same pitfalls.",
+      "type": "triumph",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "debt_level",
+            "operator": "<=",
+            "value": 0
+          },
+          {
+            "resource": "credit_score",
+            "operator": ">=",
+            "value": 720
+          }
+        ]
+      }
+    },
+    {
+      "id": "balanced_life",
+      "title": "Balanced Life",
+      "icon": "⚖️",
+      "message": "You found the sweet spot that eludes most people — financial security AND life satisfaction. You're not the richest person in the room, but you're among the happiest. Your finances are stable, your stress is manageable, and you've learned that money is a tool for living well, not a goal in itself. True wealth is measured in peace of mind.",
+      "type": "triumph",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "life_satisfaction",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "stress_level",
+            "operator": "<=",
+            "value": 40
+          },
+          {
+            "resource": "savings_rate",
+            "operator": ">=",
+            "value": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "financial_learner",
+      "title": "Financial Learner",
+      "icon": "📚",
+      "message": "Your financial journey had ups and downs — some smart moves, some costly mistakes. But here's the truth: every wealthy person started as a learner. The fact that you're thinking about money, budgets, debt, and investing at this age puts you years ahead of most adults. Keep learning, keep adjusting, and remember: financial literacy is a skill that improves with practice.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Life Decisions: Money Under Pressure Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Life Decisions: Money Under Pressure. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Life Decisions: Money Under Pressure Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Life Decisions: Money Under Pressure. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

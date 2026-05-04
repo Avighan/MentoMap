@@ -1,0 +1,2623 @@
+{
+  "game_id": "g7-batna-negotiator",
+  "title": "BATNA Master: The Negotiation Simulator",
+  "theme": "Negotiation & Communication",
+  "icon": "🤝",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are a Grade 7 student who discovers a natural talent for negotiation. From school event budgets to inter-school competitions to community projects, you face 12 progressively harder negotiation scenarios. Each teaches a core concept: BATNA, ZOPA, anchoring, logrolling, and the difference between interests and positions. Can you become the ultimate dealmaker while keeping relationships intact?",
+  "target_audience": "Ages 12-13",
+  "target_age": "12-13",
+  "grade": "7",
+  "difficulty": "intermediate",
+  "duration_minutes": 25,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You navigate 12 negotiation scenarios, each harder than the last.",
+    "Every round presents a negotiation dilemma with multiple strategies to choose from.",
+    "Watch your dashboard — Negotiation Power, Relationship Capital, Credibility, and Deal Value are all interconnected.",
+    "NPCs like Professor Deal, The Hawk, and Maya react to your negotiation style in real time.",
+    "Random events like surprise deadlines and new information will test your adaptability.",
+    "Aim for win-win outcomes — aggressive tactics may win deals but damage relationships!"
+  ],
+  "learning_objectives": [
+    "Understand BATNA (Best Alternative to a Negotiated Agreement) and how it creates leverage",
+    "Learn to identify ZOPA (Zone of Possible Agreement) in any negotiation",
+    "Practice anchoring, logrolling, and interest-based bargaining techniques",
+    "Develop emotional intelligence for reading and responding to counterparts",
+    "Build skills in creating value through collaborative negotiation rather than claiming value through competition"
+  ],
+  "tags": [
+    "negotiation",
+    "communication",
+    "grade-7",
+    "batna",
+    "conflict-resolution"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Communication",
+    "Critical Thinking",
+    "Collaboration",
+    "Social-Emotional Learning"
+  ],
+  "cultural_context": "School and community negotiation scenarios, globally relatable with diverse settings",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.2,
+    "ethical_reasoning": 0.15
+  },
+  "initial_state": {
+    "negotiation_power": {
+      "value": 40,
+      "label": "Negotiation Power",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "relationship_capital": {
+      "value": 50,
+      "label": "Relationship Capital",
+      "icon": "🫂",
+      "min": 0,
+      "max": 100
+    },
+    "deal_value": {
+      "value": 0,
+      "label": "Deal Value",
+      "icon": "💎",
+      "min": 0,
+      "max": 100
+    },
+    "strategy_skill": {
+      "value": 30,
+      "label": "Strategy Skill",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "emotional_intelligence": {
+      "value": 40,
+      "label": "Emotional Intelligence",
+      "icon": "❤️",
+      "min": 0,
+      "max": 100
+    },
+    "credibility": {
+      "value": 50,
+      "label": "Credibility",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "preparation_level": {
+      "value": 25,
+      "label": "Preparation Level",
+      "icon": "📋",
+      "min": 0,
+      "max": 100
+    },
+    "win_win_score": {
+      "value": 30,
+      "label": "Win-Win Score",
+      "icon": "🏆",
+      "min": 0,
+      "max": 100
+    },
+    "deals_closed": {
+      "value": 0,
+      "label": "Deals Closed",
+      "icon": "📝",
+      "min": 0,
+      "max": 15
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Scenario",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "strategy_tactics",
+        "label": "Strategy & Tactics",
+        "icon": "♟️",
+        "color": "#6366F1",
+        "initial_health": 35,
+        "health_formula": "min(100, max(0, strategy_skill * 0.4 + preparation_level * 0.3 + negotiation_power * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "emotional_intelligence",
+        "label": "Emotional Intelligence",
+        "icon": "💡",
+        "color": "#EF476F",
+        "initial_health": 40,
+        "health_formula": "min(100, max(0, emotional_intelligence * 0.5 + empathy_dim * 0.3 + relationship_capital * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "relationship_building",
+        "label": "Relationship Building",
+        "icon": "🤝",
+        "color": "#06D6A0",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, relationship_capital * 0.4 + credibility * 0.35 + win_win_score * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "deal_crafting",
+        "label": "Deal Crafting",
+        "icon": "📜",
+        "color": "#FFD166",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, deal_value * 0.4 + strategy_skill * 0.3 + deals_closed * 6))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "negotiator_rating",
+        "label": "Negotiator Rating",
+        "icon": "🏅",
+        "formula": "(negotiation_power * 0.25 + strategy_skill * 0.25 + emotional_intelligence * 0.25 + credibility * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "win_win_index",
+        "label": "Win-Win Index",
+        "icon": "🤝",
+        "formula": "(win_win_score * 0.4 + relationship_capital * 0.3 + emotional_intelligence * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 40,
+          "good": 60
+        }
+      },
+      {
+        "id": "credibility_score",
+        "label": "Credibility Score",
+        "icon": "⭐",
+        "formula": "(credibility * 0.5 + relationship_capital * 0.25 + win_win_score * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "skill_growth",
+        "label": "Negotiation Experience",
+        "effects": [
+          {
+            "resource": "strategy_skill",
+            "formula": "min(100, strategy_skill + 1)"
+          }
+        ],
+        "description": "Each scenario sharpens your strategic instincts."
+      },
+      {
+        "id": "relationship_decay",
+        "label": "Relationship Maintenance",
+        "condition": {
+          "resource": "relationship_capital",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "relationship_capital",
+            "formula": "max(0, relationship_capital - 2)"
+          }
+        ],
+        "description": "Relationships require constant nurturing or they slowly weaken."
+      },
+      {
+        "id": "credibility_erosion",
+        "label": "Credibility Drift",
+        "condition": {
+          "resource": "credibility",
+          "op": "<",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "credibility",
+            "formula": "max(0, credibility - 2)"
+          }
+        ],
+        "description": "Low credibility spirals — people trust you less once doubt sets in."
+      },
+      {
+        "id": "preparation_reset",
+        "label": "Preparation Fades",
+        "effects": [
+          {
+            "resource": "preparation_level",
+            "formula": "max(10, int(preparation_level * 0.85))"
+          }
+        ],
+        "description": "Each new negotiation requires fresh preparation — past prep decays."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "power_from_deals",
+        "from_subsystem": "deal_crafting",
+        "to_subsystem": "strategy_tactics",
+        "label": "Deal Experience Boost",
+        "condition": {
+          "resource": "deals_closed",
+          "op": ">=",
+          "value": 3
+        },
+        "effects": [
+          {
+            "resource": "negotiation_power",
+            "formula": "min(100, negotiation_power + deals_closed * 0.5)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Closing deals builds your reputation and negotiating leverage."
+      },
+      {
+        "id": "credibility_trust",
+        "from_subsystem": "relationship_building",
+        "to_subsystem": "emotional_intelligence",
+        "label": "Trust Multiplier",
+        "condition": {
+          "resource": "credibility",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "emotional_intelligence",
+            "formula": "min(100, emotional_intelligence + (credibility - 65) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "High credibility makes others more open, improving your emotional reads."
+      },
+      {
+        "id": "aggression_damages_relationships",
+        "from_subsystem": "strategy_tactics",
+        "to_subsystem": "relationship_building",
+        "label": "Aggressive Tactics Backlash",
+        "condition": {
+          "and": [
+            {
+              "resource": "negotiation_power",
+              "op": ">",
+              "value": 70
+            },
+            {
+              "resource": "win_win_score",
+              "op": "<",
+              "value": 30
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "relationship_capital",
+            "formula": "max(0, relationship_capital - (negotiation_power - 70) * 0.2)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "High power with low win-win signals domination, eroding relationships."
+      },
+      {
+        "id": "ei_boosts_deals",
+        "from_subsystem": "emotional_intelligence",
+        "to_subsystem": "deal_crafting",
+        "label": "Empathy Advantage",
+        "condition": {
+          "resource": "emotional_intelligence",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "deal_value",
+            "formula": "min(100, deal_value + (emotional_intelligence - 60) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Understanding the other side helps you craft more valuable deals."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "preparation_level",
+        "equilibrium": 20,
+        "rate": 0.05,
+        "direction": "toward"
+      },
+      {
+        "resource": "negotiation_power",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "surprise_deadline",
+        "label": "Surprise Deadline Pressure",
+        "icon": "⏰",
+        "description": "Breaking news: the other side just announced they have another offer and need your answer by tomorrow! Time pressure forces quick thinking.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "preparation_level",
+              "op": "<",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "preparation_level",
+            "delta": -8
+          },
+          {
+            "resource": "negotiation_power",
+            "delta": -5
+          },
+          {
+            "resource": "strategy_skill",
+            "delta": 3
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "DEADLINE ALERT: The other side sets an ultimatum. Pressure mounts to decide fast!",
+        "ai_image_prompt": "Tense negotiation room with a large clock ticking, young negotiator looking at papers under time pressure, dramatic lighting, semi-realistic"
+      },
+      {
+        "id": "new_information",
+        "label": "New Information Revealed",
+        "icon": "🔍",
+        "description": "A reliable source just leaked key information about the other side's true priorities. This changes everything!",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "emotional_intelligence",
+              "op": ">=",
+              "value": 35
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "preparation_level",
+            "delta": 10
+          },
+          {
+            "resource": "strategy_skill",
+            "delta": 5
+          },
+          {
+            "resource": "negotiation_power",
+            "delta": 5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "INTEL BOOST: New information surfaces about the other side's real interests!",
+        "ai_image_prompt": "Young student discovering a crucial document in a library, eyes wide with insight, papers and notes around, bright lighting, semi-realistic"
+      },
+      {
+        "id": "third_party_intervenes",
+        "label": "Third Party Intervenes",
+        "icon": "👤",
+        "description": "An unexpected third party enters the negotiation — a school counselor, parent, or community leader who changes the dynamics entirely.",
+        "probability": 0.15,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 4
+        },
+        "effects": [
+          {
+            "resource": "relationship_capital",
+            "delta": 5
+          },
+          {
+            "resource": "negotiation_power",
+            "delta": -3
+          },
+          {
+            "resource": "win_win_score",
+            "delta": 5
+          },
+          {
+            "resource": "credibility",
+            "delta": 3
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "MEDIATOR ARRIVES: A respected figure steps in to help both sides find common ground.",
+        "ai_image_prompt": "A wise adult mediator sitting between two groups of students at a round table, calm atmosphere, community center setting, semi-realistic"
+      },
+      {
+        "id": "cultural_misunderstanding",
+        "label": "Cultural Misunderstanding",
+        "icon": "🌍",
+        "description": "A gesture or phrase you used was misinterpreted by the other side due to different cultural backgrounds. Tension rises unexpectedly!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "emotional_intelligence",
+              "op": "<",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "relationship_capital",
+            "delta": -8
+          },
+          {
+            "resource": "credibility",
+            "delta": -5
+          },
+          {
+            "resource": "emotional_intelligence",
+            "delta": 4
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "CULTURAL CLASH: A misunderstanding strains trust. Learning moment for both sides.",
+        "ai_image_prompt": "Two groups of diverse students at a table looking confused and slightly upset, cultural flags and maps on the wall, semi-realistic"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "professor_deal",
+        "name": "Professor Deal",
+        "role": "Negotiation Coach",
+        "icon": "🎓",
+        "initial_mood": "encouraging",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "strategy_skill",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "Impressive tactical growth! You're applying negotiation frameworks like a natural. Remember: the best negotiators prepare twice as long as they negotiate.",
+            "mood_change": "proud",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "win_win_score",
+              "op": "<",
+              "value": 25
+            },
+            "action": "warn",
+            "message": "You're winning deals but burning bridges. A skilled negotiator creates value for both sides. Look for trades, not just victories.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "preparation_level",
+              "op": "<",
+              "value": 20
+            },
+            "action": "alert",
+            "message": "You're going into negotiations unprepared! 'Failing to prepare is preparing to fail.' Always research your BATNA before sitting down at the table.",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "deals_closed",
+                  "op": ">=",
+                  "value": 8
+                },
+                {
+                  "resource": "credibility",
+                  "op": ">=",
+                  "value": 60
+                }
+              ]
+            },
+            "action": "celebrate",
+            "message": "Eight deals closed with strong credibility! You're becoming a role model for principled negotiation. I'm nominating you for the Young Negotiator Award!",
+            "mood_change": "delighted",
+            "satisfaction_delta": 10
+          }
+        ]
+      },
+      {
+        "id": "the_hawk",
+        "name": "The Hawk",
+        "role": "Aggressive Counterpart",
+        "icon": "🦅",
+        "initial_mood": "competitive",
+        "initial_satisfaction": 45,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "negotiation_power",
+              "op": "<",
+              "value": 30
+            },
+            "action": "pressure",
+            "message": "I can smell weakness. You should just accept my terms — I have better options than you. Take it or leave it!",
+            "mood_change": "aggressive",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "resource": "negotiation_power",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "respect",
+            "message": "Fine, you've earned my respect. Let's talk terms properly. But don't think I'll go easy on you.",
+            "mood_change": "grudging_respect",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "deal_value",
+                  "op": "<",
+                  "value": 10
+                },
+                {
+                  "resource": "deals_closed",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "deadlock",
+            "message": "The Hawk slams the table! 'This negotiation is going nowhere. I'm walking out unless you give me something real!' Deadlock crisis!",
+            "mood_change": "furious",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "relationship_capital",
+                "delta": -10
+              },
+              {
+                "resource": "credibility",
+                "delta": -5
+              }
+            ],
+            "trigger_round": "crisis_deadlock"
+          }
+        ]
+      },
+      {
+        "id": "maya",
+        "name": "Maya",
+        "role": "Collaborative Partner",
+        "icon": "🌸",
+        "initial_mood": "friendly",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "win_win_score",
+              "op": ">=",
+              "value": 55
+            },
+            "action": "praise",
+            "message": "I love negotiating with you! You always find ways to make both sides happy. That's real skill.",
+            "mood_change": "delighted",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "resource": "credibility",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "I'm starting to doubt your promises. You said one thing but did another. Trust is hard to rebuild once broken.",
+            "mood_change": "disappointed",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "credibility",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 3
+                }
+              ]
+            },
+            "action": "trust_breach",
+            "message": "Maya announces to everyone: 'I can no longer work with someone who doesn't keep their word. Our partnership is suspended!' Trust breach crisis!",
+            "mood_change": "betrayed",
+            "satisfaction_delta": -20,
+            "effects": [
+              {
+                "resource": "relationship_capital",
+                "delta": -15
+              },
+              {
+                "resource": "win_win_score",
+                "delta": -10
+              }
+            ],
+            "trigger_round": "crisis_trust_breach"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "deals_closed",
+          "op": ">=",
+          "value": 5
+        },
+        "icon": "📰",
+        "text": "{deals_closed} deals closed! You're becoming known as a skilled negotiator around school.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "win_win_score",
+              "op": ">=",
+              "value": 65
+            },
+            {
+              "resource": "credibility",
+              "op": ">=",
+              "value": 65
+            }
+          ]
+        },
+        "icon": "🌟",
+        "text": "Word spreads: you're the go-to person for fair deals. Your win-win reputation opens doors!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "credibility",
+          "op": "<",
+          "value": 25
+        },
+        "icon": "⚠️",
+        "text": "Warning: People are talking. Your credibility is dangerously low. Others hesitate to negotiate with you.",
+        "severity": "critical"
+      }
+    ],
+    "ai_scene_prompt_template": "A negotiation scenario in a school or community setting. Negotiation power {negotiation_power}%, credibility {credibility}%, {deals_closed} deals closed. Mood: {'confident' if negotiation_power > 60 else 'tense' if credibility < 30 else 'focused'}. Semi-realistic illustration of young teenage negotiators in a modern setting."
+  },
+  "rounds": [
+    {
+      "round_id": "scenario_1_event_budget",
+      "round_title": "Scenario 1: The School Event Budget",
+      "situation": "The school annual day is coming up, but the principal has slashed the budget by 40%. As head of the organizing committee, you must negotiate with the principal to get more funds. Your drama club, dance team, and science fair all need resources — but so does the sports day happening the same month.",
+      "goal": "Negotiate with the principal to secure a fair budget for the annual day while learning about positions vs. interests.",
+      "coaching_moment": "Positions vs. Interests: The principal's position is 'less budget.' Their interest is 'fiscal responsibility.' Understanding the difference is the first step in negotiation.",
+      "reflection_prompt": "What is the difference between what someone asks for and what they actually need?",
+      "ai_image_prompt": "A student sitting across from a school principal in an office, budget papers on the desk, school event poster on the wall, earnest conversation, semi-realistic",
+      "choices": [
+        {
+          "id": "s1_demand_full",
+          "label": "A. Demand the Full Budget Back",
+          "description": "March in and insist you need every rupee restored. Your position is firm: full budget or nothing.",
+          "delta": {
+            "negotiation_power": 5,
+            "relationship_capital": -8,
+            "deal_value": 3,
+            "credibility": -5,
+            "preparation_level": -3,
+            "win_win_score": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Bold but risky. Demanding without understanding the principal's constraints makes you look unprepared. This is positional bargaining — you stated what you want without asking why the budget was cut.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "s1_explore_interests",
+          "label": "B. Ask Why the Budget Was Cut",
+          "description": "Start by understanding the principal's concerns. Ask questions: What's driving the cut? What are the school's priorities this quarter?",
+          "delta": {
+            "negotiation_power": 3,
+            "relationship_capital": 8,
+            "deal_value": 5,
+            "strategy_skill": 5,
+            "emotional_intelligence": 5,
+            "credibility": 5,
+            "preparation_level": 8,
+            "win_win_score": 8,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Excellent interest-based approach! By asking 'why,' you discovered the real issue: the school is saving for a new computer lab. Now you can propose creative solutions that address both needs.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "s1_compromise_half",
+          "label": "C. Immediately Offer a 50-50 Compromise",
+          "description": "Propose splitting the difference right away — accept half the cut, keep half the original budget.",
+          "delta": {
+            "negotiation_power": -2,
+            "relationship_capital": 3,
+            "deal_value": 2,
+            "strategy_skill": 2,
+            "credibility": 3,
+            "win_win_score": 3,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "Quick and painless, but you left value on the table. Compromising before exploring options means you never discovered what creative deals were possible. Sometimes patience pays.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "s1_fundraise_proposal",
+          "label": "D. Propose a Sponsorship Plan",
+          "description": "Come prepared with a plan to raise external sponsorship from local businesses, reducing the school's cost while keeping the event grand.",
+          "delta": {
+            "negotiation_power": 8,
+            "relationship_capital": 5,
+            "deal_value": 8,
+            "strategy_skill": 8,
+            "credibility": 8,
+            "preparation_level": 10,
+            "win_win_score": 10,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Brilliant! You expanded the pie instead of fighting over a fixed budget. This is the essence of integrative negotiation — creating value that didn't exist before. The principal is impressed!",
+          "requires": {
+            "resource": "preparation_level",
+            "op": ">=",
+            "value": 20,
+            "label": "Requires Preparation Level >= 20"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_2_batna",
+      "round_title": "Scenario 2: The BATNA Lesson",
+      "situation": "Two teams want the auditorium for the same Saturday — your debate club and the dance team. The school admin says whoever negotiates better gets priority. Your debate coach hints that the community center down the road is available as a backup venue.",
+      "goal": "Use your BATNA (Best Alternative to a Negotiated Agreement) to negotiate for the auditorium or find a creative solution.",
+      "coaching_moment": "BATNA: Your power in any negotiation comes from your alternatives. The community center is your BATNA — the better your backup, the stronger your position.",
+      "reflection_prompt": "How does having a backup plan change how you negotiate?",
+      "ai_image_prompt": "Two student teams facing each other in a school hallway, auditorium doors behind them, one team holding debate trophies, the other in dance costumes, semi-realistic",
+      "choices": [
+        {
+          "id": "s2_leverage_batna",
+          "label": "A. Reveal Your BATNA Strategically",
+          "description": "Mention casually that you have the community center available. This shows you don't desperately need the auditorium, giving you leverage.",
+          "delta": {
+            "negotiation_power": 10,
+            "strategy_skill": 8,
+            "deal_value": 6,
+            "preparation_level": 5,
+            "relationship_capital": -2,
+            "credibility": 3,
+            "win_win_score": 2,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Smart BATNA play! By showing you have alternatives, the dance team realizes they can't just outmuscle you. You negotiated a timeshare — debates in the morning, dance rehearsal in the evening.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "s2_share_venue",
+          "label": "B. Propose Sharing the Auditorium",
+          "description": "Suggest a time-split: debate practice from 9 AM to 1 PM, dance from 2 PM to 6 PM. Both teams benefit.",
+          "delta": {
+            "negotiation_power": 3,
+            "relationship_capital": 10,
+            "deal_value": 5,
+            "emotional_intelligence": 5,
+            "credibility": 8,
+            "win_win_score": 12,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Classic win-win! You found a solution that gives both teams what they need. The dance team captain thanks you publicly — your relationship capital soars.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "s2_escalate",
+          "label": "C. Take It to the Principal",
+          "description": "Escalate to the principal and argue your debate club deserves priority because of an upcoming inter-school competition.",
+          "delta": {
+            "negotiation_power": 5,
+            "relationship_capital": -10,
+            "deal_value": 4,
+            "credibility": -5,
+            "win_win_score": -8,
+            "emotional_intelligence": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "You won the battle but may have lost the war. The dance team feels cheated and the principal is annoyed you couldn't resolve it yourselves. Escalating should be a last resort, not the first move.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "s2_walk_away",
+          "label": "D. Use Your BATNA — Take the Community Center",
+          "description": "Walk away from the auditorium negotiation entirely. The community center is actually quieter and more suited to debate practice.",
+          "delta": {
+            "negotiation_power": 5,
+            "relationship_capital": 5,
+            "strategy_skill": 5,
+            "preparation_level": 5,
+            "win_win_score": 5,
+            "credibility": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Sometimes the best negotiation is knowing when to walk away. Your BATNA was actually better than the deal on the table! The dance team is grateful, and you got a better venue. Elegant move.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_3_anchoring",
+      "round_title": "Scenario 3: The Anchoring Effect",
+      "situation": "You're organizing a school trip and need to negotiate bus rates with a transport company. The company quotes 25,000 rupees for 2 buses. Your budget is 18,000. Another student from a rival school whispers that they got it for 15,000 last month.",
+      "goal": "Learn about anchoring — the first number thrown sets the tone for the entire negotiation.",
+      "coaching_moment": "Anchoring: The first offer in a negotiation sets a psychological reference point. Whoever anchors first often has an advantage — but only if the anchor is credible.",
+      "reflection_prompt": "Why does the first number mentioned in a negotiation carry so much weight?",
+      "ai_image_prompt": "A student negotiating with a bus company owner at a transport office, bus fleet in background, calculator on table, school trip brochure visible, semi-realistic",
+      "choices": [
+        {
+          "id": "s3_counter_anchor",
+          "label": "A. Counter-Anchor at 12,000",
+          "description": "Start aggressively low at 12,000 rupees to pull the final price down toward your range.",
+          "delta": {
+            "negotiation_power": 8,
+            "strategy_skill": 8,
+            "deal_value": 6,
+            "relationship_capital": -5,
+            "credibility": -3,
+            "win_win_score": -3,
+            "preparation_level": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Strong counter-anchor! You pulled the negotiation range down. The final price landed at 17,000 — within budget. But the bus company feels squeezed and might cut corners on service quality.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "s3_use_evidence",
+          "label": "B. Present Market Research",
+          "description": "Show the transport company your research: competitor prices, the rival school's rate, and average market rates. Let data do the anchoring.",
+          "delta": {
+            "negotiation_power": 6,
+            "strategy_skill": 10,
+            "deal_value": 8,
+            "preparation_level": 10,
+            "credibility": 8,
+            "relationship_capital": 3,
+            "win_win_score": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Evidence-based anchoring is the most credible approach! The company respects your preparation and offers 16,500 with better buses. Your credibility just went up — they'll want to work with you again.",
+          "requires": {
+            "resource": "preparation_level",
+            "op": ">=",
+            "value": 25,
+            "label": "Requires Preparation Level >= 25"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "s3_accept_and_negotiate_extras",
+          "label": "C. Accept the Price but Negotiate Extras",
+          "description": "Agree to 25,000 but ask for additional services: water bottles, music system, extra stops, and flexible timing.",
+          "delta": {
+            "negotiation_power": 2,
+            "deal_value": 4,
+            "relationship_capital": 6,
+            "emotional_intelligence": 5,
+            "credibility": 5,
+            "win_win_score": 8,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Creative! You didn't fight the price but expanded what you get for it. This is 'logrolling' — trading items of different value to both sides. The company happily adds extras that cost them little.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "s3_bundle_deal",
+          "label": "D. Offer a Multi-Trip Contract",
+          "description": "Propose booking 3 trips this year at a bulk discount rate. The company gets guaranteed business, you get better per-trip pricing.",
+          "delta": {
+            "negotiation_power": 5,
+            "strategy_skill": 8,
+            "deal_value": 10,
+            "relationship_capital": 8,
+            "credibility": 5,
+            "win_win_score": 10,
+            "preparation_level": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Masterclass in value creation! By committing to multiple trips, you gave the company revenue security and got each trip at 15,000. Both sides are thrilled. This is integrative bargaining at its best.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_4_logrolling",
+      "round_title": "Scenario 4: The Art of Logrolling",
+      "situation": "Your school's inter-house competition needs judges. The science department wants lab time, the arts department wants auditorium time, and both want the best display area for the exhibition. You've been asked to mediate as student council president.",
+      "goal": "Find creative trades (logrolling) so both departments get what matters most to them.",
+      "coaching_moment": "Logrolling: Trading things you value less for things you value more. Not everything has equal value to both sides — find the asymmetries!",
+      "reflection_prompt": "When two sides want different things, how can you create trades that make both sides feel like winners?",
+      "ai_image_prompt": "Student council president mediating between science and arts teachers in a school conference room, whiteboard with trade proposals, collaborative atmosphere, semi-realistic",
+      "choices": [
+        {
+          "id": "s4_split_equally",
+          "label": "A. Split Everything 50-50",
+          "description": "Divide lab time, auditorium time, and display space equally between both departments. Fair and simple.",
+          "delta": {
+            "relationship_capital": 3,
+            "deal_value": 2,
+            "credibility": 3,
+            "win_win_score": 3,
+            "emotional_intelligence": 2,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "feedback": "Fair but uninspired. Both departments got less than they needed on what matters most. A 50-50 split ignores that each side values things differently. Sometimes 'equal' isn't 'equitable.'",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "s4_logroll_trade",
+          "label": "B. Propose Strategic Trades",
+          "description": "Discover that science values lab time most and arts values auditorium time most. Trade: science gets extra lab hours, arts gets extra stage time. Both sacrifice what matters less to get what matters more.",
+          "delta": {
+            "strategy_skill": 10,
+            "deal_value": 10,
+            "relationship_capital": 8,
+            "emotional_intelligence": 8,
+            "credibility": 5,
+            "win_win_score": 12,
+            "negotiation_power": 5,
+            "preparation_level": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Perfect logrolling! By discovering each side's true priorities, you created trades where both departments got more of what they care about. The science head and arts head are both grateful. This is the core of integrative negotiation.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "s4_expand_pie",
+          "label": "C. Find Additional Resources",
+          "description": "Negotiate with the principal to open the library hall as a third venue, expanding total available space for everyone.",
+          "delta": {
+            "strategy_skill": 8,
+            "deal_value": 8,
+            "negotiation_power": 5,
+            "preparation_level": 8,
+            "relationship_capital": 5,
+            "win_win_score": 8,
+            "credibility": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "You expanded the pie! Instead of fighting over limited resources, you found new resources. Both departments get what they need without sacrifice. Creative problem-solving at its finest.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "s4_favor_one",
+          "label": "D. Side with the Bigger Department",
+          "description": "The science department has more students, so give them priority. They're a bigger voting bloc for you as student council president.",
+          "delta": {
+            "negotiation_power": 5,
+            "deal_value": 3,
+            "relationship_capital": -10,
+            "credibility": -8,
+            "win_win_score": -10,
+            "emotional_intelligence": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "ethical_reasoning"
+          ],
+          "feedback": "Politically expedient but ethically questionable. The arts department feels betrayed, and other students notice you played favorites. Short-term gain, long-term credibility loss. A mediator must be neutral.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_5_zopa",
+      "round_title": "Scenario 5: Finding the ZOPA",
+      "situation": "Your school wants to host a combined sports meet with a neighboring school. You need them to share 60% of the costs (you're providing the ground). They say they'll pay 30% maximum. Somewhere between your ranges lies the Zone of Possible Agreement.",
+      "goal": "Identify the ZOPA (Zone of Possible Agreement) and close a deal that both schools accept.",
+      "coaching_moment": "ZOPA: The overlap between what each side will accept. If your minimum is 40% and their maximum is 55%, the ZOPA is 40-55%. Finding it requires knowing both sides' limits.",
+      "reflection_prompt": "How do you figure out what the other side is truly willing to accept vs. what they first claim?",
+      "ai_image_prompt": "Two groups of school representatives at a meeting table with a sports field visible through the window, diagrams showing cost-sharing proposals, semi-realistic",
+      "choices": [
+        {
+          "id": "s5_probe_limits",
+          "label": "A. Ask Probing Questions",
+          "description": "Explore what the other school values: media coverage, trophy hosting rights, or choice of sports. Their real flexibility might be hidden.",
+          "delta": {
+            "strategy_skill": 8,
+            "emotional_intelligence": 8,
+            "preparation_level": 8,
+            "deal_value": 6,
+            "negotiation_power": 5,
+            "relationship_capital": 5,
+            "credibility": 3,
+            "win_win_score": 8,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Expert probing! You discovered that the other school cares more about hosting the trophy ceremony than the money. By giving them hosting rights, they agreed to 50% cost share. You found the ZOPA by understanding their real interests!",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "s5_anchor_high",
+          "label": "B. Anchor at 70% and Negotiate Down",
+          "description": "Start with an aggressive ask of 70% cost share, expecting to land in the 50-55% range after negotiation.",
+          "delta": {
+            "negotiation_power": 8,
+            "strategy_skill": 5,
+            "deal_value": 5,
+            "relationship_capital": -5,
+            "credibility": -3,
+            "win_win_score": -3,
+            "preparation_level": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "The anchor worked — you landed at 52%. But the other school's sports captain is upset at your aggressive tactics. They might not agree to future events. Aggressive anchoring can backfire on repeat negotiations.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "s5_package_deal",
+          "label": "C. Create a Package Deal",
+          "description": "Propose a comprehensive package: 45% cost share plus they get trophy hosting, media coverage rights, and first pick of events. Multiple items create room for trades.",
+          "delta": {
+            "strategy_skill": 10,
+            "deal_value": 10,
+            "relationship_capital": 8,
+            "emotional_intelligence": 5,
+            "credibility": 8,
+            "win_win_score": 10,
+            "negotiation_power": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Brilliant packaging! By bundling money with non-monetary items, you expanded the ZOPA. The other school agreed to 48% cost share with extras that cost you nothing but mean a lot to them. Both schools celebrate!",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "s5_walk_away_threat",
+          "label": "D. Threaten to Cancel the Joint Meet",
+          "description": "Say 'If we can't agree, we'll just host our own meet.' This is your walkaway power — the negotiation equivalent of BATNA leverage.",
+          "delta": {
+            "negotiation_power": 8,
+            "deal_value": 3,
+            "relationship_capital": -12,
+            "credibility": -5,
+            "win_win_score": -8,
+            "emotional_intelligence": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Threats are a nuclear option. The other school agreed to 55% out of fear, but they're furious. Their principal calls your principal to complain. Using threats damages trust far more than the deal is worth.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_deadlock",
+      "id": "crisis_deadlock",
+      "round_title": "CRISIS: Negotiation Deadlock!",
+      "situation": "The Hawk has walked out of a critical inter-school competition negotiation! Both sides are dug into their positions, and the event planning committee says the competition will be cancelled entirely if you can't reach an agreement within the hour. Tensions are sky-high. Other students are watching to see how you handle this.",
+      "goal": "Break the deadlock before the inter-school competition is cancelled.",
+      "coaching_moment": "Breaking Deadlocks: When negotiations stall, go back to shared interests. Ask 'What do we both lose if this fails?' Reframe the conversation from positions to consequences of no deal.",
+      "reflection_prompt": "When a negotiation reaches a complete standstill, what techniques can restart the conversation?",
+      "ai_image_prompt": "Two groups of students at opposite ends of a long table, arms crossed, frustrated expressions, a mediator standing between them, clock on wall showing urgency, semi-realistic",
+      "condition": {
+        "resource": "deal_value",
+        "operator": "<",
+        "value": 10
+      },
+      "choices": [
+        {
+          "id": "dl_reframe",
+          "label": "A. Reframe Around Shared Losses",
+          "description": "Ask both sides: 'What happens if this competition gets cancelled? Who loses?' Shift focus from what each side wants to what everyone loses if the deal falls apart.",
+          "delta": {
+            "deal_value": 10,
+            "relationship_capital": 8,
+            "emotional_intelligence": 10,
+            "credibility": 8,
+            "win_win_score": 10,
+            "strategy_skill": 5,
+            "negotiation_power": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Masterful reframing! Both sides realized cancellation hurts everyone — students lose competition experience, schools lose prestige. The shared fear of loss unlocked a compromise. This is 'loss aversion' in action.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "dl_small_wins",
+          "label": "B. Start with Small Agreements",
+          "description": "Break the big deadlock into tiny pieces. Agree on small things first — the date, the venue layout, the opening ceremony. Build momentum with micro-agreements.",
+          "delta": {
+            "deal_value": 8,
+            "strategy_skill": 8,
+            "relationship_capital": 5,
+            "emotional_intelligence": 5,
+            "credibility": 5,
+            "win_win_score": 5,
+            "preparation_level": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "The 'small wins' technique works! Each tiny agreement built trust and momentum. By the time you reached the hard issues, both sides had invested too much to walk away. Patience and persistence pay off.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "dl_bring_mediator",
+          "label": "C. Bring in a Neutral Mediator",
+          "description": "Ask the school counselor to mediate. Sometimes a fresh, neutral perspective is needed to break through.",
+          "delta": {
+            "deal_value": 6,
+            "relationship_capital": 8,
+            "credibility": 5,
+            "win_win_score": 8,
+            "negotiation_power": -3,
+            "emotional_intelligence": 3,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Smart move to recognize your limits! The counselor's fresh perspective helped both sides see past their egos. You lose some negotiation credit but the deal gets done. Knowing when to seek help is wisdom.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "dl_ultimatum",
+          "label": "D. Issue a Final Offer Ultimatum",
+          "description": "Present your last offer with a firm deadline. 'This is our final offer — take it in 15 minutes or we walk.'",
+          "delta": {
+            "negotiation_power": 8,
+            "deal_value": 5,
+            "relationship_capital": -12,
+            "credibility": -8,
+            "win_win_score": -10,
+            "emotional_intelligence": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Ultimatums are the bluntest tool in negotiation. The Hawk matches your aggression with his own. The deal barely survives, but both sides feel bitter. Nobody wins a war of ultimatums.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_6_emotional_negotiation",
+      "round_title": "Scenario 6: The Emotional Negotiation",
+      "situation": "Your best friend wants to be the lead in the school play, but so do you. The drama teacher says only one of you can have the lead role — the other gets a supporting part. This negotiation is personal, emotional, and tests your relationship.",
+      "goal": "Navigate a high-emotion negotiation where the relationship matters as much as the outcome.",
+      "coaching_moment": "Emotional Intelligence in Negotiation: When emotions run high, separate the people from the problem. You can be soft on the person and hard on the issue.",
+      "reflection_prompt": "How do you handle a negotiation when the other person is someone you care about?",
+      "ai_image_prompt": "Two close friends having a serious conversation backstage of a school theater, scripts in hand, emotional but respectful, stage lights in background, semi-realistic",
+      "choices": [
+        {
+          "id": "s6_separate_people_problem",
+          "label": "A. Separate the Person from the Problem",
+          "description": "Tell your friend: 'Our friendship is more important than any role. Let's figure this out as a team, not as competitors.' Then discuss the merits objectively.",
+          "delta": {
+            "emotional_intelligence": 12,
+            "relationship_capital": 10,
+            "credibility": 8,
+            "win_win_score": 8,
+            "deal_value": 5,
+            "strategy_skill": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Emotional maturity at its finest! By naming the elephant in the room (your friendship), you defused the tension. Together, you proposed alternating leads for the two shows. The drama teacher was so impressed she gave you both expanded roles.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "s6_defer_gracefully",
+          "label": "B. Gracefully Step Aside",
+          "description": "Your friend has been dreaming about this role all year. Offer to take the supporting role — sometimes the best negotiation is one you choose not to fight.",
+          "delta": {
+            "relationship_capital": 15,
+            "emotional_intelligence": 8,
+            "credibility": 10,
+            "win_win_score": 5,
+            "negotiation_power": -5,
+            "deal_value": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "A generous act that costs you the lead but earns immeasurable goodwill. Your friend is deeply touched and becomes your strongest ally in future negotiations. Sometimes the best deal is the one where you invest in the relationship.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "s6_compete_fairly",
+          "label": "C. Compete Based on Merit",
+          "description": "Propose that both of you audition fairly and let the drama teacher decide based on skill alone. May the best performer win.",
+          "delta": {
+            "negotiation_power": 5,
+            "deal_value": 3,
+            "credibility": 5,
+            "strategy_skill": 3,
+            "relationship_capital": -3,
+            "emotional_intelligence": 3,
+            "win_win_score": -2
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Fair but clinical. Your friend feels you're turning a personal matter into a cold competition. The audition goes well, but win or lose, the friendship has a small crack. Fairness isn't always the same as kindness.",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "s6_manipulate_emotion",
+          "label": "D. Use Guilt to Get the Role",
+          "description": "Remind your friend about all the times you helped them. Lay on the guilt: 'After everything I've done for you, you can't let me have this one thing?'",
+          "delta": {
+            "negotiation_power": 5,
+            "deal_value": 3,
+            "relationship_capital": -15,
+            "credibility": -12,
+            "emotional_intelligence": -8,
+            "win_win_score": -10
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "ethical_reasoning"
+          ],
+          "feedback": "Emotional manipulation is the dark side of negotiation. You might get the role, but you've damaged trust severely. Your friend pulls away, and others who heard about it question your character. Never trade relationships for short-term wins.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_7_multi_party",
+      "round_title": "Scenario 7: The Multi-Party Challenge",
+      "situation": "The school is forming a team for the Inter-School Debate Championship. Three classes want representation: Class 7A (strongest debaters), Class 7B (most creative speakers), and Class 7C (hardest workers). Only 6 spots. You must negotiate a fair selection process that all three classes accept.",
+      "goal": "Navigate a multi-party negotiation where three groups have competing interests.",
+      "coaching_moment": "Multi-Party Negotiations: With more parties, coalitions form, complexity rises, and managing fairness becomes crucial. Look for bridging solutions that satisfy all parties' core interests.",
+      "reflection_prompt": "What changes when you negotiate with multiple parties instead of just one?",
+      "ai_image_prompt": "Three groups of students at separate tables in a school meeting room, each with their class banner, a student mediator at the center with a whiteboard, semi-realistic",
+      "choices": [
+        {
+          "id": "s7_merit_based",
+          "label": "A. Pure Merit Selection",
+          "description": "Hold open auditions where any student from any class can try out. The best 6 debaters make the team, regardless of class.",
+          "delta": {
+            "credibility": 8,
+            "deal_value": 5,
+            "negotiation_power": 3,
+            "relationship_capital": -3,
+            "win_win_score": 2,
+            "strategy_skill": 3,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Merit-based selection is fair in principle, but Class 7C feels disadvantaged since their strengths are effort, not natural talent. One size doesn't always fit all.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "s7_quota_plus_merit",
+          "label": "B. Hybrid: Quota + Merit",
+          "description": "Guarantee 1 spot per class (3 spots total), then select 3 more by open audition. Every class gets representation plus merit is rewarded.",
+          "delta": {
+            "strategy_skill": 8,
+            "deal_value": 8,
+            "relationship_capital": 10,
+            "credibility": 8,
+            "win_win_score": 10,
+            "emotional_intelligence": 5,
+            "negotiation_power": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Elegant solution! The quota ensures inclusion, and open auditions reward talent. All three classes feel heard. This is 'bridging' — finding a solution that meets the core interests of all parties simultaneously.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "s7_coalition",
+          "label": "C. Form a Coalition with 7A",
+          "description": "Privately approach Class 7A and propose an alliance: they support your selection process, you support their top debaters. Together you outvote 7B and 7C.",
+          "delta": {
+            "negotiation_power": 10,
+            "deal_value": 5,
+            "strategy_skill": 5,
+            "relationship_capital": -8,
+            "credibility": -10,
+            "win_win_score": -8,
+            "emotional_intelligence": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Coalition politics! You and 7A win, but 7B and 7C feel excluded and form their own rival alliance. In multi-party negotiations, coalitions create winners and losers — and the losers remember.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "s7_creative_roles",
+          "label": "D. Create Specialized Roles",
+          "description": "Propose 6 specialized roles: 2 main debaters (7A), 2 creative speakers (7B), 2 researchers/prep team (7C). Each class contributes their strength.",
+          "delta": {
+            "strategy_skill": 10,
+            "emotional_intelligence": 10,
+            "deal_value": 8,
+            "relationship_capital": 8,
+            "credibility": 8,
+            "win_win_score": 12,
+            "negotiation_power": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Genius reframe! Instead of who gets spots, you asked what each class does best. Matching roles to strengths made everyone feel valued. The team performs brilliantly because each member contributes their specialty.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_trust_breach",
+      "id": "crisis_trust_breach",
+      "round_title": "CRISIS: Trust Breach!",
+      "situation": "Maya has publicly announced she can no longer partner with you after you broke a promise about sharing credit for a joint project. Other students are taking sides. Your credibility across the school is crumbling. Two upcoming negotiations are at risk because counterparts don't trust your word.",
+      "goal": "Rebuild broken trust before your reputation is permanently damaged.",
+      "coaching_moment": "Trust Repair: Trust is built slowly and lost quickly. The steps to rebuild are: acknowledge the breach, take responsibility (no excuses), make amends through actions (not just words), and be patient.",
+      "reflection_prompt": "Is it possible to fully rebuild trust once it's broken? What does it take?",
+      "ai_image_prompt": "A student standing alone in a school corridor while other students whisper in groups, broken handshake symbol on a poster behind them, regretful expression, semi-realistic",
+      "condition": {
+        "resource": "credibility",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "tb_full_accountability",
+          "label": "A. Public Apology & Full Accountability",
+          "description": "Stand up in assembly and take full responsibility. No excuses, no deflecting. Acknowledge specifically what you did wrong and commit to specific changes.",
+          "delta": {
+            "credibility": 15,
+            "relationship_capital": 12,
+            "emotional_intelligence": 10,
+            "win_win_score": 8,
+            "negotiation_power": -5,
+            "deal_value": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Courage under fire! Public accountability is painful but powerful. Maya is moved by your sincerity. Other students respect your honesty. Trust begins to heal — slowly, but genuinely.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "tb_actions_over_words",
+          "label": "B. Demonstrate Change Through Actions",
+          "description": "Don't just apologize — show change. Give Maya full credit on the next project. Follow through on every small promise. Let actions speak louder than words.",
+          "delta": {
+            "credibility": 12,
+            "relationship_capital": 10,
+            "win_win_score": 10,
+            "emotional_intelligence": 5,
+            "preparation_level": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "empathy"
+          ],
+          "feedback": "Actions speak volumes! Over the next few weeks, your consistent follow-through slowly rebuilds trust. Maya notices and gradually reopens communication. Trust repair is a marathon, not a sprint.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "tb_deflect_blame",
+          "label": "C. Explain Your Side of the Story",
+          "description": "Tell everyone there was a misunderstanding. Share your perspective: the promise was vague, the situation was complex, and Maya is overreacting.",
+          "delta": {
+            "credibility": -5,
+            "relationship_capital": -8,
+            "negotiation_power": 3,
+            "emotional_intelligence": -5,
+            "win_win_score": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Deflecting responsibility when trust is broken makes everything worse. People see through excuses. Maya feels even more betrayed, and bystanders lose faith in you. When you're wrong, own it.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "tb_fresh_start",
+          "label": "D. Propose a Trust-Building Agreement",
+          "description": "Meet Maya privately. Propose a written collaboration agreement for future projects — clear roles, shared credit, regular check-ins. Structure prevents repeat failures.",
+          "delta": {
+            "credibility": 10,
+            "relationship_capital": 8,
+            "strategy_skill": 8,
+            "preparation_level": 8,
+            "win_win_score": 8,
+            "deal_value": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Smart systemic fix! A written agreement shows Maya you're serious about change. The structure protects both of you from future misunderstandings. Maya appreciates the effort and agrees to try again.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_8_hardball",
+      "round_title": "Scenario 8: Hardball Tactics",
+      "situation": "The school is buying new sports equipment. The vendor is experienced and using hardball tactics: 'My prices are final,' 'Other schools already agreed,' 'This offer expires today.' The sports teacher has asked you to negotiate because of your growing reputation.",
+      "goal": "Recognize and counter common hardball negotiation tactics without becoming aggressive yourself.",
+      "coaching_moment": "Hardball Tactics: Good cop/bad cop, take-it-or-leave-it, artificial deadlines, and the 'other buyers' bluff. The best defense: name the tactic, stay calm, and redirect to interests.",
+      "reflection_prompt": "How can you stand firm against aggressive tactics without becoming aggressive yourself?",
+      "ai_image_prompt": "A confident student facing a professional sports equipment salesperson at a school desk, sporting goods catalogs spread out, calm student vs pushy vendor dynamic, semi-realistic",
+      "choices": [
+        {
+          "id": "s8_name_the_tactic",
+          "label": "A. Name the Tactic Directly",
+          "description": "Calmly say: 'I notice you're using deadline pressure and the \"other buyers\" technique. Let's set those tactics aside and talk about what fair pricing actually looks like.'",
+          "delta": {
+            "strategy_skill": 10,
+            "negotiation_power": 8,
+            "credibility": 8,
+            "emotional_intelligence": 8,
+            "deal_value": 6,
+            "relationship_capital": 3,
+            "win_win_score": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Naming the tactic neutralizes it! The vendor is surprised you recognized his playbook. He drops the act and engages seriously. You negotiate a 20% discount with a quality guarantee. Knowledge is power.",
+          "requires": {
+            "resource": "strategy_skill",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Strategy Skill >= 40"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "s8_counter_with_data",
+          "label": "B. Come Prepared with Market Prices",
+          "description": "Pull out a spreadsheet comparing 5 vendors' prices. Let the data speak. 'We've done our homework. Here's what the market says your equipment is worth.'",
+          "delta": {
+            "preparation_level": 10,
+            "negotiation_power": 8,
+            "strategy_skill": 8,
+            "deal_value": 8,
+            "credibility": 8,
+            "win_win_score": 5,
+            "relationship_capital": 3,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Data demolishes bluffs! When you showed competitor prices, the vendor's 'final price' suddenly had room to move. You got a 25% discount. Preparation is the ultimate negotiation superpower.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "s8_walk_away",
+          "label": "C. Walk Away Calmly",
+          "description": "Say 'Thank you for your time. We'll compare offers and get back to you.' Let your BATNA do the talking. If the price is genuinely final, you need other options.",
+          "delta": {
+            "negotiation_power": 5,
+            "credibility": 5,
+            "strategy_skill": 5,
+            "relationship_capital": 3,
+            "emotional_intelligence": 5,
+            "preparation_level": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Walking away is a powerful signal. The vendor calls back the next day with a 15% discount. Having the discipline to leave shows you have alternatives. But be ready to actually walk — bluffing destroys credibility.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "s8_match_hardball",
+          "label": "D. Match Hardball with Hardball",
+          "description": "Fire back: 'We'll go to your competitor. They offered us 40% less. Take our offer or lose the contract.' Fight fire with fire.",
+          "delta": {
+            "negotiation_power": 5,
+            "deal_value": 3,
+            "relationship_capital": -8,
+            "credibility": -5,
+            "win_win_score": -8,
+            "emotional_intelligence": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Matching hardball escalates the conflict. The vendor sees through your bluff (you didn't actually get another quote). Both sides dig in. You get a mediocre deal and a vendor who'll never prioritize your school. Aggression begets aggression.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_9_community_project",
+      "round_title": "Scenario 9: The Community Project",
+      "situation": "Your school is partnering with the local community to build a reading library. The panchayat (local council) wants it near the market for foot traffic. Parents want it near the school for safety. The librarian wants the park location for quiet. Three stakeholders, one budget, and you're the student liaison.",
+      "goal": "Negotiate with multiple community stakeholders to find the best library location.",
+      "coaching_moment": "Interest Mapping: Before proposing solutions, map every stakeholder's interests (not positions). The panchayat wants visibility, parents want safety, the librarian wants quiet. Can one location satisfy all three?",
+      "reflection_prompt": "When multiple stakeholders want different things, how do you decide what's most important?",
+      "ai_image_prompt": "A community meeting in an outdoor setting with local council members, parents, and a librarian gathered around a map of the town, student presenting ideas, semi-realistic",
+      "choices": [
+        {
+          "id": "s9_interest_map",
+          "label": "A. Map Everyone's Interests First",
+          "description": "Create a visual interest map on a whiteboard. List what each stakeholder actually needs (not just what they say). Look for overlaps and creative solutions.",
+          "delta": {
+            "strategy_skill": 10,
+            "emotional_intelligence": 8,
+            "preparation_level": 8,
+            "deal_value": 8,
+            "relationship_capital": 8,
+            "credibility": 8,
+            "win_win_score": 10,
+            "negotiation_power": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Brilliant facilitation! Your interest map revealed that the park location near the school boundary actually satisfies all three needs: quiet (park), safe (near school), visible (on the main walking path). A solution nobody had considered until interests were mapped!",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "s9_majority_rules",
+          "label": "B. Vote on It — Majority Wins",
+          "description": "Put it to a democratic vote among all stakeholders. The location with the most votes wins.",
+          "delta": {
+            "deal_value": 3,
+            "credibility": 3,
+            "negotiation_power": 2,
+            "relationship_capital": -5,
+            "win_win_score": -3,
+            "emotional_intelligence": -2
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "adaptability"
+          ],
+          "feedback": "Democracy is fair but crude for negotiations with unequal stakes. The librarian (one vote) gets overruled, feels unheard, and may not give the new library their best effort. Negotiation should aim higher than majority rule.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "s9_phased_approach",
+          "label": "C. Propose a Phased Plan",
+          "description": "Start with a small reading room near the school (quick win for parents), then build the main library near the market in Phase 2 (panchayat wins), with a quiet reading garden added in Phase 3 (librarian wins).",
+          "delta": {
+            "strategy_skill": 8,
+            "deal_value": 6,
+            "relationship_capital": 10,
+            "credibility": 5,
+            "win_win_score": 8,
+            "preparation_level": 5,
+            "emotional_intelligence": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "A phased approach gives everyone hope! Each stakeholder sees their interest addressed in the timeline. The panchayat agrees to extra funding for Phase 2 because they feel invested. Patience and planning create buy-in.",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "s9_defer_to_expert",
+          "label": "D. Bring in an Urban Planner",
+          "description": "Suggest hiring a professional urban planner to recommend the location based on data: foot traffic, noise levels, accessibility. Let expertise decide.",
+          "delta": {
+            "credibility": 5,
+            "deal_value": 3,
+            "preparation_level": 5,
+            "negotiation_power": -3,
+            "relationship_capital": 2,
+            "strategy_skill": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "feedback": "Bringing in an expert adds credibility but signals you couldn't resolve it yourself. The expert's recommendation is good, but some stakeholders feel their voices were bypassed by 'outsider authority.' Balance expert input with stakeholder voice.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_10_ethics",
+      "round_title": "Scenario 10: The Ethical Dilemma",
+      "situation": "You discover that your inter-school competition rival has been training with leaked question papers. You could report them (fair but damaging to their team), use the information to prepare counter-strategies (strategic but ethically gray), stay silent (safe but complicit), or confront them privately.",
+      "goal": "Navigate an ethical negotiation where doing the right thing may come at a personal cost.",
+      "coaching_moment": "Ethics in Negotiation: Principled negotiation means maintaining integrity even when it's costly. Short-term gains from dishonesty always carry long-term credibility costs.",
+      "reflection_prompt": "Is there ever a good reason to bend ethical rules in a negotiation? What are the long-term consequences?",
+      "ai_image_prompt": "A student at a crossroads in a school hallway, one path labeled 'Report' and another 'Stay Silent', moral dilemma visualization, thought bubbles showing consequences, semi-realistic",
+      "choices": [
+        {
+          "id": "s10_confront_privately",
+          "label": "A. Confront Them Privately First",
+          "description": "Meet the rival team leader privately. Give them a chance to come clean themselves. 'I know about the leaked papers. You should report it before someone else does.'",
+          "delta": {
+            "emotional_intelligence": 10,
+            "credibility": 10,
+            "relationship_capital": 8,
+            "win_win_score": 8,
+            "deal_value": 5,
+            "strategy_skill": 5,
+            "negotiation_power": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Courageous and compassionate! You gave them dignity by letting them self-report. The rival captain is shaken but grateful you came to them first instead of going public. They withdraw the leaked papers and your credibility soars.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "s10_report_formally",
+          "label": "B. Report to the Competition Committee",
+          "description": "Do the right thing formally. File a report with evidence. The process should handle it — that's what rules are for.",
+          "delta": {
+            "credibility": 12,
+            "negotiation_power": 5,
+            "deal_value": 3,
+            "relationship_capital": -5,
+            "emotional_intelligence": 3,
+            "win_win_score": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Doing the right thing isn't always popular. The rival school is furious and accuses you of sabotage. But the committee investigates, confirms the leak, and your school's integrity is recognized. Ethical choices build lasting reputation.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "s10_use_info",
+          "label": "C. Use the Information Strategically",
+          "description": "Don't report, don't confront — just prepare counter-strategies based on knowing what questions they've seen. Use the knowledge to your advantage.",
+          "delta": {
+            "strategy_skill": 8,
+            "negotiation_power": 5,
+            "deal_value": 5,
+            "credibility": -12,
+            "relationship_capital": -5,
+            "win_win_score": -8,
+            "emotional_intelligence": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Strategic but unethical. You're essentially becoming complicit in the cheating. When the truth eventually comes out (and it always does), your credibility takes a devastating hit. Win fairly or don't win at all.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "s10_stay_silent",
+          "label": "D. Stay Silent and Focus on Your Own Prep",
+          "description": "Not your problem. Focus on your own team's preparation and let the competition play out naturally.",
+          "delta": {
+            "preparation_level": 5,
+            "strategy_skill": 3,
+            "credibility": -5,
+            "win_win_score": -3,
+            "emotional_intelligence": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Silence in the face of wrongdoing is a form of acceptance. When the leak is discovered later, people ask why you didn't speak up. Inaction has consequences too. Principled negotiators stand up for fairness.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_11_high_stakes",
+      "round_title": "Scenario 11: High-Stakes Sponsorship",
+      "situation": "A major education company is willing to sponsor your school's science olympiad team, but with conditions: they want their logo on uniforms, a promotional video, and exclusive 'study app' usage. The principal is excited about the money. Some teachers worry it's commercializing education. Parents have mixed feelings.",
+      "goal": "Negotiate corporate sponsorship terms that benefit students without compromising educational values.",
+      "coaching_moment": "Value vs. Values: In high-stakes negotiations, know your non-negotiables. Some things aren't for sale. The best negotiators protect their core values while still finding deals.",
+      "reflection_prompt": "When money is on the table, how do you protect things that shouldn't be for sale?",
+      "ai_image_prompt": "A school meeting with corporate sponsors on one side and school faculty on the other, sponsorship proposal documents, students observing from the back, professional setting, semi-realistic",
+      "choices": [
+        {
+          "id": "s11_set_boundaries",
+          "label": "A. Accept with Clear Boundaries",
+          "description": "Negotiate specific limits: logo on jerseys (yes), logo in classrooms (no). Promotional video (yes, student-approved). Study app trial (optional, not mandatory). Protect what matters.",
+          "delta": {
+            "deal_value": 10,
+            "strategy_skill": 10,
+            "credibility": 10,
+            "win_win_score": 8,
+            "relationship_capital": 5,
+            "emotional_intelligence": 5,
+            "negotiation_power": 5,
+            "preparation_level": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "Masterclass in boundary-setting! You got the sponsorship money while protecting educational independence. The company respects your professionalism. Teachers are relieved. This is principled negotiation at its best — firm on values, flexible on terms.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "s11_accept_all",
+          "label": "B. Accept All Conditions — Money Talks",
+          "description": "Take the full sponsorship with all conditions. The money will do so much good for the team. Sometimes pragmatism beats purism.",
+          "delta": {
+            "deal_value": 8,
+            "negotiation_power": 3,
+            "deals_closed": 1,
+            "credibility": -8,
+            "relationship_capital": -5,
+            "win_win_score": -5,
+            "emotional_intelligence": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "The money flows, but at what cost? The mandatory study app frustrates students. The promotional video feels exploitative. Teachers resent the commercialization. A negotiator who can't say 'no' isn't negotiating — they're capitulating.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "s11_counter_proposal",
+          "label": "C. Counter with a Partnership Model",
+          "description": "Propose a 'learning partnership' instead of pure sponsorship: the company provides resources AND mentorship, in exchange for brand association. Transform a transaction into a relationship.",
+          "delta": {
+            "strategy_skill": 10,
+            "deal_value": 8,
+            "relationship_capital": 10,
+            "credibility": 8,
+            "win_win_score": 10,
+            "emotional_intelligence": 8,
+            "preparation_level": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "You transformed a transactional sponsorship into a genuine partnership! The company sends mentors monthly, students get real-world learning, and the brand association feels organic. Both sides gain more than money can buy.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "s11_reject",
+          "label": "D. Reject the Sponsorship",
+          "description": "Say no. Education shouldn't be a billboard. Find alternative funding through community fundraising and grants.",
+          "delta": {
+            "credibility": 8,
+            "win_win_score": 3,
+            "relationship_capital": 3,
+            "deal_value": -5,
+            "negotiation_power": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Principled rejection. Some teachers applaud, but the science team loses resources. Walking away is powerful when you have alternatives — but do you? A skilled negotiator finds middle ground before rejecting entirely.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "scenario_12_final_negotiation",
+      "round_title": "Scenario 12: The Final Challenge",
+      "situation": "The district education officer invites your school to lead a first-ever inter-school collaborative festival. Five schools must agree on format, budget-sharing, event schedule, and which school hosts. Every school wants to host. Every school wants the biggest stage. You're the lead negotiator representing your school. Everything you've learned is needed now.",
+      "goal": "Apply all your negotiation skills to broker a five-school agreement for the collaborative festival.",
+      "coaching_moment": "Integration: This final scenario tests everything — BATNA, ZOPA, anchoring, logrolling, emotional intelligence, ethics, and multi-party dynamics. The best negotiators combine all these tools fluidly.",
+      "reflection_prompt": "Looking back at all 12 scenarios, what negotiation principle has been most valuable to you?",
+      "ai_image_prompt": "Five school delegations at a large round table in an auditorium, festival banners in background, student negotiators shaking hands, collaborative energy, semi-realistic",
+      "choices": [
+        {
+          "id": "s12_rotating_host",
+          "label": "A. Propose a Rotating Annual Festival",
+          "description": "Each school hosts one year in rotation. This year's host gets the main stage, others get specialized events matching their strengths. A 5-year vision that gives everyone their moment.",
+          "delta": {
+            "strategy_skill": 10,
+            "deal_value": 10,
+            "relationship_capital": 10,
+            "credibility": 10,
+            "win_win_score": 12,
+            "emotional_intelligence": 8,
+            "negotiation_power": 8,
+            "preparation_level": 5,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "A visionary proposal! The rotating model satisfies every school's desire to host while creating a lasting tradition. Budget sharing becomes easier when everyone has future skin in the game. You just applied BATNA, logrolling, and interest-based negotiation in one move. Professor Deal gives you a standing ovation!",
+          "requires": {
+            "resource": "credibility",
+            "op": ">=",
+            "value": 50,
+            "label": "Requires Credibility >= 50"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "s12_neutral_venue",
+          "label": "B. Neutral Venue Proposal",
+          "description": "Suggest hosting at a neutral community venue instead of any school. This removes the hosting rivalry entirely and focuses energy on the festival content.",
+          "delta": {
+            "deal_value": 8,
+            "relationship_capital": 8,
+            "credibility": 8,
+            "win_win_score": 8,
+            "strategy_skill": 5,
+            "emotional_intelligence": 5,
+            "negotiation_power": 3,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Creative lateral thinking! By removing the hosting question, you eliminated the biggest point of conflict. The community center is happy to host, schools focus on programming, and the festival thrives on content instead of ego.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "s12_your_school_hosts",
+          "label": "C. Campaign for Your School to Host",
+          "description": "Use your negotiation skills, reputation, and alliances to secure hosting rights for your school. You've earned this through 11 scenarios of building credibility.",
+          "delta": {
+            "negotiation_power": 10,
+            "deal_value": 8,
+            "strategy_skill": 5,
+            "relationship_capital": -5,
+            "credibility": -3,
+            "win_win_score": -5,
+            "emotional_intelligence": -3,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "You secured hosting! But four other schools feel outmaneuvered. The festival happens, but cooperation is grudging. In your final negotiation, you chose winning over winning together. Was it worth it?",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "s12_collaborative_design",
+          "label": "D. Co-Design the Entire Festival",
+          "description": "Propose a 'negotiation marathon' where all five schools spend a day co-designing every detail together. Radical transparency and shared ownership.",
+          "delta": {
+            "emotional_intelligence": 12,
+            "relationship_capital": 12,
+            "credibility": 8,
+            "win_win_score": 10,
+            "deal_value": 6,
+            "strategy_skill": 5,
+            "preparation_level": 8,
+            "deals_closed": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Bold and idealistic! The co-design process is messy and long, but the result is a festival that every school owns equally. The shared creation builds bonds that last beyond the event. This is the highest form of negotiation — collaboration.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "win_win_master",
+      "label": "Win-Win Master",
+      "condition": "win_win_score >= 75 and deals_closed >= 8",
+      "icon": "🤝"
+    },
+    {
+      "id": "batna_expert",
+      "label": "BATNA Expert",
+      "condition": "negotiation_power >= 70 and strategy_skill >= 65",
+      "icon": "💪"
+    },
+    {
+      "id": "trust_builder",
+      "label": "Trust Builder",
+      "condition": "credibility >= 80 and relationship_capital >= 70",
+      "icon": "⭐"
+    },
+    {
+      "id": "empathy_champion",
+      "label": "Empathy Champion",
+      "condition": "emotional_intelligence >= 75 and relationship_capital >= 65",
+      "icon": "❤️"
+    },
+    {
+      "id": "dealmaker_supreme",
+      "label": "Dealmaker Supreme",
+      "condition": "deals_closed >= 10 and deal_value >= 70",
+      "icon": "📝"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "BATNA",
+      "definition": "Best Alternative to a Negotiated Agreement — your backup plan if the current negotiation fails. The stronger your BATNA, the more power you have at the table."
+    },
+    {
+      "term": "ZOPA",
+      "definition": "Zone of Possible Agreement — the range between each party's minimum acceptable outcome where a deal is possible."
+    },
+    {
+      "term": "Anchoring",
+      "definition": "A cognitive bias where the first number or offer mentioned in a negotiation sets a reference point that influences all subsequent offers."
+    },
+    {
+      "term": "Logrolling",
+      "definition": "A negotiation technique where parties trade concessions on issues they value differently, creating mutual gains. 'I'll give you X (which I value less) if you give me Y (which you value less).'"
+    },
+    {
+      "term": "Interest-Based Bargaining",
+      "definition": "Focusing on the underlying needs and motivations (interests) behind stated demands (positions). Asking 'why' instead of fighting over 'what.'"
+    },
+    {
+      "term": "Integrative Negotiation",
+      "definition": "A collaborative approach that seeks to expand the total value (the pie) rather than just dividing a fixed amount. Also called win-win negotiation."
+    },
+    {
+      "term": "Hardball Tactics",
+      "definition": "Aggressive negotiation strategies like ultimatums, artificial deadlines, and take-it-or-leave-it offers designed to pressure the other side into concessions."
+    },
+    {
+      "term": "Principled Negotiation",
+      "definition": "A method developed at Harvard that separates people from problems, focuses on interests not positions, generates options for mutual gain, and uses objective criteria."
+    }
+  ],
+  "endings": [
+    {
+      "id": "master_negotiator",
+      "title": "Master Negotiator",
+      "icon": "🏆",
+      "message": "You have earned the title of Master Negotiator! With exceptional strategy skill, high deal value, and numerous successful negotiations, you've proven that preparation and strategic thinking are the cornerstones of great negotiation. Professor Deal nominates you for the National Young Negotiator Award. Schools across the district seek your help for their toughest negotiations. Your legacy: a negotiator who was always two steps ahead.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "strategy_skill",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "deal_value",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "deals_closed",
+            "operator": ">=",
+            "value": 8
+          }
+        ]
+      }
+    },
+    {
+      "id": "relationship_builder",
+      "title": "Relationship Builder",
+      "icon": "🫂",
+      "message": "You are the ultimate Relationship Builder! People trust you, seek you out, and want you at the table. Your secret weapon was never tactics — it was genuine care for others. Maya calls you her most trusted collaborator. Even The Hawk admits he respects you. Your legacy: a negotiator who proved that relationships are the most valuable currency of all.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "relationship_capital",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "credibility",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "emotional_intelligence",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "strategic_genius",
+      "title": "Strategic Genius",
+      "icon": "🧠",
+      "message": "You are a Strategic Genius! Your ability to see the big picture, identify patterns, and craft creative solutions sets you apart. From BATNA mastery to perfect anchoring to multi-party facilitation, you demonstrated elite-level negotiation theory in action. Professor Deal writes a case study about your approach. Your legacy: a negotiator who turned every conflict into an opportunity.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "strategy_skill",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "negotiation_power",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "preparation_level",
+            "operator": ">=",
+            "value": 45
+          }
+        ]
+      }
+    },
+    {
+      "id": "win_win_champion",
+      "title": "Win-Win Champion",
+      "icon": "🤝",
+      "message": "You are the Win-Win Champion! In a world of zero-sum thinking, you consistently found ways to expand the pie. Your negotiations didn't just solve problems — they created value that didn't exist before. Both friends and rivals praise your fairness. The district education officer cites you as proof that collaboration beats competition. Your legacy: a negotiator who made everyone better off.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "win_win_score",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "deals_closed",
+            "operator": ">=",
+            "value": 8
+          }
+        ]
+      }
+    },
+    {
+      "id": "aspiring_dealmaker",
+      "title": "Aspiring Dealmaker",
+      "icon": "📚",
+      "message": "Your negotiation journey is just beginning! You've learned the fundamentals — BATNA, ZOPA, anchoring, logrolling, and emotional intelligence. Some deals went well, some didn't, but every scenario taught you something valuable. Professor Deal encourages you: 'The best negotiators aren't born — they're made through practice and reflection.' Keep negotiating, keep learning, and keep growing!",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          14
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: BATNA Master: The Negotiation Simulator Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of BATNA Master: The Negotiation Simulator. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: BATNA Master: The Negotiation Simulator Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of BATNA Master: The Negotiation Simulator. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

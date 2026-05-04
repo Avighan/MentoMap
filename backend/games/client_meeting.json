@@ -1,0 +1,528 @@
+{
+  "session_game": {
+    "game_type": "client_meeting",
+    "title": "Client Meeting Simulator",
+    "description": "Pitch to clients, handle objections, close deals. Practice real-world sales and relationship building with AI clients.",
+    "route": "/client-meeting",
+    "icon": "💼",
+    "badge_text": "AI Clients",
+    "gradient": [
+      "#10B981",
+      "#059669"
+    ],
+    "help_content": {
+      "what_is": "A client meeting simulator where you pitch products or services to AI clients with different personalities and needs. Learn to handle objections, build rapport, and close deals while maintaining professional relationships.",
+      "tips": [
+        "Understand the client's pain points before pitching solutions",
+        "Ask questions before presenting — diagnose before you prescribe",
+        "Focus on value and ROI, not just features",
+        "Handle price objections by reframing value",
+        "Build rapport first — people buy from people they trust",
+        "Always have a clear call-to-action for next steps"
+      ]
+    },
+    "initial_state": {
+      "performance_score": 0,
+      "client_satisfaction": 50,
+      "trust_level": 0,
+      "deals_closed": 0
+    },
+    "session_phases": [
+      "Rapport Building",
+      "Discovery",
+      "Solution Presentation",
+      "Objection Handling",
+      "Close"
+    ],
+    "scoring_rubric": {
+      "needs_discovery": {
+        "weight": 0.2,
+        "description": "Did they ask good questions to understand the client's needs?"
+      },
+      "solution_fit": {
+        "weight": 0.2,
+        "description": "Did the proposed solution address the client's specific pain points?"
+      },
+      "objection_handling": {
+        "weight": 0.2,
+        "description": "How effectively did they handle concerns and pushback?"
+      },
+      "relationship_building": {
+        "weight": 0.15,
+        "description": "Did they build trust and rapport throughout?"
+      },
+      "value_communication": {
+        "weight": 0.15,
+        "description": "Did they clearly communicate ROI and business value?"
+      },
+      "closing_ability": {
+        "weight": 0.1,
+        "description": "Did they move toward clear next steps?"
+      }
+    },
+    "persona_pool": [
+      {
+        "id": "budget_conscious",
+        "name": "Ramesh Gupta",
+        "archetype": "Budget Buyer",
+        "focus": "price, ROI, cost comparison, total cost of ownership",
+        "personality": "Friendly but extremely cost-conscious. Compares every quote with competitors. Will push for discounts. Needs clear ROI justification before spending a rupee.",
+        "tough_question_style": "Your competitor offered the same thing at 40% less. Why should I pay more?",
+        "voice": "fable",
+        "avatar_emoji": "💰",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "busy_executive",
+        "name": "Sneha Kapoor",
+        "archetype": "Time-Pressed Executive",
+        "focus": "efficiency, bottom line, executive summary, quick decisions",
+        "personality": "Extremely busy. Has 15 minutes for you, not a minute more. Hates fluff and long presentations. Wants the headline first, details later. Will cut you off if you ramble.",
+        "tough_question_style": "I have 5 minutes left. Tell me in one sentence why I should care.",
+        "voice": "nova",
+        "avatar_emoji": "⏰",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "skeptical_buyer",
+        "name": "Arun Venkatesh",
+        "archetype": "Skeptical Buyer",
+        "focus": "proof, case studies, references, risk mitigation",
+        "personality": "Has been burned by vendors before. Extremely skeptical of claims. Wants proof for everything — case studies, references, guarantees. Trust must be earned, not assumed.",
+        "tough_question_style": "Everyone says they're the best. Show me proof. Can I talk to three of your clients?",
+        "voice": "onyx",
+        "avatar_emoji": "🤨",
+        "difficulty_weight": 4,
+        "friendly_weight": 1
+      },
+      {
+        "id": "enthusiastic_champion",
+        "name": "Priyanka Mehta",
+        "archetype": "Internal Champion",
+        "focus": "innovation, competitive advantage, team buy-in, change management",
+        "personality": "Excited about new solutions and innovation. Wants to champion your product internally. But needs ammunition to convince her boss. Help her sell it upward.",
+        "tough_question_style": "I love this. But my CTO will ask about integration and security. What do I tell him?",
+        "voice": "shimmer",
+        "avatar_emoji": "🌟",
+        "difficulty_weight": 2,
+        "friendly_weight": 5
+      },
+      {
+        "id": "technical_evaluator",
+        "name": "Suresh Naidu",
+        "archetype": "Technical Evaluator",
+        "focus": "technical specs, integration, scalability, security, compliance",
+        "personality": "Deep technical knowledge. Tests if you really understand your own product. Will ask about edge cases, integration challenges, and security protocols. No hand-waving allowed.",
+        "tough_question_style": "What happens when you have 10x the current load? Have you load-tested this?",
+        "voice": "echo",
+        "avatar_emoji": "🔧",
+        "difficulty_weight": 5,
+        "friendly_weight": 1
+      },
+      {
+        "id": "relationship_buyer",
+        "name": "Meera Reddy",
+        "archetype": "Relationship Builder",
+        "focus": "long-term partnership, support, trust, shared values",
+        "personality": "Values relationships over transactions. Wants a partner, not a vendor. Will test your commitment to long-term support. Price is secondary to trust and reliability.",
+        "tough_question_style": "What happens after you close this deal? How do I know you won't disappear?",
+        "voice": "alloy",
+        "avatar_emoji": "🤝",
+        "difficulty_weight": 2,
+        "friendly_weight": 4
+      },
+      {
+        "id": "committee_buyer",
+        "name": "Rakesh Sharma",
+        "archetype": "Committee Decision Maker",
+        "focus": "stakeholder alignment, procurement process, compliance, documentation",
+        "personality": "Can't decide alone — needs to involve 5 other people. Asks for proposals, comparison matrices, and compliance docs. Slow but thorough. Tests your patience and process.",
+        "tough_question_style": "This sounds good, but I need to discuss with my team. Can you send a detailed proposal?",
+        "voice": "fable",
+        "avatar_emoji": "📋",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "angry_client",
+        "name": "Vikram Bajaj",
+        "archetype": "Dissatisfied Client",
+        "focus": "past issues, service quality, accountability, compensation",
+        "personality": "Already unhappy with your company due to past service failures. Angry and demanding. Tests your ability to de-escalate, take accountability, and rebuild trust.",
+        "tough_question_style": "Last time your team missed three deadlines. Why should I trust you again?",
+        "voice": "onyx",
+        "avatar_emoji": "😤",
+        "difficulty_weight": 5,
+        "friendly_weight": 1
+      }
+    ],
+    "scenarios": [
+      {
+        "scenario_id": "saas_demo",
+        "title": "SaaS Product Demo — First Meeting",
+        "description": "You're demoing your company's project management SaaS tool to a mid-size company. They're evaluating 3 vendors. This is your chance to impress.",
+        "industry": "Technology / SaaS",
+        "difficulty": "beginner",
+        "setting": "A virtual meeting room. Screen-sharing is ready. The client has allocated 30 minutes for this demo.",
+        "session_topic": "Demonstrating a project management SaaS tool to a potential client",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "enthusiastic_champion",
+          "budget_conscious",
+          "technical_evaluator"
+        ],
+        "avoid_persona_types": [
+          "angry_client"
+        ],
+        "coaching_tips": [
+          "Start with their pain points, not your features",
+          "Show, don't tell — use examples relevant to their industry"
+        ],
+        "learning_objectives": [
+          "Structure a client demo",
+          "Handle comparison questions"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Opportunity",
+            "text": "A mid-size company with 200 employees is evaluating project management tools. They've shortlisted 3 vendors, and you're one of them. This demo could mean a ₹15 lakh annual contract.",
+            "icon": "💻",
+            "image_prompt": "Indian sales professional preparing for SaaS demo on laptop, virtual meeting setup, modern home office, focused, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_saas_demo/round_storybook_p0.png"
+          },
+          {
+            "title": "Research Done",
+            "text": "You've studied their company, their team size, their industry. You know their current tool is outdated. Now you need to connect your solution to their specific problems.",
+            "icon": "🔍",
+            "image_prompt": "Research preparation montage - Indian professional studying company website, taking notes, planning demo flow, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_saas_demo/round_storybook_p1.png"
+          },
+          {
+            "title": "Lights, Camera",
+            "text": "The video call connects. You see three faces — the project manager, the IT head, and someone from finance. 'Hi, thanks for taking the time. Let's get started.'",
+            "icon": "📹",
+            "image_prompt": "Virtual meeting screen showing three Indian clients, sales professional presenting from other side, SaaS demo on screen, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_saas_demo/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "angry_renewal",
+        "title": "Angry Client — Contract Renewal",
+        "description": "Your biggest client is threatening to not renew. They've had service issues and are frustrated. Your job: retain the client, rebuild trust, and save the deal.",
+        "industry": "Account Management",
+        "difficulty": "advanced",
+        "setting": "The client's office in Delhi. You can feel the tension as you walk in. They have a competitor's proposal on the table.",
+        "session_topic": "Retaining a dissatisfied client and negotiating contract renewal",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "angry_client",
+          "busy_executive",
+          "skeptical_buyer"
+        ],
+        "avoid_persona_types": [
+          "enthusiastic_champion"
+        ],
+        "coaching_tips": [
+          "Acknowledge mistakes before proposing solutions",
+          "Don't be defensive — listen first"
+        ],
+        "learning_objectives": [
+          "De-escalate conflict",
+          "Rebuild trust with a dissatisfied client"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Warning",
+            "text": "Your boss called you in: 'Vikram Bajaj's team isn't happy. Three missed deadlines, two system outages. Their contract expires next month. If we lose them, that's ₹2 crore gone.'",
+            "icon": "⚠️",
+            "image_prompt": "Indian office scene, manager looking concerned showing client complaint email to sales rep, serious atmosphere, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_angry_renewal/round_storybook_p0.png"
+          },
+          {
+            "title": "The Meeting",
+            "text": "You arrive at the client's office. The receptionist knows you. She gives you a sympathetic look. That's not a good sign.",
+            "icon": "🏢",
+            "image_prompt": "Indian professional arriving at client's corporate office, tense atmosphere, receptionist at front desk, competitor brochure visible, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_angry_renewal/round_storybook_p1.png"
+          },
+          {
+            "title": "Face the Music",
+            "text": "Vikram is waiting. He doesn't shake hands. There's a competitor's proposal visible on his desk. 'I'll give you 20 minutes to change my mind.'",
+            "icon": "😤",
+            "image_prompt": "Tense meeting room, angry Indian client with arms crossed, competitor proposal on table, professional trying to stay calm, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_angry_renewal/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "cold_outreach",
+        "title": "Cold Outreach — First Contact",
+        "description": "You've landed a meeting with a potential client who has never heard of your company. You have 15 minutes to spark their interest.",
+        "industry": "Business Development",
+        "difficulty": "intermediate",
+        "setting": "A coffee shop in a business district. The client agreed to a quick meeting during their lunch break.",
+        "session_topic": "First meeting with a potential client through cold outreach",
+        "conversation_turns": 8,
+        "preferred_persona_types": [
+          "busy_executive",
+          "skeptical_buyer",
+          "relationship_buyer"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Don't pitch immediately — build curiosity first",
+          "Ask about their challenges before presenting solutions"
+        ],
+        "learning_objectives": [
+          "Build rapport quickly",
+          "Create interest in a short time"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Cold Email",
+            "text": "After 47 cold emails and 12 follow-ups, one person finally replied: 'Fine. I can do 15 minutes over coffee next Thursday.' This is your shot.",
+            "icon": "📧",
+            "image_prompt": "Indian professional celebrating getting a reply to cold email, laptop showing inbox, motivated expression, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_cold_outreach/round_storybook_p0.png"
+          },
+          {
+            "title": "The Coffee Shop",
+            "text": "A busy cafe in Bandra-Kurla Complex. Your potential client arrives, already checking their phone. They're giving you their time reluctantly. Make every second count.",
+            "icon": "☕",
+            "image_prompt": "Indian business professional meeting potential client at upscale coffee shop in BKC Mumbai, business district visible outside, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_cold_outreach/round_storybook_p1.png"
+          },
+          {
+            "title": "15 Minutes",
+            "text": "They sit down with their coffee. 'So, tell me — what exactly do you do and why should I care?' The clock starts.",
+            "icon": "⏱️",
+            "image_prompt": "Close-up of two Indian professionals at coffee table, one skeptical one eager, coffee cups between them, business meeting, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_cold_outreach/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "enterprise_pitch",
+        "title": "Enterprise Sale — The Big Pitch",
+        "description": "A Fortune 500 company is considering your solution for a company-wide deployment. Multiple stakeholders. High stakes. ₹5 crore potential deal.",
+        "industry": "Enterprise Sales",
+        "difficulty": "advanced",
+        "setting": "A large conference room at the client's headquarters. 5 stakeholders from different departments are present.",
+        "session_topic": "Presenting enterprise solution to multiple stakeholders at a Fortune 500 company",
+        "conversation_turns": 12,
+        "preferred_persona_types": [
+          "technical_evaluator",
+          "budget_conscious",
+          "committee_buyer"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Address each stakeholder's concerns individually",
+          "Have ROI calculations ready"
+        ],
+        "learning_objectives": [
+          "Navigate multi-stakeholder meetings",
+          "Handle complex enterprise objections"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Big League",
+            "text": "Tata Group. Reliance. Infosys. Your company just got invited to pitch to one of India's largest corporations. ₹5 crore annual deal. 50,000 users. This is the big league.",
+            "icon": "🏢",
+            "image_prompt": "Impressive Indian corporate headquarters, massive lobby, Indian sales team arriving with presentation materials, awe-inspiring, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_enterprise_pitch/round_storybook_p0.png"
+          },
+          {
+            "title": "The Stakeholders",
+            "text": "Five people in the room: CTO, CFO, Head of Operations, Procurement Lead, and the project sponsor. Each has different concerns. You need to win them all.",
+            "icon": "👥",
+            "image_prompt": "Large conference room with five Indian executives at table, different departments, presentation screen ready, high-stakes atmosphere, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_enterprise_pitch/round_storybook_p1.png"
+          },
+          {
+            "title": "Showtime",
+            "text": "The CTO opens: 'We've evaluated four solutions. You're the last presentation. Impress us.' Your slides are ready. Your team is behind you. Go.",
+            "icon": "🎯",
+            "image_prompt": "Indian presenter at podium in corporate conference room, large screen behind, five executives watching attentively, professional digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_enterprise_pitch/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "freelance_client",
+        "title": "Freelance Client — Setting Boundaries",
+        "description": "A new freelance client wants everything for nothing. Learn to set boundaries, price your work fairly, and establish a professional relationship.",
+        "industry": "Freelancing",
+        "difficulty": "beginner",
+        "setting": "A video call from your home office. The client is a small business owner who needs a website redesign.",
+        "session_topic": "Negotiating scope and pricing with a new freelance client",
+        "conversation_turns": 8,
+        "preferred_persona_types": [
+          "budget_conscious",
+          "relationship_buyer",
+          "busy_executive"
+        ],
+        "avoid_persona_types": [
+          "technical_evaluator"
+        ],
+        "coaching_tips": [
+          "Define scope clearly before discussing price",
+          "Don't discount without removing scope"
+        ],
+        "learning_objectives": [
+          "Set professional boundaries",
+          "Negotiate pricing confidently"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Inquiry",
+            "text": "A small business owner found you on LinkedIn. They need a website redesign. 'Can we jump on a quick call?' You check their business — it's legit, and could be a good client.",
+            "icon": "💻",
+            "image_prompt": "Indian freelancer at home office desk receiving client inquiry on laptop, organized workspace, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_freelance_client/round_storybook_p0.png"
+          },
+          {
+            "title": "The Expectation Gap",
+            "text": "They want a 10-page website with e-commerce, blog, and custom animations. Budget? 'Let's discuss after you understand our vision.' You've heard this before.",
+            "icon": "📊",
+            "image_prompt": "Video call between Indian freelancer and small business owner, freelancer listening carefully, home office setup, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_freelance_client/round_storybook_p1.png"
+          },
+          {
+            "title": "Your Move",
+            "text": "Time to have the conversation about scope, timeline, and pricing. Be professional, be clear, and don't undersell yourself. The call begins.",
+            "icon": "🤝",
+            "image_prompt": "Indian freelancer on video call with potential client, notepad with pricing notes visible, confident posture, digital art",
+            "image_url": "/uploads/media/images/story/client_meeting_freelance_client/round_storybook_p2.png"
+          }
+        ]
+      }
+    ]
+  },
+  "learning_concept": "Consequence Thinking & Resource Management",
+  "coach_mode_default": true,
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "game_type": "negotiation",
+  "achievements": [
+    {
+      "id": "deal_maker",
+      "name": "Deal Maker",
+      "description": "Reached a mutually beneficial agreement",
+      "condition": "agreement_reached and both_satisfied",
+      "xp_reward": 200,
+      "icon": "🤝"
+    },
+    {
+      "id": "master_negotiator",
+      "name": "Master Negotiator",
+      "description": "Secured the best possible terms",
+      "condition": "score >= 85",
+      "xp_reward": 250,
+      "icon": "💼"
+    },
+    {
+      "id": "negotiation_complete",
+      "name": "Negotiation Complete",
+      "description": "Completed the negotiation challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "✅"
+    }
+  ],
+  "title": "Client Meeting Simulator",
+  "initial_state": {
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_concession_rate": 0.4,
+      "turn_limit": 12,
+      "relationship_boost": 20
+    },
+    "medium": {
+      "ai_concession_rate": 0.25,
+      "turn_limit": 10,
+      "relationship_boost": 0
+    },
+    "hard": {
+      "ai_concession_rate": 0.1,
+      "turn_limit": 8,
+      "relationship_boost": -10
+    }
+  },
+  "description": "Step into a high-stakes client meeting and navigate competing expectations, unclear briefs, and shifting goalposts. Master the art of professional communication and expectation management.",
+  "game_id": "client_meeting",
+  "dimension_scoring_weights": {
+    "adaptability": 0.35,
+    "strategic_thinking": 0.3,
+    "empathy": 0.2,
+    "risk_tolerance": 0.15
+  },
+  "coaching_moment": "Step into a high-stakes client meeting and navigate competing expectations, unclear briefs, and shifting goalposts. Master the art of professional communication and expectation management.",
+  "tags": [
+    "adaptability",
+    "communication",
+    "creativity",
+    "negotiation"
+  ],
+  "cultural_context": "Client relationship management is a core competency in India's booming IT services, consulting, and financial advisory sectors. This game develops the professional communication and stakeholder management skills that drive client satisfaction and career advancement.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "adaptability",
+    "critical-thinking",
+    "social-emotional-learning"
+  ],
+  "estimated_duration": 20,
+  "target_age": "16-25",
+  "learning_objectives": [
+    "Develop critical thinking through negotiation gameplay",
+    "Practice decision-making in realistic scenarios",
+    "Build self-awareness about your strengths and areas for growth"
+  ],
+  "reflection_prompt": "Where did you give ground, and where did you hold it? What did the other side teach you about your own priorities?"
+}

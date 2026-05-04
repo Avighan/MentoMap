@@ -1,0 +1,2401 @@
+{
+  "game_id": "g6-ethics-team",
+  "title": "Ethics Arena: The Teamwork Challenge",
+  "theme": "Ethics & Teamwork — Working Together",
+  "icon": "🤝",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You lead a diverse team of students on a school community service project. Face ethical dilemmas, resolve teamwork conflicts, and make fair decisions as your team tackles challenges together. Every choice shapes your team's trust, your community's future, and your own integrity.",
+  "target_audience": "Ages 11-12",
+  "target_age": "11-12",
+  "grade": "6",
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You lead a team of students on a community service project over 10 weeks.",
+    "Each round presents an ethical dilemma or teamwork challenge with real trade-offs.",
+    "Watch your dashboard — ethics_score, team_cohesion, fairness_index, and community_impact are all interconnected.",
+    "Random events like cheating scandals and rival team rumors will test your character.",
+    "NPCs (Mr. Values, Riley, Zara) react to your choices and may trigger crises.",
+    "Aim for balanced growth in ethics, teamwork, and community impact to unlock the best endings!"
+  ],
+  "learning_objectives": [
+    "Understand ethical reasoning and how to evaluate right vs. wrong in complex situations",
+    "Practice collaboration and resolving conflicts within diverse teams",
+    "Develop empathy by considering different perspectives and needs",
+    "Learn about fairness, inclusion, and civic responsibility",
+    "Build personal integrity through consistent value-driven decisions"
+  ],
+  "tags": [
+    "ethics",
+    "teamwork",
+    "grade-6",
+    "values",
+    "collaboration"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Ethical Reasoning",
+    "Collaboration",
+    "Social-Emotional Learning",
+    "Civic Responsibility"
+  ],
+  "cultural_context": "School community service project, diverse student team, globally playable values education",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.1,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.1,
+    "resilience": 0.1,
+    "empathy": 0.25,
+    "ethical_reasoning": 0.25
+  },
+  "initial_state": {
+    "ethics_score": {
+      "value": 50,
+      "label": "Ethics Score",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "team_cohesion": {
+      "value": 55,
+      "label": "Team Cohesion",
+      "icon": "👫",
+      "min": 0,
+      "max": 100
+    },
+    "fairness_index": {
+      "value": 50,
+      "label": "Fairness Index",
+      "icon": "🏛️",
+      "min": 0,
+      "max": 100
+    },
+    "community_impact": {
+      "value": 10,
+      "label": "Community Impact",
+      "icon": "🌍",
+      "min": 0,
+      "max": 100
+    },
+    "trust_level": {
+      "value": 50,
+      "label": "Trust Level",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "personal_integrity": {
+      "value": 60,
+      "label": "Personal Integrity",
+      "icon": "💎",
+      "min": 0,
+      "max": 100
+    },
+    "project_progress": {
+      "value": 0,
+      "label": "Project Progress",
+      "icon": "📊",
+      "min": 0,
+      "max": 100
+    },
+    "team_happiness": {
+      "value": 60,
+      "label": "Team Happiness",
+      "icon": "😊",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "moral_compass",
+        "label": "Moral Compass",
+        "icon": "🧭",
+        "color": "#8B5CF6",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, ethics_score * 0.4 + personal_integrity * 0.35 + fairness_index * 0.25))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "team_dynamics",
+        "label": "Team Dynamics",
+        "icon": "👥",
+        "color": "#3B82F6",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, team_cohesion * 0.4 + team_happiness * 0.3 + trust_level * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "community_impact_sys",
+        "label": "Community Impact",
+        "icon": "🌍",
+        "color": "#10B981",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, community_impact * 0.5 + project_progress * 0.3 + trust_level * 0.2))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 75
+        }
+      },
+      {
+        "id": "personal_growth",
+        "label": "Personal Growth",
+        "icon": "🌱",
+        "color": "#F59E0B",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, personal_integrity * 0.35 + ethics_score * 0.25 + team_cohesion * 0.2 + fairness_index * 0.2))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "ethics_rating",
+        "label": "Ethics Rating",
+        "icon": "⚖️",
+        "formula": "(ethics_score * 0.4 + personal_integrity * 0.3 + fairness_index * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 30,
+          "warning": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "team_harmony",
+        "label": "Team Harmony",
+        "icon": "🎶",
+        "formula": "(team_cohesion * 0.35 + team_happiness * 0.35 + trust_level * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 30,
+          "warning": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "community_score",
+        "label": "Community Score",
+        "icon": "🌟",
+        "formula": "(community_impact * 0.5 + project_progress * 0.3 + fairness_index * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "project_momentum",
+        "label": "Weekly Project Momentum",
+        "condition": {
+          "resource": "team_cohesion",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "project_progress",
+            "formula": "min(100, project_progress + (team_cohesion / 100) * 5)"
+          }
+        ],
+        "description": "A cohesive team makes steady project progress each week."
+      },
+      {
+        "id": "trust_from_integrity",
+        "label": "Trust Builds Over Time",
+        "condition": {
+          "resource": "personal_integrity",
+          "op": ">=",
+          "value": 55
+        },
+        "effects": [
+          {
+            "resource": "trust_level",
+            "formula": "min(100, trust_level + (personal_integrity - 50) * 0.05)"
+          }
+        ],
+        "description": "Consistent integrity gradually builds trust with your team."
+      },
+      {
+        "id": "community_word_of_mouth",
+        "label": "Community Recognition",
+        "condition": {
+          "resource": "community_impact",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "team_happiness",
+            "formula": "min(100, team_happiness + 2)"
+          }
+        ],
+        "description": "Positive community feedback boosts team morale."
+      },
+      {
+        "id": "low_morale_drag",
+        "label": "Low Morale Slowdown",
+        "condition": {
+          "resource": "team_happiness",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "project_progress",
+            "formula": "max(0, project_progress - 3)"
+          }
+        ],
+        "description": "Unhappy teams slow down and lose project momentum."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "unfairness_erodes_cohesion",
+        "from_subsystem": "moral_compass",
+        "to_subsystem": "team_dynamics",
+        "label": "Unfairness Erodes Teamwork",
+        "condition": {
+          "resource": "fairness_index",
+          "op": "<",
+          "value": 35
+        },
+        "effects": [
+          {
+            "resource": "team_cohesion",
+            "formula": "max(0, team_cohesion - (35 - fairness_index) * 0.2)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When things feel unfair, team members lose motivation and trust."
+      },
+      {
+        "id": "strong_ethics_boosts_trust",
+        "from_subsystem": "moral_compass",
+        "to_subsystem": "personal_growth",
+        "label": "Ethics Builds Trust",
+        "condition": {
+          "resource": "ethics_score",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "trust_level",
+            "formula": "min(100, trust_level + (ethics_score - 65) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Consistent ethical behavior earns deep trust from teammates."
+      },
+      {
+        "id": "team_unity_boosts_impact",
+        "from_subsystem": "team_dynamics",
+        "to_subsystem": "community_impact_sys",
+        "label": "United Team, Bigger Impact",
+        "condition": {
+          "resource": "team_cohesion",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "community_impact",
+            "formula": "min(100, community_impact + (team_cohesion - 60) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "A united team accomplishes more for the community."
+      },
+      {
+        "id": "low_integrity_hurts_happiness",
+        "from_subsystem": "personal_growth",
+        "to_subsystem": "team_dynamics",
+        "label": "Broken Promises Hurt Morale",
+        "condition": {
+          "resource": "personal_integrity",
+          "op": "<",
+          "value": 35
+        },
+        "effects": [
+          {
+            "resource": "team_happiness",
+            "formula": "max(0, team_happiness - (35 - personal_integrity) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When a leader lacks integrity, team happiness plummets."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "team_cohesion",
+        "equilibrium": 45,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "trust_level",
+        "equilibrium": 40,
+        "rate": 0.04,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "cheating_scandal",
+        "label": "Cheating Scandal Exposed",
+        "icon": "😱",
+        "description": "A teammate is caught copying another group's project ideas and passing them off as original work. The whole school is talking about it.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "ethics_score",
+              "op": "<",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "ethics_score",
+            "delta": -10
+          },
+          {
+            "resource": "trust_level",
+            "delta": -8
+          },
+          {
+            "resource": "team_happiness",
+            "delta": -5
+          },
+          {
+            "resource": "personal_integrity",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "SCANDAL: Team member caught copying ideas! Trust shaken across the project.",
+        "ai_image_prompt": "Cartoon school scene, shocked students discovering copied work on a laptop, dramatic expressions, colorful classroom, diverse kids"
+      },
+      {
+        "id": "community_thankyou",
+        "label": "Community Thank-You Event",
+        "icon": "🎉",
+        "description": "The local community center hosts a surprise thank-you event for your team! Residents share how your project is making a real difference.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "community_impact",
+              "op": ">=",
+              "value": 35
+            },
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "team_happiness",
+            "delta": 10
+          },
+          {
+            "resource": "community_impact",
+            "delta": 8
+          },
+          {
+            "resource": "trust_level",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Community celebrates your team's work! Residents say the project changed their neighborhood.",
+        "ai_image_prompt": "Cartoon community celebration, diverse kids receiving thank-you cards from happy neighborhood residents, colorful banners, park setting"
+      },
+      {
+        "id": "teammate_family_emergency",
+        "label": "Team Member Family Emergency",
+        "icon": "💔",
+        "description": "One of your teammates has a family emergency and cannot participate for a while. The team must pick up the extra work and show support.",
+        "probability": 0.18,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 3
+        },
+        "effects": [
+          {
+            "resource": "team_cohesion",
+            "delta": -5
+          },
+          {
+            "resource": "project_progress",
+            "delta": -8
+          },
+          {
+            "resource": "team_happiness",
+            "delta": -4
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Teammate away due to family emergency. The team rallies to cover extra tasks.",
+        "ai_image_prompt": "Cartoon school hallway, group of concerned diverse students comforting a sad friend, supportive gestures, empathetic expressions"
+      },
+      {
+        "id": "rival_team_sabotage_rumor",
+        "label": "Rival Team Sabotage Rumor",
+        "icon": "🕵️",
+        "description": "A rumor spreads that a rival team sabotaged your project supplies. Some teammates want revenge, others say to stay focused and take the high road.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "fairness_index",
+              "op": "<",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "team_cohesion",
+            "delta": -6
+          },
+          {
+            "resource": "fairness_index",
+            "delta": -5
+          },
+          {
+            "resource": "team_happiness",
+            "delta": -4
+          },
+          {
+            "resource": "ethics_score",
+            "delta": -3
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "RUMOR: Rival team may have tampered with your supplies! Team is divided on how to respond.",
+        "ai_image_prompt": "Cartoon school scene, two groups of diverse students arguing, scattered project supplies, speech bubbles with question marks, dramatic mood"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "mr_values",
+        "name": "Mr. Values",
+        "role": "Ethics Teacher & Project Advisor",
+        "icon": "👨‍🏫",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "ethics_score",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "I'm concerned about the ethical direction of this project. Remember — the right choice isn't always the easy one.",
+            "mood_change": "worried",
+            "satisfaction_delta": -6
+          },
+          {
+            "condition": {
+              "resource": "ethics_score",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "praise",
+            "message": "Outstanding moral leadership! Your team is setting an example for the entire school.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "personal_integrity",
+              "op": "<",
+              "value": 35
+            },
+            "action": "mentor",
+            "message": "Integrity means doing the right thing even when no one is watching. Let's talk about how to get back on track.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "ethics_score",
+                  "op": ">=",
+                  "value": 75
+                },
+                {
+                  "resource": "community_impact",
+                  "op": ">=",
+                  "value": 60
+                }
+              ]
+            },
+            "action": "celebrate",
+            "message": "I am truly proud of this team. You've shown that doing good and doing right go hand in hand!",
+            "mood_change": "delighted",
+            "satisfaction_delta": 8
+          }
+        ]
+      },
+      {
+        "id": "riley",
+        "name": "Riley",
+        "role": "Competitive Teammate",
+        "icon": "🏆",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "fairness_index",
+              "op": "<",
+              "value": 40
+            },
+            "action": "complain",
+            "message": "This isn't fair! Some people are doing all the work while others get the same credit. I want things to be equal!",
+            "mood_change": "frustrated",
+            "satisfaction_delta": -6
+          },
+          {
+            "condition": {
+              "resource": "project_progress",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "motivated",
+            "message": "We're making amazing progress! If we push harder, we could be the best team in school!",
+            "mood_change": "excited",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "fairness_index",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 3
+                }
+              ]
+            },
+            "action": "crisis",
+            "message": "That's it — I'm done! If nobody cares about fairness, I'm quitting the team. Others are thinking about leaving too!",
+            "mood_change": "angry",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "team_cohesion",
+                "delta": -10
+              },
+              {
+                "resource": "team_happiness",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_fairness"
+          }
+        ]
+      },
+      {
+        "id": "zara",
+        "name": "Zara",
+        "role": "Shy Teammate Who Needs Empathy",
+        "icon": "🌸",
+        "initial_mood": "nervous",
+        "initial_satisfaction": 45,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "team_cohesion",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "open_up",
+            "message": "I feel safe in this team. I have some ideas I'd like to share... if that's okay?",
+            "mood_change": "hopeful",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "resource": "team_cohesion",
+              "op": "<",
+              "value": 40
+            },
+            "action": "withdraw",
+            "message": "I don't think anyone notices me here. Maybe I should just stay quiet...",
+            "mood_change": "sad",
+            "satisfaction_delta": -7
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "team_cohesion",
+                  "op": "<",
+                  "value": 30
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 3
+                }
+              ]
+            },
+            "action": "inclusion_crisis",
+            "message": "Zara hasn't spoken in days and is eating lunch alone. She told Mr. Values she feels invisible and wants to leave the team.",
+            "mood_change": "withdrawn",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "team_happiness",
+                "delta": -8
+              },
+              {
+                "resource": "ethics_score",
+                "delta": -5
+              }
+            ],
+            "trigger_round": "crisis_inclusion"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "project_progress",
+          "op": ">",
+          "value": 50
+        },
+        "icon": "📈",
+        "text": "Project progress hits {project_progress}%! The community is noticing your team's hard work.",
+        "severity": "info"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "ethics_score",
+              "op": ">=",
+              "value": 70
+            },
+            {
+              "resource": "team_cohesion",
+              "op": ">=",
+              "value": 65
+            }
+          ]
+        },
+        "icon": "🌟",
+        "text": "Your team is being called a role model by teachers and students alike!",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A cartoon school community service project scene. A diverse team of 11-12 year old students, ethics score {ethics_score}%, team cohesion {team_cohesion}%, project progress {project_progress}%. Mood: {'joyful and united' if team_happiness > 65 else 'tense and divided' if team_happiness < 35 else 'focused and working'}. Cartoon style, vivid colors, school environment."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_kickoff",
+      "round_title": "Week 1: The Kickoff — Who Does What?",
+      "situation": "Your community service project is about to begin! Your team of six students must clean up and renovate a neglected neighborhood park. The first decision: how to divide the work. Riley wants to assign jobs based on who's 'best' at each task. Zara quietly suggests everyone should get to try different roles.",
+      "goal": "Decide how to assign roles for the project fairly.",
+      "coaching_moment": "Fairness means considering everyone's needs, not just picking the most efficient option.",
+      "reflection_prompt": "What does 'fair' actually mean when people have different strengths?",
+      "ai_image_prompt": "Cartoon diverse group of 11-12 year old students standing around a messy park with overgrown plants and broken benches, planning clipboard, excited expressions, vivid colors",
+      "choices": [
+        {
+          "id": "w1_skill_based",
+          "label": "A. Assign by Strength",
+          "description": "Give each person the job they're best at. Efficient but some get boring tasks every time.",
+          "delta": {
+            "project_progress": 12,
+            "team_cohesion": -5,
+            "fairness_index": -8,
+            "team_happiness": -3,
+            "community_impact": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "skill_explanation": {
+            "strategic_thinking": "Matching people to their strengths shows you can optimise a team for maximum output.",
+            "risk_tolerance": "Prioritising speed over fairness risks team morale for short-term results."
+          },
+          "feedback": "Fast start! But Zara got 'cleanup duty' again, and some teammates feel the system is unfair."
+        },
+        {
+          "id": "w1_rotate",
+          "label": "B. Rotating Roles",
+          "description": "Everyone tries every role over the weeks. Slower but fairer and builds more skills.",
+          "delta": {
+            "project_progress": 6,
+            "fairness_index": 12,
+            "team_cohesion": 8,
+            "team_happiness": 5,
+            "ethics_score": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "skill_explanation": {
+            "empathy": "Rotating roles means you care about everyone getting equal opportunity, not just the fastest result.",
+            "ethical_reasoning": "Choosing fairness over efficiency shows you weigh what is right for the whole team."
+          },
+          "feedback": "Everyone gets a chance to learn and contribute! Slower start, but the team feels respected."
+        },
+        {
+          "id": "w1_vote",
+          "label": "C. Team Vote on Roles",
+          "description": "Let the team vote on who does what. Democratic but the quiet voices might get drowned out.",
+          "delta": {
+            "project_progress": 8,
+            "fairness_index": 5,
+            "team_cohesion": 5,
+            "trust_level": 5,
+            "team_happiness": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "skill_explanation": {
+            "adaptability": "Letting a group vote means accepting an outcome you may not control.",
+            "ethical_reasoning": "Using a democratic process shows you value collective decision-making over top-down orders."
+          },
+          "feedback": "Democracy in action! Though Zara didn't speak up during the vote and got a role she didn't want."
+        },
+        {
+          "id": "w1_volunteer",
+          "label": "D. Let Everyone Choose",
+          "description": "First come, first served — people pick what they want. Fun but some tasks go unclaimed.",
+          "delta": {
+            "project_progress": 5,
+            "team_happiness": 8,
+            "fairness_index": -3,
+            "team_cohesion": 2,
+            "community_impact": 2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "skill_explanation": {
+            "risk_tolerance": "First-come-first-served gambles that unpopular tasks will still get done somehow.",
+            "adaptability": "You allow the team to self-organise, adjusting plans as gaps appear."
+          },
+          "feedback": "Happy faces, but the hardest jobs are left to whoever's last. Is that really fair?"
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_honesty",
+      "round_title": "Week 2: The Honesty Test",
+      "situation": "While clearing the park, your team finds a wallet with money inside. There's no ID — nobody would know if you kept it. Riley suggests using it to buy better supplies for the project. Zara looks uncomfortable.",
+      "goal": "Decide what to do with the found wallet.",
+      "coaching_moment": "Integrity means doing the right thing even when nobody is watching.",
+      "reflection_prompt": "Does the outcome justify keeping something that isn't yours?",
+      "ai_image_prompt": "Cartoon kids in a park finding a wallet on the ground, surprised expressions, one kid holding it up, moral dilemma scene, bright day, vivid colors",
+      "choices": [
+        {
+          "id": "w2_turn_in",
+          "label": "A. Turn It In to the Office",
+          "description": "Report the found wallet to the school office and local authorities. Honest, no benefit for the project.",
+          "delta": {
+            "ethics_score": 15,
+            "personal_integrity": 12,
+            "trust_level": 8,
+            "community_impact": 3,
+            "project_progress": 0
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "skill_explanation": {
+            "ethical_reasoning": "Returning the wallet when no one is watching proves your honesty is genuine, not performative.",
+            "empathy": "You consider the stranger who lost their money and how stressful that must feel."
+          },
+          "feedback": "The right thing to do! Someone may have lost their rent money. Your honesty builds real trust."
+        },
+        {
+          "id": "w2_use_for_project",
+          "label": "B. Use It for Project Supplies",
+          "description": "The money could buy paint and tools. It's for a good cause, right?",
+          "delta": {
+            "project_progress": 10,
+            "community_impact": 5,
+            "ethics_score": -12,
+            "personal_integrity": -15,
+            "trust_level": -5,
+            "fairness_index": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "skill_explanation": {
+            "risk_tolerance": "Using found money is a bold gamble that no one will discover or care.",
+            "strategic_thinking": "You weigh the project benefit against ethical cost, even if the calculation is wrong."
+          },
+          "feedback": "The project benefits, but at what cost? Using someone else's money — even for good — is still wrong."
+        },
+        {
+          "id": "w2_team_discuss",
+          "label": "C. Hold a Team Discussion First",
+          "description": "Gather the team and openly discuss what the right thing to do is before deciding together.",
+          "delta": {
+            "ethics_score": 10,
+            "team_cohesion": 8,
+            "personal_integrity": 8,
+            "trust_level": 5,
+            "team_happiness": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "skill_explanation": {
+            "empathy": "Inviting everyone to share their views shows you respect each teammate's moral perspective.",
+            "ethical_reasoning": "Discussing the dilemma openly lets the group reason through right and wrong together."
+          },
+          "feedback": "Talking it through builds ethical muscles! The team decides together to turn it in, and everyone learns."
+        },
+        {
+          "id": "w2_post_notice",
+          "label": "D. Post a 'Found Wallet' Notice",
+          "description": "Put up signs around the park so the owner can claim it. Proactive and kind.",
+          "delta": {
+            "ethics_score": 10,
+            "community_impact": 8,
+            "personal_integrity": 8,
+            "trust_level": 3,
+            "team_happiness": 2
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "skill_explanation": {
+            "adaptability": "You invent a creative solution instead of choosing between keeping or simply returning the wallet.",
+            "ethical_reasoning": "Going the extra mile to reunite a stranger with their property shows principled action."
+          },
+          "feedback": "Creative and ethical! You went above and beyond to help a stranger. That's community spirit."
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_conflict",
+      "round_title": "Week 3: The Big Argument",
+      "situation": "Riley and another teammate are arguing loudly. Riley says the project should focus on the playground (visible, impressive) while the other wants to focus on the garden (benefits elderly neighbors). The team is splitting into sides. Zara looks like she wants to disappear.",
+      "goal": "Resolve the conflict and keep the team together.",
+      "coaching_moment": "Good leaders don't avoid conflict — they help people find common ground.",
+      "reflection_prompt": "How can you disagree with someone while still respecting them?",
+      "ai_image_prompt": "Cartoon school kids in heated argument at a park, two groups facing each other, one shy girl standing alone in the middle, speech bubbles, dramatic cartoon style",
+      "choices": [
+        {
+          "id": "w3_compromise",
+          "label": "A. Find a Compromise",
+          "description": "Propose splitting time between both areas — playground in the morning, garden in the afternoon.",
+          "delta": {
+            "team_cohesion": 10,
+            "fairness_index": 8,
+            "team_happiness": 5,
+            "project_progress": 5,
+            "trust_level": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "skill_explanation": {
+            "adaptability": "Splitting time between playground and garden shows flexible problem-solving under pressure.",
+            "empathy": "You validate both sides of the argument instead of dismissing either group's passion."
+          },
+          "feedback": "A true leader finds middle ground! Both sides feel heard, and the project benefits from both efforts."
+        },
+        {
+          "id": "w3_riley_wins",
+          "label": "B. Side with Riley — Playground First",
+          "description": "The playground is more visible and will impress the school. Practical but some feel ignored.",
+          "delta": {
+            "project_progress": 10,
+            "community_impact": 5,
+            "team_cohesion": -8,
+            "fairness_index": -10,
+            "team_happiness": -5,
+            "trust_level": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "skill_explanation": {
+            "strategic_thinking": "Picking the high-visibility playground maximises public impact for the project.",
+            "risk_tolerance": "Siding with one faction risks alienating the other half of your team."
+          },
+          "feedback": "Fast progress, but half the team feels unheard. The elderly neighbors are disappointed."
+        },
+        {
+          "id": "w3_garden_focus",
+          "label": "C. Prioritize the Garden",
+          "description": "The elderly neighbors need it more. It's the ethical choice, even if less flashy.",
+          "delta": {
+            "ethics_score": 8,
+            "community_impact": 8,
+            "empathy": 5,
+            "team_cohesion": -3,
+            "project_progress": 4,
+            "fairness_index": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "skill_explanation": {
+            "empathy": "Choosing the garden puts the needs of elderly neighbours above a flashier outcome.",
+            "ethical_reasoning": "Prioritising those who need help most over what looks impressive reflects strong moral judgement."
+          },
+          "feedback": "Compassionate choice! The garden helps those who need it most. Riley is unhappy but respects it."
+        },
+        {
+          "id": "w3_ask_zara",
+          "label": "D. Ask Zara to Break the Tie",
+          "description": "Give Zara a voice — she hasn't spoken yet. Let her decide which area to focus on first.",
+          "delta": {
+            "team_cohesion": 8,
+            "fairness_index": 10,
+            "trust_level": 6,
+            "team_happiness": 4,
+            "ethics_score": 5,
+            "project_progress": 4
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "skill_explanation": {
+            "empathy": "Noticing the quietest person and giving them a voice shows deep awareness of others' feelings.",
+            "ethical_reasoning": "Including marginalised voices in decisions is a principled act of fairness and inclusion."
+          },
+          "feedback": "Brilliant! Including the quietest voice shows real leadership. Zara beams and suggests a creative solution."
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_temptation",
+      "round_title": "Week 4: The Shortcut Temptation",
+      "situation": "Your project is behind schedule. A teammate suggests taking a shortcut — skipping the soil testing and planting directly. It would save two days but Mr. Values said soil testing is important for safety. Nobody would check.",
+      "goal": "Decide whether to take the shortcut or do things right.",
+      "coaching_moment": "Cutting corners might save time now, but trust and quality suffer in the long run.",
+      "reflection_prompt": "Is a small shortcut ever okay, or does it start a slippery slope?",
+      "input_type": "hybrid",
+      "free_text_prompt": "In 2-3 sentences, explain why you think shortcuts are sometimes tempting and what you would say to a teammate who wants to skip an important step.",
+      "evaluation_rubric": {
+        "ethical_reasoning": "Shows understanding of why shortcuts undermine integrity and trust",
+        "empathy": "Considers the teammate's perspective and feelings when responding"
+      },
+      "ai_image_prompt": "Cartoon kids at a park garden project, one holding a soil test kit, another pointing at a clock impatiently, fork-in-the-road visual metaphor, vivid cartoon",
+      "choices": [
+        {
+          "id": "w4_do_it_right",
+          "label": "A. Do the Full Soil Test",
+          "description": "Follow the proper process even though it takes longer. Quality and safety come first.",
+          "delta": {
+            "ethics_score": 10,
+            "personal_integrity": 10,
+            "project_progress": 3,
+            "trust_level": 5,
+            "community_impact": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "The patient path! The soil test reveals lead contamination — your thoroughness may have prevented illness.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w4_skip_it",
+          "label": "B. Skip the Test — Plant Now",
+          "description": "Save two days and get back on schedule. What's the worst that could happen?",
+          "delta": {
+            "project_progress": 12,
+            "ethics_score": -10,
+            "personal_integrity": -12,
+            "community_impact": -5,
+            "trust_level": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Faster, yes — but later you discover the soil had problems. Plants wither and need replanting. Time lost.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w4_quick_test",
+          "label": "C. Do a Quick Partial Test",
+          "description": "Run a basic check — not as thorough but catches major problems. Saves some time.",
+          "delta": {
+            "project_progress": 7,
+            "ethics_score": 3,
+            "personal_integrity": 3,
+            "community_impact": 3,
+            "trust_level": 2
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "A reasonable middle path. The quick test catches the biggest issues, and you save a day.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w4_ask_teacher",
+          "label": "D. Ask Mr. Values for Advice",
+          "description": "Be transparent about the time pressure and ask for guidance. Shows humility.",
+          "delta": {
+            "ethics_score": 8,
+            "personal_integrity": 8,
+            "trust_level": 8,
+            "team_cohesion": 3,
+            "project_progress": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "Smart leadership! Mr. Values helps you find a faster testing method and praises your honesty.",
+          "requires": {
+            "resource": "trust_level",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Trust Level >= 40"
+          },
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_inclusion",
+      "round_title": "Week 5: The Inclusion Challenge",
+      "situation": "A new student who uses a wheelchair wants to join the team. Riley mutters that it will slow them down. Zara silently offers the new student a seat. The team looks to you.",
+      "goal": "Decide how to welcome (or not) the new teammate.",
+      "coaching_moment": "True teamwork means making space for everyone, not just those who are convenient.",
+      "reflection_prompt": "What does a team lose when it excludes people who are different?",
+      "ai_image_prompt": "Cartoon school scene, diverse kids welcoming a student in wheelchair to their project team, some hesitant some open-armed, colorful park background, inclusive",
+      "choices": [
+        {
+          "id": "w5_full_welcome",
+          "label": "A. Warmly Welcome and Adapt",
+          "description": "Redesign tasks so everyone can participate. Create an accessible work plan.",
+          "delta": {
+            "ethics_score": 12,
+            "fairness_index": 12,
+            "team_cohesion": 8,
+            "empathy": 8,
+            "team_happiness": 5,
+            "project_progress": -3,
+            "community_impact": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "True inclusion! The new teammate brings amazing design ideas. Adapting made your project stronger.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "w5_limited_role",
+          "label": "B. Assign a Limited Role",
+          "description": "Welcome them but only give tasks they can 'easily' do, like note-taking.",
+          "delta": {
+            "team_cohesion": 2,
+            "fairness_index": -5,
+            "ethics_score": -3,
+            "project_progress": 5,
+            "team_happiness": -2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Good intention, poor execution. The new teammate feels tokenized — included but not really part of the team.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "w5_team_plan",
+          "label": "C. Let the Team Plan Together",
+          "description": "Sit down with everyone, including the new student, and collaboratively design an inclusive plan.",
+          "delta": {
+            "team_cohesion": 10,
+            "fairness_index": 10,
+            "ethics_score": 8,
+            "trust_level": 8,
+            "team_happiness": 5,
+            "project_progress": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Collaborative inclusion! Everyone's voice matters. The new student suggests a brilliant park accessibility feature.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w5_politely_decline",
+          "label": "D. Say the Team Is Full",
+          "description": "Politely decline — adding someone now would disrupt the workflow.",
+          "delta": {
+            "project_progress": 5,
+            "ethics_score": -15,
+            "fairness_index": -12,
+            "personal_integrity": -10,
+            "team_happiness": -3,
+            "trust_level": -8
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Efficient but exclusionary. Mr. Values pulls you aside for a serious conversation about inclusion.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_fairness",
+      "id": "crisis_fairness",
+      "round_title": "CRISIS: The Fairness Meltdown",
+      "situation": "Riley has threatened to quit! They say the project isn't fair — some people do all the hard work while others coast. Two other teammates agree. Zara is crying. Mr. Values says if you can't resolve this, the project may be canceled. The team is at breaking point.",
+      "goal": "Resolve the fairness crisis before the team falls apart.",
+      "coaching_moment": "Fairness doesn't always mean treating everyone the same — it means giving everyone what they need to succeed.",
+      "reflection_prompt": "What is the difference between equality (same for everyone) and equity (what each person needs)?",
+      "ai_image_prompt": "Cartoon dramatic school scene, angry diverse kids facing off, one crying, teacher watching concerned, broken team meeting, storm clouds visual metaphor, vivid",
+      "condition": {
+        "resource": "fairness_index",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "fc_transparent_tracker",
+          "label": "A. Create a Transparent Task Tracker",
+          "description": "Make all tasks visible with clear assignments so everyone can see who's doing what.",
+          "delta": {
+            "fairness_index": 18,
+            "team_cohesion": 10,
+            "trust_level": 10,
+            "team_happiness": 5,
+            "project_progress": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Transparency solves so many problems! When everyone can see the work, fairness follows naturally.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "fc_mediation",
+          "label": "B. Hold a Mediation Circle",
+          "description": "Sit in a circle and let everyone share their feelings — no interruptions, full honesty.",
+          "delta": {
+            "team_cohesion": 15,
+            "fairness_index": 12,
+            "trust_level": 12,
+            "team_happiness": 8,
+            "ethics_score": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Powerful! Riley admits they were scared of failing. Zara shares that she felt invisible. Healing begins.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "fc_new_rules",
+          "label": "C. Rewrite the Team Rules Together",
+          "description": "Scrap the old plan and let the whole team create new fair rules from scratch.",
+          "delta": {
+            "fairness_index": 15,
+            "team_cohesion": 8,
+            "ethics_score": 8,
+            "trust_level": 8,
+            "project_progress": -5,
+            "team_happiness": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "feedback": "A fresh start! It costs time, but the new rules have everyone's buy-in. Ownership builds commitment.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "fc_leader_apology",
+          "label": "D. Apologize and Take Responsibility",
+          "description": "As the leader, own the failure. Apologize for not noticing the unfairness sooner.",
+          "delta": {
+            "personal_integrity": 12,
+            "trust_level": 15,
+            "team_cohesion": 10,
+            "fairness_index": 8,
+            "team_happiness": 5,
+            "ethics_score": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Courage! A leader who apologizes earns more respect than one who's always right. Riley softens.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_pressure",
+      "round_title": "Week 6: Peer Pressure Problem",
+      "situation": "Popular kids from another class offer to 'help' your project — but only if you let them take credit in the school newsletter. They have connections with the principal. Some teammates want to accept because it would make the project look more impressive.",
+      "goal": "Navigate the peer pressure and decide what's right.",
+      "coaching_moment": "Taking credit for others' work — or giving away your team's credit — both raise ethical questions.",
+      "reflection_prompt": "Is it ever okay to share credit with people who didn't do the work?",
+      "ai_image_prompt": "Cartoon school hallway, popular kids in trendy clothes talking to project team kids, newspaper mockup in background, persuasion scene, vivid cartoon style",
+      "choices": [
+        {
+          "id": "w6_decline_firmly",
+          "label": "A. Decline Firmly",
+          "description": "Say no — your team did the work, your team gets the credit. Period.",
+          "delta": {
+            "ethics_score": 12,
+            "personal_integrity": 10,
+            "trust_level": 8,
+            "team_cohesion": 5,
+            "fairness_index": 5,
+            "team_happiness": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Standing up to pressure takes guts! Your team respects you more for protecting their work.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "w6_accept_deal",
+          "label": "B. Accept the Deal",
+          "description": "Let them share credit. The project gets more visibility, and you make powerful allies.",
+          "delta": {
+            "project_progress": 8,
+            "community_impact": 5,
+            "ethics_score": -12,
+            "personal_integrity": -10,
+            "fairness_index": -8,
+            "trust_level": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "More visibility, but your teammates know the truth. Zara looks betrayed. Is this really winning?",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "w6_counter_offer",
+          "label": "C. Counter-Offer: Real Help Welcome",
+          "description": "Tell them they can join — but only if they actually do real work alongside your team.",
+          "delta": {
+            "ethics_score": 5,
+            "project_progress": 8,
+            "team_cohesion": 3,
+            "fairness_index": 5,
+            "community_impact": 5,
+            "personal_integrity": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Fair and practical! If they want credit, they earn it. Two of them actually show up and help.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w6_team_decides",
+          "label": "D. Put It to a Team Vote",
+          "description": "Let the whole team decide together. It's their credit too.",
+          "delta": {
+            "team_cohesion": 8,
+            "fairness_index": 8,
+            "trust_level": 5,
+            "ethics_score": 3,
+            "team_happiness": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Democracy! The team votes to decline, and they own the decision together. Unity strengthened.",
+          "requires": {
+            "resource": "team_cohesion",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Team Cohesion >= 40"
+          },
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_inclusion",
+      "id": "crisis_inclusion",
+      "round_title": "CRISIS: The Inclusion Emergency",
+      "situation": "Zara hasn't spoken in three days. She eats lunch alone and flinches when teammates approach. She told Mr. Values she feels invisible and bullied. Mr. Values has called an urgent meeting — if the team can't create a safe environment, Zara's parents may pull her from the project. This is about more than a project. This is about a person.",
+      "goal": "Create a safe, inclusive environment before Zara leaves.",
+      "coaching_moment": "Empathy isn't just understanding someone's feelings — it's taking action to make things better.",
+      "reflection_prompt": "Have you ever felt invisible in a group? What would have helped you feel included?",
+      "ai_image_prompt": "Cartoon emotional scene, shy girl sitting alone on a bench while a group of kids stands nearby looking concerned, teacher kneeling to talk to her, warm but sad, vivid colors",
+      "condition": {
+        "resource": "team_cohesion",
+        "operator": "<",
+        "value": 30
+      },
+      "choices": [
+        {
+          "id": "ic_buddy_system",
+          "label": "A. Create a Buddy System",
+          "description": "Pair everyone with a buddy who checks in daily. Make sure Zara's buddy is someone she trusts.",
+          "delta": {
+            "team_cohesion": 15,
+            "team_happiness": 10,
+            "ethics_score": 8,
+            "fairness_index": 8,
+            "trust_level": 8
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Simple but powerful! The buddy system makes everyone feel seen. Zara's buddy helps her share ideas.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "ic_personal_apology",
+          "label": "B. Personally Apologize to Zara",
+          "description": "Go to Zara privately, listen to her, and sincerely apologize for not protecting her sooner.",
+          "delta": {
+            "personal_integrity": 15,
+            "trust_level": 12,
+            "team_cohesion": 10,
+            "ethics_score": 10,
+            "team_happiness": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Vulnerability is strength. Your apology makes Zara cry — happy tears this time. She stays.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "ic_team_charter",
+          "label": "C. Write a Team Kindness Charter",
+          "description": "The whole team writes and signs a charter with rules about respect, listening, and inclusion.",
+          "delta": {
+            "fairness_index": 12,
+            "team_cohesion": 12,
+            "ethics_score": 10,
+            "trust_level": 8,
+            "team_happiness": 5,
+            "project_progress": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "adaptability"
+          ],
+          "feedback": "Putting values in writing makes them real! The charter hangs on the wall and guides every meeting.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "ic_safe_space",
+          "label": "D. Create a Safe Sharing Circle",
+          "description": "Weekly circle time where everyone shares one feeling and one appreciation. No judging allowed.",
+          "delta": {
+            "team_cohesion": 12,
+            "team_happiness": 12,
+            "trust_level": 10,
+            "ethics_score": 5,
+            "personal_integrity": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "The sharing circle transforms the team dynamic. Even Riley opens up about feeling pressured to be perfect.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_credit",
+      "round_title": "Week 7: Who Gets the Credit?",
+      "situation": "The school newspaper wants to write a story about your project. They only want to interview ONE person — the 'leader.' Riley immediately steps forward. But Zara actually designed the garden layout that everyone loves. Mr. Values watches to see what you do.",
+      "goal": "Decide who represents the team to the newspaper.",
+      "coaching_moment": "True leaders shine the spotlight on others, not themselves.",
+      "reflection_prompt": "What matters more — being recognized or making sure the right person is recognized?",
+      "ai_image_prompt": "Cartoon school newspaper reporter with notepad interviewing students at a park project, spotlight effect, one shy girl with garden design, competitive kid stepping forward, vivid",
+      "choices": [
+        {
+          "id": "w7_zara_spotlight",
+          "label": "A. Nominate Zara",
+          "description": "Zara designed the best part of the project. She deserves the recognition.",
+          "delta": {
+            "fairness_index": 12,
+            "ethics_score": 10,
+            "team_cohesion": 8,
+            "trust_level": 8,
+            "team_happiness": 5,
+            "personal_integrity": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Zara is stunned — then radiant. Her interview inspires other shy students across school. Riley learns a lesson.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w7_group_interview",
+          "label": "B. Insist on a Group Interview",
+          "description": "Tell the newspaper it's a team effort — either interview everyone or no one.",
+          "delta": {
+            "team_cohesion": 10,
+            "fairness_index": 10,
+            "team_happiness": 8,
+            "trust_level": 5,
+            "community_impact": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "feedback": "Unity! The newspaper agrees to a group photo and quotes everyone. The article is stronger for it.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w7_riley_goes",
+          "label": "C. Let Riley Do It",
+          "description": "Riley is confident and articulate — they'll represent the project well to the public.",
+          "delta": {
+            "project_progress": 5,
+            "community_impact": 5,
+            "fairness_index": -8,
+            "team_cohesion": -5,
+            "ethics_score": -3,
+            "trust_level": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Riley gives a great interview but takes full credit. Zara reads the article and goes quiet again.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w7_you_go",
+          "label": "D. Go Yourself as Team Leader",
+          "description": "You're the leader — it makes sense for you to represent the team.",
+          "delta": {
+            "project_progress": 3,
+            "community_impact": 3,
+            "team_cohesion": -5,
+            "fairness_index": -5,
+            "personal_integrity": -5,
+            "team_happiness": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "You do fine, but Mr. Values raises an eyebrow. Leadership isn't about being in the spotlight.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_sacrifice",
+      "round_title": "Week 8: The Sacrifice Decision",
+      "situation": "The project needs a final push, but it clashes with the school sports day. Riley is the star athlete and has been training for months. Asking Riley to skip sports day would be a big sacrifice. But without Riley's strength, the heavy park benches can't be installed on time.",
+      "goal": "Balance individual needs with team goals.",
+      "coaching_moment": "Ethical teams don't force sacrifices — they inspire voluntary ones and find alternatives.",
+      "reflection_prompt": "Is it fair to ask someone to give up something important for the group?",
+      "input_type": "hybrid",
+      "free_text_prompt": "In 2-3 sentences, explain what you would say to Riley about the situation. How would you balance being honest about the team's needs while respecting Riley's personal goals?",
+      "evaluation_rubric": {
+        "empathy": "Shows understanding of Riley's feelings and personal goals",
+        "strategic_thinking": "Proposes a concrete solution that considers both sides"
+      },
+      "ai_image_prompt": "Cartoon split scene, one side showing a sports race track with medals, other side showing kids struggling to lift heavy park benches, student torn between both, vivid",
+      "choices": [
+        {
+          "id": "w8_let_riley_compete",
+          "label": "A. Let Riley Compete",
+          "description": "Riley has worked hard for sports day. Find another way to install the benches.",
+          "delta": {
+            "ethics_score": 8,
+            "fairness_index": 8,
+            "team_happiness": 5,
+            "project_progress": -5,
+            "trust_level": 8,
+            "team_cohesion": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Respecting Riley's dreams earns deep loyalty. The team finds a creative workaround together.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "w8_ask_riley",
+          "label": "B. Ask Riley to Choose",
+          "description": "Explain the situation honestly and let Riley decide. No pressure, just transparency.",
+          "delta": {
+            "trust_level": 10,
+            "team_cohesion": 5,
+            "personal_integrity": 5,
+            "ethics_score": 5,
+            "project_progress": 3,
+            "fairness_index": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Honesty wins. Riley decides to compete in the morning and help in the afternoon. Best of both worlds.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "w8_pressure_riley",
+          "label": "C. Pressure Riley to Skip Sports",
+          "description": "The team needs come first. Tell Riley the project is more important.",
+          "delta": {
+            "project_progress": 12,
+            "team_cohesion": -10,
+            "fairness_index": -8,
+            "ethics_score": -8,
+            "team_happiness": -8,
+            "trust_level": -10
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The benches get installed, but Riley is resentful. Other teammates wonder if they'll be forced too.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "w8_community_help",
+          "label": "D. Ask Community Volunteers",
+          "description": "Reach out to neighborhood adults to help with the heavy lifting. Build community connections.",
+          "delta": {
+            "community_impact": 10,
+            "project_progress": 8,
+            "team_happiness": 5,
+            "trust_level": 5,
+            "ethics_score": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Brilliant! Community adults love helping kids. Riley competes AND the benches get installed. Win-win!",
+          "requires": {
+            "resource": "community_impact",
+            "op": ">=",
+            "value": 30,
+            "label": "Requires Community Impact >= 30"
+          },
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_9_truth",
+      "round_title": "Week 9: The Truth Comes Out",
+      "situation": "Disaster! The paint your team used on the park benches is peeling off after just one week. It turns out someone bought the cheapest paint to save money without telling anyone. If you report it, the project deadline gets pushed back. If you cover it with a second coat, it might hold until the final presentation.",
+      "goal": "Handle the quality problem with integrity.",
+      "coaching_moment": "Covering up mistakes always makes them worse. Transparency is the foundation of trust.",
+      "reflection_prompt": "Is a beautiful lie better than an ugly truth?",
+      "ai_image_prompt": "Cartoon kids looking at peeling paint on a park bench with dismay, one holding a paint can guiltily, quality problem scene, colorful park, vivid style",
+      "choices": [
+        {
+          "id": "w9_report_honestly",
+          "label": "A. Report the Problem Honestly",
+          "description": "Tell Mr. Values the truth, accept the delay, and redo it properly with good paint.",
+          "delta": {
+            "ethics_score": 12,
+            "personal_integrity": 12,
+            "trust_level": 10,
+            "project_progress": -10,
+            "community_impact": 5,
+            "team_cohesion": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Painful but right! Mr. Values respects the honesty and helps find a sponsor for good paint.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "w9_cover_up",
+          "label": "B. Cover It with a Second Coat",
+          "description": "Apply another coat and hope it holds until the presentation. Nobody needs to know.",
+          "delta": {
+            "project_progress": 5,
+            "ethics_score": -15,
+            "personal_integrity": -15,
+            "trust_level": -10,
+            "community_impact": -8
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The cover-up holds for the presentation, but peels worse a week later. Now everyone knows — and trusts you less.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w9_fundraise",
+          "label": "C. Organize a Quick Fundraiser",
+          "description": "The team holds a bake sale to raise money for proper paint. Turn the mistake into a learning moment.",
+          "delta": {
+            "ethics_score": 8,
+            "community_impact": 8,
+            "team_cohesion": 8,
+            "project_progress": -3,
+            "trust_level": 5,
+            "team_happiness": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Turning setbacks into comebacks! The bake sale brings the community together and raises enough for premium paint.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "w9_confront_buyer",
+          "label": "D. Talk to Whoever Bought the Paint",
+          "description": "Have a private conversation about why they made that choice. Understand before judging.",
+          "delta": {
+            "ethics_score": 8,
+            "empathy": 8,
+            "team_cohesion": 8,
+            "trust_level": 8,
+            "personal_integrity": 5,
+            "project_progress": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "You discover they couldn't afford better and were too embarrassed to say so. Compassion leads to a real solution.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_10_finale",
+      "round_title": "Week 10: The Grand Finale — Your Legacy",
+      "situation": "The project presentation is tomorrow! The park looks great, but you get one final choice. The school principal offers a special award — but it can only go to ONE team member. How you handle this final moment will define what your team remembers most.",
+      "goal": "Make a final decision that reflects your values and leadership.",
+      "coaching_moment": "The greatest leaders are remembered not for awards they won, but for how they made others feel.",
+      "reflection_prompt": "At the end of a journey, what matters more — the trophy or the memories?",
+      "input_type": "hybrid",
+      "free_text_prompt": "In 2-3 sentences, describe the most important lesson you learned from leading this team. What advice would you give to the next student leader?",
+      "evaluation_rubric": {
+        "ethical_reasoning": "Reflects genuine learning about ethics, fairness, or integrity",
+        "resilience": "Shows awareness of challenges faced and how they built strength"
+      },
+      "ai_image_prompt": "Cartoon grand school presentation day, beautiful renovated park with happy community, diverse team of kids on stage, trophy/medal, pride and joy, vivid sunset colors",
+      "choices": [
+        {
+          "id": "w10_give_zara",
+          "label": "A. Give the Award to Zara",
+          "description": "Zara grew the most and overcame shyness. Recognize her journey publicly.",
+          "delta": {
+            "ethics_score": 12,
+            "fairness_index": 10,
+            "team_cohesion": 10,
+            "empathy": 10,
+            "trust_level": 8,
+            "team_happiness": 8,
+            "community_impact": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Zara's family is in the audience and they're weeping with joy. This is what leadership looks like.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w10_team_trophy",
+          "label": "B. Decline — Ask for a Team Award Instead",
+          "description": "Tell the principal that no individual deserves it more than the team. Request a group award.",
+          "delta": {
+            "team_cohesion": 15,
+            "fairness_index": 12,
+            "team_happiness": 10,
+            "ethics_score": 8,
+            "trust_level": 8,
+            "personal_integrity": 8,
+            "community_impact": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "adaptability"
+          ],
+          "feedback": "The principal is impressed and creates a team trophy on the spot. Riley cheers. Zara smiles. Perfect ending.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w10_take_it",
+          "label": "C. Accept the Award Yourself",
+          "description": "You led the team through crises and made the hard decisions. You deserve recognition.",
+          "delta": {
+            "project_progress": 5,
+            "community_impact": 3,
+            "personal_integrity": -10,
+            "team_cohesion": -12,
+            "fairness_index": -10,
+            "team_happiness": -8,
+            "trust_level": -8
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "You hold the trophy, but your team looks away. Was it worth it? Leadership isn't about collecting medals.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w10_community_dedication",
+          "label": "D. Dedicate the Award to the Community",
+          "description": "Accept on behalf of the entire community that supported the project — neighbors, parents, everyone.",
+          "delta": {
+            "community_impact": 15,
+            "ethics_score": 10,
+            "personal_integrity": 10,
+            "trust_level": 8,
+            "team_happiness": 8,
+            "team_cohesion": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "The whole community stands and cheers. The park isn't just your team's project — it belongs to everyone now.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "ethics_champion",
+      "label": "Ethics Champion",
+      "condition": "ethics_score >= 80 and personal_integrity >= 75",
+      "icon": "⚖️"
+    },
+    {
+      "id": "team_builder",
+      "label": "Team Builder",
+      "condition": "team_cohesion >= 80 and team_happiness >= 75",
+      "icon": "👥"
+    },
+    {
+      "id": "community_hero",
+      "label": "Community Hero",
+      "condition": "community_impact >= 80 and project_progress >= 80",
+      "icon": "🌍"
+    },
+    {
+      "id": "trust_master",
+      "label": "Trust Master",
+      "condition": "trust_level >= 80 and fairness_index >= 75",
+      "icon": "🤝"
+    },
+    {
+      "id": "integrity_star",
+      "label": "Integrity Star",
+      "condition": "personal_integrity >= 85",
+      "icon": "💎"
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3,
+        "description": "Learn the basics of ethical decision-making and team dynamics."
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4,
+        "description": "Face tougher dilemmas involving inclusion, peer pressure, and fairness crises."
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 4,
+        "description": "Prove your leadership through high-stakes decisions about truth, sacrifice, and legacy."
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "checkpoint_id": "checkpoint_ethics_foundations",
+      "title": "Ethics & Teamwork Check-In",
+      "description": "Let's see what you've learned about ethics and working together so far!",
+      "review_summary": "In the first five weeks, you faced dilemmas about fairness in assigning roles, honesty when finding lost property, resolving team conflicts, resisting shortcuts, and welcoming someone different. These situations tested whether you can balance doing what is right with doing what is easy.",
+      "questions": [
+        {
+          "question_id": "cp1_q1",
+          "question": "Your team finds extra supplies that belong to another group. Nobody saw you pick them up. What is the most ethical thing to do?",
+          "choices": [
+            {
+              "id": "cp1_q1_a",
+              "text": "Keep them — your project needs them more.",
+              "correct": false,
+              "explanation": "Just because no one saw you doesn't make it right. Taking what belongs to others is dishonest, even for a good cause."
+            },
+            {
+              "id": "cp1_q1_b",
+              "text": "Return them to the other group and explain what happened.",
+              "correct": true,
+              "explanation": "Integrity means doing the right thing even when nobody is watching. Returning the supplies builds trust and shows your team what honesty looks like in action."
+            },
+            {
+              "id": "cp1_q1_c",
+              "text": "Hide them and decide later.",
+              "correct": false,
+              "explanation": "Delaying the decision doesn't change the fact that the supplies aren't yours. Avoiding the truth is still a form of dishonesty."
+            }
+          ]
+        },
+        {
+          "question_id": "cp1_q2",
+          "question": "Two teammates disagree about how to complete a task. One is louder and more confident, the other is quiet and unsure. As the team leader, what should you do?",
+          "choices": [
+            {
+              "id": "cp1_q2_a",
+              "text": "Go with the louder person because they seem more sure.",
+              "correct": false,
+              "explanation": "Being loud doesn't mean being right. Good leaders listen to all voices, not just the loudest ones."
+            },
+            {
+              "id": "cp1_q2_b",
+              "text": "Ignore both and decide on your own.",
+              "correct": false,
+              "explanation": "Making decisions alone without listening to your teammates breaks trust and ignores valuable perspectives."
+            },
+            {
+              "id": "cp1_q2_c",
+              "text": "Ask the quiet person to share their idea first, then discuss both options as a team.",
+              "correct": true,
+              "explanation": "Good teamwork means creating space for every voice. When quieter members feel heard, the whole team makes better decisions."
+            }
+          ]
+        },
+        {
+          "question_id": "cp1_q3",
+          "question": "A new student who is different from the rest of your team wants to join. Some teammates worry it will slow things down. What does true inclusion mean?",
+          "choices": [
+            {
+              "id": "cp1_q3_a",
+              "text": "Let them join but only give them easy tasks so they don't slow the team down.",
+              "correct": false,
+              "explanation": "Giving someone only easy tasks is not real inclusion — it's tokenism. It makes the person feel like they don't truly belong."
+            },
+            {
+              "id": "cp1_q3_b",
+              "text": "Adapt your plans so everyone can participate meaningfully, including the new person.",
+              "correct": true,
+              "explanation": "True inclusion means adjusting how the team works so that every member can contribute their best. Different perspectives make teams stronger."
+            },
+            {
+              "id": "cp1_q3_c",
+              "text": "Politely say the team is full right now.",
+              "correct": false,
+              "explanation": "Excluding someone because they are different goes against the values of fairness and empathy. Every person deserves a chance to belong."
+            }
+          ]
+        },
+        {
+          "question_id": "cp1_q4",
+          "question": "Your team is behind schedule. A teammate suggests skipping an important safety step to save time. What is the best approach?",
+          "choices": [
+            {
+              "id": "cp1_q4_a",
+              "text": "Skip it — the deadline is more important than one small step.",
+              "correct": false,
+              "explanation": "Cutting corners on safety can lead to bigger problems later. A shortcut today can become a disaster tomorrow."
+            },
+            {
+              "id": "cp1_q4_b",
+              "text": "Do the safety step properly, even if it means the project takes longer.",
+              "correct": true,
+              "explanation": "Doing things right matters more than doing them fast. Quality and safety are part of being responsible, and the team learns that patience pays off."
+            },
+            {
+              "id": "cp1_q4_c",
+              "text": "Do a very quick version of the step and hope it's good enough.",
+              "correct": false,
+              "explanation": "While compromise can be wise, safety steps exist for a reason. Half-measures on important procedures can still lead to problems."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "after_round": 10,
+      "checkpoint_id": "checkpoint_ethics_mastery",
+      "title": "Ethics & Leadership Mastery Check",
+      "description": "You've been through tough decisions, crises, and moments of truth. Let's reflect on what you've learned about ethics and leadership!",
+      "review_summary": "Over the past ten weeks, you navigated peer pressure, credit disputes, personal sacrifices, cover-up temptations, and final legacy decisions. These advanced challenges tested whether you can maintain integrity under pressure, share credit generously, balance individual and team needs, and choose transparency over convenience.",
+      "questions": [
+        {
+          "question_id": "cp2_q1",
+          "question": "Popular students offer to help your project, but only if they get credit in the school newspaper even though they didn't do the work. What is the most ethical response?",
+          "choices": [
+            {
+              "id": "cp2_q1_a",
+              "text": "Accept the deal — more publicity helps the project.",
+              "correct": false,
+              "explanation": "Giving credit to people who didn't do the work is dishonest. It also disrespects the teammates who actually put in the effort."
+            },
+            {
+              "id": "cp2_q1_b",
+              "text": "Tell them they are welcome to join if they do real work alongside the team.",
+              "correct": true,
+              "explanation": "This is fair and principled. If someone wants credit, they should earn it. Standing up to social pressure while leaving the door open for genuine help shows strong ethical reasoning."
+            },
+            {
+              "id": "cp2_q1_c",
+              "text": "Ignore them and hope they go away.",
+              "correct": false,
+              "explanation": "Avoiding the situation doesn't address the ethical issue. Good leaders face difficult conversations directly and honestly."
+            }
+          ]
+        },
+        {
+          "question_id": "cp2_q2",
+          "question": "Your team discovers a mistake — the paint you used is peeling. You could cover it up before the presentation or report it honestly. Why is honesty the better choice?",
+          "choices": [
+            {
+              "id": "cp2_q2_a",
+              "text": "Because cover-ups always get discovered eventually, and then trust is broken even worse.",
+              "correct": true,
+              "explanation": "Exactly right. Hiding mistakes destroys trust when the truth comes out — and it almost always does. Honesty may be painful in the short term, but it builds lasting trust and respect."
+            },
+            {
+              "id": "cp2_q2_b",
+              "text": "Honesty is only better if you think you'll get caught.",
+              "correct": false,
+              "explanation": "Integrity isn't about calculating the risk of getting caught. It's about doing what's right because it's right, regardless of whether anyone is watching."
+            },
+            {
+              "id": "cp2_q2_c",
+              "text": "It doesn't matter — what counts is that the project looks good for the presentation.",
+              "correct": false,
+              "explanation": "Appearances can be deceiving. A project built on honesty and quality is worth far more than one that just looks good on the surface."
+            }
+          ]
+        },
+        {
+          "question_id": "cp2_q3",
+          "question": "A teammate has trained for months for sports day, but the project also needs them that day. What does ethical leadership look like in this situation?",
+          "choices": [
+            {
+              "id": "cp2_q3_a",
+              "text": "Pressure them to skip sports day — the team project is more important.",
+              "correct": false,
+              "explanation": "Forcing someone to sacrifice something important to them breaks trust and is not fair. Ethical teams inspire, not coerce."
+            },
+            {
+              "id": "cp2_q3_b",
+              "text": "Explain the situation honestly and let them choose, with no pressure.",
+              "correct": true,
+              "explanation": "Respecting someone's right to choose shows you value them as a person, not just as a resource. Transparency and respect lead to solutions where everyone feels heard."
+            },
+            {
+              "id": "cp2_q3_c",
+              "text": "Don't say anything and just work around them being absent.",
+              "correct": false,
+              "explanation": "Avoiding the conversation means the teammate doesn't get the chance to help find a solution. Open communication is essential for good teamwork."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Ethics",
+      "definition": "A set of moral principles that guide how we decide what is right and wrong in our actions and decisions."
+    },
+    {
+      "term": "Teamwork",
+      "definition": "Working together cooperatively as a group to achieve a shared goal, using each person's strengths."
+    },
+    {
+      "term": "Integrity",
+      "definition": "Being honest and having strong moral principles — doing the right thing even when nobody is watching."
+    },
+    {
+      "term": "Empathy",
+      "definition": "The ability to understand and share the feelings of another person, putting yourself in their shoes."
+    },
+    {
+      "term": "Fairness",
+      "definition": "Treating people in a way that is right and reasonable, without favoritism or discrimination."
+    },
+    {
+      "term": "Inclusion",
+      "definition": "Making sure that all people, regardless of their differences, feel welcomed, valued, and able to participate."
+    },
+    {
+      "term": "Civic Responsibility",
+      "definition": "The duty of citizens to participate in their community and take actions that benefit the common good."
+    },
+    {
+      "term": "Equity",
+      "definition": "The concept of giving people what they individually need to succeed, which may differ from person to person — unlike equality, which gives everyone the same thing."
+    }
+  ],
+  "endings": [
+    {
+      "id": "ethics_champion_ending",
+      "title": "Ethics Champion",
+      "icon": "⚖️",
+      "message": "Your team has become the ethical conscience of the entire school! Mr. Values nominates your project as a model for character education. Your commitment to honesty, fairness, and doing the right thing — even when it was hard — has inspired students across all grades. Other teams now come to you for advice on handling tough situations. You proved that success built on strong values lasts forever.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "ethics_score",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "personal_integrity",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "team_spirit_award_ending",
+      "title": "Team Spirit Award",
+      "icon": "🏆",
+      "message": "Your team wins the school's Team Spirit Award! Riley, Zara, and every teammate have grown into confident, caring collaborators. The principal says she's never seen a group resolve conflicts so maturely. Riley learned that winning isn't everything, and Zara found her voice. Together, you proved that a united team can accomplish anything — and have fun doing it!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "team_cohesion",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "team_happiness",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "community_hero_ending",
+      "title": "Community Hero",
+      "icon": "🌍",
+      "message": "The neighborhood throws a celebration in your team's honor! The park is transformed — elderly residents enjoy the garden, children play on safe equipment, and the community center displays photos of your journey. Local news picks up the story, and the mayor invites your team to speak about youth civic engagement. You showed that young people can change the world — one park at a time.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "community_impact",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "project_progress",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "integrity_star_ending",
+      "title": "Integrity Star",
+      "icon": "💎",
+      "message": "Mr. Values personally writes a letter to your parents praising your character. Through every temptation, shortcut, and pressure situation, you chose the honest path. Your teammates trust you completely — not because you were perfect, but because you always owned your mistakes and did the right thing. That kind of integrity is rarer and more valuable than any award.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "personal_integrity",
+            "operator": ">=",
+            "value": 80
+          },
+          {
+            "resource": "trust_level",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "growing_together_ending",
+      "title": "Growing Together",
+      "icon": "🌱",
+      "message": "The project is complete, and the park looks better than before. Your team had ups and downs — arguments, mistakes, and tough days — but you made it through together. Not every decision was perfect, and that's okay. The real project was never just about the park — it was about learning to work with others, stand up for what's right, and grow as a person. And in that project, you passed.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

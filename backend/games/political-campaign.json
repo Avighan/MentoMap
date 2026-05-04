@@ -1,0 +1,797 @@
+{
+  "game_id": "political-campaign",
+  "title": "Political Campaign",
+  "theme": "Election Strategy",
+  "icon": "🗳️",
+  "description": "A chess-inspired strategy game where you run for office by positioning your campaign team across electoral districts. Deploy your Party Leader, Campaign Manager, Media Strategists, Pollsters, Lobbyists, and Volunteers to outmaneuver the opposition. Control swing states, dominate media markets, and build enough political capital to win the election.",
+  "game_type": "chess_strategy",
+  "category": "Strategy & Tactics",
+  "target_audience": "16-25",
+  "duration_minutes": 25,
+  "difficulty": "advanced",
+  "learning_objectives": [
+    "Develop strategic thinking by planning multi-step campaign maneuvers across districts",
+    "Practice resource allocation by deciding where to deploy limited campaign staff",
+    "Understand risk-reward tradeoffs when choosing between aggressive and defensive political tactics",
+    "Build spatial reasoning skills through positional control of key electoral territories",
+    "Learn adaptive decision-making by responding to the opponent's shifting campaign strategy",
+    "Cultivate long-term planning skills by balancing immediate gains against election-day positioning"
+  ],
+  "tags": [
+    "strategy",
+    "politics",
+    "resource-management",
+    "critical-thinking",
+    "elections",
+    "campaign-tactics"
+  ],
+  "how_to_play": [
+    "Each turn you get 2 Action Points (AP). Moving a piece costs 1 AP, and using a special ability costs 1 AP.",
+    "Pieces move like chess: Leader=King, Manager=Queen, Media=Rook, Pollster=Bishop, Lobbyist=Knight, Volunteer=Pawn.",
+    "Capture enemy pieces by moving onto their square. Volunteers promote to Campaign Manager when reaching the last row.",
+    "Control resource tiles (Swing States, Media Markets, etc.) by placing your pieces on them. Each tile generates political capital per turn.",
+    "Win by: capturing the enemy Party Leader, controlling 3+ resource tiles, or reaching $10M in political capital.",
+    "Use each piece's unique abilities strategically — the Lobbyist's backroom deals and the Pollster's data-driven repositioning can turn the tide of any campaign."
+  ],
+  "objectives": [
+    "Capture the rival Party Leader for an instant electoral victory",
+    "Control 3 or more key districts for a landslide resource domination win",
+    "Build your political capital to $10 million through strategic campaigning"
+  ],
+  "storybook_pages": [
+    {
+      "title": "The Campaign Trail Begins",
+      "text": "Election season is here, and two rival campaigns face off in a battle for the hearts and minds of voters. Your team of strategists, media experts, and grassroots volunteers must outmaneuver the opposition across contested districts. Every move counts — the polls are razor-thin and victory belongs to the boldest campaign.",
+      "image_prompt": "two rival political campaign teams facing each other across a giant electoral map styled as a chess board, red and blue colors, dramatic spotlights, campaign banners and ballot boxes, digital illustration style"
+    },
+    {
+      "title": "Your Campaign Team",
+      "text": "Party Leader (King) — Your candidate, protect at all costs.\nCampaign Manager (Queen) — Most powerful, moves any direction.\nMedia Strategist (Rook) — Straight-line media blitz specialist.\nPollster (Bishop) — Diagonal data-driven analyst.\nLobbyist (Knight) — L-shaped backroom deal maker.\nVolunteer (Pawn) — Grassroots power, promotes to Campaign Manager!",
+      "image_prompt": "diverse political campaign team members as chess pieces on a campaign stage, leader at podium as king, volunteer with clipboard as pawn, colorful modern illustration, game character design with political theme"
+    },
+    {
+      "title": "The Electoral Battlefield",
+      "text": "The 8x8 board represents contested electoral territory with 6 key districts: Swing States, Media Markets, Debate Stages, Rally Venues, Donor Networks, and Campaign HQs. Control them to generate political capital each turn and build your path to victory!",
+      "image_prompt": "birds eye view of a colorful 8x8 game board with glowing district tiles shaped like states, political themed with ballot boxes and microphones, campaign trail map style, digital game art"
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "prefrontal_cortex"
+      }
+    ]
+  },
+  "initial_state": {
+    "valuation": {
+      "label": "Political Capital",
+      "value": 1000000,
+      "icon": "🗳️"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "chess_config": {
+    "board_size": 8,
+    "max_ap": 2,
+    "win_valuation": 10000000,
+    "win_resource_count": 3,
+    "resource_tiles": [
+      {
+        "pos": [
+          2,
+          2
+        ],
+        "type": "swing_state",
+        "income": 200000,
+        "icon": "🗳️",
+        "label": "Swing State"
+      },
+      {
+        "pos": [
+          2,
+          5
+        ],
+        "type": "media_market",
+        "income": 150000,
+        "icon": "📰",
+        "label": "Media Market"
+      },
+      {
+        "pos": [
+          5,
+          2
+        ],
+        "type": "debate_stage",
+        "income": 180000,
+        "icon": "🎙️",
+        "label": "Debate Stage"
+      },
+      {
+        "pos": [
+          5,
+          5
+        ],
+        "type": "rally_venue",
+        "income": 160000,
+        "icon": "🏟️",
+        "label": "Rally Venue"
+      },
+      {
+        "pos": [
+          3,
+          3
+        ],
+        "type": "donor_network",
+        "income": 120000,
+        "icon": "💰",
+        "label": "Donor Network"
+      },
+      {
+        "pos": [
+          4,
+          4
+        ],
+        "type": "campaign_hq",
+        "income": 140000,
+        "icon": "🏛️",
+        "label": "Campaign HQ"
+      }
+    ],
+    "theme_config": {
+      "king_role": "leader",
+      "queen_role": "manager",
+      "pawn_role": "volunteer",
+      "valuation_label": "Political Capital",
+      "back_row": [
+        "media",
+        "lobbyist",
+        "pollster",
+        "leader",
+        "manager",
+        "pollster",
+        "lobbyist",
+        "media"
+      ],
+      "piece_stats": {
+        "leader": {
+          "hp": 10,
+          "attack": 3,
+          "label": "Party Leader",
+          "icon": "🎤"
+        },
+        "manager": {
+          "hp": 8,
+          "attack": 4,
+          "label": "Campaign Manager",
+          "icon": "📋"
+        },
+        "media": {
+          "hp": 7,
+          "attack": 3,
+          "label": "Media Strategist",
+          "icon": "📺"
+        },
+        "pollster": {
+          "hp": 6,
+          "attack": 3,
+          "label": "Pollster",
+          "icon": "📊"
+        },
+        "lobbyist": {
+          "hp": 6,
+          "attack": 4,
+          "label": "Lobbyist",
+          "icon": "🤝"
+        },
+        "volunteer": {
+          "hp": 3,
+          "attack": 2,
+          "label": "Volunteer",
+          "icon": "🙋"
+        }
+      },
+      "piece_moves": {
+        "leader": {
+          "type": "king",
+          "range": 1,
+          "diagonal": true,
+          "straight": true
+        },
+        "manager": {
+          "type": "queen",
+          "range": 8,
+          "diagonal": true,
+          "straight": true
+        },
+        "media": {
+          "type": "rook",
+          "range": 8,
+          "diagonal": false,
+          "straight": true
+        },
+        "pollster": {
+          "type": "bishop",
+          "range": 8,
+          "diagonal": true,
+          "straight": false
+        },
+        "lobbyist": {
+          "type": "knight",
+          "range": 0,
+          "knight": true
+        },
+        "volunteer": {
+          "type": "pawn",
+          "range": 1,
+          "pawn": true
+        }
+      },
+      "piece_profiles": {
+        "leader": {
+          "title": "Party Leader (The Candidate)",
+          "strengths": [
+            {
+              "name": "Rally the Base",
+              "desc": "Boosts morale of adjacent allies, +1 ATK each"
+            },
+            {
+              "name": "Executive Immunity",
+              "desc": "Cannot be ambushed by hidden moves — sees all threats"
+            },
+            {
+              "name": "Fundraiser-in-Chief",
+              "desc": "Generates +$50K political capital per turn just by being alive"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "High-Value Target",
+              "desc": "Capture means instant electoral loss — must be protected"
+            },
+            {
+              "name": "Limited Mobility",
+              "desc": "Can only move 1 square in any direction"
+            },
+            {
+              "name": "Scandal Risk",
+              "desc": "If surrounded by enemies, loses 1 HP per turn from negative press"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "executive_order",
+              "name": "Stump Speech",
+              "desc": "Rally all adjacent allies +2 ATK for 1 turn",
+              "cost": 1,
+              "icon": "🎤"
+            },
+            {
+              "id": "pivot_vision",
+              "name": "Opposition Research",
+              "desc": "Reveal all enemy piece abilities for 2 turns",
+              "cost": 1,
+              "icon": "🔍"
+            }
+          ]
+        },
+        "manager": {
+          "title": "Campaign Manager (The Strategist)",
+          "strengths": [
+            {
+              "name": "Full Spectrum",
+              "desc": "Moves in any direction, any distance — most versatile piece"
+            },
+            {
+              "name": "Debate Prep Master",
+              "desc": "+2 ATK when capturing Lobbyists or Volunteers"
+            },
+            {
+              "name": "Spin Control",
+              "desc": "Cannot be pushed or displaced by Pollsters"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Micromanager",
+              "desc": "-1 ATK if no other allies within 2 squares"
+            },
+            {
+              "name": "Message Fatigue",
+              "desc": "Each ability use costs +1 extra AP next turn"
+            },
+            {
+              "name": "Media Cycle",
+              "desc": "Cannot stay on same tile 2 turns in a row"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "tech_pivot",
+              "name": "Rapid Redeployment",
+              "desc": "Teleport to any empty tile within 3 squares",
+              "cost": 1,
+              "icon": "⚡"
+            },
+            {
+              "id": "deploy_patch",
+              "name": "Damage Control",
+              "desc": "Heal self +3 HP and remove debuffs",
+              "cost": 1,
+              "icon": "🩹"
+            }
+          ]
+        },
+        "media": {
+          "title": "Media Strategist (The Broadcaster)",
+          "strengths": [
+            {
+              "name": "Airwave Dominance",
+              "desc": "Moves in straight lines with no range limit"
+            },
+            {
+              "name": "Ad Revenue",
+              "desc": "+$100K bonus political capital when capturing any enemy piece"
+            },
+            {
+              "name": "Press Shield",
+              "desc": "Cannot be captured if adjacent to a resource tile you control"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "No Diagonal Coverage",
+              "desc": "Cannot move or attack diagonally at all"
+            },
+            {
+              "name": "Ratings Pressure",
+              "desc": "Loses 1 HP per turn if not adjacent to a resource tile"
+            },
+            {
+              "name": "Breaking News Tunnel Vision",
+              "desc": "Must move at least 2 squares when moving"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "close_deal",
+              "name": "Exclusive Interview",
+              "desc": "Gain political capital from any adjacent resource tile instantly",
+              "cost": 1,
+              "icon": "🎤"
+            },
+            {
+              "id": "cold_call",
+              "name": "Smear Campaign",
+              "desc": "Weaken an enemy within 3 squares -2 ATK",
+              "cost": 1,
+              "icon": "📰"
+            }
+          ]
+        },
+        "pollster": {
+          "title": "Pollster (The Analyst)",
+          "strengths": [
+            {
+              "name": "Diagonal Data",
+              "desc": "Controls long diagonals — great for surprise cross-board strikes"
+            },
+            {
+              "name": "Narrative Control",
+              "desc": "Enemies adjacent to Pollster have -1 ATK from morale drop"
+            },
+            {
+              "name": "Statistical Cascade",
+              "desc": "Pushing an enemy into another enemy damages both"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "No Straight Lines",
+              "desc": "Cannot move horizontally or vertically"
+            },
+            {
+              "name": "Funding Dependent",
+              "desc": "-2 ATK if your political capital is below $2M"
+            },
+            {
+              "name": "Ego Fragility",
+              "desc": "Takes +1 extra damage from Campaign Manager attacks"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "viral_campaign",
+              "name": "Negative Ad Blitz",
+              "desc": "Push any enemy piece 2 squares away",
+              "cost": 1,
+              "icon": "📢"
+            },
+            {
+              "id": "rebrand",
+              "name": "Staff Reshuffle",
+              "desc": "Swap positions with any friendly piece on the board",
+              "cost": 1,
+              "icon": "🔀"
+            }
+          ]
+        },
+        "lobbyist": {
+          "title": "Lobbyist (The Dealmaker)",
+          "strengths": [
+            {
+              "name": "Backroom Maneuvers",
+              "desc": "Unique L-shaped moves that jump over pieces"
+            },
+            {
+              "name": "Leverage Play",
+              "desc": "+2 ATK when attacking from an unexpected angle"
+            },
+            {
+              "name": "Political Armor",
+              "desc": "Takes -1 damage from all attacks"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Predictable Connections",
+              "desc": "Only 8 possible landing squares — can be blocked"
+            },
+            {
+              "name": "Burnout",
+              "desc": "Cannot use abilities 2 turns in a row"
+            },
+            {
+              "name": "Paper Trail",
+              "desc": "Cannot retreat to previous position within 2 turns"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "deploy_mvp",
+              "name": "Set Up Blockade",
+              "desc": "Place a blocker on any empty adjacent tile",
+              "cost": 1,
+              "icon": "🚧"
+            },
+            {
+              "id": "hackathon",
+              "name": "All-Night Session",
+              "desc": "Move again immediately (costs all remaining AP)",
+              "cost": 2,
+              "icon": "🌙"
+            }
+          ]
+        },
+        "volunteer": {
+          "title": "Volunteer (The Grassroots)",
+          "strengths": [
+            {
+              "name": "Fired Up",
+              "desc": "+1 ATK for each turn survived (stacks up to +3)"
+            },
+            {
+              "name": "Strength in Numbers",
+              "desc": "You have 8 of them — overwhelm with volunteers"
+            },
+            {
+              "name": "Promotion Path",
+              "desc": "Reaching the last row promotes to Campaign Manager — massive power spike"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Forward Only",
+              "desc": "Can only move forward, never backward"
+            },
+            {
+              "name": "Low Stamina",
+              "desc": "Only 3 HP — easily removed by any piece"
+            },
+            {
+              "name": "Diagonal Canvass Only",
+              "desc": "Can only capture diagonally, not when moving forward"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "coffee_run",
+              "name": "First Aid Kit",
+              "desc": "Heal any adjacent ally +3 HP",
+              "cost": 0,
+              "icon": "🩹"
+            },
+            {
+              "id": "networking",
+              "name": "Shift Swap",
+              "desc": "Swap position with any adjacent friendly Volunteer",
+              "cost": 0,
+              "icon": "🤝"
+            }
+          ]
+        }
+      },
+      "move_narratives": {
+        "leader": {
+          "move": [
+            "{piece} steps to the podium, surveying the electoral landscape.",
+            "The Party Leader makes a calculated move, repositioning for maximum district control.",
+            "{piece} advances cautiously — every leader's move sends a signal to voters."
+          ],
+          "capture": [
+            "{piece} personally outmaneuvers the rival's {target} — a political takedown!",
+            "In a bold power play, {piece} forces the enemy {target} out of the race.",
+            "{piece} demonstrates electoral authority, eliminating the rival {target} from the campaign."
+          ]
+        },
+        "manager": {
+          "move": [
+            "{piece} deploys across the board with the precision of a campaign pivot.",
+            "The Campaign Manager repositions, scanning for the optimal attack strategy.",
+            "{piece} moves with purpose — like a perfectly timed press release."
+          ],
+          "capture": [
+            "{piece} launches a devastating opposition attack against the rival {target}!",
+            "With a brilliant strategy shift, {piece} outclasses and eliminates {target}.",
+            "{piece} executes a media blitz that renders the enemy {target} irrelevant."
+          ]
+        },
+        "media": {
+          "move": [
+            "{piece} broadcasts straight ahead, dominating the airwaves.",
+            "The Media Strategist pushes forward aggressively — ratings are everything.",
+            "{piece} repositions along the media corridor for maximum coverage."
+          ],
+          "capture": [
+            "{piece} runs a devastating exposé, taking down the rival's {target}!",
+            "The Media Strategist steamrolls through — the enemy {target} never saw the headline coming.",
+            "{piece} buries the rival {target} with wall-to-wall negative coverage."
+          ]
+        },
+        "pollster": {
+          "move": [
+            "{piece} slides diagonally, disrupting the rival's polling numbers.",
+            "The Pollster flanks the competition with unexpected data-driven analysis.",
+            "{piece} repositions for a cross-district data offensive."
+          ],
+          "capture": [
+            "{piece} releases devastating poll numbers that destroy the enemy {target}!",
+            "A viral data drop! {piece} turns public opinion against the rival {target}.",
+            "{piece} statistically dismantles the competition's {target} — total narrative control!"
+          ]
+        },
+        "lobbyist": {
+          "move": [
+            "{piece} vaults over obstacles with a crafty backroom maneuver.",
+            "The Lobbyist deploys to a flanking position — nobody saw that deal coming!",
+            "{piece} jumps into position like a well-timed political favor."
+          ],
+          "capture": [
+            "{piece} delivers a surprise lobbying strike, taking down the rival {target}!",
+            "In a brilliant backroom deal, {piece} exploits a weakness and eliminates {target}.",
+            "{piece} calls in political favors that knock out the enemy {target}."
+          ]
+        },
+        "volunteer": {
+          "move": [
+            "The eager Volunteer pushes forward, one step closer to that promotion.",
+            "{piece} advances with grassroots determination.",
+            "Small steps, big dreams — {piece} marches toward the final district."
+          ],
+          "capture": [
+            "Against all odds, the scrappy Volunteer takes down the rival {target}!",
+            "{piece} proves their worth — the enemy {target} underestimated people power!",
+            "What an upset! {piece} captures the rival's {target} in a stunning grassroots surge."
+          ],
+          "promote": [
+            "The Volunteer reaches headquarters and is PROMOTED TO CAMPAIGN MANAGER! A massive power spike!",
+            "From door-knocking to strategy — the Volunteer emerges as a powerful new Campaign Manager!",
+            "A political dream realized! The humble Volunteer earns a promotion to Campaign Manager!"
+          ]
+        }
+      },
+      "resource_narratives": [
+        "Political capital flows in from controlled districts — your campaign war chest grows!",
+        "Resource districts generate donations, fueling your campaign's momentum.",
+        "District dominance pays dividends — political capital collected from held territories."
+      ],
+      "role_values": {
+        "leader": 100,
+        "manager": 50,
+        "media": 30,
+        "pollster": 30,
+        "lobbyist": 25,
+        "volunteer": 10
+      }
+    }
+  },
+  "rounds": [
+    {
+      "id": "chess_game",
+      "title": "Political Campaign",
+      "story": "The electoral battlefield awaits. Lead your campaign team to victory across the districts!",
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "risk_tolerance"
+        ],
+        "secondary_skills": [
+          "delayed_gratification",
+          "adaptability",
+          "resilience"
+        ]
+      },
+      "choices": [],
+      "coaching_moment": "Think carefully about the trade-offs before committing to this path.",
+      "reflection_prompt": "What sacrifices did you make, and were they worth it?"
+    }
+  ],
+  "learning_concept": "Pattern Recognition & Strategic Planning",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Planning moves several steps ahead",
+      "real_world": "Mapping out a study plan for exams with realistic milestones",
+      "challenge": "Draw a decision tree for a real goal you have — what are the possible paths and outcomes?"
+    },
+    {
+      "skill_tag": "adaptability",
+      "game_context": "Responding to opponent's unexpected moves",
+      "real_world": "Adjusting your plan when a key team member is unavailable",
+      "challenge": "Describe a time when you had to completely change your approach mid-way. What did you learn?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "grandmaster",
+      "name": "Grandmaster",
+      "description": "Executed a perfect strategic sequence",
+      "condition": "accuracy >= 90",
+      "xp_reward": 250,
+      "icon": "👑"
+    },
+    {
+      "id": "tactical_genius",
+      "name": "Tactical Genius",
+      "description": "Found the winning move in a critical position",
+      "condition": "best_move_found",
+      "xp_reward": 200,
+      "icon": "🧠"
+    },
+    {
+      "id": "chess_complete",
+      "name": "Chess Champion",
+      "description": "Completed the chess strategy challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "♟️"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_depth": 1,
+      "show_hints": true,
+      "starting_advantage": 1.2
+    },
+    "medium": {
+      "ai_depth": 2,
+      "show_hints": false,
+      "starting_advantage": 1.0
+    },
+    "hard": {
+      "ai_depth": 4,
+      "show_hints": false,
+      "starting_advantage": 0.8
+    }
+  },
+  "coach_mode_default": true,
+  "features": {
+    "voice_enabled": true
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.35,
+    "adaptability": 0.3,
+    "ethical_reasoning": 0.2,
+    "empathy": 0.15
+  },
+  "estimated_duration": 25,
+  "target_age": "16-25",
+  "cultural_context": "India is the world's largest democracy, with over 900 million registered voters. Understanding how political campaigns balance messaging, coalitions, and voter outreach is an essential part of civic literacy for Indian students.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "values-citizenship"
+  ],
+  "reflection_prompt": "What pattern did your opponent rely on, and how did you counter (or fail to)?"
+}

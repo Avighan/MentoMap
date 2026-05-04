@@ -1,0 +1,2453 @@
+{
+  "game_id": "g7-leadership-fire",
+  "title": "Leadership Under Fire: When Things Go Wrong",
+  "theme": "Leadership & Crisis Management",
+  "icon": "🔥",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are the student council president of Greenfield Academy. A series of crises — event disasters, team conflicts, budget cuts, public criticism, and ethical dilemmas — test your leadership at every turn. Can you hold your team together, keep your community's trust, and lead through adversity without losing yourself?",
+  "target_audience": "Ages 12-13",
+  "target_age": "12-13",
+  "grade": "7",
+  "difficulty": "intermediate",
+  "duration_minutes": 25,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You lead the student council across 12 challenging weeks.",
+    "Each round presents a crisis or leadership decision with real trade-offs.",
+    "Watch your dashboard — leadership credibility, team loyalty, public approval, and personal wellbeing are all connected.",
+    "Random events like surprise inspections, viral social media posts, and rival school challenges will test your resilience.",
+    "NPCs (Vice Principal, your Best Ally, and the School Reporter) react to your choices and can trigger crises.",
+    "Balance leading others with taking care of yourself — even the best leaders burn out."
+  ],
+  "learning_objectives": [
+    "Understand how leaders navigate crises under pressure",
+    "Practice making difficult decisions when there are no perfect options",
+    "Develop resilience and emotional self-regulation during adversity",
+    "Learn to balance team needs with personal wellbeing",
+    "Build communication skills for high-stakes situations",
+    "Explore ethical leadership when facing criticism and temptation"
+  ],
+  "tags": [
+    "leadership",
+    "resilience",
+    "grade-7",
+    "crisis-management",
+    "decision-making"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Leadership",
+    "Resilience",
+    "Communication",
+    "Ethical Reasoning"
+  ],
+  "cultural_context": "School leadership, student government, community-building, universally relatable school life",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.12,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.15,
+    "resilience": 0.2,
+    "empathy": 0.18,
+    "ethical_reasoning": 0.15
+  },
+  "initial_state": {
+    "leadership_credibility": {
+      "value": 45,
+      "label": "Leadership Credibility",
+      "icon": "👑",
+      "min": 0,
+      "max": 100
+    },
+    "team_loyalty": {
+      "value": 50,
+      "label": "Team Loyalty",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "crisis_management": {
+      "value": 20,
+      "label": "Crisis Management",
+      "icon": "🛡️",
+      "min": 0,
+      "max": 100
+    },
+    "public_approval": {
+      "value": 55,
+      "label": "Public Approval",
+      "icon": "📣",
+      "min": 0,
+      "max": 100
+    },
+    "emotional_resilience": {
+      "value": 40,
+      "label": "Emotional Resilience",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "decision_speed": {
+      "value": 30,
+      "label": "Decision Speed",
+      "icon": "⚡",
+      "min": 0,
+      "max": 100
+    },
+    "stakeholder_trust": {
+      "value": 45,
+      "label": "Stakeholder Trust",
+      "icon": "🏛️",
+      "min": 0,
+      "max": 100
+    },
+    "personal_wellbeing": {
+      "value": 70,
+      "label": "Personal Wellbeing",
+      "icon": "❤️",
+      "min": 0,
+      "max": 100
+    },
+    "budget": {
+      "value": 5000,
+      "label": "Council Budget",
+      "icon": "💰",
+      "min": 0,
+      "max": 20000
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "crisis_response",
+        "label": "Crisis Response",
+        "icon": "🚨",
+        "color": "#EF4444",
+        "initial_health": 25,
+        "health_formula": "min(100, max(0, crisis_management * 0.4 + decision_speed * 0.3 + emotional_resilience * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "team_leadership",
+        "label": "Team Leadership",
+        "icon": "👥",
+        "color": "#3B82F6",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, team_loyalty * 0.45 + leadership_credibility * 0.35 + personal_wellbeing * 0.2))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "public_relations",
+        "label": "Public Relations",
+        "icon": "📰",
+        "color": "#F59E0B",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, public_approval * 0.4 + stakeholder_trust * 0.35 + leadership_credibility * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "personal_resilience",
+        "label": "Personal Resilience",
+        "icon": "🧘",
+        "color": "#10B981",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, personal_wellbeing * 0.4 + emotional_resilience * 0.4 + team_loyalty * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "strategic_vision",
+        "label": "Strategic Vision",
+        "icon": "🔭",
+        "color": "#8B5CF6",
+        "initial_health": 35,
+        "health_formula": "min(100, max(0, leadership_credibility * 0.3 + decision_speed * 0.25 + stakeholder_trust * 0.25 + crisis_management * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "leadership_effectiveness",
+        "label": "Leadership Effectiveness",
+        "icon": "👑",
+        "formula": "(leadership_credibility * 0.3 + team_loyalty * 0.25 + stakeholder_trust * 0.2 + decision_speed * 0.15 + crisis_management * 0.1)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "crisis_response_score",
+        "label": "Crisis Response Score",
+        "icon": "🛡️",
+        "formula": "(crisis_management * 0.35 + emotional_resilience * 0.25 + decision_speed * 0.2 + leadership_credibility * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 60
+        }
+      },
+      {
+        "id": "team_cohesion_index",
+        "label": "Team Cohesion Index",
+        "icon": "🤝",
+        "formula": "(team_loyalty * 0.4 + public_approval * 0.2 + personal_wellbeing * 0.2 + stakeholder_trust * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "weekly_budget_drip",
+        "label": "Weekly Council Allowance",
+        "effects": [
+          {
+            "resource": "budget",
+            "formula": "min(20000, budget + 400)"
+          }
+        ],
+        "description": "The school allocates a small weekly budget to the student council."
+      },
+      {
+        "id": "credibility_momentum",
+        "label": "Credibility Momentum",
+        "condition": {
+          "resource": "leadership_credibility",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "stakeholder_trust",
+            "formula": "min(100, stakeholder_trust + 2)"
+          }
+        ],
+        "description": "High credibility steadily builds stakeholder trust."
+      },
+      {
+        "id": "low_morale_contagion",
+        "label": "Low Morale Spreads",
+        "condition": {
+          "resource": "team_loyalty",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "public_approval",
+            "formula": "max(0, public_approval - 3)"
+          },
+          {
+            "resource": "leadership_credibility",
+            "formula": "max(0, leadership_credibility - 2)"
+          }
+        ],
+        "description": "When your team is unhappy, the whole school notices."
+      },
+      {
+        "id": "burnout_creep",
+        "label": "Burnout Creep",
+        "condition": {
+          "resource": "personal_wellbeing",
+          "op": "<",
+          "value": 35
+        },
+        "effects": [
+          {
+            "resource": "decision_speed",
+            "formula": "max(0, decision_speed - 3)"
+          },
+          {
+            "resource": "emotional_resilience",
+            "formula": "max(0, emotional_resilience - 2)"
+          }
+        ],
+        "description": "Low wellbeing drains your sharpness and emotional reserves."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "trust_credibility_loop",
+        "from_subsystem": "team_leadership",
+        "to_subsystem": "public_relations",
+        "label": "Trust Builds Reputation",
+        "condition": {
+          "resource": "team_loyalty",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "public_approval",
+            "formula": "min(100, public_approval + (team_loyalty - 65) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "A loyal, cohesive team visibly boosts your public image."
+      },
+      {
+        "id": "stress_erodes_team",
+        "from_subsystem": "personal_resilience",
+        "to_subsystem": "team_leadership",
+        "label": "Leader Stress Hurts Team",
+        "condition": {
+          "resource": "personal_wellbeing",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "team_loyalty",
+            "formula": "max(0, team_loyalty - (30 - personal_wellbeing) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When the leader is struggling, the team feels the strain."
+      },
+      {
+        "id": "crisis_builds_credibility",
+        "from_subsystem": "crisis_response",
+        "to_subsystem": "strategic_vision",
+        "label": "Crisis Forges Leaders",
+        "condition": {
+          "resource": "crisis_management",
+          "op": ">=",
+          "value": 55
+        },
+        "effects": [
+          {
+            "resource": "leadership_credibility",
+            "formula": "min(100, leadership_credibility + (crisis_management - 55) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Successfully managing crises earns deep credibility."
+      },
+      {
+        "id": "public_pressure_on_wellbeing",
+        "from_subsystem": "public_relations",
+        "to_subsystem": "personal_resilience",
+        "label": "Public Scrutiny Drains Energy",
+        "condition": {
+          "resource": "public_approval",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "personal_wellbeing",
+            "formula": "max(0, personal_wellbeing - (30 - public_approval) * 0.12)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Constant public criticism takes a toll on your wellbeing."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "public_approval",
+        "equilibrium": 40,
+        "rate": 0.04,
+        "direction": "toward"
+      },
+      {
+        "resource": "decision_speed",
+        "equilibrium": 30,
+        "rate": 0.03,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "surprise_inspection",
+        "label": "Surprise School Inspection",
+        "icon": "🔍",
+        "description": "The district education officer arrives for an unannounced inspection of school facilities and student council records.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "stakeholder_trust",
+              "op": "<",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "stakeholder_trust",
+            "delta": -8
+          },
+          {
+            "resource": "personal_wellbeing",
+            "delta": -6
+          },
+          {
+            "resource": "leadership_credibility",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "ALERT: District inspection reveals gaps in council documentation. Pressure mounts on the president.",
+        "ai_image_prompt": "School principal's office, stern inspector reviewing files, nervous student leader, official documents on desk, tense atmosphere"
+      },
+      {
+        "id": "viral_social_media",
+        "label": "Viral Social Media Post",
+        "icon": "📱",
+        "description": "A classmate posts a viral video criticizing the student council's recent decisions. It gets shared hundreds of times.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "public_approval",
+              "op": "<",
+              "value": 45
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "public_approval",
+            "delta": -12
+          },
+          {
+            "resource": "personal_wellbeing",
+            "delta": -8
+          },
+          {
+            "resource": "leadership_credibility",
+            "delta": -6
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "TRENDING: Student's video criticizing council goes viral. Hashtag #CouncilFail trends across school groups.",
+        "ai_image_prompt": "Teenager looking at phone screen showing negative comments, school hallway background, worried expression, social media notifications"
+      },
+      {
+        "id": "rival_school_challenge",
+        "label": "Rival School Challenge",
+        "icon": "⚔️",
+        "description": "The neighboring school's council publicly challenges Greenfield to an inter-school competition. The whole school expects you to accept.",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "team_loyalty",
+              "op": ">=",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "team_loyalty",
+            "delta": 6
+          },
+          {
+            "resource": "public_approval",
+            "delta": 5
+          },
+          {
+            "resource": "budget",
+            "delta": -600
+          },
+          {
+            "resource": "personal_wellbeing",
+            "delta": -5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Inter-school challenge accepted! Greenfield rallies behind the council. Budget stretched but spirits high.",
+        "ai_image_prompt": "Two school teams facing each other across a competition stage, banners, cheering students, competitive energy, school auditorium"
+      },
+      {
+        "id": "anonymous_complaint",
+        "label": "Anonymous Complaint Letter",
+        "icon": "📨",
+        "description": "An anonymous letter accusing the council of favoritism is left in the principal's mailbox. Rumors spread fast.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "stakeholder_trust",
+              "op": "<",
+              "value": 45
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "stakeholder_trust",
+            "delta": -10
+          },
+          {
+            "resource": "public_approval",
+            "delta": -7
+          },
+          {
+            "resource": "team_loyalty",
+            "delta": -5
+          },
+          {
+            "resource": "emotional_resilience",
+            "delta": 4
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "RUMOR MILL: Anonymous complaint alleges council favoritism. Students demand answers.",
+        "ai_image_prompt": "School notice board with anonymous letter pinned, students whispering in hallway, concerned expressions, school corridor"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "vice_principal_mehta",
+        "name": "Vice Principal Mehta",
+        "role": "Authority Figure",
+        "icon": "👨‍💼",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "stakeholder_trust",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "I'm receiving complaints about the council. Shape up, or I'll have to step in.",
+            "mood_change": "stern",
+            "satisfaction_delta": -6
+          },
+          {
+            "condition": {
+              "resource": "leadership_credibility",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "praise",
+            "message": "I must say, you're handling things impressively. The school board has noticed.",
+            "mood_change": "impressed",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "leadership_credibility",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "public_approval",
+                  "op": "<",
+                  "value": 30
+                }
+              ]
+            },
+            "action": "crisis_trigger",
+            "message": "This is unacceptable. I'm calling an emergency assembly. The students will vote on whether you should continue as president.",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "personal_wellbeing",
+                "delta": -10
+              },
+              {
+                "resource": "emotional_resilience",
+                "delta": -5
+              }
+            ],
+            "trigger_round": "crisis_no_confidence"
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "stakeholder_trust",
+                  "op": ">=",
+                  "value": 60
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 6
+                }
+              ]
+            },
+            "action": "support",
+            "message": "You've earned the school's trust. I'm recommending you for the district student leadership program.",
+            "mood_change": "supportive",
+            "satisfaction_delta": 8
+          }
+        ]
+      },
+      {
+        "id": "best_ally_priya",
+        "name": "Priya (Best Ally)",
+        "role": "Loyal Teammate",
+        "icon": "💜",
+        "initial_mood": "supportive",
+        "initial_satisfaction": 65,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "team_loyalty",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "Hey, the team is falling apart. People are talking about quitting. We need to do something.",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "team_loyalty",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "boost",
+            "message": "The team is amazing right now! Everyone's fired up. Let's use this energy!",
+            "mood_change": "energized",
+            "satisfaction_delta": 5,
+            "effects": [
+              {
+                "resource": "public_approval",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "personal_wellbeing",
+              "op": "<",
+              "value": 25
+            },
+            "action": "crisis_trigger",
+            "message": "You haven't slept properly in weeks. You snapped at two team members today. I'm worried about you — we all are. You need to stop and take care of yourself.",
+            "mood_change": "deeply_concerned",
+            "satisfaction_delta": -10,
+            "effects": [
+              {
+                "resource": "team_loyalty",
+                "delta": -8
+              },
+              {
+                "resource": "decision_speed",
+                "delta": -10
+              }
+            ],
+            "trigger_round": "crisis_burnout"
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "personal_wellbeing",
+                  "op": ">=",
+                  "value": 50
+                },
+                {
+                  "resource": "team_loyalty",
+                  "op": ">=",
+                  "value": 50
+                }
+              ]
+            },
+            "action": "collaborate",
+            "message": "We make a great team! I had an idea for the next event — want to brainstorm together?",
+            "mood_change": "happy",
+            "satisfaction_delta": 4
+          }
+        ]
+      },
+      {
+        "id": "reporter_arjun",
+        "name": "Arjun (School Reporter)",
+        "role": "School Media",
+        "icon": "📝",
+        "initial_mood": "curious",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "public_approval",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "positive_coverage",
+            "message": "Great story for the school paper! 'Student Council Delivers — Approval Ratings Soar.' This will look good.",
+            "mood_change": "excited",
+            "satisfaction_delta": 5,
+            "effects": [
+              {
+                "resource": "leadership_credibility",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "public_approval",
+              "op": "<",
+              "value": 35
+            },
+            "action": "negative_coverage",
+            "message": "Sorry, but I have to report the truth. Tomorrow's headline: 'Council in Crisis — Students Demand Change.'",
+            "mood_change": "determined",
+            "satisfaction_delta": -6,
+            "effects": [
+              {
+                "resource": "leadership_credibility",
+                "delta": -5
+              },
+              {
+                "resource": "stakeholder_trust",
+                "delta": -3
+              }
+            ]
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "public_approval",
+                  "op": "<",
+                  "value": 20
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 3
+                }
+              ]
+            },
+            "action": "expose",
+            "message": "I'm running an investigative piece on council spending and broken promises. The whole school will read it.",
+            "mood_change": "aggressive",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "public_approval",
+                "delta": -10
+              },
+              {
+                "resource": "stakeholder_trust",
+                "delta": -8
+              },
+              {
+                "resource": "leadership_credibility",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_pr_meltdown"
+          },
+          {
+            "condition": {
+              "resource": "crisis_management",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "respect",
+            "message": "I have to say, watching you handle these crises has been impressive. I'm writing a profile piece on your leadership style.",
+            "mood_change": "respectful",
+            "satisfaction_delta": 7,
+            "effects": [
+              {
+                "resource": "public_approval",
+                "delta": 5
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "leadership_credibility",
+          "op": ">=",
+          "value": 70
+        },
+        "icon": "⭐",
+        "text": "Student council president's credibility at an all-time high of {leadership_credibility}%!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "personal_wellbeing",
+          "op": "<",
+          "value": 30
+        },
+        "icon": "⚠️",
+        "text": "Friends worry about council president's health. Burnout signs visible.",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "team_loyalty",
+              "op": ">=",
+              "value": 70
+            },
+            {
+              "resource": "crisis_management",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        },
+        "icon": "💪",
+        "text": "Greenfield's student council earns praise for teamwork during tough times.",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A school student council office at Greenfield Academy, leadership credibility {leadership_credibility}%, team loyalty {team_loyalty}%, public approval {public_approval}%. Diverse group of student leaders working together. Mood: {'confident' if leadership_credibility > 60 else 'tense' if leadership_credibility < 35 else 'focused'}. Semi-realistic style, dramatic lighting reflecting the pressure of leadership."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_first_crisis",
+      "round_title": "Week 1: The Welcome Assembly Disaster",
+      "situation": "Your very first event as president — the Welcome Assembly — goes wrong. The sound system fails mid-speech, two performers don't show up, and a group of seniors starts heckling from the back. The whole school is watching. What do you do?",
+      "goal": "Handle your first public failure and set the tone for your leadership.",
+      "coaching_moment": "Resilience: How you respond to your first failure defines you more than how you handle success.",
+      "reflection_prompt": "When something goes wrong in front of everyone, what matters more — fixing it perfectly or how you react?",
+      "ai_image_prompt": "School auditorium with technical problems, microphone not working, a confident student leader on stage improvising, audience of students, some heckling, dramatic lighting",
+      "choices": [
+        {
+          "id": "w1_improvise",
+          "label": "A. Improvise and Own It",
+          "description": "Step up with confidence. Crack a joke about the sound system, lead an acoustic sing-along, and turn the disaster into a memorable moment.",
+          "delta": {
+            "leadership_credibility": 10,
+            "public_approval": 8,
+            "emotional_resilience": 8,
+            "crisis_management": 6,
+            "personal_wellbeing": -5,
+            "decision_speed": 8
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Brilliant recovery! The school will remember how you turned chaos into magic. That's real leadership presence.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "w1_apologize_reschedule",
+          "label": "B. Apologize and Reschedule",
+          "description": "Honestly acknowledge the failure, apologize to everyone, and promise a better event next week.",
+          "delta": {
+            "leadership_credibility": 4,
+            "public_approval": -3,
+            "stakeholder_trust": 6,
+            "team_loyalty": 5,
+            "emotional_resilience": 3,
+            "budget": -300
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Honest and humble. Some students are disappointed, but teachers respect your maturity. Rescheduling costs extra though.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w1_blame_tech",
+          "label": "C. Blame the Tech Team",
+          "description": "Point out that the AV club didn't do their job. It's their fault, not yours. Demand they fix it.",
+          "delta": {
+            "leadership_credibility": -5,
+            "team_loyalty": -12,
+            "public_approval": 2,
+            "stakeholder_trust": -4,
+            "decision_speed": 5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Blame-shifting is tempting but toxic. The tech team is furious, and the school sees a leader who can't own mistakes.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w1_freeze",
+          "label": "D. Freeze and Let Someone Else Handle It",
+          "description": "You're overwhelmed. Step aside and let your vice president take over while you collect yourself backstage.",
+          "delta": {
+            "leadership_credibility": -8,
+            "public_approval": -6,
+            "personal_wellbeing": 5,
+            "team_loyalty": -3,
+            "emotional_resilience": -5
+          },
+          "skill_tags": [
+            "resilience"
+          ],
+          "feedback": "It's okay to feel overwhelmed, but stepping away in your first test sends a difficult message. The school wonders if you're ready.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_team_fracture",
+      "round_title": "Week 2: Team Fracture",
+      "situation": "Two of your council members are fighting publicly. Riya accuses Karan of taking credit for her ideas. Karan says Riya never finishes her work. The rest of the team is picking sides. If you don't intervene, the whole council could split.",
+      "goal": "Resolve the internal conflict before it destroys team cohesion.",
+      "coaching_moment": "Empathy: Great leaders listen to all sides before acting. Conflict resolution is a core leadership skill.",
+      "reflection_prompt": "When two people you care about are fighting, how do you stay fair without being cold?",
+      "ai_image_prompt": "School meeting room, two students arguing across a table, other students looking uncomfortable, mediator student leader in the middle, tense body language",
+      "choices": [
+        {
+          "id": "w2_mediate",
+          "label": "A. Mediate a Private Conversation",
+          "description": "Sit down with both of them separately, then together. Listen, acknowledge both perspectives, and help them find common ground.",
+          "delta": {
+            "team_loyalty": 10,
+            "leadership_credibility": 6,
+            "emotional_resilience": 5,
+            "personal_wellbeing": -6,
+            "empathy": 4,
+            "decision_speed": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Deep listening takes time and energy, but it works. Both Riya and Karan feel heard. The team respects your fairness.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w2_rules",
+          "label": "B. Set Clear Rules and Move On",
+          "description": "Create a credit-sharing policy and task assignment system. No more ambiguity — everyone knows their role.",
+          "delta": {
+            "team_loyalty": 4,
+            "leadership_credibility": 8,
+            "stakeholder_trust": 5,
+            "decision_speed": 8,
+            "emotional_resilience": 2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Systematic and fair. The rules prevent future conflicts, though Riya and Karan's personal tension still simmers beneath the surface.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "w2_pick_side",
+          "label": "C. Back Riya Publicly",
+          "description": "You know Riya is right — Karan has been taking credit. Stand with her and tell Karan to apologize.",
+          "delta": {
+            "team_loyalty": -8,
+            "leadership_credibility": -4,
+            "public_approval": 3,
+            "stakeholder_trust": -5,
+            "emotional_resilience": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "ethical_reasoning"
+          ],
+          "feedback": "Taking a side feels decisive, but it fractures the team further. Karan and his supporters now see you as biased.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w2_ignore",
+          "label": "D. Stay Out of It",
+          "description": "They're both mature enough to sort it out themselves. You have bigger things to worry about.",
+          "delta": {
+            "team_loyalty": -10,
+            "leadership_credibility": -6,
+            "personal_wellbeing": 3,
+            "public_approval": -4,
+            "crisis_management": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Avoiding conflict might seem peaceful, but the fight escalates. Other council members lose faith in your willingness to lead.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_budget_axe",
+      "round_title": "Week 3: The Budget Axe Falls",
+      "situation": "The school administration announces a 40% budget cut for all student activities due to infrastructure repairs. Your planned cultural festival, sports day, and charity drive all need funding. You can only afford one — maybe two if you get creative.",
+      "goal": "Decide how to allocate drastically reduced resources.",
+      "coaching_moment": "Strategic thinking: Scarcity forces prioritization. Great leaders make hard choices transparently.",
+      "reflection_prompt": "When you can't do everything, how do you decide what matters most?",
+      "ai_image_prompt": "Student council budget meeting, spreadsheets on table, worried faces, crossed-out line items, calculator, school office setting",
+      "choices": [
+        {
+          "id": "w3_festival_only",
+          "label": "A. Go All-In on the Cultural Festival",
+          "description": "Focus all remaining budget on one spectacular event. Make it unforgettable and prove the council's worth.",
+          "delta": {
+            "budget": -2500,
+            "public_approval": 12,
+            "leadership_credibility": 5,
+            "team_loyalty": -4,
+            "stakeholder_trust": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "High-risk, high-reward! The festival could be amazing, but the sports and charity teams feel abandoned.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 2500,
+            "label": "Requires Budget >= 2,500"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "w3_split_creative",
+          "label": "B. Get Creative — Fundraise and Split",
+          "description": "Launch a fundraising campaign (bake sales, sponsorships, online crowdfunding) and try to fund all three events at a smaller scale.",
+          "delta": {
+            "budget": -800,
+            "team_loyalty": 8,
+            "leadership_credibility": 6,
+            "public_approval": 5,
+            "personal_wellbeing": -10,
+            "decision_speed": 5,
+            "crisis_management": 6
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Creative problem-solving! Fundraising is exhausting but it keeps everyone included. Your wellbeing takes a hit though.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "w3_charity_first",
+          "label": "C. Prioritize the Charity Drive",
+          "description": "Cancel the festival and sports day. Use the budget for the charity drive — it's the most meaningful cause.",
+          "delta": {
+            "budget": -1200,
+            "stakeholder_trust": 10,
+            "public_approval": -5,
+            "team_loyalty": 3,
+            "leadership_credibility": 4,
+            "emotional_resilience": 4
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Principled choice. Teachers and parents are impressed, but many students are upset about losing their fun events.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "w3_negotiate_admin",
+          "label": "D. Challenge the Budget Cut",
+          "description": "March to the principal's office with a proposal: restore 20% of the budget in exchange for the council helping with infrastructure fundraising.",
+          "delta": {
+            "leadership_credibility": 8,
+            "stakeholder_trust": 6,
+            "decision_speed": 6,
+            "budget": 1000,
+            "team_loyalty": 4,
+            "personal_wellbeing": -4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Bold negotiation! The principal respects your initiative and grants partial restoration. Standing up for your team builds credibility.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_ethical_trap",
+      "round_title": "Week 4: The Ethical Trap",
+      "situation": "A popular senior offers you a deal: his family's business will sponsor the cultural festival fully — free stage, decorations, food — but only if you let him MC the event and give his friend the 'Best Student Leader' award at the ceremony. The sponsorship would solve your budget problems completely.",
+      "goal": "Navigate an ethical dilemma where the easy path is the wrong one.",
+      "coaching_moment": "Ethical reasoning: Integrity means making the right choice even when no one is watching — and especially when the wrong choice is tempting.",
+      "reflection_prompt": "Is it ever okay to compromise your values for a good outcome? Where do you draw the line?",
+      "input_type": "hybrid",
+      "free_text_prompt": "In 2-3 sentences, explain how you would respond to the senior's offer. What would you say to him and why?",
+      "evaluation_rubric": {
+        "ethical_reasoning": "Demonstrates clear reasoning about why the deal crosses an ethical line",
+        "strategic_thinking": "Proposes an alternative approach that addresses the budget problem honestly"
+      },
+      "ai_image_prompt": "School corridor, wealthy-looking senior student offering a handshake to the council president, shiny sponsorship poster in background, moral dilemma atmosphere",
+      "choices": [
+        {
+          "id": "w4_reject_firmly",
+          "label": "A. Reject the Deal — Publicly",
+          "description": "Turn down the sponsorship in front of the council. Explain why trading awards for money crosses a line.",
+          "delta": {
+            "leadership_credibility": 12,
+            "stakeholder_trust": 10,
+            "public_approval": -3,
+            "team_loyalty": 5,
+            "emotional_resilience": 6,
+            "budget": 0
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Integrity over convenience. The team respects your principles. The festival will be smaller, but your credibility is bulletproof.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "w4_negotiate_partial",
+          "label": "B. Accept Sponsorship, Reject the Award Condition",
+          "description": "Counter-offer: accept the sponsorship and let him MC, but the award goes through the normal voting process.",
+          "delta": {
+            "leadership_credibility": 6,
+            "budget": 2000,
+            "public_approval": 5,
+            "stakeholder_trust": 3,
+            "decision_speed": 5,
+            "team_loyalty": 2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Smart negotiation! You found a middle path — got the funding without fully compromising. But some wonder if you're getting too comfortable making deals.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w4_accept_deal",
+          "label": "C. Accept the Full Deal",
+          "description": "Take the money. The festival needs it. You can quietly give the award and no one will know the real reason.",
+          "delta": {
+            "budget": 3500,
+            "public_approval": 8,
+            "leadership_credibility": -10,
+            "stakeholder_trust": -12,
+            "team_loyalty": -6,
+            "emotional_resilience": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The festival is funded, but your conscience knows. If this ever comes out, your credibility will be destroyed. Secrets have a way of surfacing.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w4_consult_team",
+          "label": "D. Put It to a Team Vote",
+          "description": "Bring the full offer to the council and let them decide together. Transparency, even with uncomfortable truths.",
+          "delta": {
+            "team_loyalty": 8,
+            "leadership_credibility": 4,
+            "stakeholder_trust": 5,
+            "decision_speed": -5,
+            "personal_wellbeing": -3,
+            "public_approval": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Democratic and transparent! The team votes to reject the award condition but try to negotiate on the sponsorship. Slower, but everyone owns the decision.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_public_criticism",
+      "round_title": "Week 5: The Wall of Complaints",
+      "situation": "Someone has put up a 'Complaint Wall' in the school corridor — a poster where students can anonymously write grievances. It's full of harsh criticism: 'council wastes money,' 'president plays favorites,' 'where are the results?' Even some fair points hurt to read.",
+      "goal": "Respond to public criticism without being defensive or dismissive.",
+      "coaching_moment": "Emotional resilience: Leaders face unfair criticism. The skill is hearing the truth within the noise without letting it destroy you.",
+      "reflection_prompt": "How do you separate useful feedback from hurtful noise? Can both exist in the same message?",
+      "ai_image_prompt": "School hallway with a large poster covered in sticky notes and handwritten complaints, student leader reading them with a thoughtful expression, other students passing by",
+      "choices": [
+        {
+          "id": "w5_town_hall",
+          "label": "A. Host an Open Town Hall",
+          "description": "Organize a public Q&A session. Face every criticism head-on. Show up, listen, and respond honestly.",
+          "delta": {
+            "leadership_credibility": 10,
+            "public_approval": 8,
+            "emotional_resilience": 6,
+            "personal_wellbeing": -8,
+            "crisis_management": 5,
+            "stakeholder_trust": 6
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Courageous! Facing critics publicly is terrifying but earns enormous respect. Some questions still stung, but you handled them with grace.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "w5_written_response",
+          "label": "B. Put Up a 'Response Wall'",
+          "description": "Next to the complaint wall, post a detailed response wall — addressing every point with facts, plans, and timelines.",
+          "delta": {
+            "leadership_credibility": 6,
+            "public_approval": 5,
+            "stakeholder_trust": 6,
+            "decision_speed": 4,
+            "personal_wellbeing": -4,
+            "team_loyalty": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Measured and thoughtful. The response wall shows you take feedback seriously without the emotional risk of a live session.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "w5_take_down",
+          "label": "C. Take Down the Complaint Wall",
+          "description": "Anonymous attacks aren't constructive. Remove the wall and insist that criticism should come through proper channels.",
+          "delta": {
+            "public_approval": -10,
+            "leadership_credibility": -8,
+            "personal_wellbeing": 5,
+            "stakeholder_trust": -6,
+            "team_loyalty": 2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Censorship backfires. Photos of you removing the wall circulate instantly. The message is clear: 'The president can't handle criticism.'",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w5_absorb_quietly",
+          "label": "D. Read, Reflect, and Adapt Silently",
+          "description": "Don't respond publicly. Instead, quietly fix the valid issues. Let your actions speak louder than words.",
+          "delta": {
+            "emotional_resilience": 8,
+            "personal_wellbeing": -3,
+            "leadership_credibility": 3,
+            "crisis_management": 4,
+            "public_approval": -2
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Mature restraint. You don't need to win every argument. Over time, quiet improvements will speak for themselves — but some students wanted to see you fight back.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_no_confidence",
+      "id": "crisis_no_confidence",
+      "round_title": "CRISIS: Vote of No Confidence",
+      "situation": "Vice Principal Mehta has called an emergency assembly. A group of students has petitioned for a vote of no confidence in your leadership. You have 10 minutes before the assembly begins to decide your strategy. Your heart is pounding. Your team looks to you. This is the hardest moment of your presidency.",
+      "goal": "Survive the vote of no confidence — or lose it with dignity.",
+      "coaching_moment": "Resilience under fire: This is the ultimate test. How you handle potential failure reveals your true character.",
+      "reflection_prompt": "If you might lose everything you've worked for, what matters most — winning or how you handle losing?",
+      "ai_image_prompt": "School assembly hall, student leader at podium facing a large crowd, some students holding 'no confidence' signs, dramatic spotlight, tense atmosphere",
+      "condition": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "leadership_credibility",
+            "operator": "<",
+            "value": 25
+          },
+          {
+            "resource": "public_approval",
+            "operator": "<",
+            "value": 30
+          }
+        ]
+      },
+      "choices": [
+        {
+          "id": "nc_passionate_speech",
+          "label": "A. Give the Speech of Your Life",
+          "description": "Pour your heart out. Acknowledge your mistakes, share what you've learned, and ask for one more chance with a concrete plan.",
+          "delta": {
+            "leadership_credibility": 15,
+            "public_approval": 12,
+            "emotional_resilience": 10,
+            "personal_wellbeing": -10,
+            "crisis_management": 12,
+            "team_loyalty": 8
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Raw vulnerability wins. Tears in your eyes, truth in your voice — the assembly votes to give you another chance. Now you must deliver.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "nc_resign_gracefully",
+          "label": "B. Resign with Dignity",
+          "description": "Announce your resignation before the vote. Thank everyone, own your failures, and wish your successor well.",
+          "delta": {
+            "leadership_credibility": 8,
+            "public_approval": 6,
+            "emotional_resilience": 12,
+            "stakeholder_trust": 8,
+            "personal_wellbeing": -5,
+            "team_loyalty": -5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Graceful exit. The school respects your courage to step down. Sometimes the strongest thing a leader can do is know when to let go.",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "nc_rally_allies",
+          "label": "C. Rally Your Allies Backstage",
+          "description": "Quickly coordinate with Priya and loyal council members. Have them speak in your defense before you take the stage.",
+          "delta": {
+            "team_loyalty": 10,
+            "leadership_credibility": 8,
+            "public_approval": 6,
+            "personal_wellbeing": -6,
+            "crisis_management": 8,
+            "stakeholder_trust": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Smart strategy! Your allies vouch for you passionately. The vote swings in your favor, but you know you owe your team everything.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "nc_demand_fairness",
+          "label": "D. Challenge the Process",
+          "description": "Question whether a small group should override a democratic election. Demand proper procedure: petition signatures, debate period, secret ballot.",
+          "delta": {
+            "leadership_credibility": 5,
+            "stakeholder_trust": 6,
+            "public_approval": -4,
+            "decision_speed": 8,
+            "crisis_management": 5,
+            "team_loyalty": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Procedurally correct but politically risky. The vote is delayed, buying you time. But critics say you're hiding behind rules instead of facing them.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_burnout",
+      "id": "crisis_burnout",
+      "round_title": "CRISIS: Burnout — Breaking Point",
+      "situation": "You haven't slept more than four hours a night in weeks. You forgot your best friend's birthday. You snapped at your parents last night. In today's council meeting, you lost your temper and said something hurtful to a teammate. Priya pulled you aside: 'This isn't you. You're burning out.' She's right.",
+      "goal": "Confront your burnout before it destroys your relationships and leadership.",
+      "coaching_moment": "Self-awareness: The most overlooked leadership skill is knowing your limits. You cannot pour from an empty cup.",
+      "reflection_prompt": "Why do high-achievers often ignore their own wellbeing? What would you tell a friend who was burning out?",
+      "ai_image_prompt": "Exhausted teenage student alone at a desk late at night, head in hands, scattered papers and phone notifications, dim desk lamp, shadows showing isolation",
+      "condition": {
+        "resource": "personal_wellbeing",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "bo_step_back",
+          "label": "A. Take a Full Week Off",
+          "description": "Delegate everything to Priya for a week. Rest, see friends, sleep properly. Come back refreshed.",
+          "delta": {
+            "personal_wellbeing": 25,
+            "emotional_resilience": 15,
+            "leadership_credibility": -5,
+            "team_loyalty": 5,
+            "decision_speed": 8,
+            "public_approval": -4
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Self-care is not weakness — it's wisdom. You come back sharper, kinder, and more focused. Priya kept things running perfectly.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "bo_reduce_load",
+          "label": "B. Restructure and Delegate More",
+          "description": "Don't take time off, but permanently redistribute responsibilities. Admit you've been doing too much alone.",
+          "delta": {
+            "personal_wellbeing": 12,
+            "team_loyalty": 10,
+            "leadership_credibility": 5,
+            "emotional_resilience": 8,
+            "decision_speed": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Sustainable leadership! Sharing the load makes the team stronger and you healthier. This should have happened sooner.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "bo_push_through",
+          "label": "C. Push Through — There's Too Much at Stake",
+          "description": "You'll rest after the term ends. Right now, the team needs you. Drink more coffee, sleep less, work harder.",
+          "delta": {
+            "personal_wellbeing": -15,
+            "emotional_resilience": -10,
+            "decision_speed": -8,
+            "leadership_credibility": 3,
+            "team_loyalty": -8,
+            "crisis_management": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Pushing through burnout doesn't make you stronger — it makes you brittle. Your performance drops, mistakes multiply, and the team watches you crumble.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "bo_counselor",
+          "label": "D. Talk to the School Counselor",
+          "description": "Swallow your pride and visit the school counselor. Talk about the pressure, the expectations, and how overwhelmed you feel.",
+          "delta": {
+            "personal_wellbeing": 18,
+            "emotional_resilience": 12,
+            "leadership_credibility": 3,
+            "stakeholder_trust": 4,
+            "team_loyalty": 3,
+            "crisis_management": 4
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Asking for help is the bravest thing a leader can do. The counselor helps you build coping strategies. You start sleeping better within days.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_betrayal",
+      "round_title": "Week 6: The Insider Leak",
+      "situation": "Confidential council meeting notes — including your private criticisms of certain teachers — have been leaked to the school WhatsApp group. Someone on your own team betrayed you. You're furious, embarrassed, and hurt. The school reporter, Arjun, is already writing about it.",
+      "goal": "Handle a betrayal of trust without destroying your team.",
+      "coaching_moment": "Adaptability: Betrayal tests whether you can separate your emotions from your decisions. React, don't retaliate.",
+      "reflection_prompt": "When someone you trusted betrays you, is it possible to respond without becoming cynical?",
+      "ai_image_prompt": "School student looking shocked at phone screen showing leaked messages, other students whispering in background, school hallway, dramatic tension",
+      "choices": [
+        {
+          "id": "w6_address_openly",
+          "label": "A. Address It Head-On in a Team Meeting",
+          "description": "Call an emergency meeting. Acknowledge the leak, express your disappointment, and ask the person to come forward. Don't accuse anyone specific.",
+          "delta": {
+            "leadership_credibility": 8,
+            "team_loyalty": 4,
+            "emotional_resilience": 6,
+            "personal_wellbeing": -6,
+            "public_approval": -3,
+            "crisis_management": 6
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Brave and measured. The leaker doesn't confess, but the team sees you handling betrayal without losing your composure. Trust slowly rebuilds.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "w6_investigate",
+          "label": "B. Quietly Investigate",
+          "description": "Don't make it public. Privately check message timestamps, who had access, and narrow down the source. Then confront them one-on-one.",
+          "delta": {
+            "decision_speed": 8,
+            "stakeholder_trust": 5,
+            "leadership_credibility": 5,
+            "team_loyalty": -3,
+            "personal_wellbeing": -5,
+            "crisis_management": 6
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Methodical approach. You find the leaker — it's a council member who felt sidelined. The confrontation is tense but productive.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w6_apologize_teachers",
+          "label": "C. Apologize to the Teachers First",
+          "description": "Before anything else, personally apologize to the teachers whose names appeared in the leaked notes. Own your words.",
+          "delta": {
+            "stakeholder_trust": 10,
+            "leadership_credibility": 6,
+            "public_approval": 5,
+            "personal_wellbeing": -4,
+            "emotional_resilience": 5,
+            "team_loyalty": 2
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Integrity first. The teachers are moved by your apology. One says, 'This took real courage.' Your stakeholder trust soars.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "w6_lock_down",
+          "label": "D. New Security Rules — No More Sharing",
+          "description": "Implement strict confidentiality policies. No phones in meetings, no shared notes, consequences for future leaks.",
+          "delta": {
+            "team_loyalty": -8,
+            "stakeholder_trust": 4,
+            "decision_speed": 5,
+            "leadership_credibility": 2,
+            "personal_wellbeing": 2,
+            "public_approval": -3
+          },
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "feedback": "Security is tighter, but the team feels surveilled. Trust isn't built with rules — it's built with relationships. The vibe becomes corporate.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_impossible_choice",
+      "round_title": "Week 7: The Impossible Choice",
+      "situation": "The annual inter-school competition and the school's biggest community service project are scheduled on the same day. Your team can only handle one. The competition would bring glory and boost morale. The service project would help 200 underprivileged children get school supplies. Both groups are passionate and won't back down.",
+      "goal": "Make an impossible choice when both options are genuinely good.",
+      "coaching_moment": "Delayed gratification vs. immediate impact: Sometimes leadership means choosing between two right answers.",
+      "reflection_prompt": "When both choices are good, what values guide your decision?",
+      "ai_image_prompt": "Split scene showing two paths — one leading to a bright school competition stage with trophies, the other to a community center with children receiving supplies, student leader standing at the fork",
+      "choices": [
+        {
+          "id": "w7_service",
+          "label": "A. Prioritize the Community Service",
+          "description": "Choose the service project. Tell the competition team you'll enter next year. The children can't wait — they need supplies now.",
+          "delta": {
+            "stakeholder_trust": 10,
+            "leadership_credibility": 6,
+            "public_approval": -4,
+            "team_loyalty": -3,
+            "emotional_resilience": 5,
+            "personal_wellbeing": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Service over glory. The community thanks you warmly. Some students are disappointed, but teachers and parents see a leader with heart.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "w7_competition",
+          "label": "B. Go for the Competition",
+          "description": "The school needs a win right now. Morale is everything. Reschedule the service project for next month.",
+          "delta": {
+            "public_approval": 10,
+            "team_loyalty": 6,
+            "leadership_credibility": 3,
+            "stakeholder_trust": -5,
+            "budget": -400
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "The school rallies behind you! But the service volunteers are hurt, and Vice Principal Mehta quietly notes the choice.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 400,
+            "label": "Requires Budget >= 400"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w7_split_team",
+          "label": "C. Split the Team — Do Both",
+          "description": "Send half the council to each event. You'll run between both locations. It's ambitious but possible.",
+          "delta": {
+            "personal_wellbeing": -12,
+            "team_loyalty": 4,
+            "public_approval": 6,
+            "stakeholder_trust": 5,
+            "decision_speed": 6,
+            "crisis_management": 5,
+            "budget": -600
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Heroic but exhausting! Both events happen — neither perfectly. You're stretched impossibly thin, but both groups feel valued.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "w7_negotiate_date",
+          "label": "D. Negotiate to Move One Event",
+          "description": "Call the competition organizers and the NGO. Explain the conflict and ask if either can shift by one day.",
+          "delta": {
+            "leadership_credibility": 8,
+            "decision_speed": 8,
+            "stakeholder_trust": 6,
+            "crisis_management": 6,
+            "personal_wellbeing": -4,
+            "team_loyalty": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "The NGO agrees to shift by two days! Problem solved through communication. Not every crisis needs sacrifice — sometimes a phone call is enough.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_power_test",
+      "round_title": "Week 8: The Power Test",
+      "situation": "A group of younger students approaches you in secret. They're being bullied by a group of seniors, but they're afraid to report it because the ringleader is the captain of the sports team — and your council depends on the sports team's cooperation for upcoming events. Do you protect the younger students and risk losing the sports team's support?",
+      "goal": "Choose between political convenience and protecting the vulnerable.",
+      "coaching_moment": "Ethical reasoning: Real leadership is tested not when it's easy to do the right thing, but when doing right has a real cost.",
+      "reflection_prompt": "When protecting someone means losing something valuable, is it still worth it?",
+      "input_type": "hybrid",
+      "free_text_prompt": "In 2-3 sentences, explain what you would say to the younger students who came to you for help. How would you reassure them while being honest about the risks?",
+      "evaluation_rubric": {
+        "empathy": "Shows genuine care for the younger students' safety and feelings",
+        "resilience": "Acknowledges the difficulty of the situation while committing to action"
+      },
+      "ai_image_prompt": "School courtyard, younger students looking scared approaching the council president, intimidating senior athletes in background, moral tension, protective atmosphere",
+      "choices": [
+        {
+          "id": "w8_protect_kids",
+          "label": "A. Report the Bullying Immediately",
+          "description": "Go straight to Vice Principal Mehta with the younger students' account. Full support, no hesitation, consequences be damned.",
+          "delta": {
+            "stakeholder_trust": 12,
+            "leadership_credibility": 10,
+            "team_loyalty": -5,
+            "public_approval": 4,
+            "emotional_resilience": 6,
+            "crisis_management": 5,
+            "personal_wellbeing": -4
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "This is what leadership looks like. The sports captain is suspended for a week. Some seniors are angry at you, but the younger students feel safe. Teachers see a leader with moral courage.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "w8_private_warning",
+          "label": "B. Confront the Bully Privately First",
+          "description": "Talk to the sports captain one-on-one. Give him a chance to stop before escalating. Maybe he doesn't realize the impact.",
+          "delta": {
+            "leadership_credibility": 5,
+            "team_loyalty": 3,
+            "stakeholder_trust": 3,
+            "crisis_management": 4,
+            "emotional_resilience": 4,
+            "personal_wellbeing": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Diplomatic approach. The captain is defensive but shaken. Bullying decreases but doesn't stop entirely. You'll need to follow up.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w8_stay_out",
+          "label": "C. Advise Students to Report It Themselves",
+          "description": "Encourage the younger students to go to a teacher directly. You don't want to get involved politically.",
+          "delta": {
+            "leadership_credibility": -8,
+            "stakeholder_trust": -6,
+            "personal_wellbeing": 3,
+            "team_loyalty": 2,
+            "emotional_resilience": -5,
+            "public_approval": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The students feel abandoned. 'We came to you because we trusted you,' one says quietly. Leadership means stepping up when others can't.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w8_systemic_fix",
+          "label": "D. Launch an Anti-Bullying Campaign",
+          "description": "Report this case AND create a broader anti-bullying system — anonymous tip line, peer mediators, awareness week.",
+          "delta": {
+            "stakeholder_trust": 10,
+            "leadership_credibility": 8,
+            "public_approval": 6,
+            "budget": -800,
+            "team_loyalty": 2,
+            "personal_wellbeing": -8,
+            "crisis_management": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Systemic thinking! You don't just fix this case — you build infrastructure to prevent future ones. The school board is deeply impressed.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 800,
+            "label": "Requires Budget >= 800"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_9_ally_crisis",
+      "round_title": "Week 9: When Your Ally Falters",
+      "situation": "Priya, your most loyal supporter, makes a serious mistake — she accidentally double-books the school auditorium, causing two events to clash and embarrassing both organizers. She's devastated and offers to resign from the council. The school gossip mill is in overdrive.",
+      "goal": "Support an ally through failure while maintaining accountability.",
+      "coaching_moment": "Empathy and accountability: Good leaders don't abandon people who make mistakes, but they also don't ignore accountability.",
+      "reflection_prompt": "How do you support someone who has let you down without excusing the mistake?",
+      "ai_image_prompt": "School office, a visibly upset girl sitting with head bowed, supportive friend-leader sitting beside her, scheduling papers on desk, empathetic atmosphere",
+      "choices": [
+        {
+          "id": "w9_stand_by",
+          "label": "A. Stand By Priya Publicly",
+          "description": "Refuse her resignation. Tell the school that mistakes happen, take shared responsibility, and work together on a fix.",
+          "delta": {
+            "team_loyalty": 12,
+            "leadership_credibility": 4,
+            "public_approval": -4,
+            "emotional_resilience": 5,
+            "personal_wellbeing": -3,
+            "stakeholder_trust": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Loyalty earned. Priya becomes even more dedicated. The team sees a leader who has their back. Some students think you're too soft though.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "w9_accountability",
+          "label": "B. Accept Her Resignation from the Role",
+          "description": "Let Priya step down from scheduling duties but keep her on the council in a different capacity. Accountability with compassion.",
+          "delta": {
+            "leadership_credibility": 8,
+            "stakeholder_trust": 6,
+            "team_loyalty": 2,
+            "public_approval": 5,
+            "decision_speed": 4,
+            "personal_wellbeing": -4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Balanced leadership. Priya is hurt but understands. The school sees a leader who values both people and standards.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w9_take_blame",
+          "label": "C. Take All the Blame Yourself",
+          "description": "Tell everyone it was your oversight, not Priya's. Shield her completely. The buck stops with you.",
+          "delta": {
+            "team_loyalty": 8,
+            "leadership_credibility": -3,
+            "public_approval": -5,
+            "personal_wellbeing": -8,
+            "emotional_resilience": 3,
+            "stakeholder_trust": -2
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Noble but dishonest. Priya is grateful, but Vice Principal Mehta knows the truth. Covering for others erodes trust when discovered.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "w9_systemic_fix",
+          "label": "D. Fix the System, Not the Person",
+          "description": "Create a shared digital calendar for all bookings. Turn the mistake into a process improvement opportunity.",
+          "delta": {
+            "leadership_credibility": 6,
+            "decision_speed": 6,
+            "crisis_management": 5,
+            "team_loyalty": 5,
+            "stakeholder_trust": 5,
+            "budget": -200
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Systems thinking at its best! The new calendar prevents future conflicts. Priya contributes to building it, turning her mistake into a contribution.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_10_final_test",
+      "round_title": "Week 10: The Final Speech",
+      "situation": "Your term is ending. The school gathers for the closing ceremony. You have one last speech — your chance to reflect on what you've been through, what you've learned, and what kind of leader you became. The incoming president is in the audience, watching.",
+      "goal": "Deliver a speech that reflects your leadership journey honestly.",
+      "coaching_moment": "Self-reflection: The best leaders grow not from their victories but from honest reflection on their failures and growth.",
+      "reflection_prompt": "Looking back, what would you tell yourself at the start of this journey?",
+      "input_type": "hybrid",
+      "free_text_prompt": "Write 2-3 sentences of your closing speech. What is the one leadership lesson you want the incoming president to remember?",
+      "evaluation_rubric": {
+        "resilience": "Reflects honest self-awareness about struggles and growth",
+        "empathy": "Shows care for the next leader's success and the school community"
+      },
+      "ai_image_prompt": "School auditorium stage, student leader giving a final speech at podium, audience of students and teachers, banner reading 'Thank You Council', emotional and uplifting atmosphere, spotlight",
+      "choices": [
+        {
+          "id": "w10_vulnerability",
+          "label": "A. Speak from the Heart — Failures and All",
+          "description": "Share your real journey — the disasters, the burnout, the betrayal, the ethical dilemmas. Be completely honest about what you learned the hard way.",
+          "delta": {
+            "leadership_credibility": 12,
+            "public_approval": 10,
+            "emotional_resilience": 10,
+            "team_loyalty": 8,
+            "stakeholder_trust": 8,
+            "personal_wellbeing": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "The most powerful speech the school has heard. Students cry. Teachers applaud. The incoming president says, 'I want to lead like that.'",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "w10_strategic",
+          "label": "B. Present a Leadership Report Card",
+          "description": "Show data — what was achieved, what wasn't, what's left for the next council. Professional, clear, and forward-looking.",
+          "delta": {
+            "leadership_credibility": 8,
+            "stakeholder_trust": 10,
+            "decision_speed": 5,
+            "public_approval": 5,
+            "team_loyalty": 4,
+            "crisis_management": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Impressive and thorough. The school board takes note. The incoming president has a clear roadmap. You leave behind more than memories — you leave systems.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "w10_thank_team",
+          "label": "C. Make It About the Team",
+          "description": "Use your speech time to thank each council member individually. Share stories of how they saved the council. Take no credit yourself.",
+          "delta": {
+            "team_loyalty": 15,
+            "public_approval": 8,
+            "emotional_resilience": 6,
+            "personal_wellbeing": 6,
+            "leadership_credibility": 5,
+            "stakeholder_trust": 4
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Servant leadership at its finest. Your team is in tears. Every council member walks taller. You showed that leadership is lifting others.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w10_challenge_next",
+          "label": "D. Challenge the Next Generation",
+          "description": "Focus less on the past and more on the future. Challenge the incoming council to go further, take bigger risks, and care more deeply than you did.",
+          "delta": {
+            "leadership_credibility": 6,
+            "public_approval": 6,
+            "stakeholder_trust": 6,
+            "crisis_management": 4,
+            "emotional_resilience": 5,
+            "decision_speed": 4,
+            "personal_wellbeing": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Forward-thinking and inspiring! The incoming president is both motivated and nervous. You've passed the torch with purpose.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "crisis_commander",
+      "label": "Crisis Commander",
+      "condition": "crisis_management >= 70 and decision_speed >= 60",
+      "icon": "🛡️"
+    },
+    {
+      "id": "team_champion",
+      "label": "Team Champion",
+      "condition": "team_loyalty >= 75 and leadership_credibility >= 65",
+      "icon": "🤝"
+    },
+    {
+      "id": "ethical_compass",
+      "label": "Ethical Compass",
+      "condition": "stakeholder_trust >= 75 and leadership_credibility >= 60",
+      "icon": "⚖️"
+    },
+    {
+      "id": "resilient_leader",
+      "label": "Resilient Leader",
+      "condition": "emotional_resilience >= 70 and personal_wellbeing >= 50",
+      "icon": "💪"
+    },
+    {
+      "id": "peoples_president",
+      "label": "People's President",
+      "condition": "public_approval >= 75 and team_loyalty >= 60",
+      "icon": "⭐"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Leadership Credibility",
+      "definition": "The trust and respect a leader earns through consistent, honest, and competent actions over time."
+    },
+    {
+      "term": "Vote of No Confidence",
+      "definition": "A formal vote by a group to express that they no longer trust the current leader to do their job effectively."
+    },
+    {
+      "term": "Burnout",
+      "definition": "Physical and emotional exhaustion caused by prolonged stress, overwork, and neglecting personal wellbeing."
+    },
+    {
+      "term": "Ethical Dilemma",
+      "definition": "A situation where you must choose between two or more options, each of which involves compromising a moral principle."
+    },
+    {
+      "term": "Servant Leadership",
+      "definition": "A leadership style where the leader's main goal is to serve others — putting the team's needs above personal glory."
+    },
+    {
+      "term": "Stakeholder",
+      "definition": "Any person or group affected by your decisions — in school leadership, this includes students, teachers, parents, and administration."
+    },
+    {
+      "term": "Conflict Resolution",
+      "definition": "The process of finding a peaceful solution to a disagreement by understanding all sides and finding common ground."
+    },
+    {
+      "term": "Accountability",
+      "definition": "Taking responsibility for your actions and their outcomes, whether positive or negative, without making excuses."
+    }
+  ],
+  "endings": [
+    {
+      "id": "crisis_commander_ending",
+      "title": "Crisis Commander",
+      "icon": "🛡️",
+      "message": "You emerged from the fire as a crisis leader. Every disaster — the leaked notes, the budget cuts, the vote of no confidence — you met head-on and turned into a lesson. The incoming president asks for your personal crisis-management playbook. Vice Principal Mehta recommends you for the district leadership program. Your legacy: a leader who was forged, not born, in adversity.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "crisis_management",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "decision_speed",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "servant_leader_ending",
+      "title": "Servant Leader",
+      "icon": "💜",
+      "message": "Your term wasn't about personal glory — it was about your team. You put people first in every crisis, mediated conflicts with empathy, and built a council that felt like family. Priya says, 'You didn't just lead us — you lifted us.' The new council members all cite you as the reason they ran for office. Your legacy: a leader who served.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "team_loyalty",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "emotional_resilience",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "resilient_captain_ending",
+      "title": "Resilient Captain",
+      "icon": "💪",
+      "message": "You were knocked down again and again — public criticism, betrayal, burnout, impossible choices — and every time, you got back up. You didn't just survive your term; you grew through it. The school counselor uses your story (anonymously) as an example of healthy resilience. Your legacy: a leader who bent but never broke.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "emotional_resilience",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "personal_wellbeing",
+            "operator": ">=",
+            "value": 45
+          }
+        ]
+      }
+    },
+    {
+      "id": "peoples_champion_ending",
+      "title": "People's Champion",
+      "icon": "⭐",
+      "message": "The school voted you 'Most Impactful President' in the yearbook. You protected younger students from bullying, chose community service over trophies, and always put the school's needs above your own comfort. Arjun's final article is titled: 'The President Who Actually Cared.' Your legacy: a leader the people chose to remember.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "public_approval",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "stakeholder_trust",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "growing_leader_ending",
+      "title": "Growing Leader",
+      "icon": "🌱",
+      "message": "Your presidency wasn't perfect — no one's is. You stumbled through crises, made some tough calls that didn't work out, and learned the hard way that leadership is messy. But you showed up every day, tried your best, and finished your term. The incoming president asks for your advice. You say: 'Take care of yourself. And never stop learning.' Your legacy: a leader who grew.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Leadership Under Fire: When Things Go Wrong Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Leadership Under Fire: When Things Go Wrong. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Leadership Under Fire: When Things Go Wrong Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Leadership Under Fire: When Things Go Wrong. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

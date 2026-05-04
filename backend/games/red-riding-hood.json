@@ -1,0 +1,655 @@
+{
+  "game_id": "red-riding-hood",
+  "title": "Little Red Riding Hood",
+  "game_type": "story_branching",
+  "description": "Navigate the classic fairy tale with choices that shape your wisdom, courage and empathy. Will you outsmart the wolf? A chapter-by-chapter storybook adventure.",
+  "theme": "folklore & life wisdom",
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "target_audience": "Ages 8+",
+  "icon": "📖",
+  "learning_objectives": [
+    "Practice active listening and following important instructions",
+    "Develop critical thinking when meeting strangers",
+    "Build resilience and composure under pressure",
+    "Recognise manipulation and respond wisely",
+    "Understand that kindness and caution can coexist"
+  ],
+  "learning_concept": "Every choice carries consequences. Wisdom comes from listening, observing, and thinking before acting — even in fairy tales!",
+  "psychological_framework": "Social-Emotional Learning (SEL) — self-awareness, responsible decision-making, relationship skills",
+  "cover_image_prompt": "Little Red Riding Hood in a red cloak standing at the edge of a magical forest, holding a basket, watercolor storybook illustration, warm golden light",
+  "ai_image_config": {
+    "style": "watercolor storybook illustration, warm and whimsical, classic fairy tale aesthetic, soft pastel tones",
+    "provider": "dalle",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/story_branching"
+  },
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "The Journey Begins",
+      "icon": "🌲",
+      "teaser": "Red sets off on her first solo errand...",
+      "always_unlocked": true,
+      "color": "#22c55e"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "The Wolf's Cunning",
+      "icon": "🐺",
+      "teaser": "A smooth-talking stranger crosses Red's path...",
+      "unlocks_after": "ch1",
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "Grandmother's Cottage",
+      "icon": "🏠",
+      "teaser": "Something feels terribly wrong inside...",
+      "unlocks_after": "ch2",
+      "color": "#f59e0b"
+    },
+    {
+      "chapter_id": "ch4",
+      "number": 4,
+      "title": "The Reckoning",
+      "icon": "⚡",
+      "teaser": "The moment of truth — face the wolf!",
+      "unlocks_after": "ch3",
+      "color": "#ef4444"
+    }
+  ],
+  "initial_state": {
+    "wisdom": {
+      "value": 30,
+      "label": "Wisdom",
+      "icon": "🦉",
+      "min": 0,
+      "max": 100
+    },
+    "courage": {
+      "value": 40,
+      "label": "Courage",
+      "icon": "🦁",
+      "min": 0,
+      "max": 100
+    },
+    "kindness": {
+      "value": 50,
+      "label": "Kindness",
+      "icon": "💛",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "glossary_terms": [
+    {
+      "term": "Empathy",
+      "definition": "Understanding and sharing the feelings of another person."
+    },
+    {
+      "term": "Resilience",
+      "definition": "The ability to recover quickly and stay calm under pressure."
+    },
+    {
+      "term": "Manipulation",
+      "definition": "Influencing someone unfairly by using tricks or false information."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Carefully analysing a situation before making a decision."
+    }
+  ],
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "transitions_to_gameplay": true,
+        "title": "A Mother's Instructions",
+        "narrative": "Your mother hands you a wicker basket filled with warm bread, honey cakes, and elderflower tea. 'Grandmother is feeling poorly,' she says softly, kneeling to look you in the eye. 'Stay on the main path through the forest. Talk to no strangers. And do not dawdle!' She kisses your forehead. The morning sun is bright and the forest edge shimmers ahead.",
+        "image_prompt": "A cosy cottage kitchen, a girl in a red hooded cloak receiving a wicker basket from her loving mother, warm golden morning light through the window, watercolor storybook illustration",
+        "coaching_moment": "Listening carefully to instructions from people who care about us is a sign of respect — and wisdom.",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Listen carefully and repeat the instructions back to make sure you understood",
+            "description": "You want to get this right — grandmother needs you.",
+            "delta": {
+              "wisdom": 12,
+              "kindness": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Nod quickly and dash out the door — you know what to do!",
+            "description": "You're excited and confident. How hard can it be?",
+            "delta": {
+              "courage": 8,
+              "wisdom": -5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "next_scene": "ch1_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "The Two Paths",
+        "narrative": "At the forest edge, the path splits in two. The wide, sunny path winds gently through meadows — beautiful but longer. The narrow shortcut cuts through shadowy trees — it would save half an hour. You can smell wildflowers from here, and the birds seem cheerful. But the shortcut is very quiet... almost too quiet.",
+        "image_prompt": "A fairy tale forest path splitting into two directions, one wide and sunny through a flower meadow, one narrow and dark through dense trees, a red-cloaked girl deciding which way to go, watercolor storybook illustration",
+        "coaching_moment": "Taking the safe, familiar route isn't always 'boring' — sometimes it shows real wisdom and discipline.",
+        "reflection_prompt": "What would you do if you were in a hurry but the quick option felt risky?",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Take the wide sunny path — mother said to stay on the main trail",
+            "description": "Rules exist for a reason. You'll honour that trust.",
+            "delta": {
+              "wisdom": 10,
+              "kindness": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch1_s3"
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Take the shortcut — grandmother needs the food quickly!",
+            "description": "Good intentions... but is this really about grandmother?",
+            "delta": {
+              "courage": 10,
+              "wisdom": -8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "next_scene": "ch1_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "is_chapter_end": true,
+        "title": "The Bluebird's Warning",
+        "narrative": "A small bluebird lands on a branch in front of you, chirping urgently. It keeps darting its gaze toward the deeper part of the forest, then back at you. Your grandmother always said, 'The forest has eyes, little one — learn to listen.' The bird's behaviour feels like a signal. What do you do?",
+        "image_prompt": "A small bright bluebird perched on a branch, looking urgently at a red-cloaked girl on a forest path, sunlight filtering through leaves, watercolor fairy tale illustration",
+        "coaching_moment": "Nature and our environment often give us signals — tuning in requires patience and awareness.",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "Pause and observe carefully — grandmother's wisdom says to listen to the forest",
+            "description": "You slow down and look around with alert eyes.",
+            "delta": {
+              "wisdom": 12,
+              "kindness": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "Walk on quickly — it's just a bird, and time is ticking",
+            "description": "You smile at the bird and keep moving at a brisk pace.",
+            "delta": {
+              "courage": 8,
+              "wisdom": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "next_chapter": "ch2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "A Charming Stranger",
+        "narrative": "A large grey wolf steps onto the path, blocking your way. He smiles broadly — too broadly — and bows with a sweeping gesture. 'Good morning, little one! What a beautiful day for a walk! That basket smells delicious. Where might you be off to on this fine morning?' His eyes are bright and clever, watching every little movement you make.",
+        "image_prompt": "A sly grey wolf in a forest bowing politely to a red-cloaked girl with a basket, wolf grinning with too-wide eyes, sunlight in the background, watercolor storybook illustration",
+        "coaching_moment": "When someone asks too many questions too quickly — especially a stranger — it's wise to be careful about what you share.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Be polite but vague — 'Just visiting someone nearby, thank you!'",
+            "description": "You give nothing away while staying courteous.",
+            "delta": {
+              "wisdom": 12,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Answer honestly — 'I'm going to grandmother's cottage down the path!'",
+            "description": "You were raised to be polite and honest with everyone.",
+            "delta": {
+              "kindness": 8,
+              "wisdom": -10
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_c",
+            "label": "Turn and walk away without answering at all",
+            "description": "Mother said no talking to strangers — full stop.",
+            "delta": {
+              "wisdom": 10,
+              "courage": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "next_scene": "ch2_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "An Offer to Help",
+        "narrative": "The wolf tilts his head sympathetically. 'Oh my, that basket looks heavy for such small hands! I'd be delighted to carry it for you — I know these woods like the back of my paw. We could take a marvellous shortcut I know!' He steps closer and reaches toward the basket with one large grey paw.",
+        "image_prompt": "A wolf reaching out a paw toward a basket held by a red-cloaked girl in the forest, wolf smiling too eagerly, girl looking uncertain, watercolor fairy tale",
+        "coaching_moment": "Real helpers don't pressure you. If someone insists on helping in ways that make you uncomfortable, trust that feeling.",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Step back firmly — 'No thank you, I can manage perfectly well!'",
+            "description": "You hold the basket close and stand your ground.",
+            "delta": {
+              "wisdom": 10,
+              "courage": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch2_s3"
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Hand over the basket — he seems friendly enough and it IS heavy",
+            "description": "Maybe he genuinely wants to help...",
+            "delta": {
+              "wisdom": -10,
+              "kindness": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch2_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "is_chapter_end": true,
+        "title": "The Wolf Dashes Ahead",
+        "narrative": "Before you can say anything else, the wolf gives a theatrical bow. 'I shall see you at grandmother's!' he declares, and vanishes into the trees at terrifying speed. Your heart hammers. Something is very wrong. The cottage is only ten minutes away. You must decide — and quickly.",
+        "image_prompt": "A wolf sprinting away through forest trees at frightening speed, a red-cloaked girl watching in alarm with her basket, dramatic fairy tale watercolor illustration",
+        "coaching_moment": "When something feels wrong in your gut — that feeling is worth taking seriously. Staying calm is your biggest advantage now.",
+        "reflection_prompt": "What would you do if you realised someone had deceived you and was now ahead of you?",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "Run as fast as you can to reach grandmother first",
+            "description": "Speed and urgency — you won't let him get there first.",
+            "delta": {
+              "courage": 12,
+              "wisdom": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "next_chapter": "ch3"
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "Walk calmly but call out to a woodcutter you spotted nearby",
+            "description": "Smart thinking — don't go in alone if you don't have to.",
+            "delta": {
+              "wisdom": 15,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_chapter": "ch3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "The Unlocked Door",
+        "narrative": "You arrive at grandmother's cottage. The little wooden door is ajar — grandmother always keeps it shut tight, especially in autumn. Through the gap you can see the curtains are drawn and the fire has gone cold. A strange, low growling sound drifts out. Your breath catches in your throat.",
+        "image_prompt": "A small stone cottage in the forest with a slightly open wooden door, autumn leaves, a red-cloaked girl peering at the door nervously, moody watercolor fairy tale illustration",
+        "coaching_moment": "Small details that seem 'off' are important clues. A calm, observant mind catches what a panicked mind misses.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Stop at the door and listen carefully before entering",
+            "description": "Knowledge before action — always a good strategy.",
+            "delta": {
+              "wisdom": 12,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Call out cheerfully — 'Grandmother! It's Red, I've brought your basket!'",
+            "description": "Maybe everything is fine and you're being overly cautious.",
+            "delta": {
+              "kindness": 8,
+              "wisdom": -5
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_c",
+            "label": "Back away quietly and run for help immediately",
+            "description": "Something is very wrong. Discretion is the better part of valour.",
+            "delta": {
+              "wisdom": 15,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "next_scene": "ch3_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "Grandmother's Strange Voice",
+        "narrative": "A voice calls from the bedroom — it sounds like grandmother, but rougher, deeper. 'Come in, dear... come cloooser.' The bedroom door is almost shut. On the windowsill, grandmother's spectacles are knocked to the floor. Her favourite teacup is smashed. The room smells of damp fur.",
+        "image_prompt": "A dark cottage interior with a closed bedroom door, knocked-over spectacles and a broken teacup visible, red-cloaked girl at the doorway looking alarmed, watercolor fairy tale",
+        "coaching_moment": "Physical clues tell a story. Smashed objects, strange smells, unusual sounds — put the pieces together!",
+        "reflection_prompt": "When something feels completely wrong, what is the bravest AND wisest choice?",
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Don't enter — call out from the doorway and keep your distance",
+            "description": "You won't be rushed. You need more information first.",
+            "delta": {
+              "wisdom": 12,
+              "courage": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch3_s3"
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Enter the bedroom — grandmother might genuinely be ill and need you",
+            "description": "Your love for grandmother overrides your fear.",
+            "delta": {
+              "kindness": 10,
+              "wisdom": -8
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "next_scene": "ch3_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "is_chapter_end": true,
+        "title": "What Big Eyes...",
+        "narrative": "You push the door open slowly. There, in grandmother's bed, wearing her white nightcap, is a very large shape with very sharp ears. The 'grandmother' in the bed smiles at you with teeth that are far, far too big. 'My, what a brave little visitor,' it says in a honeyed voice. 'Come, sit with me.'",
+        "image_prompt": "A bed with a wolf disguised as a grandmother in a white cap, sheets pulled up high, sharp teeth visible in a fake smile, red-cloaked girl standing in the doorway, watercolor fairy tale illustration",
+        "coaching_moment": "Staying calm when you're afraid is one of the bravest and most strategic things a person can do.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "Stay very calm — pretend you haven't noticed anything and stall for time",
+            "description": "Your best weapon right now is composure.",
+            "delta": {
+              "wisdom": 15,
+              "courage": 10
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "next_chapter": "ch4"
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "Drop the basket, scream, and run for the door",
+            "description": "Flight instinct kicks in — get out now!",
+            "delta": {
+              "courage": 12,
+              "wisdom": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "next_chapter": "ch4"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s1",
+        "chapter": "ch4",
+        "title": "What Big Teeth...",
+        "narrative": "The wolf throws off the nightcap and rises to his full terrifying height. 'All the better to EAT you with!' he snarls. But then — a sharp knock on the cottage door. A gruff voice calls out: 'Hello? Everything alright in there? I heard shouting!' It's the woodcutter from the forest. The wolf glances at the door, then back at you, calculating.",
+        "image_prompt": "A wolf rising to full height in a cottage bedroom, red-cloaked girl backing away bravely, a woodcutter's silhouette visible through a window, dramatic watercolor fairy tale illustration",
+        "coaching_moment": "In a crisis, asking for help is not weakness — it is the smartest possible move.",
+        "choices": [
+          {
+            "id": "ch4_s1_a",
+            "label": "Shout as loudly as you can — 'HELP! There's a wolf in here!'",
+            "description": "Make yourself heard. This is exactly when to ask for help.",
+            "delta": {
+              "wisdom": 10,
+              "courage": 12,
+              "kindness": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch4_s2"
+          },
+          {
+            "id": "ch4_s1_b",
+            "label": "Stay silent and edge toward the window — you might escape yourself",
+            "description": "Independent thinking — but also risky.",
+            "delta": {
+              "courage": 15,
+              "wisdom": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "next_scene": "ch4_s2"
+          },
+          {
+            "id": "ch4_s1_c",
+            "label": "Speak calmly to the wolf — 'The woodcutter will come in whether you want him to or not'",
+            "description": "Use logic. Give the wolf a reason to stand down.",
+            "delta": {
+              "wisdom": 18,
+              "courage": 10
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch4_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s2",
+        "chapter": "ch4",
+        "title": "The Woodcutter Arrives",
+        "narrative": "The cottage door bursts open. The woodcutter stands in the doorway, axe in hand. The wolf snarls, but senses the odds are no longer in his favour. He leaps through the window and flees into the forest. Grandmother emerges, shaken but unharmed, from the wardrobe where she had been locked. She holds you tight. 'Oh my brave, clever child!'",
+        "image_prompt": "A woodcutter bursting through a cottage door, a wolf leaping through a window in fright, grandmother emerging from a wardrobe, red-cloaked girl standing strong, joyful watercolor fairy tale illustration",
+        "coaching_moment": "Courage is not the absence of fear — it is acting wisely despite it. Today you showed both.",
+        "choices": [
+          {
+            "id": "ch4_s2_a",
+            "label": "Hug grandmother tightly and thank the woodcutter warmly",
+            "description": "Express your gratitude — kindness matters even after danger.",
+            "delta": {
+              "kindness": 15,
+              "wisdom": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "next_scene": "ch4_s3"
+          },
+          {
+            "id": "ch4_s2_b",
+            "label": "Check on grandmother first and make sure she's unhurt",
+            "description": "The mission was always grandmother — focus on that.",
+            "delta": {
+              "kindness": 12,
+              "wisdom": 10
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch4_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s3",
+        "chapter": "ch4",
+        "is_chapter_end": true,
+        "title": "Wisdom Earned",
+        "narrative": "Later, sitting by the fire with grandmother, you share the honey cakes and elderflower tea. Grandmother listens carefully to every detail of your adventure. 'You faced fear and kept your wits,' she says. 'That, my darling, is the beginning of wisdom. Every forest has its wolves — the ones inside our hearts and the ones on the path. Today, you chose wisely.'",
+        "image_prompt": "An old grandmother and a red-cloaked girl sharing tea and cakes by a warm fireplace in a cosy cottage, both smiling peacefully, warm golden watercolor illustration",
+        "coaching_moment": "Wisdom is not something you are born with — it grows with every difficult choice you face and learn from.",
+        "reflection_prompt": "What is one thing you learned today that you will carry with you into real life?",
+        "choices": [
+          {
+            "id": "ch4_s3_a",
+            "label": "'I learned that asking for help is a sign of wisdom, not weakness'",
+            "description": "A powerful realisation about strength.",
+            "delta": {
+              "wisdom": 15,
+              "kindness": 10
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "is_ending": true,
+            "ending_type": "best",
+            "ending_message": "You have shown the true spirit of wisdom — listening, thinking, and knowing when to ask for help. The forest will always have wolves, but minds like yours find the way home."
+          },
+          {
+            "id": "ch4_s3_b",
+            "label": "'I learned to trust my instincts — they were right all along'",
+            "description": "Self-belief earned through experience.",
+            "delta": {
+              "wisdom": 12,
+              "courage": 10
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "is_ending": true,
+            "ending_type": "redemption",
+            "ending_message": "Your instincts guided you well. Trust in yourself — paired with careful thinking — is one of the greatest gifts you can have. The journey has made you wiser."
+          }
+        ]
+      }
+    ]
+  },
+  "dimension_scoring_weights": {
+    "empathy": 0.35,
+    "adaptability": 0.35,
+    "resilience": 0.3
+  },
+  "coaching_moment": "Practice active listening and following important instructions. Develop critical thinking when meeting strangers.",
+  "estimated_duration": 20,
+  "target_age": "Ages 8+",
+  "tags": [
+    "beginner",
+    "branching-story",
+    "creativity",
+    "empathy",
+    "narrative"
+  ],
+  "cultural_context": "Storytelling as a vehicle for values education has deep roots in Indian culture, from Panchatantra to Jataka tales. This narrative game continues that tradition, helping young learners explore moral choices through immersive story.",
+  "nep_stage": "foundational",
+  "nep_competencies": [
+    "social-emotional-learning",
+    "adaptability"
+  ],
+  "visible": false,
+  "status": "replaced",
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}

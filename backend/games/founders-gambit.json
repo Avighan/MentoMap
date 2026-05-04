@@ -1,0 +1,851 @@
+{
+  "game_id": "founders-gambit",
+  "title": "Cyber Defense: Network Wars",
+  "theme": "Cybersecurity, Network Defense & Ethical Hacking",
+  "icon": "🛡️",
+  "description": "Command your cybersecurity team to defend a corporate network against a ruthless hacker collective! Deploy firewalls, encrypt data channels, run penetration tests, and set honeypot traps. Every move teaches real network security concepts — from firewalls and encryption to zero-day exploits and phishing attacks. Control critical network nodes to secure your infrastructure before the hackers breach your defenses.",
+  "game_type": "chess_strategy",
+  "category": "Strategy & Tactics",
+  "target_audience": "12-25",
+  "duration_minutes": 25,
+  "difficulty": "intermediate",
+  "learning_objectives": [
+    "Understand how firewalls, IDS, and SIEM systems protect networks",
+    "Learn about common attack vectors: phishing, ransomware, trojans, zero-day exploits",
+    "Practice strategic defense-in-depth thinking",
+    "Understand the role of encryption in data protection",
+    "Learn how honeypots and penetration testing improve security",
+    "Develop risk assessment and incident response skills"
+  ],
+  "tags": [
+    "cybersecurity",
+    "chess",
+    "strategy",
+    "network-security",
+    "defense",
+    "hacking"
+  ],
+  "how_to_play": [
+    "Each turn you get 2 Action Points (AP). Moving a piece costs 1 AP, using a special ability costs 1 AP.",
+    "Your Firewall is the king — if it's captured, your network is breached and you lose!",
+    "SIEM Analyst moves like a queen (any direction, any distance). IDS Scanner moves like a rook (straight lines). Encryption moves like a bishop (diagonals). Pentester moves like a knight (L-shaped jumps). Honeypots move like pawns (forward only).",
+    "Capture enemy pieces by moving onto their square. Honeypots promote to SIEM Analysts when reaching the last row.",
+    "Control network nodes by placing pieces on them. Each node generates security score per turn.",
+    "Win by: capturing the enemy Botnet C2, controlling 3+ network nodes, or reaching 10M security score."
+  ],
+  "objectives": [
+    "Capture the enemy Botnet C2 server to shut down the attack",
+    "Control 3 or more critical network nodes",
+    "Build your security score to 10 million"
+  ],
+  "storybook_pages": [
+    {
+      "title": "Welcome to Cyber Defense",
+      "text": "A sophisticated hacker collective has launched a coordinated attack on your corporate network. Botnets, ransomware, phishing campaigns — they're using every tool in their arsenal. As the head of cybersecurity, you must deploy your defense team strategically to protect critical infrastructure.",
+      "image_prompt": "futuristic cybersecurity command center with holographic screens showing network maps, a team of security analysts working, blue and green neon lights, digital shield icons, dramatic lighting, cartoon style"
+    },
+    {
+      "title": "Know Your Tools",
+      "text": "Your team includes Firewalls to block attacks, SIEM analysts to detect threats across the entire network, IDS scanners to monitor traffic, Encryption specialists to protect data, Pentesters who think like hackers to find vulnerabilities first, and Honeypots that lure attackers into traps.",
+      "image_prompt": "cybersecurity tools illustrated as characters: a shield (firewall), a magnifying glass (SIEM), a radar dish (IDS), a lock (encryption), a hacker in white hat (pentester), a honey jar trap (honeypot), colorful cartoon style"
+    },
+    {
+      "title": "Defend the Network",
+      "text": "Control the critical network nodes — server rooms, databases, and API gateways. Each node you secure strengthens your defense. But beware: the hackers have their own arsenal of malware, exploits, and social engineering attacks. Think strategically, anticipate attacks, and protect what matters most.",
+      "image_prompt": "network map with glowing nodes connected by lines, some nodes protected by shields (blue), others under attack by red malware icons, chess-like grid overlay, dramatic cyberpunk style, cartoon"
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪"
+      }
+    ]
+  },
+  "initial_state": {
+    "valuation": {
+      "label": "Security Score",
+      "value": 1000000,
+      "icon": "🛡️"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "chess_config": {
+    "board_size": 8,
+    "max_ap": 2,
+    "win_valuation": 10000000,
+    "win_resource_count": 3,
+    "resource_tiles": [
+      {
+        "pos": [
+          2,
+          2
+        ],
+        "type": "server",
+        "income": 200000,
+        "icon": "🖥️",
+        "label": "Server Room"
+      },
+      {
+        "pos": [
+          2,
+          5
+        ],
+        "type": "database",
+        "income": 180000,
+        "icon": "🗄️",
+        "label": "Database"
+      },
+      {
+        "pos": [
+          5,
+          2
+        ],
+        "type": "credentials",
+        "income": 160000,
+        "icon": "🔑",
+        "label": "User Credentials"
+      },
+      {
+        "pos": [
+          5,
+          5
+        ],
+        "type": "api",
+        "income": 170000,
+        "icon": "🌐",
+        "label": "API Gateway"
+      },
+      {
+        "pos": [
+          3,
+          3
+        ],
+        "type": "cloud",
+        "income": 150000,
+        "icon": "☁️",
+        "label": "Cloud Storage"
+      },
+      {
+        "pos": [
+          4,
+          4
+        ],
+        "type": "keys",
+        "income": 140000,
+        "icon": "🔐",
+        "label": "Encryption Keys"
+      }
+    ],
+    "theme_config": {
+      "king_role": "firewall",
+      "queen_role": "siem",
+      "pawn_role": "honeypot",
+      "back_row": [
+        "ids",
+        "pentester",
+        "encryption",
+        "firewall",
+        "siem",
+        "encryption",
+        "pentester",
+        "ids"
+      ],
+      "valuation_label": "Security Score",
+      "piece_stats": {
+        "firewall": {
+          "hp": 10,
+          "attack": 3,
+          "label": "Firewall",
+          "icon": "🛡️"
+        },
+        "siem": {
+          "hp": 8,
+          "attack": 4,
+          "label": "SIEM Analyst",
+          "icon": "🔍"
+        },
+        "ids": {
+          "hp": 7,
+          "attack": 3,
+          "label": "IDS Scanner",
+          "icon": "📡"
+        },
+        "encryption": {
+          "hp": 6,
+          "attack": 3,
+          "label": "Encryption",
+          "icon": "🔐"
+        },
+        "pentester": {
+          "hp": 6,
+          "attack": 4,
+          "label": "Pentester",
+          "icon": "🧑‍💻"
+        },
+        "honeypot": {
+          "hp": 3,
+          "attack": 2,
+          "label": "Honeypot",
+          "icon": "🍯"
+        }
+      },
+      "piece_moves": {
+        "firewall": {
+          "type": "king",
+          "range": 1,
+          "diagonal": true,
+          "straight": true
+        },
+        "siem": {
+          "type": "queen",
+          "range": 8,
+          "diagonal": true,
+          "straight": true
+        },
+        "ids": {
+          "type": "rook",
+          "range": 8,
+          "diagonal": false,
+          "straight": true
+        },
+        "encryption": {
+          "type": "bishop",
+          "range": 8,
+          "diagonal": true,
+          "straight": false
+        },
+        "pentester": {
+          "type": "knight",
+          "range": 0,
+          "knight": true
+        },
+        "honeypot": {
+          "type": "pawn",
+          "range": 1,
+          "pawn": true
+        }
+      },
+      "piece_profiles": {
+        "firewall": {
+          "title": "Firewall (Network Guardian)",
+          "strengths": [
+            {
+              "name": "Traffic Filter",
+              "desc": "Blocks all unauthorized access attempts. Enemies attacking the Firewall deal -1 damage."
+            },
+            {
+              "name": "Rule Engine",
+              "desc": "All adjacent friendly pieces gain +1 ATK from optimized firewall rules."
+            },
+            {
+              "name": "Always On",
+              "desc": "Generates 50,000 Security Score per turn just by being alive on the board."
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "High-Value Target",
+              "desc": "If the Firewall is captured, your entire network is breached — game over!"
+            },
+            {
+              "name": "Limited Mobility",
+              "desc": "Can only move 1 square in any direction, making repositioning slow."
+            },
+            {
+              "name": "Configuration Drift",
+              "desc": "If surrounded by 3+ enemy pieces, the Firewall loses 1 HP per turn from misconfigurations."
+            }
+          ],
+          "abilities": [
+            {
+              "id": "block_traffic",
+              "name": "Block Traffic",
+              "desc": "Activate deep packet inspection — all adjacent friendly pieces gain +2 ATK this turn.",
+              "cost": 1,
+              "effect": {
+                "type": "buff_adjacent",
+                "value": 2,
+                "range": 1
+              },
+              "needs_target": false
+            },
+            {
+              "id": "emergency_patch",
+              "name": "Emergency Patch",
+              "desc": "Deploy a critical security patch — reveals all enemy piece abilities and stats for 2 turns.",
+              "cost": 1,
+              "effect": {
+                "type": "reveal"
+              },
+              "needs_target": false
+            }
+          ]
+        },
+        "siem": {
+          "title": "SIEM Analyst (The Watcher)",
+          "strengths": [
+            {
+              "name": "Full Visibility",
+              "desc": "Moves any direction, any distance — monitors the entire network from a single console."
+            },
+            {
+              "name": "Correlation Engine",
+              "desc": "Gains +2 ATK when attacking Pentesters or Honeypots due to advanced threat correlation."
+            },
+            {
+              "name": "Threat Intel",
+              "desc": "Cannot be pushed or displaced by enemy abilities — anchored by real-time intelligence feeds."
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Alert Fatigue",
+              "desc": "If no friendly pieces are within 2 squares, the SIEM suffers -1 ATK from information overload."
+            },
+            {
+              "name": "Log Overflow",
+              "desc": "After using an ability, all abilities cost +1 AP next turn due to log processing overhead."
+            },
+            {
+              "name": "False Positives",
+              "desc": "Cannot remain on the same tile for 2 consecutive turns — must reposition to recalibrate."
+            }
+          ],
+          "abilities": [
+            {
+              "id": "deep_scan",
+              "name": "Deep Scan",
+              "desc": "Perform a deep network scan — teleport to any empty tile within 3 squares.",
+              "cost": 1,
+              "effect": {
+                "type": "teleport",
+                "range": 3
+              },
+              "needs_target": true,
+              "target_type": "empty_tile"
+            },
+            {
+              "id": "incident_response",
+              "name": "Incident Response",
+              "desc": "Initiate incident response protocol — heal self for +3 HP.",
+              "cost": 1,
+              "effect": {
+                "type": "heal_self",
+                "value": 3
+              },
+              "needs_target": false
+            }
+          ]
+        },
+        "ids": {
+          "title": "IDS Scanner (Perimeter Watch)",
+          "strengths": [
+            {
+              "name": "Signature Match",
+              "desc": "Moves in straight lines with no distance limit — scans entire rows and columns for threats."
+            },
+            {
+              "name": "Packet Capture",
+              "desc": "When capturing an enemy piece, gain bonus Security Score income equal to the target's value."
+            },
+            {
+              "name": "Network Tap",
+              "desc": "Cannot be captured while adjacent to a controlled resource node — protected by network monitoring."
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Blind Diagonals",
+              "desc": "Cannot move diagonally — vulnerable to attacks from Encryption and other diagonal threats."
+            },
+            {
+              "name": "Bandwidth Drain",
+              "desc": "Loses 1 HP per turn if not adjacent to a resource node — needs network bandwidth to operate."
+            },
+            {
+              "name": "Tunnel Vision",
+              "desc": "Must move at least 2 squares when moving — cannot make small adjustments."
+            }
+          ],
+          "abilities": [
+            {
+              "id": "alert_scan",
+              "name": "Alert Scan",
+              "desc": "Deploy network probes — gain immediate income from any adjacent resource node.",
+              "cost": 1,
+              "effect": {
+                "type": "income"
+              },
+              "needs_target": false
+            },
+            {
+              "id": "block_ip",
+              "name": "Block IP",
+              "desc": "Blacklist a malicious IP — weaken any enemy piece within 3 squares by -2 ATK for 1 turn.",
+              "cost": 1,
+              "effect": {
+                "type": "weaken_enemy",
+                "value": 2,
+                "range": 3
+              },
+              "needs_target": false
+            }
+          ]
+        },
+        "encryption": {
+          "title": "Encryption (Data Shield)",
+          "strengths": [
+            {
+              "name": "Diagonal Control",
+              "desc": "Moves diagonally across the network — launches cross-network encryption attacks."
+            },
+            {
+              "name": "Cipher Strength",
+              "desc": "All enemy pieces adjacent to Encryption have -1 ATK — weakened by strong ciphers."
+            },
+            {
+              "name": "Key Exchange",
+              "desc": "Pushing an enemy piece into another enemy piece damages both for 2 HP — collision from key exchange protocol."
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "No Direct Path",
+              "desc": "Cannot move in straight lines — must always approach targets diagonally."
+            },
+            {
+              "name": "Key Dependency",
+              "desc": "Suffers -2 ATK if your Security Score falls below 2,000,000 — weak keys from resource shortage."
+            },
+            {
+              "name": "Decryption Vulnerable",
+              "desc": "Takes +1 extra damage from SIEM-type attacks — log analysis can break encryption patterns."
+            }
+          ],
+          "abilities": [
+            {
+              "id": "encrypt_channel",
+              "name": "Encrypt Channel",
+              "desc": "Force-encrypt a data channel — push an enemy piece 2 squares away from current position.",
+              "cost": 1,
+              "effect": {
+                "type": "push_enemy",
+                "distance": 2
+              },
+              "needs_target": true,
+              "target_type": "enemy"
+            },
+            {
+              "id": "key_rotate",
+              "name": "Key Rotate",
+              "desc": "Rotate encryption keys — swap positions with any friendly piece on the board.",
+              "cost": 1,
+              "effect": {
+                "type": "swap_ally"
+              },
+              "needs_target": true,
+              "target_type": "ally"
+            }
+          ]
+        },
+        "pentester": {
+          "title": "Pentester (Ethical Hacker)",
+          "strengths": [
+            {
+              "name": "Exploit Knowledge",
+              "desc": "Moves in L-shaped patterns and jumps over other pieces — bypasses conventional defenses."
+            },
+            {
+              "name": "Zero-Day Discovery",
+              "desc": "Gains +2 ATK when attacking from an unexpected angle — exploits unknown vulnerabilities."
+            },
+            {
+              "name": "Hardened Defense",
+              "desc": "Takes -1 damage from all attacks — battle-tested from constant penetration testing."
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Scope Limited",
+              "desc": "Can only reach 8 possible squares from any position — restricted engagement scope."
+            },
+            {
+              "name": "Sprint Fatigue",
+              "desc": "Cannot use abilities on two consecutive turns — needs cooldown between exploit attempts."
+            },
+            {
+              "name": "Engagement Rules",
+              "desc": "Cannot return to the same position within 2 turns — rules of engagement prevent revisiting."
+            }
+          ],
+          "abilities": [
+            {
+              "id": "vuln_scan",
+              "name": "Vulnerability Scan",
+              "desc": "Identify and patch a vulnerability — place a firewall blocker on any adjacent empty tile.",
+              "cost": 1,
+              "effect": {
+                "type": "place_blocker"
+              },
+              "needs_target": true,
+              "target_type": "empty_tile"
+            },
+            {
+              "id": "exploit_chain",
+              "name": "Exploit Chain",
+              "desc": "Chain multiple exploits together — move twice in one turn. Costs all AP.",
+              "cost": 2,
+              "effect": {
+                "type": "extra_move"
+              },
+              "needs_target": false
+            }
+          ]
+        },
+        "honeypot": {
+          "title": "Honeypot (The Trap)",
+          "strengths": [
+            {
+              "name": "Threat Intel",
+              "desc": "Gains +1 ATK for each turn survived on the board, stacking up to +3 — gathers attacker intelligence."
+            },
+            {
+              "name": "Disposable",
+              "desc": "You deploy 8 Honeypots — losing one is acceptable if it reveals enemy tactics."
+            },
+            {
+              "name": "Promotion",
+              "desc": "Reaching the last row of the board promotes a Honeypot into a full SIEM Analyst."
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Forward Only",
+              "desc": "Can only move forward one square at a time — no retreat from the front lines."
+            },
+            {
+              "name": "Low HP",
+              "desc": "Only 3 HP — easily destroyed by any serious attack."
+            },
+            {
+              "name": "Diagonal Capture Only",
+              "desc": "Can only capture enemy pieces diagonally — cannot attack straight ahead."
+            }
+          ],
+          "abilities": [
+            {
+              "id": "lure",
+              "name": "Lure",
+              "desc": "Emit a fake vulnerability signal — heal an adjacent friendly piece for +3 HP.",
+              "cost": 0,
+              "effect": {
+                "type": "heal_ally",
+                "value": 3,
+                "range": 1
+              },
+              "needs_target": false
+            },
+            {
+              "id": "decoy_swap",
+              "name": "Decoy Swap",
+              "desc": "Switch positions with an adjacent friendly Honeypot to confuse attackers.",
+              "cost": 0,
+              "effect": {
+                "type": "swap_pawn"
+              },
+              "needs_target": true,
+              "target_type": "ally_pawn"
+            }
+          ]
+        }
+      },
+      "move_narratives": {
+        "firewall": {
+          "move": [
+            "{piece} adjusts firewall rules and repositions to a new network segment.",
+            "{piece} shifts to cover a critical vulnerability in the perimeter.",
+            "{piece} reconfigures and moves to protect a high-priority asset."
+          ],
+          "capture": [
+            "{piece} blocks the intrusion and shuts down {target} with a deny-all rule!",
+            "{piece} detects malicious traffic from {target} and terminates the connection!",
+            "{piece} drops {target}'s packets and purges the threat from the network!"
+          ]
+        },
+        "siem": {
+          "move": [
+            "{piece} correlates log data and repositions for better network visibility.",
+            "{piece} follows the threat trail across multiple network segments.",
+            "{piece} analyzes traffic patterns and moves to a new monitoring position."
+          ],
+          "capture": [
+            "{piece} traces {target}'s activity through log analysis and neutralizes the threat!",
+            "{piece} identifies {target}'s signature in the SIEM dashboard and eliminates it!",
+            "{piece} correlates {target}'s attack pattern and shuts it down with precision!"
+          ]
+        },
+        "ids": {
+          "move": [
+            "{piece} scans the network perimeter and repositions along the traffic lane.",
+            "{piece} deploys to a new chokepoint to monitor incoming traffic.",
+            "{piece} moves along the network backbone to inspect packet flows."
+          ],
+          "capture": [
+            "{piece} matches {target}'s attack signature and blocks the intrusion!",
+            "{piece} detects {target}'s anomalous behavior and drops the connection!",
+            "{piece} captures {target}'s malicious packets and quarantines the threat!"
+          ]
+        },
+        "encryption": {
+          "move": [
+            "{piece} rotates keys and secures a new diagonal data channel.",
+            "{piece} extends encrypted tunnels across the network matrix.",
+            "{piece} establishes a new encrypted pathway through the infrastructure."
+          ],
+          "capture": [
+            "{piece} overwhelms {target} with unbreakable cipher algorithms!",
+            "{piece} encrypts {target}'s communications and locks it out permanently!",
+            "{piece} wraps {target} in AES-256 encryption — threat neutralized!"
+          ]
+        },
+        "pentester": {
+          "move": [
+            "{piece} exploits a network hop to reach an unexpected position.",
+            "{piece} pivots through the network using a creative attack vector.",
+            "{piece} bypasses security controls and lands behind enemy lines."
+          ],
+          "capture": [
+            "{piece} discovers a zero-day vulnerability in {target} and exploits it!",
+            "{piece} chains exploits to breach {target}'s defenses completely!",
+            "{piece} uses social engineering to compromise {target} from the inside!"
+          ]
+        },
+        "honeypot": {
+          "move": [
+            "{piece} advances deeper into hostile territory, emitting fake vulnerabilities.",
+            "{piece} moves forward, broadcasting decoy services to attract attackers.",
+            "{piece} pushes toward enemy lines, gathering threat intelligence as it goes."
+          ],
+          "capture": [
+            "{piece} lures {target} into its trap and captures the attack data!",
+            "{piece} baits {target} with a fake database and springs the trap!",
+            "{piece} entices {target} with dummy credentials and locks it down!"
+          ],
+          "promote": [
+            "The Honeypot has gathered enough threat intelligence to be promoted to a full SIEM Analyst!",
+            "After months of deception, the Honeypot evolves into a powerful SIEM Analyst!",
+            "Intelligence gathered by the Honeypot transforms it into an elite SIEM Analyst!"
+          ]
+        }
+      },
+      "ai_move_narratives": [
+        "The hacker collective deploys a new attack vector...",
+        "Malicious traffic detected — the enemy is on the move!",
+        "An intrusion attempt is underway — stay alert!"
+      ],
+      "ai_capture_narratives": [
+        "The hackers breach your {target}'s defenses — a critical loss!",
+        "Your {target} is compromised by the attack!",
+        "A zero-day exploit takes down your {target}!"
+      ],
+      "resource_narratives": [
+        "Secured nodes generate defense metrics — your security score grows!",
+        "Network monitoring pays off — threat intelligence data flowing in.",
+        "Controlled infrastructure strengthens your security posture."
+      ],
+      "role_values": {
+        "firewall": 100,
+        "siem": 50,
+        "ids": 30,
+        "encryption": 30,
+        "pentester": 25,
+        "honeypot": 10
+      }
+    }
+  },
+  "rounds": [
+    {
+      "id": "chess_game",
+      "title": "Cyber Defense: Network Wars",
+      "story": "The network battlefield awaits. Deploy your cybersecurity team to defend against the hacker collective!",
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "risk_tolerance"
+        ],
+        "secondary_skills": [
+          "delayed_gratification",
+          "adaptability",
+          "resilience"
+        ]
+      },
+      "choices": [],
+      "coaching_moment": "Think carefully about the trade-offs before committing to this path.",
+      "reflection_prompt": "What sacrifices did you make, and were they worth it?"
+    }
+  ],
+  "learning_concept": "Pattern Recognition & Strategic Planning",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Planning moves several steps ahead",
+      "real_world": "Mapping out a study plan for exams with realistic milestones",
+      "challenge": "Draw a decision tree for a real goal you have — what are the possible paths and outcomes?"
+    },
+    {
+      "skill_tag": "adaptability",
+      "game_context": "Responding to opponent's unexpected moves",
+      "real_world": "Adjusting your plan when a key team member is unavailable",
+      "challenge": "Describe a time when you had to completely change your approach mid-way. What did you learn?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "grandmaster",
+      "name": "Grandmaster",
+      "description": "Executed a perfect strategic sequence",
+      "condition": "accuracy >= 90",
+      "xp_reward": 250,
+      "icon": "👑"
+    },
+    {
+      "id": "tactical_genius",
+      "name": "Tactical Genius",
+      "description": "Found the winning move in a critical position",
+      "condition": "best_move_found",
+      "xp_reward": 200,
+      "icon": "🧠"
+    },
+    {
+      "id": "chess_complete",
+      "name": "Chess Champion",
+      "description": "Completed the chess strategy challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "♟️"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_depth": 1,
+      "show_hints": true,
+      "starting_advantage": 1.2
+    },
+    "medium": {
+      "ai_depth": 2,
+      "show_hints": false,
+      "starting_advantage": 1.0
+    },
+    "hard": {
+      "ai_depth": 4,
+      "show_hints": false,
+      "starting_advantage": 0.8
+    }
+  },
+  "coach_mode_default": true,
+  "features": {
+    "voice_enabled": true
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.4,
+    "risk_tolerance": 0.35,
+    "adaptability": 0.25
+  },
+  "estimated_duration": 25,
+  "target_age": "12-25",
+  "cultural_context": "India's startup ecosystem is the world's third largest, producing over 100 unicorns. The strategic risks and resource trade-offs in this game mirror the decisions made daily by Indian entrepreneurs from Mumbai to Bangalore.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "entrepreneurial-thinking",
+    "adaptability"
+  ],
+  "reflection_prompt": "What pattern did your opponent rely on, and how did you counter (or fail to)?"
+}

@@ -1,0 +1,525 @@
+{
+  "session_game": {
+    "game_type": "stakeholder_update",
+    "title": "Stakeholder Update Room",
+    "description": "Present project updates to demanding stakeholders. Manage expectations, handle tough questions, and communicate progress effectively.",
+    "route": "/stakeholder",
+    "icon": "📊",
+    "badge_text": "AI Stakeholders",
+    "gradient": [
+      "#14B8A6",
+      "#0D9488"
+    ],
+    "help_content": {
+      "what_is": "A stakeholder update simulator where you present project progress, manage expectations, and handle challenging questions from AI stakeholders with different priorities and concerns. Learn to communicate bad news, manage scope, and keep stakeholders aligned.",
+      "tips": [
+        "Lead with the most important update — don't bury the lead",
+        "Use data to support your claims, not just opinions",
+        "Be transparent about risks and blockers",
+        "Have a plan for every problem you raise",
+        "Know your audience — tailor depth to each stakeholder",
+        "End with clear asks and next steps"
+      ]
+    },
+    "initial_state": {
+      "performance_score": 0,
+      "stakeholder_confidence": 50,
+      "trust_level": 0,
+      "updates_delivered": 0
+    },
+    "session_phases": [
+      "Status Overview",
+      "Progress Deep-Dive",
+      "Risk & Issues",
+      "Questions & Discussion",
+      "Next Steps"
+    ],
+    "scoring_rubric": {
+      "clarity_structure": {
+        "weight": 0.2,
+        "description": "Was the update well-organized and easy to follow?"
+      },
+      "transparency": {
+        "weight": 0.2,
+        "description": "Were they honest about progress, risks, and challenges?"
+      },
+      "data_driven": {
+        "weight": 0.15,
+        "description": "Did they use metrics and data to support their update?"
+      },
+      "question_handling": {
+        "weight": 0.15,
+        "description": "How well did they handle stakeholder questions and concerns?"
+      },
+      "expectation_management": {
+        "weight": 0.15,
+        "description": "Did they set realistic expectations?"
+      },
+      "action_orientation": {
+        "weight": 0.15,
+        "description": "Did they end with clear next steps and asks?"
+      }
+    },
+    "persona_pool": [
+      {
+        "id": "impatient_ceo",
+        "name": "Sunil Mehra",
+        "archetype": "Impatient CEO",
+        "focus": "bottom line, speed, market impact, big picture",
+        "personality": "Time-pressed and results-oriented. Wants the executive summary, not the details. Gets frustrated with jargon and excuses. Respects people who say 'here's the problem, here's my plan.'",
+        "tough_question_style": "Skip the details. Are we on track, yes or no? And if no, what are you doing about it?",
+        "voice": "onyx",
+        "avatar_emoji": "👨‍💼",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "detail_oriented_cto",
+        "name": "Dr. Priya Rajan",
+        "archetype": "Technical Scrutinizer",
+        "focus": "technical depth, architecture decisions, scalability, quality",
+        "personality": "Deep technical knowledge. Questions every technical decision. Wants to understand not just what was built but why and how. Catches hand-waving instantly.",
+        "tough_question_style": "You said the architecture will scale. Walk me through the load testing results.",
+        "voice": "alloy",
+        "avatar_emoji": "🔬",
+        "difficulty_weight": 5,
+        "friendly_weight": 1
+      },
+      {
+        "id": "worried_pm",
+        "name": "Ankit Sharma",
+        "archetype": "Worried PM",
+        "focus": "timeline, dependencies, blockers, risk mitigation",
+        "personality": "Anxious about deadlines and dependencies. Keeps detailed project plans. Asks about every risk and mitigation strategy. Needs reassurance backed by concrete plans.",
+        "tough_question_style": "If Team B delivers late, what's our contingency? Have you planned for that?",
+        "voice": "echo",
+        "avatar_emoji": "📋",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "budget_holder",
+        "name": "Kavita Desai",
+        "archetype": "Budget Guardian",
+        "focus": "cost, ROI, budget burn rate, resource allocation",
+        "personality": "Guards the budget fiercely. Every expense needs justification. Compares cost vs. value constantly. Will challenge any request for additional resources or timeline extensions.",
+        "tough_question_style": "We've already spent 60% of the budget and we're at 40% completion. Explain that gap.",
+        "voice": "nova",
+        "avatar_emoji": "💵",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "end_user_rep",
+        "name": "Riya Nair",
+        "archetype": "User Advocate",
+        "focus": "user experience, customer feedback, feature requests, usability",
+        "personality": "Represents the end users. Brings customer feedback to every meeting. Frustrated when features are delayed or user concerns are ignored. Advocates passionately for the user.",
+        "tough_question_style": "Users have been asking for this feature for 6 months. Why is it still not in the plan?",
+        "voice": "shimmer",
+        "avatar_emoji": "💛",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "supportive_sponsor",
+        "name": "Vijay Krishnan",
+        "archetype": "Project Sponsor",
+        "focus": "strategic alignment, stakeholder management, organizational politics",
+        "personality": "Your champion in the organization. Supportive but needs ammunition to defend the project to the board. Wants to help but needs clear communication to do so.",
+        "tough_question_style": "The board meets Friday. Give me three talking points to defend this project.",
+        "voice": "fable",
+        "avatar_emoji": "🛡️",
+        "difficulty_weight": 2,
+        "friendly_weight": 5
+      },
+      {
+        "id": "external_client",
+        "name": "Meena Saxena",
+        "archetype": "External Client",
+        "focus": "delivery dates, quality, contractual obligations, value for money",
+        "personality": "Paying client with high expectations. Professional but firm. Holds you accountable to committed timelines. Not interested in internal challenges — wants results.",
+        "tough_question_style": "We had a contract for March delivery. It's March 15th. Where's the deliverable?",
+        "voice": "nova",
+        "avatar_emoji": "📝",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "new_stakeholder",
+        "name": "Arjun Bhatia",
+        "archetype": "New Stakeholder",
+        "focus": "understanding context, getting up to speed, asking basic questions",
+        "personality": "Just joined the project or organization. Needs context on everything. Asks seemingly basic questions that sometimes reveal gaps in communication. Good for testing your ability to explain clearly.",
+        "tough_question_style": "Sorry, I'm new here. Can you explain why we chose this approach over the alternatives?",
+        "voice": "echo",
+        "avatar_emoji": "🆕",
+        "difficulty_weight": 2,
+        "friendly_weight": 4
+      }
+    ],
+    "scenarios": [
+      {
+        "scenario_id": "sprint_review",
+        "title": "Sprint Review — Behind Schedule",
+        "description": "Your team is 2 sprints behind. The product owner, tech lead, and project manager want answers. You need to explain the delay and propose a recovery plan.",
+        "industry": "Software Development",
+        "difficulty": "beginner",
+        "setting": "A conference room with a whiteboard showing the sprint burndown chart. It's not looking good. Three stakeholders sit with their laptops open.",
+        "session_topic": "Presenting a delayed sprint review and proposing a recovery plan",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "worried_pm",
+          "supportive_sponsor",
+          "detail_oriented_cto"
+        ],
+        "avoid_persona_types": [
+          "impatient_ceo"
+        ],
+        "coaching_tips": [
+          "Be honest about the delay — don't minimize it",
+          "Present a realistic recovery plan, not an optimistic fantasy"
+        ],
+        "learning_objectives": [
+          "Communicate delays effectively",
+          "Present recovery plans"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Burndown",
+            "text": "The sprint burndown chart tells the story clearly — you're behind. Two sprints of work compressed into one. Technical debt caught up. Your team is tired, and stakeholders want answers.",
+            "icon": "📉",
+            "image_prompt": "Indian developer looking at declining burndown chart on whiteboard, office setting, concerned expression, sprint board with many pending items, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_sprint_review/round_storybook_p0.png"
+          },
+          {
+            "title": "The Stakeholders",
+            "text": "Three people will be in the room: the product owner who promised features to customers, the tech lead who warned about tech debt, and the PM tracking the Gantt chart.",
+            "icon": "👥",
+            "image_prompt": "Three Indian stakeholders waiting in meeting room, laptops open with project dashboards, concerned but professional, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_sprint_review/round_storybook_p1.png"
+          },
+          {
+            "title": "Your Update",
+            "text": "You walk in with your update prepared. Be honest, be clear, and most importantly — have a plan. 'Good morning. Let me start with where we are.'",
+            "icon": "📊",
+            "image_prompt": "Indian project lead entering meeting room with laptop and notes, stakeholders seated, whiteboard with sprint data, beginning presentation, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_sprint_review/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "board_presentation",
+        "title": "Board of Directors — Quarterly Update",
+        "description": "Present your division's quarterly results to the board. Mix of good news and bad news. How you frame it matters as much as the numbers.",
+        "industry": "Corporate Leadership",
+        "difficulty": "advanced",
+        "setting": "A mahogany-lined boardroom on the top floor. 8 board members in suits. Your CEO is watching from the end of the table.",
+        "session_topic": "Presenting quarterly business results to the board of directors",
+        "conversation_turns": 12,
+        "preferred_persona_types": [
+          "impatient_ceo",
+          "budget_holder",
+          "detail_oriented_cto"
+        ],
+        "avoid_persona_types": [
+          "new_stakeholder"
+        ],
+        "coaching_tips": [
+          "Lead with the headline — good or bad",
+          "Have answers ready for every number you present"
+        ],
+        "learning_objectives": [
+          "Present to senior leadership",
+          "Handle high-pressure executive communication"
+        ],
+        "storybook_pages": [
+          {
+            "title": "Quarter End",
+            "text": "Revenue up 12%, but costs grew 18%. Two key hires quit. The new product launch delayed by 6 weeks. It's a mixed quarter. The board expects the full picture.",
+            "icon": "📊",
+            "image_prompt": "Indian business leader reviewing quarterly report at desk, mixed results on screen, late evening office, preparing board presentation, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_board_presentation/round_storybook_p0.png"
+          },
+          {
+            "title": "The Boardroom",
+            "text": "Mahogany table, leather chairs, framed accolades on walls. 8 board members who've seen hundreds of these presentations. They can spot spin from a mile away.",
+            "icon": "🏛️",
+            "image_prompt": "Grand Indian corporate boardroom, mahogany table, 8 board members in formal attire, projector screen ready, CEO at head, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_board_presentation/round_storybook_p1.png"
+          },
+          {
+            "title": "Take the Floor",
+            "text": "The CEO nods in your direction: 'Let's hear from the product division.' All eyes turn to you. Every number you say will be questioned. Begin.",
+            "icon": "🎯",
+            "image_prompt": "Indian executive standing to present at boardroom, all board members looking attentively, quarterly slides on screen, professional atmosphere, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_board_presentation/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "client_status",
+        "title": "Client Status Call — Scope Creep Alert",
+        "description": "The client keeps adding requirements. Your team is already stretched. You need to push back on scope while keeping the client happy.",
+        "industry": "Client Services",
+        "difficulty": "intermediate",
+        "setting": "A video call with the client's project team. They have a list of 'small additions' that are anything but small.",
+        "session_topic": "Managing scope creep in a client project update meeting",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "external_client",
+          "end_user_rep",
+          "budget_holder"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Use data to show impact of additional requests on timeline",
+          "Offer trade-offs, not flat rejections"
+        ],
+        "learning_objectives": [
+          "Manage scope professionally",
+          "Say 'no' without damaging relationships"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Creep",
+            "text": "It started with 'Can you just add one more field?' Then 'One more report.' Then 'A small dashboard.' Now you're 3 weeks over timeline and the client wants even more.",
+            "icon": "📈",
+            "image_prompt": "Growing stack of change requests on Indian project manager's desk, timeline chart showing delays, project scope expanding, overwhelmed expression, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_client_status/round_storybook_p0.png"
+          },
+          {
+            "title": "The Call",
+            "text": "The weekly status call. Your team is already working weekends. The client's project lead has 'just a few more items to discuss.' You know what's coming.",
+            "icon": "📞",
+            "image_prompt": "Indian project manager preparing for video call, notes about scope creep, team burnout visible in background, bracing for difficult conversation, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_client_status/round_storybook_p1.png"
+          },
+          {
+            "title": "Set Boundaries",
+            "text": "The video connects. The client smiles: 'Before we start, I have a few small requests.' This is it. You need to push back — professionally, firmly, and with data.",
+            "icon": "✋",
+            "image_prompt": "Video call between Indian project manager and client, scope document visible, professional but firm body language, setting boundaries, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_client_status/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "cross_team_sync",
+        "title": "Cross-Team Sync — Dependency Management",
+        "description": "Three teams depend on each other's deliverables. Priorities clash. You're leading the sync meeting to align everyone and unblock progress.",
+        "industry": "Project Management",
+        "difficulty": "intermediate",
+        "setting": "A virtual meeting with leads from three different teams. Each team has their own priorities, and nobody wants to be the bottleneck.",
+        "session_topic": "Facilitating a cross-team dependency meeting",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "worried_pm",
+          "impatient_ceo",
+          "supportive_sponsor"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Map dependencies visually",
+          "Focus on unblocking, not blaming"
+        ],
+        "learning_objectives": [
+          "Facilitate multi-stakeholder alignment",
+          "Manage dependencies diplomatically"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Bottleneck",
+            "text": "Team A needs Team B's API. Team B needs Team C's data. Team C is waiting on Team A's design. Classic circular dependency. Nothing moves until someone unblocks.",
+            "icon": "🔄",
+            "image_prompt": "Diagram of three Indian teams in circular dependency, arrows connecting them, frustrated team leads, whiteboard showing blocked tasks, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_cross_team_sync/round_storybook_p0.png"
+          },
+          {
+            "title": "Three Priorities",
+            "text": "Each team lead thinks their work is the most important. Nobody wants to reprioritize. But the deadline is fixed. Someone needs to break the deadlock.",
+            "icon": "🎯",
+            "image_prompt": "Three Indian team leads on video call, each pointing at their priority board, split screen showing conflicting priorities, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_cross_team_sync/round_storybook_p1.png"
+          },
+          {
+            "title": "Lead the Sync",
+            "text": "You've been asked to facilitate. Pull up the dependency map, acknowledge everyone's constraints, and find a path forward. 'Let's figure this out together.'",
+            "icon": "🤝",
+            "image_prompt": "Indian facilitator sharing screen with dependency map, three team leads in video tiles, collaborative problem-solving meeting, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_cross_team_sync/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "investor_update",
+        "title": "Investor Update — After a Bad Quarter",
+        "description": "Your startup's monthly investor update after a tough quarter. Metrics are down. Runway is shrinking. Be transparent while maintaining confidence.",
+        "industry": "Startup / Venture Capital",
+        "difficulty": "advanced",
+        "setting": "A video call with your 3 angel investors. They've seen the monthly dashboard already — the numbers aren't pretty.",
+        "session_topic": "Delivering a monthly investor update after poor quarterly performance",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "impatient_ceo",
+          "budget_holder",
+          "supportive_sponsor"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Don't hide bad news — address it head-on",
+          "Show you understand WHY metrics dropped and what you're doing about it"
+        ],
+        "learning_objectives": [
+          "Communicate bad news to investors",
+          "Maintain confidence while being transparent"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Numbers",
+            "text": "MRR dropped 15%. Churn up 8%. CAC increased. Your runway just went from 12 months to 8. Your investors have seen the dashboard. They have questions.",
+            "icon": "📉",
+            "image_prompt": "Indian startup founder looking at declining metrics dashboard, late night office, startup office with motivational posters, worried but determined, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_investor_update/round_storybook_p0.png"
+          },
+          {
+            "title": "The Investors",
+            "text": "Three angel investors who believed in you. They wrote checks based on your vision. Now they need to know: is this a blip or a trend? Do you have a plan?",
+            "icon": "💰",
+            "image_prompt": "Video call gallery view showing three Indian angel investors, concerned but open expressions, startup founder about to present, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_investor_update/round_storybook_p1.png"
+          },
+          {
+            "title": "Own It",
+            "text": "The call starts. 'I want to start by addressing the elephant in the room. Our numbers this quarter aren't where we want them to be. Let me explain what happened and what we're doing.'",
+            "icon": "📢",
+            "image_prompt": "Indian startup founder on video call, honest expression, metrics charts in background, investor faces in small tiles, transparent communication moment, digital art",
+            "image_url": "/uploads/media/images/story/stakeholder_update_investor_update/round_storybook_p2.png"
+          }
+        ]
+      }
+    ]
+  },
+  "learning_concept": "Consequence Thinking & Resource Management",
+  "coach_mode_default": true,
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "game_type": "negotiation",
+  "achievements": [
+    {
+      "id": "deal_maker",
+      "name": "Deal Maker",
+      "description": "Reached a mutually beneficial agreement",
+      "condition": "agreement_reached and both_satisfied",
+      "xp_reward": 200,
+      "icon": "🤝"
+    },
+    {
+      "id": "master_negotiator",
+      "name": "Master Negotiator",
+      "description": "Secured the best possible terms",
+      "condition": "score >= 85",
+      "xp_reward": 250,
+      "icon": "💼"
+    },
+    {
+      "id": "negotiation_complete",
+      "name": "Negotiation Complete",
+      "description": "Completed the negotiation challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "✅"
+    }
+  ],
+  "title": "Stakeholder Update",
+  "initial_state": {
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_concession_rate": 0.4,
+      "turn_limit": 12,
+      "relationship_boost": 20
+    },
+    "medium": {
+      "ai_concession_rate": 0.25,
+      "turn_limit": 10,
+      "relationship_boost": 0
+    },
+    "hard": {
+      "ai_concession_rate": 0.1,
+      "turn_limit": 8,
+      "relationship_boost": -10
+    }
+  },
+  "description": "Present a project update to a room full of stakeholders with different priorities. Practise clear communication under pressure and learn to read the room in real time.",
+  "game_id": "stakeholder_update",
+  "dimension_scoring_weights": {
+    "adaptability": 0.35,
+    "strategic_thinking": 0.3,
+    "empathy": 0.2,
+    "ethical_reasoning": 0.15
+  },
+  "coaching_moment": "Present a project update to a room full of stakeholders with different priorities. Practise clear communication under pressure and learn to read the room in real time.",
+  "tags": [
+    "adaptability",
+    "communication",
+    "negotiation"
+  ],
+  "cultural_context": "Stakeholder communication is among the highest-leverage management skills in India's corporate environment. The ability to align diverse interests through clear, honest communication is valued from junior roles to the C-suite.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "adaptability",
+    "critical-thinking",
+    "social-emotional-learning"
+  ],
+  "estimated_duration": 20,
+  "target_age": "16-25",
+  "learning_objectives": [
+    "Develop critical thinking through negotiation gameplay",
+    "Practice decision-making in realistic scenarios",
+    "Build self-awareness about your strengths and areas for growth"
+  ],
+  "reflection_prompt": "Where did you give ground, and where did you hold it? What did the other side teach you about your own priorities?"
+}

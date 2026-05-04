@@ -1,0 +1,1001 @@
+{
+  "game_id": "the-debate-captain",
+  "title": "The Debate Captain",
+  "theme": "Building and leading a debate team through challenges, conflicts, and competition",
+  "icon": "🎤",
+  "description": "You're the captain of your school's debate team heading to the state championship. Over 8 rounds, you'll pick your team, handle conflicts, deal with cheating accusations, and lead under pressure. Can you build a winning team without losing your soul?",
+  "game_type": "rounds",
+  "visible": false,
+  "category": "Simulation",
+  "coaching_tone": "supportive",
+  "target_audience": "students",
+  "duration_minutes": 20,
+  "difficulty": "beginner",
+  "learning_concept": "Team Leadership and Communication",
+  "cultural_context": "Indian school debate and competition culture",
+  "learning_objectives": [
+    "Learn to build and manage a team with diverse strengths and personalities",
+    "Practice decision-making under competitive pressure",
+    "Understand the balance between winning and playing fair"
+  ],
+  "how_to_play": "Each round presents a leadership challenge related to your debate team. Choose how to lead. Your team's morale, preparation, confidence, and reputation all depend on your decisions.",
+  "glossary_terms": [
+    {
+      "term": "Rebuttal",
+      "definition": "A counter-argument that challenges or disproves the opposing side's point"
+    },
+    {
+      "term": "Motion",
+      "definition": "The topic being debated, usually phrased as 'This house believes that...'"
+    },
+    {
+      "term": "Stage fright",
+      "definition": "Anxiety or fear experienced before or during a public performance"
+    },
+    {
+      "term": "Rhetoric",
+      "definition": "The art of effective and persuasive speaking — using language to influence an audience"
+    },
+    {
+      "term": "Ad hominem",
+      "definition": "Attacking the person making the argument instead of the argument itself — a logical fallacy"
+    }
+  ],
+  "initial_state": {
+    "team_morale": {
+      "icon": "💪",
+      "label": "Team Morale",
+      "value": 50,
+      "min": 0,
+      "max": 100
+    },
+    "preparation": {
+      "icon": "📚",
+      "label": "Preparation",
+      "value": 40,
+      "min": 0,
+      "max": 100
+    },
+    "confidence": {
+      "icon": "🌟",
+      "label": "Confidence",
+      "value": 45,
+      "min": 0,
+      "max": 100
+    },
+    "reputation": {
+      "icon": "🏆",
+      "label": "Reputation",
+      "value": 35,
+      "min": 0,
+      "max": 100
+    }
+  },
+  "rounds": [
+    {
+      "id": "r1",
+      "round_number": 1,
+      "title": "Picking Your Team",
+      "situation": "{player_name}, tryouts are done. You need to pick 3 debaters for the state championship team. Your shortlist has 4 strong candidates: Priya — brilliant researcher, knows every fact, but freezes on stage. Ravi — charismatic speaker, audiences love him, but he doesn't prepare and wings it. Ananya — solid all-rounder, no weaknesses, no standout strengths. Kabir — passionate, emotional speaker, but gets personal in arguments and has been warned by judges before.",
+      "story": "You can only take 3. Each combination creates a different team dynamic.",
+      "image_prompt": "Four Indian students standing in a row after debate tryouts, each with distinct personality visible, captain evaluating them",
+      "coaching_moment": "The best teams aren't made of the best individuals — they're made of people whose strengths complement each other's weaknesses.",
+      "time_limit_seconds": null,
+      "timer_narrative": null,
+      "choices": [
+        {
+          "id": "r1_a",
+          "label": "Priya, Ravi, and Ananya",
+          "description": "Research power + charisma + consistency. Drop Kabir — his aggression is a liability.",
+          "consequence_hint": "A safe, balanced team, but you lose Kabir's fire and he'll be devastated to be cut",
+          "delta": {
+            "preparation": 10,
+            "team_morale": 5,
+            "confidence": 5,
+            "reputation": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "memory_tags": [
+            "balanced_team"
+          ],
+          "events": [
+            {
+              "description": "Kabir's face falls when you tell him. He says, 'I thought you believed in me.' The team feels safe but slightly flat.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r1_b",
+          "label": "Ravi, Kabir, and Ananya",
+          "description": "Two passionate speakers + a stabilizer. Drop Priya — she can't handle the stage pressure.",
+          "consequence_hint": "High energy team, but without Priya's research depth, arguments may be thin under cross-examination",
+          "delta": {
+            "confidence": 10,
+            "team_morale": 8,
+            "preparation": -5,
+            "reputation": 0
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "memory_tags": [
+            "high_energy_team"
+          ],
+          "events": [
+            {
+              "description": "Ravi and Kabir high-five. 'This team is going to be fire!' Priya quietly packs her notes and leaves.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r1_c",
+          "label": "Priya, Kabir, and Ananya",
+          "description": "Research + passion + balance. Drop Ravi — talent without preparation is unreliable.",
+          "consequence_hint": "Strong preparation, but Kabir's aggression is still a risk and Ravi's absence removes your best speaker",
+          "delta": {
+            "preparation": 12,
+            "team_morale": 3,
+            "confidence": -3,
+            "reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "memory_tags": [
+            "preparation_focused"
+          ],
+          "events": [
+            {
+              "description": "Ravi shrugs: 'Your loss.' Priya looks terrified but determined. Kabir says, 'I won't let you down.'",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r1_a",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r2",
+      "round_number": 2,
+      "title": "Topic Assignment Crisis",
+      "situation": "The championship topics are announced, {player_name}. Round 1 motion: 'This house believes social media does more harm than good.' You need to assign who speaks first, second, and gives the rebuttal. The first speaker sets the frame but faces the toughest cross-examination. The rebuttal speaker needs to think on their feet with no preparation time.",
+      "story": "How you assign roles reveals how well you understand your team's strengths.",
+      "image_prompt": "Indian debate team around a table with topic written on whiteboard, captain assigning positions, notebooks open",
+      "coaching_moment": "A good captain puts people where they'll succeed, not where they want to be.",
+      "time_limit_seconds": null,
+      "timer_narrative": null,
+      "choices": [
+        {
+          "id": "r2_a",
+          "label": "Let team members choose their own positions",
+          "description": "They know their strengths best. Let them discuss and decide together.",
+          "consequence_hint": "Democratic and empowering, but what if two people want the same slot? Conflict is likely.",
+          "delta": {
+            "team_morale": 10,
+            "preparation": -3,
+            "confidence": 5,
+            "reputation": 0
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "memory_tags": [
+            "democratic_leader"
+          ],
+          "events": [
+            {
+              "description": "Two team members want the rebuttal slot. A tense 20-minute argument follows. You have to intervene anyway.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r2_b",
+          "label": "Assign based on skill analysis",
+          "description": "You've watched everyone in tryouts. Assign positions based on objective assessment of each person's strengths.",
+          "consequence_hint": "Efficient and strategic, but team members may feel you're being controlling",
+          "delta": {
+            "preparation": 10,
+            "confidence": 5,
+            "team_morale": -3,
+            "reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "memory_tags": [
+            "strategic_leader"
+          ],
+          "events": [
+            {
+              "description": "The team accepts your reasoning. One person looks unhappy but nods. Preparation begins immediately.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r2_c",
+          "label": "Run a mock debate first",
+          "description": "Do a full practice round where everyone tries each position. Let performance decide assignments.",
+          "consequence_hint": "Fair and evidence-based, but it takes an entire day and the championship is in 5 days",
+          "delta": {
+            "preparation": 8,
+            "team_morale": 8,
+            "confidence": 3,
+            "reputation": 0
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "memory_tags": [
+            "evidence_based"
+          ],
+          "events": [
+            {
+              "description": "The mock debate reveals surprising results. One person is much better at rebuttal than expected.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r2_b",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r3",
+      "round_number": 3,
+      "title": "The Cheating Accusation",
+      "situation": "{player_name}, during practice, Ananya finds that the team from City Model School has posted their entire debate strategy on a private blog — someone left it unlisted but not password-protected. Your team could read it and prepare counter-arguments perfectly. Ravi says, 'It's their mistake. We'd be stupid not to use it.' Ananya says, 'That feels like cheating.'",
+      "story": "The information is there. Using it would give you a massive advantage. Nobody would ever know.",
+      "image_prompt": "Indian debate team looking at laptop screen with rival team's strategy, ethical dilemma visible in their expressions",
+      "coaching_moment": "The line between competitive intelligence and cheating is thinner than most people admit — but it exists, and it matters.",
+      "time_limit_seconds": null,
+      "timer_narrative": null,
+      "choices": [
+        {
+          "id": "r3_a",
+          "label": "Don't read it — prepare on your own merit",
+          "description": "Close the blog. Prepare your arguments from scratch. Win or lose, it'll be real.",
+          "consequence_hint": "Ethical and principled, but your team might be underprepared compared to others who found the same blog",
+          "delta": {
+            "reputation": 12,
+            "confidence": -3,
+            "preparation": -3,
+            "team_morale": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "memory_tags": [
+            "chose_ethics"
+          ],
+          "events": [
+            {
+              "description": "Ravi grumbles. Ananya says, 'I respect this decision.' You prepare knowing your arguments are genuinely yours.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r3_b",
+          "label": "Read it and use it",
+          "description": "It's public information, even if accidentally. They made the mistake. Competitive advantage is competitive advantage.",
+          "consequence_hint": "You'll be extremely well-prepared against this team, but if anyone finds out, your reputation is destroyed",
+          "delta": {
+            "preparation": 12,
+            "reputation": -8,
+            "confidence": 8,
+            "team_morale": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "memory_tags": [
+            "used_advantage"
+          ],
+          "events": [
+            {
+              "description": "Your team studies every point. You prepare devastating counter-arguments. Ananya looks uncomfortable throughout.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r3_c",
+          "label": "Tell City Model School their blog is visible",
+          "description": "Email them and let them know. You lose the advantage but earn respect — and they owe you one.",
+          "consequence_hint": "Generous and builds inter-school goodwill, but your team might feel you gave away their edge",
+          "delta": {
+            "reputation": 15,
+            "team_morale": -5,
+            "preparation": 0,
+            "confidence": 0
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "memory_tags": [
+            "helped_rival"
+          ],
+          "events": [
+            {
+              "description": "City Model School's captain sends a grateful message: 'Thank you. That was really decent of you.' Ravi says, 'We just helped our competition.'",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r3_b",
+        "reason": "Calculated risk-taking is what separates growth-oriented leaders from status-quo managers."
+      }
+    },
+    {
+      "id": "r4",
+      "round_number": 4,
+      "title": "Stage Fright Emergency",
+      "situation": "Two hours before the first debate round, {player_name}, your most prepared team member (the one with all the research and facts) is in the bathroom, hyperventilating. 'I can't do this. Everyone will be watching. I'll forget everything. Please don't make me go out there.' The team is panicking. There's no substitute.",
+      "story": "Your best-prepared debater might not be able to perform. The clock is ticking.",
+      "image_prompt": "Indian student panicking in hallway before debate, team captain talking to them calmly, trophy and stage visible in background",
+      "coaching_moment": "Supporting someone through anxiety isn't about minimizing their fear — it's about helping them find the courage underneath it.",
+      "time_limit_seconds": null,
+      "timer_narrative": null,
+      "conditional_next": [
+        {
+          "if_memory_tag": "aggressive_style",
+          "goto_round": "r5_aggressive"
+        },
+        {
+          "default": "r5_measured"
+        }
+      ],
+      "choices": [
+        {
+          "id": "r4_a",
+          "label": "Sit with them, breathe together, talk them through it",
+          "description": "Cancel the last practice session. Spend 30 minutes helping them calm down. Use breathing techniques. Remind them of their preparation.",
+          "consequence_hint": "This might work and you save your strongest debater, but you lose 30 minutes of final prep for the whole team",
+          "delta": {
+            "team_morale": 10,
+            "confidence": 8,
+            "preparation": -5,
+            "reputation": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "memory_tags": [
+            "measured_style"
+          ],
+          "events": [
+            {
+              "description": "After 20 minutes, their breathing steadies. 'Okay. I can do this. Just don't leave my side until we go on.' They walk to the stage.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r4_b",
+          "label": "Restructure — give their slot to someone else",
+          "description": "Quickly redistribute their arguments to other team members. Let them sit in the audience and recover.",
+          "consequence_hint": "The team adapts, but the anxious member feels they've failed and the replacement is underprepared",
+          "delta": {
+            "preparation": -8,
+            "team_morale": -5,
+            "confidence": -5,
+            "reputation": 0
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "memory_tags": [
+            "aggressive_style"
+          ],
+          "events": [
+            {
+              "description": "The replacement fumbles through unfamiliar material. The team loses the first round. The original debater cries in the audience.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r4_c",
+          "label": "Give them a smaller, less visible role",
+          "description": "Move them from first speaker to timekeeper. Tell them they're still part of the team but don't have to speak today.",
+          "consequence_hint": "Compassionate compromise, but they'll feel sidelined and you still need someone to fill their speaking slot",
+          "delta": {
+            "team_morale": 3,
+            "confidence": -3,
+            "preparation": -3,
+            "reputation": 0
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "memory_tags": [
+            "measured_style"
+          ],
+          "events": [
+            {
+              "description": "They accept quietly. They hold the timer with shaking hands. Watching from the side, they whisper rebuttals that would have been perfect.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r4_a",
+        "reason": "Goleman's EQ framework rates empathetic responses as the highest-impact leadership move."
+      }
+    },
+    {
+      "id": "r5_aggressive",
+      "round_number": 5,
+      "title": "Recovery After the Loss",
+      "situation": "You lost the first round, {player_name}. The team is demoralized. The replacement debater is blaming themselves. The audience saw your team struggle. You have 2 hours before Round 2. One team member says, 'We should just forfeit — we're embarrassing ourselves.' Another says, 'We need to come back twice as hard.'",
+      "story": "How a team responds to a loss defines whether they're truly competitive.",
+      "image_prompt": "Dejected Indian debate team in a school corridor, captain standing, trying to rally them, debate stage in background",
+      "coaching_moment": "Losing round one doesn't mean losing the championship — unless you let the loss define the rest of the tournament.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "Round 2 starts in 90 minutes...",
+      "choices": [
+        {
+          "id": "r5a_a",
+          "label": "Fiery motivational speech",
+          "description": "Gather the team. 'We didn't come here to play safe. We came to win. Round 1 was a warm-up. Round 2 is where we show who we really are.'",
+          "consequence_hint": "Energy and fire can turn things around, but forced motivation without a plan is just noise",
+          "delta": {
+            "confidence": 10,
+            "team_morale": 8,
+            "preparation": -3,
+            "reputation": 0
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "memory_tags": [
+            "rallied_with_fire"
+          ],
+          "events": [
+            {
+              "description": "The team's eyes light up. Kabir slams the table: 'Let's go!' Even the replacement debater stands taller.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r5a_b",
+          "label": "Analyze what went wrong, fix it",
+          "description": "Calmly review the Round 1 performance. Identify exactly where arguments fell apart. Rebuild the strategy for Round 2.",
+          "consequence_hint": "Analytical and effective, but the team might need emotional support before they can think clearly",
+          "delta": {
+            "preparation": 12,
+            "confidence": 3,
+            "team_morale": 3,
+            "reputation": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "memory_tags": [
+            "analyzed_loss"
+          ],
+          "events": [
+            {
+              "description": "You find three specific weak points. The team reworks them. By the time Round 2 starts, you have a sharper strategy.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r5a_b",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r5_measured",
+      "round_number": 5,
+      "title": "Negotiating with Organizers",
+      "situation": "Between rounds, {player_name}, you discover that the organizers have given your team only 5 minutes of prep time for the next motion instead of the mandated 15. Another school got 15 minutes because their coach is friends with the chief judge. Your coach says, 'This is unfair but I don't want to create a scene. It's your call.'",
+      "story": "Playing by the rules only works if the rules apply equally to everyone.",
+      "image_prompt": "Indian student debater approaching organizer table, looking determined but polite, stopwatch visible, other teams in background",
+      "coaching_moment": "Standing up for fairness — even when it's uncomfortable — is itself a form of debate.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "The next round starts in 20 minutes...",
+      "choices": [
+        {
+          "id": "r5m_a",
+          "label": "Formally raise the issue with organizers",
+          "description": "Approach the chief organizer politely but firmly. Show the rules document. Request equal time.",
+          "consequence_hint": "Standing up for fairness might earn equal time, or it might mark you as 'difficult'",
+          "delta": {
+            "reputation": 8,
+            "confidence": 8,
+            "team_morale": 5,
+            "preparation": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "memory_tags": [
+            "stood_up_for_fairness"
+          ],
+          "events": [
+            {
+              "description": "The organizer looks embarrassed. They grant you 15 minutes. The other school's coach glares at you.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r5m_b",
+          "label": "Use the 5 minutes and don't complain",
+          "description": "Great debaters prepare under any conditions. Show you can perform even with a disadvantage.",
+          "consequence_hint": "Noble but impractical — 5 minutes vs 15 is a massive disadvantage that willpower can't fully overcome",
+          "delta": {
+            "team_morale": -5,
+            "preparation": -8,
+            "confidence": 3,
+            "reputation": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "memory_tags": [
+            "accepted_unfairness"
+          ],
+          "events": [
+            {
+              "description": "Your team scrambles. The preparation is thin. You go on stage knowing you're underprepared.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r5m_a",
+        "reason": "Resilience research shows that processing setbacks openly builds stronger teams."
+      }
+    },
+    {
+      "id": "r6",
+      "round_number": 6,
+      "title": "Team Conflict Over Strategy",
+      "situation": "Before the semi-final, {player_name}, your team splits on strategy. One faction wants to go aggressive — 'Attack their facts, challenge their sources, dominate the floor.' The other wants measured persuasion — 'Win the judges with logic and composure. Aggression turns judges off.' Both approaches have won championships. The team is tense.",
+      "story": "Strategic disagreements can either strengthen a team or break it apart.",
+      "image_prompt": "Indian debate team split into two groups, passionate discussion, whiteboard with strategy notes, captain in the middle",
+      "coaching_moment": "When your team disagrees on strategy, the captain's job isn't to pick a side — it's to find the strategy that uses everyone's strengths.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "Semi-final starts in one hour...",
+      "choices": [
+        {
+          "id": "r6_a",
+          "label": "Aggressive strategy",
+          "description": "Go on the attack. Challenge every claim. Dominate the floor time. Win by overwhelming the opponent.",
+          "consequence_hint": "High risk, high reward — judges either love it or penalize it. The measured-approach team members will feel overruled.",
+          "delta": {
+            "confidence": 10,
+            "reputation": -3,
+            "preparation": 3,
+            "team_morale": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "memory_tags": [
+            "chose_aggressive"
+          ],
+          "events": [
+            {
+              "description": "The aggressive speakers are fired up. The others look nervous. 'I hope this works,' one whispers.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r6_b",
+          "label": "Measured, logical strategy",
+          "description": "Stay calm, present airtight arguments, let the opponent make mistakes. Win on substance, not style.",
+          "consequence_hint": "Safe and respectable, but if the opponent is charismatic, your team might look boring by comparison",
+          "delta": {
+            "preparation": 10,
+            "reputation": 8,
+            "confidence": 3,
+            "team_morale": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "memory_tags": [
+            "chose_measured"
+          ],
+          "events": [
+            {
+              "description": "The research-focused members feel confident. The charismatic speakers feel held back.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r6_c",
+          "label": "Hybrid — assign styles by speaker",
+          "description": "Let the charismatic speaker be aggressive. Let the researcher be measured. Use both approaches strategically.",
+          "consequence_hint": "Creative use of each person's strength, but a mixed style can feel inconsistent to judges",
+          "delta": {
+            "team_morale": 10,
+            "confidence": 5,
+            "preparation": 5,
+            "reputation": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "memory_tags": [
+            "chose_hybrid"
+          ],
+          "events": [
+            {
+              "description": "Each person feels they're playing to their strength. The strategy meeting ends with everyone actually smiling.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r6_b",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r7",
+      "round_number": 7,
+      "title": "The Debate Performance",
+      "situation": "It's the final, {player_name}. Motion: 'This house believes that grades should be abolished in schools.' You're opposing. The other team — from St. Xavier's — is polished, experienced, and has won this tournament twice. During the debate, their second speaker makes a factually incorrect claim: 'Finland has abolished all grading and their education outcomes doubled.' You know this isn't true — Finland reduced grading but didn't abolish it, and outcomes improved by 15%, not doubled.",
+      "story": "You can catch them in a lie. But how you do it matters.",
+      "image_prompt": "Indian student at debate podium in finals, rival team visible, judges watching closely, tension in the room",
+      "coaching_moment": "Catching an opponent's mistake is powerful — but how you expose it reveals whether you're a debater or a bully.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "You have 30 seconds before your rebuttal window closes...",
+      "choices": [
+        {
+          "id": "r7_a",
+          "label": "Correct the fact calmly and precisely",
+          "description": "'The honourable speaker cited Finland abolishing grades — Finland actually reduced grading, not abolished it, and outcomes improved by 15%. We ask this team to be more careful with their facts.'",
+          "consequence_hint": "Devastating but respectful — judges reward precision. The opponent looks caught.",
+          "delta": {
+            "reputation": 12,
+            "confidence": 10,
+            "preparation": 5,
+            "team_morale": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "memory_tags": [
+            "precise_correction"
+          ],
+          "events": [
+            {
+              "description": "The judges lean forward. The St. Xavier's speaker goes pale. Your team sits up straighter.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r7_b",
+          "label": "Mock the error publicly",
+          "description": "'If the opposing team is doubling Finland's numbers, one wonders what else they've doubled in their arguments today.' Audience laughs.",
+          "consequence_hint": "The audience loves it, but judges may see it as ad hominem and dock points for sportsmanship",
+          "delta": {
+            "confidence": 8,
+            "reputation": -5,
+            "team_morale": 5,
+            "preparation": 0
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "memory_tags": [
+            "mocked_opponent"
+          ],
+          "events": [
+            {
+              "description": "The audience laughs. The chief judge writes something down with a frown. The St. Xavier's team looks angry.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r7_c",
+          "label": "Note it but focus on your own argument",
+          "description": "Briefly mention the factual error, then spend your time strengthening your own case instead of attacking theirs.",
+          "consequence_hint": "Shows confidence in your own arguments, but you miss a chance to seriously damage their credibility",
+          "delta": {
+            "preparation": 8,
+            "reputation": 5,
+            "confidence": 3,
+            "team_morale": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "memory_tags": [
+            "focused_own_case"
+          ],
+          "events": [
+            {
+              "description": "Your argument is airtight. The judges nod. But the opponent recovers from their mistake because you didn't press it.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r7_a",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r8",
+      "round_number": 8,
+      "title": "Post-Debate Reflection",
+      "situation": "The tournament is over, {player_name}. Whether you won or lost, the team is sitting in the bus going home. It's quiet. The team member who had stage fright says, 'I'm sorry I almost let you all down.' Kabir says, 'We should have been more aggressive.' Ananya says, 'I think we did our best.' Everyone is looking at you for the final word.",
+      "story": "How a captain reflects on the journey — not just the result — defines the team's memory of this experience.",
+      "image_prompt": "Indian students sitting in school bus after debate tournament, tired but thoughtful, captain standing in aisle, evening light through windows",
+      "coaching_moment": "The best leaders don't just celebrate wins or mourn losses — they help their team learn from the experience and grow together.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "The bus ride is ending soon — this is your last moment as a team at this tournament...",
+      "choices": [
+        {
+          "id": "r8_a",
+          "label": "Focus on what everyone learned",
+          "description": "'Win or lose, we came here as individuals and we're leaving as a team. Every one of you was braver today than you were a week ago.'",
+          "consequence_hint": "This builds lasting team bonds and makes people want to come back for next year",
+          "delta": {
+            "team_morale": 12,
+            "confidence": 8,
+            "reputation": 5,
+            "preparation": 0
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "memory_tags": [
+            "growth_reflection"
+          ],
+          "events": [
+            {
+              "description": "The bus goes quiet. Then the team member with stage fright smiles: 'Can I go first speaker next time?' Everyone laughs.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r8_b",
+          "label": "Analyze what to improve for next time",
+          "description": "'Here's what worked and here's what didn't. Let's talk about each round — I want us to be better next year.'",
+          "consequence_hint": "Productive and forward-looking, but people might want emotional closure before analysis",
+          "delta": {
+            "preparation": 10,
+            "reputation": 5,
+            "team_morale": 3,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "memory_tags": [
+            "analytical_reflection"
+          ],
+          "events": [
+            {
+              "description": "The team pulls out notebooks. By the time you reach school, you have a plan for next year's training.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r8_c",
+          "label": "Celebrate the effort, save analysis for later",
+          "description": "'Tonight we eat ice cream. Analysis starts Monday. For now — we showed up, we fought, and I'm proud of us.'",
+          "consequence_hint": "Great for morale and team bonding, but the lessons from today might fade by Monday",
+          "delta": {
+            "team_morale": 15,
+            "confidence": 5,
+            "preparation": -3,
+            "reputation": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "memory_tags": [
+            "celebrated_first"
+          ],
+          "events": [
+            {
+              "description": "The team stops for ice cream on the way back. Stories and laughter fill the bus. Ananya says, 'This is my favourite team memory.'",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r8_a",
+        "reason": "Goleman's EQ framework rates empathetic responses as the highest-impact leadership move."
+      }
+    }
+  ],
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.12,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.14,
+    "resilience": 0.16,
+    "empathy": 0.16,
+    "ethical_reasoning": 0.12
+  },
+  "coaching_moment": "Leading a team isn't about having all the answers — it's about creating an environment where everyone can bring their best, especially under pressure.",
+  "tags": [
+    "debate",
+    "team-leadership",
+    "communication",
+    "competition",
+    "ethics",
+    "stage-fright",
+    "strategy"
+  ],
+  "target_age": "12-18",
+  "nep_stage": "middle_school",
+  "nep_competencies": [
+    "communication",
+    "critical-thinking",
+    "social-emotional-learning",
+    "values-citizenship"
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          3
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          4,
+          6
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          7,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 4,
+      "title": "Checkpoint 1: The Debate Captain Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 4 rounds of The Debate Captain. Focus on the core principles and how they connect to real-world applications."
+    }
+  ],
+  "reflection_prompt": "Which decision in this run shifted your outcome the most? What signal told you it was the right call?"
+}

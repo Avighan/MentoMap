@@ -1,0 +1,1655 @@
+{
+  "game_id": "the-citizenship-test",
+  "title": "The Citizenship Test: Clean Up Mohalla",
+  "game_type": "story_branching",
+  "visible": true,
+  "description": "Your neighbourhood is falling apart — broken roads, no garbage collection, a corrupt ward officer. Armed with civic knowledge, community spirit, and your phone camera, can you clean up the mohalla and prove that teenagers can change the world?",
+  "theme": "Active citizenship and community organizing",
+  "difficulty": "intermediate",
+  "duration_minutes": 45,
+  "target_audience": "students",
+  "icon": "🏘️",
+  "cover_image_prompt": "A 14-year-old Indian girl with a clipboard and phone camera standing in a messy neighbourhood with broken roads and overflowing garbage, determined expression, community members behind her, watercolor illustration, age 10-18 friendly",
+  "learning_objectives": [
+    "Understand civic rights and responsibilities in a democracy",
+    "Learn practical tools for community organizing: RTI, petitions, media",
+    "Practice building diverse coalitions across age, class, and interest groups",
+    "Develop resilience when facing institutional corruption and bureaucratic obstacles",
+    "Explore how individual action can spark collective change"
+  ],
+  "learning_concept": "Citizenship is not a test you pass once — it is a daily practice of caring about your community and having the courage to improve it.",
+  "psychological_framework": "Community Organizing (Alinsky) — building power through relationships and shared interests; Civic Agency — the belief and capacity that ordinary people can create meaningful change",
+  "ai_image_config": {
+    "style": "vibrant watercolor illustration, Indian neighbourhood setting, community activism, warm tones, age 10-18 friendly",
+    "provider": "dalle",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/story_branching"
+  },
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "The Idea",
+      "icon": "💡",
+      "teaser": "Zara sees the mess and decides: enough is enough.",
+      "always_unlocked": true,
+      "color": "#f59e0b"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "RTI Application",
+      "icon": "📋",
+      "teaser": "The Right to Information reveals what the ward office has been hiding.",
+      "unlocks_after": "ch1",
+      "color": "#10b981"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "Door to Door",
+      "icon": "🚪",
+      "teaser": "Not everyone cares. Not everyone trusts. {player_name} must convince them.",
+      "unlocks_after": "ch2",
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch4",
+      "number": 4,
+      "title": "The Corrupt Official",
+      "icon": "🏛️",
+      "teaser": "Uncle Ramesh offers a deal. The easy way out is tempting.",
+      "unlocks_after": "ch3",
+      "color": "#ec4899"
+    },
+    {
+      "chapter_id": "ch5",
+      "number": 5,
+      "title": "Media Attention",
+      "icon": "📱",
+      "teaser": "Photographer Priya's images go viral. The pressure builds.",
+      "unlocks_after": "ch4",
+      "color": "#ef4444"
+    },
+    {
+      "chapter_id": "ch6",
+      "number": 6,
+      "title": "Backlash",
+      "icon": "⚡",
+      "teaser": "The corrupt fight back. Threats and intimidation test the movement.",
+      "unlocks_after": "ch5",
+      "color": "#8b5cf6"
+    },
+    {
+      "chapter_id": "ch7",
+      "number": 7,
+      "title": "Community Meeting",
+      "icon": "🤝",
+      "teaser": "The whole mohalla gathers. Unity or division — the vote decides.",
+      "unlocks_after": "ch6",
+      "color": "#0ea5e9"
+    },
+    {
+      "chapter_id": "ch8",
+      "number": 8,
+      "title": "The Cleanup Drive",
+      "icon": "🧹",
+      "teaser": "Words become action. The biggest community cleanup in memory.",
+      "unlocks_after": "ch7",
+      "color": "#f97316"
+    },
+    {
+      "chapter_id": "ch9",
+      "number": 9,
+      "title": "Political Interference",
+      "icon": "🏴",
+      "teaser": "MLA's secretary wants to take credit. Do you let him?",
+      "unlocks_after": "ch8",
+      "color": "#14b8a6"
+    },
+    {
+      "chapter_id": "ch10",
+      "number": 10,
+      "title": "Sustainable Change",
+      "icon": "🌱",
+      "teaser": "The mohalla is clean. But can it stay that way without {player_name}?",
+      "unlocks_after": "ch9",
+      "color": "#f59e0b"
+    }
+  ],
+  "initial_state": {
+    "civic_knowledge": {
+      "value": 30,
+      "label": "Civic Knowledge",
+      "icon": "📚",
+      "min": 0,
+      "max": 100
+    },
+    "community_support": {
+      "value": 40,
+      "label": "Community Support",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "courage": {
+      "value": 45,
+      "label": "Courage",
+      "icon": "🦁",
+      "min": 0,
+      "max": 100
+    },
+    "media_attention": {
+      "value": 20,
+      "label": "Media Attention",
+      "icon": "📱",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "title": "The Broken Road",
+        "narrative": "The pothole had been there for three months. It started small — just a crack in the asphalt near the community temple. But monsoon rains turned it into a crater wide enough to swallow a bicycle wheel. Last Tuesday, old Mr. Verma fell into it and broke his wrist.\n\nZara walked past it every day on her way to school. She walked past the overflowing garbage bin that hadn't been emptied in two weeks. Past the broken streetlight that made the lane dangerous after dark. Past the drainage pipe that spilled sewage onto the road every evening.\n\n{player_name} had always assumed that someone else would fix these things. The municipal corporation. The ward officer. The adults. But nobody was fixing anything. And Mr. Verma's broken wrist was the last straw.\n\nDev, her best friend, saw her staring at the pothole. 'You have that look,' he said. 'The look that means you are about to do something everyone says is impossible.'",
+        "image_prompt": "A 14-year-old Indian girl staring at a large pothole in a neighbourhood road, broken streetlight and overflowing garbage visible, her friend watching her with a knowing smile, run-down but vibrant neighbourhood setting, watercolor illustration",
+        "coaching_moment": "Change begins when one person decides that 'someone should do something' means 'I should do something.'",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Document everything — photos, dates, impact",
+            "description": "Zara pulls out her phone and starts a systematic photo record of every civic problem in the mohalla.",
+            "delta": {
+              "civic_knowledge": 12,
+              "courage": 5,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Evidence is the foundation of any civic campaign — what you can show is harder to deny.",
+            "memory_tags": [
+              "documented_problems"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Talk to the neighbours — find out who else is frustrated",
+            "description": "Zara starts knocking on doors, asking families what civic problems affect them most.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "civic_knowledge": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Understanding community pain points reveals where the energy for change already exists.",
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_c",
+            "label": "Go straight to the ward office — demand action",
+            "description": "Zara marches to the ward office with Dev, determined to confront the officials responsible for the neglect.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 3,
+              "community_support": -5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Direct confrontation shows courage — but without preparation, you may be easily dismissed.",
+            "memory_tags": [
+              "confronted_early"
+            ],
+            "next_scene": "ch1_s2"
+          }
+        ],
+        "transitions_to_gameplay": true
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "The Ward Office",
+        "narrative": "The ward office was a dingy building with peeling paint and a ceiling fan that creaked ominously. Uncle Ramesh — officially Mr. Ramesh Tiwari, Junior Ward Officer — sat behind a desk covered in files that looked like they hadn't been opened since the last election.\n\n'Ah, you are here about the pothole,' he said before Zara could speak. 'Yes, yes, we know about it. It is in the plan for next quarter. Budget constraints, you understand.'\n\nNext quarter. That was three months away. Zara looked at the 'Citizen Grievance Register' on the counter. It had entries going back two years — the same complaints repeated every few months, each marked 'Under Process.'\n\n{player_name} realized something: the system was not broken. It was working exactly as Uncle Ramesh wanted it to — slowly enough that nothing changed and nobody was held accountable.",
+        "image_prompt": "A teenager at a dingy municipal ward office, a bureaucrat behind a desk of unopened files, a grievance register visible on the counter, ceiling fan creaking, the frustration of institutional apathy, watercolor illustration",
+        "coaching_moment": "Understanding how a broken system works is the first step to fixing it — you cannot change what you do not understand.",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Ask to see the ward budget allocation for this area",
+            "description": "Zara requests the official budget documents, wanting to see where the money meant for infrastructure actually went.",
+            "delta": {
+              "civic_knowledge": 15,
+              "courage": 5,
+              "community_support": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Budget data reveals priorities — and exposes gaps between promises and spending.",
+            "next_scene": "ch1_s3"
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Register a formal complaint — create a paper trail",
+            "description": "Zara insists on filing an official complaint in the register, getting a stamped receipt for every issue.",
+            "delta": {
+              "civic_knowledge": 10,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Paper trails create accountability — documented complaints are harder to ignore than verbal ones.",
+            "memory_tags": [
+              "filed_complaint"
+            ],
+            "next_scene": "ch1_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "title": "The Decision to Fight",
+        "narrative": "Walking home from the ward office, Zara's mind was racing. The system was designed to exhaust citizens — make them file forms, wait in queues, get lost in bureaucracy, and eventually give up.\n\nBut Zara had learned something useful in school: citizens have rights. The Right to Information Act. The right to attend gram sabha meetings. The right to demand accountability from elected representatives.\n\nDev said: 'So what is the plan?' Zara pulled out her notebook. 'First, we learn the rules. Then we use them. Then we organize the neighbourhood. Then we make enough noise that ignoring us is more trouble than fixing the problems.'\n\nAunty Fatima, who was watering her plants on the balcony above, overheard. 'Beta, I have been complaining about that garbage for five years. Nobody listens.' Zara looked up: 'Then let us make them listen, Aunty.'\n\n{player_name} went home and started researching. The fight for the mohalla had begun.",
+        "image_prompt": "A teenager walking home from a government office with determination, writing plans in a notebook, a woman on a balcony overhead listening with interest, neighbourhood setting at evening, watercolor illustration, the spark of civic action",
+        "coaching_moment": "Every movement starts with one person who refuses to accept that 'nothing can be done' — and then finds the tools to prove otherwise.",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "File an RTI application — demand the ward's budget and spending data",
+            "description": "Zara drafts her first RTI application, requesting complete budget allocation and expenditure reports for the ward.",
+            "delta": {
+              "civic_knowledge": 15,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "RTI is the most powerful tool a citizen has — it forces transparency on institutions that prefer to operate in the dark.",
+            "memory_tags": [
+              "filed_rti"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "Start a neighbourhood survey — map every problem systematically",
+            "description": "Zara creates a door-to-door survey, documenting every civic issue with photos, GPS locations, and resident testimonials.",
+            "delta": {
+              "community_support": 12,
+              "civic_knowledge": 10,
+              "courage": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "A comprehensive survey gives you data that no official can dismiss as anecdotal.",
+            "memory_tags": [
+              "surveyed_mohalla"
+            ],
+            "next_chapter": "ch2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "The RTI Response",
+        "narrative": "The RTI response arrived in fifteen days — as required by law. What it revealed was explosive. The ward had received Rs. 45 lakh for infrastructure maintenance in the last year. Of this, Rs. 38 lakh was marked as 'spent.' But the roads were broken, the lights were off, and the garbage was uncollected.\n\nWhere did thirty-eight lakh rupees go? The documents showed payments to contractors for work that was never done — ghost repairs, phantom maintenance, imaginary equipment purchases.\n\n{player_name} held the papers with trembling hands. This was not just negligence. It was corruption. Uncle Ramesh and his network were stealing the neighbourhood's money.\n\nDev looked at the papers and said: 'This is dangerous, Zara. These people have power. They will not be happy that a fourteen-year-old girl is looking at their books.'",
+        "image_prompt": "A teenage girl holding government documents with highlighted discrepancies, her friend looking worried, papers spread on a table with numbers circled in red, watercolor illustration, the discovery of corruption",
+        "coaching_moment": "When you discover corruption, the question is not just what you know — it is what you are willing to do about it.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Take the strategic path — plan carefully before acting",
+            "description": "Zara analyzes the situation and develops a careful strategy before making any moves.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Careful strategy maximizes impact — but requires patience when emotions run high.",
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Take the bold path — act decisively and adjust along the way",
+            "description": "Zara trusts her instincts and takes immediate action, adapting as she goes.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Bold action creates momentum — but can lead to unintended consequences.",
+            "next_scene": "ch2_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "Building the Case",
+        "narrative": "Zara and Dev spent three days cross-referencing the RTI data with the reality on the ground. For every 'completed' repair in the documents, they took photos showing the road still broken. For every 'purchased' streetlight, they counted the ones still dark.\n\nAunty Fatima, who turned out to be a retired school principal with a sharp mind for numbers, helped them create a comparison chart: 'Official Claims vs. Reality.'\n\nThe chart was devastating. Of twenty-three claimed repairs, only three showed any evidence of work being done. Almost thirty-five lakh rupees — the neighbourhood's money — had disappeared.\n\n{player_name} now had evidence that could expose a corrupt system. But evidence without allies is just paper. She needed the community behind her before taking this further.",
+        "image_prompt": "A teenager, an elderly woman, and a boy creating a comparison chart on a whiteboard — 'Claims vs Reality' — with photos pinned beside official data, the evidence building, watercolor illustration",
+        "coaching_moment": "Data becomes power only when it is organized, verified, and shared — raw information alone changes nothing.",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Focus on building community strength first",
+            "description": "Zara prioritizes strengthening the community coalition before engaging with external forces.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Strong communities withstand any external pressure — but building takes time.",
+            "next_scene": "ch2_s3"
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Leverage the moment — use the current momentum",
+            "description": "Zara capitalizes on the energy and attention of the moment to push for maximum impact.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Momentum is a powerful force — but it dissipates quickly if not channeled into structure.",
+            "next_scene": "ch2_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "title": "The Choice of Path",
+        "narrative": "Zara had to decide how to use what she had found. Three paths lay before her:\n\nPath 1: Take the evidence directly to the MLA's office — political pressure from above could force the ward officer out.\nPath 2: Build community support first, then present the evidence publicly — democratic pressure from below.\nPath 3: Give the evidence to Photographer Priya for a media exposé — public pressure from outside.\n\nEach path had risks. Politicians might bury it. The community might be too afraid. Media might sensationalize it and move on.\n\n{player_name} looked at her comparison chart and asked herself: what approach gives the mohalla the best chance of lasting change — not just one fix, but a permanent improvement?",
+        "image_prompt": "A teenage girl at a crossroads — literally and metaphorically — three paths visible, each with a symbol (government building, community gathering, media camera), watercolor illustration, strategic decision",
+        "coaching_moment": "How you use evidence matters as much as the evidence itself — the right channel at the right time creates maximum impact.",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "Consolidate gains and prepare for the next phase",
+            "description": "Zara ensures the current progress is locked in before moving forward to the next challenge.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Consolidation prevents backsliding — secure what you have before reaching for more.",
+            "next_chapter": "ch3"
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "Push forward immediately — maintain the pressure",
+            "description": "Zara keeps the campaign's momentum going, knowing that pausing gives opponents time to regroup.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Sustained pressure wears down opposition — but it also wears down your own team.",
+            "next_chapter": "ch3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "The Skeptics",
+        "narrative": "Zara's door-to-door campaign hit immediate resistance. Some neighbours were supportive — Aunty Fatima had already recruited five women from her morning walk group. But others were skeptical.\n\nMr. Kapoor, the retired engineer: 'Beta, I have seen twenty campaigns like this. They all fizzle out. The politicians promise, nothing changes, everyone goes home.'\n\nMrs. Fernandes, the teacher: 'I agree things need to change. But I cannot be seen opposing the ward officer. My husband's shop licence renewal is pending.'\n\nDev's own father: 'Stay out of trouble. These government people can make life difficult for families who speak up.'\n\n{player_name} realized that the biggest obstacle was not corruption — it was the community's learned helplessness. Years of disappointment had taught them that fighting was futile.",
+        "image_prompt": "A teenage girl going door to door in an Indian neighbourhood, some doors open and welcoming, some closed and wary, a mix of support and skepticism on different faces, watercolor illustration",
+        "coaching_moment": "The hardest part of organizing is not fighting the system — it is convincing people who have been disappointed before that this time can be different.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Take the strategic path — plan carefully before acting",
+            "description": "Zara analyzes the situation and develops a careful strategy before making any moves.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Careful strategy maximizes impact — but requires patience when emotions run high.",
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Take the bold path — act decisively and adjust along the way",
+            "description": "Zara trusts her instincts and takes immediate action, adapting as she goes.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Bold action creates momentum — but can lead to unintended consequences.",
+            "next_scene": "ch3_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "The Breakthrough",
+        "narrative": "The breakthrough came from an unexpected source. Zara visited the local tea stall where the auto-rickshaw drivers gathered. She showed them the RTI data — specifically the claim that Rs. 3 lakh had been spent on 'road resurfacing near the auto stand.'\n\nThe drivers looked at the pothole-ridden road outside their stand and burst out laughing. 'Three lakh on THIS road? Show us where!' The laughter turned to anger. These were working men who damaged their vehicles on these roads daily.\n\nWithin an hour, twelve auto drivers had signed the petition. Their informal network spread the word faster than any WhatsApp group — because everyone rides an auto, and every driver was now talking about the stolen road money.\n\n{player_name} learned something valuable: find the people who feel the problem most acutely, and they become your most passionate advocates.",
+        "image_prompt": "A teenage girl talking to a group of Indian auto-rickshaw drivers at a tea stall, showing them official documents, their expressions changing from curiosity to outrage, a potholed road visible behind them, watercolor illustration",
+        "coaching_moment": "The most effective allies are not always the obvious ones — find the people who live with the problem every day, and they will fight the hardest.",
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Focus on building community strength first",
+            "description": "Zara prioritizes strengthening the community coalition before engaging with external forces.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Strong communities withstand any external pressure — but building takes time.",
+            "next_scene": "ch3_s3"
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Leverage the moment — use the current momentum",
+            "description": "Zara capitalizes on the energy and attention of the moment to push for maximum impact.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Momentum is a powerful force — but it dissipates quickly if not channeled into structure.",
+            "next_scene": "ch3_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "title": "Growing Numbers",
+        "narrative": "The petition signatures grew: from the initial twelve auto drivers to forty neighbours, then a hundred, then two hundred. Aunty Fatima organized a women's group. Dev recruited school friends. Even Mr. Kapoor, the skeptical retired engineer, signed after reviewing the RTI data with his professional eye.\n\n'The numbers do not lie,' he said. 'Someone is stealing from all of us.'\n\nThe WhatsApp group had 150 members. The comparison chart had been photographed and shared hundreds of times. Photographer Priya had been documenting everything with her camera.\n\n{player_name} looked at the growing movement and felt a mix of pride and fear. Pride because the community was waking up. Fear because Uncle Ramesh would soon notice — and powerful people do not like being noticed for the wrong reasons.",
+        "image_prompt": "A growing stack of petition signatures, a WhatsApp group filling with messages, a photographer documenting the neighbourhood problems, the movement building momentum, watercolor illustration, community power growing",
+        "coaching_moment": "Movements grow when ordinary people share their evidence with each other — transparency creates collective courage.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "Consolidate gains and prepare for the next phase",
+            "description": "Zara ensures the current progress is locked in before moving forward to the next challenge.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Consolidation prevents backsliding — secure what you have before reaching for more.",
+            "next_chapter": "ch4"
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "Push forward immediately — maintain the pressure",
+            "description": "Zara keeps the campaign's momentum going, knowing that pausing gives opponents time to regroup.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Sustained pressure wears down opposition — but it also wears down your own team.",
+            "next_chapter": "ch4"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s1",
+        "chapter": "ch4",
+        "title": "Uncle Ramesh's Offer",
+        "narrative": "Uncle Ramesh came to Zara's house. Not to the ward office — to her home. He sat in her living room, drinking the chai her mother nervously served, and smiled the smile of a man who was used to getting his way.\n\n'Beta, I hear you are upset about some civic issues,' he said gently. 'Very admirable. Your parents must be proud of such an active citizen.' He paused. 'I can fast-track the pothole repair. And the streetlight. Done within a week. All you have to do is withdraw the petition and stop sharing those documents.'\n\nIt was not a threat. It was worse — it was a bribe disguised as helpfulness. Fix two problems in exchange for covering up thirty-five lakh worth of corruption.\n\n{player_name} felt her mother's anxious eyes on her. This was the moment where most campaigns died — when the power offered a quick fix to silence the noise.",
+        "image_prompt": "A middle-aged Indian bureaucrat sitting in a modest living room drinking chai, offering a deal to a teenage girl while her mother watches nervously, the tension between convenience and principle, watercolor illustration",
+        "coaching_moment": "When the system offers you a quick fix in exchange for your silence, that is not a solution — it is a purchase price.",
+        "choices": [
+          {
+            "id": "ch4_s1_a",
+            "label": "Take the strategic path — plan carefully before acting",
+            "description": "Zara analyzes the situation and develops a careful strategy before making any moves.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Careful strategy maximizes impact — but requires patience when emotions run high.",
+            "next_scene": "ch4_s2",
+            "memory_tags": [
+              "ch4s1_choice"
+            ]
+          },
+          {
+            "id": "ch4_s1_b",
+            "label": "Take the bold path — act decisively and adjust along the way",
+            "description": "Zara trusts her instincts and takes immediate action, adapting as she goes.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Bold action creates momentum — but can lead to unintended consequences.",
+            "next_scene": "ch4_s2",
+            "memory_tags": [
+              "ch4s1_choice"
+            ]
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch4_s2",
+        "chapter": "ch4",
+        "title": "The Decision",
+        "narrative": "After Uncle Ramesh left, Zara's mother was upset. 'Just let it go, beta. He offered to fix the problems. Why make enemies?'\n\nDev, who had been listening from the next room, disagreed: 'He is not fixing problems. He is buying silence. If you stop now, the corruption continues and nothing changes for anyone.'\n\nAunty Fatima called that evening: 'I heard Ramesh visited you. Remember — he came to YOUR house. That means he is scared. You have the power now, not him.'\n\n{player_name} lay awake that night, weighing the options. Accept the quick fix and avoid conflict. Or reject it and commit to a longer, harder, riskier fight for real change. Her mother's fear was real. Aunty Fatima's analysis was also real. Both were right in different ways.",
+        "image_prompt": "A teenage girl lying in bed staring at the ceiling, two thought bubbles — one showing a fixed road (quick fix), one showing community justice (real change), the weight of a moral decision, watercolor illustration",
+        "coaching_moment": "The easy path and the right path rarely overlap — and the people who love you most may urge you toward the easy one.",
+        "choices": [
+          {
+            "id": "ch4_s2_a",
+            "label": "Focus on building community strength first",
+            "description": "Zara prioritizes strengthening the community coalition before engaging with external forces.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Strong communities withstand any external pressure — but building takes time.",
+            "next_scene": "ch4_s3"
+          },
+          {
+            "id": "ch4_s2_b",
+            "label": "Leverage the moment — use the current momentum",
+            "description": "Zara capitalizes on the energy and attention of the moment to push for maximum impact.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Momentum is a powerful force — but it dissipates quickly if not channeled into structure.",
+            "next_scene": "ch4_s3"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch4_s3",
+        "chapter": "ch4",
+        "title": "Taking a Stand",
+        "narrative": "Zara wrote a reply to Uncle Ramesh's offer and posted it on the community WhatsApp group so everyone could see:\n\n'Thank you for your offer to fix the pothole and streetlight. We welcome any repairs — the community deserves them. However, these two repairs do not address the larger question: where did Rs. 35 lakh of our ward budget go? We will continue our campaign for full accountability and transparency. We invite you to a community meeting to discuss the ward budget publicly.'\n\nThe message was polite but unmistakable. It was also irreversible — two hundred people had read it within the hour.\n\nDev grinned. 'You just declared war. Politely.' Aunty Fatima sent a thumbs up emoji. Uncle Ramesh read the message and did not reply.\n\n{player_name} felt her heart racing. There was no going back now.",
+        "image_prompt": "A teenage girl composing a message on her phone with determination, the message visible on screen — polite but firm, her reflection showing resolve, WhatsApp notification sounds implied, watercolor illustration, taking a stand publicly",
+        "coaching_moment": "Public commitments create accountability in both directions — once you say it, you must back it up with action.",
+        "choices": [
+          {
+            "id": "ch4_s3_a",
+            "label": "Consolidate gains and prepare for the next phase",
+            "description": "Zara ensures the current progress is locked in before moving forward to the next challenge.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Consolidation prevents backsliding — secure what you have before reaching for more.",
+            "next_chapter": "ch5"
+          },
+          {
+            "id": "ch4_s3_b",
+            "label": "Push forward immediately — maintain the pressure",
+            "description": "Zara keeps the campaign's momentum going, knowing that pausing gives opponents time to regroup.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Sustained pressure wears down opposition — but it also wears down your own team.",
+            "next_chapter": "ch5"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch5_s1",
+        "chapter": "ch5",
+        "title": "Priya's Lens",
+        "narrative": "Photographer Priya had been quietly documenting the neighbourhood for weeks. She was twenty-two, a freelance photojournalist with a following on social media, and she saw a story worth telling.\n\nHer photo series — 'Chandpur Mohalla: Where Rs. 35 Lakh Disappeared' — featured side-by-side images: the official expenditure claims next to photos of the actual conditions. A road claimed as 'resurfaced' with a pothole big enough to bath in. A streetlight marked 'installed' that was clearly rusted and non-functional.\n\nShe posted the series on her Instagram. Within 24 hours: 5,000 shares. A local news channel picked it up. Then a national outlet.\n\n{player_name} watched the numbers climb on Priya's phone with a mixture of excitement and anxiety. Media attention was powerful — but it also meant Uncle Ramesh and his network could no longer pretend this was a small neighbourhood complaint.",
+        "image_prompt": "A young Indian woman photographer showing viral photos on her phone — the comparison images generating thousands of shares, a teenage girl watching the numbers climb, media vans arriving outside, watercolor illustration, going viral",
+        "coaching_moment": "Media attention amplifies a message beyond what any petition can achieve — but once the spotlight is on, everything you do is visible, including mistakes.",
+        "choices": [
+          {
+            "id": "ch5_s1_a",
+            "label": "Take the strategic path — plan carefully before acting",
+            "description": "Zara analyzes the situation and develops a careful strategy before making any moves.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Careful strategy maximizes impact — but requires patience when emotions run high.",
+            "next_scene": "ch5_s2"
+          },
+          {
+            "id": "ch5_s1_b",
+            "label": "Take the bold path — act decisively and adjust along the way",
+            "description": "Zara trusts her instincts and takes immediate action, adapting as she goes.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Bold action creates momentum — but can lead to unintended consequences.",
+            "next_scene": "ch5_s2"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch5_s2",
+        "chapter": "ch5",
+        "title": "The Interview",
+        "narrative": "A news channel wants to interview Zara. The producer says: 'We need a face for the story. A fourteen-year-old fighting corruption — that is a great angle.'\n\nZara is nervous. She has never been on camera. Dev helps her prepare talking points. Aunty Fatima coaches her: 'Speak slowly. Say what you know. Do not exaggerate. And always bring it back to the community — this is not about you, it is about everyone.'\n\nBut there is a risk. Putting her face on television makes her a target. Uncle Ramesh will know exactly who is behind the campaign. Her family could face pressure.\n\n{player_name} weighs the visibility against the vulnerability. Being the face of the campaign could accelerate change — or it could endanger everything she cares about.",
+        "image_prompt": "A teenage girl being coached for a TV interview by an elderly woman and a friend, notes and talking points on cards, a camera crew setting up outside, the tension between impact and exposure, watercolor illustration",
+        "coaching_moment": "Visibility is both a shield and a target — the more people see you, the harder it is to silence you, but the easier it is to attack you.",
+        "choices": [
+          {
+            "id": "ch5_s2_a",
+            "label": "Focus on building community strength first",
+            "description": "Zara prioritizes strengthening the community coalition before engaging with external forces.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Strong communities withstand any external pressure — but building takes time.",
+            "next_scene": "ch5_s3",
+            "memory_tags": [
+              "ch5s2_choice"
+            ]
+          },
+          {
+            "id": "ch5_s2_b",
+            "label": "Leverage the moment — use the current momentum",
+            "description": "Zara capitalizes on the energy and attention of the moment to push for maximum impact.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Momentum is a powerful force — but it dissipates quickly if not channeled into structure.",
+            "next_scene": "ch5_s3",
+            "memory_tags": [
+              "ch5s2_choice"
+            ]
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch5_s3",
+        "chapter": "ch5",
+        "title": "The Broadcast",
+        "narrative": "The interview airs. Zara is articulate, calm, and armed with data. The segment shows the RTI response, the comparison chart, the community petition. It is a damning portrait of institutional neglect and corruption.\n\nThe district collector sees it. The state government's anti-corruption cell sees it. And Uncle Ramesh sees it too.\n\nThe phone starts ringing. Community members are thrilled. Politicians are nervous. And a threatening message arrives on the family WhatsApp from an unknown number: 'Tell your daughter to stop making trouble. Some things are better left alone.'\n\n{player_name} stares at the threatening message. The fight has escalated. Media attention brought power, but it also brought danger. The question now is whether the community will hold together under pressure.",
+        "image_prompt": "A family watching a news broadcast of their daughter's interview, pride and worry on different faces, a phone showing a threatening message in the foreground, the dual nature of media exposure, watercolor illustration",
+        "coaching_moment": "Threats are a sign that your message is reaching the right people — but they are also a sign that you need allies who will stand with you.",
+        "choices": [
+          {
+            "id": "ch5_s3_a",
+            "label": "Consolidate gains and prepare for the next phase",
+            "description": "Zara ensures the current progress is locked in before moving forward to the next challenge.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Consolidation prevents backsliding — secure what you have before reaching for more.",
+            "next_chapter": "ch6"
+          },
+          {
+            "id": "ch5_s3_b",
+            "label": "Push forward immediately — maintain the pressure",
+            "description": "Zara keeps the campaign's momentum going, knowing that pausing gives opponents time to regroup.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Sustained pressure wears down opposition — but it also wears down your own team.",
+            "next_chapter": "ch6"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch6_s1",
+        "chapter": "ch6",
+        "title": "The Pressure",
+        "narrative": "The backlash comes fast. Mrs. Fernandes, the teacher whose husband's shop licence was pending, gets a call from the ward office: 'Your licence application has been... delayed. Processing issues.' The message is clear.\n\nTwo auto drivers report that they were stopped by police and given spurious traffic fines. An anonymous complaint is filed against Aunty Fatima's building for 'structural violations.'\n\nThe intimidation is surgical — targeting specific supporters to scare the rest.\n\n{player_name} watches the coalition wobble. Five petition signers ask for their names to be removed. Mrs. Fernandes tearfully says she cannot participate anymore. Even Dev's father tells him to step back.",
+        "image_prompt": "A worried neighbourhood — people receiving official notices, a woman tearfully withdrawing from the campaign, a teenage girl watching her coalition tested, the reality of fighting institutional power, watercolor illustration",
+        "coaching_moment": "Retaliation is designed to divide and conquer — the only defence is solidarity and making the retaliation itself evidence of corruption.",
+        "choices": [
+          {
+            "id": "ch6_s1_a",
+            "label": "Take the strategic path — plan carefully before acting",
+            "description": "Zara analyzes the situation and develops a careful strategy before making any moves.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Careful strategy maximizes impact — but requires patience when emotions run high.",
+            "next_scene": "ch6_s2"
+          },
+          {
+            "id": "ch6_s1_b",
+            "label": "Take the bold path — act decisively and adjust along the way",
+            "description": "Zara trusts her instincts and takes immediate action, adapting as she goes.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Bold action creates momentum — but can lead to unintended consequences.",
+            "next_scene": "ch6_s2"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch6_s2",
+        "chapter": "ch6",
+        "title": "The Response",
+        "narrative": "Zara calls an emergency meeting of the core group — Aunty Fatima, Dev, Priya, Mr. Kapoor, and the auto drivers' leader. The mood is grim.\n\nPriya says: 'Document every act of intimidation. Licence delays, false fines, building notices — these are not coincidences. They are evidence of retaliation. That is a story in itself.'\n\nMr. Kapoor adds: 'I have friends in the engineering department. The building notice against Fatima's house is baseless — I can get it challenged in a day.'\n\nAunty Fatima, who has been quiet, speaks last: 'I have faced bullies all my life. I was a school principal for thirty years. Do you think a man who steals from potholes scares me?'\n\n{player_name} feels the group steadying. Not everyone is brave enough to stay. But the core is strong.",
+        "image_prompt": "A small group of determined community members in an emergency meeting, strategizing their response to intimidation, a whiteboard with counter-strategies, the core team holding firm, watercolor illustration",
+        "coaching_moment": "When the pressure increases, the people who stay are the foundation of your movement — quality of commitment matters more than quantity.",
+        "choices": [
+          {
+            "id": "ch6_s2_a",
+            "label": "Focus on building community strength first",
+            "description": "Zara prioritizes strengthening the community coalition before engaging with external forces.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Strong communities withstand any external pressure — but building takes time.",
+            "next_scene": "ch6_s3"
+          },
+          {
+            "id": "ch6_s2_b",
+            "label": "Leverage the moment — use the current momentum",
+            "description": "Zara capitalizes on the energy and attention of the moment to push for maximum impact.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Momentum is a powerful force — but it dissipates quickly if not channeled into structure.",
+            "next_scene": "ch6_s3"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch6_s3",
+        "chapter": "ch6",
+        "title": "Fighting Back",
+        "narrative": "The counter-strategy works. Priya documents every act of retaliation and publishes a follow-up: 'After Exposing Corruption, Citizens Face Revenge.' The story generates even more outrage than the first one.\n\nThe district collector's office sends a notice to the ward: 'Address citizen grievances within 7 days or face departmental inquiry.'\n\nThe tide is turning. Uncle Ramesh cannot fight the community AND the media AND the district administration simultaneously.\n\n{player_name} sees an opening: the community meeting she proposed in her original reply to Uncle Ramesh could now happen with real institutional backing. The district office has asked the ward to engage with citizens publicly.",
+        "image_prompt": "A newspaper headline about retaliation against activists, a government notice demanding action, the pressure mounting on the corrupt official from multiple directions, watercolor illustration, the tide turning",
+        "coaching_moment": "When retaliation is documented and publicized, it backfires — what was meant to silence you amplifies your message instead.",
+        "choices": [
+          {
+            "id": "ch6_s3_a",
+            "label": "Consolidate gains and prepare for the next phase",
+            "description": "Zara ensures the current progress is locked in before moving forward to the next challenge.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Consolidation prevents backsliding — secure what you have before reaching for more.",
+            "next_chapter": "ch7"
+          },
+          {
+            "id": "ch6_s3_b",
+            "label": "Push forward immediately — maintain the pressure",
+            "description": "Zara keeps the campaign's momentum going, knowing that pausing gives opponents time to regroup.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Sustained pressure wears down opposition — but it also wears down your own team.",
+            "next_chapter": "ch7"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch7_s1",
+        "chapter": "ch7",
+        "title": "The Community Meeting",
+        "narrative": "The community hall is packed. Two hundred residents, plus the district collector's representative, plus three media cameras. Uncle Ramesh sits in the front row looking uncomfortable.\n\nZara opens with the comparison chart — claims versus reality. Mr. Kapoor provides technical verification. Aunty Fatima shares the women's testimonies. The auto drivers speak about daily road damage to their vehicles.\n\n{player_name} watches the community tell its own story — not through one voice, but through many. The electrician who was never hired for the streetlight contract. The contractor who was paid for work he never did. The grandmother who fell near the broken drain cover.\n\nThe evidence is overwhelming. The district representative takes notes furiously.",
+        "image_prompt": "A packed community meeting — residents presenting evidence to an official, comparison charts on display, multiple speakers sharing their experiences, media recording, the democratic process in action, watercolor illustration",
+        "coaching_moment": "When an entire community speaks with evidence and personal stories, institutional denial becomes impossible.",
+        "choices": [
+          {
+            "id": "ch7_s1_a",
+            "label": "Take the strategic path — plan carefully before acting",
+            "description": "Zara analyzes the situation and develops a careful strategy before making any moves.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Careful strategy maximizes impact — but requires patience when emotions run high.",
+            "next_scene": "ch7_s2",
+            "memory_tags": [
+              "ch7s1_choice"
+            ]
+          },
+          {
+            "id": "ch7_s1_b",
+            "label": "Take the bold path — act decisively and adjust along the way",
+            "description": "Zara trusts her instincts and takes immediate action, adapting as she goes.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Bold action creates momentum — but can lead to unintended consequences.",
+            "next_scene": "ch7_s2",
+            "memory_tags": [
+              "ch7s1_choice"
+            ]
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch7_s2",
+        "chapter": "ch7",
+        "title": "Uncle Ramesh Responds",
+        "narrative": "Uncle Ramesh gets his chance to respond. He is sweating but composed. 'There have been some administrative delays,' he says. 'Budget allocations are complex. Contractors sometimes underperform. I take responsibility for the oversight, but there was no corruption.'\n\nSomeone in the audience shouts: 'Then where is the money?' Others join: 'Show us the accounts! Show us the work!'\n\nThe district representative intervenes: 'Mr. Tiwari, a departmental audit has been ordered. The accounts will be reviewed. I suggest you cooperate fully.'\n\n{player_name} watches Uncle Ramesh's face and sees something she did not expect: not defiance, but defeat. The man who once controlled this neighbourhood from a desk of unopened files now sits in a room where every file has been opened — by a fourteen-year-old girl and her community.",
+        "image_prompt": "A bureaucrat sweating under questioning at a community meeting, residents demanding answers, a government auditor taking notes, the power dynamics completely reversed, watercolor illustration",
+        "coaching_moment": "When accountability arrives, even the most entrenched corruption crumbles — because corruption depends on darkness, and transparency is light.",
+        "choices": [
+          {
+            "id": "ch7_s2_a",
+            "label": "Focus on building community strength first",
+            "description": "Zara prioritizes strengthening the community coalition before engaging with external forces.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Strong communities withstand any external pressure — but building takes time.",
+            "next_scene": "ch7_s3"
+          },
+          {
+            "id": "ch7_s2_b",
+            "label": "Leverage the moment — use the current momentum",
+            "description": "Zara capitalizes on the energy and attention of the moment to push for maximum impact.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Momentum is a powerful force — but it dissipates quickly if not channeled into structure.",
+            "next_scene": "ch7_s3"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch7_s3",
+        "chapter": "ch7",
+        "title": "The Vote",
+        "narrative": "The meeting concludes with a community vote: should the mohalla organize its own cleanup drive to demonstrate what real civic action looks like, while the audit proceeds?\n\nThe vote is nearly unanimous. Two hundred hands raised. The mohalla will clean itself — not because the government failed (though it did), but because the community has decided to take ownership of its own neighbourhood.\n\nAunty Fatima says: 'We are not doing the government's job. We are showing them how it should be done.'\n\n{player_name} feels something shift in the room — from anger to agency. This is no longer a protest. It is a community deciding to be the change it demands.",
+        "image_prompt": "A community vote — nearly all hands raised in a packed hall, the transition from protest to action, determination and unity on faces, watercolor illustration, democratic participation at its best",
+        "coaching_moment": "The most powerful civic action is not demanding change from the government — it is demonstrating what change looks like through your own effort.",
+        "choices": [
+          {
+            "id": "ch7_s3_a",
+            "label": "Consolidate gains and prepare for the next phase",
+            "description": "Zara ensures the current progress is locked in before moving forward to the next challenge.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Consolidation prevents backsliding — secure what you have before reaching for more.",
+            "next_chapter": "ch8"
+          },
+          {
+            "id": "ch7_s3_b",
+            "label": "Push forward immediately — maintain the pressure",
+            "description": "Zara keeps the campaign's momentum going, knowing that pausing gives opponents time to regroup.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Sustained pressure wears down opposition — but it also wears down your own team.",
+            "next_chapter": "ch8"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch8_s1",
+        "chapter": "ch8",
+        "title": "Cleanup Day",
+        "narrative": "Saturday morning. The mohalla wakes up to something it has never seen: organized action. Zara's team has divided the area into zones, each with a volunteer leader, supplies, and a checklist.\n\nThe auto drivers clear the pothole area and fill it with gravel as a temporary fix. The women's group tackles the garbage collection points. The school students paint community walls. The retired engineers supervise drainage clearing.\n\nBy noon, more people have joined than signed up. Neighbours who never attended meetings are picking up brooms. Children are sorting recyclables. Even Mrs. Fernandes, who withdrew from the campaign, is quietly sweeping her stretch of road.\n\n{player_name} stands in the middle of the lane and watches the mohalla transform — not just physically, but spiritually. People who avoided each other are working side by side. The community is building something that no government can take credit for: pride.",
+        "image_prompt": "A massive community cleanup — Indian residents of all ages sweeping, painting, clearing drains, filling potholes, children sorting recyclables, a vibrant scene of collective action, watercolor illustration, the mohalla transforms",
+        "coaching_moment": "When a community works together on something visible, the act of cleaning becomes an act of claiming — this is our neighbourhood, and we care.",
+        "choices": [
+          {
+            "id": "ch8_s1_a",
+            "label": "Take the strategic path — plan carefully before acting",
+            "description": "Zara analyzes the situation and develops a careful strategy before making any moves.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Careful strategy maximizes impact — but requires patience when emotions run high.",
+            "next_scene": "ch8_s2"
+          },
+          {
+            "id": "ch8_s1_b",
+            "label": "Take the bold path — act decisively and adjust along the way",
+            "description": "Zara trusts her instincts and takes immediate action, adapting as she goes.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Bold action creates momentum — but can lead to unintended consequences.",
+            "next_scene": "ch8_s2"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch8_s2",
+        "chapter": "ch8",
+        "title": "The Transformation",
+        "narrative": "By evening, the mohalla is unrecognizable. The pothole is filled. Three streetlights have been fixed by the retired electrician volunteers. The garbage points are clean and marked with fresh paint. Community art adorns two walls.\n\nPriya photographs the before-and-after. The contrast is staggering. What the ward office could not do in three years, the community did in one day.\n\nMedia coverage is extensive. The district collector himself tweets the before-and-after photos: 'This is what citizen-led development looks like. Chandpur Mohalla shows the way.'\n\n{player_name} is exhausted, sunburnt, and covered in paint. She is also happier than she has been in months.",
+        "image_prompt": "A before-and-after split image — dirty neglected lane on one side, clean vibrant community on the other, residents celebrating their work, media documenting the transformation, watercolor illustration",
+        "coaching_moment": "The most convincing argument is not a petition or a protest — it is visible evidence that a better reality is possible.",
+        "choices": [
+          {
+            "id": "ch8_s2_a",
+            "label": "Focus on building community strength first",
+            "description": "Zara prioritizes strengthening the community coalition before engaging with external forces.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Strong communities withstand any external pressure — but building takes time.",
+            "next_scene": "ch8_s3"
+          },
+          {
+            "id": "ch8_s2_b",
+            "label": "Leverage the moment — use the current momentum",
+            "description": "Zara capitalizes on the energy and attention of the moment to push for maximum impact.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Momentum is a powerful force — but it dissipates quickly if not channeled into structure.",
+            "next_scene": "ch8_s3"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch8_s3",
+        "chapter": "ch8",
+        "title": "The Celebration",
+        "narrative": "That night, Aunty Fatima organizes a simple celebration — chai and samosas in the cleaned community space. The auto drivers contribute music from a Bluetooth speaker. Children run around the freshly painted walls.\n\nDev finds Zara sitting on the repaired boundary wall. 'You know what is amazing?' he says. 'Three months ago, nobody believed anything could change. Now look at this.'\n\nUncle Ramesh did not attend the cleanup. But a junior clerk from his office came — 'on personal time,' he said. He swept an entire section by himself. Change was happening even inside the system.\n\n{player_name} sips chai and watches her neighbourhood celebrate itself. But she knows: one cleanup day does not fix corruption. The audit is still pending. The real test is whether this energy can be sustained.",
+        "image_prompt": "A community celebration after a successful cleanup — chai, samosas, music, children playing, cleaned neighbourhood visible, a teenage girl watching it all with quiet satisfaction, watercolor illustration, earned joy",
+        "coaching_moment": "Celebrations after collective action are not just fun — they cement the bonds that will sustain the movement through harder times ahead.",
+        "choices": [
+          {
+            "id": "ch8_s3_a",
+            "label": "Consolidate gains and prepare for the next phase",
+            "description": "Zara ensures the current progress is locked in before moving forward to the next challenge.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Consolidation prevents backsliding — secure what you have before reaching for more.",
+            "next_chapter": "ch9"
+          },
+          {
+            "id": "ch8_s3_b",
+            "label": "Push forward immediately — maintain the pressure",
+            "description": "Zara keeps the campaign's momentum going, knowing that pausing gives opponents time to regroup.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Sustained pressure wears down opposition — but it also wears down your own team.",
+            "next_chapter": "ch9"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch9_s1",
+        "chapter": "ch9",
+        "title": "The MLA's Secretary",
+        "narrative": "Monday morning. Mr. Joshi, the local MLA's secretary, arrives at the mohalla in a government car. He has a proposal: the MLA wants to 'officially adopt' the mohalla cleanup initiative. He will announce it at a press conference, allocate additional funds, and take the community's success as a model for the constituency.\n\nThe catch: the MLA's party banner will be everywhere. The political party gets the credit. Zara's name and the community's campaign are not mentioned.\n\n{player_name} is conflicted. The MLA's involvement could bring real resources — permanent road repair, regular garbage collection, new streetlights. But it would also erase the community's agency and turn a people's movement into a politician's photo opportunity.",
+        "image_prompt": "A political secretary in a government car offering a deal to a teenage girl at a community gathering, party banners ready to be unfurled, the temptation of resources vs the principle of community ownership, watercolor illustration",
+        "coaching_moment": "When politicians want to co-opt your success, you face a choice: accept resources and lose credit, or maintain independence and fight for resources on your own terms.",
+        "choices": [
+          {
+            "id": "ch9_s1_a",
+            "label": "Take the strategic path — plan carefully before acting",
+            "description": "Zara analyzes the situation and develops a careful strategy before making any moves.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Careful strategy maximizes impact — but requires patience when emotions run high.",
+            "next_scene": "ch9_s2"
+          },
+          {
+            "id": "ch9_s1_b",
+            "label": "Take the bold path — act decisively and adjust along the way",
+            "description": "Zara trusts her instincts and takes immediate action, adapting as she goes.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Bold action creates momentum — but can lead to unintended consequences.",
+            "next_scene": "ch9_s2"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch9_s2",
+        "chapter": "ch9",
+        "title": "The Counter-Move",
+        "narrative": "Zara consults the community. The opinions are split — some want the resources regardless of credit, others refuse to let politicians hijack their movement.\n\nAunty Fatima proposes a middle path: 'We accept the resources but insist on community oversight. The funds go through the cooperative, not the party. And the press conference features community members, not just the MLA.'\n\nIt is a brilliant compromise — accepting help without surrendering control. The MLA's secretary is reluctant but agrees after Priya hints that refusing reasonable terms would make its own news story.\n\n{player_name} watches Aunty Fatima negotiate with the professional skill of someone who has managed a school of 1,500 students for three decades. Some skills never retire.",
+        "image_prompt": "A negotiation between a community group and a political representative, an elderly woman leading the discussion with the ease of experience, terms being written on a board, watercolor illustration, bargaining from a position of strength",
+        "coaching_moment": "The best response to co-optation is not rejection or surrender — it is a counteroffer that protects your core principles while accepting genuine help.",
+        "choices": [
+          {
+            "id": "ch9_s2_a",
+            "label": "Focus on building community strength first",
+            "description": "Zara prioritizes strengthening the community coalition before engaging with external forces.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Strong communities withstand any external pressure — but building takes time.",
+            "next_scene": "ch9_s3"
+          },
+          {
+            "id": "ch9_s2_b",
+            "label": "Leverage the moment — use the current momentum",
+            "description": "Zara capitalizes on the energy and attention of the moment to push for maximum impact.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Momentum is a powerful force — but it dissipates quickly if not channeled into structure.",
+            "next_scene": "ch9_s3"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch9_s3",
+        "chapter": "ch9",
+        "title": "The Press Conference",
+        "narrative": "The press conference happens — but on the community's terms. Zara speaks first, presenting the campaign's journey. Aunty Fatima introduces the community cooperative. Mr. Kapoor presents the audit findings that have been shared with the district.\n\nThe MLA, who expected to be the star, finds himself in a supporting role. He smiles tightly and pledges Rs. 10 lakh for the mohalla's infrastructure, to be managed by the community cooperative.\n\nUncle Ramesh has been transferred to another ward. The district audit found Rs. 28 lakh in misallocated funds. A new, younger ward officer has been appointed — and her first act was to visit the mohalla and ask: 'What needs to be fixed?'\n\n{player_name} watches the press conference and thinks: six months ago, a politician would never have asked a fourteen-year-old's neighbourhood what it needed. Now they have to. That is the real victory.",
+        "image_prompt": "A press conference in a cleaned mohalla — a teenage girl speaking at a podium, community members flanking her, a politician in the background, media cameras capturing the community's triumph, watercolor illustration",
+        "coaching_moment": "When the community controls the narrative, even powerful politicians become partners rather than patrons — that is the difference between charity and democracy.",
+        "choices": [
+          {
+            "id": "ch9_s3_a",
+            "label": "Consolidate gains and prepare for the next phase",
+            "description": "Zara ensures the current progress is locked in before moving forward to the next challenge.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Consolidation prevents backsliding — secure what you have before reaching for more.",
+            "next_chapter": "ch10"
+          },
+          {
+            "id": "ch9_s3_b",
+            "label": "Push forward immediately — maintain the pressure",
+            "description": "Zara keeps the campaign's momentum going, knowing that pausing gives opponents time to regroup.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Sustained pressure wears down opposition — but it also wears down your own team.",
+            "next_chapter": "ch10"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch10_s1",
+        "chapter": "ch10",
+        "title": "Three Months Later",
+        "narrative": "Three months after the cleanup. The roads have been properly repaired — by the new ward officer, using actual funds for actual work. Two new streetlights installed. Regular garbage collection restored.\n\nThe community cooperative meets monthly. A volunteer maintenance roster keeps the neighbourhood tidy. Aunty Fatima's women's group has started a kitchen garden on the cleared vacant lot.\n\nBut the real change is subtler: people talk to each other now. Neighbours who never spoke beyond polite nods are sharing vegetables from the kitchen garden. The auto drivers' union helped the flower seller expand her business. Dev's father, who told him to stay out of trouble, now attends every cooperative meeting.\n\n{player_name} sees the mohalla differently now — not as a place where problems happen, but as a place where people solve problems together.",
+        "image_prompt": "A transformed neighbourhood three months later — repaired roads, working streetlights, a community kitchen garden, neighbours chatting, the auto stand clean and organized, the lasting change visible, watercolor illustration",
+        "coaching_moment": "The most lasting change is not in the infrastructure — it is in the community's belief that they have the power to shape their own environment.",
+        "choices": [
+          {
+            "id": "ch10_s1_a",
+            "label": "Take the strategic path — plan carefully before acting",
+            "description": "Zara analyzes the situation and develops a careful strategy before making any moves.",
+            "delta": {
+              "civic_knowledge": 10,
+              "community_support": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Careful strategy maximizes impact — but requires patience when emotions run high.",
+            "next_scene": "ch10_s2"
+          },
+          {
+            "id": "ch10_s1_b",
+            "label": "Take the bold path — act decisively and adjust along the way",
+            "description": "Zara trusts her instincts and takes immediate action, adapting as she goes.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Bold action creates momentum — but can lead to unintended consequences.",
+            "next_scene": "ch10_s2"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch10_s2",
+        "chapter": "ch10",
+        "title": "Zara's Report Card",
+        "narrative": "School project time. Zara's civics teacher asks each student to present a 'Real World Civic Action' project. Most students talk about voting or the Constitution.\n\nZara presents the entire Chandpur Mohalla campaign: the problem identification, the RTI, the community organizing, the media strategy, the negotiation with the MLA, and the sustainable outcome.\n\nHer teacher is speechless. Her classmates are stunned. One student asks: 'You actually DID this? At fourteen?'\n\nDev, from the back of the class, adds: 'She also fixed the pothole I kept tripping over. So I am personally grateful.'\n\n{player_name} gets the highest marks in civics she has ever received. But the real report card is the mohalla itself — clean, organized, and owned by its residents.",
+        "image_prompt": "A teenage girl presenting a civic action project to her class with photos, charts, and the community story, her classmates looking amazed, the teacher beaming, school classroom setting, watercolor illustration",
+        "coaching_moment": "The best education is the one that happens outside the classroom — where theory meets practice and you discover what you are capable of.",
+        "choices": [
+          {
+            "id": "ch10_s2_a",
+            "label": "Focus on building community strength first",
+            "description": "Zara prioritizes strengthening the community coalition before engaging with external forces.",
+            "delta": {
+              "community_support": 12,
+              "courage": 8,
+              "media_attention": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Strong communities withstand any external pressure — but building takes time.",
+            "next_scene": "ch10_s3"
+          },
+          {
+            "id": "ch10_s2_b",
+            "label": "Leverage the moment — use the current momentum",
+            "description": "Zara capitalizes on the energy and attention of the moment to push for maximum impact.",
+            "delta": {
+              "courage": 15,
+              "civic_knowledge": 5,
+              "media_attention": 8
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Momentum is a powerful force — but it dissipates quickly if not channeled into structure.",
+            "next_scene": "ch10_s3"
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      },
+      {
+        "scene_id": "ch10_s3",
+        "chapter": "ch10",
+        "title": "The Invitation",
+        "narrative": "A letter arrives from the National Commission for Protection of Child Rights. They are organizing a 'Young Citizens' Forum' and want Zara to speak about community organizing for teenagers.\n\nAunty Fatima reads the letter and cries. 'Your grandfather would have been so proud,' she says — and then Zara realizes that Aunty Fatima knew her grandfather, which Zara never knew.\n\n'He was the one who built this community hall,' Fatima says. 'Forty years ago. With his own hands and his neighbours' hands. You did not start something new, beta. You continued something that was always here.'\n\n{player_name} holds the letter and looks at the community hall — the same hall where the cleanup was planned, where Uncle Ramesh was confronted, where the cooperative was born. Built by her grandfather. Renewed by her.",
+        "image_prompt": "A teenage girl holding an official invitation letter, an elderly woman crying with pride, a community hall visible through the window — the same hall built by the girl's grandfather decades ago, watercolor illustration, legacy continuing",
+        "coaching_moment": "Every act of civic courage is part of a longer chain — the people who built before you, the people who will continue after you. Citizenship is not a moment. It is a legacy.",
+        "choices": [
+          {
+            "id": "ch10_s3_a",
+            "label": "Accept the invitation — share your story with the nation",
+            "description": "Zara decides to amplify the Chandpur Mohalla story, hoping it inspires other communities to take action.",
+            "delta": {
+              "civic_knowledge": 20,
+              "community_support": 18,
+              "courage": 15
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "is_ending": true,
+            "ending_type": "citizen_leader",
+            "ending_message": "Zara's speech at the Young Citizens' Forum was watched by 50,000 students online. She spoke about potholes and corruption, about grandmothers and auto drivers, about a community that decided enough was enough. Within a year, twelve other neighbourhoods had launched their own civic campaigns, using the Chandpur model. Uncle Ramesh was formally charged with misappropriation. The new ward officer became a regular at Aunty Fatima's cooperative meetings. And the pothole — the one that started everything — was permanently fixed, with a small plaque that read: 'Fixed by the citizens of Chandpur Mohalla, 2026.' Zara went on to study public policy, but she always said her real education happened on a dusty road with a phone camera and a stubborn grandmother's blessing."
+          },
+          {
+            "id": "ch10_s3_b",
+            "label": "Stay local — the mohalla needs you more than the nation does",
+            "description": "Zara decides that sustaining local change is more important than national recognition.",
+            "delta": {
+              "community_support": 20,
+              "civic_knowledge": 15,
+              "courage": 18
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "empathy"
+            ],
+            "is_ending": true,
+            "ending_type": "community_guardian",
+            "ending_message": "Zara stayed in Chandpur Mohalla. She turned down the national forum, choosing instead to strengthen the community cooperative into something permanent. By the time she was eighteen, the cooperative managed a monthly budget, maintained the neighbourhood infrastructure, and ran a civic education programme for local children. Aunty Fatima became its honorary president. Dev became the first resident to pass the civil services exam, inspired by his front-row seat to democracy in action. And every year on the anniversary of the cleanup, the mohalla held a celebration — not of what they accomplished once, but of what they continued to build every day. The pothole never returned. Neither did the apathy."
+          }
+        ],
+        "narrative_variants": {
+          "filed_rti": "The RTI data Zara filed gives her campaign a solid foundation of verified facts.",
+          "surveyed_mohalla": "The door-to-door survey revealed problems even Zara did not know about — strengthening the case."
+        }
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "RTI",
+      "definition": "Right to Information — an Indian law giving citizens the right to request information from government bodies, a powerful accountability tool."
+    },
+    {
+      "term": "ward_officer",
+      "definition": "A local government official responsible for managing civic services in a specific area or ward of a city."
+    },
+    {
+      "term": "petition",
+      "definition": "A formal written request signed by many people, asking an authority to take action on an issue."
+    },
+    {
+      "term": "civic_engagement",
+      "definition": "The ways in which citizens participate in the life of their community — from voting to organizing to volunteering."
+    },
+    {
+      "term": "corruption",
+      "definition": "The misuse of public power for private gain — when officials steal public money or abuse their authority."
+    },
+    {
+      "term": "accountability",
+      "definition": "The obligation of officials to explain their actions and accept responsibility for the outcomes."
+    },
+    {
+      "term": "cooperative",
+      "definition": "An organization owned and managed by its members, pooling resources for shared benefit."
+    },
+    {
+      "term": "retaliation",
+      "definition": "Punishment directed at someone for speaking up or challenging authority — a common response to whistleblowing."
+    },
+    {
+      "term": "coalition",
+      "definition": "An alliance of diverse groups united by a common goal, combining their strengths."
+    },
+    {
+      "term": "audit",
+      "definition": "An official examination of accounts and records to verify that money was spent as claimed."
+    },
+    {
+      "term": "advocacy",
+      "definition": "The act of publicly supporting or arguing for a cause, policy, or group of people."
+    },
+    {
+      "term": "transparency",
+      "definition": "The quality of being open and honest about decisions and finances — essential for trust in governance."
+    },
+    {
+      "term": "grassroots",
+      "definition": "A movement built from ordinary people at the local level, rather than from powerful organizations or leaders."
+    },
+    {
+      "term": "civic_duty",
+      "definition": "The responsibilities that citizens have toward their community and government — voting, paying taxes, and holding officials accountable."
+    },
+    {
+      "term": "empowerment",
+      "definition": "The process of gaining the knowledge, confidence, and tools to take control of your own circumstances."
+    },
+    {
+      "term": "sustainable_change",
+      "definition": "Change that lasts beyond the initial effort — built on institutions, habits, and community ownership."
+    }
+  ],
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.25,
+    "resilience": 0.2,
+    "empathy": 0.2,
+    "adaptability": 0.15,
+    "delayed_gratification": 0.15,
+    "risk_tolerance": 0.05
+  },
+  "coaching_moment": "Citizenship is not a test you pass once — it is a daily practice of caring about your community and having the courage to improve it.",
+  "estimated_duration": "40-50 minutes",
+  "target_age": "10-18",
+  "tags": [
+    "story",
+    "citizenship",
+    "community",
+    "corruption",
+    "civic-rights",
+    "life-skills",
+    "india"
+  ],
+  "cultural_context": "indian",
+  "nep_stage": "middle_school",
+  "nep_competencies": [
+    "critical_thinking",
+    "civic_participation",
+    "communication",
+    "social_emotional_learning",
+    "ethical_reasoning"
+  ],
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}

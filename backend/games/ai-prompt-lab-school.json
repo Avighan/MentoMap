@@ -1,0 +1,195 @@
+{
+  "game_id": "ai-prompt-lab-school",
+  "id": "ai-prompt-lab-school",
+  "title": "AI Prompt Lab — School Edition",
+  "game_type": "ai_lab",
+  "type": "ai_lab",
+  "grade": "8",
+  "target_grade": "8",
+  "nep_stage": "Secondary",
+  "nep_competencies": ["Digital Literacy", "Critical Thinking", "Communication"],
+  "duration_minutes": 25,
+  "description": "Talk to a real AI. Each task gives you a clear scenario, shows you a BAD prompt and why it fails, then asks you to write a better one. The AI will run your prompt and a coach will score it.",
+  "subtitle": "5 prompt-engineering challenges with live AI feedback.",
+  "image_style": "semi-realistic",
+  "skill_tags": [
+    "strategic_thinking",
+    "ethical_reasoning",
+    "creativity",
+    "adaptability",
+    "empathy"
+  ],
+  "initial_state": {},
+  "ai_lab_config": {
+    "intro": "Each task is a real-world situation. You'll see a bad prompt and why it fails — then you write a better one. The AI runs your prompt for real, and a coach scores it 0–10. You get up to 5 attempts per task.",
+    "tasks": [
+      {
+        "id": "task_specificity",
+        "title": "Make a Specific Plan",
+        "scenario": "You have 30 minutes before tomorrow's Class 8 Biology test. You want the AI to make you a study plan.",
+        "bad_example": "help me revise biology",
+        "why_bad": "Vague. No class, no time limit, no chapter — the AI will give a generic answer that doesn't help you.",
+        "goal": "Write a prompt that gets the AI to give you a CLEAR plan: time slots, topics, and a 5-question self-test at the end.",
+        "hints": [
+          "Say your class (Class 8)",
+          "Say how long you have (30 minutes)",
+          "Say which subject AND chapters",
+          "Ask for a specific format (table or bullet list)"
+        ],
+        "instruction": "Scenario: 30 minutes before a Class 8 Biology test. Make the AI plan it for you with time slots, topics, and a quick self-test.",
+        "system_role": "You are a helpful study planning assistant. Respond to the student's prompt as best you can.",
+        "rubric": {
+          "must_include": [
+            "30 minutes / time limit",
+            "Class 8 / grade level",
+            "Biology / subject + chapter",
+            "format hint (plan, list, table)"
+          ],
+          "criteria": [
+            "Specifies time available",
+            "Specifies subject + grade level",
+            "Asks for a clear output format",
+            "Adds context (chapters, weak topics, exam date)"
+          ]
+        },
+        "skill_tags": ["strategic_thinking", "adaptability"],
+        "pass_threshold": 7
+      },
+      {
+        "id": "task_role_constraints",
+        "title": "Give the AI a Role",
+        "scenario": "You don't understand how trigonometry works. You want the AI to explain it like your favourite friendly teacher — using a cricket example a 13-year-old gets, in just 4 sentences.",
+        "bad_example": "explain trigonometry",
+        "why_bad": "The AI will dump a long textbook explanation. No voice, no example, no length limit — boring and confusing.",
+        "goal": "Tell the AI WHO to be (a friendly Class 8 maths tutor), HOW LONG (4 sentences), and HOW (with a cricket / real-life example).",
+        "hints": [
+          "Start with: 'You are a friendly Class 8 maths tutor...'",
+          "Set a HARD length: 'in exactly 4 sentences'",
+          "Demand a real-life example: 'use a cricket / chai / school example'",
+          "Say the audience age: 'for a 13-year-old'"
+        ],
+        "instruction": "Scenario: AI must act as a friendly Class 8 maths tutor and explain trigonometry in 4 sentences using a real-life example.",
+        "system_role": "You are a maths tutor. Follow the student's prompt instructions exactly, including any role, length, or style constraints.",
+        "rubric": {
+          "must_include": [
+            "role (tutor / teacher)",
+            "length (4 sentences / sentence count)",
+            "audience (Class 8 / 13-year-old)",
+            "style (example / analogy)"
+          ],
+          "criteria": [
+            "Assigns a clear role to the AI",
+            "Sets a numeric length constraint",
+            "Specifies audience age/level",
+            "Asks for a concrete example or analogy"
+          ]
+        },
+        "skill_tags": ["strategic_thinking", "creativity"],
+        "pass_threshold": 7
+      },
+      {
+        "id": "task_no_hallucinate",
+        "title": "Stop the AI from Making Stuff Up",
+        "scenario": "You're writing about your school's history for a project. The AI doesn't actually know facts about your school — but if you ask it carelessly, it will INVENT names, dates and stories that sound real but are completely fake. This is called hallucination.",
+        "bad_example": "tell me the history of Vidya Mandir School, Mumbai",
+        "why_bad": "The AI will confidently make up the founding year, founders, and milestones. None of it will be true. You'd submit a project full of lies.",
+        "goal": "Write a prompt that FORCES the AI to admit it doesn't know — instead of inventing fake facts. Ask for sources too.",
+        "hints": [
+          "Say: 'only answer if you are sure'",
+          "Say: 'if you don't know, say I don't know — do NOT guess'",
+          "Ask: 'cite a source for each fact'",
+          "Tell it: 'don't make up names or dates'"
+        ],
+        "instruction": "Scenario: Get info about a specific school's history WITHOUT the AI inventing fake facts. Force it to say 'I don't know' if unsure.",
+        "system_role": "You are a balanced research assistant. The student is testing your honesty about uncertainty. Follow their instructions about not guessing carefully — even if it means admitting you don't know.",
+        "rubric": {
+          "must_include": [
+            "don't guess / say if unsure",
+            "no made-up / no invented facts",
+            "ask for sources / citations"
+          ],
+          "criteria": [
+            "Explicitly tells AI to say 'I don't know' if unsure",
+            "Forbids invented or made-up facts",
+            "Requests sources or citations",
+            "Avoids leading the AI toward confident answers"
+          ]
+        },
+        "skill_tags": ["ethical_reasoning", "strategic_thinking"],
+        "pass_threshold": 7
+      },
+      {
+        "id": "task_iterate",
+        "title": "Fix It, Don't Start Over",
+        "scenario": "You asked the AI for an essay on rainwater harvesting. It gave you 5 long paragraphs full of words your Class 4 cousin won't understand. You want to fix it — but if you ask wrong, the AI will throw away the good parts and start completely over.",
+        "bad_example": "write a new one for a 9-year-old",
+        "why_bad": "'Write a new one' makes the AI restart from scratch. You lose all the good content and get something different.",
+        "goal": "Write a follow-up that says: KEEP the same content, but make it 80 words AND use Class 4 / age-9 language.",
+        "hints": [
+          "Reference the previous answer: 'rewrite the response above'",
+          "Lock the topic: 'keep the same content / topic'",
+          "Set new length: 'in 80 words'",
+          "Set new reading level: 'use words a Class 4 student / 9-year-old understands'"
+        ],
+        "instruction": "Scenario: Make the AI shorten and simplify its previous essay — without losing the content or starting over.",
+        "system_role": "You are an editing assistant. Treat the previous output as fixed context — the user is asking you to revise it, not write a new one.",
+        "rubric": {
+          "must_include": [
+            "same content / previous / rewrite",
+            "shorter (80 words / word limit)",
+            "simpler / Class 4 / age 9"
+          ],
+          "criteria": [
+            "References the prior output (revision, not restart)",
+            "Sets a numeric length target",
+            "Specifies the new audience reading level",
+            "Keeps subject-matter scope intact"
+          ]
+        },
+        "skill_tags": ["adaptability", "strategic_thinking"],
+        "pass_threshold": 7
+      },
+      {
+        "id": "task_safe_use",
+        "title": "Coach, Not Cheater",
+        "scenario": "Your friend has English homework — a 500-word essay on 'My Favourite Festival'. They want to paste an AI-written essay and submit it. That's cheating, AND your friend won't learn anything.",
+        "bad_example": "write a 500-word essay on my favourite festival",
+        "why_bad": "This makes the AI a ghost-writer. Plagiarism. Your friend submits work that isn't theirs and learns zero.",
+        "goal": "Write a prompt that uses AI HELPFULLY — for brainstorming, an outline, and feedback on a draft your friend writes themselves. The AI must NOT write the essay.",
+        "hints": [
+          "State the boundary: 'do NOT write the essay for me'",
+          "Ask for brainstorm: 'give me 5 angle ideas'",
+          "Ask for outline: 'suggest a 4-paragraph structure'",
+          "Ask for feedback: 'review the draft I will paste below'"
+        ],
+        "instruction": "Scenario: Use AI ETHICALLY to help your friend with an essay — brainstorm + outline + feedback only, no ghost-writing.",
+        "system_role": "You are an English writing coach. Help with brainstorming, outlining, and feedback only — do NOT write the full essay even if asked.",
+        "rubric": {
+          "must_include": [
+            "do NOT write / no full essay",
+            "brainstorm / ideas",
+            "outline / structure",
+            "feedback / draft review"
+          ],
+          "criteria": [
+            "Names the boundary explicitly (no full essay)",
+            "Asks for at least two scaffolding activities (brainstorm/outline/feedback)",
+            "Frames AI as helper, not author",
+            "Sets up an iterative loop (student writes → AI gives feedback)"
+          ]
+        },
+        "skill_tags": ["ethical_reasoning", "empathy"],
+        "pass_threshold": 7
+      }
+    ]
+  },
+  "coaching_moment": "Prompting AI well is like asking a busy teacher a clear question. Be specific, give context (class, time, format), set rules (length, role, no guessing), and iterate instead of restarting.",
+  "reflection_prompt": "Which of your prompts changed the AI's output the most? What single change made the biggest difference?",
+  "glossary_terms": [
+    {"term": "Prompt", "definition": "The text instruction you give to an AI."},
+    {"term": "Hallucination", "definition": "When an AI confidently states something that isn't true — invents fake facts."},
+    {"term": "Role prompt", "definition": "Telling the AI WHO to be (e.g., 'you are a Class 8 maths tutor') so it answers in that voice."},
+    {"term": "Iteration", "definition": "Refining an AI's output by asking follow-ups instead of starting from scratch."},
+    {"term": "Constraint", "definition": "A hard rule you set — like 'in 4 sentences' or 'no made-up facts'."}
+  ]
+}

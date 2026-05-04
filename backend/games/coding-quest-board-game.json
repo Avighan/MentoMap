@@ -1,0 +1,1564 @@
+{
+  "game_id": "coding_quest_board",
+  "title": "Coding Quest: Debug & Deploy",
+  "theme": "Programming Logic & Computational Thinking",
+  "description": "Embark on an epic journey through the world of programming! Roll the dice, solve coding puzzles, debug tricky errors, and deploy your first app. Navigate loops, conditionals, arrays, and algorithms as you level up from a beginner coder to a full-stack developer in this educational board game.",
+  "game_type": "board",
+  "target_audience": "12-18",
+  "duration_minutes": 20,
+  "difficulty": "intermediate",
+  "learning_objectives": [
+    "Understand core programming concepts like loops, conditionals, and functions",
+    "Learn debugging strategies and how to trace errors in code",
+    "Practice computational thinking and algorithmic problem-solving",
+    "Explore real-world software development scenarios and trade-offs",
+    "Build familiarity with data structures, APIs, and deployment workflows"
+  ],
+  "how_to_play": {
+    "title": "How to Play",
+    "steps": [
+      "Roll the dice to move your coder avatar along the board from 'Hello World' to 'App Deployed!'",
+      "Land on Code Challenge tiles to face real programming scenarios involving loops, bugs, and design choices",
+      "Visit the Dev Shop to spend energy on IDE upgrades, energy drinks, or mentor sessions",
+      "Conquer Boss Bug tiles by answering programming knowledge questions correctly",
+      "Race against AI coders CodeBot Clara and HackerRaj to deploy your app first with the highest code quality"
+    ],
+    "tips": [
+      "Balance code_quality and debug_skill -- both are critical for surviving boss challenges",
+      "Conserve energy for tough decisions later in the game -- running out means slower progress",
+      "Use power-ups wisely: 'Stack Overflow' can save you from a boss penalty, 'Rubber Duck' doubles your roll"
+    ]
+  },
+  "psychological_skills": [
+    "Logical reasoning and pattern recognition",
+    "Decision-making under constraints",
+    "Resource management and prioritization",
+    "Resilience through debugging and failure recovery",
+    "Strategic thinking and planning ahead"
+  ],
+  "initial_state": {
+    "code_quality": 40,
+    "debug_skill": 30,
+    "energy": 100,
+    "reputation": 20,
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "board_config": {
+    "grid_size": [
+      5,
+      4
+    ],
+    "movement": "dice",
+    "dice_range": [
+      1,
+      6
+    ],
+    "tile_types": {
+      "start": {
+        "label": "Hello World",
+        "bg": "#06D6A0",
+        "text": "#FFFFFF",
+        "icon": "🏁",
+        "border_color": "#059669"
+      },
+      "event": {
+        "label": "Code Challenge",
+        "bg": "#FFD166",
+        "text": "#2D3047",
+        "icon": "❓",
+        "border_color": "#EAB308"
+      },
+      "shop": {
+        "label": "Dev Shop",
+        "bg": "#4CC9F0",
+        "text": "#FFFFFF",
+        "icon": "🏪",
+        "border_color": "#0EA5E9"
+      },
+      "boss": {
+        "label": "Boss Bug",
+        "bg": "#EF476F",
+        "text": "#FFFFFF",
+        "icon": "🐛",
+        "border_color": "#DC2626"
+      },
+      "empty": {
+        "label": "Compile & Run",
+        "bg": "#E5E7EB",
+        "text": "#6B7280",
+        "icon": "⚡",
+        "border_color": "#D1D5DB"
+      },
+      "treasure": {
+        "label": "Open Source Reward",
+        "bg": "#FBBF24",
+        "text": "#2D3047",
+        "icon": "💎",
+        "border_color": "#D97706"
+      },
+      "finish": {
+        "label": "App Deployed!",
+        "bg": "#9B5DE5",
+        "text": "#FFFFFF",
+        "icon": "🚀",
+        "border_color": "#7C3AED"
+      }
+    },
+    "tile_effects": {
+      "empty": {
+        "delta": {
+          "code_quality": 3
+        },
+        "message": "You compile and run your code successfully. Small quality improvement!"
+      },
+      "treasure": {
+        "delta": {
+          "code_quality": 8,
+          "reputation": 10
+        },
+        "message": "Your open-source contribution gets starred on GitHub! Code quality and reputation boosted."
+      },
+      "shop": {
+        "shop_items": [
+          {
+            "id": "ide_upgrade",
+            "label": "IDE Upgrade",
+            "cost_key": "energy",
+            "cost": 25,
+            "delta": {
+              "code_quality": 15
+            }
+          },
+          {
+            "id": "energy_drink",
+            "label": "Energy Drink",
+            "cost_key": "energy",
+            "cost": 0,
+            "delta": {
+              "energy": 20
+            }
+          },
+          {
+            "id": "mentor_session",
+            "label": "Mentor Session",
+            "cost_key": "energy",
+            "cost": 20,
+            "delta": {
+              "debug_skill": 10
+            }
+          }
+        ]
+      },
+      "boss": {
+        "challenge": {
+          "question": "A boss bug has appeared! Answer the coding question to squash it.",
+          "options": [
+            "See individual boss tiles for specific questions"
+          ],
+          "correct": 0,
+          "success_delta": {
+            "code_quality": 10,
+            "debug_skill": 10,
+            "reputation": 5
+          },
+          "fail_delta": {
+            "code_quality": -8,
+            "energy": -15
+          },
+          "success_message": "Bug squashed! Your debugging skills impress the team.",
+          "fail_message": "The bug persists... You lose energy and code quality trying to fix it.",
+          "explanation": "This is a generic boss challenge placeholder. The actual boss questions are defined in individual boss events (evt_boss_loop, evt_boss_datastructure, evt_boss_recursion), each with their own specific question and correct answer."
+        }
+      }
+    },
+    "power_ups": [
+      {
+        "id": "stack_overflow",
+        "label": "Stack Overflow",
+        "icon": "📚",
+        "description": "Skip the penalty from a failed boss challenge. The community has your back!"
+      },
+      {
+        "id": "rubber_duck",
+        "label": "Rubber Duck",
+        "icon": "🦆",
+        "description": "Roll dice twice and add both values. Rubber duck debugging gives you clarity and speed!"
+      }
+    ],
+    "ai_competitors": [
+      {
+        "id": "ai_clara",
+        "name": "CodeBot Clara",
+        "avatar": "🤖",
+        "personality": "quality_focused",
+        "color": "#4CC9F0",
+        "description": "A systematic coder who writes clean, well-tested code. Slow but steady -- never skips unit tests."
+      },
+      {
+        "id": "ai_raj",
+        "name": "HackerRaj",
+        "avatar": "👨‍💻",
+        "personality": "aggressive",
+        "color": "#EF476F",
+        "description": "A fast-moving hacker who ships first and fixes later. High risk, high reward -- moves fast and breaks things."
+      }
+    ],
+    "tiles": [
+      {
+        "id": "tile_0",
+        "position": {
+          "row": 0,
+          "col": 0
+        },
+        "type": "start",
+        "label": "Hello World",
+        "icon": "🏁",
+        "event_id": null,
+        "description": "Your coding journey begins! Write your first line of code."
+      },
+      {
+        "id": "tile_1",
+        "position": {
+          "row": 0,
+          "col": 1
+        },
+        "type": "event",
+        "label": "Loop Logic",
+        "icon": "🔁",
+        "event_id": "evt_loop_logic",
+        "description": "You encounter a repetitive task. Time to learn about loops!"
+      },
+      {
+        "id": "tile_2",
+        "position": {
+          "row": 0,
+          "col": 2
+        },
+        "type": "empty",
+        "label": "Compile & Run",
+        "icon": "⚡",
+        "event_id": null,
+        "description": "Your code compiles successfully. Small progress!"
+      },
+      {
+        "id": "tile_3",
+        "position": {
+          "row": 0,
+          "col": 3
+        },
+        "type": "event",
+        "label": "If-Else Dilemma",
+        "icon": "🔀",
+        "event_id": "evt_conditionals",
+        "description": "A fork in your code path. Conditionals will guide the way."
+      },
+      {
+        "id": "tile_4",
+        "position": {
+          "row": 1,
+          "col": 3
+        },
+        "type": "shop",
+        "label": "Dev Shop",
+        "icon": "🛒",
+        "event_id": "evt_dev_shop_1",
+        "description": "A marketplace full of developer tools and resources."
+      },
+      {
+        "id": "tile_5",
+        "position": {
+          "row": 1,
+          "col": 2
+        },
+        "type": "event",
+        "label": "Array Adventure",
+        "icon": "📦",
+        "event_id": "evt_arrays",
+        "description": "Data needs organizing. Arrays and lists to the rescue!"
+      },
+      {
+        "id": "tile_6",
+        "position": {
+          "row": 1,
+          "col": 1
+        },
+        "type": "boss",
+        "label": "Bug Boss: Infinite Loop",
+        "icon": "🐛",
+        "event_id": "evt_boss_loop",
+        "description": "A dreaded infinite loop bug blocks your path!"
+      },
+      {
+        "id": "tile_7",
+        "position": {
+          "row": 1,
+          "col": 0
+        },
+        "type": "treasure",
+        "label": "GitHub Star!",
+        "icon": "⭐",
+        "event_id": "evt_github_star",
+        "description": "Your open-source project gets noticed by the community!"
+      },
+      {
+        "id": "tile_8",
+        "position": {
+          "row": 2,
+          "col": 0
+        },
+        "type": "event",
+        "label": "Function Factory",
+        "icon": "🏭",
+        "event_id": "evt_functions",
+        "description": "Time to modularize your code with functions."
+      },
+      {
+        "id": "tile_9",
+        "position": {
+          "row": 2,
+          "col": 1
+        },
+        "type": "empty",
+        "label": "Code Review",
+        "icon": "👀",
+        "event_id": null,
+        "description": "A peer reviews your code. Minor improvements applied."
+      },
+      {
+        "id": "tile_10",
+        "position": {
+          "row": 2,
+          "col": 2
+        },
+        "type": "event",
+        "label": "Debug Detective",
+        "icon": "🔍",
+        "event_id": "evt_debugging",
+        "description": "A mysterious bug appears in production. Time to investigate!"
+      },
+      {
+        "id": "tile_11",
+        "position": {
+          "row": 2,
+          "col": 3
+        },
+        "type": "boss",
+        "label": "Bug Boss: Null Pointer",
+        "icon": "💀",
+        "event_id": "evt_boss_datastructure",
+        "description": "The feared NullPointerException strikes!"
+      },
+      {
+        "id": "tile_12",
+        "position": {
+          "row": 3,
+          "col": 3
+        },
+        "type": "event",
+        "label": "Algorithm Arena",
+        "icon": "🧮",
+        "event_id": "evt_algorithms",
+        "description": "A coding contest challenges your algorithm skills."
+      },
+      {
+        "id": "tile_13",
+        "position": {
+          "row": 3,
+          "col": 2
+        },
+        "type": "shop",
+        "label": "Tech Bazaar",
+        "icon": "🏪",
+        "event_id": "evt_dev_shop_2",
+        "description": "Another chance to stock up on tools and mentorship."
+      },
+      {
+        "id": "tile_14",
+        "position": {
+          "row": 3,
+          "col": 1
+        },
+        "type": "empty",
+        "label": "Git Commit",
+        "icon": "📝",
+        "event_id": null,
+        "description": "You save your progress with a clean git commit."
+      },
+      {
+        "id": "tile_15",
+        "position": {
+          "row": 3,
+          "col": 0
+        },
+        "type": "finish",
+        "label": "Finish",
+        "icon": "🏆",
+        "event_id": null,
+        "description": "Your app needs to talk to the outside world via APIs."
+      },
+      {
+        "id": "tile_16",
+        "position": {
+          "row": 4,
+          "col": 0
+        },
+        "type": "treasure",
+        "label": "Hackathon Win!",
+        "icon": "🏆",
+        "event_id": "evt_hackathon_treasure",
+        "description": "You win a hackathon! Recognition and rewards await."
+      },
+      {
+        "id": "tile_17",
+        "position": {
+          "row": 4,
+          "col": 1
+        },
+        "type": "boss",
+        "label": "Bug Boss: Memory Leak",
+        "icon": "🧨",
+        "event_id": "evt_boss_recursion",
+        "description": "The final boss: a catastrophic memory leak in production!"
+      },
+      {
+        "id": "tile_18",
+        "position": {
+          "row": 4,
+          "col": 2
+        },
+        "type": "event",
+        "label": "Deployment Day",
+        "icon": "☁️",
+        "event_id": "evt_deployment",
+        "description": "Your app is ready for the world. Choose your deployment strategy."
+      },
+      {
+        "id": "tile_19",
+        "position": {
+          "row": 4,
+          "col": 3
+        },
+        "type": "finish",
+        "label": "App Deployed!",
+        "icon": "🚀",
+        "event_id": null,
+        "description": "Congratulations! Your app is live. The world can use your creation!"
+      }
+    ],
+    "difficulty_modifiers": {
+      "easy": {
+        "resource_multiplier": 1.3,
+        "negative_event_chance": 0.2
+      },
+      "medium": {
+        "resource_multiplier": 1.0,
+        "negative_event_chance": 0.4
+      },
+      "hard": {
+        "resource_multiplier": 0.75,
+        "negative_event_chance": 0.65
+      }
+    }
+  },
+  "events": {
+    "evt_loop_logic": {
+      "title": "The Loop Challenge",
+      "story": "You're interning at an Indian e-commerce startup and your manager asks you to process 10,000 customer orders. Doing it manually would take weeks! A senior developer suggests using loops. How do you approach this?",
+      "choices": [
+        {
+          "id": "loop_for",
+          "text": "Use a for loop with a counter to iterate through each order systematically",
+          "delta": {
+            "code_quality": 10,
+            "debug_skill": 5,
+            "energy": -10
+          },
+          "feedback": "Excellent choice! A for loop is perfect when you know exactly how many iterations you need. Your manager is impressed -- all 10,000 orders processed in seconds. Fun fact: a for loop has three parts -- initialization, condition, and increment.",
+          "skill_tags": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "loop_while",
+          "text": "Use a while loop that keeps running until all orders are processed",
+          "delta": {
+            "code_quality": 5,
+            "debug_skill": 8,
+            "energy": -15
+          },
+          "feedback": "Good thinking! A while loop works well when you don't know the exact count upfront. But be careful -- if the condition never becomes false, you'll get an infinite loop! Your code works but uses slightly more energy to debug.",
+          "skill_tags": [
+            "adaptability"
+          ]
+        },
+        {
+          "id": "loop_manual",
+          "text": "Copy-paste the processing code 10,000 times -- no loops needed!",
+          "delta": {
+            "code_quality": -15,
+            "energy": -25,
+            "reputation": -5
+          },
+          "feedback": "Yikes! Copy-pasting violates the DRY principle (Don't Repeat Yourself). Your file is now 50,000 lines long and impossible to maintain. The senior dev shakes their head. Loops exist precisely to avoid this!",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "algorithm",
+        "debugging"
+      ]
+    },
+    "evt_conditionals": {
+      "title": "The If-Else Dilemma",
+      "story": "You're building an online exam portal for a coaching institute in Kota. The system needs to assign grades based on student scores: A for 90+, B for 70-89, C for 50-69, and F for below 50. How do you implement the grading logic?",
+      "choices": [
+        {
+          "id": "cond_ifelse",
+          "text": "Use a proper if-else-if chain that checks score ranges from highest to lowest",
+          "delta": {
+            "code_quality": 12,
+            "debug_skill": 5,
+            "energy": -8
+          },
+          "feedback": "Perfect implementation! Checking from highest to lowest is efficient because once a condition is true, the rest are skipped. The coaching institute loves it -- grades are assigned instantly for 5,000 students. This is called 'short-circuit evaluation' in practice.",
+          "skill_tags": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "cond_nested",
+          "text": "Use deeply nested if statements -- if inside if inside if",
+          "delta": {
+            "code_quality": -5,
+            "debug_skill": 3,
+            "energy": -20
+          },
+          "feedback": "It works, but the code is hard to read! Deeply nested conditionals create what developers call 'arrow code' or 'pyramid of doom.' Each nesting level makes bugs harder to find. A flat if-else-if chain would be much cleaner.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "cond_switch",
+          "text": "Use a switch-case statement with score ranges",
+          "delta": {
+            "code_quality": 5,
+            "debug_skill": 8,
+            "energy": -10
+          },
+          "feedback": "Creative approach! Switch-case works great for exact values, but score ranges need extra logic. You make it work using Math.floor(score/10) to bucket scores. It's clever but less readable than if-else for this use case. Good to know both patterns!",
+          "skill_tags": [
+            "adaptability"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "debugging",
+        "variables"
+      ]
+    },
+    "evt_arrays": {
+      "title": "The Array Adventure",
+      "story": "Your team at an Indian food delivery app (think Swiggy/Zomato) needs to manage a list of restaurant menu items. Items get added, removed, and searched frequently. The menu has 500+ dishes. How do you organize this data?",
+      "choices": [
+        {
+          "id": "arr_array",
+          "text": "Use an array/list and sort it for faster searching",
+          "delta": {
+            "code_quality": 10,
+            "debug_skill": 5,
+            "energy": -10
+          },
+          "feedback": "Solid choice! A sorted array allows binary search (O(log n)), making lookups super fast. Adding and removing items is a bit slower since you need to maintain sort order, but for a menu that changes infrequently, this is efficient. The app loads restaurant menus in milliseconds!",
+          "skill_tags": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "arr_hashmap",
+          "text": "Use a hashmap/dictionary with dish names as keys",
+          "delta": {
+            "code_quality": 12,
+            "debug_skill": 8,
+            "energy": -12
+          },
+          "feedback": "Excellent thinking! A hashmap gives O(1) average lookup time -- nearly instant! Each dish name maps directly to its details. This is the approach real food delivery apps use. You've just learned one of the most important data structures in programming. The tech lead gives you a shoutout in the standup!",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        },
+        {
+          "id": "arr_separate",
+          "text": "Store each dish in a separate variable -- dish1, dish2, dish3...",
+          "delta": {
+            "code_quality": -12,
+            "energy": -20,
+            "reputation": -5
+          },
+          "feedback": "Oh no! With 500+ dishes, that means 500+ separate variables. What happens when a new dish is added? You can't loop through separate variables easily. This is exactly why arrays and collections exist -- to group related data. Time to refactor!",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "variables",
+        "functions"
+      ]
+    },
+    "evt_functions": {
+      "title": "The Function Factory",
+      "story": "You're working on a fintech app (like Paytm or PhonePe) and notice the same payment validation code is written in 7 different places. Every time the RBI updates regulations, all 7 copies need to change. A colleague suggests using functions. What's your approach?",
+      "choices": [
+        {
+          "id": "func_modular",
+          "text": "Create a single validatePayment() function and call it everywhere",
+          "delta": {
+            "code_quality": 15,
+            "debug_skill": 5,
+            "energy": -8
+          },
+          "feedback": "This is exactly what functions are for! One source of truth means one place to update when rules change. Your code went from 700 lines to 200 lines. The principle is called DRY -- Don't Repeat Yourself. When RBI updates UPI limits next month, you only change one function. The team celebrates with chai!",
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ]
+        },
+        {
+          "id": "func_class",
+          "text": "Create a PaymentValidator class with multiple helper methods",
+          "delta": {
+            "code_quality": 10,
+            "debug_skill": 10,
+            "energy": -15
+          },
+          "feedback": "Going object-oriented! A class groups related functions and data together. Your PaymentValidator has methods like checkAmount(), verifyUPI(), and validateKYC(). It's a bit over-engineered for now, but it's future-proof. You've learned about encapsulation -- bundling data with the methods that operate on it.",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        },
+        {
+          "id": "func_keep",
+          "text": "Keep the 7 copies but add comments so everyone knows to update all of them",
+          "delta": {
+            "code_quality": -10,
+            "debug_skill": -5,
+            "energy": -5
+          },
+          "feedback": "Comments are helpful, but humans forget! Within a month, 3 of the 7 copies are out of sync with each other, causing payment failures for users. A function would have prevented this entirely. This is a classic example of why 'code duplication is the root of all evil' in software engineering.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "functions",
+        "loops"
+      ]
+    },
+    "evt_debugging": {
+      "title": "The Debug Detective",
+      "story": "It's 11 PM and the Indian Railway ticket booking feature on your app is crashing during Tatkal hours! Thousands of users are affected. The error log shows 'TypeError: Cannot read property of undefined' on line 247. The entire team is on a war-room call. How do you debug this?",
+      "choices": [
+        {
+          "id": "debug_systematic",
+          "text": "Use console.log and breakpoints to trace the variable that's undefined, step by step",
+          "delta": {
+            "code_quality": 8,
+            "debug_skill": 15,
+            "energy": -15
+          },
+          "feedback": "Textbook debugging! You add strategic console.log statements and discover that the user's 'session' object becomes undefined after 30 minutes of inactivity -- right when Tatkal booking opens and users rush in. You add a session refresh check, and the fix goes live by midnight. Systematic debugging saves the day!",
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ]
+        },
+        {
+          "id": "debug_rollback",
+          "text": "Quickly rollback to the last working version while you investigate",
+          "delta": {
+            "code_quality": 5,
+            "debug_skill": 8,
+            "energy": -10,
+            "reputation": 10
+          },
+          "feedback": "Smart crisis management! Rolling back stops the bleeding immediately. Users can book tickets again while you investigate offline. You discover the bug was introduced in yesterday's deployment -- a missing null check. This is why version control (Git) is essential. Fix the bug, add tests, redeploy safely.",
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "debug_random",
+          "text": "Start randomly changing code that looks suspicious until it works",
+          "delta": {
+            "code_quality": -10,
+            "debug_skill": -5,
+            "energy": -25
+          },
+          "feedback": "This is called 'shotgun debugging' and it's dangerous! You accidentally break two more features while blindly changing code. The CTO steps in and reverts everything. Lesson learned: always understand the bug BEFORE changing code. Read the error message carefully -- it tells you exactly where to look.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "loops",
+        "api"
+      ],
+      "reflection_prompt": "When thousands of users are affected and your team is under pressure, how do you decide between a quick fix and a thorough one? What does responsible engineering look like when speed and correctness are in tension?"
+    },
+    "evt_algorithms": {
+      "title": "The Algorithm Arena",
+      "story": "You've entered a competitive programming contest on CodeChef (an Indian coding platform). The problem: given a list of 1 million Aadhaar numbers, find duplicates as fast as possible. The naive approach (comparing every pair) would take hours. How do you optimize?",
+      "choices": [
+        {
+          "id": "algo_sort",
+          "text": "Sort the list first, then check adjacent elements for duplicates",
+          "delta": {
+            "code_quality": 10,
+            "debug_skill": 8,
+            "energy": -12
+          },
+          "feedback": "Great algorithm choice! Sorting takes O(n log n) time, and then a single pass finds duplicates. Compared to the naive O(n^2) approach, this is massively faster -- seconds instead of hours for a million entries. You finish in the top 20% of the contest. Sorting is one of the most fundamental algorithmic techniques!",
+          "skill_tags": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "algo_hashset",
+          "text": "Use a HashSet -- add each number and check if it already exists",
+          "delta": {
+            "code_quality": 12,
+            "debug_skill": 10,
+            "energy": -10,
+            "reputation": 5
+          },
+          "feedback": "Optimal solution! A HashSet gives O(1) lookup time, making the entire operation O(n) -- the fastest possible. You process a million Aadhaar numbers in under a second and finish in the top 5% of the contest! The trade-off is using extra memory for the HashSet, but for this problem, speed matters more. You earn a CodeChef rating boost!",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        },
+        {
+          "id": "algo_brute",
+          "text": "Use two nested loops to compare every number with every other number",
+          "delta": {
+            "code_quality": -8,
+            "energy": -20,
+            "reputation": -5
+          },
+          "feedback": "This O(n^2) approach means roughly 1 trillion comparisons for a million numbers -- your program times out after 10 minutes! In competitive programming, understanding Big-O complexity is crucial. The judges expected at least O(n log n). Time to study sorting algorithms and hash-based data structures!",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "api",
+        "version_control"
+      ]
+    },
+    "evt_api_calls": {
+      "title": "The API Quest",
+      "story": "Your team is building a weather dashboard for Indian farmers. You need to fetch real-time weather data from an external API. The API returns JSON data with temperature, humidity, and rainfall predictions. But API calls can fail due to network issues. How do you handle this?",
+      "choices": [
+        {
+          "id": "api_robust",
+          "text": "Implement try-catch with retry logic and show cached data if the API is down",
+          "delta": {
+            "code_quality": 15,
+            "debug_skill": 8,
+            "energy": -15
+          },
+          "feedback": "Production-grade code! Your try-catch block gracefully handles network failures. The retry logic (with exponential backoff) gives the API 3 chances before falling back to cached data. Farmers in rural areas with poor connectivity can still see yesterday's forecast. Your tech lead says this is how professionals handle API integration!",
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ]
+        },
+        {
+          "id": "api_basic",
+          "text": "Make the API call and display an error message if it fails",
+          "delta": {
+            "code_quality": 5,
+            "debug_skill": 5,
+            "energy": -8
+          },
+          "feedback": "Basic error handling -- better than nothing! The error message helps users understand what went wrong. But farmers in remote areas see errors frequently due to spotty internet. Adding a cache and retry logic would make the app much more resilient. Still, you've learned the fundamentals of API error handling.",
+          "skill_tags": [
+            "adaptability"
+          ]
+        },
+        {
+          "id": "api_none",
+          "text": "Just make the API call directly -- it should always work, right?",
+          "delta": {
+            "code_quality": -10,
+            "debug_skill": -5,
+            "energy": -10,
+            "reputation": -8
+          },
+          "feedback": "Famous last words in programming! The first time the API server goes down, your entire app crashes with an unhandled exception. Rule #1 of API calls: ALWAYS handle failures. Networks are unreliable, servers go down, and rate limits get hit. This is why try-catch and error handling exist. The farmers lose trust in the app.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "version_control",
+        "testing"
+      ],
+      "reflection_prompt": "Your code serves farmers who depend on weather predictions for their livelihoods. When building software for vulnerable users, how does the responsibility change? What happens when your error handling fails people who need it most?"
+    },
+    "evt_deployment": {
+      "title": "Deployment Day",
+      "story": "Your app is ready to go live! The entire team at your Bengaluru tech startup is gathered around. You need to deploy the app to production servers. This is the moment of truth. How do you deploy?",
+      "choices": [
+        {
+          "id": "deploy_cicd",
+          "text": "Set up a CI/CD pipeline with automated tests that deploy only if all tests pass",
+          "delta": {
+            "code_quality": 12,
+            "debug_skill": 10,
+            "energy": -15,
+            "reputation": 10
+          },
+          "feedback": "The gold standard! Your CI/CD pipeline runs 200 automated tests, checks code style, and deploys to a staging server first. After manual QA approval, it auto-deploys to production. Zero downtime deployment! The CTO presents your pipeline at the next tech meetup as a best practice. This is how top companies like Flipkart and Razorpay deploy.",
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ]
+        },
+        {
+          "id": "deploy_manual",
+          "text": "Manually copy files to the production server via FTP",
+          "delta": {
+            "code_quality": -5,
+            "debug_skill": 3,
+            "energy": -10,
+            "reputation": -5
+          },
+          "feedback": "It's 2024, not 2004! Manual FTP deployment is error-prone -- you accidentally miss uploading the config file, and the app shows database errors to users. No automated tests means bugs slip through. Modern deployment uses Git-based workflows and CI/CD. But hey, at least you learned why automation matters the hard way.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "deploy_staged",
+          "text": "Deploy to a staging environment first, test manually, then push to production",
+          "delta": {
+            "code_quality": 8,
+            "debug_skill": 5,
+            "energy": -12,
+            "reputation": 5
+          },
+          "feedback": "A practical middle ground! The staging environment catches a critical bug -- the payment gateway integration breaks on the production API keys. You fix it before any real user is affected. Not as automated as CI/CD, but much safer than deploying directly to production. You'll automate this later as the team grows.",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "testing",
+        "algorithm"
+      ],
+      "reflection_prompt": "Deploying code to production is irreversible -- real users are affected immediately. How much testing is 'enough' before going live? What is the cost of moving too fast versus too slowly in software engineering?"
+    },
+    "evt_boss_loop": {
+      "title": "Boss Bug: The Infinite Loop",
+      "story": "A terrifying bug has appeared! The app is frozen in an infinite loop, consuming 100% CPU. The server fans are screaming. Your task: identify what a for loop does to defeat this bug.",
+      "choices": [
+        {
+          "id": "boss1_correct",
+          "text": "A for loop repeats a block of code a specific number of times using a counter variable",
+          "delta": {
+            "code_quality": 10,
+            "debug_skill": 12,
+            "reputation": 5,
+            "energy": -5
+          },
+          "feedback": "Bug squashed! You correctly identified that a for loop uses a counter (like i = 0; i < 10; i++) to repeat code a set number of times. The infinite loop was caused by a missing increment (i++) -- the counter never changed, so the condition was always true. You add the increment and the app resumes instantly!",
+          "explanation": "A for loop is designed to repeat a block of code a specific number of times using three components: initialization (setting a counter), a condition (when to stop), and an update (incrementing the counter). For example, 'for (i = 0; i < 10; i++)' runs exactly 10 times. This makes it ideal when you know in advance how many iterations you need, unlike a while loop which continues until a condition becomes false."
+        },
+        {
+          "id": "boss1_wrong1",
+          "text": "A for loop only runs once and then stops",
+          "delta": {
+            "code_quality": -8,
+            "energy": -15,
+            "debug_skill": -5
+          },
+          "feedback": "Not quite! If a loop only ran once, it wouldn't be much of a loop. A for loop repeats code multiple times based on a condition. The key parts are: initialization (start), condition (keep going?), and update (change counter). Without understanding this, the infinite loop persists and the server eventually crashes."
+        },
+        {
+          "id": "boss1_wrong2",
+          "text": "A for loop is used to declare new variables in your program",
+          "delta": {
+            "code_quality": -5,
+            "energy": -12,
+            "debug_skill": -3
+          },
+          "feedback": "That's not right! While a for loop does initialize a counter variable, its primary purpose is repetition -- executing the same code block multiple times. Variable declaration uses keywords like let, var, or const. The bug remains unfixed while you review loop fundamentals."
+        }
+      ],
+      "glossary_terms": [
+        "algorithm",
+        "debugging"
+      ]
+    },
+    "evt_boss_datastructure": {
+      "title": "Boss Bug: The Null Pointer Exception",
+      "story": "A NullPointerException is crashing the ticket queue system! Users are losing their place in line. To fix it, you must prove your data structure knowledge. Answer: Which data structure uses FIFO (First In, First Out)?",
+      "choices": [
+        {
+          "id": "boss2_correct",
+          "text": "A Queue -- the first element added is the first one removed, just like a real queue",
+          "delta": {
+            "code_quality": 12,
+            "debug_skill": 10,
+            "reputation": 8,
+            "energy": -5
+          },
+          "feedback": "Bug defeated! A Queue follows FIFO -- exactly like standing in line at a movie theatre. The first person in line gets served first. You trace the NullPointerException to a missing queue initialization and fix it. The ticket system now correctly maintains user order. Stacks use LIFO (Last In, First Out) -- the opposite!",
+          "explanation": "A Queue follows the FIFO (First In, First Out) principle, meaning the first element added is the first one removed. This mirrors real-life queues like standing in line at a ticket counter. A Stack, by contrast, uses LIFO (Last In, First Out), like a stack of plates. An Array allows random access by index but does not enforce any particular insertion/removal order."
+        },
+        {
+          "id": "boss2_wrong1",
+          "text": "A Stack -- items are stacked on top of each other",
+          "delta": {
+            "code_quality": -8,
+            "energy": -15,
+            "debug_skill": -3
+          },
+          "feedback": "Close, but a Stack uses LIFO (Last In, First Out), not FIFO! Think of a stack of plates -- you take from the top (last placed). A Queue is like a line at a chai stall -- first person in line gets served first. This is a critical distinction in computer science. The bug exploits your confusion and causes more crashes."
+        },
+        {
+          "id": "boss2_wrong2",
+          "text": "An Array -- it stores items in order, so the first one is always first",
+          "delta": {
+            "code_quality": -5,
+            "energy": -12,
+            "debug_skill": -2
+          },
+          "feedback": "An Array stores items in order, but it doesn't enforce FIFO operations. You can access any element by index (random access). A Queue specifically restricts you to adding at the back (enqueue) and removing from the front (dequeue). Without the right data structure, the ticket queue remains broken."
+        }
+      ],
+      "glossary_terms": [
+        "debugging",
+        "variables"
+      ]
+    },
+    "evt_boss_recursion": {
+      "title": "Boss Bug: The Memory Leak",
+      "story": "The final boss! A catastrophic memory leak is eating up server RAM at your Hyderabad tech company. The app slows to a crawl every 6 hours. To defeat this boss, answer: What is recursion in programming?",
+      "choices": [
+        {
+          "id": "boss3_correct",
+          "text": "A function that calls itself to solve smaller sub-problems, with a base case to stop",
+          "delta": {
+            "code_quality": 15,
+            "debug_skill": 15,
+            "reputation": 10,
+            "energy": -5
+          },
+          "feedback": "Final boss defeated! Recursion is when a function calls itself, breaking a big problem into smaller identical sub-problems. The BASE CASE is crucial -- without it, the function calls itself forever, causing a stack overflow (memory leak!). You find the missing base case in the data processing function, add it, and the memory leak vanishes. The server stabilizes!",
+          "explanation": "Recursion is a programming technique where a function calls itself to solve progressively smaller sub-problems. Every recursive function needs a base case -- a condition that stops the recursion -- to prevent infinite calls and stack overflow. Classic examples include calculating factorials (n! = n * (n-1)!) and traversing tree data structures. Without a base case, recursion leads to memory leaks as the call stack grows indefinitely."
+        },
+        {
+          "id": "boss3_wrong1",
+          "text": "A type of loop that runs backwards through an array",
+          "delta": {
+            "code_quality": -10,
+            "energy": -18,
+            "debug_skill": -5
+          },
+          "feedback": "That describes a reverse loop, not recursion! Recursion is a function calling itself. Think of Russian nesting dolls -- each doll contains a smaller version of itself, until you reach the smallest one (base case). Without fixing the actual issue, the memory leak grows worse and the server crashes completely."
+        },
+        {
+          "id": "boss3_wrong2",
+          "text": "A way to import libraries from other programming languages",
+          "delta": {
+            "code_quality": -8,
+            "energy": -15,
+            "debug_skill": -3
+          },
+          "feedback": "That's not recursion at all! Importing libraries is done with keywords like 'import' or 'require.' Recursion is a problem-solving technique where a function solves a problem by calling itself on a smaller version of the same problem. The classic example is factorial: factorial(5) = 5 * factorial(4). The boss bug persists."
+        }
+      ],
+      "glossary_terms": [
+        "variables",
+        "functions"
+      ]
+    },
+    "evt_dev_shop_1": {
+      "title": "The Developer's Shop",
+      "story": "You stumble upon a well-stocked developer tool shop in the tech corridor. The shopkeeper (a retired Infosys engineer) has quality tools to offer.",
+      "choices": [
+        {
+          "id": "shop1_ide",
+          "text": "Buy IDE Upgrade -- autocomplete, linting, and themes (costs 25 energy)",
+          "delta": {
+            "code_quality": 15,
+            "energy": -25
+          },
+          "feedback": "Excellent investment! The upgraded IDE catches typos before you run the code, suggests function completions, and the dark theme saves your eyes during late-night coding. Your productivity doubles!"
+        },
+        {
+          "id": "shop1_energy",
+          "text": "Grab an Energy Drink -- filter coffee from the office pantry (free!)",
+          "delta": {
+            "energy": 20
+          },
+          "feedback": "Nothing beats South Indian filter coffee to recharge a coder! You feel energized and ready to tackle the next challenge. Energy restored!"
+        },
+        {
+          "id": "shop1_mentor",
+          "text": "Book a Mentor Session with the retired engineer (costs 20 energy)",
+          "delta": {
+            "debug_skill": 10,
+            "energy": -20
+          },
+          "feedback": "The mentor shares 30 years of debugging wisdom! He teaches you about systematic debugging, reading stack traces, and the art of print-statement debugging. Your debug skill increases significantly."
+        }
+      ],
+      "glossary_terms": [
+        "functions",
+        "loops"
+      ]
+    },
+    "evt_dev_shop_2": {
+      "title": "The Tech Bazaar",
+      "story": "A second shop appears near the end of your journey. This bazaar, run by IIT graduates turned entrepreneurs, has premium tools and resources.",
+      "choices": [
+        {
+          "id": "shop2_ide",
+          "text": "Premium IDE License -- AI-powered code suggestions (costs 25 energy)",
+          "delta": {
+            "code_quality": 15,
+            "energy": -25
+          },
+          "feedback": "The AI copilot in your IDE is incredible! It predicts entire function bodies and catches potential bugs before you even run the code. Code quality soars!"
+        },
+        {
+          "id": "shop2_energy",
+          "text": "Masala Chai Break -- recharge with a hot cup (free!)",
+          "delta": {
+            "energy": 20
+          },
+          "feedback": "A piping hot masala chai from the tapri outside the office. The perfect coder fuel! You feel refreshed and focused."
+        },
+        {
+          "id": "shop2_mentor",
+          "text": "Advanced Debugging Workshop with a senior architect (costs 20 energy)",
+          "delta": {
+            "debug_skill": 10,
+            "energy": -20
+          },
+          "feedback": "The architect teaches you about memory profiling, performance debugging, and reading core dumps. These are advanced skills that separate junior devs from senior engineers!"
+        }
+      ],
+      "glossary_terms": [
+        "loops",
+        "api"
+      ]
+    },
+    "evt_github_star": {
+      "title": "Open Source Recognition!",
+      "story": "Your open-source project -- a library for simplifying UPI payment integration -- gets featured on GitHub Trending India. Stars are flooding in! How do you respond?",
+      "choices": [
+        {
+          "id": "gh_maintain",
+          "text": "Invest time in documentation, tests, and reviewing pull requests from contributors",
+          "delta": {
+            "code_quality": 10,
+            "reputation": 12,
+            "energy": -15
+          },
+          "feedback": "Being a responsible open-source maintainer earns respect! Your well-documented project attracts contributors from across India. Two developers from TCS and Wipro start contributing regularly. The project becomes a standard library for UPI integration.",
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ]
+        },
+        {
+          "id": "gh_celebrate",
+          "text": "Share the achievement on LinkedIn and Twitter, ride the hype wave",
+          "delta": {
+            "reputation": 15,
+            "energy": -5
+          },
+          "feedback": "Your post goes viral in Indian tech Twitter! Developers share your project, and recruiters start noticing. But without maintenance, some users report bugs and the star count plateaus. Still, the reputation boost is real!",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "api",
+        "version_control"
+      ]
+    },
+    "evt_hackathon_treasure": {
+      "title": "Hackathon Victory!",
+      "story": "You and your team win the Smart India Hackathon! The judges loved your solution for digitizing rural healthcare records. Prize money and national recognition are yours!",
+      "choices": [
+        {
+          "id": "hack_invest",
+          "text": "Invest the prize money in learning advanced cloud and DevOps skills",
+          "delta": {
+            "code_quality": 10,
+            "debug_skill": 8,
+            "energy": -10,
+            "reputation": 8
+          },
+          "feedback": "Knowledge is the best investment! You learn Docker, Kubernetes, and AWS -- skills that top Indian tech companies pay premium salaries for. Your hackathon project evolves into a polished product.",
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "hack_network",
+          "text": "Use the recognition to network with industry mentors and potential employers",
+          "delta": {
+            "reputation": 18,
+            "energy": -5
+          },
+          "feedback": "Your Smart India Hackathon win opens doors! A CTO from a Pune-based startup offers you a summer internship. Networking in the Indian tech ecosystem is incredibly valuable.",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "version_control",
+        "testing"
+      ]
+    }
+  },
+  "result_deltas": {
+    "code_quality_high": {
+      "condition": "code_quality >= 80",
+      "title": "Code Master",
+      "message": "Your code is clean, efficient, and well-structured. Senior developers would be proud!"
+    },
+    "debug_skill_high": {
+      "condition": "debug_skill >= 70",
+      "title": "Bug Slayer",
+      "message": "No bug can hide from you. Your debugging skills are legendary!"
+    },
+    "energy_depleted": {
+      "condition": "energy <= 10",
+      "title": "Burnout Warning",
+      "message": "You're running on fumes. Take breaks -- even the best coders need rest!"
+    },
+    "reputation_high": {
+      "condition": "reputation >= 60",
+      "title": "Community Star",
+      "message": "The developer community knows your name. Open source contributions pay off!"
+    }
+  },
+  "layout_config": {
+    "layout_type": "dashboard",
+    "theme": {
+      "primary_color": "#6366F1",
+      "secondary_color": "#10B981",
+      "accent_color": "#F59E0B",
+      "font_family": "Poppins, sans-serif"
+    }
+  },
+  "win_conditions": {
+    "style": "reach_finish",
+    "description": "Reach the 'App Deployed!' tile to launch your application! Your final score depends on code_quality, debug_skill, energy, and reputation. The best coders balance all four resources."
+  },
+  "glossary_terms": [
+    {
+      "term": "Loop",
+      "definition": "A programming construct that repeats a block of code multiple times. Common types include for loops (known iterations) and while loops (condition-based).",
+      "example": "A for loop that prints numbers 1 to 10: for(i=1; i<=10; i++) { print(i); }",
+      "remember_tip": "Loop = a track that goes round and round until you decide to stop."
+    },
+    {
+      "term": "Conditional (If-Else)",
+      "definition": "A statement that executes different code blocks depending on whether a condition is true or false. It allows programs to make decisions.",
+      "example": "if(age >= 18) { print('Can vote'); } else { print('Too young'); }",
+      "remember_tip": "If-Else = the program's way of asking 'Should I go left or right?'"
+    },
+    {
+      "term": "Function",
+      "definition": "A reusable block of code that performs a specific task. Functions take inputs (parameters), process them, and return outputs.",
+      "example": "function add(a, b) { return a + b; } -- call it with add(3, 5) to get 8.",
+      "remember_tip": "Function = a recipe. Give it ingredients (inputs), follow steps, get a dish (output)."
+    },
+    {
+      "term": "API (Application Programming Interface)",
+      "definition": "A set of rules that allows different software applications to communicate with each other. APIs let your app fetch data from external services.",
+      "example": "A weather app uses a weather API to fetch temperature data from a remote server.",
+      "remember_tip": "API = a waiter in a restaurant. You tell the waiter (API) your order, they go to the kitchen (server), and bring back your food (data)."
+    },
+    {
+      "term": "Recursion",
+      "definition": "A technique where a function calls itself to solve a problem by breaking it into smaller sub-problems. Every recursive function needs a base case to stop.",
+      "example": "Factorial: factorial(5) = 5 * factorial(4) = 5 * 4 * factorial(3)... down to factorial(1) = 1.",
+      "remember_tip": "Recursion = Russian nesting dolls. Each doll opens to reveal a smaller one, until you reach the smallest (base case)."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "ach_clean_coder",
+      "title": "Clean Coder",
+      "description": "Choose the best coding practice in the Loop Logic event (use a for loop)",
+      "condition": {
+        "type": "event_choice",
+        "event_id": "evt_loop_logic",
+        "choice_id": "loop_for"
+      },
+      "reward": {
+        "code_quality": 5
+      },
+      "icon": "✨",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_bug_hunter",
+      "title": "Bug Hunter Supreme",
+      "description": "Defeat all 3 boss bugs by answering correctly",
+      "condition": {
+        "type": "boss_wins",
+        "count": 3
+      },
+      "reward": {
+        "debug_skill": 15,
+        "reputation": 10
+      },
+      "icon": "🏅",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_api_master",
+      "title": "API Architect",
+      "description": "Choose robust error handling in the API Quest event (try-catch with retry logic)",
+      "condition": {
+        "type": "event_choice",
+        "event_id": "evt_api_calls",
+        "choice_id": "api_robust"
+      },
+      "reward": {
+        "code_quality": 8,
+        "reputation": 5
+      },
+      "icon": "🌐",
+      "xp_reward": 250
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "ethical_reasoning",
+        "name": "Ethical Reasoning",
+        "icon": "⚖️",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "emotional_regulation",
+        "name": "Emotional Regulation",
+        "icon": "🧘",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "self_awareness",
+        "name": "Self Awareness",
+        "icon": "🪞",
+        "brain_region": "occipital_posterior"
+      },
+      {
+        "id": "growth_mindset",
+        "name": "Growth Mindset",
+        "icon": "🌱",
+        "brain_region": "occipital_posterior"
+      }
+    ]
+  },
+  "glossary": {
+    "algorithm": {
+      "term": "Algorithm",
+      "definition": "A step-by-step procedure for solving a problem or accomplishing a task. In programming, algorithms are the foundation of all code.",
+      "example": "A sorting algorithm arranges data in order, like alphabetizing a list of names.",
+      "real_world_example": "Google's PageRank algorithm determines which web pages appear first in search results."
+    },
+    "debugging": {
+      "term": "Debugging",
+      "definition": "The process of finding and fixing errors (bugs) in computer programs. Named after a literal moth found in an early computer.",
+      "example": "Using console.log() to trace where a variable gets an unexpected value.",
+      "real_world_example": "The Mars Climate Orbiter was lost due to a unit conversion bug — a costly debugging failure."
+    },
+    "variables": {
+      "term": "Variables",
+      "definition": "Named containers that store data values in a program. They can hold numbers, text, or more complex data structures.",
+      "example": "let score = 0; creates a variable named score that starts at zero.",
+      "real_world_example": "Every app you use has variables — your username, score, and settings are all stored in variables."
+    },
+    "functions": {
+      "term": "Functions",
+      "definition": "Reusable blocks of code that perform specific tasks. Functions help organize code and avoid repetition.",
+      "example": "A calculateTotal() function that adds up prices in a shopping cart.",
+      "real_world_example": "Excel formulas like SUM() and AVERAGE() are functions that process data automatically."
+    },
+    "loops": {
+      "term": "Loops",
+      "definition": "Programming structures that repeat a block of code multiple times. Essential for processing collections of data.",
+      "example": "A for loop that checks each student's grade and assigns pass/fail.",
+      "real_world_example": "Spotify uses loops to play through your playlist, moving to the next song automatically."
+    },
+    "api": {
+      "term": "API (Application Programming Interface)",
+      "definition": "A set of rules that allows different software applications to communicate with each other.",
+      "example": "A weather app uses an API to fetch temperature data from a weather service.",
+      "real_world_example": "When you log in with Google on another website, that website uses Google's API."
+    },
+    "version_control": {
+      "term": "Version Control",
+      "definition": "A system that tracks changes to code over time, allowing developers to collaborate and revert mistakes.",
+      "example": "Using Git to save snapshots of your code so you can undo changes if something breaks.",
+      "real_world_example": "Wikipedia uses version control — you can see every edit ever made to any article."
+    },
+    "testing": {
+      "term": "Software Testing",
+      "definition": "The practice of verifying that code works correctly by running it against expected outcomes.",
+      "example": "Writing a test that checks if add(2, 3) returns 5.",
+      "real_world_example": "Tesla runs millions of automated tests before deploying software updates to their cars."
+    }
+  },
+  "win_criteria": [
+    {
+      "id": "highest_code_quality",
+      "label": "Highest Code Quality",
+      "metric": "code_quality",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "highest_debug_skill",
+      "label": "Highest Debug Skill",
+      "metric": "debug_skill",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "highest_energy",
+      "label": "Highest Energy",
+      "metric": "energy",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "highest_reputation",
+      "label": "Highest Reputation",
+      "metric": "reputation",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "resource_balance",
+      "label": "Best Resource Balance",
+      "metric": "all_resources",
+      "type": "balanced_growth",
+      "icon": "⚖️",
+      "weight": 1.5,
+      "description": "Lowest variance across all resource growth percentages"
+    },
+    {
+      "id": "knowledge_mastery",
+      "label": "Knowledge Mastery",
+      "metric": "glossary_terms_learned",
+      "type": "highest_count",
+      "icon": "📚",
+      "weight": 1
+    },
+    {
+      "id": "challenge_champion",
+      "label": "Challenge Champion",
+      "metric": "boss_wins",
+      "type": "highest_count",
+      "icon": "🗡️",
+      "weight": 1
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "resource_multiplier": 1.4,
+      "negative_event_chance": 0.2
+    },
+    "medium": {
+      "resource_multiplier": 1.0,
+      "negative_event_chance": 0.4
+    },
+    "hard": {
+      "resource_multiplier": 0.65,
+      "negative_event_chance": 0.65
+    }
+  },
+  "coach_mode_default": true,
+  "learning_concept": "Strategic Decision Making",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Navigating resource trade-offs on the board",
+      "real_world": "Managing a project budget with competing priorities",
+      "challenge": "List 3 real decisions you made this week that involved trade-offs between short-term and long-term outcomes."
+    },
+    {
+      "skill_tag": "risk_tolerance",
+      "game_context": "Taking bold moves despite uncertain outcomes",
+      "real_world": "Starting a new initiative at school or work without guaranteed success",
+      "challenge": "Identify one situation where you played it too safe. What would you try differently?"
+    }
+  ],
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.45,
+    "delayed_gratification": 0.3,
+    "adaptability": 0.25
+  },
+  "coaching_moment": "Understand core programming concepts like loops, conditionals, and functions. Learn debugging strategies and how to trace errors in code.",
+  "estimated_duration": 20,
+  "target_age": "12-18",
+  "tags": [
+    "board-game",
+    "intermediate",
+    "role-playing",
+    "strategic-thinking",
+    "technology"
+  ],
+  "cultural_context": "India produces over 1.5 million engineering graduates annually, yet employability in technology remains a challenge. This game develops the logical thinking and computational approach that underlies effective coding in India's booming technology sector.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "self-regulation",
+    "adaptability"
+  ],
+  "reflection_prompt": "Which turn was your turning point — and was it skill, luck, or planning?"
+}

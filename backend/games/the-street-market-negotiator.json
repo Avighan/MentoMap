@@ -1,0 +1,1665 @@
+{
+  "game_id": "the-street-market-negotiator",
+  "title": "The Street Market Negotiator: Save Nani's Stall",
+  "game_type": "story_branching",
+  "visible": true,
+  "description": "The municipal corporation wants to demolish Nani's beloved street food stall to build a parking lot. Armed with nothing but determination, information, and the art of negotiation, can you save a grandmother's livelihood and a community's heart?",
+  "theme": "Negotiation, civic rights, and community advocacy",
+  "difficulty": "intermediate",
+  "duration_minutes": 45,
+  "target_audience": "students",
+  "icon": "🏪",
+  "cover_image_prompt": "A 14-year-old Indian boy standing protectively in front of a colorful street food stall with his grandmother, a municipal notice visible on the wall, busy Indian market setting, vibrant watercolor illustration, age 10-18 friendly",
+  "learning_objectives": [
+    "Learn the fundamentals of negotiation — preparation, anchoring, and BATNA",
+    "Understand civic rights and how municipal processes work",
+    "Practice building alliances across different interest groups",
+    "Develop the skill of finding creative solutions that satisfy multiple parties",
+    "Explore the balance between tradition and development"
+  ],
+  "learning_concept": "The best negotiators do not just fight for what they want — they understand what the other side needs and find creative ways to satisfy both.",
+  "psychological_framework": "Principled Negotiation (Fisher & Ury) — separate people from problems, focus on interests not positions, generate options for mutual gain; combined with Civic Engagement — understanding how to participate effectively in democratic processes",
+  "ai_image_config": {
+    "style": "vibrant watercolor illustration, Indian street market setting, colorful food stall, municipal office, warm community atmosphere, age 10-18 friendly",
+    "provider": "dalle",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/story_branching"
+  },
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "The Notice",
+      "icon": "📋",
+      "teaser": "A demolition notice on Nani's stall. Thirty days to fight for fifty years of history.",
+      "always_unlocked": true,
+      "color": "#ef4444"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "Understanding the Plan",
+      "icon": "🗺️",
+      "teaser": "The parking lot plan hides a bigger picture. {player_name} digs deeper.",
+      "unlocks_after": "ch1",
+      "color": "#f97316"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "Nani's Stories",
+      "icon": "📖",
+      "teaser": "The stall is not just a business — it is a living piece of the neighbourhood's soul.",
+      "unlocks_after": "ch2",
+      "color": "#10b981"
+    },
+    {
+      "chapter_id": "ch4",
+      "number": 4,
+      "title": "Meeting the Commissioner",
+      "icon": "🏛️",
+      "teaser": "Face to face with the man who signed the demolition order.",
+      "unlocks_after": "ch3",
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch5",
+      "number": 5,
+      "title": "The Anchor",
+      "icon": "⚓",
+      "teaser": "Every negotiation needs a first offer. What is Aarav's opening move?",
+      "unlocks_after": "ch4",
+      "color": "#ec4899"
+    },
+    {
+      "chapter_id": "ch6",
+      "number": 6,
+      "title": "Finding Allies",
+      "icon": "🤝",
+      "teaser": "Reshma Aunty was a rival. Now she might be an ally. Journalist Vikram has his own agenda.",
+      "unlocks_after": "ch5",
+      "color": "#8b5cf6"
+    },
+    {
+      "chapter_id": "ch7",
+      "number": 7,
+      "title": "The Public Hearing",
+      "icon": "📢",
+      "teaser": "One microphone. Five minutes. The whole neighbourhood is listening.",
+      "unlocks_after": "ch6",
+      "color": "#0ea5e9"
+    },
+    {
+      "chapter_id": "ch8",
+      "number": 8,
+      "title": "The Counter-Proposal",
+      "icon": "📝",
+      "teaser": "Aarav presents a plan that could give everyone what they need.",
+      "unlocks_after": "ch7",
+      "color": "#f59e0b"
+    },
+    {
+      "chapter_id": "ch9",
+      "number": 9,
+      "title": "The Deal Table",
+      "icon": "🤝",
+      "teaser": "The final negotiation. Councillor Das, Commissioner Gupta, and {player_name}.",
+      "unlocks_after": "ch8",
+      "color": "#14b8a6"
+    },
+    {
+      "chapter_id": "ch10",
+      "number": 10,
+      "title": "Grand Reopening",
+      "icon": "🎉",
+      "teaser": "Nani's stall is saved — but something even bigger was built along the way.",
+      "unlocks_after": "ch9",
+      "color": "#f59e0b"
+    }
+  ],
+  "initial_state": {
+    "confidence": {
+      "value": 40,
+      "label": "Confidence",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "information": {
+      "value": 30,
+      "label": "Information",
+      "icon": "📚",
+      "min": 0,
+      "max": 100
+    },
+    "relationship": {
+      "value": 35,
+      "label": "Relationships",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "patience": {
+      "value": 50,
+      "label": "Patience",
+      "icon": "⏳",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "transitions_to_gameplay": true,
+        "title": "The Red Notice",
+        "narrative": "Nani's chaat stall had been on the corner of Chandni Chowk Lane for fifty-two years. She started it as a young bride with a single pot of dahi and a dream. Now, at seventy-three, her pani puri was famous across three neighbourhoods. Politicians ate here during elections. Schoolchildren pooled their pocket money for her special aloo tikki.\n\nBut today, a red-bordered notice was pasted on the stall's front board: 'MUNICIPAL CORPORATION — NOTICE OF DEMOLITION — 30 DAYS.' The parking lot project for the new metro station required clearing all structures on this block.\n\nNani sat on her stool, reading the notice for the third time. She could not read English well, but she understood the word 'demolition.' {player_name} found her there after school — his grandmother, who had never asked anyone for anything in her life, looking smaller than he had ever seen her.",
+        "image_prompt": "An elderly Indian woman sitting on a stool outside a colorful street food stall reading a red demolition notice with trembling hands, her teenage grandson approaching with a school bag, busy Indian market lane, watercolor illustration, warm afternoon light mixed with worry",
+        "coaching_moment": "When someone you love is threatened by a system that feels too big to fight, the first step is always the same: decide to try.",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Read the notice carefully — understand every word and every deadline",
+            "description": "Aarav takes the notice home and reads it word by word, researching every legal term and procedure mentioned.",
+            "delta": {
+              "information": 12,
+              "confidence": 5,
+              "patience": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Understanding the rules of the game is the first step to changing the outcome.",
+            "memory_tags": [
+              "read_notice_carefully"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Comfort Nani first — the paperwork can wait, she needs you right now",
+            "description": "Aarav sits beside Nani, holds her hand, and promises her the stall is not going anywhere. Emotional support first.",
+            "delta": {
+              "relationship": 10,
+              "confidence": 8,
+              "patience": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Taking care of people before tackling problems builds the emotional foundation for the fight ahead.",
+            "memory_tags": [
+              "comforted_nani"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_c",
+            "label": "Ask the neighbouring shopkeepers — has everyone received the same notice?",
+            "description": "Aarav walks down the lane, checking with other stall owners and shops to understand the scope of the threat.",
+            "delta": {
+              "information": 10,
+              "relationship": 8,
+              "confidence": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Understanding the full picture reveals whether this is a fight for one stall or a fight for an entire community.",
+            "memory_tags": [
+              "checked_neighbours"
+            ],
+            "next_scene": "ch1_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "The Scope of the Problem",
+        "narrative": "The demolition notice affects twelve businesses on Chandni Chowk Lane — Nani's stall, three other food vendors, a tailor, a cobbler, a flower seller, and five small shops. About forty families depend on this income. The parking lot project is backed by the municipal commissioner, Mr. Gupta, and has been approved by the town planning committee.\n\nReshma Aunty, who runs a rival chaat stall two doors down, is furious. 'Fifty years we have been here! My mother started this business! They cannot just tear it down for a parking lot!'\n\nBut the tailor, Raza bhai, is more resigned: 'What can we do? They are the government. We are just small people.'\n\n{player_name} feels the community's mood — anger, fear, and resignation in equal measure. He knows that if everyone stays resigned, the stalls will be gone in thirty days.",
+        "image_prompt": "A market lane with multiple small shops and stalls, worried shopkeepers reading demolition notices, a teenage boy talking to them one by one, the vibrancy of the market contrasted with the threat of destruction, watercolor illustration",
+        "coaching_moment": "The most dangerous response to injustice is resignation — when people believe nothing can change, nothing does.",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Start a WhatsApp group — unite all affected shopkeepers into one voice",
+            "description": "Aarav creates a group called 'Save Chandni Chowk Lane' and adds every shopkeeper, starting the process of collective action.",
+            "delta": {
+              "relationship": 12,
+              "confidence": 8,
+              "information": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Collective voices are harder to ignore — but groups also mean managing disagreements.",
+            "memory_tags": [
+              "started_group"
+            ],
+            "next_scene": "ch1_s3"
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Research the legal options — is there a way to challenge this notice?",
+            "description": "Aarav spends the evening online, learning about municipal law, public hearing requirements, and citizen objection processes.",
+            "delta": {
+              "information": 15,
+              "confidence": 5,
+              "patience": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Legal knowledge is leverage — knowing the rules gives you power even against powerful opponents.",
+            "next_scene": "ch1_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "title": "The First Decision",
+        "narrative": "Aarav's research reveals something important: under municipal law, affected parties have the right to file a formal objection within fifteen days AND to request a public hearing. If enough objections are filed, the corporation must respond before proceeding with demolition.\n\nBut there is a catch: the objection must be well-documented, citing specific grounds such as heritage value, economic impact, or procedural irregularity. A simple 'we do not want it' will not work.\n\nNani, who has been quiet all evening, says something that stops Aarav: 'Beta, this stall fed your father. It paid for your school fees. It gave free food to every hungry person who ever walked past. If they want to take it, make them explain why a parking lot matters more than all of that.'\n\n{player_name} realizes: this is not just about saving a stall. It is about proving that a community's history and livelihood deserve consideration in development decisions.",
+        "image_prompt": "A grandmother and grandson at a kitchen table with legal documents and a laptop, the grandmother speaking with quiet strength while the boy takes notes, evening lamp light, the start of a plan, watercolor illustration",
+        "coaching_moment": "Every negotiation starts with understanding your own story — why does this matter, and why should anyone else care?",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "File formal objections for all twelve businesses — strength in numbers",
+            "description": "Aarav helps every shopkeeper draft and file individual objections, creating a flood of formal responses the corporation must address.",
+            "delta": {
+              "information": 10,
+              "relationship": 12,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Mass objections demand attention — but coordinating twelve different businesses is complex.",
+            "memory_tags": [
+              "filed_objections"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "Focus on one powerful objection with strong evidence — quality over quantity",
+            "description": "Aarav crafts a single comprehensive objection on behalf of the lane, with economic data, heritage arguments, and alternative proposals.",
+            "delta": {
+              "information": 15,
+              "confidence": 8,
+              "relationship": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "A well-crafted argument cuts deeper than many weak ones — but it must be compelling enough to stand alone.",
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_c",
+            "label": "Request a meeting with Commissioner Gupta directly — negotiate before formal battle",
+            "description": "Aarav writes a polite but firm letter requesting a meeting, hoping to resolve the issue through dialogue before it becomes a fight.",
+            "delta": {
+              "confidence": 12,
+              "relationship": 8,
+              "patience": -5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "consequence_hint": "Direct engagement shows respect — but you are meeting a powerful person without full preparation.",
+            "memory_tags": [
+              "requested_meeting_early"
+            ],
+            "next_chapter": "ch2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "The Real Plan",
+        "narrative": "Aarav digs deeper into the parking lot project and discovers something the notice did not mention: the parking lot is not just for the metro station. It is part of a larger commercial development project. A private developer — Skyline Properties — has a contract with the municipality to build a shopping complex with underground parking. The street stalls are in the way of the commercial entrance.\n\nThis changes everything. It is not the municipality serving public interest — it is a private company using government power to clear land for profit.\n\n{player_name} shares this discovery with the WhatsApp group. Reshma Aunty says: 'So they are kicking us out for some rich builder? That is not development. That is robbery.'\n\nBut Raza bhai adds a sobering note: 'If there is a private developer with money involved, this fight just got much harder.'",
+        "image_prompt": "A teenage boy at a computer discovering hidden documents about a development project, property developer logos visible on screen, the revelation that changes the stakes, evening study room, watercolor illustration, investigative discovery",
+        "coaching_moment": "In any negotiation, knowing what the other side REALLY wants — versus what they claim to want — gives you the biggest advantage.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Use RTI to get the full project documents — know everything before acting",
+            "description": "Aarav files a Right to Information request for the complete project file, including the developer agreement.",
+            "delta": {
+              "information": 15,
+              "confidence": 8,
+              "patience": -5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "RTI is a powerful tool — but responses take time, and the clock is ticking.",
+            "memory_tags": [
+              "filed_rti"
+            ],
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Contact Journalist Vikram — media attention could slow the project down",
+            "description": "Aarav reaches out to a local journalist known for covering civic issues, sharing what he has found.",
+            "delta": {
+              "relationship": 10,
+              "confidence": 8,
+              "information": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Media coverage creates public pressure — but journalists have their own agendas and timelines.",
+            "memory_tags": [
+              "contacted_media"
+            ],
+            "next_scene": "ch2_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "The Developer's Angle",
+        "narrative": "More information trickles in. The Skyline Properties deal was approved by the town planning committee six months ago — before any public notice. The contract gives the developer the cleared land at below-market rates in exchange for building public parking. The shopping complex above the parking is where the real money is.\n\nCrucially, the planning approval requires a public consultation — which was never held. The committee skipped a mandatory step.\n\n{player_name} now holds two powerful cards: the private developer angle (which makes the project look less like public service) and the procedural gap (which makes the approval legally questionable). The question is how to use them.",
+        "image_prompt": "A boy studying municipal planning documents at a library table, highlighting a missed procedural step, legal books around him, the moment of finding a crucial error, watercolor illustration, detective work in bureaucracy",
+        "coaching_moment": "In negotiations against powerful opponents, procedural errors are your greatest leverage — because even powerful people must follow rules.",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Present the procedural gap to the commissioner as a reason to pause — not threaten, inform",
+            "description": "Aarav raises the missing public consultation diplomatically, giving the commissioner a face-saving way to slow down.",
+            "delta": {
+              "confidence": 12,
+              "information": 8,
+              "relationship": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Giving powerful people a graceful exit is often more effective than cornering them.",
+            "next_scene": "ch2_s3"
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Save the procedural card for later — use it only if negotiation fails",
+            "description": "Aarav keeps this information in reserve, planning to use it as leverage at the right moment.",
+            "delta": {
+              "information": 10,
+              "patience": 10,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Saving your strongest card for the right moment is expert negotiation — but timing it wrong means losing the advantage.",
+            "memory_tags": [
+              "saved_procedural_card"
+            ],
+            "next_scene": "ch2_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "title": "Preparation Complete",
+        "narrative": "By the end of the first week, Aarav has assembled a negotiation toolkit:\n\n1. Legal knowledge: the procedural gap, citizen objection rights, heritage protection provisions\n2. Economic data: forty families dependent on the lane, estimated annual revenue of the twelve businesses\n3. Community support: all twelve shopkeepers united (for now)\n4. Media interest: Journalist Vikram is following the story\n5. The developer connection: proof that this is private profit using public power\n\nNani watches her grandson preparing and says: 'You remind me of your grandfather. He always said: before you argue, know more than the other person. Then argue gently.'\n\n{player_name} smiles. Argue gently. That is exactly what he plans to do.",
+        "image_prompt": "A teenage boy organizing documents into a neat folder at Nani's food stall table, evidence and charts visible, Nani watching proudly while serving chai, the preparation for battle at a humble food stall, watercolor illustration, warm determination",
+        "coaching_moment": "The negotiator who prepares the most has the most options at the table — and the most options means the most power.",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "Request the formal meeting with Commissioner Gupta — it is time",
+            "description": "Aarav writes a well-prepared letter requesting a meeting, attaching a summary of concerns and the community's willingness to discuss alternatives.",
+            "delta": {
+              "confidence": 12,
+              "relationship": 8,
+              "patience": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "A formal meeting request shows seriousness — and a prepared summary shows you are not someone to dismiss.",
+            "next_chapter": "ch3"
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "First build the emotional case — document Nani's story and the lane's history",
+            "description": "Aarav creates a visual presentation of the lane's history: photos, stories, customer testimonials, fifty-two years of community service.",
+            "delta": {
+              "relationship": 12,
+              "information": 8,
+              "patience": -3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Emotional narratives move hearts — and decisions are made by people with hearts, not just rules.",
+            "memory_tags": [
+              "documented_history"
+            ],
+            "next_chapter": "ch3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "Nani's History",
+        "narrative": "Before the meeting with the commissioner, Aarav sits with Nani to record her story properly. What emerges is not just a business history — it is the history of the neighbourhood itself.\n\nNani tells him about the 1971 floods, when the stall became a free kitchen for displaced families. About the time she lent money to Raza bhai's father so he could start his tailoring shop. About how she named every recipe after someone — 'Meera's Masala Puri' was created for a girl who only liked mild food.\n\nShe shows him a tattered notebook: a list of every family she has fed for free over fifty-two years. It fills forty-seven pages.\n\n{player_name} realizes: this stall is not a commercial property. It is a community institution. Demolishing it would remove something that cannot be rebuilt with steel and concrete.",
+        "image_prompt": "An elderly Indian woman showing her grandson a tattered notebook in her food stall kitchen, old photographs pinned to the wall, recipes written on yellowed paper, the living history of a neighbourhood, watercolor illustration, heritage and love",
+        "coaching_moment": "The best argument in any negotiation is not data or logic alone — it is a story that makes the other person see what they would be destroying.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Photograph everything — create a visual heritage document",
+            "description": "Aarav creates a comprehensive photo and video archive of the stall, its history, and its community impact.",
+            "delta": {
+              "information": 12,
+              "relationship": 8,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Visual evidence of heritage is compelling — people protect what they can see and feel.",
+            "memory_tags": [
+              "created_archive"
+            ],
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Collect testimonials from customers — let the community speak for itself",
+            "description": "Aarav visits regular customers and asks them to write or record short testimonials about what the stall means to them.",
+            "delta": {
+              "relationship": 15,
+              "confidence": 8,
+              "information": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Community voices carry authenticity that no lawyer or politician can match.",
+            "memory_tags": [
+              "collected_testimonials"
+            ],
+            "next_scene": "ch3_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "Reshma Aunty's Olive Branch",
+        "narrative": "Something unexpected: Reshma Aunty, Nani's biggest business rival for twenty years, walks into the stall. The two women have barely spoken — their competition is legendary in the lane.\n\n'Listen,' Reshma says, arms crossed. 'I do not like your pani puri. And you do not like my bhel. But neither of us likes a parking lot. My daughter told me your grandson is organizing something. I want in.'\n\nNani looks at Reshma for a long moment. Then she picks up a plate of her best dahi puri and puts it in front of her rival. 'Eat first. Then we talk.'\n\nReshma takes a bite. She chews slowly. Then: 'Okay. Your dahi puri is decent. Not great. Decent.'\n\nNani almost smiles. It is the closest to a compliment Reshma has ever given.\n\n{player_name} watches two women who have competed for decades find common ground against a bigger threat — and thinks: this is what coalition building actually looks like.",
+        "image_prompt": "Two elderly Indian women at a street food stall, one grudgingly eating the other's food, years of rivalry softening into alliance, a teenage boy watching the unlikely reconciliation, vibrant market setting, watercolor illustration, humor and heart",
+        "coaching_moment": "The strongest coalitions are formed not between friends, but between rivals who discover a shared interest bigger than their differences.",
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Invite Reshma Aunty to co-lead the campaign — her passion and energy are assets",
+            "description": "Aarav formally asks Reshma to be a spokesperson alongside Nani, doubling the campaign's credibility and energy.",
+            "delta": {
+              "relationship": 15,
+              "confidence": 8,
+              "patience": -3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Sharing leadership with a former rival shows strength — and two powerful voices are harder to dismiss than one.",
+            "memory_tags": [
+              "reshma_alliance"
+            ],
+            "next_scene": "ch3_s3"
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Welcome her support but keep Nani as the face — one clear story is more powerful",
+            "description": "Aarav includes Reshma in the coalition but keeps Nani's story as the emotional centrepiece of the campaign.",
+            "delta": {
+              "confidence": 10,
+              "relationship": 8,
+              "information": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "A focused narrative cuts through noise — but sidelining a strong personality has risks.",
+            "next_scene": "ch3_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "title": "The Petition",
+        "narrative": "The coalition grows. Aarav and the shopkeepers create a formal petition: 'Save Chandni Chowk Lane — Preserve Heritage, Protect Livelihoods.' Within a week, they collect 847 signatures from residents, customers, and supporters.\n\nJournalist Vikram writes a feature story: 'The Grandmother vs. The Parking Lot.' It goes moderately viral locally. Three TV news channels pick it up.\n\nCouncillor Mrs. Das, who represents the ward, calls Aarav. 'I have been watching your campaign,' she says carefully. 'I am sympathetic. But the commissioner and the developer have powerful friends. If you want my support, you need to show me a viable alternative — not just opposition.'\n\n{player_name} understands: saying 'no' to demolition is not enough. He needs to say 'yes' to something better.",
+        "image_prompt": "A teenager collecting petition signatures at a busy market, stacks of signed papers, a TV news crew in the background, a female councillor watching from a car, the campaign gaining momentum, watercolor illustration, civic action",
+        "coaching_moment": "The most powerful negotiation position is not just opposing what you do not want — it is proposing what you do want.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "Research alternative parking solutions — is there another location or design that works?",
+            "description": "Aarav studies the area's layout and proposes underground parking beneath the existing road, preserving the stalls above.",
+            "delta": {
+              "information": 15,
+              "confidence": 10,
+              "relationship": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Creative alternatives transform your position from obstructionist to problem-solver — a much stronger place to negotiate from.",
+            "memory_tags": [
+              "found_alternative"
+            ],
+            "next_chapter": "ch4"
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "Propose a heritage zone designation — protect the lane permanently under heritage laws",
+            "description": "Aarav applies for the lane to be designated as a heritage food street, which would block commercial development.",
+            "delta": {
+              "information": 12,
+              "confidence": 8,
+              "patience": -5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Heritage protection is powerful legally — but the process is slow and the developer will fight it.",
+            "next_chapter": "ch4"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s1",
+        "chapter": "ch4",
+        "title": "Commissioner Gupta's Office",
+        "narrative": "Two weeks into the campaign, Commissioner Gupta agrees to meet Aarav. His office is large, air-conditioned, and intimidating. A scale model of the development project sits on the conference table — gleaming glass and steel replacing the chaotic warmth of Chandni Chowk Lane.\n\nGupta is a bureaucrat in his fifties, polite but efficient. 'I have fifteen minutes,' he says. 'I have read your petition. I understand the sentiment. But development requires sacrifice. The metro station needs parking. The shopping complex will create 200 jobs. Twelve stalls cannot hold back progress for a city of five lakh people.'\n\n{player_name} takes a breath. This is the first real face-to-face negotiation. Every word matters. The opening move will set the tone for everything that follows.",
+        "image_prompt": "A teenage boy sitting across from a senior government official in a formal office, a development project model between them, the boy looking prepared despite his age, the official looking skeptical but listening, watercolor illustration, David meets Goliath",
+        "coaching_moment": "In negotiation, your opening statement frames the entire conversation — choose whether to start with emotion, with facts, or with a question.",
+        "choices": [
+          {
+            "id": "ch4_s1_a",
+            "label": "Start with a question: 'Was the mandatory public consultation held before approval?'",
+            "description": "Aarav opens with the procedural gap, immediately establishing that the process was flawed.",
+            "delta": {
+              "confidence": 15,
+              "information": 8,
+              "relationship": -5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Opening with leverage shows strength — but it can also make the other side defensive from the start.",
+            "memory_tags": [
+              "opened_with_procedure"
+            ],
+            "next_scene": "ch4_s2"
+          },
+          {
+            "id": "ch4_s1_b",
+            "label": "Start with respect: 'Sir, we are not against development. We want to find a way that works for everyone.'",
+            "description": "Aarav opens cooperatively, positioning himself as a problem-solver rather than an opponent.",
+            "delta": {
+              "relationship": 12,
+              "confidence": 8,
+              "patience": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Cooperative openings lower defenses — but they may be mistaken for weakness.",
+            "memory_tags": [
+              "opened_cooperatively"
+            ],
+            "next_scene": "ch4_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s2",
+        "chapter": "ch4",
+        "title": "The Commissioner Responds",
+        "narrative": "Commissioner Gupta is more thoughtful than expected. Whether Aarav opened with procedure or cooperation, the commissioner reveals something: he is under pressure. The developer is pushing for speed. The metro authority wants parking ready before the station opens. And the local MLA wants to announce a big development project before elections.\n\n'I am not heartless,' Gupta says. 'I ate at your grandmother's stall as a young officer. But I have a city to run. If you have a better idea that gives me parking spaces AND protects the stalls, I will listen. If all you have is nostalgia, I cannot help you.'\n\n{player_name} hears the hidden message: Gupta is open to alternatives, but he needs something concrete. Nostalgia is not enough. He needs a plan that solves HIS problem — parking — while saving Aarav's problem — the stalls.",
+        "image_prompt": "A commissioner leaning forward across his desk, looking at a teenage boy with a mix of respect and challenge, the development model between them, a window showing the city behind, watercolor illustration, the negotiation deepens",
+        "coaching_moment": "The best negotiators listen for what the other side actually needs — hidden behind their stated position, there is usually a problem they want solved.",
+        "choices": [
+          {
+            "id": "ch4_s2_a",
+            "label": "Present the underground parking alternative — the stalls can stay above ground",
+            "description": "Aarav shows a rough proposal for underground parking beneath the road, with the food stalls integrated into the metro station entrance.",
+            "delta": {
+              "confidence": 15,
+              "information": 10,
+              "relationship": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "A concrete alternative transforms the conversation from 'no' to 'what if' — the most powerful words in negotiation.",
+            "memory_tags": [
+              "presented_alternative"
+            ],
+            "next_scene": "ch4_s3"
+          },
+          {
+            "id": "ch4_s2_b",
+            "label": "Ask for time: 'Give me one week to prepare a proper alternative proposal'",
+            "description": "Aarav recognizes he needs more preparation and asks for a follow-up meeting with a professional-quality proposal.",
+            "delta": {
+              "patience": 10,
+              "information": 8,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Asking for time shows you take the challenge seriously — but the clock is still ticking on that thirty-day notice.",
+            "next_scene": "ch4_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s3",
+        "chapter": "ch4",
+        "title": "A Door Opens",
+        "narrative": "Commissioner Gupta does not say yes. But he does not say no. He says: 'Bring me a proper proposal with cost estimates. If it works financially and gives me the same number of parking spaces, I will consider it. But you have two weeks.'\n\nAs Aarav leaves the office, he realizes something: the negotiation has shifted. He is no longer begging for mercy. He is being asked to solve a problem. That is a completely different power dynamic.\n\nBut he also needs help. He is fourteen. He does not know how to create architectural proposals or cost estimates. He needs professionals — architects, engineers, someone who understands municipal budgets.\n\n{player_name} walks out of the municipal building into the afternoon sun and thinks: the door is open. But he has two weeks to walk through it with something extraordinary.",
+        "image_prompt": "A teenage boy walking out of a municipal building into sunlight, looking determined and slightly overwhelmed, the building imposing behind him, a notepad with notes in his hand, watercolor illustration, the challenge ahead",
+        "coaching_moment": "When an opponent opens a door, the smartest thing is to walk through it prepared — not rush through it breathless.",
+        "choices": [
+          {
+            "id": "ch4_s3_a",
+            "label": "Find a friendly architect — someone who can turn the alternative idea into a real plan",
+            "description": "Aarav reaches out to an architect he found online who specializes in heritage-sensitive urban design.",
+            "delta": {
+              "information": 15,
+              "confidence": 10,
+              "relationship": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Professional support turns ideas into credible proposals — but finding the right expert takes effort and sometimes money.",
+            "memory_tags": [
+              "found_architect"
+            ],
+            "next_chapter": "ch5"
+          },
+          {
+            "id": "ch4_s3_b",
+            "label": "Rally the community to fund a professional proposal — collective investment shows commitment",
+            "description": "Aarav asks the twelve shopkeepers to pool resources for a professional architect's report, investing in their own future.",
+            "delta": {
+              "relationship": 15,
+              "confidence": 8,
+              "patience": -3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Community investment creates shared ownership — people fight harder for something they have invested in.",
+            "memory_tags": [
+              "community_funded"
+            ],
+            "next_chapter": "ch5"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s1",
+        "chapter": "ch5",
+        "title": "The Anchor Strategy",
+        "narrative": "With professional help, Aarav's proposal takes shape. The architect suggests three options:\n\nOption A: Underground parking with street stalls preserved above (most expensive, best for community)\nOption B: Multi-level parking at a different location 200 metres away (moderate cost, preserves the lane entirely)\nOption C: Integrated development — the shopping complex includes a heritage food court where all twelve businesses relocate with guaranteed leases (lowest cost, compromise)\n\n{player_name} must decide his 'anchor' — the first offer he presents to the commissioner. In negotiation theory, the anchor sets the reference point for all subsequent bargaining. If you anchor high, the final deal tends to be better for you.",
+        "image_prompt": "A teenage boy and an architect looking at three different design proposals spread on a table, each showing a different solution to the parking vs stalls problem, professional drawings and cost sheets, watercolor illustration, strategic planning",
+        "coaching_moment": "Your first offer in a negotiation sets the range of possible outcomes — anchor thoughtfully, because everything that follows is relative to where you start.",
+        "choices": [
+          {
+            "id": "ch5_s1_a",
+            "label": "Anchor with Option A — underground parking, stalls stay exactly where they are",
+            "description": "Aarav leads with the most ambitious proposal, knowing the final deal will likely be less but still favorable.",
+            "delta": {
+              "confidence": 15,
+              "information": 5,
+              "patience": -3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "High anchors set favorable reference points — but they can also be dismissed as unrealistic.",
+            "memory_tags": [
+              "anchored_high"
+            ],
+            "next_scene": "ch5_s2"
+          },
+          {
+            "id": "ch5_s1_b",
+            "label": "Present all three options — let the commissioner choose, making him feel in control",
+            "description": "Aarav gives Gupta a menu of solutions, each solving his parking problem while preserving the community.",
+            "delta": {
+              "relationship": 12,
+              "confidence": 10,
+              "information": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Offering choices makes the other side feel empowered — and all three choices are wins for you.",
+            "next_scene": "ch5_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s2",
+        "chapter": "ch5",
+        "title": "The Developer Pushes Back",
+        "narrative": "Word reaches Skyline Properties that the shopkeepers are organizing. The developer sends a representative to meet Aarav — a slick man named Verma who arrives in an expensive car.\n\n'Let me be honest,' Verma says. 'We have invested two crore rupees in this project. We have a signed contract with the municipality. Your proposal is nice, but we are not changing our plans because a few stalls do not want to move.'\n\nThen he lowers his voice: 'I can offer your grandmother a very generous compensation. Five lakh rupees. That is more than she would earn in five years.'\n\n{player_name} stares at the number. Five lakh is a lot of money for Nani. It could pay for her medical expenses, for Aarav's education. But it would also mean surrendering — putting a price on fifty-two years of history.",
+        "image_prompt": "A slick businessman in an expensive car offering money to a teenage boy at a street food stall, the boy's expression showing temptation battling with principle, the stall and grandmother visible in the background, watercolor illustration, moral test",
+        "coaching_moment": "Every negotiation has a moment where the other side tries to buy your silence — knowing your walk-away value before that moment is essential.",
+        "narrative_variants": {
+          "comforted_nani": "Aarav remembers Nani's face when she read the demolition notice. No amount of money replaces what would be lost.",
+          "saved_procedural_card": "Aarav still has the procedural gap in reserve. The developer does not know it. This leverage changes the power dynamic."
+        },
+        "choices": [
+          {
+            "id": "ch5_s2_a",
+            "label": "Reject the offer — 'This stall is not for sale'",
+            "description": "Aarav declines the compensation firmly, making clear that the fight is about preservation, not price.",
+            "delta": {
+              "confidence": 15,
+              "relationship": 8,
+              "patience": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Refusing money when you need it shows conviction — and tells the developer this will not be easy.",
+            "memory_tags": [
+              "rejected_buyout"
+            ],
+            "next_scene": "ch5_s3"
+          },
+          {
+            "id": "ch5_s2_b",
+            "label": "Counter: 'We do not want money. We want guaranteed spaces in your new development — for all twelve businesses'",
+            "description": "Aarav turns the buyout attempt into a negotiation, demanding permanent inclusion rather than removal.",
+            "delta": {
+              "confidence": 12,
+              "information": 10,
+              "relationship": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Counter-offers keep the negotiation alive while raising your position — but you are now bargaining with the developer directly.",
+            "memory_tags": [
+              "counter_offered"
+            ],
+            "next_scene": "ch5_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s3",
+        "chapter": "ch5",
+        "title": "The Lines Are Drawn",
+        "narrative": "The developer leaves unhappy. Verma's parting words: 'You are making a mistake. We can make this happen with or without your cooperation. The municipality is on our side.'\n\nReshma Aunty, who overheard the conversation, is furious. 'Let him try. We have been here fifty years. Where was Skyline Properties?'\n\nBut Raza bhai is nervous. 'Five lakh is real money. My daughter's wedding is next year. What if we lose everything and get nothing?'\n\nThe coalition is being tested. The developer's visit has introduced doubt — and doubt is the most dangerous thing in any alliance.\n\n{player_name} must hold the coalition together while the external pressure mounts.",
+        "image_prompt": "A group of worried Indian shopkeepers gathered at a market stall, some looking determined and some looking scared, a teenager trying to hold them together, the pressure of powerful opposition visible, watercolor illustration, coalition under stress",
+        "coaching_moment": "Coalitions break not from external pressure, but from internal doubt — the leader's job is to address the doubt honestly, not ignore it.",
+        "choices": [
+          {
+            "id": "ch5_s3_a",
+            "label": "Hold a meeting — let everyone voice their fears, then recommit together",
+            "description": "Aarav calls a meeting of all twelve shopkeepers, giving each person space to express their concerns before deciding the next step collectively.",
+            "delta": {
+              "relationship": 15,
+              "confidence": 8,
+              "patience": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Open discussion prevents resentment — but it also means some people may voice the desire to take the money.",
+            "next_chapter": "ch6"
+          },
+          {
+            "id": "ch5_s3_b",
+            "label": "Offer a safety net — if the negotiation fails, everyone gets their share of whatever compensation comes",
+            "description": "Aarav promises that nobody will be left with nothing — creating a fallback that reduces the risk of staying united.",
+            "delta": {
+              "confidence": 10,
+              "relationship": 12,
+              "patience": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Safety nets keep coalitions together — people fight harder when they know they will not lose everything.",
+            "next_chapter": "ch6"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s1",
+        "chapter": "ch6",
+        "title": "Reshma's Idea",
+        "narrative": "Reshma Aunty arrives at the next meeting with an idea nobody expected. 'My nephew works in TV production. What if we organize a food festival on Chandni Chowk Lane? Invite the whole city. Show them what they will lose if the stalls are demolished. Make it impossible to tear down something that the whole city just celebrated.'\n\nThe shopkeepers buzz. A food festival would generate publicity, demonstrate the lane's economic value, and create emotional attachment — all in one event.\n\nBut Journalist Vikram, who has been following the story, warns: 'The developer might try to get the municipality to deny your event permit. Be ready for bureaucratic obstruction.'\n\n{player_name} weighs the idea. A food festival is brilliant — but it requires permission, organization, and money, all within two weeks.",
+        "image_prompt": "An animated elderly woman pitching a food festival idea to a group of shopkeepers, everyone looking excited, a journalist taking notes, colorful market stall backdrop, watercolor illustration, creative strategy",
+        "coaching_moment": "The best strategies make people experience what they stand to lose — because humans fight harder to prevent loss than to achieve gain.",
+        "choices": [
+          {
+            "id": "ch6_s1_a",
+            "label": "Go all in on the food festival — it is the emotional gambit that could change everything",
+            "description": "Aarav throws the community's energy into organizing a spectacular food festival that becomes a city event.",
+            "delta": {
+              "relationship": 15,
+              "confidence": 10,
+              "patience": -5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "A successful festival is a game-changer — a failed one wastes the little time remaining.",
+            "memory_tags": [
+              "organized_festival"
+            ],
+            "next_scene": "ch6_s2"
+          },
+          {
+            "id": "ch6_s1_b",
+            "label": "Do a smaller version — a 'Heritage Walk and Taste Tour' that does not need a permit",
+            "description": "Aarav scales down the idea to avoid bureaucratic obstacles, creating a walking tour that highlights each stall's history.",
+            "delta": {
+              "confidence": 8,
+              "relationship": 10,
+              "patience": 5
+            },
+            "skill_tags": [
+              "adaptability",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Smaller events are easier to execute — but they may not generate the attention needed.",
+            "next_scene": "ch6_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s2",
+        "chapter": "ch6",
+        "title": "Councillor Das Steps In",
+        "narrative": "Councillor Mrs. Das makes her move. She publicly supports the 'Save Chandni Chowk Lane' campaign at a ward meeting, citing the community petition and the procedural gaps.\n\n'Development should serve the people, not displace them,' she says. 'I am asking the commissioner to extend the deadline and consider alternative proposals.'\n\nHer support is significant — she has political influence and sits on the town planning committee. But Aarav notices something: Mrs. Das is up for re-election next year. Her support may be genuine, or it may be strategic. Either way, he needs her.\n\n{player_name} must navigate the murky world where civic activism meets political self-interest — a place where allies are useful but not always reliable.",
+        "image_prompt": "A female Indian councillor speaking at a ward meeting with campaign posters visible, a teenage boy in the audience watching carefully, political supporters and community members mixed together, watercolor illustration, where activism meets politics",
+        "coaching_moment": "In civic campaigns, political allies are essential — the key is to make your cause align with their interests, so their support is durable.",
+        "choices": [
+          {
+            "id": "ch6_s2_a",
+            "label": "Work closely with Mrs. Das — her political weight can tip the negotiation",
+            "description": "Aarav coordinates with the councillor, sharing information and strategy, integrating her support into the campaign.",
+            "delta": {
+              "relationship": 12,
+              "confidence": 10,
+              "information": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Political allies amplify your voice — but they may also reshape your message to suit their needs.",
+            "memory_tags": [
+              "political_alliance"
+            ],
+            "next_scene": "ch6_s3"
+          },
+          {
+            "id": "ch6_s2_b",
+            "label": "Accept her support but maintain independence — the campaign belongs to the community, not a politician",
+            "description": "Aarav thanks Mrs. Das publicly but keeps the campaign's messaging and strategy independent of her political agenda.",
+            "delta": {
+              "confidence": 10,
+              "relationship": 5,
+              "patience": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Independence preserves credibility — but it may limit the resources and access a political ally could provide.",
+            "next_scene": "ch6_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s3",
+        "chapter": "ch6",
+        "title": "The Public Hearing Announced",
+        "narrative": "The combined pressure — petition, media coverage, councillor's intervention, and the procedural gap — forces Commissioner Gupta to announce a public hearing. It will be held in three days at the municipal hall.\n\nThis is the opportunity Aarav has been working toward. A public hearing means both sides get to present their case in front of the community and the decision-makers. The developer will have lawyers and professional presentations. Aarav has a teenage boy, a grandmother, a plate of chaat, and the truth.\n\n{player_name} has three days to prepare the most important presentation of his life. Not in a boardroom, but in a civic hall. Not with lawyers, but with stories, data, and a community standing behind him.",
+        "image_prompt": "A public hearing announcement posted on a municipal board, a teenage boy reading it with determination while community members gather behind him, the municipal hall visible in the background, watercolor illustration, the arena is set",
+        "coaching_moment": "Public hearings are where ordinary citizens can challenge powerful institutions — but only if they come prepared, organized, and clear about what they want.",
+        "choices": [
+          {
+            "id": "ch6_s3_a",
+            "label": "Prepare a multi-speaker presentation — Nani, Reshma, a customer, and the architect each speak",
+            "description": "Aarav designs a coordinated presentation with different voices telling different parts of the story.",
+            "delta": {
+              "confidence": 15,
+              "relationship": 12,
+              "information": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Multiple voices create a symphony of evidence — but coordinating speakers requires rehearsal.",
+            "next_chapter": "ch7"
+          },
+          {
+            "id": "ch6_s3_b",
+            "label": "Let Nani speak alone — one authentic voice is more powerful than a rehearsed chorus",
+            "description": "Aarav bets everything on Nani's story, trusting that the authenticity of one grandmother will outweigh any corporate presentation.",
+            "delta": {
+              "confidence": 10,
+              "relationship": 15,
+              "patience": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "One authentic voice can change everything — but it also means putting all your weight on one person.",
+            "memory_tags": [
+              "nani_speaks"
+            ],
+            "next_chapter": "ch7"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s1",
+        "chapter": "ch7",
+        "title": "The Public Hearing",
+        "narrative": "The municipal hall is packed. Skyline Properties has brought three lawyers, a presentation screen, and the slick Verma in a fresh suit. Commissioner Gupta sits at the front with two committee members. Councillor Das is in the audience. Journalist Vikram has a camera.\n\nThe developer goes first. Their presentation is polished: economic projections, job creation figures, tax revenue estimates. They show renderings of the gleaming shopping complex. It looks impressive. It looks like progress.\n\nThen it is the community's turn. {player_name} takes a deep breath. The room is full. Nani is in the front row. Reshma Aunty is beside her. Eight hundred and forty-seven petition signers are represented. This is the moment.",
+        "image_prompt": "A packed municipal hearing hall — lawyers with a presentation on one side, a teenage boy preparing to speak on the other, a grandmother in the front row, media present, the hall buzzing with civic energy, watercolor illustration, the democratic arena",
+        "coaching_moment": "In a public hearing, you are not just arguing a case — you are telling a story that makes people feel the consequences of the decision.",
+        "choices": [
+          {
+            "id": "ch7_s1_a",
+            "label": "Start with the data — economic impact, jobs at risk, heritage value",
+            "description": "Aarav opens with facts: forty families, fifty-two years, economic data that shows the lane generates real value.",
+            "delta": {
+              "information": 12,
+              "confidence": 10,
+              "relationship": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Leading with data establishes credibility — and makes the emotional arguments that follow harder to dismiss.",
+            "next_scene": "ch7_s2"
+          },
+          {
+            "id": "ch7_s1_b",
+            "label": "Start with Nani — let her tell her story first, then present the alternative plan",
+            "description": "Aarav lets the emotional truth fill the room before introducing the practical solution.",
+            "delta": {
+              "relationship": 15,
+              "confidence": 8,
+              "information": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Stories create emotional investment — people who care about Nani will care about the outcome.",
+            "memory_tags": [
+              "nani_first"
+            ],
+            "next_scene": "ch7_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s2",
+        "chapter": "ch7",
+        "title": "The Developer Attacks",
+        "narrative": "Verma from Skyline Properties responds aggressively. 'This is sentimentality holding a city hostage. One grandmother's chaat stall cannot block a project that benefits five lakh citizens. We have a legal contract. We have approvals. This hearing is a formality.'\n\nThe lawyers back him up with legal citations. They show projected losses if the project is delayed. They paint the shopkeepers as obstacles to progress.\n\nThe room shifts. Some audience members nod. Others look uncomfortable. Commissioner Gupta is writing notes.\n\n{player_name} has to respond — not with anger, not with tears, but with the kind of argument that changes how people frame the problem. The developer has positioned it as progress vs. nostalgia. Aarav needs to reframe it as progress WITH preservation.",
+        "image_prompt": "A tense public hearing moment — a corporate representative aggressively attacking the community's position, a teenage boy standing his ground preparing to respond, the audience split between sympathy and doubt, watercolor illustration",
+        "coaching_moment": "Reframing is the most powerful technique in negotiation — the side that controls the frame controls the outcome.",
+        "choices": [
+          {
+            "id": "ch7_s2_a",
+            "label": "Present the alternative plan NOW — show that both parking AND stalls are possible",
+            "description": "Aarav unveils the architect's proposal, proving that the developer's either/or framing is false.",
+            "delta": {
+              "confidence": 15,
+              "information": 12,
+              "relationship": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Shattering a false choice with a third option is the most powerful move in any public debate.",
+            "next_scene": "ch7_s3"
+          },
+          {
+            "id": "ch7_s2_b",
+            "label": "Raise the procedural gap — 'This project was approved without the legally required public consultation'",
+            "description": "Aarav plays the legal card, challenging the entire basis of the project's approval.",
+            "delta": {
+              "information": 15,
+              "confidence": 10,
+              "relationship": -3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Legal challenges are powerful but adversarial — they force a decision rather than facilitating agreement.",
+            "next_scene": "ch7_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s3",
+        "chapter": "ch7",
+        "title": "The Audience Responds",
+        "narrative": "Whatever Aarav chose, the room responds. The alternative plan draws surprised murmurs — even the commissioner leans forward. The procedural challenge makes the lawyers uncomfortable. The combination is powerful: a solution AND a legal lever.\n\nBut the most powerful moment comes unscripted. An elderly man in the audience stands up. 'I have eaten at that stall for thirty years. My wife and I had our first meal together there. My children grew up on Nani's pani puri. If you tear it down for a parking lot, you are saying that our memories, our community, our identity — that these things have no value. Is that really the kind of city we want?'\n\nThe room is quiet. {player_name} watches Commissioner Gupta's face. Something is shifting.",
+        "image_prompt": "An elderly man standing in a public hearing audience making an emotional plea, the room listening in silence, a teenage boy watching from the speakers' table, the commissioner's expression softening, watercolor illustration, the power of a single voice",
+        "coaching_moment": "The most powerful arguments often come not from the prepared speakers, but from the community they represent — when ordinary people speak, decision-makers listen differently.",
+        "choices": [
+          {
+            "id": "ch7_s3_a",
+            "label": "Build on the emotion — invite other community members to share their stories",
+            "description": "Aarav opens the floor to more voices, letting the wave of community feeling carry the argument.",
+            "delta": {
+              "relationship": 15,
+              "confidence": 10,
+              "patience": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Community voices are the most authentic advocacy — but managing an open floor is unpredictable.",
+            "next_chapter": "ch8"
+          },
+          {
+            "id": "ch7_s3_b",
+            "label": "Channel the moment into action — ask the commissioner to defer the demolition and review the alternative plan",
+            "description": "Aarav uses the emotional momentum to push for a specific, concrete outcome: a decision to pause and consider.",
+            "delta": {
+              "confidence": 15,
+              "information": 8,
+              "relationship": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Converting emotion into action is the mark of a skilled negotiator — feelings fade, but decisions stick.",
+            "next_chapter": "ch8"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s1",
+        "chapter": "ch8",
+        "title": "The Counter-Proposal",
+        "narrative": "Commissioner Gupta agrees to a two-week extension and a formal review of the alternative plan. The developer is furious but cannot publicly oppose a fair process.\n\nAarav, the architect, and Councillor Das work around the clock to refine the proposal. The final version proposes:\n\n1. Underground parking beneath the existing road (300 spaces, same as the original plan)\n2. Chandni Chowk Lane designated as a 'Heritage Food Street' (permanent protection)\n3. The shopping complex moves 100 metres north, where there is vacant land\n4. A partnership between the developer, the municipality, and the shopkeepers' cooperative\n\nThe proposal is professional, costed, and feasible. But it requires the developer to change plans — which costs money and time.\n\n{player_name} presents it to the commissioner in a formal meeting. This is the counter-proposal. Everything depends on whether it is good enough.",
+        "image_prompt": "A teenage boy presenting a professional architectural proposal to a commissioner and committee members, detailed plans on screen showing underground parking with preserved stalls above, a formal conference room, watercolor illustration, the counter-proposal",
+        "coaching_moment": "The strongest negotiation position is when your proposal solves the other side's problem better than their own plan does.",
+        "choices": [
+          {
+            "id": "ch8_s1_a",
+            "label": "Emphasize how this plan serves the commissioner's interests too — parking, development, AND happy voters",
+            "description": "Aarav frames the proposal as a win for Gupta: he gets parking, development, AND the political goodwill of protecting heritage.",
+            "delta": {
+              "confidence": 15,
+              "relationship": 12,
+              "information": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Showing the other side how your proposal serves THEIR interests is the golden rule of negotiation.",
+            "next_scene": "ch8_s2"
+          },
+          {
+            "id": "ch8_s1_b",
+            "label": "Present the facts and let the proposal speak for itself — no spin, just substance",
+            "description": "Aarav delivers a clean, factual presentation, trusting the quality of the plan to make the argument.",
+            "delta": {
+              "information": 12,
+              "confidence": 10,
+              "patience": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Substance without spin shows confidence — but decision-makers are human and respond to framing.",
+            "next_scene": "ch8_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s2",
+        "chapter": "ch8",
+        "title": "The Developer's Final Move",
+        "narrative": "Skyline Properties makes a final play. Verma requests a private meeting with Commissioner Gupta. When Aarav learns about this from Councillor Das, his blood runs cold — private deals behind closed doors are where community interests usually lose.\n\nMrs. Das says: 'I can try to get you into that meeting. But you would be walking into a room with a commissioner, a developer, and three lawyers. Alone. At fourteen.'\n\n{player_name} considers the risk. If the developer and commissioner make a deal without the community present, the alternative proposal dies. But if Aarav is in the room, he can protect the community's interests — or at least witness what is decided.",
+        "image_prompt": "A worried councillor telling a teenage boy about a secret meeting, a conference room visible through a glass door with powerful people inside, the boy weighing whether to enter, watercolor illustration, power dynamics",
+        "coaching_moment": "The most important negotiation sessions happen behind closed doors — being in the room is half the battle.",
+        "narrative_variants": {
+          "opened_with_procedure": "Aarav's earlier procedural challenge gives him standing to demand inclusion in any meeting about the project.",
+          "political_alliance": "Mrs. Das's political weight gets Aarav a seat at the table — the alliance pays off at the crucial moment."
+        },
+        "choices": [
+          {
+            "id": "ch8_s2_a",
+            "label": "Go to the meeting — you have earned a seat at the table",
+            "description": "Aarav walks into the room with the commissioner, the developer, and three lawyers. He has his evidence folder, his alternative plan, and Nani's voice in his head.",
+            "delta": {
+              "confidence": 15,
+              "relationship": 8,
+              "patience": -5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "Being in the room where decisions happen is the most important thing — even if you are the youngest person there.",
+            "memory_tags": [
+              "entered_the_room"
+            ],
+            "next_scene": "ch8_s3"
+          },
+          {
+            "id": "ch8_s2_b",
+            "label": "Send the architect instead — a professional carries more weight in that room",
+            "description": "Aarav delegates to the architect, who can speak the technical and financial language the room demands.",
+            "delta": {
+              "information": 10,
+              "patience": 8,
+              "confidence": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Sending the right person for the right room is strategic — but it means your voice is not directly heard.",
+            "next_scene": "ch8_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s3",
+        "chapter": "ch8",
+        "title": "The Negotiation",
+        "narrative": "The meeting lasts three hours. The developer tries everything: threats ('We will sue for breach of contract'), inducements ('We will increase compensation to eight lakh per stall'), and pressure ('The metro authority wants this done yesterday').\n\nBut the alternative plan keeps coming back: it solves the parking problem, it preserves the community, and it is legally cleaner because it includes the public consultation that was originally skipped.\n\nCommissioner Gupta, after hearing both sides, says something that changes the room: 'The alternative plan is feasible. It costs the developer more, yes. But it also gives the project political legitimacy and public support. That has value.'\n\nVerma protests. But Gupta raises his hand. 'I am not destroying a fifty-two-year-old food street for a parking lot when there is a viable alternative. Not on my watch.'\n\n{player_name}'s heart is pounding. Is this real?",
+        "image_prompt": "A turning point in a conference room — a commissioner making a decision, the developer looking frustrated, a teenage boy (or architect) looking astonished, the moment a negotiation tips in the community's favor, watercolor illustration",
+        "coaching_moment": "The moment when a powerful person chooses the right thing over the easy thing is the moment that all your preparation was building toward.",
+        "choices": [
+          {
+            "id": "ch8_s3_a",
+            "label": "Thank the commissioner and immediately start discussing implementation details",
+            "description": "Aarav locks in the decision by moving to specifics: timelines, guarantees, written agreements.",
+            "delta": {
+              "confidence": 15,
+              "information": 10,
+              "relationship": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Closing the deal quickly after a favorable decision prevents it from being reversed — get it in writing.",
+            "next_chapter": "ch9"
+          },
+          {
+            "id": "ch8_s3_b",
+            "label": "Ask for everything in writing before leaving the room — verbal promises are not enough",
+            "description": "Aarav insists on a formal written commitment before anyone leaves, knowing that unwritten agreements evaporate.",
+            "delta": {
+              "information": 15,
+              "confidence": 12,
+              "patience": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Written agreements are the foundation of trust in negotiation — ink on paper is worth a thousand handshakes.",
+            "memory_tags": [
+              "got_it_in_writing"
+            ],
+            "next_chapter": "ch9"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s1",
+        "chapter": "ch9",
+        "title": "The Deal",
+        "narrative": "The final agreement is signed by the commissioner, the developer, and the shopkeepers' cooperative (represented by Nani and Reshma Aunty as co-chairs):\n\n1. Chandni Chowk Lane is designated a Heritage Food Street\n2. Underground parking will be built beneath the adjacent road\n3. The shopping complex moves to vacant land 100 metres north\n4. All twelve stalls receive permanent operating licenses\n5. The developer receives a tax incentive for heritage-sensitive design\n\nIt is not perfect. The stalls will face construction disruption for months. The developer got concessions Aarav would have preferred to withhold. But the core outcome is achieved: Nani's stall stands.\n\n{player_name} holds the signed document and thinks about the journey from a red demolition notice to this piece of paper. Thirty days. One teenager. One grandmother. And a community that chose to fight.",
+        "image_prompt": "A formal signing ceremony — an elderly woman and another woman signing a document alongside a commissioner and developer, a teenage boy standing behind them beaming, official setting with community members watching, watercolor illustration, victory",
+        "coaching_moment": "The best deals are the ones where everyone gets something they truly need — even if nobody gets everything they wanted.",
+        "choices": [
+          {
+            "id": "ch9_s1_a",
+            "label": "Celebrate with the community — they earned this together",
+            "description": "Aarav organizes a celebration at the lane, where every stall provides free food and the whole neighbourhood rejoices.",
+            "delta": {
+              "relationship": 20,
+              "confidence": 10,
+              "patience": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Celebrating together cements the community bond that was forged in the fight.",
+            "memory_tags": [
+              "celebrated_together"
+            ],
+            "next_scene": "ch9_s2"
+          },
+          {
+            "id": "ch9_s1_b",
+            "label": "Start monitoring implementation immediately — deals are only as good as their execution",
+            "description": "Aarav shifts into oversight mode, creating a timeline and tracking system for every point in the agreement.",
+            "delta": {
+              "information": 12,
+              "confidence": 10,
+              "patience": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Vigilant follow-through turns paper agreements into real outcomes — the fight is not over until the stalls are safe.",
+            "next_scene": "ch9_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s2",
+        "chapter": "ch9",
+        "title": "Nani's Tears",
+        "narrative": "That evening, after the signing ceremony and the celebrations, Aarav finds Nani sitting at her stall. The same stool. The same spot. But she is crying — not from sadness, but from relief.\n\n'I thought it was over,' she says. 'Fifty-two years. Your grandfather's dream. Our family's livelihood. I thought they would take it and nobody would care.'\n\nShe looks at Aarav. 'You cared. You fought. A fourteen-year-old boy fought the municipal corporation. Your grandfather would have been so proud.'\n\n{player_name} sits beside Nani on the stool that has held four generations of his family. The evening light turns the street golden. The sound of the city hums around them. The stall stands.",
+        "image_prompt": "An elderly Indian grandmother and her teenage grandson sitting together at their saved food stall at golden hour, tears of relief on the grandmother's face, the stall standing strong behind them, warm evening light, watercolor illustration, intergenerational love",
+        "coaching_moment": "The most meaningful victories are not the ones that make headlines — they are the ones that let the people you love keep living with dignity.",
+        "choices": [
+          {
+            "id": "ch9_s2_a",
+            "label": "Ask Nani to teach you her secret recipe — it is time to learn the family tradition",
+            "description": "Aarav asks to learn Nani's cooking, ensuring the tradition survives regardless of what the future brings.",
+            "delta": {
+              "relationship": 15,
+              "patience": 10,
+              "confidence": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Preserving tradition is not just about saving buildings — it is about passing on knowledge and love.",
+            "memory_tags": [
+              "learned_recipe"
+            ],
+            "next_scene": "ch9_s3"
+          },
+          {
+            "id": "ch9_s2_b",
+            "label": "Tell Nani: 'This fight taught me more than any school ever could'",
+            "description": "Aarav shares what he learned — negotiation, civic rights, coalition building — and credits Nani as his real teacher.",
+            "delta": {
+              "confidence": 15,
+              "relationship": 12,
+              "information": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Acknowledging what you learned from the fight is the sign of a leader who keeps growing.",
+            "next_scene": "ch9_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s3",
+        "chapter": "ch9",
+        "title": "The Shopkeepers' Cooperative",
+        "narrative": "In the weeks that follow, Aarav helps formalize the Chandni Chowk Lane Shopkeepers' Cooperative — a legal entity that gives the twelve businesses collective bargaining power for the future.\n\nReshma Aunty is elected co-president alongside Nani. Raza bhai is treasurer. Even the flower seller, who was the most skeptical throughout, joins enthusiastically.\n\nThe cooperative's first act: establishing a joint marketing fund. The second: creating a heritage display at the entrance of the lane, telling the fifty-two-year history of the food street.\n\n{player_name} sees the coalition that was forged in crisis becoming a permanent institution — and realizes that the best outcomes of negotiation are not just deals, but relationships that outlast them.",
+        "image_prompt": "A group of Indian shopkeepers gathered around a table signing cooperative documents, the teenage boy who organized them watching proudly, a heritage display banner visible in the background, market stalls thriving behind them, watercolor illustration, community institution born",
+        "coaching_moment": "The lasting impact of good negotiation is not just the deal you reach — it is the relationships and institutions you build along the way.",
+        "choices": [
+          {
+            "id": "ch9_s3_a",
+            "label": "Create a 'civic rights workshop' for teenagers — teach others what you learned",
+            "description": "Aarav turns his experience into a teaching programme, helping other young people learn how to engage with municipal processes.",
+            "delta": {
+              "confidence": 15,
+              "relationship": 10,
+              "information": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Teaching what you learned multiplies the impact — every student you train becomes another person who knows how to fight.",
+            "memory_tags": [
+              "civic_workshop"
+            ],
+            "next_chapter": "ch10"
+          },
+          {
+            "id": "ch9_s3_b",
+            "label": "Write up the whole story — document the negotiation as a case study for others",
+            "description": "Aarav creates a detailed account of the campaign, strategies, and lessons, making it available to other communities facing similar threats.",
+            "delta": {
+              "information": 15,
+              "confidence": 10,
+              "relationship": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Documented case studies help other communities replicate success — your story becomes a template.",
+            "next_chapter": "ch10"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s1",
+        "chapter": "ch10",
+        "title": "Grand Reopening",
+        "narrative": "Six months later. The underground parking construction is underway, but the stalls above continue to operate. Chandni Chowk Lane has a new archway that reads: 'HERITAGE FOOD STREET — EST. 1974.'\n\nNani's stall has been renovated — same recipes, same location, but with a proper seating area. Reshma Aunty's stall has a sign: 'BEST BHEL IN TOWN (NANI'S DAHI PURI IS SECOND BEST).'\n\nNani's response sign: 'OUR DAHI PURI IS FAMOUS. OUR BHEL... WE DO NOT TALK ABOUT BHEL.'\n\nThe rivalry is alive and well. {player_name} laughs every time he passes both signs. Some things should never change.",
+        "image_prompt": "A vibrant Indian heritage food street with a new archway, renovated stalls with humorous rival signs, customers eating happily, a teenage boy surveying his creation with pride, colorful bunting and lights, watercolor illustration, celebration",
+        "coaching_moment": "The best outcomes preserve what is precious while allowing for growth — development and heritage can coexist when people care enough to insist on both.",
+        "choices": [
+          {
+            "id": "ch10_s1_a",
+            "label": "Organize the inaugural Heritage Food Festival — make it an annual tradition",
+            "description": "Aarav makes Reshma's original idea permanent, creating an annual celebration that draws the whole city to the lane.",
+            "delta": {
+              "relationship": 15,
+              "confidence": 12,
+              "patience": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Annual traditions create cultural infrastructure — they make heritage visible and valued year after year.",
+            "memory_tags": [
+              "annual_festival"
+            ],
+            "next_scene": "ch10_s2"
+          },
+          {
+            "id": "ch10_s1_b",
+            "label": "Invite Commissioner Gupta as chief guest — turn an opponent into a champion",
+            "description": "Aarav invites the commissioner to inaugurate the heritage street, giving him public credit for the decision to preserve it.",
+            "delta": {
+              "relationship": 12,
+              "confidence": 10,
+              "information": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Making your former opponent a partner in success ensures they defend the outcome forever.",
+            "next_scene": "ch10_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s2",
+        "chapter": "ch10",
+        "title": "The Next Fight",
+        "narrative": "At the reopening celebration, a woman approaches Aarav. She introduces herself as the head of the Shanti Nagar Residents' Association, two neighbourhoods away.\n\n'We heard what you did,' she says. 'We are facing the same thing — a developer wants to tear down our community park for a mall. Our children play in that park. Will you help us?'\n\nAarav looks at her. He thinks about the last six months — the sleepless nights, the confrontations, the moments when he thought they would lose. It was the hardest thing he has ever done.\n\nIt was also the most meaningful.\n\n{player_name} looks at Nani, serving her famous dahi puri to a long line of customers. He looks at Reshma Aunty, loudly arguing with a customer about the proper way to eat bhel. He looks at the Heritage Food Street arch.\n\nThen he looks back at the woman and says...",
+        "image_prompt": "A woman approaching a teenage boy at a food festival, asking for help, the boy looking at his grandmother's thriving stall then back at the woman with a growing sense of purpose, celebratory festival background, watercolor illustration, the next chapter",
+        "coaching_moment": "The skills you develop fighting one battle — negotiation, coalition building, civic engagement — become tools you carry for life.",
+        "narrative_variants": {
+          "civic_workshop": "The civic rights workshop Aarav taught has already produced three students who could help with the park campaign.",
+          "annual_festival": "The Heritage Food Festival has created a template that the park community could adapt for their own campaign."
+        },
+        "choices": [
+          {
+            "id": "ch10_s2_a",
+            "label": "'Yes. Let me hear about your park.'",
+            "description": "Aarav accepts immediately — because the skills are transferable and the cause is just.",
+            "delta": {
+              "confidence": 12,
+              "relationship": 12,
+              "information": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Saying yes to the next fight means your impact multiplies — each community you help becomes another champion for civic rights.",
+            "next_scene": "ch10_s3"
+          },
+          {
+            "id": "ch10_s2_b",
+            "label": "'I will teach your community what we learned — but you must lead your own fight.'",
+            "description": "Aarav offers guidance and tools, but insists that the community must own their campaign — sustainable advocacy requires local leadership.",
+            "delta": {
+              "confidence": 15,
+              "relationship": 10,
+              "patience": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Teaching others to fish rather than fishing for them creates exponential impact — but it requires patience and trust.",
+            "memory_tags": [
+              "taught_others"
+            ],
+            "next_scene": "ch10_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s3",
+        "chapter": "ch10",
+        "title": "Nani's Final Word",
+        "narrative": "Late that evening, after the festival crowds have gone, Aarav helps Nani close the stall. She wipes down the counter — the same wood, the same cloth, the same ritual for fifty-two years.\n\n'Beta,' she says, 'you know what your grandfather used to say? He used to say: the strongest building is not made of cement. It is made of people who refuse to be moved.'\n\nShe hangs up the cloth. 'You moved people today. Not with anger. Not with money. With patience, with information, and with the belief that a grandmother's chaat stall is worth fighting for.'\n\nShe pats his cheek. 'Now go do your homework. You still have a maths test on Monday.'\n\n{player_name} laughs. Some things — mothers, grandmothers, and maths tests — are truly immovable. And that is exactly how it should be.",
+        "image_prompt": "A grandmother and grandson closing a food stall together at night, the 'Heritage Food Street' archway glowing behind them, the grandmother's hand on the boy's cheek, warm lamp light, the love between generations, watercolor illustration, perfect ending",
+        "coaching_moment": "The greatest negotiator is not the one who wins every deal — it is the one who fights for what matters and comes home to the people who matter most.",
+        "choices": [
+          {
+            "id": "ch10_s3_a",
+            "label": "Walk home with Nani, planning tomorrow's menu — life goes on, and that is the victory",
+            "description": "Aarav walks beside his grandmother, talking about recipes and customers, savoring the normalcy they fought to keep.",
+            "delta": {
+              "relationship": 20,
+              "confidence": 18,
+              "patience": 15
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "is_ending": true,
+            "ending_type": "community_champion",
+            "ending_message": "Chandni Chowk Lane became one of the most visited heritage food streets in the city. The annual food festival drew 10,000 visitors in its second year. Nani's dahi puri was featured in a national food magazine. Reshma Aunty's bhel puri was featured in the SAME magazine — they argued about whose page came first for three months. The underground parking was completed on time, serving both the metro station and the food street customers. Commissioner Gupta attended the inauguration and was photographed eating Nani's pani puri — a picture that became the most shared image in the city that week. And Aarav? He went on to study law, specializing in civic rights and urban heritage. His first case: defending a community park from a mall developer. He won. Nani sent laddoos to the courtroom."
+          },
+          {
+            "id": "ch10_s3_b",
+            "label": "Sit at the stall one more minute — savor the silence of a fight well won",
+            "description": "Aarav sits alone at the closed stall, listening to the quiet of the lane, feeling the weight of what was saved.",
+            "delta": {
+              "confidence": 20,
+              "patience": 18,
+              "relationship": 15
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "is_ending": true,
+            "ending_type": "quiet_hero",
+            "ending_message": "Twenty years later, Aarav would bring his own daughter to Chandni Chowk Lane. Nani was ninety-three and still making dahi puri — slower, with help from Reshma Aunty's granddaughter, but with the same recipe from 1974. The Heritage Food Street was now a landmark. The stall had a small plaque that read: 'Saved by the community, 2026.' His daughter would ask: 'Papa, is it true you fought the whole government to save a chaat stall?' And Aarav would say: 'Not just a chaat stall, beta. A home. A history. A grandmother who taught me that the strongest buildings are made of people who refuse to be moved.'"
+          }
+        ]
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "negotiation",
+      "definition": "A discussion aimed at reaching an agreement between parties with different interests — the goal is to find a solution that works for everyone."
+    },
+    {
+      "term": "BATNA",
+      "definition": "Best Alternative to a Negotiated Agreement — your backup plan if talks fail, which determines how much power you have at the table."
+    },
+    {
+      "term": "anchor",
+      "definition": "The first offer in a negotiation, which sets the reference point for all subsequent bargaining — where you start influences where you end."
+    },
+    {
+      "term": "coalition",
+      "definition": "A group of people or organizations that come together to achieve a shared goal, combining their resources and influence."
+    },
+    {
+      "term": "RTI",
+      "definition": "Right to Information — an Indian law giving citizens the right to request information from government bodies, promoting transparency."
+    },
+    {
+      "term": "heritage",
+      "definition": "Things of value that are passed down from previous generations — buildings, traditions, recipes, stories — that define a community's identity."
+    },
+    {
+      "term": "public_hearing",
+      "definition": "A formal meeting where citizens can speak about a proposed government action, ensuring community voices are part of the decision-making process."
+    },
+    {
+      "term": "municipal_corporation",
+      "definition": "The local government body responsible for managing a city's services, planning, and development."
+    },
+    {
+      "term": "cooperative",
+      "definition": "An organization owned and run jointly by its members, who share the profits and decision-making."
+    },
+    {
+      "term": "compensation",
+      "definition": "Payment or other benefits given to someone in exchange for loss — in development contexts, what affected people receive when their property is taken."
+    },
+    {
+      "term": "zoning",
+      "definition": "Government rules about how land in different areas can be used — residential, commercial, heritage, etc."
+    },
+    {
+      "term": "stakeholder",
+      "definition": "Anyone who is affected by or has an interest in a decision — in development, this includes residents, businesses, developers, and government."
+    },
+    {
+      "term": "reframe",
+      "definition": "Changing the way a problem is described or understood — a powerful negotiation technique that shifts the discussion to more favorable terms."
+    },
+    {
+      "term": "civic_engagement",
+      "definition": "The ways citizens participate in their community's governance — voting, petitioning, attending hearings, organizing."
+    },
+    {
+      "term": "procedural_justice",
+      "definition": "The idea that fair processes are as important as fair outcomes — when people feel the process was fair, they accept even unfavorable results."
+    },
+    {
+      "term": "eminent_domain",
+      "definition": "The government's power to take private property for public use, usually with compensation — a power that must be exercised fairly."
+    }
+  ],
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.3,
+    "empathy": 0.2,
+    "delayed_gratification": 0.2,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "risk_tolerance": 0.05
+  },
+  "coaching_moment": "The best negotiators do not just fight for what they want — they understand what the other side needs and find creative ways to satisfy both.",
+  "estimated_duration": "40-50 minutes",
+  "target_age": "10-18",
+  "tags": [
+    "story",
+    "negotiation",
+    "civic-rights",
+    "community",
+    "heritage",
+    "life-skills",
+    "india"
+  ],
+  "cultural_context": "indian",
+  "nep_stage": "middle_school",
+  "nep_competencies": [
+    "critical_thinking",
+    "communication",
+    "civic_participation",
+    "social_emotional_learning",
+    "ethical_reasoning"
+  ],
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}

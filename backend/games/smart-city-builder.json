@@ -1,0 +1,2335 @@
+{
+  "game_id": "smart-city-builder",
+  "title": "Smart City Builder",
+  "theme": "Urban Planning & Governance",
+  "icon": "🏗️",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are the newly appointed City Development Officer of Naya Shahar. Balance infrastructure, environment, economy, and citizen welfare to build a model smart city. Every decision ripples across interconnected systems — choose wisely!",
+  "target_audience": "Ages 12-16",
+  "target_age": "12-16",
+  "grade": "8",
+  "difficulty": "intermediate",
+  "duration_minutes": 25,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You manage Naya Shahar across 10 months of development.",
+    "Each round presents a policy decision with trade-offs across systems.",
+    "Watch the dashboard — your subsystems (Transport, Health, Economy, Environment, Education) are interconnected.",
+    "Random events like monsoons, elections, and festivals will test your resilience.",
+    "NPCs (Mayor, Citizens, Activists) react to your choices in real time.",
+    "Aim for balanced growth — maximizing one system at the expense of others will backfire!"
+  ],
+  "learning_objectives": [
+    "Understand systems thinking and how subsystems interconnect",
+    "Practice balancing competing priorities under constraints",
+    "Develop strategic thinking about resource allocation",
+    "Learn about urban governance, sustainability, and civic responsibility",
+    "Build empathy for diverse stakeholder perspectives"
+  ],
+  "tags": [
+    "simulation",
+    "city-building",
+    "governance",
+    "systems-thinking",
+    "sustainability"
+  ],
+  "nep_stage": "Secondary",
+  "nep_competencies": [
+    "Critical Thinking",
+    "Problem Solving",
+    "Environmental Awareness",
+    "Civic Responsibility",
+    "Financial Literacy"
+  ],
+  "cultural_context": "Indian urban development, smart city mission, sustainable growth",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.15,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.15,
+    "ethical_reasoning": 0.15
+  },
+  "initial_state": {
+    "budget": {
+      "value": 50000,
+      "label": "Budget",
+      "icon": "💰",
+      "min": -20000,
+      "max": 200000
+    },
+    "population": {
+      "value": 10000,
+      "label": "Population",
+      "icon": "👥",
+      "min": 0,
+      "max": 500000
+    },
+    "happiness": {
+      "value": 60,
+      "label": "Citizen Happiness",
+      "icon": "😊",
+      "min": 0,
+      "max": 100
+    },
+    "public_health": {
+      "value": 55,
+      "label": "Public Health",
+      "icon": "🏥",
+      "min": 0,
+      "max": 100
+    },
+    "environment_quality": {
+      "value": 65,
+      "label": "Environment",
+      "icon": "🌿",
+      "min": 0,
+      "max": 100
+    },
+    "infrastructure": {
+      "value": 50,
+      "label": "Infrastructure",
+      "icon": "🏗️",
+      "min": 0,
+      "max": 100
+    },
+    "education_quality": {
+      "value": 45,
+      "label": "Education",
+      "icon": "📚",
+      "min": 0,
+      "max": 100
+    },
+    "economy_index": {
+      "value": 50,
+      "label": "Economy",
+      "icon": "📈",
+      "min": 0,
+      "max": 100
+    },
+    "safety": {
+      "value": 55,
+      "label": "Safety",
+      "icon": "🛡️",
+      "min": 0,
+      "max": 100
+    },
+    "green_cover": {
+      "value": 40,
+      "label": "Green Cover",
+      "icon": "🌳",
+      "min": 0,
+      "max": 100
+    },
+    "traffic_congestion": {
+      "value": 60,
+      "label": "Traffic Congestion",
+      "icon": "🚗",
+      "min": 0,
+      "max": 100
+    },
+    "digital_infra": {
+      "value": 30,
+      "label": "Digital Infrastructure",
+      "icon": "📱",
+      "min": 0,
+      "max": 100
+    },
+    "tax_revenue": {
+      "value": 8000,
+      "label": "Tax Revenue/Month",
+      "icon": "💵",
+      "min": 0,
+      "max": 100000
+    },
+    "public_trust": {
+      "value": 55,
+      "label": "Public Trust",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Month",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "transportation",
+        "label": "Transportation",
+        "icon": "🚌",
+        "color": "#6366F1",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, infrastructure * 0.4 + (100 - traffic_congestion) * 0.3 + digital_infra * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "healthcare",
+        "label": "Healthcare",
+        "icon": "🏥",
+        "color": "#EF476F",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, public_health * 0.5 + budget / 1000 * 0.2 + environment_quality * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "economy",
+        "label": "Economy",
+        "icon": "📈",
+        "color": "#FFD166",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, economy_index * 0.4 + infrastructure * 0.2 + education_quality * 0.2 + digital_infra * 0.2))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "environment",
+        "label": "Environment",
+        "icon": "🌿",
+        "color": "#06D6A0",
+        "initial_health": 65,
+        "health_formula": "min(100, max(0, environment_quality * 0.4 + green_cover * 0.35 + (100 - traffic_congestion) * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "education",
+        "label": "Education",
+        "icon": "🎓",
+        "color": "#118AB2",
+        "initial_health": 45,
+        "health_formula": "min(100, max(0, education_quality * 0.5 + digital_infra * 0.25 + budget / 1000 * 0.25))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "citizen_satisfaction",
+        "label": "Citizen Satisfaction",
+        "icon": "😊",
+        "formula": "(happiness * 0.3 + public_health * 0.2 + safety * 0.2 + environment_quality * 0.15 + education_quality * 0.15)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 30,
+          "warning": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "city_development_index",
+        "label": "City Development Index",
+        "icon": "🏙️",
+        "formula": "(infrastructure * 0.2 + economy_index * 0.2 + education_quality * 0.15 + public_health * 0.15 + environment_quality * 0.15 + digital_infra * 0.15)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "sustainability_score",
+        "label": "Sustainability Score",
+        "icon": "♻️",
+        "formula": "(environment_quality * 0.4 + green_cover * 0.3 + (100 - traffic_congestion) * 0.3)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 40,
+          "good": 60
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "tax_collection",
+        "label": "Monthly Tax Revenue",
+        "effects": [
+          {
+            "resource": "budget",
+            "formula": "budget + tax_revenue"
+          }
+        ],
+        "description": "Tax revenue is collected monthly."
+      },
+      {
+        "id": "population_growth",
+        "label": "Population Growth",
+        "condition": {
+          "resource": "happiness",
+          "op": ">=",
+          "value": 45
+        },
+        "effects": [
+          {
+            "resource": "population",
+            "formula": "int(population + population * 0.015 * (happiness / 100))"
+          }
+        ],
+        "description": "Satisfied citizens attract new residents."
+      },
+      {
+        "id": "population_decline",
+        "label": "Population Exodus",
+        "condition": {
+          "resource": "happiness",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "population",
+            "formula": "int(population * 0.97)"
+          }
+        ],
+        "description": "Unhappy citizens are leaving the city."
+      },
+      {
+        "id": "tax_revenue_adjustment",
+        "label": "Tax Revenue Update",
+        "effects": [
+          {
+            "resource": "tax_revenue",
+            "formula": "int(population * 0.8 * (economy_index / 100))"
+          }
+        ],
+        "description": "Tax revenue depends on population and economic activity."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "industry_pollution",
+        "from_subsystem": "economy",
+        "to_subsystem": "environment",
+        "label": "Industrial Pollution",
+        "condition": {
+          "resource": "economy_index",
+          "op": ">",
+          "value": 70
+        },
+        "effects": [
+          {
+            "resource": "environment_quality",
+            "formula": "max(0, environment_quality - (economy_index - 70) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Rapid economic growth can harm the environment."
+      },
+      {
+        "id": "traffic_health",
+        "from_subsystem": "transportation",
+        "to_subsystem": "healthcare",
+        "label": "Traffic Pollution",
+        "condition": {
+          "resource": "traffic_congestion",
+          "op": ">",
+          "value": 70
+        },
+        "effects": [
+          {
+            "resource": "public_health",
+            "formula": "max(0, public_health - (traffic_congestion - 70) * 0.2)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Heavy traffic leads to air pollution and health issues."
+      },
+      {
+        "id": "education_economy",
+        "from_subsystem": "education",
+        "to_subsystem": "economy",
+        "label": "Skilled Workforce",
+        "condition": {
+          "resource": "education_quality",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "economy_index",
+            "formula": "min(100, economy_index + (education_quality - 60) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Quality education creates a skilled workforce, boosting the economy."
+      },
+      {
+        "id": "green_cover_health",
+        "from_subsystem": "environment",
+        "to_subsystem": "healthcare",
+        "label": "Green Spaces & Health",
+        "condition": {
+          "resource": "green_cover",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "public_health",
+            "formula": "min(100, public_health + (green_cover - 50) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Parks and green spaces improve public health."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "infrastructure",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "public_trust",
+        "equilibrium": 45,
+        "rate": 0.04,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "monsoon_flood",
+        "label": "Monsoon Flooding",
+        "icon": "🌧️",
+        "description": "Heavy monsoon rains have caused flooding in low-lying areas of Naya Shahar.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "infrastructure",
+              "op": "<",
+              "value": 60
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "infrastructure",
+            "delta": -12
+          },
+          {
+            "resource": "public_health",
+            "delta": -8
+          },
+          {
+            "resource": "budget",
+            "delta": -5000
+          },
+          {
+            "resource": "happiness",
+            "delta": -7
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "BREAKING: Monsoon flooding damages roads and hospitals. Emergency funds deployed.",
+        "ai_image_prompt": "Indian smart city flooded streets, monsoon rain, rescue workers, dramatic sky, waterlogged roads, emergency response"
+      },
+      {
+        "id": "tech_startup_boom",
+        "label": "Tech Startup Boom",
+        "icon": "🚀",
+        "description": "A wave of tech startups are setting up offices in Naya Shahar!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "digital_infra",
+              "op": ">=",
+              "value": 50
+            },
+            {
+              "resource": "education_quality",
+              "op": ">=",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "economy_index",
+            "delta": 10
+          },
+          {
+            "resource": "tax_revenue",
+            "delta": 3000
+          },
+          {
+            "resource": "population",
+            "delta": 500
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "Tech companies flock to Naya Shahar! New IT park announced.",
+        "ai_image_prompt": "Modern Indian smart city tech park, glass buildings, young professionals, digital innovation hub, vibrant atmosphere"
+      },
+      {
+        "id": "festival_season",
+        "label": "Festival Season",
+        "icon": "🎉",
+        "description": "Diwali celebrations bring joy but also test city services.",
+        "probability": 0.25,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 3
+        },
+        "effects": [
+          {
+            "resource": "happiness",
+            "delta": 8
+          },
+          {
+            "resource": "economy_index",
+            "delta": 5
+          },
+          {
+            "resource": "traffic_congestion",
+            "delta": 10
+          },
+          {
+            "resource": "environment_quality",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "Festival season brings cheer! Markets bustle, traffic surges across Naya Shahar.",
+        "ai_image_prompt": "Indian city during Diwali, colorful lights, crowded markets, festive atmosphere, fireworks over smart city skyline"
+      },
+      {
+        "id": "heatwave",
+        "label": "Summer Heatwave",
+        "icon": "🌡️",
+        "description": "Extreme heat affects outdoor workers and strains power supply.",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "green_cover",
+              "op": "<",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "public_health",
+            "delta": -10
+          },
+          {
+            "resource": "happiness",
+            "delta": -6
+          },
+          {
+            "resource": "budget",
+            "delta": -3000
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 1,
+        "news_text": "Heatwave alert! Hospitals report surge in heat-related illnesses.",
+        "ai_image_prompt": "Indian city under scorching sun, heatwave, people seeking shade, water tankers, dry landscape"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "mayor_sharma",
+        "name": "Mayor Sharma",
+        "role": "City Official",
+        "icon": "👨‍💼",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "budget",
+              "op": "<",
+              "value": 15000
+            },
+            "action": "warn",
+            "message": "Our coffers are running low. We need to be more careful with spending or raise taxes!",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "economy_index",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "praise",
+            "message": "Excellent economic growth! Investors are noticing Naya Shahar.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "public_trust",
+                  "op": "<",
+                  "value": 35
+                }
+              ]
+            },
+            "action": "urgent",
+            "message": "Public trust is dangerously low. We might face protests if we don't act fast!",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "budget",
+                  "op": "<",
+                  "value": 10000
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "emergency_session",
+            "message": "Mayor Sharma convenes an emergency budget session! The city is on the verge of bankruptcy!",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "public_trust",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_financial"
+          }
+        ]
+      },
+      {
+        "id": "dr_priya",
+        "name": "Dr. Priya",
+        "role": "Health Officer",
+        "icon": "👩‍⚕️",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "public_health",
+              "op": "<",
+              "value": 40
+            },
+            "action": "alert",
+            "message": "Health emergency! We need more clinics and sanitation investment immediately.",
+            "mood_change": "stressed",
+            "satisfaction_delta": -7
+          },
+          {
+            "condition": {
+              "resource": "public_health",
+              "op": ">=",
+              "value": 75
+            },
+            "action": "happy",
+            "message": "Health indicators are strong. Our preventive care programs are working!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          }
+        ]
+      },
+      {
+        "id": "arjun_activist",
+        "name": "Arjun (Environmental Activist)",
+        "role": "Citizen Leader",
+        "icon": "✊",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "environment_quality",
+              "op": "<",
+              "value": 40
+            },
+            "action": "protest",
+            "message": "We're destroying our environment for profit! The citizens demand change!",
+            "mood_change": "angry",
+            "satisfaction_delta": -10,
+            "effects": [
+              {
+                "resource": "public_trust",
+                "delta": -5
+              },
+              {
+                "resource": "happiness",
+                "delta": -3
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "green_cover",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "support",
+            "message": "Beautiful green spaces! This is the Naya Shahar we dreamed of.",
+            "mood_change": "happy",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "environment_quality",
+                  "op": "<",
+                  "value": 30
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 3
+                }
+              ]
+            },
+            "action": "protest_march",
+            "message": "Arjun has organized a massive green protest! Citizens block roads demanding environmental action!",
+            "mood_change": "angry",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "public_trust",
+                "delta": -10
+              },
+              {
+                "resource": "happiness",
+                "delta": -8
+              },
+              {
+                "resource": "traffic_congestion",
+                "delta": 15
+              }
+            ],
+            "trigger_round": "crisis_environmental"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "population",
+          "op": ">",
+          "value": 15000
+        },
+        "icon": "📈",
+        "text": "Naya Shahar population crosses {population}! City growth rate impressive.",
+        "severity": "info"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "digital_infra",
+              "op": ">=",
+              "value": 70
+            },
+            {
+              "resource": "education_quality",
+              "op": ">=",
+              "value": 65
+            }
+          ]
+        },
+        "icon": "💻",
+        "text": "Naya Shahar ranked among India's top emerging smart cities!",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A bustling Indian smart city called Naya Shahar, population {population}, happiness level {happiness}%, with {green_cover}% green cover, {infrastructure}% infrastructure quality. Modern buildings mixed with traditional Indian architecture, solar panels, digital billboards, busy streets. Mood: {'vibrant' if happiness > 60 else 'tense' if happiness < 40 else 'everyday'}."
+  },
+  "rounds": [
+    {
+      "round_id": "month_1_transport",
+      "round_title": "Month 1: The Transport Dilemma",
+      "situation": "Naya Shahar's roads are clogged. Auto-rickshaws, two-wheelers, and private cars create daily gridlock. The Transport Ministry has offered three proposals.",
+      "goal": "Choose a transportation strategy for the city.",
+      "coaching_moment": "Systems thinking: Transportation affects economy, environment, and citizen happiness simultaneously.",
+      "reflection_prompt": "How does a transport decision ripple across other city systems?",
+      "ai_image_prompt": "Busy Indian city intersection with auto-rickshaws, bikes, cars in traffic jam, smog, frustrated commuters, colorful vehicles",
+      "choices": [
+        {
+          "id": "m1_metro",
+          "label": "A. Build a Metro Line",
+          "description": "Invest heavily in a metro system — expensive now, transformative later.",
+          "delta": {
+            "budget": -18000,
+            "infrastructure": 15,
+            "traffic_congestion": -15,
+            "happiness": 5,
+            "public_trust": 5,
+            "environment_quality": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "A bold long-term investment! The metro will take time to show results but will transform mobility.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 18000,
+            "label": "Requires Budget ≥ 18,000"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "m1_bus",
+          "label": "B. Expand Bus Rapid Transit (BRT)",
+          "description": "Affordable, quick to implement, but moderate impact.",
+          "delta": {
+            "budget": -8000,
+            "infrastructure": 8,
+            "traffic_congestion": -8,
+            "happiness": 3,
+            "public_trust": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "A balanced approach! BRT is cost-effective and practical for a growing city.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "m1_cycle",
+          "label": "C. Cycling & Pedestrian Zones",
+          "description": "Create car-free zones with cycle lanes. Green, cheap, but controversial.",
+          "delta": {
+            "budget": -3000,
+            "green_cover": 8,
+            "environment_quality": 8,
+            "traffic_congestion": -5,
+            "happiness": -3,
+            "public_trust": -2,
+            "public_health": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Bold environmental move! Some citizens resist, but health and environment benefit significantly.",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "m1_private",
+          "label": "D. Public-Private Partnership Tollway",
+          "description": "Let private companies build toll roads. Free for the city, but citizens pay.",
+          "delta": {
+            "budget": 2000,
+            "infrastructure": 10,
+            "traffic_congestion": -10,
+            "happiness": -5,
+            "public_trust": -8,
+            "economy_index": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Financially smart but socially risky. Toll roads can deepen inequality.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_2_health",
+      "round_title": "Month 2: Health Crisis Looming",
+      "situation": "Reports of waterborne diseases are rising. Dr. Priya warns that without action, a public health crisis could unfold.",
+      "goal": "Address the growing health concerns in Naya Shahar.",
+      "coaching_moment": "Empathy in leadership: Health decisions affect the most vulnerable citizens first.",
+      "reflection_prompt": "Who suffers most when health infrastructure is weak?",
+      "ai_image_prompt": "Indian public health clinic, queue of patients, worried doctor, community health workers, modest neighborhood",
+      "choices": [
+        {
+          "id": "m2_hospitals",
+          "label": "A. Build New Public Hospitals",
+          "description": "Major investment in healthcare infrastructure. 3 new hospitals across the city.",
+          "delta": {
+            "budget": -15000,
+            "public_health": 18,
+            "happiness": 8,
+            "public_trust": 6,
+            "infrastructure": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "A compassionate investment! Public hospitals serve everyone, especially the vulnerable.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "m2_sanitation",
+          "label": "B. Clean Water & Sanitation Drive",
+          "description": "Address the root cause — clean water access and waste management.",
+          "delta": {
+            "budget": -8000,
+            "public_health": 12,
+            "environment_quality": 8,
+            "happiness": 5,
+            "safety": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Smart root-cause thinking! Prevention is better than cure. Clean water prevents 80% of diseases.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "m2_telemedicine",
+          "label": "C. Digital Health & Telemedicine",
+          "description": "Launch an app for remote consultations, reducing hospital load.",
+          "delta": {
+            "budget": -5000,
+            "public_health": 8,
+            "digital_infra": 10,
+            "happiness": 3,
+            "economy_index": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Innovative! Digital health scales fast, but not everyone has smartphones yet.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "m2_private_health",
+          "label": "D. Incentivize Private Healthcare",
+          "description": "Tax breaks for private hospitals. More beds, but not everyone can afford them.",
+          "delta": {
+            "budget": -2000,
+            "public_health": 6,
+            "economy_index": 5,
+            "happiness": -2,
+            "public_trust": -4
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "ethical_reasoning"
+          ],
+          "feedback": "Market-driven approach. Efficient, but risks leaving the poor behind.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_3_education",
+      "round_title": "Month 3: Education for Tomorrow",
+      "situation": "Naya Shahar's schools are outdated. NEP 2020 guidelines call for experiential learning, but implementation requires investment and training.",
+      "goal": "Reform the city's education system for the future.",
+      "coaching_moment": "Delayed gratification: Education investments pay off over years, not months.",
+      "reflection_prompt": "Why is education considered a long-term investment?",
+      "ai_image_prompt": "Modern Indian school classroom, diverse students using tablets, engaged teacher, colorful learning environment, NEP 2020 poster on wall",
+      "choices": [
+        {
+          "id": "m3_smart_schools",
+          "label": "A. Smart Schools Initiative",
+          "description": "Equip all schools with tablets, projectors, and high-speed internet.",
+          "delta": {
+            "budget": -12000,
+            "education_quality": 15,
+            "digital_infra": 8,
+            "happiness": 5,
+            "economy_index": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Technology in classrooms accelerates learning! A future-ready investment.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "m3_teacher_training",
+          "label": "B. Teacher Training Program",
+          "description": "Train 500 teachers in NEP 2020 methods. Slow but deep impact.",
+          "delta": {
+            "budget": -6000,
+            "education_quality": 10,
+            "public_trust": 5,
+            "happiness": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "empathy"
+          ],
+          "feedback": "Teachers are the backbone! Training them creates a multiplier effect on learning quality.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "m3_vocational",
+          "label": "C. Vocational Training Centers",
+          "description": "Build skill centers for trades — plumbing, electrical, coding, design.",
+          "delta": {
+            "budget": -7000,
+            "education_quality": 8,
+            "economy_index": 8,
+            "happiness": 4,
+            "population": 200
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Practical skills create jobs! Vocational training bridges the education-employment gap.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "m3_scholarship",
+          "label": "D. Scholarship & Inclusion Program",
+          "description": "Scholarships for underprivileged students + accessible school infrastructure.",
+          "delta": {
+            "budget": -5000,
+            "education_quality": 6,
+            "happiness": 7,
+            "public_trust": 8,
+            "empathy": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Inclusive education creates social equity. Every child deserves a chance!",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_4_economy",
+      "round_title": "Month 4: Economic Crossroads",
+      "situation": "Unemployment is rising. The youth demand jobs, businesses want tax breaks, and farmers on the city outskirts need support.",
+      "goal": "Boost Naya Shahar's economy while keeping it inclusive.",
+      "coaching_moment": "Risk tolerance: Economic policies involve trade-offs between growth speed and equity.",
+      "reflection_prompt": "Can economic growth be both fast AND fair?",
+      "ai_image_prompt": "Indian bazaar meets modern business district, street vendors alongside glass offices, diverse workers, economic activity",
+      "choices": [
+        {
+          "id": "m4_sez",
+          "label": "A. Special Economic Zone (SEZ)",
+          "description": "Attract foreign companies with tax-free zones. High growth, but may displace locals.",
+          "delta": {
+            "budget": 5000,
+            "economy_index": 15,
+            "population": 800,
+            "tax_revenue": 5000,
+            "environment_quality": -8,
+            "happiness": -3,
+            "public_trust": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Big economic boost! But at what social and environmental cost? Classic growth dilemma.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "m4_startup",
+          "label": "B. Startup Incubator Hub",
+          "description": "Fund local startups, co-working spaces, and innovation labs.",
+          "delta": {
+            "budget": -10000,
+            "economy_index": 10,
+            "digital_infra": 8,
+            "education_quality": 3,
+            "happiness": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "Nurturing local talent! Startups create organic, sustainable economic growth.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "m4_agriculture",
+          "label": "C. Urban Farming & Agri-Tech",
+          "description": "Support peri-urban farmers with technology and market access.",
+          "delta": {
+            "budget": -7000,
+            "economy_index": 5,
+            "environment_quality": 8,
+            "green_cover": 5,
+            "happiness": 6,
+            "public_health": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Sustainable and inclusive! Urban farming feeds the city and supports livelihoods.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "m4_tourism",
+          "label": "D. Heritage Tourism Development",
+          "description": "Restore historical sites and develop eco-tourism circuits.",
+          "delta": {
+            "budget": -8000,
+            "economy_index": 8,
+            "happiness": 5,
+            "environment_quality": 3,
+            "public_trust": 4,
+            "infrastructure": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Culture meets commerce! Tourism preserves heritage while creating jobs.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_5_environment",
+      "round_title": "Month 5: The Green Challenge",
+      "situation": "Air quality has deteriorated. Arjun's environmental group is gaining support. International observers are watching Naya Shahar's green commitments.",
+      "goal": "Address environmental concerns while maintaining growth.",
+      "coaching_moment": "Ethical reasoning: Balancing economic growth with environmental responsibility is a core governance challenge.",
+      "reflection_prompt": "What do we owe future generations in our city planning?",
+      "ai_image_prompt": "Indian city with visible air pollution, contrast between green parks and industrial areas, citizens wearing masks, green activists",
+      "choices": [
+        {
+          "id": "m5_solar",
+          "label": "A. Solar City Initiative",
+          "description": "Mandate solar panels on all new buildings. Subsidize residential solar.",
+          "delta": {
+            "budget": -12000,
+            "environment_quality": 12,
+            "green_cover": 5,
+            "economy_index": 3,
+            "happiness": 4,
+            "digital_infra": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "Visionary green policy! Solar energy reduces costs long-term and fights climate change.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "m5_waste",
+          "label": "B. Zero-Waste Management System",
+          "description": "Implement waste segregation, composting, and recycling citywide.",
+          "delta": {
+            "budget": -6000,
+            "environment_quality": 10,
+            "public_health": 5,
+            "happiness": 3,
+            "public_trust": 4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Waste management is unglamorous but essential! Clean cities are healthy cities.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "m5_green_belt",
+          "label": "C. Green Belt & Urban Forest",
+          "description": "Plant 50,000 trees and create a green corridor around the city.",
+          "delta": {
+            "budget": -8000,
+            "green_cover": 15,
+            "environment_quality": 10,
+            "public_health": 5,
+            "happiness": 5,
+            "traffic_congestion": -3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "empathy"
+          ],
+          "feedback": "Trees are nature's infrastructure! This green belt will cool the city and clean the air.",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "m5_ev",
+          "label": "D. Electric Vehicle Push",
+          "description": "EV subsidies, charging stations, and ban on old diesel vehicles.",
+          "delta": {
+            "budget": -10000,
+            "environment_quality": 8,
+            "traffic_congestion": -5,
+            "economy_index": 5,
+            "happiness": 2,
+            "public_trust": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Bold transition! EVs are the future, but the transition period disrupts current vehicle owners.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_financial",
+      "id": "crisis_financial",
+      "round_title": "CRISIS: Financial Emergency",
+      "situation": "The city treasury is nearly empty! Creditors are demanding payment, essential services face shutdown, and Mayor Sharma has called an emergency session. Workers are threatening to strike, and hospitals are rationing supplies. The people of Naya Shahar look to you for a solution.",
+      "goal": "Navigate the financial crisis before city services collapse.",
+      "coaching_moment": "Resilience under pressure: Financial crises force hard trade-offs. The best leaders find creative solutions that preserve trust while solving the immediate problem.",
+      "reflection_prompt": "When facing resource scarcity, how do you decide what to sacrifice and what to protect?",
+      "ai_image_prompt": "Indian city municipal office in crisis, empty treasury vault, worried officials around table, budget papers scattered, red warning signs, dramatic lighting",
+      "condition": {
+        "resource": "budget",
+        "operator": "<",
+        "value": 15000
+      },
+      "choices": [
+        {
+          "id": "fc_emergency_tax",
+          "label": "A. Emergency Tax Levy",
+          "description": "Impose a one-time emergency tax on commercial properties and luxury apartments.",
+          "delta": {
+            "budget": 12000,
+            "happiness": -10,
+            "public_trust": -8,
+            "economy_index": -3
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Emergency taxes fill the coffers but citizens feel the pinch. Small businesses struggle.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "fc_federal_loan",
+          "label": "B. Federal Emergency Grant",
+          "description": "Request an emergency grant from the Smart Cities Mission — fast money with oversight strings attached.",
+          "delta": {
+            "budget": 15000,
+            "public_trust": -3,
+            "economy_index": 2
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Federal support provides relief, but now Delhi watches every rupee you spend.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "fc_asset_sale",
+          "label": "C. Sell City Assets",
+          "description": "Liquidate underperforming city properties to private developers.",
+          "delta": {
+            "budget": 10000,
+            "infrastructure": -5,
+            "happiness": -5,
+            "economy_index": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Quick cash at long-term cost. Once sold, city land is gone forever.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "fc_community_bonds",
+          "label": "D. Community Investment Bonds",
+          "description": "Issue citizen-focused micro-bonds at 7% returns. Lower amount but builds ownership.",
+          "delta": {
+            "budget": 8000,
+            "public_trust": 5,
+            "happiness": 2,
+            "economy_index": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Citizens invest in their own city! Lower immediate relief but a powerful community signal.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_6_digital",
+      "round_title": "Month 6: Digital Transformation",
+      "situation": "The Smart Cities Mission demands digital governance. Citizens want online services, but digital literacy is low in many neighborhoods.",
+      "goal": "Digitize city services while ensuring no one is left behind.",
+      "coaching_moment": "Adaptability: Technology adoption requires balancing speed with inclusivity.",
+      "reflection_prompt": "How can digital transformation be inclusive for all age groups and income levels?",
+      "ai_image_prompt": "Indian smart city digital kiosk, elderly person being helped by a young volunteer, digital India, modern governance center",
+      "choices": [
+        {
+          "id": "m6_egov",
+          "label": "A. Full E-Governance Platform",
+          "description": "All permits, taxes, and complaints go online. Fast and transparent.",
+          "delta": {
+            "budget": -10000,
+            "digital_infra": 18,
+            "public_trust": 8,
+            "happiness": 3,
+            "economy_index": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Digital governance reduces corruption and speeds up services. Transparency builds trust!",
+          "requires": {
+            "resource": "digital_infra",
+            "op": ">=",
+            "value": 20,
+            "label": "Requires Digital Infrastructure ≥ 20"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "m6_literacy",
+          "label": "B. Digital Literacy Campaign",
+          "description": "Train citizens, especially elderly and rural migrants, in digital skills.",
+          "delta": {
+            "budget": -4000,
+            "digital_infra": 8,
+            "education_quality": 5,
+            "happiness": 6,
+            "public_trust": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Inclusion first! No one should be left behind in the digital revolution.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "m6_wifi",
+          "label": "C. Free City-Wide Wi-Fi",
+          "description": "Public Wi-Fi across major areas. Boosts digital access for all.",
+          "delta": {
+            "budget": -7000,
+            "digital_infra": 12,
+            "happiness": 5,
+            "economy_index": 4,
+            "education_quality": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Connectivity is the great equalizer! Free Wi-Fi opens doors for students and entrepreneurs.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "m6_data",
+          "label": "D. Smart Data & AI for City Planning",
+          "description": "Deploy sensors, cameras, and AI analytics for traffic, waste, and safety.",
+          "delta": {
+            "budget": -14000,
+            "digital_infra": 15,
+            "safety": 8,
+            "traffic_congestion": -8,
+            "public_trust": -3,
+            "environment_quality": 2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Data-driven city! But surveillance concerns arise. Privacy vs. efficiency is a real tension.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 14000,
+            "label": "Requires Budget ≥ 14,000"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_environmental",
+      "id": "crisis_environmental",
+      "round_title": "CRISIS: Environmental Emergency",
+      "situation": "Air quality has plummeted to hazardous levels! Schools are shut, hospitals overflow with respiratory patients, and Arjun's environmental group is staging daily protests blocking the main highway. The national media is calling Naya Shahar 'India's most polluted new city.' You must act now.",
+      "goal": "Address the environmental emergency before permanent damage is done.",
+      "coaching_moment": "Ethical reasoning: Environmental crises pit short-term economic interests against long-term survival. There are no easy answers.",
+      "reflection_prompt": "Is it ethical to shut down factories that employ thousands to save the environment?",
+      "ai_image_prompt": "Indian smart city with heavy smog, people wearing masks, protest signs about pollution, closed schools, dark sky, dramatic",
+      "condition": {
+        "resource": "environment_quality",
+        "operator": "<",
+        "value": 35
+      },
+      "choices": [
+        {
+          "id": "ec_emergency_cleanup",
+          "label": "A. Emergency Green Cleanup",
+          "description": "Deploy emergency air scrubbers, plant 10,000 trees, and create green corridors in 30 days.",
+          "delta": {
+            "budget": -8000,
+            "environment_quality": 15,
+            "green_cover": 10,
+            "public_health": 5,
+            "happiness": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Rapid action! The trees won't mature for years, but air scrubbers show immediate results.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "ec_industrial_shutdown",
+          "label": "B. Temporary Industrial Shutdown",
+          "description": "Order all polluting factories to halt for 2 weeks. Effective but economically devastating.",
+          "delta": {
+            "environment_quality": 20,
+            "economy_index": -15,
+            "happiness": -5,
+            "budget": -3000
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "risk_tolerance"
+          ],
+          "feedback": "Air clears dramatically. But factory workers go unpaid and businesses threaten to leave.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "ec_green_fund",
+          "label": "C. Green Emergency Fund",
+          "description": "Create a Rs. 5 crore fund for industries to upgrade to clean technology within 90 days.",
+          "delta": {
+            "budget": -5000,
+            "environment_quality": 8,
+            "economy_index": 3,
+            "digital_infra": 2
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "A balanced approach. Industries appreciate the support, but change takes time.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "ec_community_mobilize",
+          "label": "D. Community Mobilization",
+          "description": "Partner with Arjun's group to turn the protest into a citizen cleanup movement.",
+          "delta": {
+            "environment_quality": 10,
+            "happiness": 8,
+            "public_trust": 10,
+            "green_cover": 5,
+            "budget": -2000
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Brilliant move! Turning protesters into partners. Arjun's group becomes your strongest ally.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_7_safety",
+      "round_title": "Month 7: Safety & Social Harmony",
+      "situation": "Crime rates have risen in new migrant neighborhoods. Tensions between old residents and newcomers are growing. The police need resources.",
+      "goal": "Ensure safety while maintaining social cohesion.",
+      "coaching_moment": "Resilience: Building safe communities requires addressing root causes, not just symptoms.",
+      "reflection_prompt": "Is more policing the answer, or should we address why people feel unsafe?",
+      "ai_image_prompt": "Indian neighborhood community meeting, diverse citizens, community police, neighborhood watch, evening gathering",
+      "choices": [
+        {
+          "id": "m7_community",
+          "label": "A. Community Policing & Mediation",
+          "description": "Train officers in community relations. Set up neighborhood mediation centers.",
+          "delta": {
+            "budget": -6000,
+            "safety": 10,
+            "happiness": 6,
+            "public_trust": 8,
+            "public_health": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Community-based safety builds trust. When people know their officers, crime drops naturally.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "m7_cctv",
+          "label": "B. Smart Surveillance Network",
+          "description": "AI-powered CCTV across the city. Deters crime but raises privacy concerns.",
+          "delta": {
+            "budget": -10000,
+            "safety": 15,
+            "digital_infra": 5,
+            "public_trust": -5,
+            "happiness": -2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Effective deterrent, but at what cost to personal freedom? A modern governance dilemma.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "m7_youth",
+          "label": "C. Youth Engagement Programs",
+          "description": "Sports leagues, coding clubs, and mentorship for at-risk youth.",
+          "delta": {
+            "budget": -5000,
+            "safety": 7,
+            "education_quality": 4,
+            "happiness": 8,
+            "public_trust": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "empathy"
+          ],
+          "feedback": "Prevention over cure! Engaged youth are far less likely to turn to crime.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "m7_lighting",
+          "label": "D. Infrastructure for Safety",
+          "description": "Street lights, safe walkways, emergency call boxes, women's safety booths.",
+          "delta": {
+            "budget": -8000,
+            "safety": 12,
+            "infrastructure": 5,
+            "happiness": 5,
+            "public_trust": 4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Environmental design for safety! Well-lit, accessible spaces prevent crime by design.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_8_budget",
+      "round_title": "Month 8: Budget Crisis",
+      "situation": "Mid-year review reveals the budget is tighter than expected. Revenue is below projections. Tough choices ahead.",
+      "goal": "Manage the financial crisis without derailing progress.",
+      "coaching_moment": "Risk tolerance & resilience: Financial crises test a leader's ability to make difficult trade-offs.",
+      "reflection_prompt": "When resources are scarce, how do you decide what to prioritize?",
+      "ai_image_prompt": "Indian government office, officials reviewing budget documents, worried expressions, calculator and spreadsheets, austere room",
+      "choices": [
+        {
+          "id": "m8_raise_tax",
+          "label": "A. Raise Property Taxes",
+          "description": "Increase taxes on commercial and luxury properties. Revenue up, popularity down.",
+          "delta": {
+            "tax_revenue": 5000,
+            "budget": 5000,
+            "happiness": -8,
+            "public_trust": -6,
+            "economy_index": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Politically costly but fiscally responsible. Tough decisions define leadership.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "m8_ppp",
+          "label": "B. Public-Private Partnerships",
+          "description": "Invite private investment in schools, hospitals, and roads. Shared risk.",
+          "delta": {
+            "budget": 8000,
+            "economy_index": 5,
+            "infrastructure": 3,
+            "public_trust": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Pragmatic! PPPs can fill funding gaps but require careful oversight.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "m8_cut_spending",
+          "label": "C. Austerity & Efficiency Drive",
+          "description": "Cut administrative costs, freeze hiring, digitize processes to save money.",
+          "delta": {
+            "budget": 10000,
+            "happiness": -4,
+            "digital_infra": 3,
+            "public_trust": -2
+          },
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking"
+          ],
+          "feedback": "Tightening the belt shows discipline. But austerity can slow progress on key initiatives.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "m8_bonds",
+          "label": "D. Issue Municipal Bonds",
+          "description": "Borrow from the market to fund development. Money now, debt later.",
+          "delta": {
+            "budget": 20000,
+            "economy_index": 3,
+            "public_trust": 2,
+            "happiness": 2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "delayed_gratification"
+          ],
+          "feedback": "Bonds provide immediate relief but create future obligations. Manage debt wisely!",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_9_housing",
+      "round_title": "Month 9: The Housing Question",
+      "situation": "Naya Shahar's population growth is outpacing housing. Slums are expanding. The real estate lobby wants fewer regulations.",
+      "goal": "Solve the housing crisis equitably.",
+      "coaching_moment": "Ethical reasoning: Housing is a fundamental right. How do we balance market forces with social justice?",
+      "reflection_prompt": "Should housing be treated as a market commodity or a public good?",
+      "ai_image_prompt": "Indian city skyline showing contrast between high-rise apartments and slum areas, construction cranes, diverse neighborhoods",
+      "choices": [
+        {
+          "id": "m9_affordable",
+          "label": "A. Affordable Housing Mission",
+          "description": "Government-built affordable housing for low-income families. 5,000 units.",
+          "delta": {
+            "budget": -18000,
+            "happiness": 10,
+            "public_trust": 10,
+            "infrastructure": 5,
+            "population": 1000
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Housing as a right! Affordable homes stabilize families and communities.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "m9_deregulate",
+          "label": "B. Deregulate Real Estate",
+          "description": "Reduce building permits and height restrictions. Market solves the shortage.",
+          "delta": {
+            "budget": 2000,
+            "infrastructure": 8,
+            "economy_index": 8,
+            "environment_quality": -10,
+            "happiness": -3,
+            "green_cover": -8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "The market is efficient, but unregulated growth can be ugly and unequal.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "m9_slum_upgrade",
+          "label": "C. Slum Upgrading Program",
+          "description": "Upgrade existing slums with water, sanitation, roads, and legal land titles.",
+          "delta": {
+            "budget": -10000,
+            "happiness": 8,
+            "public_health": 8,
+            "public_trust": 8,
+            "safety": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Dignifying existing communities! Upgrading slums is more humane than demolishing them.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "m9_transit_housing",
+          "label": "D. Transit-Oriented Development",
+          "description": "Build housing near transit hubs. Reduces commute, increases density efficiently.",
+          "delta": {
+            "budget": -12000,
+            "infrastructure": 8,
+            "traffic_congestion": -10,
+            "happiness": 5,
+            "environment_quality": 3,
+            "economy_index": 4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Brilliant urban planning! Housing near transit reduces cars and commute stress.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_10_legacy",
+      "round_title": "Month 10: Your Legacy",
+      "situation": "Your term is ending. One final decision will define your legacy as Naya Shahar's Development Officer. What future do you build toward?",
+      "goal": "Make a defining decision for the city's long-term future.",
+      "coaching_moment": "Strategic thinking: Great leaders think beyond their term. What legacy do you want to leave?",
+      "reflection_prompt": "If you could change one thing about how cities are run, what would it be?",
+      "ai_image_prompt": "Aerial view of a thriving Indian smart city at sunset, green spaces, modern buildings, happy citizens, golden hour light, hopeful future",
+      "choices": [
+        {
+          "id": "m10_university",
+          "label": "A. World-Class University",
+          "description": "Establish Naya Shahar University — a knowledge hub for generations.",
+          "delta": {
+            "budget": -20000,
+            "education_quality": 20,
+            "economy_index": 8,
+            "population": 2000,
+            "happiness": 8,
+            "public_trust": 8
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "A university is a gift to the future! Education is the most enduring legacy.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 20000,
+            "label": "Requires Budget ≥ 20,000"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "m10_green_city",
+          "label": "B. India's First Carbon-Neutral City",
+          "description": "Go all-in on renewable energy, EV mandates, and zero-carbon buildings.",
+          "delta": {
+            "budget": -18000,
+            "environment_quality": 20,
+            "green_cover": 15,
+            "public_health": 8,
+            "happiness": 5,
+            "public_trust": 10
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "delayed_gratification"
+          ],
+          "feedback": "A green legacy! Carbon neutrality puts Naya Shahar on the global map for sustainability.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 18000,
+            "label": "Requires Budget ≥ 18,000"
+          },
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "m10_digital_hub",
+          "label": "C. Asia's Innovation Hub",
+          "description": "Massive tech park, AI research center, and global startup incubator.",
+          "delta": {
+            "budget": -15000,
+            "economy_index": 18,
+            "digital_infra": 15,
+            "tax_revenue": 8000,
+            "population": 1500,
+            "happiness": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "An innovation powerhouse! This puts Naya Shahar on the tech map.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "m10_inclusive",
+          "label": "D. Model Inclusive City",
+          "description": "Universal healthcare, inclusive education, accessible infrastructure for all abilities.",
+          "delta": {
+            "budget": -16000,
+            "public_health": 15,
+            "education_quality": 10,
+            "happiness": 15,
+            "public_trust": 15,
+            "safety": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "The most humane choice! An inclusive city is a just city. Naya Shahar becomes a model for India.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "green_champion",
+      "label": "Green Champion",
+      "condition": "environment_quality >= 80 and green_cover >= 70",
+      "icon": "🌿"
+    },
+    {
+      "id": "peoples_leader",
+      "label": "People's Leader",
+      "condition": "happiness >= 80 and public_trust >= 80",
+      "icon": "❤️"
+    },
+    {
+      "id": "tech_visionary",
+      "label": "Tech Visionary",
+      "condition": "digital_infra >= 80 and economy_index >= 75",
+      "icon": "🚀"
+    },
+    {
+      "id": "balanced_governor",
+      "label": "Balanced Governor",
+      "condition": "happiness >= 60 and economy_index >= 60 and environment_quality >= 60",
+      "icon": "⚖️"
+    },
+    {
+      "id": "budget_master",
+      "label": "Budget Master",
+      "condition": "budget >= 30000",
+      "icon": "💰"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Systems Thinking",
+      "definition": "Understanding how different parts of a system interconnect and affect each other."
+    },
+    {
+      "term": "Smart City",
+      "definition": "A city that uses technology and data to improve quality of life, sustainability, and governance."
+    },
+    {
+      "term": "NEP 2020",
+      "definition": "India's National Education Policy 2020, emphasizing holistic, experiential, and skill-based education."
+    },
+    {
+      "term": "Public-Private Partnership",
+      "definition": "Collaboration between government and private companies to fund and deliver public services."
+    },
+    {
+      "term": "Urban Planning",
+      "definition": "The process of designing and organizing city spaces, infrastructure, and services for efficient living."
+    },
+    {
+      "term": "Carbon Neutrality",
+      "definition": "Achieving net-zero carbon dioxide emissions by balancing emissions with removal or offsets."
+    },
+    {
+      "term": "Transit-Oriented Development",
+      "definition": "Urban planning that concentrates housing, jobs, and services around public transit stations."
+    },
+    {
+      "term": "Municipal Bonds",
+      "definition": "Debt securities issued by cities to fund public projects, repaid with future tax revenue."
+    }
+  ],
+  "endings": [
+    {
+      "id": "university_city",
+      "title": "University City",
+      "icon": "🎓",
+      "message": "Naya Shahar is now a world-renowned education hub! Students from across India flock to your universities and research centers. Knowledge drives the economy forward, and the city's intellectual capital attracts global talent. Your legacy: a city that invested in minds over monuments.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "education_quality",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "green_city",
+      "title": "India's First Green City",
+      "icon": "🌿",
+      "message": "Naya Shahar becomes India's first truly sustainable city! Your carbon-neutral policies, urban forests, and clean air have made it a global model. International delegations visit to study your approach. Your legacy: a city that chose the planet over profit.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "environment_quality",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "green_cover",
+            "operator": ">=",
+            "value": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "tech_hub",
+      "title": "Asia's Innovation Hub",
+      "icon": "🚀",
+      "message": "Move over Bangalore — Naya Shahar is Asia's next tech capital! Startups, AI labs, and digital governance have transformed the city. The 'Naya Shahar Model' becomes a blueprint for smart cities worldwide. Your legacy: a city that embraced the future fearlessly.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "digital_infra",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "economy_index",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "inclusive_city",
+      "title": "India's Most Livable City",
+      "icon": "❤️",
+      "message": "Naya Shahar wins 'India's Most Livable City' award! Universal healthcare, inclusive schools, and strong community bonds make it a model for equitable governance. People from all walks of life thrive here. Your legacy: a city that left no one behind.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "happiness",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "public_health",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "balanced_city",
+      "title": "Balanced Metropolis",
+      "icon": "⚖️",
+      "message": "Naya Shahar is a stable, well-managed Indian city. Not the flashiest, not the greenest, not the most innovative — but functional, safe, and steadily growing. Sometimes the best leadership is the kind nobody notices. Your legacy: steady, quiet governance.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Smart City Builder Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What does 'profit' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Total money spent",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Revenue minus costs",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Money borrowed from a bank",
+              "correct": false
+            }
+          ],
+          "explanation": "Profit is what remains after subtracting all costs from total revenue."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "What is a 'budget'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "A list of things to buy",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "A plan for how to spend money",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "A type of bank account",
+              "correct": false
+            }
+          ],
+          "explanation": "A budget is a financial plan that allocates income to different spending categories."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Smart City Builder. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Smart City Builder Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Smart City Builder. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

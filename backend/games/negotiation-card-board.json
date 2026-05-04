@@ -1,0 +1,639 @@
+{
+  "game_id": "negotiation-card-board",
+  "game_type": "card_board",
+  "title": "The Deal Table",
+  "description": "Claim negotiation tiles by playing the right cards at the right moment. Trade resources with an AI opponent and build credibility, influence, and empathy to win the boardroom.",
+  "theme": "Negotiation & Persuasion",
+  "icon": "🤝",
+  "difficulty": "medium",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "communication",
+    "critical_thinking",
+    "social_emotional"
+  ],
+  "cultural_context": "Set in Indian business context — stakeholder meetings, pitch rooms, and community councils.",
+  "skill_tags": [
+    "adaptability",
+    "empathy",
+    "strategic_thinking",
+    "risk_tolerance",
+    "resilience",
+    "delayed_gratification"
+  ],
+  "learning_objectives": [
+    "Understand when to open vs. hold back in a negotiation",
+    "Practice reading the other party's signals",
+    "Balance short-term gains vs. long-term credibility",
+    "Develop empathy as a negotiation tool"
+  ],
+  "initial_state": {
+    "credibility": 10,
+    "influence": 8,
+    "empathy": 6
+  },
+  "hand_size": 5,
+  "max_turns": 15,
+  "win_condition": "most_tiles",
+  "monopoly_mode": true,
+  "go_bonus": {
+    "credibility": 2,
+    "influence": 1
+  },
+  "event_cards": [
+    {
+      "event_id": "windfall",
+      "title": "Unexpected Ally",
+      "icon": "🌟",
+      "story": "A senior leader unexpectedly vouches for you in the boardroom. Your credibility soars.",
+      "delta": {
+        "influence": 3
+      },
+      "skill_tag": "adaptability",
+      "image_prompt": "senior Indian professional endorsing colleague in boardroom warm confident lighting"
+    },
+    {
+      "event_id": "setback",
+      "title": "Missed Signal",
+      "icon": "📉",
+      "story": "You overlooked a subtle cue from the client. The meeting turns cold.",
+      "delta": {
+        "empathy": -1,
+        "credibility": -1
+      },
+      "skill_tag": "resilience",
+      "image_prompt": "tense office meeting awkward silence body language professional Indian context"
+    },
+    {
+      "event_id": "opportunity",
+      "title": "Market Gap Found",
+      "icon": "💡",
+      "story": "You spot a gap no one else sees. The table leans in.",
+      "delta": {
+        "influence": 2,
+        "credibility": 1
+      },
+      "skill_tag": "strategic_thinking",
+      "image_prompt": "Indian entrepreneur insight moment whiteboard charts eureka expression"
+    },
+    {
+      "event_id": "trust_bonus",
+      "title": "Trust Earned",
+      "icon": "🤝",
+      "story": "Months of consistent follow-through have built deep trust with your stakeholder.",
+      "delta": {
+        "credibility": 3
+      },
+      "skill_tag": "empathy",
+      "image_prompt": "Indian business partners genuine handshake warm lighting trust partnership"
+    },
+    {
+      "event_id": "risk_reward",
+      "title": "Bold Move Pays Off",
+      "icon": "🎲",
+      "story": "The risky position you took last week created exactly the leverage you needed.",
+      "delta": {
+        "influence": 2
+      },
+      "skill_tag": "risk_tolerance",
+      "image_prompt": "confident Indian businessperson bold gesture celebration deal moment"
+    },
+    {
+      "event_id": "community",
+      "title": "Community Council",
+      "icon": "🏛️",
+      "story": "You help mediate a local community issue. Your empathy and credibility grow.",
+      "delta": {
+        "empathy": 2,
+        "credibility": 1
+      },
+      "skill_tag": "empathy",
+      "image_prompt": "community council meeting traditional Indian hall diverse group collaboration"
+    }
+  ],
+  "resources": {
+    "credibility": {
+      "label": "Credibility",
+      "icon": "🏅",
+      "start": 10,
+      "max": 20
+    },
+    "influence": {
+      "label": "Influence",
+      "icon": "💡",
+      "start": 8,
+      "max": 20
+    },
+    "empathy": {
+      "label": "Empathy",
+      "icon": "❤️",
+      "start": 6,
+      "max": 20
+    }
+  },
+  "ai_opponent": {
+    "name": "Mento",
+    "avatar": "🤖",
+    "strategy": "balanced",
+    "trade_frequency": 0.3
+  },
+  "deck": [
+    {
+      "card_id": "open_offer",
+      "title": "Open Offer",
+      "icon": "🤝",
+      "skill_tag": "adaptability",
+      "nep_competency": "communication",
+      "resource_bonus": {
+        "influence": 2
+      },
+      "tile_type_bonus": {
+        "negotiation": 1.5,
+        "default": 1.0
+      },
+      "color": "#6C5CE7"
+    },
+    {
+      "card_id": "bold_stance",
+      "title": "Bold Stance",
+      "icon": "💪",
+      "skill_tag": "risk_tolerance",
+      "nep_competency": "critical_thinking",
+      "resource_bonus": {
+        "credibility": 2
+      },
+      "tile_type_bonus": {
+        "challenge": 1.5,
+        "strategy": 1.2,
+        "default": 1.0
+      },
+      "color": "#E17055"
+    },
+    {
+      "card_id": "listen_first",
+      "title": "Listen First",
+      "icon": "👂",
+      "skill_tag": "empathy",
+      "nep_competency": "social_emotional",
+      "resource_bonus": {
+        "empathy": 2
+      },
+      "tile_type_bonus": {
+        "collaboration": 1.5,
+        "negotiation": 1.2,
+        "default": 1.0
+      },
+      "color": "#00B894"
+    },
+    {
+      "card_id": "long_game",
+      "title": "Long Game",
+      "icon": "⏳",
+      "skill_tag": "delayed_gratification",
+      "nep_competency": "critical_thinking",
+      "resource_bonus": {
+        "credibility": 1,
+        "influence": 1
+      },
+      "tile_type_bonus": {
+        "strategy": 1.5,
+        "opportunity": 1.2,
+        "default": 1.0
+      },
+      "color": "#FDCB6E"
+    },
+    {
+      "card_id": "pivot_plan",
+      "title": "Pivot Plan",
+      "icon": "🔄",
+      "skill_tag": "adaptability",
+      "nep_competency": "critical_thinking",
+      "resource_bonus": {
+        "influence": 1,
+        "empathy": 1
+      },
+      "tile_type_bonus": {
+        "crisis": 1.5,
+        "challenge": 1.3,
+        "default": 1.0
+      },
+      "color": "#A29BFE"
+    },
+    {
+      "card_id": "trust_bridge",
+      "title": "Trust Bridge",
+      "icon": "🌉",
+      "skill_tag": "empathy",
+      "nep_competency": "social_emotional",
+      "resource_bonus": {
+        "credibility": 2,
+        "empathy": 1
+      },
+      "tile_type_bonus": {
+        "collaboration": 1.5,
+        "negotiation": 1.3,
+        "default": 1.0
+      },
+      "color": "#74B9FF"
+    },
+    {
+      "card_id": "market_read",
+      "title": "Market Read",
+      "icon": "📊",
+      "skill_tag": "strategic_thinking",
+      "nep_competency": "critical_thinking",
+      "resource_bonus": {
+        "influence": 2
+      },
+      "tile_type_bonus": {
+        "opportunity": 1.5,
+        "strategy": 1.3,
+        "default": 1.0
+      },
+      "color": "#55EFC4"
+    },
+    {
+      "card_id": "stay_calm",
+      "title": "Stay Calm",
+      "icon": "🧘",
+      "skill_tag": "resilience",
+      "nep_competency": "social_emotional",
+      "resource_bonus": {
+        "empathy": 1,
+        "credibility": 1
+      },
+      "tile_type_bonus": {
+        "crisis": 1.5,
+        "challenge": 1.2,
+        "default": 1.0
+      },
+      "color": "#FD79A8"
+    },
+    {
+      "card_id": "anchor_ask",
+      "title": "Anchor Ask",
+      "icon": "⚓",
+      "skill_tag": "strategic_thinking",
+      "nep_competency": "communication",
+      "resource_bonus": {
+        "credibility": 2
+      },
+      "tile_type_bonus": {
+        "negotiation": 1.5,
+        "strategy": 1.2,
+        "default": 1.0
+      },
+      "color": "#6C5CE7"
+    },
+    {
+      "card_id": "shared_win",
+      "title": "Shared Win",
+      "icon": "🤜🤛",
+      "skill_tag": "empathy",
+      "nep_competency": "social_emotional",
+      "resource_bonus": {
+        "influence": 1,
+        "empathy": 2
+      },
+      "tile_type_bonus": {
+        "collaboration": 1.5,
+        "opportunity": 1.2,
+        "default": 1.0
+      },
+      "color": "#00B894"
+    },
+    {
+      "card_id": "risk_hedge",
+      "title": "Risk Hedge",
+      "icon": "🛡️",
+      "skill_tag": "risk_tolerance",
+      "nep_competency": "critical_thinking",
+      "resource_bonus": {
+        "credibility": 1,
+        "influence": 1
+      },
+      "tile_type_bonus": {
+        "crisis": 1.3,
+        "challenge": 1.5,
+        "default": 1.0
+      },
+      "color": "#E17055"
+    },
+    {
+      "card_id": "patience_play",
+      "title": "Patience Play",
+      "icon": "🕰️",
+      "skill_tag": "delayed_gratification",
+      "nep_competency": "critical_thinking",
+      "resource_bonus": {
+        "credibility": 2
+      },
+      "tile_type_bonus": {
+        "strategy": 1.5,
+        "opportunity": 1.3,
+        "default": 1.0
+      },
+      "color": "#FDCB6E"
+    },
+    {
+      "card_id": "reframe_it",
+      "title": "Reframe It",
+      "icon": "🔭",
+      "skill_tag": "adaptability",
+      "nep_competency": "communication",
+      "resource_bonus": {
+        "influence": 2,
+        "empathy": 1
+      },
+      "tile_type_bonus": {
+        "negotiation": 1.3,
+        "crisis": 1.5,
+        "default": 1.0
+      },
+      "color": "#A29BFE"
+    },
+    {
+      "card_id": "power_silence",
+      "title": "Power Silence",
+      "icon": "🤫",
+      "skill_tag": "strategic_thinking",
+      "nep_competency": "communication",
+      "resource_bonus": {
+        "credibility": 2,
+        "influence": 1
+      },
+      "tile_type_bonus": {
+        "negotiation": 1.5,
+        "strategy": 1.3,
+        "default": 1.0
+      },
+      "color": "#2D3436"
+    },
+    {
+      "card_id": "bounce_back",
+      "title": "Bounce Back",
+      "icon": "🏀",
+      "skill_tag": "resilience",
+      "nep_competency": "social_emotional",
+      "resource_bonus": {
+        "empathy": 2,
+        "credibility": 1
+      },
+      "tile_type_bonus": {
+        "crisis": 1.5,
+        "challenge": 1.3,
+        "default": 1.0
+      },
+      "color": "#FD79A8"
+    },
+    {
+      "card_id": "stakeholder_map",
+      "title": "Stakeholder Map",
+      "icon": "🗺️",
+      "skill_tag": "strategic_thinking",
+      "nep_competency": "critical_thinking",
+      "resource_bonus": {
+        "influence": 2
+      },
+      "tile_type_bonus": {
+        "strategy": 1.5,
+        "opportunity": 1.3,
+        "default": 1.0
+      },
+      "color": "#55EFC4"
+    },
+    {
+      "card_id": "empathy_bridge",
+      "title": "Empathy Bridge",
+      "icon": "💞",
+      "skill_tag": "empathy",
+      "nep_competency": "social_emotional",
+      "resource_bonus": {
+        "empathy": 3
+      },
+      "tile_type_bonus": {
+        "collaboration": 1.5,
+        "negotiation": 1.2,
+        "default": 1.0
+      },
+      "color": "#74B9FF"
+    },
+    {
+      "card_id": "calculated_risk",
+      "title": "Calculated Risk",
+      "icon": "🎲",
+      "skill_tag": "risk_tolerance",
+      "nep_competency": "critical_thinking",
+      "resource_bonus": {
+        "influence": 2,
+        "credibility": 1
+      },
+      "tile_type_bonus": {
+        "opportunity": 1.5,
+        "challenge": 1.3,
+        "default": 1.0
+      },
+      "color": "#E17055"
+    },
+    {
+      "card_id": "coalition_build",
+      "title": "Coalition Build",
+      "icon": "👥",
+      "skill_tag": "empathy",
+      "nep_competency": "social_emotional",
+      "resource_bonus": {
+        "credibility": 1,
+        "influence": 1,
+        "empathy": 1
+      },
+      "tile_type_bonus": {
+        "collaboration": 1.5,
+        "strategy": 1.2,
+        "default": 1.0
+      },
+      "color": "#00B894"
+    },
+    {
+      "card_id": "future_proof",
+      "title": "Future Proof",
+      "icon": "🚀",
+      "skill_tag": "delayed_gratification",
+      "nep_competency": "critical_thinking",
+      "resource_bonus": {
+        "credibility": 2,
+        "influence": 1
+      },
+      "tile_type_bonus": {
+        "strategy": 1.5,
+        "opportunity": 1.3,
+        "default": 1.0
+      },
+      "color": "#FDCB6E"
+    }
+  ],
+  "board": {
+    "size": 12,
+    "tiles": [
+      {
+        "id": "t1",
+        "type": "go",
+        "label": "Start — Collect",
+        "icon": "🚀",
+        "position": 0,
+        "delta": {
+          "credibility": 2,
+          "influence": 1
+        },
+        "story": "A new negotiation cycle begins. Collect your starting resources."
+      },
+      {
+        "id": "t2",
+        "type": "claim",
+        "label": "Stakeholder Meet",
+        "icon": "🤝",
+        "position": 1
+      },
+      {
+        "id": "t3",
+        "type": "event",
+        "label": "Chance",
+        "icon": "❓",
+        "position": 2
+      },
+      {
+        "id": "t4",
+        "type": "claim",
+        "label": "Tough Ask",
+        "icon": "⚡",
+        "position": 3
+      },
+      {
+        "id": "t5",
+        "type": "rest",
+        "label": "Coffee Break",
+        "icon": "☕",
+        "position": 4,
+        "delta": {
+          "empathy": 1
+        },
+        "story": "A brief pause. You reflect and reconnect with your purpose."
+      },
+      {
+        "id": "t6",
+        "type": "claim",
+        "label": "Board Room",
+        "icon": "📋",
+        "position": 5
+      },
+      {
+        "id": "t7",
+        "type": "challenge",
+        "label": "Deal Collapse",
+        "icon": "🚨",
+        "position": 6,
+        "story": "The deal is falling apart. Play your best card to salvage it."
+      },
+      {
+        "id": "t8",
+        "type": "event",
+        "label": "Chance",
+        "icon": "❓",
+        "position": 7
+      },
+      {
+        "id": "t9",
+        "type": "claim",
+        "label": "Closing Round",
+        "icon": "🏁",
+        "position": 8
+      },
+      {
+        "id": "t10",
+        "type": "claim",
+        "label": "Investor Pitch",
+        "icon": "💰",
+        "position": 9
+      },
+      {
+        "id": "t11",
+        "type": "rest",
+        "label": "Reflection Break",
+        "icon": "🧘",
+        "position": 10,
+        "delta": {
+          "credibility": 1
+        },
+        "story": "You pause to reflect. Quiet moments build credibility."
+      },
+      {
+        "id": "t12",
+        "type": "claim",
+        "label": "Community Council",
+        "icon": "🏛️",
+        "position": 11
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "BATNA",
+      "definition": "Best Alternative To a Negotiated Agreement — your fallback if talks fail.",
+      "example": "If the salary offer is too low, your BATNA might be another job offer."
+    },
+    {
+      "term": "Anchoring",
+      "definition": "Setting the first number in a negotiation to frame expectations.",
+      "example": "Opening with a high price so the final agreed price feels like a win for the other side."
+    },
+    {
+      "term": "Rapport",
+      "definition": "A sense of mutual understanding and trust between negotiating parties.",
+      "example": "Building rapport through small talk before getting to the main ask."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "deal_closer",
+      "name": "Deal Closer",
+      "icon": "🏆",
+      "description": "Win 8 or more tiles",
+      "rarity": "rare",
+      "xp_reward": 120
+    },
+    {
+      "id": "empathy_ace",
+      "name": "Empathy Ace",
+      "icon": "❤️",
+      "description": "Reach max Empathy (20)",
+      "rarity": "common",
+      "xp_reward": 75
+    },
+    {
+      "id": "influencer",
+      "name": "Influencer",
+      "icon": "💡",
+      "description": "Reach max Influence (20)",
+      "rarity": "common",
+      "xp_reward": 75
+    }
+  ],
+  "dimension_scoring_weights": {
+    "adaptability": 0.35,
+    "strategic_thinking": 0.3,
+    "empathy": 0.2,
+    "risk_tolerance": 0.15
+  },
+  "coaching_moment": "Understand when to open vs. hold back in a negotiation. Practice reading the other party's signals.",
+  "tags": [
+    "adaptability",
+    "board-game",
+    "card-game",
+    "economics",
+    "medium",
+    "negotiation",
+    "nep-secondary"
+  ],
+  "estimated_duration": 20,
+  "target_age": "13-18",
+  "reflection_prompt": "When did you feel most in control, and when did chance push back? What does that tell you about strategy vs. luck?"
+}

@@ -1,0 +1,2320 @@
+{
+  "game_id": "g6-question-quest",
+  "title": "Question Quest: The Thinking Detective",
+  "theme": "Critical Thinking & Logical Reasoning",
+  "icon": "🔍",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are a junior detective at the Thinking Detective Agency! Solve mysteries using critical thinking — ask the right questions, spot logical fallacies, analyze evidence, and avoid tricky biases. Over 10 cases, sharpen your detective mind and earn your badge as a master thinker!",
+  "target_audience": "Ages 11-12",
+  "target_age": "11-12",
+  "grade": "6",
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You are a junior detective solving 10 mystery cases using critical thinking.",
+    "Each case presents a puzzle — pick the best approach to investigate.",
+    "Watch your dashboard: Logic Score, Observation, Questioning Skill, and Bias Awareness all matter.",
+    "Random events like surprise witnesses or tampered evidence will test your adaptability.",
+    "NPCs (Inspector Gray, Watson Jr, The Trickster) react to your choices.",
+    "Build your Evidence Quality and Reputation to unlock the best endings!"
+  ],
+  "learning_objectives": [
+    "Learn to ask probing, open-ended questions to uncover truth",
+    "Identify common logical fallacies and reasoning errors",
+    "Practice evaluating evidence objectively without bias",
+    "Develop systematic observation and pattern recognition skills",
+    "Build confidence in defending conclusions with evidence"
+  ],
+  "tags": [
+    "critical-thinking",
+    "logic",
+    "grade-6",
+    "problem-solving",
+    "reasoning"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Critical Thinking",
+    "Problem Solving",
+    "Logical Reasoning",
+    "Communication"
+  ],
+  "cultural_context": "Global detective mystery setting, age-appropriate cases for 11-12 year olds, cartoon style",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.15,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.15,
+    "ethical_reasoning": 0.15
+  },
+  "initial_state": {
+    "logic_score": {
+      "value": 30,
+      "label": "Logic Score",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "observation": {
+      "value": 40,
+      "label": "Observation",
+      "icon": "👁️",
+      "min": 0,
+      "max": 100
+    },
+    "questioning_skill": {
+      "value": 25,
+      "label": "Questioning Skill",
+      "icon": "❓",
+      "min": 0,
+      "max": 100
+    },
+    "bias_awareness": {
+      "value": 20,
+      "label": "Bias Awareness",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "evidence_quality": {
+      "value": 0,
+      "label": "Evidence Quality",
+      "icon": "📋",
+      "min": 0,
+      "max": 100
+    },
+    "reputation": {
+      "value": 50,
+      "label": "Reputation",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "confidence": {
+      "value": 45,
+      "label": "Confidence",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "case_solved": {
+      "value": 0,
+      "label": "Cases Solved",
+      "icon": "🏆",
+      "min": 0,
+      "max": 12
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Case",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "logical_reasoning",
+        "label": "Logical Reasoning",
+        "icon": "🧩",
+        "color": "#6366F1",
+        "initial_health": 30,
+        "health_formula": "min(100, max(0, logic_score * 0.5 + evidence_quality * 0.3 + questioning_skill * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "observation_mastery",
+        "label": "Observation Mastery",
+        "icon": "🔎",
+        "color": "#F59E0B",
+        "initial_health": 40,
+        "health_formula": "min(100, max(0, observation * 0.5 + evidence_quality * 0.25 + confidence * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "question_craft",
+        "label": "Question Craft",
+        "icon": "💬",
+        "color": "#10B981",
+        "initial_health": 25,
+        "health_formula": "min(100, max(0, questioning_skill * 0.5 + logic_score * 0.25 + reputation * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "bias_detection",
+        "label": "Bias Detection",
+        "icon": "🛡️",
+        "color": "#EF4444",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, bias_awareness * 0.5 + observation * 0.25 + logic_score * 0.25))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "detective_rating",
+        "label": "Detective Rating",
+        "icon": "🕵️",
+        "formula": "(reputation * 0.3 + evidence_quality * 0.3 + case_solved * 8 * 0.4)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "accuracy_score",
+        "label": "Accuracy Score",
+        "icon": "🎯",
+        "formula": "(logic_score * 0.3 + observation * 0.3 + evidence_quality * 0.4)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "critical_thinking_index",
+        "label": "Critical Thinking Index",
+        "icon": "💡",
+        "formula": "(logic_score * 0.25 + questioning_skill * 0.25 + bias_awareness * 0.25 + observation * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 40,
+          "good": 60
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "experience_growth",
+        "label": "Detective Experience",
+        "condition": {
+          "resource": "case_solved",
+          "op": ">=",
+          "value": 1
+        },
+        "effects": [
+          {
+            "resource": "confidence",
+            "formula": "min(100, confidence + case_solved * 0.5)"
+          }
+        ],
+        "description": "Each solved case builds your confidence as a detective."
+      },
+      {
+        "id": "reputation_boost",
+        "label": "Reputation Growth",
+        "condition": {
+          "resource": "evidence_quality",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "reputation",
+            "formula": "min(100, reputation + (evidence_quality - 40) * 0.05)"
+          }
+        ],
+        "description": "Strong evidence quality builds your reputation in the agency."
+      },
+      {
+        "id": "reputation_decline",
+        "label": "Reputation at Risk",
+        "condition": {
+          "resource": "evidence_quality",
+          "op": "<",
+          "value": 15
+        },
+        "effects": [
+          {
+            "resource": "reputation",
+            "formula": "max(0, reputation - 3)"
+          }
+        ],
+        "description": "Low evidence quality damages your reputation."
+      },
+      {
+        "id": "logic_practice",
+        "label": "Logic Sharpening",
+        "effects": [
+          {
+            "resource": "logic_score",
+            "formula": "min(100, logic_score + questioning_skill * 0.02)"
+          }
+        ],
+        "description": "Good questioning skills gradually improve your logical reasoning."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "logic_boosts_evidence",
+        "from_subsystem": "logical_reasoning",
+        "to_subsystem": "observation_mastery",
+        "label": "Logical Observation",
+        "condition": {
+          "resource": "logic_score",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "observation",
+            "formula": "min(100, observation + (logic_score - 50) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Strong logic helps you notice things others miss."
+      },
+      {
+        "id": "bias_helps_logic",
+        "from_subsystem": "bias_detection",
+        "to_subsystem": "logical_reasoning",
+        "label": "Clear Thinking",
+        "condition": {
+          "resource": "bias_awareness",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "logic_score",
+            "formula": "min(100, logic_score + (bias_awareness - 40) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Awareness of biases clears your mind for better logic."
+      },
+      {
+        "id": "observation_boosts_questions",
+        "from_subsystem": "observation_mastery",
+        "to_subsystem": "question_craft",
+        "label": "Informed Questions",
+        "condition": {
+          "resource": "observation",
+          "op": ">=",
+          "value": 55
+        },
+        "effects": [
+          {
+            "resource": "questioning_skill",
+            "formula": "min(100, questioning_skill + (observation - 55) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Good observers ask better, more targeted questions."
+      },
+      {
+        "id": "low_bias_hurts_evidence",
+        "from_subsystem": "bias_detection",
+        "to_subsystem": "observation_mastery",
+        "label": "Blind Spots",
+        "condition": {
+          "resource": "bias_awareness",
+          "op": "<",
+          "value": 20
+        },
+        "effects": [
+          {
+            "resource": "evidence_quality",
+            "formula": "max(0, evidence_quality - (20 - bias_awareness) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Low bias awareness creates blind spots that weaken your evidence."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "confidence",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "reputation",
+        "equilibrium": 45,
+        "rate": 0.02,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "surprise_witness",
+        "label": "Surprise Witness Appears",
+        "icon": "🙋",
+        "description": "An unexpected witness comes forward with new information about the case!",
+        "probability": 0.2,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 2
+        },
+        "effects": [
+          {
+            "resource": "evidence_quality",
+            "delta": 10
+          },
+          {
+            "resource": "observation",
+            "delta": 5
+          },
+          {
+            "resource": "confidence",
+            "delta": 3
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "BREAKING: A surprise witness steps forward! New testimony could change everything.",
+        "ai_image_prompt": "Cartoon detective office, a surprised young detective meeting a mysterious witness in a trenchcoat, dramatic lighting, colorful cartoon style"
+      },
+      {
+        "id": "evidence_tampered",
+        "label": "Evidence Tampered With",
+        "icon": "🚨",
+        "description": "Someone has tampered with key evidence in your case file! Your work is at risk.",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "evidence_quality",
+              "op": ">=",
+              "value": 20
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "evidence_quality",
+            "delta": -15
+          },
+          {
+            "resource": "confidence",
+            "delta": -8
+          },
+          {
+            "resource": "reputation",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "ALERT: Evidence has been tampered with! The Trickster may be behind this.",
+        "ai_image_prompt": "Cartoon crime scene with scattered clue files, magnifying glass over torn documents, red warning tape, mysterious shadow, vivid colors"
+      },
+      {
+        "id": "media_pressure",
+        "label": "Media Pressure for Quick Answer",
+        "icon": "📰",
+        "description": "Reporters are demanding answers! The public wants the case solved now, even if the evidence is incomplete.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "case_solved",
+              "op": ">=",
+              "value": 2
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "confidence",
+            "delta": -6
+          },
+          {
+            "resource": "reputation",
+            "delta": -4
+          },
+          {
+            "resource": "bias_awareness",
+            "delta": 5
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "Reporters swarm the agency! 'When will you solve the case?' echoes everywhere.",
+        "ai_image_prompt": "Cartoon newspaper reporters with microphones and cameras surrounding a young detective, flashing cameras, press badges, vivid cartoon style"
+      },
+      {
+        "id": "hidden_clue",
+        "label": "Hidden Clue Discovered",
+        "icon": "🗝️",
+        "description": "While reviewing old case notes, you stumble upon a hidden clue everyone else missed!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "observation",
+              "op": ">=",
+              "value": 50
+            },
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "evidence_quality",
+            "delta": 12
+          },
+          {
+            "resource": "logic_score",
+            "delta": 5
+          },
+          {
+            "resource": "reputation",
+            "delta": 5
+          },
+          {
+            "resource": "confidence",
+            "delta": 5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "A hidden clue found in old case files! Your sharp eyes pay off.",
+        "ai_image_prompt": "Cartoon detective with magnifying glass finding a glowing hidden clue in a dusty file cabinet, excited expression, sparkle effects, vivid cartoon"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "inspector_gray",
+        "name": "Inspector Gray",
+        "role": "Mentor Detective",
+        "icon": "🧑‍✈️",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "logic_score",
+              "op": "<",
+              "value": 25
+            },
+            "action": "coach",
+            "message": "Remember, detective — slow down and think step by step. Rushing leads to mistakes. Ask yourself: what do I actually KNOW vs. what do I ASSUME?",
+            "mood_change": "concerned",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "resource": "evidence_quality",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "Outstanding evidence work! Your case files are rock-solid. This is what separates good detectives from great ones.",
+            "mood_change": "proud",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "resource": "questioning_skill",
+              "op": ">=",
+              "value": 55
+            },
+            "action": "praise",
+            "message": "Your questioning technique is really improving! You are asking the kind of probing questions that uncover the truth.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "reputation",
+                  "op": "<",
+                  "value": 30
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "warn",
+            "message": "Your reputation is slipping, detective. The agency director is asking questions. We need better results — and soon.",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          }
+        ]
+      },
+      {
+        "id": "watson_jr",
+        "name": "Watson Jr.",
+        "role": "Detective Partner",
+        "icon": "🧒",
+        "initial_mood": "excited",
+        "initial_satisfaction": 65,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "case_solved",
+              "op": ">=",
+              "value": 3
+            },
+            "action": "celebrate",
+            "message": "We have solved 3 cases together! We make a great team! I am learning so much from watching how you think through problems.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "bias_awareness",
+              "op": "<",
+              "value": 20
+            },
+            "action": "concerned",
+            "message": "Hey partner, I think we might be jumping to conclusions. Are we sure we are not falling for a thinking trap? Maybe we should double-check our assumptions.",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "bias_awareness",
+                  "op": "<",
+                  "value": 20
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 5
+                }
+              ]
+            },
+            "action": "crisis",
+            "message": "I am really worried! We keep making the same thinking mistakes. I heard Inspector Gray might split us up if we do not improve. We NEED to start checking our biases!",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "confidence",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_bias_trap"
+          }
+        ]
+      },
+      {
+        "id": "the_trickster",
+        "name": "The Trickster",
+        "role": "Antagonist",
+        "icon": "🎭",
+        "initial_mood": "smug",
+        "initial_satisfaction": 40,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "evidence_quality",
+              "op": "<",
+              "value": 25
+            },
+            "action": "taunt",
+            "message": "Ha! Your evidence is so weak I could blow it over like a house of cards. You will never catch anyone with reasoning this sloppy!",
+            "mood_change": "smug",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "evidence_quality",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "nervous",
+            "message": "Hmm... your evidence is getting annoyingly solid. I may need to change my strategy. You are better than I expected, kid.",
+            "mood_change": "nervous",
+            "satisfaction_delta": -10
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "evidence_quality",
+                  "op": "<",
+                  "value": 15
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "sabotage",
+            "message": "Time to have some fun! I have planted fake evidence all over your case files. Good luck figuring out what is real and what is not!",
+            "mood_change": "gleeful",
+            "satisfaction_delta": 10,
+            "effects": [
+              {
+                "resource": "evidence_quality",
+                "delta": -10
+              },
+              {
+                "resource": "confidence",
+                "delta": -5
+              }
+            ],
+            "trigger_round": "crisis_evidence"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "case_solved",
+          "op": ">=",
+          "value": 5
+        },
+        "icon": "🏅",
+        "text": "Young detective crosses the 5-case milestone! The agency is impressed.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "logic_score",
+              "op": ">=",
+              "value": 70
+            },
+            {
+              "resource": "observation",
+              "op": ">=",
+              "value": 70
+            }
+          ]
+        },
+        "icon": "🌟",
+        "text": "Top marks in logic AND observation! This detective is one to watch.",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A cartoon detective agency office, young detective with {case_solved} solved cases, evidence board with {evidence_quality}% quality evidence, detective rating badge showing {reputation} reputation. Colorful, vibrant cartoon style with magnifying glasses, clue boards, and mystery maps. Mood: {'confident' if confidence > 60 else 'determined' if confidence > 35 else 'uncertain'}."
+  },
+  "rounds": [
+    {
+      "round_id": "case_1_missing_mascot",
+      "round_title": "Case 1: The Missing School Mascot",
+      "situation": "The school mascot costume has vanished the day before the big game! Three students were seen near the storage room. Everyone is pointing fingers, but nobody saw exactly what happened. As the newest detective at the Thinking Agency, this is your first case!",
+      "goal": "Figure out how to start your first investigation the right way.",
+      "coaching_moment": "Critical thinking starts with asking the RIGHT questions, not jumping to conclusions.",
+      "reflection_prompt": "Why is it important to gather information before forming an opinion?",
+      "ai_image_prompt": "Cartoon school hallway, empty mascot display case, three nervous-looking students nearby, young detective with magnifying glass, bright colorful cartoon style",
+      "choices": [
+        {
+          "id": "c1_question_all",
+          "label": "A. Interview All Three Students Separately",
+          "description": "Talk to each student one-on-one. Compare their stories for inconsistencies.",
+          "delta": {
+            "questioning_skill": 8,
+            "evidence_quality": 10,
+            "logic_score": 5,
+            "observation": 3,
+            "reputation": 5,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Excellent detective work! Interviewing separately prevents stories from being coordinated. You found key contradictions that cracked the case!",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "c1_check_evidence",
+          "label": "B. Search the Storage Room for Clues First",
+          "description": "Before talking to anyone, examine the scene. Look for footprints, fingerprints, or anything out of place.",
+          "delta": {
+            "observation": 10,
+            "evidence_quality": 12,
+            "logic_score": 3,
+            "questioning_skill": 2,
+            "reputation": 4,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Smart! Physical evidence does not lie. You found a torn piece of fabric that matched one student's jacket. Evidence-first thinking!",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "c1_ask_crowd",
+          "label": "C. Ask Everyone in the Hallway What They Saw",
+          "description": "Cast a wide net — maybe someone passing by noticed something useful.",
+          "delta": {
+            "questioning_skill": 5,
+            "observation": 5,
+            "evidence_quality": 6,
+            "bias_awareness": 3,
+            "reputation": 3,
+            "confidence": 3,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Good instinct to gather multiple perspectives! But crowds can give unreliable info. Eyewitness memory is tricky — did you know people often 'remember' things that did not happen?",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "c1_blame_obvious",
+          "label": "D. The Student Who Was Closest is Probably Guilty",
+          "description": "The simplest answer is usually right. The kid standing nearest the storage room probably did it.",
+          "delta": {
+            "confidence": 5,
+            "logic_score": -3,
+            "bias_awareness": -5,
+            "evidence_quality": 2,
+            "reputation": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Careful! This is called 'proximity bias' — assuming the nearest person is guilty. A real detective needs evidence, not assumptions. The student was actually there to return a basketball!",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "case_2_broken_trophy",
+      "round_title": "Case 2: The Broken Trophy Mystery",
+      "situation": "The principal's prized science fair trophy is found shattered. The janitor says he heard a crash at 3:15 PM. Two students claim they were in the library at that time, but the librarian was on break and cannot confirm. A third student says the janitor himself looked nervous.",
+      "goal": "Sort fact from speculation and determine what really happened.",
+      "coaching_moment": "Distinguishing FACTS (what we can verify) from OPINIONS (what people believe) is a core thinking skill.",
+      "reflection_prompt": "How can you tell the difference between a fact and an opinion?",
+      "ai_image_prompt": "Cartoon school trophy case with broken glass trophy on floor, magnifying glass examining shards, clock showing 3:15, detective notebook, bright cartoon style",
+      "choices": [
+        {
+          "id": "c2_fact_check",
+          "label": "A. Make a Fact vs. Opinion Chart",
+          "description": "Write down everything you know. Label each piece as FACT (provable) or OPINION (someone's belief). Find the gaps.",
+          "delta": {
+            "logic_score": 10,
+            "evidence_quality": 8,
+            "bias_awareness": 6,
+            "questioning_skill": 4,
+            "reputation": 5,
+            "confidence": 4,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Brilliant systematic thinking! Your chart revealed that the janitor's nervousness is an OPINION (the third student's interpretation), while the crash time is a FACT. This distinction cracked the case!",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "c2_timeline",
+          "label": "B. Build a Timeline of Events",
+          "description": "Map out exactly who was where and when. Look for contradictions in the timeline.",
+          "delta": {
+            "logic_score": 8,
+            "observation": 8,
+            "evidence_quality": 10,
+            "questioning_skill": 3,
+            "reputation": 4,
+            "confidence": 4,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Great detective method! Your timeline showed a 5-minute gap where nobody could account for one student's location. Timelines expose contradictions!",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "c2_trust_janitor",
+          "label": "C. Trust the Janitor Since He is an Adult",
+          "description": "Adults are more reliable witnesses than kids, right? Focus the investigation on the students.",
+          "delta": {
+            "confidence": 3,
+            "bias_awareness": -8,
+            "logic_score": -2,
+            "evidence_quality": 3,
+            "reputation": -2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Watch out! This is 'authority bias' — assuming adults are always more truthful. A good detective evaluates EVIDENCE, not status. It turned out the janitor accidentally knocked the trophy while mopping!",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "c2_check_cameras",
+          "label": "D. Check if There Are Security Cameras",
+          "description": "Look for any cameras in the hallway that might have recorded what happened.",
+          "delta": {
+            "observation": 7,
+            "evidence_quality": 8,
+            "logic_score": 3,
+            "questioning_skill": 3,
+            "reputation": 4,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Resourceful thinking! Looking for independent evidence sources is a strong detective move. Unfortunately the camera was out of battery — but you learned to always check for recorded evidence!",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "case_3_lunch_money",
+      "round_title": "Case 3: The Case of the Disappearing Lunch Money",
+      "situation": "Three students have reported missing lunch money this week. Everyone suspects the new student, Ravi, because 'he looks shady' and 'he does not talk to anyone.' But you notice that all three victims sit near the door, and Ravi sits on the opposite side of the room.",
+      "goal": "Investigate without falling into the trap of stereotyping.",
+      "coaching_moment": "Confirmation bias makes us look for evidence that supports what we already believe, while ignoring evidence that contradicts it.",
+      "reflection_prompt": "Have you ever blamed someone for something just because they seemed 'different'? What happened?",
+      "ai_image_prompt": "Cartoon classroom with students at desks, one lonely student sitting apart looking sad, detective noticing seating chart, lunch boxes on desks, colorful cartoon",
+      "choices": [
+        {
+          "id": "c3_seating_chart",
+          "label": "A. Study the Seating Chart and Door Access Pattern",
+          "description": "Map who sits where. Figure out who has the easiest access to the victims' bags near the door.",
+          "delta": {
+            "observation": 10,
+            "bias_awareness": 10,
+            "logic_score": 8,
+            "evidence_quality": 10,
+            "reputation": 6,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Excellent! You used spatial reasoning instead of stereotypes. The seating chart showed that the monitor who collects homework passes by all three victims' desks — and Ravi never goes near them. Evidence beats assumptions!",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "c3_defend_ravi",
+          "label": "B. Point Out Everyone's Bias Against Ravi",
+          "description": "Tell the class that suspecting someone just because they are 'different' is unfair. Then investigate properly.",
+          "delta": {
+            "bias_awareness": 12,
+            "questioning_skill": 5,
+            "reputation": 5,
+            "confidence": 6,
+            "evidence_quality": 6,
+            "observation": 3,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Brave and ethical! Standing up against bias takes courage. You taught the class about 'scapegoating' — blaming someone who is different. Ravi appreciated your fairness, and the real culprit was eventually found.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "c3_question_ravi",
+          "label": "C. Question Ravi First to Clear His Name",
+          "description": "Interview Ravi to see if he has an alibi. If he is innocent, everyone will see.",
+          "delta": {
+            "questioning_skill": 6,
+            "bias_awareness": 3,
+            "confidence": 3,
+            "evidence_quality": 5,
+            "reputation": 2,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Your heart was in the right place, but questioning Ravi first still treats him as a suspect. A truly unbiased investigation would examine evidence before focusing on any individual.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "c3_go_with_crowd",
+          "label": "D. Everyone Suspects Ravi — They Must Be Onto Something",
+          "description": "When lots of people agree, they are usually right. Focus on Ravi.",
+          "delta": {
+            "bias_awareness": -10,
+            "logic_score": -5,
+            "reputation": -4,
+            "confidence": 2,
+            "evidence_quality": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "This is the 'bandwagon fallacy' — believing something is true just because many people believe it. History is full of times the majority was wrong. Ravi was innocent, and the real thief was never caught because you followed the crowd instead of the evidence.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "case_4_science_sabotage",
+      "round_title": "Case 4: The Science Fair Sabotage",
+      "situation": "Someone poured water on three science fair projects overnight. The top competitor, Meera, says her project was also damaged, but you notice her project has only minor water marks while others are destroyed. She also arrived earliest this morning. Is she a victim — or the saboteur?",
+      "goal": "Use logical reasoning to evaluate contradictory evidence.",
+      "coaching_moment": "In critical thinking, contradictions are clues. When something does not add up, dig deeper.",
+      "reflection_prompt": "When someone's words and actions do not match, what should you do?",
+      "ai_image_prompt": "Cartoon science fair with soggy ruined projects on tables, one barely damaged project standing out, young detective examining water damage patterns, colorful poster boards",
+      "choices": [
+        {
+          "id": "c4_compare_damage",
+          "label": "A. Carefully Compare Damage Across All Projects",
+          "description": "Measure and photograph the water damage on each project. Look for patterns in how the water was splashed.",
+          "delta": {
+            "observation": 10,
+            "evidence_quality": 12,
+            "logic_score": 8,
+            "bias_awareness": 3,
+            "reputation": 5,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Masterful analysis! You found that the water was poured from a consistent height and direction on all damaged projects — but Meera's was only lightly sprinkled. The pattern revealed she staged her own damage to look like a victim!",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "c4_ask_why",
+          "label": "B. Ask Meera 'Why' Questions — Dig Into Her Story",
+          "description": "Use the power of 'WHY' questions. Why was she here so early? Why is her damage minor? How does she explain the pattern?",
+          "delta": {
+            "questioning_skill": 12,
+            "logic_score": 6,
+            "evidence_quality": 8,
+            "observation": 3,
+            "reputation": 5,
+            "confidence": 4,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Powerful questioning! Your WHY questions made Meera's story fall apart. She could not explain why her project survived when it was right next to the most damaged one. Asking 'why' five times deep uncovers the truth!",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "c4_believe_meera",
+          "label": "C. Believe Meera — She Is a Victim Too",
+          "description": "Meera is the top student. She would not sabotage others. Focus on finding an outside culprit.",
+          "delta": {
+            "bias_awareness": -6,
+            "logic_score": -2,
+            "evidence_quality": 3,
+            "reputation": -3,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "This is the 'halo effect' — assuming good students cannot do bad things. Critical thinkers evaluate evidence, not reputations. Top students can be just as capable of cheating as anyone else.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "c4_check_access",
+          "label": "D. Check Who Had Access to the Room Overnight",
+          "description": "Get the sign-in sheet and check which doors were unlocked. Build an access timeline.",
+          "delta": {
+            "logic_score": 7,
+            "observation": 6,
+            "evidence_quality": 9,
+            "questioning_skill": 4,
+            "reputation": 4,
+            "confidence": 4,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Solid procedural thinking! The access log showed only two people entered early — Meera and the janitor. Combined with the damage patterns, the evidence pointed clearly to Meera.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "case_5_playground_argument",
+      "round_title": "Case 5: The Playground Argument",
+      "situation": "Two groups of students are in a fierce argument. Group A says Group B broke the basketball hoop. Group B says Group A started it by hogging the court. Both sides have 'witnesses' who tell completely different stories. Emotions are running high and everyone is shouting.",
+      "goal": "Cut through emotional arguments to find the facts.",
+      "coaching_moment": "Emotional arguments are louder but not stronger. Learning to separate emotions from facts is a superpower.",
+      "reflection_prompt": "When people are angry, do they tell the truth more accurately or less accurately? Why?",
+      "ai_image_prompt": "Cartoon playground with two groups of kids arguing, broken basketball hoop, young detective standing between them with notebook, expressive cartoon faces showing anger",
+      "choices": [
+        {
+          "id": "c5_separate_groups",
+          "label": "A. Separate the Groups and Interview One at a Time",
+          "description": "Cool everyone down first. Then get each person's account individually, away from the group pressure.",
+          "delta": {
+            "questioning_skill": 8,
+            "bias_awareness": 8,
+            "logic_score": 6,
+            "evidence_quality": 8,
+            "reputation": 6,
+            "confidence": 4,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Excellent emotional intelligence! When you separated people from group pressure, their stories became more honest. You discovered the hoop was already cracked — nobody 'broke' it. The argument was about pride, not truth.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "c5_find_neutral",
+          "label": "B. Find a Neutral Witness Who Was Not Involved",
+          "description": "Look for someone who was nearby but not part of either group. A neutral observer sees things more clearly.",
+          "delta": {
+            "observation": 8,
+            "bias_awareness": 10,
+            "evidence_quality": 10,
+            "logic_score": 4,
+            "reputation": 5,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Smart strategy! A student reading on a bench nearby saw the whole thing without any emotional stake. Her calm, detailed account was the most reliable. Neutral witnesses are gold in investigations!",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "c5_look_at_hoop",
+          "label": "C. Ignore the Arguments — Examine the Basketball Hoop",
+          "description": "Words can lie, but physical evidence cannot. Check the hoop for clues about how it actually broke.",
+          "delta": {
+            "observation": 10,
+            "evidence_quality": 9,
+            "logic_score": 6,
+            "questioning_skill": 2,
+            "reputation": 4,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Physical evidence for the win! The hoop's bolts were rusted through — it was going to break no matter who was playing. Nobody was at fault. This case taught everyone to check evidence before casting blame.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "c5_majority_rules",
+          "label": "D. The Group With More Witnesses is Probably Right",
+          "description": "Group A has 6 witnesses, Group B has only 3. More people backing a story means it is more likely true.",
+          "delta": {
+            "confidence": 3,
+            "bias_awareness": -8,
+            "logic_score": -4,
+            "evidence_quality": -2,
+            "reputation": -4
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "This is the 'appeal to numbers' fallacy! Having more people say something does not make it true. In group conflicts, friends back each other regardless of truth. Quality of evidence beats quantity of voices.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_evidence",
+      "id": "crisis_evidence",
+      "round_title": "CRISIS: Evidence Under Attack!",
+      "situation": "The Trickster has struck! Fake clues have been planted throughout your case files, forged documents mixed in with real ones, and a crucial piece of evidence has gone missing from the evidence locker. Your entire case portfolio is compromised. Inspector Gray demands you sort real evidence from fake — or the agency will reassign you.",
+      "goal": "Save your reputation by proving you can separate authentic evidence from planted fakes.",
+      "coaching_moment": "Resilience means staying calm when everything goes wrong. Systematic verification separates strong thinkers from panicked guessers.",
+      "reflection_prompt": "When you cannot trust what you see, what methods can you use to verify the truth?",
+      "ai_image_prompt": "Cartoon detective evidence room in chaos, scattered files, magnifying glass over documents with question marks, mysterious shadow of The Trickster, red alert lights, vivid cartoon",
+      "condition": {
+        "resource": "evidence_quality",
+        "operator": "<",
+        "value": 15
+      },
+      "choices": [
+        {
+          "id": "ce_systematic_verify",
+          "label": "A. Create a Verification Checklist for Every Piece of Evidence",
+          "description": "Go through ALL evidence systematically. Check each piece against three independent sources. Slow but thorough.",
+          "delta": {
+            "evidence_quality": 20,
+            "logic_score": 10,
+            "observation": 5,
+            "bias_awareness": 5,
+            "reputation": 8,
+            "confidence": 6
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Outstanding resilience! Your systematic approach exposed 4 fake documents the Trickster planted. By cross-referencing every piece, nothing slipped through. This is how real forensic analysts work!",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "ce_pattern_analysis",
+          "label": "B. Look for Patterns in the Fake Evidence",
+          "description": "The Trickster made the fakes, so they share patterns. Find what the fakes have in common to identify them all.",
+          "delta": {
+            "logic_score": 12,
+            "evidence_quality": 15,
+            "observation": 8,
+            "reputation": 6,
+            "confidence": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Clever reverse-engineering! You noticed all fake documents used the same font and had slightly different paper texture. Pattern recognition turned the Trickster's strategy against them!",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "ce_ask_help",
+          "label": "C. Ask Inspector Gray and Watson Jr. to Help Review",
+          "description": "Three pairs of eyes are better than one. Divide the evidence among the team for faster checking.",
+          "delta": {
+            "evidence_quality": 12,
+            "questioning_skill": 6,
+            "reputation": 4,
+            "confidence": 4,
+            "bias_awareness": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Teamwork! Asking for help is not weakness — it is wisdom. Each team member caught fakes the others missed. Collaboration strengthens critical thinking.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "ce_start_fresh",
+          "label": "D. Throw Everything Out and Start From Scratch",
+          "description": "If we cannot trust any evidence, rebuild the entire case from zero. Clean slate.",
+          "delta": {
+            "evidence_quality": 8,
+            "confidence": -5,
+            "reputation": -6,
+            "logic_score": 3,
+            "bias_awareness": 2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Starting fresh sounds safe, but you lost valuable real evidence in the process. A better approach is to verify rather than discard. Not everything was fake — some evidence was still solid.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "case_6_false_accusation",
+      "round_title": "Case 6: The False Accusation",
+      "situation": "A teacher accuses a student of cheating on a test because she scored much higher than usual. 'She could not have improved this much on her own,' the teacher says. But the student says she studied every night for two weeks with her older sister's help. The teacher wants your detective opinion.",
+      "goal": "Evaluate whether 'unlikely' means 'impossible' — and recognize the fallacy of incredulity.",
+      "coaching_moment": "The argument from incredulity says: 'I cannot believe it, therefore it is not true.' But the universe does not care what we find believable.",
+      "reflection_prompt": "Has anyone ever doubted you could do something, and you proved them wrong?",
+      "ai_image_prompt": "Cartoon test classroom, student looking upset while teacher holds up a high-score test paper suspiciously, detective thinking with thought bubble showing logic, bright cartoon style",
+      "choices": [
+        {
+          "id": "c6_check_study_evidence",
+          "label": "A. Ask to See the Student's Study Evidence",
+          "description": "Look at her notebooks, ask the sister to confirm, check if her answers show understanding (not just memorization).",
+          "delta": {
+            "evidence_quality": 10,
+            "questioning_skill": 8,
+            "logic_score": 6,
+            "bias_awareness": 8,
+            "reputation": 6,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Perfect investigation! Her notebook had two weeks of practice problems, her sister confirmed nightly study sessions, and her test answers showed deep understanding. The teacher's disbelief was not evidence of cheating.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "c6_compare_tests",
+          "label": "B. Compare This Test With Her Previous Work in Detail",
+          "description": "Look at answer patterns, handwriting, types of mistakes. Does her improvement make logical sense?",
+          "delta": {
+            "observation": 10,
+            "logic_score": 8,
+            "evidence_quality": 8,
+            "questioning_skill": 3,
+            "reputation": 5,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Thorough analysis! You found that her improvement followed a logical pattern — she still missed the hardest questions but aced the ones she would have gotten from consistent study. Real cheaters usually get an unnaturally perfect score.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "c6_agree_teacher",
+          "label": "C. Agree With the Teacher — The Jump is Suspicious",
+          "description": "A score jump that big is statistically unlikely. The teacher knows the student better than you do.",
+          "delta": {
+            "bias_awareness": -8,
+            "logic_score": -3,
+            "reputation": -4,
+            "confidence": 2,
+            "evidence_quality": -2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "This is the 'argument from incredulity' — rejecting something just because it seems unlikely. Unlikely things happen every day! And trusting authority over evidence is authority bias. The student was innocent and deeply hurt by the false accusation.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "c6_give_retest",
+          "label": "D. Suggest a Supervised Re-Test as Fair Proof",
+          "description": "If she really studied, she can prove it by scoring well again under supervision.",
+          "delta": {
+            "questioning_skill": 6,
+            "logic_score": 5,
+            "evidence_quality": 7,
+            "bias_awareness": 4,
+            "reputation": 4,
+            "confidence": 3,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "requires": {
+            "resource": "reputation",
+            "op": ">=",
+            "value": 35,
+            "label": "Requires Reputation >= 35"
+          },
+          "feedback": "A fair compromise! The student scored even higher on the retest. This proved her improvement was real AND gave the teacher confidence in the process. Sometimes the best answer is: let the evidence speak for itself.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "case_7_internet_rumor",
+      "round_title": "Case 7: The Internet Rumor Investigation",
+      "situation": "A viral social media post claims the school cafeteria food contains 'dangerous chemicals.' Parents are panicking, students are refusing to eat, and the cafeteria staff are terrified of losing their jobs. The post has 500 shares but no source, no data, and no author name. You need to investigate whether the claim is true.",
+      "goal": "Learn to evaluate sources, identify misinformation, and separate viral claims from verified facts.",
+      "coaching_moment": "In the age of information, the ability to evaluate sources is one of the most important critical thinking skills.",
+      "reflection_prompt": "How do you decide whether something you see online is true or false?",
+      "ai_image_prompt": "Cartoon school cafeteria, worried parents and students looking at phones, cafeteria workers looking scared, young detective examining a phone screen with magnifying glass, viral post with question marks",
+      "choices": [
+        {
+          "id": "c7_source_check",
+          "label": "A. Trace the Post Back to Its Original Source",
+          "description": "Who posted it first? Do they have expertise? What evidence did they provide? Follow the digital trail.",
+          "delta": {
+            "logic_score": 10,
+            "questioning_skill": 8,
+            "evidence_quality": 10,
+            "bias_awareness": 6,
+            "reputation": 6,
+            "confidence": 4,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Masterful digital detective work! You traced the post to a competing food company's employee who wanted to hurt the cafeteria's supplier. The 'chemicals' were just common preservatives listed on every food label. Source verification is everything!",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "c7_test_food",
+          "label": "B. Get the Food Independently Tested",
+          "description": "Send samples to a lab. If the claim is true, the test will show it. If false, the results will calm everyone.",
+          "delta": {
+            "evidence_quality": 12,
+            "observation": 6,
+            "logic_score": 5,
+            "reputation": 6,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "requires": {
+            "resource": "evidence_quality",
+            "op": ">=",
+            "value": 25,
+            "label": "Requires Evidence Quality >= 25"
+          },
+          "feedback": "The gold standard — independent verification! Lab tests showed the food was perfectly safe. When claims are serious, objective testing beats all arguments. This is how scientists separate fact from fiction.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "c7_calm_crowd",
+          "label": "C. Hold a School Assembly to Present the Facts",
+          "description": "Show students and parents the evidence step by step. Teach them to ask: Who said it? What is their evidence? Who benefits from this claim?",
+          "delta": {
+            "questioning_skill": 10,
+            "bias_awareness": 8,
+            "reputation": 7,
+            "confidence": 6,
+            "evidence_quality": 5,
+            "logic_score": 3,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Community education! You did not just solve the case — you taught everyone HOW to evaluate information. The three questions (Who? What evidence? Who benefits?) became the school's anti-misinformation toolkit.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "c7_500_shares",
+          "label": "D. With 500 Shares, There Must Be Some Truth to It",
+          "description": "That many people would not share something completely false. Where there is smoke, there is fire.",
+          "delta": {
+            "bias_awareness": -10,
+            "logic_score": -5,
+            "reputation": -5,
+            "evidence_quality": -3,
+            "confidence": 2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "This combines TWO fallacies: 'appeal to popularity' (many shares = must be true) and 'where there is smoke there is fire' (no, sometimes there is just a smoke machine). False claims go viral every day. Shares measure emotions, not truth.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_bias_trap",
+      "id": "crisis_bias_trap",
+      "round_title": "CRISIS: The Bias Trap!",
+      "situation": "Watson Jr. was right — your thinking biases have caught up with you! You confidently solved a case last week, but new evidence proves your conclusion was completely wrong. The suspect you identified was innocent, and the real culprit is still free. Inspector Gray is furious. The agency's credibility is at stake, and Watson Jr. looks heartbroken. You need to fix this — fast.",
+      "goal": "Acknowledge your mistake, identify which bias led you astray, and rebuild trust.",
+      "coaching_moment": "The hardest part of critical thinking is admitting when YOU are wrong. Intellectual humility — knowing you can be wrong — is what separates great thinkers from stubborn ones.",
+      "reflection_prompt": "Is admitting a mistake a sign of weakness or strength? Why?",
+      "ai_image_prompt": "Cartoon detective looking shocked at a wall of connected clues with a big red X through the wrong conclusion, Watson Jr looking disappointed, Inspector Gray with arms crossed, evidence pointing new direction",
+      "condition": {
+        "and": [
+          {
+            "resource": "bias_awareness",
+            "operator": "<",
+            "value": 20
+          },
+          {
+            "resource": "case_solved",
+            "operator": ">=",
+            "value": 3
+          }
+        ]
+      },
+      "choices": [
+        {
+          "id": "cb_full_review",
+          "label": "A. Conduct a Full Bias Audit of Your Past Cases",
+          "description": "Go back through every case. For each one, ask: What did I ASSUME? What evidence did I IGNORE? What bias might have affected me?",
+          "delta": {
+            "bias_awareness": 18,
+            "logic_score": 8,
+            "evidence_quality": 10,
+            "reputation": 5,
+            "confidence": 6,
+            "questioning_skill": 4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "This takes real intellectual courage! Your bias audit revealed confirmation bias in two cases and authority bias in another. By naming your biases, you gain power over them. Inspector Gray was deeply impressed.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "cb_apologize_learn",
+          "label": "B. Publicly Apologize and Explain What Went Wrong",
+          "description": "Admit the mistake to everyone at the agency. Explain exactly which bias fooled you and what you learned.",
+          "delta": {
+            "bias_awareness": 15,
+            "reputation": 10,
+            "confidence": 5,
+            "questioning_skill": 5,
+            "logic_score": 3,
+            "evidence_quality": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Incredible bravery! Admitting mistakes publicly takes enormous courage. Watson Jr. said: 'That is what a real detective does.' Your honesty actually INCREASED people's trust in you. Vulnerability is strength.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "cb_create_checklist",
+          "label": "C. Create an Anti-Bias Checklist for Future Cases",
+          "description": "Build a checklist every detective must follow: 1) Challenge your first theory 2) Seek contradicting evidence 3) Ask 'What if I am wrong?' 4) Get a second opinion.",
+          "delta": {
+            "bias_awareness": 14,
+            "logic_score": 6,
+            "questioning_skill": 8,
+            "evidence_quality": 6,
+            "reputation": 4,
+            "confidence": 4
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Systems thinking! Instead of just fixing this mistake, you created a system to prevent ALL future bias mistakes. Inspector Gray adopted your checklist as official agency protocol!",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "cb_blame_others",
+          "label": "D. The Witnesses Gave Bad Information — It is Not Your Fault",
+          "description": "You followed the evidence you were given. The witnesses were unreliable, not your reasoning.",
+          "delta": {
+            "bias_awareness": -5,
+            "reputation": -10,
+            "confidence": -5,
+            "logic_score": -3,
+            "evidence_quality": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "This is called 'self-serving bias' — blaming others for your mistakes while taking credit for successes. A detective's job IS to evaluate witness reliability. Watson Jr. looked even more disappointed. Inspector Gray said: 'A detective who cannot admit mistakes is not a detective at all.'",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "case_8_pattern_puzzle",
+      "round_title": "Case 8: The Pattern Puzzle",
+      "situation": "Strange things are happening in the neighborhood: garden gnomes are being rearranged, mailboxes are getting stickers, and wind chimes appear on random porches. Residents are scared, but you notice the 'vandalism' only happens on houses along Maple Street, only on Tuesday nights, and the stickers all have math equations on them. There might be a pattern here.",
+      "goal": "Use pattern recognition and hypothesis testing to crack an unusual case.",
+      "coaching_moment": "Hypothesis testing means making a prediction based on a pattern, then TESTING it. If the test fails, revise the hypothesis!",
+      "reflection_prompt": "What is the difference between a pattern and a coincidence?",
+      "ai_image_prompt": "Cartoon suburban street at night, houses with quirky decorations - gnomes rearranged, sticker-covered mailboxes, wind chimes, young detective with flashlight studying a map of the street, cartoon style",
+      "choices": [
+        {
+          "id": "c8_map_pattern",
+          "label": "A. Map Every Incident and Look for the Pattern",
+          "description": "Plot every event on a map with dates and times. What do the affected houses have in common? Predict where it will happen next.",
+          "delta": {
+            "logic_score": 12,
+            "observation": 10,
+            "evidence_quality": 10,
+            "questioning_skill": 3,
+            "reputation": 5,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Brilliant hypothesis testing! Your map revealed all affected houses were on the Math Olympiad team captain's walking route home from Tuesday practice. The 'vandalism' was actually a math scavenger hunt she created for her team! Pattern recognition solved a mystery that baffled adults.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "c8_stakeout",
+          "label": "B. Conduct a Tuesday Night Stakeout",
+          "description": "Wait on Maple Street next Tuesday night with Watson Jr. Catch the person in the act!",
+          "delta": {
+            "observation": 12,
+            "evidence_quality": 10,
+            "confidence": 6,
+            "logic_score": 4,
+            "reputation": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Direct observation! You caught the Math Olympiad captain in the act — happily placing equation stickers on a mailbox. She was creating a neighborhood math trail for her team. Sometimes the simplest method works best: go look!",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "c8_decode_stickers",
+          "label": "C. Decode the Math Equations on the Stickers",
+          "description": "The stickers have math equations. Maybe solving them reveals a message or a pattern about the locations.",
+          "delta": {
+            "logic_score": 10,
+            "questioning_skill": 7,
+            "evidence_quality": 8,
+            "observation": 5,
+            "reputation": 4,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Creative code-breaking! The equations' answers corresponded to house numbers on the street. When solved in order, they spelled out 'MATH IS FUN.' This was a puzzle, not a crime! Lateral thinking cracked the code.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "c8_random_act",
+          "label": "D. This is Just Random Vandalism — Report It to the Police",
+          "description": "There is no pattern. Some kids are just being mischievous. Let the police handle it.",
+          "delta": {
+            "logic_score": -4,
+            "observation": -3,
+            "reputation": -3,
+            "confidence": 2,
+            "evidence_quality": -2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "You gave up too quickly! A detective should always look for patterns before concluding something is random. The 'every Tuesday, only Maple Street, math stickers' pattern was strong — dismissing it without investigation is the opposite of critical thinking.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "case_9_debate_challenge",
+      "round_title": "Case 9: The Great Debate Challenge",
+      "situation": "The school debate club invites you to judge a tricky debate. One side argues 'Homework should be banned' using emotional stories of stressed students. The other side argues 'Homework helps learning' using research studies and data. The emotional side is much more popular with the audience. Your job: determine which side made the stronger ARGUMENT (not who got more applause).",
+      "goal": "Distinguish between emotionally persuasive arguments and logically strong arguments.",
+      "coaching_moment": "An argument that FEELS right is not the same as one that IS right. Emotional appeals can be powerful but must be backed by logic and evidence.",
+      "reflection_prompt": "Can you think of a time when everyone agreed with something that turned out to be wrong?",
+      "ai_image_prompt": "Cartoon school debate stage, two teams at podiums, one with heart-shaped signs and crying faces, other with graphs and charts, young detective judge with thinking expression, colorful audience",
+      "choices": [
+        {
+          "id": "c9_analyze_arguments",
+          "label": "A. Score Each Argument on Logic, Evidence, and Relevance",
+          "description": "Create a scoring rubric: Does each point use evidence? Is the logic valid? Are there any fallacies? Judge systematically.",
+          "delta": {
+            "logic_score": 12,
+            "bias_awareness": 8,
+            "evidence_quality": 8,
+            "questioning_skill": 5,
+            "reputation": 6,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Rigorous analysis! Your rubric revealed that the emotional side used three logical fallacies (appeal to emotion, anecdotal evidence, and false dilemma) while the research side had solid evidence but poor delivery. Substance beat style — and you showed both teams how to improve!",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "c9_identify_fallacies",
+          "label": "B. List the Logical Fallacies Each Side Used",
+          "description": "Spot the thinking errors: appeal to emotion, cherry-picking, straw man, false dilemma. Name them publicly so everyone learns.",
+          "delta": {
+            "bias_awareness": 12,
+            "logic_score": 10,
+            "questioning_skill": 5,
+            "evidence_quality": 5,
+            "reputation": 5,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "Fallacy detective! Both sides had errors: the emotional side used 'appeal to pity,' while the research side used 'appeal to authority' without explaining the research. Naming fallacies out loud helped the entire audience become better thinkers.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "c9_ask_questions",
+          "label": "C. Ask Both Sides Follow-Up Questions to Test Their Claims",
+          "description": "Challenge each team: 'What is your source? Can you give a counter-example? What if the opposite were true?'",
+          "delta": {
+            "questioning_skill": 12,
+            "logic_score": 6,
+            "bias_awareness": 5,
+            "evidence_quality": 6,
+            "reputation": 5,
+            "confidence": 5,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Socratic questioning! Your follow-up questions exposed weak points in both arguments. The emotional side could not provide data, and the research side could not explain why some top students hate homework. Great questions are more powerful than great answers!",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "c9_go_popular",
+          "label": "D. The Side With More Audience Support Has the Better Argument",
+          "description": "The audience is clapping loudest for the anti-homework team. Popular opinion reflects the stronger argument.",
+          "delta": {
+            "bias_awareness": -8,
+            "logic_score": -5,
+            "reputation": -5,
+            "evidence_quality": -3,
+            "confidence": 2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Applause measures entertainment, not truth! This is 'appeal to popularity' combined with 'appeal to emotion.' Audiences cheer for what feels good. A judge's job is to evaluate evidence, not count claps. History's greatest ideas were often unpopular at first.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "case_10_final_mystery",
+      "round_title": "Case 10: The Final Mystery — Who Is the Trickster?",
+      "situation": "It is time to crack the biggest case of all. The Trickster has been planting misleading evidence and causing trouble throughout your career. Inspector Gray says if you can unmask the Trickster, you will earn your Master Detective badge. You have clues from every previous case. Watson Jr. is by your side. It all comes down to this.",
+      "goal": "Use everything you have learned — logic, observation, questioning, and bias awareness — to solve the ultimate mystery.",
+      "coaching_moment": "The greatest test of critical thinking is combining multiple skills at once: logic, evidence evaluation, bias checking, and brave questioning. This is what 'thinking like a detective' really means.",
+      "reflection_prompt": "Looking back at all your cases, which thinking skill helped you the most? Why?",
+      "ai_image_prompt": "Cartoon detective agency grand finale, young detective and Watson Jr facing a shadowy Trickster figure, evidence boards connected with strings, dramatic lighting, all NPCs watching, vivid cartoon climax",
+      "choices": [
+        {
+          "id": "c10_connect_clues",
+          "label": "A. Connect All Previous Case Clues on a Giant Evidence Board",
+          "description": "Review every case. Find the common thread. The Trickster left traces each time — connect the dots across all cases to unmask them.",
+          "delta": {
+            "logic_score": 10,
+            "observation": 8,
+            "evidence_quality": 12,
+            "questioning_skill": 5,
+            "bias_awareness": 5,
+            "reputation": 10,
+            "confidence": 8,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "The ultimate synthesis! By connecting clues across all cases, you discovered the Trickster was the school librarian's assistant — someone nobody suspected because of authority bias. Each case left a small breadcrumb, and only by seeing the big picture could you solve it. You are a true Master Detective!",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "c10_ask_right_question",
+          "label": "B. Ask the One Question Nobody Has Asked",
+          "description": "Everyone has been asking WHO the Trickster is. But the real question is: WHY? What does the Trickster gain from planting fake evidence? Follow the motive.",
+          "delta": {
+            "questioning_skill": 12,
+            "logic_score": 8,
+            "bias_awareness": 8,
+            "evidence_quality": 8,
+            "reputation": 8,
+            "confidence": 7,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "The power of WHY! By asking about motive, you narrowed the suspects to someone who benefits from the agency looking bad. It was a rival detective agency's intern! The 'why' question is the master key of critical thinking. Inspector Gray called it 'the best question asked in this agency's history.'",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "c10_set_trap",
+          "label": "C. Set a Trap With Fake Evidence of Your Own",
+          "description": "Create a decoy case file with wrong information. Whoever tries to tamper with it reveals themselves as the Trickster.",
+          "delta": {
+            "observation": 10,
+            "evidence_quality": 10,
+            "logic_score": 6,
+            "confidence": 8,
+            "reputation": 8,
+            "questioning_skill": 3,
+            "case_solved": 1
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "requires": {
+            "resource": "logic_score",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Logic Score >= 40"
+          },
+          "feedback": "Turning the Trickster's tactics against them! Your decoy file had a hidden marker that transferred to whoever touched it. The next morning, the marker was on the janitor's nephew. Clever counter-strategy! You used the Trickster's own methods to catch them.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "c10_give_up",
+          "label": "D. The Trickster is Too Smart — We Will Never Catch Them",
+          "description": "Some mysteries are unsolvable. Accept it and move on to easier cases.",
+          "delta": {
+            "confidence": -10,
+            "reputation": -10,
+            "logic_score": -3,
+            "evidence_quality": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Never give up on thinking! Every problem has a solution if you look at it from enough angles. The other detectives eventually caught the Trickster — and they used the very skills YOU taught them in earlier cases. Your methods worked even when your confidence did not. Remember: self-doubt is the biggest bias of all.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "master_logician",
+      "label": "Master Logician",
+      "condition": "logic_score >= 75 and evidence_quality >= 70",
+      "icon": "🧠"
+    },
+    {
+      "id": "bias_buster",
+      "label": "Bias Buster",
+      "condition": "bias_awareness >= 60 and case_solved >= 7",
+      "icon": "🛡️"
+    },
+    {
+      "id": "question_master",
+      "label": "Question Master",
+      "condition": "questioning_skill >= 65 and reputation >= 70",
+      "icon": "❓"
+    },
+    {
+      "id": "eagle_eye",
+      "label": "Eagle Eye Observer",
+      "condition": "observation >= 75 and evidence_quality >= 65",
+      "icon": "👁️"
+    },
+    {
+      "id": "perfect_record",
+      "label": "Perfect Record",
+      "condition": "case_solved >= 10",
+      "icon": "🏆"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Confirmation Bias",
+      "definition": "The tendency to search for, interpret, and remember information that confirms what you already believe, while ignoring contradicting evidence."
+    },
+    {
+      "term": "Logical Fallacy",
+      "definition": "A flaw in reasoning that makes an argument invalid. Common fallacies include appeal to emotion, appeal to authority, and straw man arguments."
+    },
+    {
+      "term": "Hypothesis",
+      "definition": "A proposed explanation that can be tested. Good hypotheses are specific, testable, and can be proven wrong (falsifiable)."
+    },
+    {
+      "term": "Evidence",
+      "definition": "Facts, observations, or information that support or disprove a claim. Strong evidence is objective, verifiable, and comes from reliable sources."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "The ability to analyze information objectively, evaluate arguments, identify biases, and form well-reasoned conclusions based on evidence."
+    },
+    {
+      "term": "Appeal to Emotion",
+      "definition": "A logical fallacy where someone tries to win an argument by making you FEEL something (sad, angry, scared) instead of providing evidence."
+    },
+    {
+      "term": "Bandwagon Fallacy",
+      "definition": "The mistaken belief that something must be true or good because many people believe it or do it. Popularity does not equal truth."
+    },
+    {
+      "term": "Intellectual Humility",
+      "definition": "The willingness to admit you might be wrong, to change your mind when presented with new evidence, and to say 'I do not know' when you genuinely do not."
+    }
+  ],
+  "endings": [
+    {
+      "id": "master_detective",
+      "title": "Master Detective",
+      "icon": "🕵️",
+      "message": "Congratulations! You have earned the legendary Master Detective badge! Your logic is razor-sharp, your evidence is rock-solid, and your reputation is the highest in the agency's history. Inspector Gray says you are the best junior detective he has ever mentored. The Trickster has been defeated, and Watson Jr. wants to be YOUR apprentice now. Your legacy: a detective who proved that the sharpest weapon is a thinking mind.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "logic_score",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "evidence_quality",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "reputation",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "logic_champion",
+      "title": "Logic Champion",
+      "icon": "🧩",
+      "message": "Your logical reasoning skills are off the charts! You can spot a fallacy from a mile away and build arguments as solid as steel. The school has asked you to lead a 'Logic Club' to teach other students how to think clearly. Inspector Gray says your reasoning abilities remind him of the great Sherlock Holmes. Your legacy: proving that logic is the foundation of all good thinking.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "logic_score",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "bias_awareness",
+            "operator": ">=",
+            "value": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "fair_investigator",
+      "title": "Fair Investigator",
+      "icon": "⚖️",
+      "message": "You are known throughout the agency as the fairest detective on the team. Your bias awareness is exceptional — you never jump to conclusions, you always hear every side, and you treat every person with respect regardless of how they look or what others say about them. Watson Jr. says working with you taught him that fairness IS intelligence. Your legacy: proving that the best detectives are the most fair-minded ones.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "bias_awareness",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "reputation",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "question_master_ending",
+      "title": "Question Master",
+      "icon": "❓",
+      "message": "You have discovered the ultimate detective superpower: asking the right questions! Your questioning technique is so sharp that suspects reveal the truth without even realizing it. Inspector Gray wants you to train new detectives in the art of questioning. The Trickster admitted: 'I was not beaten by evidence or logic — I was beaten by questions I could not answer.' Your legacy: proving that a great question is worth more than a hundred answers.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "questioning_skill",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "case_solved",
+            "operator": ">=",
+            "value": 7
+          }
+        ]
+      }
+    },
+    {
+      "id": "rookie_thinker",
+      "title": "Rookie Thinker",
+      "icon": "🌱",
+      "message": "You have completed your time at the Thinking Detective Agency. While you did not earn the top badges, you learned something valuable: critical thinking is a skill that grows with practice. Inspector Gray says: 'Every master detective started as a rookie. The fact that you kept trying shows real character.' Watson Jr. gave you a notebook that says 'Keep Asking Why.' Your journey as a thinker has just begun!",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Question Quest: The Thinking Detective Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Question Quest: The Thinking Detective. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Question Quest: The Thinking Detective Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Question Quest: The Thinking Detective. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

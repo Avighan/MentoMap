@@ -1,0 +1,855 @@
+{
+  "id": "the-vanishing-customer",
+  "title": "The Vanishing Customer",
+  "type": "mystery_room",
+  "grade": "8",
+  "target_grade": "8",
+  "duration_minutes": 30,
+  "description": "Priya's chai stall is losing customers — fast. The new café is the obvious villain. The real cause is hidden in plain sight. You have one Saturday afternoon and five places to look.",
+  "ai_image_config": {
+    "image_style": "semi-realistic"
+  },
+  "feature_flag": "mystery_room_enabled",
+  "skill_tags": [
+    "critical_thinking",
+    "empathy",
+    "strategic_thinking",
+    "creativity",
+    "ethical_reasoning",
+    "delayed_gratification",
+    "adaptability",
+    "resilience"
+  ],
+  "rooms": [
+    {
+      "id": "tea_stall",
+      "name": "Priya's Tea Stall",
+      "background_image": "/uploads/mystery/the-vanishing-customer/tea_stall.png",
+      "ambient_sound": "/uploads/mystery/the-vanishing-customer/ambient_stall.mp3",
+      "hotspots": [
+        {
+          "id": "sales_register",
+          "label": "Priya's spiral notebook of daily sales",
+          "icon": "notebook",
+          "bbox": [
+            0.06,
+            0.55,
+            0.22,
+            0.75
+          ],
+          "puzzle_id": "p1_sales_trend",
+          "skill_tags_on_examine": [
+            "critical_thinking"
+          ]
+        },
+        {
+          "id": "kettle_residue",
+          "label": "A faint pale ring inside the kettle",
+          "icon": "tea",
+          "bbox": [
+            0.4,
+            0.4,
+            0.55,
+            0.62
+          ],
+          "hint": "The bottom of the steel kettle has a thin pale ring — slightly chalkier than the warm brown tea-stain you'd expect. The colour is wrong by a shade. Most people wouldn't notice.",
+          "skill_tags_on_examine": [
+            "empathy",
+            "creativity"
+          ]
+        },
+        {
+          "id": "customer_review_jar",
+          "label": "The 'feedback & tips' jar",
+          "icon": "papers",
+          "bbox": [
+            0.6,
+            0.5,
+            0.74,
+            0.7
+          ],
+          "puzzle_id": "p2_review_jar",
+          "skill_tags_on_examine": [
+            "critical_thinking",
+            "empathy"
+          ]
+        },
+        {
+          "id": "uncle_phone_log",
+          "label": "Uncle's phone bill on the counter",
+          "icon": "phone",
+          "bbox": [
+            0.78,
+            0.55,
+            0.94,
+            0.72
+          ],
+          "yields_item": "phone_call_record",
+          "skill_tags_on_examine": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "brewverse_flyer",
+          "label": "A glossy Brewverse Café flyer pinned to the cart",
+          "icon": "notice",
+          "bbox": [
+            0.24,
+            0.1,
+            0.4,
+            0.3
+          ],
+          "hint": "A bright glossy flyer for Brewverse Café next door — '20% off chai latte!' It's eye-catching. It's also the most obvious thing in this stall — and obvious clues in mystery investigations are usually a trap.",
+          "skill_tags_on_examine": [
+            "creativity"
+          ]
+        }
+      ],
+      "exits": [
+        {
+          "to": "kitchen",
+          "label": "Step behind the counter to the prep area",
+          "bbox": [
+            0.02,
+            0.3,
+            0.1,
+            0.85
+          ]
+        },
+        {
+          "to": "warehouse",
+          "label": "Auto-rickshaw to Krishna Mama's warehouse",
+          "bbox": [
+            0.9,
+            0.3,
+            0.99,
+            0.85
+          ],
+          "requires_item": "phone_call_record",
+          "locked_message": "You don't yet have a reason to make the trip. Find something on the cart that points to the supplier."
+        },
+        {
+          "to": "competitor_cafe",
+          "label": "Walk next door to Brewverse Café",
+          "bbox": [
+            0.4,
+            0.02,
+            0.62,
+            0.1
+          ]
+        },
+        {
+          "to": "anjali_balcony",
+          "label": "Visit Anjali — the regular who stopped coming",
+          "bbox": [
+            0.68,
+            0.02,
+            0.86,
+            0.1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kitchen",
+      "name": "Behind the Counter — The Prep Kitchen",
+      "background_image": "/uploads/mystery/the-vanishing-customer/kitchen.png",
+      "ambient_sound": "/uploads/mystery/the-vanishing-customer/ambient_kitchen.mp3",
+      "hotspots": [
+        {
+          "id": "milk_packets",
+          "label": "Two milk packets on the steel tray",
+          "icon": "milk",
+          "bbox": [
+            0.3,
+            0.45,
+            0.52,
+            0.68
+          ],
+          "puzzle_id": "p3_milk_brand",
+          "skill_tags_on_examine": [
+            "critical_thinking",
+            "creativity"
+          ]
+        },
+        {
+          "id": "empty_packets_crate",
+          "label": "Crate of crumpled empty milk packets",
+          "icon": "crate",
+          "bbox": [
+            0.04,
+            0.55,
+            0.22,
+            0.85
+          ],
+          "yields_item": "old_packet_evidence",
+          "skill_tags_on_examine": [
+            "critical_thinking"
+          ]
+        },
+        {
+          "id": "tea_leaves_jar",
+          "label": "Open jar of tea leaves",
+          "icon": "jar",
+          "bbox": [
+            0.56,
+            0.4,
+            0.7,
+            0.62
+          ],
+          "hint": "The same brand of black tea leaves Priya has used for years. The cap is dusty — last opened weeks ago. Whatever changed, it isn't the tea. Tea is not the variable.",
+          "skill_tags_on_examine": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "priya_diary_page",
+          "label": "A torn page from Priya's notebook",
+          "icon": "note",
+          "bbox": [
+            0.74,
+            0.48,
+            0.92,
+            0.68
+          ],
+          "puzzle_id": "p4_diary_page",
+          "skill_tags_on_examine": [
+            "empathy",
+            "critical_thinking"
+          ]
+        }
+      ],
+      "exits": [
+        {
+          "to": "tea_stall",
+          "label": "Back to the front of the stall",
+          "bbox": [
+            0.4,
+            0.02,
+            0.6,
+            0.12
+          ]
+        }
+      ]
+    },
+    {
+      "id": "warehouse",
+      "name": "Krishna Mama's Warehouse",
+      "background_image": "/uploads/mystery/the-vanishing-customer/warehouse.png",
+      "ambient_sound": "/uploads/mystery/the-vanishing-customer/ambient_warehouse.mp3",
+      "hotspots": [
+        {
+          "id": "supply_register",
+          "label": "Supply ledger on the steel desk",
+          "icon": "register",
+          "bbox": [
+            0.18,
+            0.5,
+            0.4,
+            0.72
+          ],
+          "puzzle_id": "p5_supply_ledger",
+          "skill_tags_on_examine": [
+            "critical_thinking",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "out_of_stock_note",
+          "label": "Handwritten note pinned to the wall",
+          "icon": "note",
+          "bbox": [
+            0.1,
+            0.1,
+            0.26,
+            0.3
+          ],
+          "hint": "A scrap of paper in Krishna Mama's handwriting: 'AarogyaDairy plant on STRIKE — back in 6 weeks.' Dated 23 days ago. He didn't switch brands to save money. He switched because his usual supply chain broke.",
+          "skill_tags_on_examine": [
+            "empathy",
+            "critical_thinking"
+          ]
+        },
+        {
+          "id": "goldencow_invoice",
+          "label": "A printed invoice on the desk",
+          "icon": "papers",
+          "bbox": [
+            0.42,
+            0.55,
+            0.58,
+            0.74
+          ],
+          "yields_item": "invoice_evidence",
+          "skill_tags_on_examine": [
+            "ethical_reasoning"
+          ]
+        },
+        {
+          "id": "phone_to_priya_note",
+          "label": "A sticky note on the desk lamp",
+          "icon": "sticky_note",
+          "bbox": [
+            0.62,
+            0.42,
+            0.74,
+            0.55
+          ],
+          "hint": "A small yellow sticky note reads: 'Tell Priya about brand?' followed by a question mark. Not crossed off. Krishna Mama meant to mention the supplier change to her — and forgot in the rush of the strike.",
+          "skill_tags_on_examine": [
+            "empathy"
+          ]
+        },
+        {
+          "id": "competitor_invoice",
+          "label": "A second invoice — Brewverse Café",
+          "icon": "papers",
+          "bbox": [
+            0.78,
+            0.55,
+            0.94,
+            0.74
+          ],
+          "hint": "A separate invoice — to Brewverse Café next door. Same supplier. Same GoldenCow milk. Same date. So the café is using the exact same milk Priya is. The milk by itself doesn't explain why customers prefer the café — keep thinking.",
+          "skill_tags_on_examine": [
+            "critical_thinking",
+            "creativity"
+          ]
+        }
+      ],
+      "exits": [
+        {
+          "to": "tea_stall",
+          "label": "Back to the chai stall",
+          "bbox": [
+            0.86,
+            0.3,
+            0.99,
+            0.85
+          ]
+        }
+      ]
+    },
+    {
+      "id": "anjali_balcony",
+      "name": "Anjali's Balcony — Lost Customer",
+      "background_image": "/uploads/mystery/the-vanishing-customer/balcony.png",
+      "ambient_sound": "/uploads/mystery/the-vanishing-customer/ambient_balcony.mp3",
+      "hotspots": [
+        {
+          "id": "question_anjali",
+          "label": "Anjali, sipping a half-finished thermos of chai",
+          "icon": "person",
+          "bbox": [
+            0.3,
+            0.3,
+            0.55,
+            0.85
+          ],
+          "puzzle_id": "p6_anjali_interview",
+          "skill_tags_on_examine": [
+            "empathy",
+            "creativity"
+          ]
+        },
+        {
+          "id": "brewverse_cup",
+          "label": "A single Brewverse paper cup in the bin",
+          "icon": "cup",
+          "bbox": [
+            0.1,
+            0.65,
+            0.22,
+            0.82
+          ],
+          "hint": "Just one Brewverse cup in the recycling. Anjali tried the café once — but didn't switch loyalty. Her chai habit didn't move to Brewverse. So the café isn't where Priya's customers went.",
+          "skill_tags_on_examine": [
+            "creativity",
+            "critical_thinking"
+          ]
+        },
+        {
+          "id": "family_photo",
+          "label": "A photo on the side table",
+          "icon": "photo",
+          "bbox": [
+            0.62,
+            0.4,
+            0.78,
+            0.62
+          ],
+          "hint": "Anjali with her late mother, on a kitchen step, both holding small steel tumblers of chai. The frame is well-worn — she looks at it often. 'Tastes like home' isn't a casual phrase from Anjali. It's about her mother.",
+          "skill_tags_on_examine": [
+            "empathy"
+          ]
+        }
+      ],
+      "exits": [
+        {
+          "to": "tea_stall",
+          "label": "Back to Priya's stall",
+          "bbox": [
+            0.86,
+            0.3,
+            0.99,
+            0.85
+          ]
+        }
+      ]
+    },
+    {
+      "id": "competitor_cafe",
+      "name": "Brewverse Café — The Obvious Culprit",
+      "background_image": "/uploads/mystery/the-vanishing-customer/brewverse.png",
+      "ambient_sound": "/uploads/mystery/the-vanishing-customer/ambient_cafe.mp3",
+      "hotspots": [
+        {
+          "id": "cafe_menu",
+          "label": "Brewverse menu board",
+          "icon": "menu",
+          "bbox": [
+            0.2,
+            0.1,
+            0.42,
+            0.4
+          ],
+          "puzzle_id": "p7_cafe_menu",
+          "skill_tags_on_examine": [
+            "critical_thinking"
+          ]
+        },
+        {
+          "id": "customer_count",
+          "label": "Look around — count the customers",
+          "icon": "crowd",
+          "bbox": [
+            0.46,
+            0.4,
+            0.7,
+            0.72
+          ],
+          "hint": "About 8 customers in Brewverse on a Saturday afternoon. Priya used to have 12 at her stall at lunchtime. If all of Priya's lost customers had moved here, the place would be packed. It isn't. Most of her regulars went somewhere else.",
+          "skill_tags_on_examine": [
+            "strategic_thinking",
+            "critical_thinking"
+          ]
+        },
+        {
+          "id": "brewverse_milk_packet",
+          "label": "Behind the counter — a stack of milk packets",
+          "icon": "milk",
+          "bbox": [
+            0.74,
+            0.42,
+            0.9,
+            0.62
+          ],
+          "hint": "The packets behind the espresso machine are GoldenCow — the SAME brand Priya is now using. So if milk alone were the cause of Priya's drop, Brewverse would taste 'wrong' too. The issue isn't the milk in absolute terms. It's the *change* Priya's regulars noticed in HER chai.",
+          "skill_tags_on_examine": [
+            "creativity",
+            "critical_thinking"
+          ]
+        },
+        {
+          "id": "manager_quote",
+          "label": "A small framed poster on the wall",
+          "icon": "poster",
+          "bbox": [
+            0.06,
+            0.2,
+            0.18,
+            0.4
+          ],
+          "hint": "'We support local — try our chai latte paired with Krishna Mama's cardamom!' — Brewverse buys spices from the same Krishna Mama who supplies Priya. Their relationship runs through the same hands.",
+          "skill_tags_on_examine": [
+            "empathy"
+          ]
+        }
+      ],
+      "exits": [
+        {
+          "to": "tea_stall",
+          "label": "Back to Priya's stall",
+          "bbox": [
+            0.86,
+            0.3,
+            0.99,
+            0.85
+          ]
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "phone_call_record",
+      "name": "Uncle's Phone Log",
+      "icon": "/uploads/mystery/the-vanishing-customer/items/phone_log.png",
+      "is_evidence": true,
+      "description": "Six calls to Krishna Mama in the last 3 weeks. Before that, one a month. Something changed — and the supplier knows about it.",
+      "skill_tags_on_pickup": [
+        "strategic_thinking"
+      ]
+    },
+    {
+      "id": "old_packet_evidence",
+      "name": "Old AarogyaDairy Packet",
+      "icon": "/uploads/mystery/the-vanishing-customer/items/old_packet.png",
+      "is_evidence": true,
+      "description": "A crumpled empty packet from the original brand, dated four weeks ago. Proof of what Priya's chai used to be made with.",
+      "skill_tags_on_pickup": [
+        "critical_thinking"
+      ]
+    },
+    {
+      "id": "invoice_evidence",
+      "name": "GoldenCow Invoice",
+      "icon": "/uploads/mystery/the-vanishing-customer/items/invoice.png",
+      "is_evidence": true,
+      "description": "Same per-litre cost as AarogyaDairy. Krishna Mama wasn't trying to save money — he was scrambling to keep his customers supplied.",
+      "skill_tags_on_pickup": [
+        "ethical_reasoning"
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "p1_sales_trend",
+      "type": "factual",
+      "prompt": "Priya's spiral notebook shows daily sales for 8 weeks. The numbers are written in her handwriting. What is the most accurate way to describe the pattern?",
+      "options": [
+        "Sales were rising steadily, then suddenly crashed in the last week.",
+        "Sales were stable for the first 5 weeks, then started a steady, gentle decline three weeks ago.",
+        "Sales have been falling for the entire 8 weeks — there is no specific change point."
+      ],
+      "correct": 1,
+      "skill_tags_correct": [
+        "critical_thinking"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "Look at the dates: weeks 1–5 are stable, then a clear inflection three weeks ago — a steady drift downward, about 8–10% per week. That kind of pattern almost never comes from a sudden event. It comes from something that *changed* three weeks ago and is still happening. Find what changed at that exact moment, and you find your cause.",
+      "explanation_wrong": "Look at the numbers more carefully — the first 5 weeks are stable, and the drop starts at a clear date 3 weeks ago and continues steadily. Sudden 'crashes' look different (one big drop), and gradual long-term declines wouldn't have a stable first 5 weeks. The shape of this curve points to a single change-event 3 weeks ago."
+    },
+    {
+      "id": "p2_review_jar",
+      "type": "factual",
+      "prompt": "There are four feedback slips in the jar — written by regulars, undated except for the order in which they were dropped. Read them all. Which slip gives you the most useful clue about WHY customers are leaving?",
+      "options": [
+        "'Love the new vada-pav!' — written in cheerful pen.",
+        "'Tastes a bit like water lately. Are you using less tea?' — written carefully in blue ink.",
+        "'Miss the old chai, didi. It was different before.' — written in pencil, almost shy.",
+        "'You should put up a fan, it's too hot here.' — written quickly in marker."
+      ],
+      "correct": 2,
+      "skill_tags_correct": [
+        "empathy",
+        "critical_thinking"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "The third slip is the most useful — not because it's the most informative, but because it's the most emotionally honest. The customer doesn't accuse Priya, doesn't pretend to know what's wrong, and doesn't suggest a fix. They just say 'it was different before.' That single word — *different* — confirms the change is real, the customer feels it, and they can't even articulate it. Slip 2 is also useful but Slip 3 reveals customer loyalty was wounded, not just taste.",
+      "explanation_wrong": "Slip 2 is good — it directly suggests the chai is weaker. But Slip 3 is even more revealing. It's not a suggestion or a complaint. It's grief. The customer can't name what changed but they *feel* it. That tells you the change is real, subtle, and emotional — exactly the kind of thing a founder who tastes their own chai every day would miss. Slip 1 (vada-pav) and Slip 4 (fan) aren't about the chai itself."
+    },
+    {
+      "id": "p3_milk_brand",
+      "type": "factual",
+      "prompt": "Two milk packets sit on the prep tray. They are the same volume, the same price. But the brand names are different — one is 'AarogyaDairy', the other 'GoldenCow'. What does this tell you?",
+      "options": [
+        "Priya is testing different brands to see which works better.",
+        "Priya's supplier switched brands — she may not even have noticed because the price is the same.",
+        "It doesn't matter. Milk is milk.",
+        "These are old packets that nobody cleaned up."
+      ],
+      "correct": 1,
+      "skill_tags_correct": [
+        "critical_thinking",
+        "creativity"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "Two different brands sitting side-by-side at the same price point — that's not a test, that's a transition. Priya wouldn't run an experiment by mixing both at once at peak hour. The much more likely story is: the supplier switched, and because the price didn't change, Priya didn't get a flag in her ledger. The brand name is the only thing that gives it away — and you only see it if you look at the *packets*, not the bills.",
+      "explanation_wrong": "Look at the price stickers — they're identical. If Priya were running her own brand test, you'd expect the cheaper one to win out. The fact that BOTH are on the tray right now, at the same price, means the change wasn't a choice she made — it was something that happened to her supply chain. 'Milk is milk' is what most founders assume — and it's the assumption that lost Priya her customers."
+    },
+    {
+      "id": "p4_diary_page",
+      "type": "factual",
+      "prompt": "A torn page from Priya's notebook is dated 19 days ago — three days after the supplier change. In her own handwriting she's written 'tastes ok? bit weird? maybe tired today'. What does this reveal?",
+      "options": [
+        "Priya was sick that week and her own taste was off.",
+        "Priya did notice the change — but talked herself out of trusting her own taste, because she was tired and busy.",
+        "Customers had been complaining and she was reacting to them.",
+        "She's a careless tea-maker."
+      ],
+      "correct": 1,
+      "skill_tags_correct": [
+        "empathy",
+        "critical_thinking"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "This is the founder blind spot in plain handwriting. Priya did notice. Her instincts were correct. But she dismissed the signal because she was tired, because the change was small, because she trusts her supplier. This is one of the most important lessons in entrepreneurship: when you taste your own product every day, your palate adapts faster than your customers' do. The customer feels what you can't anymore. *Trust the soft signal — even when you're tired.*",
+      "explanation_wrong": "Read the words again — 'bit weird?' is a question to herself, not a complaint about anything external. The note is dated three days *after* the supplier change, before any customer complained. Priya's own taste was already raising a flag. She just didn't trust it. That's not carelessness — it's a very specific founder blind spot worth understanding."
+    },
+    {
+      "id": "p5_supply_ledger",
+      "type": "factual",
+      "prompt": "Krishna Mama's supply ledger has 5 entries from the last 6 weeks. Read them in date order and notice the pattern. Which date is the supply chain transition?",
+      "options": [
+        "Week 6 — earliest entry: 'AarogyaDairy 100L delivered, paid Rs. 4,000.'",
+        "Week 5 — second entry: 'AarogyaDairy 100L delivered, paid Rs. 4,000.'",
+        "Week 4 — third entry, BIGGER handwriting: 'GoldenCow 100L — emergency stock!! AarogyaDairy on strike.'",
+        "Week 3 — fourth entry: 'GoldenCow 100L delivered, paid Rs. 4,000.'",
+        "Week 2 — fifth entry: 'GoldenCow 100L delivered, paid Rs. 4,000.'"
+      ],
+      "correct": 2,
+      "skill_tags_correct": [
+        "critical_thinking",
+        "strategic_thinking"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "Week 4 is the transition — and Krishna Mama's own handwriting tells you he knew it was a big deal. Notice the bigger writing, the double exclamation, the word 'emergency'. He was scrambling. The supply switch wasn't a slow drift; it was one bad day. After that, GoldenCow becomes the routine. Now match that date with Priya's sales notebook (Puzzle 1) — the sales decline started exactly when the milk changed. That's not coincidence — that's causation.",
+      "explanation_wrong": "All five entries help, but only one of them is the *change point*. Look for the entry where the brand name changes from AarogyaDairy to GoldenCow — and look at how it's written. Krishna Mama wasn't calm when he wrote that one. The handwriting itself tells you it was the moment everything shifted."
+    },
+    {
+      "id": "p6_anjali_interview",
+      "type": "factual",
+      "prompt": "Anjali sits with you on her balcony. She's friendly, but vague. You can ask her ONE question. Pick the one most likely to reveal why she stopped coming to Priya's stall.",
+      "options": [
+        "Are you going to Brewverse Café instead now?",
+        "Did Priya raise the prices? Was there a fight?",
+        "What did you love about Priya's chai? — and has anything been different lately?",
+        "Are you working from home now?"
+      ],
+      "correct": 2,
+      "skill_tags_correct": [
+        "empathy",
+        "creativity"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "An open question that invites her to talk about *what she loved* gets you the gold. Watch what happens: Anjali says her late mother used to make chai exactly like Priya's, and that 'lately, the last few times… it didn't taste right. I couldn't say why. It didn't feel like home.' That's the entire case in one sentence — emotional anchor + sensory drift + can't-articulate-it. The other three questions are closed, accusatory, or off-topic and would have got you a polite 'no, nothing changed'.",
+      "explanation_wrong": "Closed questions ('Are you going to Brewverse?', 'Did the price change?', 'Are you working from home?') get yes-or-no answers and let the other person off the hook. Open questions about what they *loved* and what's *different* get them to talk. Anjali's real reason for leaving wasn't anything she'd announce — she had to feel safe enough to admit even she couldn't explain it."
+    },
+    {
+      "id": "p7_cafe_menu",
+      "type": "factual",
+      "prompt": "Brewverse Café's menu lists chai latte at ₹120 a cup. Priya charges ₹15 a cup. What does the price difference tell you?",
+      "options": [
+        "Customers are leaving Priya for Brewverse because Brewverse is cheaper.",
+        "Brewverse charges 8x what Priya does — its customers are NOT Priya's customers. The 'they switched to the new café' theory is wrong.",
+        "Same price — both cafés are equally affordable.",
+        "Priya should raise her prices to match Brewverse."
+      ],
+      "correct": 1,
+      "skill_tags_correct": [
+        "critical_thinking",
+        "creativity"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "₹120 vs ₹15 means Brewverse and Priya serve almost completely different markets. The IT engineer earning ₹50K who occasionally treats himself to a ₹120 latte is NOT going to make Priya's ₹15 chai stall his daily stop or vice versa. So whatever drove Priya's regulars away, it wasn't a switch to Brewverse. Most of them went to a closer, cheaper option — probably the chai cart two blocks down. Brewverse looked like the obvious villain. The obvious villain is rarely the real one.",
+      "explanation_wrong": "Compare the numbers — ₹120 versus ₹15 is a HUGE gap. People who pay ₹120 for chai latte aren't buying chai for the chai — they're buying for the café experience, the ambience, the WiFi. Priya's customers are walking workers who buy ₹15 chai for the energy hit. Two different markets. Brewverse is a red herring."
+    }
+  ],
+  "evidence_board": {
+    "buckets": [
+      "symptom",
+      "real_cause",
+      "red_herring"
+    ],
+    "correct_groupings": {
+      "sales_register": "symptom",
+      "customer_review_jar": "symptom",
+      "kettle_residue": "real_cause",
+      "milk_packets": "real_cause",
+      "old_packet_evidence": "real_cause",
+      "supply_register": "real_cause",
+      "out_of_stock_note": "real_cause",
+      "invoice_evidence": "real_cause",
+      "priya_diary_page": "real_cause",
+      "phone_call_record": "real_cause",
+      "phone_to_priya_note": "real_cause",
+      "question_anjali": "real_cause",
+      "brewverse_flyer": "red_herring",
+      "cafe_menu": "red_herring",
+      "competitor_invoice": "red_herring",
+      "brewverse_milk_packet": "red_herring",
+      "customer_count": "red_herring",
+      "manager_quote": "red_herring",
+      "tea_leaves_jar": "red_herring",
+      "family_photo": "red_herring",
+      "brewverse_cup": "red_herring"
+    },
+    "skill_tags_correct": [
+      "strategic_thinking",
+      "critical_thinking"
+    ],
+    "skill_tags_partial": [
+      "adaptability"
+    ]
+  },
+  "climax": {
+    "modal_text": "Priya is closing up the stall. Her uncle's auto pulls up at the corner — they're about to talk about ending the rent on the cart. You have less than a minute. The evidence is in your hands. What do you do?",
+    "options": [
+      {
+        "id": "stay_silent",
+        "label": "Don't say anything. It's not your business.",
+        "gating": null,
+        "gating_message": "",
+        "skill_tags": [
+          "empathy_negative",
+          "courage_negative"
+        ]
+      },
+      {
+        "id": "blame_competitor",
+        "label": "Tell her the new café next door is stealing her customers.",
+        "gating": null,
+        "gating_message": "",
+        "skill_tags": [
+          "critical_thinking_negative",
+          "creativity_negative"
+        ]
+      },
+      {
+        "id": "name_milk_change",
+        "label": "Show her the two milk packets and explain the brand changed.",
+        "gating": {
+          "evidence_min": 5
+        },
+        "gating_message": "Find at least 5 pieces of evidence before you can confidently name the cause.",
+        "skill_tags": [
+          "critical_thinking",
+          "strategic_thinking"
+        ]
+      },
+      {
+        "id": "rebuild_with_supplier",
+        "label": "Go further — bring Krishna Mama into the conversation. Solve it together: a taste-test, a clear conversation, save the relationship.",
+        "gating": {
+          "evidence_min": 7,
+          "synthesis_correct": true
+        },
+        "gating_message": "Connect every clue on the Evidence Board AND visit Krishna Mama's warehouse to unlock this path.",
+        "skill_tags": [
+          "empathy",
+          "ethical_reasoning",
+          "courage",
+          "strategic_thinking"
+        ]
+      }
+    ],
+    "trigger": {
+      "must_visit": [
+        "tea_stall",
+        "kitchen",
+        "warehouse",
+        "anjali_balcony",
+        "competitor_cafe"
+      ],
+      "evidence_min": 4
+    }
+  },
+  "hint_policy": {
+    "auto_prompt_seconds": 120,
+    "max_auto_prompts_per_puzzle": 1
+  },
+  "hints": {
+    "p1_sales_trend": [
+      "Look at the curve, not just the latest number. When did things start to change?",
+      "Sales were stable for 5 weeks. The decline starts at a clear week, then continues steady. That's not a crash — it's a drift, and drifts come from something that changed at the start of the drift.",
+      "The correct answer is option B: stable for 5 weeks, then a steady decline starting 3 weeks ago. Find what changed exactly 3 weeks ago, and you'll find the cause."
+    ],
+    "p2_review_jar": [
+      "Some slips are about Priya's product. Some are about the surroundings. Focus on the ones about the chai itself.",
+      "Slip 2 says the chai 'tastes like water'. Slip 3 says it's 'different now'. Both are about the chai — but one is more emotionally telling. Which one would be hardest for the customer to write?",
+      "The correct answer is option C — Slip 3, 'miss the old chai, didi. It was different before.' It's the slip where the customer can't even name what changed but knows something has. That's the most reliable signal of subtle product drift."
+    ],
+    "p3_milk_brand": [
+      "Both packets are sitting on the tray at the same time. Both have the same price. What kind of situation puts two brands of the same product side-by-side like this?",
+      "If Priya were testing brands, she'd buy small amounts and compare. If she were transitioning, both would be on the tray at once. Look at the price stickers — they're identical. So she didn't switch for cost.",
+      "The correct answer is option B: the supplier switched brands. Because the price stayed the same, Priya's accounts didn't flag the change — she only would have spotted it by reading the packet."
+    ],
+    "p4_diary_page": [
+      "Priya wrote this herself. Read each phrase like you would a private text message — what does the *tone* tell you?",
+      "She wrote 'bit weird?' with a question mark — to herself. That's not a customer reporting something to her. That's her own taste sending a flag. But she finishes the note with 'maybe tired today' — dismissing her own instinct.",
+      "The correct answer is option B: Priya did notice the taste drift, but talked herself out of trusting it. This is the textbook founder blind spot."
+    ],
+    "p5_supply_ledger": [
+      "Read the entries in date order. Notice when the brand name changes — and look at the handwriting itself.",
+      "Three entries are calm and routine. One entry has bigger writing, exclamation marks, and the word 'emergency'. That's the entry where everything pivoted.",
+      "The correct answer is option C: Week 4 — the GoldenCow emergency stock entry. Match that date to Priya's sales notebook from Room 1 — the sales decline started the same week. That's the chain of cause and effect."
+    ],
+    "p6_anjali_interview": [
+      "You only get ONE question. Some questions invite long answers; others can be answered with a single 'yes' or 'no'.",
+      "Closed questions ('Did you go to Brewverse?', 'Did the price change?') get one-word answers and miss what's underneath. Open questions ('What did you love?', 'What's different?') let people surface things they didn't know they were going to say.",
+      "The correct answer is option C: 'What did you love about Priya's chai? — and has anything been different lately?' This open, two-part question is the only one that gets Anjali to admit the chai 'didn't taste right' — the missing piece you need."
+    ],
+    "p7_cafe_menu": [
+      "Compare the prices. ₹120 vs ₹15. Are these two cafés really competing for the same customer?",
+      "An IT worker who occasionally treats themselves to a ₹120 latte is not the same person who buys a ₹15 cup of chai every day. Different markets, different reasons-to-buy.",
+      "The correct answer is option B: Brewverse charges 8× what Priya does — they serve different markets. Priya's lost customers didn't move to Brewverse. They moved somewhere closer and similarly priced."
+    ],
+    "evidence_board": [
+      "Sort what you have into three piles: symptoms (the visible drop), real causes (what's actually behind it), and red herrings (things that look guilty but aren't).",
+      "The sales notebook and the customer feedback jar are SYMPTOMS — they show the problem, not the cause. The milk packets, the supply ledger, Krishna Mama's note, Priya's diary page, and Anjali's interview are the REAL CAUSES. Anything Brewverse-related is a RED HERRING — even though it looks suspicious.",
+      "Correct groupings: SYMPTOMS (sales_register, customer_review_jar). REAL CAUSE (everything in the kitchen, warehouse, and Anjali's balcony — the milk story). RED HERRING (everything Brewverse-related, plus the tea-leaves jar, the family photo, and the Brewverse cup in Anjali's bin)."
+    ]
+  },
+  "epilogues": {
+    "stay_silent": {
+      "image": "/uploads/mystery/the-vanishing-customer/epilogues/stay_silent.png",
+      "title": "You Said Nothing",
+      "paragraphs": [
+        "You watch Priya pull down the metal shutter on the cart. Her uncle's auto pulls up. They talk in low voices for a few minutes. He puts a hand on her shoulder. She nods. He drives off.",
+        "Two weeks later, the cart is gone. A photocopy shop has rented the space. You walk past it on your way home and see Priya once, sitting on the steps of her uncle's electronics shop, scrolling through her phone. She doesn't see you.",
+        "You learned what was wrong. You held the answer in your hands. And it was easier to keep walking than to say it out loud. There is no shame in fear — but the question of what you could have done is going to sit with you for a while. Curiosity without courage is just spectatorship."
+      ],
+      "soft_skill_named": "Self-awareness"
+    },
+    "blame_competitor": {
+      "image": "/uploads/mystery/the-vanishing-customer/epilogues/blame_competitor.png",
+      "title": "You Pointed at the Wrong Villain",
+      "paragraphs": [
+        "You tell Priya the new café is stealing her customers. She nods, frustrated. 'I knew it,' she says. Her uncle agrees — they spend the next month trying to compete with Brewverse: lower prices, longer hours, free biscuit with every chai.",
+        "It doesn't work. Sales keep falling. The chai still tastes 'a bit like water' to the regulars who try it again. By the time Priya hears, by accident, that her milk supplier switched brands months ago, she has burned through her savings and her uncle's patience.",
+        "Blaming the competitor felt right. It also wasted a month. The obvious villain is almost never the real one. In business, the explanation that fits the loudest evidence is usually the one designed to mislead you. Slow down. Look in unsexy places."
+      ],
+      "soft_skill_named": "Critical thinking (room to grow)"
+    },
+    "name_milk_change": {
+      "image": "/uploads/mystery/the-vanishing-customer/epilogues/name_milk_change.png",
+      "title": "You Named the Real Cause",
+      "paragraphs": [
+        "You pull both milk packets out of your bag and put them on the cart's wooden surface. 'Priya didi — your milk supplier changed the brand three weeks ago. AarogyaDairy went on strike. Krishna Mama switched to GoldenCow without telling you. That's why the regulars are saying the chai tastes different. It does.'",
+        "Priya stares at the two packets. Then she picks one up, smells it, picks up the other. Her face changes. Her uncle has stopped halfway out of the auto. She turns to him: 'Mama, listen to this.' And then to you: 'How did you find this?'",
+        "Over the next two weeks Priya goes back to AarogyaDairy through a different supplier. Her old customers slowly drift back. By month-end she's at 80% of her original numbers — not perfect, but climbing. You named what no one else had spotted: a quiet supply-chain change masquerading as a marketing problem. That kind of clarity is what real entrepreneurs lean on."
+      ],
+      "soft_skill_named": "Strategic thinking"
+    },
+    "rebuild_with_supplier": {
+      "image": "/uploads/mystery/the-vanishing-customer/epilogues/rebuild_with_supplier.png",
+      "title": "You Rebuilt the Whole Chain",
+      "paragraphs": [
+        "You don't just hand Priya the answer. You ask her to come back to the warehouse with you, and you ask Krishna Mama to come too. The three of you sit at the steel desk under the fluorescent tube. You put both milk packets on the desk. You put the sticky note that says 'Tell Priya about brand?' next to them. Krishna Mama goes very quiet and apologises — he meant to mention it, the strike was chaos, he forgot. Priya is upset, but you keep the conversation steady. 'It's not betrayal,' you say. 'It's a supply chain that broke and didn't get reported.'",
+        "By the end of the evening, Priya has done a blind taste-test of both milks. She admits her own daily-tasting palate had drifted. Krishna Mama agrees to send her a one-line WhatsApp every time *anything* changes — brand, batch, anything. They keep working together. Priya goes back to AarogyaDairy as soon as the strike ends. Brewverse Café — the obvious villain — never enters the conversation again.",
+        "Six weeks later, Priya hangs a small sign on the cart: 'Made with the same care since the day Mama and I started.' Her old customers are back. Anjali brings her cousins. The cart stays.",
+        "Naming a cause is one skill. Holding a difficult conversation in a way that *strengthens* a relationship instead of breaking it — that's harder. You found the truth and you kept the bond. That's the entrepreneur's full muscle."
+      ],
+      "soft_skill_named": "Ethical reasoning + Empathy"
+    }
+  },
+  "game_id": "the-vanishing-customer",
+  "game_type": "mystery_room",
+  "initial_state": {},
+  "reflection_prompt": "Which clue felt useless until it suddenly mattered? What does that tell you about how you investigate?"
+}

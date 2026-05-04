@@ -1,0 +1,795 @@
+{
+  "game_id": "space-colonization",
+  "title": "Space Colonization",
+  "theme": "Space Fleet Battles",
+  "icon": "🛸",
+  "description": "Command your space fleet in a tactical chess-style battle for galactic dominance. Deploy your Space Station, Flagship, Battlecruisers, Scout Ships, Fighter Squadrons, and Drones across an 8x8 star grid. Capture enemy vessels, seize strategic planets and asteroid belts, and build your fleet's power rating to 10 million to claim victory among the stars.",
+  "game_type": "chess_strategy",
+  "category": "Strategy & Tactics",
+  "target_audience": "Ages 12+",
+  "duration_minutes": 25,
+  "difficulty": "advanced",
+  "learning_objectives": [
+    "Develop strategic spatial reasoning by controlling key sectors of the galactic grid",
+    "Practice resource management by balancing fleet movements with territory acquisition",
+    "Learn positional advantage concepts through fleet formation and sector control",
+    "Build risk assessment skills by evaluating when to engage or retreat from combat",
+    "Understand the value of sacrifice and trade-offs in achieving long-term strategic goals",
+    "Strengthen multi-step planning by coordinating multiple fleet units toward victory conditions"
+  ],
+  "tags": [
+    "strategy",
+    "space",
+    "chess",
+    "fleet_combat",
+    "resource_management",
+    "tactical_thinking"
+  ],
+  "how_to_play": [
+    "Each turn you receive 2 Action Points (AP). Moving a ship costs 1 AP, and using a special ability costs AP as listed on the ability.",
+    "Ships move like chess pieces: Station=King, Flagship=Queen, Cruiser=Rook, Scout Ship=Bishop, Fighter=Knight, Drone=Pawn.",
+    "Engage enemy ships by moving onto their square to deal damage. Drones promote to Flagship when reaching the far edge of the grid.",
+    "Control resource sectors by positioning your ships on them. Each sector generates power income every turn.",
+    "Win by destroying the enemy Space Station, controlling 3 or more resource sectors, or reaching 10 million power rating.",
+    "Use special abilities wisely: each ship has two unique abilities that can turn the tide of battle at critical moments."
+  ],
+  "objectives": [
+    "Destroy the rival Space Station to achieve an instant tactical victory",
+    "Control 3 or more resource sectors for a territorial dominance victory",
+    "Build your fleet power rating to 10 million through strategic income generation"
+  ],
+  "storybook_pages": [
+    {
+      "title": "The Galactic Frontier",
+      "text": "Two rival space fleets converge on an uncharted sector of the galaxy. Planets rich in resources, asteroid belts full of rare minerals, and mysterious wormholes dot the star grid. Your mission: deploy your fleet, seize control of strategic sectors, and outmaneuver the enemy commander before they do the same to you.",
+      "image_prompt": "two massive space fleets facing each other across a glowing 8x8 star grid with planets and asteroid belts scattered across it, dramatic nebula background, sci-fi digital art, cinematic lighting"
+    },
+    {
+      "title": "Your Fleet",
+      "text": "Space Station (King) - Your command center, lose it and the war is over.\nFlagship (Queen) - Your most powerful vessel, capable of any maneuver.\nBattlecruiser (Rook) - Straight-line firepower that dominates corridors.\nScout Ship (Bishop) - Diagonal reconnaissance and flanking specialist.\nFighter Squadron (Knight) - Unpredictable L-shaped strike craft.\nDrone (Pawn) - Expendable units that can be promoted to Flagship!",
+      "image_prompt": "lineup of six different sci-fi spacecraft ranging from a massive space station to tiny drones, each with distinct silhouettes, holographic display style, blueprint aesthetic with glowing lines"
+    },
+    {
+      "title": "The Sectors of Power",
+      "text": "The star grid contains 6 strategic resource sectors: Planet Alpha provides habitable territory, the Asteroid Belt yields rare minerals, a Wormhole offers tactical shortcuts, a Nebula hides sensor signatures, the Space Dock repairs damaged ships, and the Fuel Depot extends your operational range. Control them to fuel your fleet's expansion!",
+      "image_prompt": "birds eye view of a glowing 8x8 space grid with six highlighted sectors showing a planet, asteroid belt, wormhole portal, colorful nebula, orbital space dock, and fuel station, sci-fi strategy game map art"
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "🧠",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🔄",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "prefrontal_cortex"
+      }
+    ]
+  },
+  "initial_state": {
+    "valuation": {
+      "label": "Fleet Power",
+      "value": 1000000,
+      "icon": "⚡"
+    },
+    "strategic_thinking": {
+      "icon": "🧠",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "adaptability": {
+      "icon": "🔄",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "chess_config": {
+    "board_size": 8,
+    "max_ap": 2,
+    "win_valuation": 10000000,
+    "win_resource_count": 3,
+    "resource_tiles": [
+      {
+        "pos": [
+          2,
+          2
+        ],
+        "type": "planet",
+        "income": 200000,
+        "icon": "🪐",
+        "label": "Planet Alpha"
+      },
+      {
+        "pos": [
+          2,
+          5
+        ],
+        "type": "asteroid",
+        "income": 150000,
+        "icon": "☄️",
+        "label": "Asteroid Belt"
+      },
+      {
+        "pos": [
+          5,
+          2
+        ],
+        "type": "wormhole",
+        "income": 180000,
+        "icon": "🌀",
+        "label": "Wormhole"
+      },
+      {
+        "pos": [
+          5,
+          5
+        ],
+        "type": "nebula",
+        "income": 160000,
+        "icon": "🌌",
+        "label": "Nebula"
+      },
+      {
+        "pos": [
+          3,
+          3
+        ],
+        "type": "dock",
+        "income": 120000,
+        "icon": "🏗️",
+        "label": "Space Dock"
+      },
+      {
+        "pos": [
+          4,
+          4
+        ],
+        "type": "fuel",
+        "income": 140000,
+        "icon": "⛽",
+        "label": "Fuel Depot"
+      }
+    ],
+    "theme_config": {
+      "king_role": "station",
+      "queen_role": "flagship",
+      "pawn_role": "drone",
+      "back_row": [
+        "cruiser",
+        "fighter",
+        "scout_ship",
+        "station",
+        "flagship",
+        "scout_ship",
+        "fighter",
+        "cruiser"
+      ],
+      "piece_stats": {
+        "station": {
+          "hp": 10,
+          "attack": 3,
+          "label": "Space Station",
+          "icon": "🛸"
+        },
+        "flagship": {
+          "hp": 8,
+          "attack": 4,
+          "label": "Flagship",
+          "icon": "🚀"
+        },
+        "cruiser": {
+          "hp": 7,
+          "attack": 3,
+          "label": "Battlecruiser",
+          "icon": "🔫"
+        },
+        "scout_ship": {
+          "hp": 6,
+          "attack": 3,
+          "label": "Scout Ship",
+          "icon": "🛰️"
+        },
+        "fighter": {
+          "hp": 6,
+          "attack": 4,
+          "label": "Fighter Squadron",
+          "icon": "✈️"
+        },
+        "drone": {
+          "hp": 3,
+          "attack": 2,
+          "label": "Drone",
+          "icon": "🤖"
+        }
+      },
+      "piece_moves": {
+        "station": {
+          "type": "king",
+          "range": 1,
+          "diagonal": true,
+          "straight": true
+        },
+        "flagship": {
+          "type": "queen",
+          "range": 8,
+          "diagonal": true,
+          "straight": true
+        },
+        "cruiser": {
+          "type": "rook",
+          "range": 8,
+          "diagonal": false,
+          "straight": true
+        },
+        "scout_ship": {
+          "type": "bishop",
+          "range": 8,
+          "diagonal": true,
+          "straight": false
+        },
+        "fighter": {
+          "type": "knight",
+          "range": 0,
+          "knight": true
+        },
+        "drone": {
+          "type": "pawn",
+          "range": 1,
+          "pawn": true
+        }
+      },
+      "piece_profiles": {
+        "station": {
+          "title": "Space Station (Command Hub)",
+          "strengths": [
+            {
+              "name": "Command Aura",
+              "desc": "Boosts shield strength of adjacent allied ships, +1 ATK each"
+            },
+            {
+              "name": "Long-Range Sensors",
+              "desc": "Detects all threats within sensor range, cannot be ambushed"
+            },
+            {
+              "name": "Power Generator",
+              "desc": "Generates +50K fleet power per turn just by remaining operational"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "High-Value Target",
+              "desc": "Destruction means instant defeat — must be defended at all costs"
+            },
+            {
+              "name": "Limited Thrusters",
+              "desc": "Can only reposition 1 sector in any direction per turn"
+            },
+            {
+              "name": "Reactor Overload",
+              "desc": "If surrounded by enemy ships, takes 1 hull damage per turn"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "executive_order",
+              "name": "Fleet Command",
+              "desc": "Broadcast tactical orders boosting all adjacent ships +2 ATK for 1 turn",
+              "cost": 1,
+              "icon": "📡"
+            },
+            {
+              "id": "pivot_vision",
+              "name": "Deep Scan",
+              "desc": "Activate long-range sensors to reveal all enemy ship abilities",
+              "cost": 1,
+              "icon": "👁️"
+            }
+          ]
+        },
+        "flagship": {
+          "title": "Flagship (The Dreadnought)",
+          "strengths": [
+            {
+              "name": "Omni-Directional Drive",
+              "desc": "Moves in any direction, any distance — the most versatile vessel in the fleet"
+            },
+            {
+              "name": "Heavy Armament",
+              "desc": "+2 ATK when engaging Fighters or Drones"
+            },
+            {
+              "name": "Inertial Dampeners",
+              "desc": "Cannot be pushed or displaced by Scout Ship abilities"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Power Drain",
+              "desc": "-1 ATK if no allied ships within 2 sectors"
+            },
+            {
+              "name": "Cooldown Cycles",
+              "desc": "Each ability use costs +1 extra AP next turn"
+            },
+            {
+              "name": "Drive Instability",
+              "desc": "Cannot remain stationary in the same sector for 2 consecutive turns"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "tech_pivot",
+              "name": "Warp Jump",
+              "desc": "Teleport to any empty sector within 3 squares via short-range warp",
+              "cost": 1,
+              "icon": "⚡"
+            },
+            {
+              "id": "deploy_patch",
+              "name": "Hull Repair",
+              "desc": "Activate auto-repair nanobots to restore +3 HP",
+              "cost": 1,
+              "icon": "🔧"
+            }
+          ]
+        },
+        "cruiser": {
+          "title": "Battlecruiser (The Broadside)",
+          "strengths": [
+            {
+              "name": "Linear Assault",
+              "desc": "Fires in straight lines with unlimited range across the grid"
+            },
+            {
+              "name": "Salvage Operations",
+              "desc": "+100K fleet power bonus when destroying any enemy ship"
+            },
+            {
+              "name": "Armored Hull",
+              "desc": "Cannot be destroyed if adjacent to a controlled resource sector"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "No Lateral Targeting",
+              "desc": "Cannot move or fire diagonally whatsoever"
+            },
+            {
+              "name": "Fuel Consumption",
+              "desc": "Loses 1 HP per turn if not adjacent to a resource sector"
+            },
+            {
+              "name": "Minimum Range",
+              "desc": "Must move at least 2 sectors when repositioning"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "close_deal",
+              "name": "Resource Extraction",
+              "desc": "Extract power from any adjacent resource sector instantly",
+              "cost": 1,
+              "icon": "⛏️"
+            },
+            {
+              "id": "cold_call",
+              "name": "Ion Disruptor",
+              "desc": "Fire an ion pulse weakening an enemy within 3 sectors by -2 ATK",
+              "cost": 1,
+              "icon": "💫"
+            }
+          ]
+        },
+        "scout_ship": {
+          "title": "Scout Ship (The Phantom)",
+          "strengths": [
+            {
+              "name": "Diagonal Stealth Runs",
+              "desc": "Moves along diagonals for surprise cross-grid flanking attacks"
+            },
+            {
+              "name": "Sensor Jamming",
+              "desc": "Enemies adjacent to Scout Ship suffer -1 ATK from interference"
+            },
+            {
+              "name": "Ricochet Torpedoes",
+              "desc": "Pushing an enemy into another enemy damages both targets"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "No Linear Trajectory",
+              "desc": "Cannot move horizontally or vertically along the grid"
+            },
+            {
+              "name": "Power Dependent",
+              "desc": "-2 ATK if fleet power rating is below 2 million"
+            },
+            {
+              "name": "Thin Armor",
+              "desc": "Takes +1 extra damage from Flagship weapons"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "viral_campaign",
+              "name": "Tractor Beam",
+              "desc": "Lock onto an enemy ship and push it 2 sectors away from you",
+              "cost": 1,
+              "icon": "🧲"
+            },
+            {
+              "id": "rebrand",
+              "name": "Phase Swap",
+              "desc": "Swap positions with any friendly ship using short-range teleporter",
+              "cost": 1,
+              "icon": "🔀"
+            }
+          ]
+        },
+        "fighter": {
+          "title": "Fighter Squadron (The Aces)",
+          "strengths": [
+            {
+              "name": "Evasive Maneuvers",
+              "desc": "Unique L-shaped attack vectors that bypass obstacles and enemy formations"
+            },
+            {
+              "name": "Strafing Run",
+              "desc": "+2 ATK when attacking from an unexpected vector"
+            },
+            {
+              "name": "Reinforced Cockpit",
+              "desc": "Takes -1 damage from all incoming fire"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Predictable Vectors",
+              "desc": "Only 8 possible landing positions — can be intercepted"
+            },
+            {
+              "name": "Pilot Fatigue",
+              "desc": "Cannot use abilities in consecutive turns"
+            },
+            {
+              "name": "No Reverse Thrust",
+              "desc": "Cannot return to a previous position within 2 turns"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "deploy_mvp",
+              "name": "Deploy Mine",
+              "desc": "Launch a space mine onto any empty adjacent sector to block movement",
+              "cost": 1,
+              "icon": "💣"
+            },
+            {
+              "id": "hackathon",
+              "name": "Afterburner",
+              "desc": "Ignite afterburners for an immediate second move this turn",
+              "cost": 2,
+              "icon": "🔥"
+            }
+          ]
+        },
+        "drone": {
+          "title": "Drone (Expendable Recon)",
+          "strengths": [
+            {
+              "name": "Adaptive Learning",
+              "desc": "+1 ATK for each turn survived, stacking up to +3 maximum"
+            },
+            {
+              "name": "Swarm Advantage",
+              "desc": "You deploy 8 drones — overwhelm enemies with sheer numbers"
+            },
+            {
+              "name": "Upgrade Protocol",
+              "desc": "Reaching the far edge of the grid upgrades the Drone to a Flagship"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Forward Thrusters Only",
+              "desc": "Can only advance forward, never retreat backward"
+            },
+            {
+              "name": "Minimal Shielding",
+              "desc": "Only 3 HP — easily destroyed by any combat vessel"
+            },
+            {
+              "name": "Diagonal Targeting Only",
+              "desc": "Can only engage enemies diagonally, not when moving forward"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "coffee_run",
+              "name": "Field Repair",
+              "desc": "Deploy repair nanites to heal any adjacent allied ship +3 HP",
+              "cost": 0,
+              "icon": "🔋"
+            },
+            {
+              "id": "networking",
+              "name": "Swarm Link",
+              "desc": "Swap position with any adjacent friendly Drone via networked coordination",
+              "cost": 0,
+              "icon": "🔗"
+            }
+          ]
+        }
+      },
+      "move_narratives": {
+        "station": {
+          "move": [
+            "{piece} adjusts orbit, repositioning for optimal fleet coordination across the sector.",
+            "The Space Station fires maneuvering thrusters, shifting to a more defensible position.",
+            "{piece} drifts into a new sector — every repositioning sends ripples through the fleet's tactical network."
+          ],
+          "capture": [
+            "{piece} locks weapons and obliterates the rival {target} — a devastating show of firepower!",
+            "In a bold tactical strike, {piece} destroys the enemy {target}. The star grid shifts dramatically.",
+            "{piece} unleashes the station's full weapons battery, eliminating the rival {target} from the sector."
+          ]
+        },
+        "flagship": {
+          "move": [
+            "{piece} engages main drives, sweeping across the grid with the authority of a capital ship.",
+            "The Flagship repositions, scanning for optimal firing solutions against the enemy fleet.",
+            "{piece} glides through space with precision — like a perfectly executed fleet maneuver."
+          ],
+          "capture": [
+            "{piece} unleashes a devastating broadside against the rival {target}, tearing it apart!",
+            "With a brilliant tactical pivot, {piece} outmaneuvers and destroys the enemy {target}.",
+            "{piece} fires all weapons systems, reducing the enemy {target} to floating debris."
+          ]
+        },
+        "cruiser": {
+          "move": [
+            "{piece} powers forward along the corridor, weapons charged and ready to fire.",
+            "The Battlecruiser advances aggressively — maintaining firing lanes is everything in space combat.",
+            "{piece} repositions along the linear attack corridor, broadside cannons tracking targets."
+          ],
+          "capture": [
+            "{piece} delivers a punishing broadside, destroying the rival {target} in a hail of plasma!",
+            "The Battlecruiser's guns thunder across the void — the enemy {target} never stood a chance.",
+            "{piece} annihilates the rival {target} with overwhelming linear firepower."
+          ]
+        },
+        "scout_ship": {
+          "move": [
+            "{piece} banks along a diagonal vector, slicing through the enemy's sensor blind spots.",
+            "The Scout Ship flanks the enemy formation from an unexpected angle, sensors blazing.",
+            "{piece} repositions for a cross-grid reconnaissance sweep along the diagonal."
+          ],
+          "capture": [
+            "{piece} emerges from a sensor shadow and destroys the enemy {target} with surgical precision!",
+            "A phantom strike! {piece} catches the rival {target} completely off guard on the diagonal.",
+            "{piece} decloaks and eliminates the enemy {target} — stealth superiority demonstrated!"
+          ]
+        },
+        "fighter": {
+          "move": [
+            "{piece} executes an L-shaped attack run, weaving through enemy formations effortlessly.",
+            "The Fighter Squadron deploys to a flanking position — nobody anticipated that vector!",
+            "{piece} screams into position like a well-coordinated combat sortie."
+          ],
+          "capture": [
+            "{piece} delivers a surprise strafing run, shredding the rival {target} with concentrated fire!",
+            "In a brilliant combat maneuver, {piece} exploits a weakness and destroys the enemy {target}.",
+            "{piece} completes a devastating attack run that obliterates the enemy {target}."
+          ]
+        },
+        "drone": {
+          "move": [
+            "The autonomous Drone pushes forward, one sector closer to its upgrade destination.",
+            "{piece} advances with programmed determination across the star grid.",
+            "Small thrusters, big potential — {piece} inches toward the far edge and Flagship promotion."
+          ],
+          "capture": [
+            "Against all odds, the tiny Drone locks weapons and destroys the rival {target}!",
+            "{piece} proves its combat value — the enemy {target} underestimated the expendable unit!",
+            "Incredible! {piece} intercepts and destroys the rival {target} in a stunning engagement."
+          ],
+          "promote": [
+            "The Drone reaches the far edge and undergoes a massive UPGRADE TO FLAGSHIP! A game-changing power spike!",
+            "From expendable recon to capital ship — the Drone emerges as a powerful new Flagship!",
+            "Mission complete! The humble Drone activates its upgrade protocol and transforms into a fully armed Flagship!"
+          ]
+        }
+      },
+      "resource_narratives": [
+        "Power flows in from controlled sectors — your fleet rating climbs steadily!",
+        "Resource sectors generate energy, fueling your fleet's expansion across the galaxy.",
+        "Territorial dominance pays dividends — income collected from secured sectors."
+      ],
+      "role_values": {
+        "station": 100,
+        "flagship": 50,
+        "cruiser": 30,
+        "scout_ship": 30,
+        "fighter": 25,
+        "drone": 10
+      }
+    }
+  },
+  "rounds": [
+    {
+      "id": "chess_game",
+      "title": "Space Colonization",
+      "story": "The galactic frontier awaits your command. Deploy your fleet, seize resource sectors, and crush the enemy before they dominate the star grid!",
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "risk_tolerance"
+        ],
+        "secondary_skills": [
+          "delayed_gratification",
+          "adaptability",
+          "resilience"
+        ]
+      },
+      "choices": [],
+      "coaching_moment": "Think carefully about the trade-offs before committing to this path.",
+      "reflection_prompt": "What sacrifices did you make, and were they worth it?"
+    }
+  ],
+  "learning_concept": "Pattern Recognition & Strategic Planning",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Planning moves several steps ahead",
+      "real_world": "Mapping out a study plan for exams with realistic milestones",
+      "challenge": "Draw a decision tree for a real goal you have — what are the possible paths and outcomes?"
+    },
+    {
+      "skill_tag": "adaptability",
+      "game_context": "Responding to opponent's unexpected moves",
+      "real_world": "Adjusting your plan when a key team member is unavailable",
+      "challenge": "Describe a time when you had to completely change your approach mid-way. What did you learn?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "grandmaster",
+      "name": "Grandmaster",
+      "description": "Executed a perfect strategic sequence",
+      "condition": "accuracy >= 90",
+      "xp_reward": 250,
+      "icon": "👑"
+    },
+    {
+      "id": "tactical_genius",
+      "name": "Tactical Genius",
+      "description": "Found the winning move in a critical position",
+      "condition": "best_move_found",
+      "xp_reward": 200,
+      "icon": "🧠"
+    },
+    {
+      "id": "chess_complete",
+      "name": "Chess Champion",
+      "description": "Completed the chess strategy challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "♟️"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_depth": 1,
+      "show_hints": true,
+      "starting_advantage": 1.2
+    },
+    "medium": {
+      "ai_depth": 2,
+      "show_hints": false,
+      "starting_advantage": 1.0
+    },
+    "hard": {
+      "ai_depth": 4,
+      "show_hints": false,
+      "starting_advantage": 0.8
+    }
+  },
+  "coach_mode_default": true,
+  "features": {
+    "voice_enabled": true
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.4,
+    "adaptability": 0.35,
+    "risk_tolerance": 0.25
+  },
+  "estimated_duration": 25,
+  "target_age": "Ages 12+",
+  "cultural_context": "India's ISRO has made India a global leader in affordable space technology, with missions to Mars and the Moon. This game develops the long-range strategic thinking that defines India's ambitions in the new space economy.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "entrepreneurial-thinking"
+  ],
+  "reflection_prompt": "What pattern did your opponent rely on, and how did you counter (or fail to)?"
+}

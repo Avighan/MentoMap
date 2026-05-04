@@ -1,0 +1,1648 @@
+{
+  "game_id": "the-panchayat",
+  "title": "The Panchayat: Justice in the Village",
+  "game_type": "story_branching",
+  "visible": true,
+  "description": "A village dispute over land and water threatens to tear your community apart. Navigate ancient wisdom, modern law, and the art of negotiation to find justice in the panchayat — where every voice matters and every compromise has consequences.",
+  "theme": "Conflict resolution and community justice",
+  "difficulty": "intermediate",
+  "duration_minutes": 45,
+  "target_audience": "students",
+  "icon": "⚖️",
+  "cover_image_prompt": "A 15-year-old Indian girl standing at the entrance of a village panchayat hall, elders seated in a semicircle, a banyan tree in the courtyard, rural Indian setting, vibrant watercolor illustration, warm golden light, age 10-18 friendly",
+  "learning_objectives": [
+    "Understand that conflict resolution requires listening to all sides before judging",
+    "Learn the difference between positional bargaining and interest-based negotiation",
+    "Practice building alliances across opposing groups",
+    "Develop the skill of finding creative solutions that address underlying needs",
+    "Explore how traditional wisdom and modern rights can work together"
+  ],
+  "learning_concept": "Justice is not about one side winning — it is about finding a solution where everyone's core needs are met, even if nobody gets everything they wanted.",
+  "psychological_framework": "Interest-Based Negotiation (Fisher & Ury, Getting to Yes) — separating people from problems, focusing on interests not positions; combined with Restorative Justice — repairing relationships rather than just punishing wrongdoers",
+  "ai_image_config": {
+    "style": "vibrant watercolor illustration, rural Indian village setting, panchayat hall, banyan tree, warm earthy tones, age 10-18 friendly, justice and community story aesthetic",
+    "provider": "dalle",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/story_branching"
+  },
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "The Dispute",
+      "icon": "⚡",
+      "teaser": "The factory's waste is poisoning the river — and the village is split.",
+      "always_unlocked": true,
+      "color": "#f59e0b"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "Grandmother's Wisdom",
+      "icon": "🪔",
+      "teaser": "Dadi tells a story from the old days — and {player_name} sees the problem differently.",
+      "unlocks_after": "ch1",
+      "color": "#10b981"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "Meeting the Factory",
+      "icon": "🏭",
+      "teaser": "Mr. Sharma is not the villain everyone assumed. The truth is more complicated.",
+      "unlocks_after": "ch2",
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch4",
+      "number": 4,
+      "title": "Understanding Interests",
+      "icon": "🔍",
+      "teaser": "Behind every demand is a need. Can {player_name} find what people actually want?",
+      "unlocks_after": "ch3",
+      "color": "#ec4899"
+    },
+    {
+      "chapter_id": "ch5",
+      "number": 5,
+      "title": "The Evidence",
+      "icon": "📋",
+      "teaser": "Advocate Pillai arrives with legal tools — but law alone cannot heal a community.",
+      "unlocks_after": "ch4",
+      "color": "#ef4444"
+    },
+    {
+      "chapter_id": "ch6",
+      "number": 6,
+      "title": "Building Alliances",
+      "icon": "🤝",
+      "teaser": "Two sides must become one — but who will make the first move?",
+      "unlocks_after": "ch5",
+      "color": "#8b5cf6"
+    },
+    {
+      "chapter_id": "ch7",
+      "number": 7,
+      "title": "The Panchayat Meeting",
+      "icon": "🏛️",
+      "teaser": "The whole village gathers. Every word matters. Every silence speaks.",
+      "unlocks_after": "ch6",
+      "color": "#0ea5e9"
+    },
+    {
+      "chapter_id": "ch8",
+      "number": 8,
+      "title": "Counter-Offers",
+      "icon": "💬",
+      "teaser": "Mr. Sharma makes a proposal. Lakshmi rejects it. The negotiation enters its hardest phase.",
+      "unlocks_after": "ch7",
+      "color": "#f97316"
+    },
+    {
+      "chapter_id": "ch9",
+      "number": 9,
+      "title": "The Verdict",
+      "icon": "⚖️",
+      "teaser": "Sarpanch Rao asks for a final recommendation. {player_name} must speak.",
+      "unlocks_after": "ch8",
+      "color": "#14b8a6"
+    },
+    {
+      "chapter_id": "ch10",
+      "number": 10,
+      "title": "Lasting Peace",
+      "icon": "🌱",
+      "teaser": "The dispute is settled — but can peace truly last without trust?",
+      "unlocks_after": "ch9",
+      "color": "#f59e0b"
+    }
+  ],
+  "initial_state": {
+    "knowledge": {
+      "value": 35,
+      "label": "Knowledge",
+      "icon": "📚",
+      "min": 0,
+      "max": 100
+    },
+    "respect": {
+      "value": 40,
+      "label": "Respect",
+      "icon": "🙏",
+      "min": 0,
+      "max": 100
+    },
+    "negotiation_skill": {
+      "value": 30,
+      "label": "Negotiation Skill",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "community_trust": {
+      "value": 50,
+      "label": "Community Trust",
+      "icon": "🏘️",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "transitions_to_gameplay": true,
+        "title": "The Poisoned River",
+        "narrative": "The Kaveri canal had run clear through Ramnagar village for as long as anyone could remember. Dadi said it was cleaner than bottled water when she was a girl. But that was before Sharma Chemicals set up its factory upstream three years ago.\n\nNow the water ran grey-green. The fish were gone. Two families had stopped farming because their crops tasted strange. And last week, little Raju from the potter's family got a skin rash that the village doctor said came from contaminated water.\n\n{player_name} stood at the canal bank, watching the murky flow. Kiran was fifteen, old enough to understand the science from school textbooks, young enough that most adults did not take her seriously. But Dadi had always said: 'The young see what the old have stopped looking at.'\n\nToday, Sarpanch Rao had announced a panchayat meeting to discuss the factory. The whole village would attend. And Kiran had to decide whether this was her fight too.",
+        "image_prompt": "A 15-year-old Indian girl standing at the bank of a polluted canal in a rural village, grey-green water flowing, a factory visible in the distance, concerned expression, banyan tree nearby, vibrant watercolor illustration, warm but troubled atmosphere",
+        "coaching_moment": "The first step in solving any conflict is choosing to get involved — even when it would be easier to stay silent.",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Collect water samples — approach this scientifically",
+            "description": "Kiran fills three bottles from different points along the canal, labeling each carefully. Evidence first.",
+            "delta": {
+              "knowledge": 12,
+              "respect": 5,
+              "negotiation_skill": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Scientific evidence is powerful — but it takes time, and the village is angry now.",
+            "memory_tags": [
+              "collected_evidence"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Talk to the affected families — understand their pain first",
+            "description": "Kiran visits the two farming families and Raju's parents, listening to how the pollution has changed their lives.",
+            "delta": {
+              "community_trust": 10,
+              "respect": 8,
+              "knowledge": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Understanding suffering gives you moral authority — but emotions alone do not win negotiations.",
+            "memory_tags": [
+              "heard_families"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_c",
+            "label": "Ask Dadi what happened when the factory first came",
+            "description": "Kiran sits with her grandmother to understand the history — how did the village agree to the factory in the first place?",
+            "delta": {
+              "knowledge": 10,
+              "community_trust": 5,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Knowing the history prevents repeating mistakes — but the past does not always predict the future.",
+            "memory_tags": [
+              "learned_history"
+            ],
+            "next_scene": "ch1_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "The Village Divides",
+        "narrative": "The more Kiran looked into the dispute, the more complicated it became. The village was not simply united against the factory. It was split.\n\nOn one side: Lakshmi and the farmers, who wanted the factory shut down immediately. Their crops and health were being destroyed. They were angry and they had every right to be.\n\nOn the other side: about twenty families whose sons and daughters worked at Sharma Chemicals. The factory paid better wages than farming. Closing it would mean those families losing their only income.\n\nIn the middle: Sarpanch Rao, who had approved the factory's land permit three years ago and now faced accusations from both sides.\n\n{player_name} realized this was not a simple story of good versus evil. It was a story of competing needs — and the hardest problems are always the ones where everyone has a point.",
+        "image_prompt": "A village meeting ground with two groups of Indian villagers on opposite sides, farmers on one side looking angry, factory workers on the other looking worried, a young girl observing from the middle, banyan tree overhead, watercolor illustration, tension and complexity",
+        "coaching_moment": "The most important skill in conflict resolution is resisting the urge to pick a side before you understand all sides.",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Meet both sides separately — listen without judging",
+            "description": "Kiran spends a day with the farmers and a day with the factory workers, hearing each group's fears.",
+            "delta": {
+              "knowledge": 10,
+              "community_trust": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Listening to everyone builds credibility — but someone will always ask: whose side are you on?",
+            "next_scene": "ch1_s3"
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Research what the law says about factory pollution",
+            "description": "Kiran goes to the school library and looks up environmental regulations — what are the factory's legal obligations?",
+            "delta": {
+              "knowledge": 15,
+              "negotiation_skill": 5,
+              "respect": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Legal knowledge gives you tools — but laws mean little in a village if nobody enforces them.",
+            "next_scene": "ch1_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "title": "Dadi's Question",
+        "narrative": "That evening, Kiran sat with Dadi on the charpoy in the courtyard. The old woman was threading marigolds for the morning puja, her fingers working automatically while her mind turned.\n\n'You have been running around the village all day,' Dadi said without looking up. 'What have you learned?'\n\nKiran told her everything — the farmers' anger, the workers' fear, the sarpanch's guilt. Dadi listened, nodding slowly.\n\nThen she asked a question that stopped Kiran cold: 'What does Mr. Sharma need? Not what he wants — what does he need?'\n\nKiran had not thought about that. She had been thinking of the factory owner as the problem. But Dadi was suggesting something different — that understanding even the opponent's needs was the key to finding a solution.\n\n{player_name} went to bed that night with Dadi's question echoing in her head.",
+        "image_prompt": "An elderly Indian grandmother and a teenage girl sitting on a charpoy in a village courtyard at dusk, the grandmother threading marigolds, the girl listening intently, warm lamp light, stars beginning to appear, watercolor illustration, wisdom and warmth",
+        "coaching_moment": "In negotiation, the breakthrough comes when you stop thinking about what people demand and start thinking about what they need.",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "Decide to visit the factory tomorrow — find out what Sharma needs",
+            "description": "Kiran takes Dadi's advice to heart and plans to visit the factory owner directly — a bold move.",
+            "delta": {
+              "knowledge": 8,
+              "negotiation_skill": 10,
+              "community_trust": -3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Meeting the other side takes courage — and some villagers may see it as betrayal.",
+            "memory_tags": [
+              "visited_factory_early"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "First prepare with Lakshmi — understand the farmers' bottom line",
+            "description": "Kiran decides she needs to fully understand her own side before engaging with the opposition.",
+            "delta": {
+              "community_trust": 10,
+              "knowledge": 8,
+              "negotiation_skill": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "empathy"
+            ],
+            "consequence_hint": "Preparation is power — but time is running out before the panchayat meeting.",
+            "memory_tags": [
+              "prepared_with_farmers"
+            ],
+            "next_chapter": "ch2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "The Story of the Two Rivers",
+        "narrative": "Dadi woke Kiran early the next morning. 'Come, sit,' she said, pouring chai. 'Before you go to any meeting, you need to hear a story.'\n\nShe told the tale of two rivers — Ganga and Yamuna — who quarreled over which one was holier. Each claimed the other was impure. They built walls of mud between themselves. The land between them dried up and died. It was only when a small stream connected them underground — unseen by anyone — that both rivers began to flow again.\n\n'The stream did not take sides,' Dadi said. 'It just connected.'\n\n{player_name} understood the metaphor. In this dispute, someone needed to be the underground stream — connecting the two sides without being seen as belonging to either.",
+        "image_prompt": "An elderly Indian grandmother telling a story to her granddaughter over morning chai in a village kitchen, the girl's eyes wide with understanding, an illustrated story of two rivers visible in imagination clouds above, watercolor illustration, warm morning light",
+        "coaching_moment": "The best mediators are like bridges — they stand between two sides and hold them together, even when the weight is heavy.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Ask Dadi to come to the panchayat meeting — her stories carry weight",
+            "description": "Kiran knows the elders respect Dadi. Her presence could shift the tone of the meeting from anger to wisdom.",
+            "delta": {
+              "community_trust": 10,
+              "respect": 8,
+              "knowledge": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Elders bring authority — but they also bring old alliances and old grudges.",
+            "memory_tags": [
+              "dadi_support"
+            ],
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Take the lesson but act independently — this is your generation's fight",
+            "description": "Kiran thanks Dadi but decides to approach this in her own way, combining wisdom with modern thinking.",
+            "delta": {
+              "confidence": 10,
+              "negotiation_skill": 8,
+              "knowledge": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "consequence_hint": "Independence shows strength — but ignoring elders can look like disrespect.",
+            "next_scene": "ch2_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "Lakshmi's Ultimatum",
+        "narrative": "Lakshmi, the farmer leader, finds Kiran at the village well. She is a strong woman in her forties who has been organizing the farming families for weeks. Her eyes are fierce.\n\n'I hear you are trying to be neutral,' Lakshmi says. 'Let me tell you something — there is no neutral when children are getting sick. You are either with us or with the factory.'\n\nKiran feels the pressure. Lakshmi is right that children are suffering. But Kiran also knows that the factory workers have children too — children who eat because of those wages.\n\n{player_name} realizes that being a mediator means sometimes being accused by both sides of not caring enough. It is the hardest position to hold.",
+        "image_prompt": "A strong middle-aged Indian farm woman confronting a teenage girl at a village well, the woman's expression fierce and challenging, the girl standing her ground respectfully, other villagers watching from a distance, watercolor illustration, tense but respectful",
+        "coaching_moment": "When someone demands you pick a side, the bravest answer is: 'I am on the side of finding a solution that works for everyone.'",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Validate Lakshmi's anger — then explain why mediation serves her goals better",
+            "description": "Kiran acknowledges the suffering honestly, then shows Lakshmi how a negotiated solution could get more than a fight would.",
+            "delta": {
+              "negotiation_skill": 12,
+              "community_trust": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Combining empathy with strategy is the hardest skill — but the most effective.",
+            "next_scene": "ch2_s3"
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Stand firm — 'I care about the children. That is exactly why I want a solution that lasts.'",
+            "description": "Kiran does not back down or apologize, making clear that her approach IS about the children's future.",
+            "delta": {
+              "respect": 12,
+              "negotiation_skill": 5,
+              "community_trust": -3
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Standing firm earns respect from some — and resentment from others who wanted agreement.",
+            "next_scene": "ch2_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "title": "The Map on the Wall",
+        "narrative": "That afternoon, Kiran does something nobody expected. She borrows a large sheet of paper from the school, draws a map of the village, and pins it to the wall of the community hall. On it, she marks:\n\n- The canal and its flow direction\n- The factory's location and its waste pipes\n- Every farm that has been affected\n- Every family with someone working at the factory\n- The school, the well, the temple — shared spaces\n\nWhen villagers walk by, they stop to look. For the first time, everyone can see the whole picture — not just their own corner of the problem.\n\nLakshmi studies it for a long time. So does Ramu, whose son works at the factory. They stand on opposite sides of the map, but they are both looking at the same thing.\n\n{player_name} watches them and thinks: this is how it begins. Not with arguments, but with shared understanding.",
+        "image_prompt": "A large hand-drawn map pinned to a village community hall wall, Indian villagers from both sides of the dispute studying it together, a teenage girl watching from the side, color-coded markers showing farms, factory, and water flow, watercolor illustration, breakthrough moment",
+        "coaching_moment": "Before people can agree on a solution, they need to agree on what the problem actually is — shared facts create shared ground.",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "Invite both sides to add to the map — their stories, their losses, their fears",
+            "description": "Kiran turns the map into a living document where everyone can mark their own experience.",
+            "delta": {
+              "community_trust": 15,
+              "negotiation_skill": 10,
+              "respect": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Shared storytelling builds empathy between enemies — but it can also reopen wounds.",
+            "memory_tags": [
+              "shared_map"
+            ],
+            "next_chapter": "ch3"
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "Use the map to prepare a factual presentation for the panchayat meeting",
+            "description": "Kiran keeps the map as an objective tool — data, not emotions, will guide the negotiation.",
+            "delta": {
+              "knowledge": 15,
+              "negotiation_skill": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Facts are essential — but a negotiation without emotional connection often fails.",
+            "next_chapter": "ch3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "Inside Sharma Chemicals",
+        "narrative": "Mr. Sharma agrees to meet Kiran at the factory. She expected a villain — a greedy industrialist in a big car. Instead, she finds a tired man in his fifties, sitting in a small office with peeling paint and a desk piled with files.\n\n'You think I do not know about the water?' he says before she can speak. 'I know. My own mother drinks from the same canal downstream. But the water treatment plant costs eighty lakhs. I barely make payroll as it is.'\n\nHe shows her the factory's books — the real ones, he says. Twenty families depend on this factory. If he installs the treatment plant, he would need to lay off eight workers. If he does not, the village will eventually shut him down anyway.\n\n{player_name} stares at the numbers. The villain is not a villain. He is a man caught between doing the right thing and keeping people employed. The problem just got harder.",
+        "image_prompt": "A tired Indian factory owner in a small cluttered office showing financial books to a teenage girl, the factory visible through a dusty window, peeling paint walls, both looking at numbers with concern, watercolor illustration, unexpected complexity",
+        "coaching_moment": "When you discover that the 'enemy' has legitimate problems too, the easy answer disappears — and the real negotiation begins.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Ask Sharma: 'If money were not the problem, what would you do?'",
+            "description": "Kiran uses Dadi's technique — finding out what the factory owner truly needs, not just what he says he cannot do.",
+            "delta": {
+              "negotiation_skill": 12,
+              "knowledge": 10,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Asking the right question can unlock a solution nobody has considered.",
+            "memory_tags": [
+              "understood_sharma"
+            ],
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Challenge the numbers — ask to see the full accounts, not just what he chooses to show",
+            "description": "Kiran is empathetic but not naive. She asks for transparency before accepting his story at face value.",
+            "delta": {
+              "knowledge": 15,
+              "negotiation_skill": 5,
+              "community_trust": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Healthy skepticism protects you from being manipulated — but it can also offend a genuine person.",
+            "next_scene": "ch3_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "The Worker's Perspective",
+        "narrative": "As Kiran leaves the factory, a young man named Ravi stops her. He is twenty-two, one of the workers. 'Sharma sahab showed you the books, right?' he says. 'But did he show you the godown where the chemical drums are stored without safety covers? Or the fact that we work overtime without extra pay?'\n\nRavi tells Kiran something the factory owner left out: the workers are not just afraid of losing jobs. They are afraid of getting sick too. Three workers have had breathing problems in the last year. But they cannot complain because Sharma will replace them with someone from the next village.\n\n{player_name} realizes there is a third group in this dispute — the workers, who are caught between the factory owner and the farmers, belonging to neither camp, afraid to speak to either.\n\nThis changes everything. The solution cannot just be about water. It has to be about worker safety too.",
+        "image_prompt": "A young Indian factory worker talking secretly to a teenage girl outside a factory gate, looking around nervously, chemical drums visible in the background, evening light, watercolor illustration, whispered truth",
+        "coaching_moment": "In every conflict, there are voices that have not been heard yet — finding them changes the entire picture.",
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Promise Ravi you will include worker safety in the panchayat discussion",
+            "description": "Kiran commits to representing all three groups — farmers, factory owner, AND workers.",
+            "delta": {
+              "community_trust": 12,
+              "negotiation_skill": 8,
+              "respect": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Adding another dimension to the negotiation makes it harder — but the solution will be more complete.",
+            "memory_tags": [
+              "included_workers"
+            ],
+            "next_scene": "ch3_s3"
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Ask Ravi to speak at the panchayat himself — his voice matters more than yours",
+            "description": "Kiran encourages Ravi to tell his own story rather than speaking for him — empowering him directly.",
+            "delta": {
+              "respect": 12,
+              "community_trust": 10,
+              "negotiation_skill": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Empowering others to speak is powerful — but they might say something you cannot control.",
+            "memory_tags": [
+              "empowered_ravi"
+            ],
+            "next_scene": "ch3_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "title": "Three Sides, One Problem",
+        "narrative": "That night, Kiran sits on the charpoy with her notebook. She draws three circles:\n\nCircle 1: FARMERS — Need clean water, healthy crops, safe children\nCircle 2: FACTORY — Needs to stay open, afford treatment, keep workers\nCircle 3: WORKERS — Need safe conditions, fair wages, job security\n\nWhere the circles overlap, she writes: 'Everyone needs the village to survive and thrive.'\n\nDadi looks over her shoulder. 'Now you are thinking like a mediator,' she says. 'The question is not who is right. The question is: what arrangement lets everyone get what they truly need?'\n\n{player_name} looks at the three circles and begins to see the outline of a solution — not yet clear, but forming like a picture developing in water.",
+        "image_prompt": "A teenage Indian girl sitting on a charpoy at night with a notebook showing three overlapping circles, a grandmother looking over her shoulder approvingly, village stars visible through a window, warm lamp light, watercolor illustration, moment of clarity",
+        "coaching_moment": "The best negotiators do not think in two sides — they think in overlapping circles, looking for the space where all needs meet.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "Develop a proposal: phased treatment plant funded by village cooperative + factory",
+            "description": "Kiran crafts a creative proposal where costs are shared, workers get safety training, and farmers monitor water quality.",
+            "delta": {
+              "negotiation_skill": 15,
+              "knowledge": 10,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Creative proposals need buy-in from all sides — a great idea alone is not enough.",
+            "memory_tags": [
+              "crafted_proposal"
+            ],
+            "next_chapter": "ch4"
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "Do not propose anything yet — bring the three groups together to create the solution jointly",
+            "description": "Kiran decides that a solution imposed from outside will fail. The three groups must design it together.",
+            "delta": {
+              "community_trust": 15,
+              "negotiation_skill": 8,
+              "respect": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Co-creation builds ownership — but it is slow and messy, and the panchayat is approaching.",
+            "next_chapter": "ch4"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s1",
+        "chapter": "ch4",
+        "title": "What Lakshmi Really Wants",
+        "narrative": "Kiran meets Lakshmi for chai at the farmer's market. After the anger from their last meeting has cooled, Lakshmi is more thoughtful.\n\n'You want to know what I really want?' she says, stirring her chai. 'I do not want the factory closed. My nephew works there. I want the water clean. I want my grandchildren to swim in that canal the way I did. I want someone to look at Raju and say: this will never happen again.'\n\nShe pauses. 'But I also want respect. For three years, Sharma pretended the water was fine. He called us uneducated farmers who do not understand chemistry. That hurt more than the pollution.'\n\n{player_name} hears something crucial: Lakshmi's need is not just clean water. It is acknowledgment. She needs to hear Sharma say: I was wrong, and I am sorry.",
+        "image_prompt": "An Indian farm woman and a teenage girl having chai at a rustic market stall, the woman's expression softening from anger to vulnerability, morning market sounds implied, watercolor illustration, warm and honest conversation",
+        "coaching_moment": "Behind every angry demand is an unmet need — and often the deepest need is simply to be seen and respected.",
+        "choices": [
+          {
+            "id": "ch4_s1_a",
+            "label": "Ask Lakshmi: 'If Sharma apologized publicly, would you consider a compromise?'",
+            "description": "Kiran tests whether an apology — a recognition of dignity — could unlock the negotiation.",
+            "delta": {
+              "negotiation_skill": 15,
+              "community_trust": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Identifying the emotional key to a negotiation can break deadlocks — if the other side is willing.",
+            "memory_tags": [
+              "found_apology_key"
+            ],
+            "next_scene": "ch4_s2"
+          },
+          {
+            "id": "ch4_s1_b",
+            "label": "Promise Lakshmi concrete monitoring — quarterly water tests she can see",
+            "description": "Kiran offers a tangible accountability mechanism, knowing that trust is rebuilt through verification.",
+            "delta": {
+              "community_trust": 12,
+              "knowledge": 8,
+              "negotiation_skill": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Systems of accountability are essential — but they do not replace the human need for acknowledgment.",
+            "next_scene": "ch4_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s2",
+        "chapter": "ch4",
+        "title": "What Sharma Really Fears",
+        "narrative": "Kiran returns to the factory for a second meeting. This time, Mr. Sharma is less guarded. His wife brings chai — she is from the village originally and knows the farmers personally.\n\n'I am tired,' Sharma admits. 'I started this factory to create jobs, not to poison anyone. My father was a farmer. I know what clean water means. But if I spend eighty lakhs on treatment and then the village still wants to shut me down — I lose everything. My savings, my workers, my reputation.'\n\n{player_name} realizes Sharma's deepest fear is not the money. It is trust. He is afraid that even if he fixes the water, the village will never forgive him — that the investment will be wasted because the community will punish him anyway.\n\nBoth sides fear the same thing: betrayal after vulnerability.",
+        "image_prompt": "A factory owner and his wife serving chai to a teenage girl in their modest home behind the factory, the man looking vulnerable and tired, family photos on the wall, watercolor illustration, unexpected intimacy and honesty",
+        "coaching_moment": "Fear of betrayal keeps people stuck in conflict — building trust means someone has to be brave enough to go first.",
+        "choices": [
+          {
+            "id": "ch4_s2_a",
+            "label": "Propose a written agreement — guaranteed timelines, mutual accountability",
+            "description": "Kiran suggests a formal agreement that protects both sides — Sharma invests, the village guarantees no shutdown if conditions are met.",
+            "delta": {
+              "negotiation_skill": 12,
+              "knowledge": 10,
+              "community_trust": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Written agreements build trust through structure — but they require both sides to have faith in enforcement.",
+            "next_scene": "ch4_s3"
+          },
+          {
+            "id": "ch4_s2_b",
+            "label": "Suggest a small first step — let Sharma fix the worst pipe first, village responds with goodwill",
+            "description": "Kiran proposes starting small — one gesture from each side — to build trust before tackling the big issues.",
+            "delta": {
+              "community_trust": 12,
+              "negotiation_skill": 10,
+              "respect": 5
+            },
+            "skill_tags": [
+              "adaptability",
+              "empathy"
+            ],
+            "consequence_hint": "Small trust-building steps are powerful — but they require patience when people want big answers.",
+            "memory_tags": [
+              "small_steps"
+            ],
+            "next_scene": "ch4_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s3",
+        "chapter": "ch4",
+        "title": "The Interest Map",
+        "narrative": "Kiran creates a second document — an 'Interest Map' that shows what each party truly needs versus what they have been demanding:\n\nFarmers DEMAND: Factory shutdown. NEED: Clean water, health safety, respect.\nFactory DEMANDS: No interference. NEEDS: Financial viability, guaranteed future, forgiveness.\nWorkers DEMAND: Nothing (silent). NEED: Safe conditions, job security, voice.\n\nWhen she shows this to Dadi, the old woman smiles. 'Now you can see the game clearly. The demands are walls. The needs are doors. Walk through the doors.'\n\n{player_name} feels the outline of a solution becoming clearer. But there is still one missing piece: legal standing. What does the law actually require of Sharma Chemicals?",
+        "image_prompt": "A teenage girl showing a colorful chart to her grandmother — the chart shows 'Demands vs Needs' for three groups, the grandmother nodding wisely, a simple village room with books and notebooks spread around, watercolor illustration, analytical clarity meeting traditional wisdom",
+        "coaching_moment": "Separating what people demand from what they need is the single most powerful skill in negotiation.",
+        "choices": [
+          {
+            "id": "ch4_s3_a",
+            "label": "Seek legal advice — find out what the law requires before the panchayat",
+            "description": "Kiran reaches out to the visiting advocate, Pillai, to understand the legal framework surrounding factory pollution.",
+            "delta": {
+              "knowledge": 15,
+              "negotiation_skill": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Legal knowledge is leverage — knowing the rules changes who has power in the room.",
+            "next_chapter": "ch5"
+          },
+          {
+            "id": "ch4_s3_b",
+            "label": "Share the interest map with both sides — let transparency build trust",
+            "description": "Kiran shows Lakshmi what Sharma needs and shows Sharma what Lakshmi needs — making both sides see each other.",
+            "delta": {
+              "community_trust": 15,
+              "negotiation_skill": 10,
+              "respect": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Radical transparency can create breakthroughs — or it can feel like a betrayal of confidences.",
+            "memory_tags": [
+              "shared_interests"
+            ],
+            "next_chapter": "ch5"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s1",
+        "chapter": "ch5",
+        "title": "Advocate Pillai Arrives",
+        "narrative": "Advocate Pillai is a tall, quiet man from Chennai who visits rural villages to provide free legal advice. He listens to Kiran's summary of the dispute for twenty minutes without interrupting — then says something that changes everything.\n\n'Under the Water (Prevention and Control of Pollution) Act, Sharma Chemicals is already in violation. The district collector can issue a closure order within 48 hours. The factory should have had a treatment plant from day one.'\n\nHe pauses. 'But here is what the law cannot do: it cannot rebuild trust between neighbors. A court order will shut the factory. Twenty families lose income. The canal gets clean eventually. Everyone is worse off than before.'\n\n{player_name} now holds a powerful card — the legal threat. The question is how to use it.",
+        "image_prompt": "A distinguished Indian lawyer in a simple kurta talking to a teenage girl under a banyan tree, legal documents in his briefcase, a village visible in the background, watercolor illustration, authority meeting grassroots, warm afternoon light",
+        "coaching_moment": "Legal power is a tool, not a weapon. The best negotiators use it as leverage for agreement, not as a threat for destruction.",
+        "choices": [
+          {
+            "id": "ch5_s1_a",
+            "label": "Tell Sharma about the legal liability — give him a chance to act before enforcement",
+            "description": "Kiran warns Sharma privately, letting him choose compliance over punishment. Fairness before force.",
+            "delta": {
+              "negotiation_skill": 15,
+              "respect": 10,
+              "community_trust": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Giving someone a chance to do the right thing is more powerful than forcing them — if they take it.",
+            "memory_tags": [
+              "fair_warning"
+            ],
+            "next_scene": "ch5_s2"
+          },
+          {
+            "id": "ch5_s1_b",
+            "label": "Use the legal threat as BATNA — the fallback if negotiation fails",
+            "description": "Kiran keeps the legal option in her back pocket, using it only if the panchayat negotiation breaks down.",
+            "delta": {
+              "knowledge": 12,
+              "negotiation_skill": 10,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "BATNA (Best Alternative to Negotiated Agreement) gives you power — but only if the other side knows it exists.",
+            "next_scene": "ch5_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s2",
+        "chapter": "ch5",
+        "title": "The Water Test Results",
+        "narrative": "The water samples Kiran collected come back from the district lab. The results are worse than anyone imagined. The canal water has arsenic levels four times the safe limit, and heavy metals that explain Raju's skin condition.\n\nAdvocate Pillai looks at the report gravely. 'This is not just a nuisance. This is a public health emergency. People could develop serious illness if exposure continues.'\n\nThe evidence is damning. But Kiran now faces a dilemma: releasing these results publicly will cause panic and probably end any chance of a negotiated solution. The farmers will demand immediate closure. The workers will be terrified for their own health.\n\n{player_name} holds a piece of paper that could blow up the entire mediation — or save lives if handled correctly.",
+        "image_prompt": "A teenage girl and a lawyer staring at a lab report with alarming numbers highlighted, grave expressions, a village visible through the window, the weight of dangerous information, watercolor illustration, tense and serious",
+        "coaching_moment": "When evidence is explosive, how you release it matters as much as what it says — timing and framing can save or break a negotiation.",
+        "narrative_variants": {
+          "collected_evidence": "Kiran's early decision to collect scientific evidence has paid off — she has proof that cannot be denied.",
+          "fair_warning": "Having already warned Sharma, Kiran knows he cannot claim ignorance when these results go public."
+        },
+        "choices": [
+          {
+            "id": "ch5_s2_a",
+            "label": "Show the results to both sides simultaneously — transparency above all",
+            "description": "Kiran calls an emergency meeting with Lakshmi and Sharma, presenting the data to both at the same time.",
+            "delta": {
+              "community_trust": 12,
+              "respect": 10,
+              "negotiation_skill": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Simultaneous disclosure prevents anyone from feeling ambushed — but the reaction may be explosive.",
+            "next_scene": "ch5_s3"
+          },
+          {
+            "id": "ch5_s2_b",
+            "label": "Show Sharma first — give him 24 hours to propose emergency measures before going public",
+            "description": "Kiran uses the evidence as leverage, giving Sharma a window to demonstrate good faith before the crisis hits.",
+            "delta": {
+              "negotiation_skill": 15,
+              "knowledge": 8,
+              "community_trust": -3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Giving the factory a head start could produce a solution — or it could look like you are protecting the polluter.",
+            "next_scene": "ch5_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s3",
+        "chapter": "ch5",
+        "title": "The Emergency",
+        "narrative": "The test results become public knowledge within a day — villages are small places where secrets do not last. Panic spreads. Three more families stop using canal water. The school announces bottled water for students.\n\nSarpanch Rao accelerates the panchayat meeting to this Saturday — three days away.\n\nIn the chaos, something unexpected happens. Mr. Sharma does not hide. He comes to the village and stands in front of the community hall. 'I have seen the water report,' he says. 'I should have acted sooner. I will begin emergency repairs on the worst drainage pipe tomorrow. It will not fix everything, but it is a start.'\n\nLakshmi watches from across the courtyard. She does not nod or smile, but she does not shout either.\n\n{player_name} sees the first tiny crack in the wall between the two sides.",
+        "image_prompt": "An Indian factory owner standing before a group of villagers outside a community hall, making a public admission, some villagers angry, some surprised, a teenage girl watching the moment carefully, watercolor illustration, a turning point in conflict",
+        "coaching_moment": "When someone in power admits a mistake publicly, it does not make them weaker — it makes the whole situation more honest.",
+        "choices": [
+          {
+            "id": "ch5_s3_a",
+            "label": "Publicly acknowledge Sharma's step — then push for a comprehensive plan at the panchayat",
+            "description": "Kiran validates the gesture while making clear that one pipe is not enough — the panchayat must produce a full solution.",
+            "delta": {
+              "negotiation_skill": 12,
+              "community_trust": 10,
+              "respect": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Acknowledging progress while demanding more is the art of positive pressure.",
+            "memory_tags": [
+              "acknowledged_gesture"
+            ],
+            "next_chapter": "ch6"
+          },
+          {
+            "id": "ch5_s3_b",
+            "label": "Stay cautious — one repaired pipe does not make up for three years of pollution",
+            "description": "Kiran appreciates the gesture but warns the village not to let symbolic actions replace real systemic change.",
+            "delta": {
+              "knowledge": 10,
+              "respect": 8,
+              "community_trust": 3
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "resilience"
+            ],
+            "consequence_hint": "Healthy skepticism protects against false promises — but if pushed too hard, it can kill momentum.",
+            "next_chapter": "ch6"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s1",
+        "chapter": "ch6",
+        "title": "Building the Coalition",
+        "narrative": "Two days before the panchayat meeting, Kiran realizes she needs allies from BOTH sides to support a middle path. If only farmers attend, they will demand closure. If only factory supporters attend, they will demand the status quo.\n\nShe starts building bridges. She asks Ramu — whose son works at the factory but whose farmland is also affected — to speak. She asks the school teacher, who is respected by everyone, to moderate. She asks Ravi the worker to share the workers' perspective.\n\n{player_name} is essentially designing the meeting itself — choosing who speaks, in what order, and what questions to ask. The meeting design IS the negotiation strategy.",
+        "image_prompt": "A teenage girl going door to door in an Indian village, talking to different people — a farmer, a factory worker, a teacher — assembling a diverse group, evening village setting with lamp light, watercolor illustration, coalition building",
+        "coaching_moment": "Who is in the room determines what solutions are possible — building a diverse group is half the battle won.",
+        "choices": [
+          {
+            "id": "ch6_s1_a",
+            "label": "Design the meeting so each group speaks first, then responds to each other",
+            "description": "Kiran creates a structured format: farmers speak, factory responds, workers speak, then open discussion.",
+            "delta": {
+              "negotiation_skill": 15,
+              "knowledge": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Structured dialogue prevents chaos — but it can feel controlling to people who want to speak freely.",
+            "memory_tags": [
+              "structured_meeting"
+            ],
+            "next_scene": "ch6_s2"
+          },
+          {
+            "id": "ch6_s1_b",
+            "label": "Let it be organic — trust the community to find its own rhythm",
+            "description": "Kiran provides the space but not the structure, believing that authentic conversation leads to authentic solutions.",
+            "delta": {
+              "community_trust": 12,
+              "respect": 10,
+              "negotiation_skill": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "empathy"
+            ],
+            "consequence_hint": "Organic discussion feels democratic — but it can be hijacked by the loudest voices.",
+            "next_scene": "ch6_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s2",
+        "chapter": "ch6",
+        "title": "The Night Before",
+        "narrative": "The night before the panchayat meeting, Dadi finds Kiran unable to sleep. They sit on the charpoy again.\n\n'I am scared, Dadi,' Kiran admits. 'What if it falls apart? What if Lakshmi and Sharma start shouting and the whole thing collapses? I am fifteen. Why would anyone listen to me?'\n\nDadi takes her hand. 'They will not listen to you because of your age. They will listen because you are the only person who has talked to every side. You are the one thread that runs through all three circles.'\n\nShe pauses. 'And if it falls apart? You try again. Every panchayat in history has had failed meetings before the one that worked. The river does not reach the sea in one straight line.'\n\n{player_name} sleeps that night with a strange mixture of fear and readiness. Tomorrow, everything comes together — or falls apart.",
+        "image_prompt": "A grandmother and granddaughter on a charpoy under stars, the girl looking anxious but comforted, village houses quiet around them, a gentle hand-holding moment, watercolor illustration, the night before a big day, warm and intimate",
+        "coaching_moment": "Courage is not the absence of fear — it is the decision that something else matters more than fear.",
+        "narrative_variants": {
+          "dadi_support": "Having Dadi's support makes the fear manageable. She will be in the room tomorrow, a steady presence.",
+          "crafted_proposal": "Kiran runs through her proposal one more time in her head. The numbers work. The structure is fair. Now it is about people."
+        },
+        "choices": [
+          {
+            "id": "ch6_s2_a",
+            "label": "Write down three possible outcomes — best case, worst case, acceptable case",
+            "description": "Kiran prepares mentally by defining what success looks like, what failure looks like, and what 'good enough' is.",
+            "delta": {
+              "negotiation_skill": 12,
+              "knowledge": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Knowing your acceptable outcome prevents you from accepting too little or demanding too much.",
+            "next_scene": "ch6_s3"
+          },
+          {
+            "id": "ch6_s2_b",
+            "label": "Let go of the plan — trust the process and be fully present tomorrow",
+            "description": "Kiran decides that over-planning will make her rigid. She needs to be responsive, not rehearsed.",
+            "delta": {
+              "community_trust": 10,
+              "respect": 8,
+              "negotiation_skill": 5
+            },
+            "skill_tags": [
+              "adaptability",
+              "resilience"
+            ],
+            "consequence_hint": "Being present and flexible is powerful — but having no plan at all is just hope.",
+            "next_scene": "ch6_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s3",
+        "chapter": "ch6",
+        "title": "Morning of the Panchayat",
+        "narrative": "Saturday morning. The community hall is filling up. Sarpanch Rao sits at the front, looking nervous. Lakshmi and six farmers are on the left. Sharma and three factory managers are on the right. Workers sit in the middle, belonging to neither side.\n\nDadi is in the back row. She catches Kiran's eye and gives the smallest nod.\n\nAdvocate Pillai has agreed to attend as a neutral legal advisor — not representing either side. The school teacher will moderate.\n\nThe whole village seems to be watching. Children sit on the boundary wall outside the hall. Tea is being served. The air smells of jasmine and tension.\n\n{player_name} takes a deep breath. Sarpanch Rao opens the meeting. It begins.",
+        "image_prompt": "A village panchayat hall filling with people — farmers on one side, factory people on the other, workers in the middle, an elder at the front, a teenage girl standing ready to speak, community hall with open doors, morning light streaming in, watercolor illustration, democratic village gathering",
+        "coaching_moment": "The moment of truth in any negotiation is when all the preparation meets the unpredictability of real human conversation.",
+        "choices": [
+          {
+            "id": "ch6_s3_a",
+            "label": "Open by showing the village map and interest chart — set the stage with shared facts",
+            "description": "Kiran begins with the visual tools she has created, ensuring everyone starts from the same understanding.",
+            "delta": {
+              "knowledge": 10,
+              "negotiation_skill": 10,
+              "community_trust": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Starting with shared facts creates common ground — the foundation for any agreement.",
+            "next_chapter": "ch7"
+          },
+          {
+            "id": "ch6_s3_b",
+            "label": "Ask Lakshmi and Sharma each to speak first — let the human stories open hearts",
+            "description": "Kiran lets the emotional truth of both sides fill the room before introducing analysis.",
+            "delta": {
+              "community_trust": 12,
+              "respect": 10,
+              "negotiation_skill": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Stories open hearts — but they can also inflame passions if not guided carefully.",
+            "next_chapter": "ch7"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s1",
+        "chapter": "ch7",
+        "title": "The Panchayat Begins",
+        "narrative": "The meeting begins. Lakshmi speaks first. Her voice shakes with three years of frustration: the grey water, the sick children, the ignored complaints. Several farmers nod. A woman in the back row wipes her eyes.\n\nThen Sharma speaks. He is calmer than expected — perhaps Kiran's earlier conversations helped. He admits the problem, shares the financial reality, and makes a visible effort not to be defensive.\n\nThen Ravi stands up. Nobody expected the workers to speak. His voice is quiet but clear: 'We are caught in the middle. We breathe the factory air. We drink the canal water. We are both sides.'\n\nThe room goes silent. {player_name} watches as something shifts in the atmosphere. For the first time, the village sees the problem as belonging to everyone — not just one group against another.",
+        "image_prompt": "A village panchayat meeting — a young worker standing to speak while farmers and factory managers listen in surprise, an elder sarpanch at the front, a teenage girl mediator watching carefully, community hall setting, watercolor illustration, breakthrough moment",
+        "coaching_moment": "When the silent voices finally speak, the whole conversation changes — because they see the truth that the louder voices miss.",
+        "choices": [
+          {
+            "id": "ch7_s1_a",
+            "label": "Build on Ravi's words — 'We are all affected. Let us solve this together.'",
+            "description": "Kiran seizes the moment of unity, channeling the emotional shift into collaborative problem-solving.",
+            "delta": {
+              "community_trust": 15,
+              "negotiation_skill": 10,
+              "respect": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Channeling emotion into action is the mediator's greatest skill.",
+            "next_scene": "ch7_s2"
+          },
+          {
+            "id": "ch7_s1_b",
+            "label": "Present the water test results now — let the science ground the emotion",
+            "description": "Kiran introduces the lab report, using evidence to move from feelings to facts.",
+            "delta": {
+              "knowledge": 12,
+              "negotiation_skill": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Evidence after emotion creates urgency — but too many facts can overwhelm a room that just opened its heart.",
+            "next_scene": "ch7_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s2",
+        "chapter": "ch7",
+        "title": "The First Impasse",
+        "narrative": "The goodwill lasts about thirty minutes. Then Lakshmi puts her demand on the table: 'Full treatment plant installed within three months. If not, we file a complaint with the district collector.'\n\nSharma shakes his head. 'Three months is impossible. The equipment alone takes six months to order. And eighty lakhs — where do I find it overnight?'\n\n'That is not our problem,' Lakshmi says.\n\n'It IS your problem,' Sharma fires back, 'because if you shut me down, twenty of your neighbours lose their income.'\n\nThe room temperature rises. Sarpanch Rao looks helpless. Two farmers stand up angrily. A factory manager pushes his chair back.\n\n{player_name} has seconds to prevent the meeting from collapsing.",
+        "image_prompt": "A heated moment in a village panchayat — a farmer woman and factory owner arguing across a table, other villagers standing up in anger, a teenage girl standing between them with hands raised, sarpanch looking helpless, watercolor illustration, crisis in negotiation",
+        "coaching_moment": "When a negotiation hits an impasse, the mediator's job is not to solve it immediately — it is to keep people talking.",
+        "choices": [
+          {
+            "id": "ch7_s2_a",
+            "label": "Call a fifteen-minute break — let tempers cool before continuing",
+            "description": "Kiran asks Sarpanch Rao to pause the meeting, knowing that heated people make bad agreements.",
+            "delta": {
+              "negotiation_skill": 12,
+              "community_trust": 5,
+              "respect": 8
+            },
+            "skill_tags": [
+              "adaptability",
+              "resilience"
+            ],
+            "consequence_hint": "Strategic pauses prevent breakdowns — but some may see it as delay tactics.",
+            "next_scene": "ch7_s3"
+          },
+          {
+            "id": "ch7_s2_b",
+            "label": "Redirect — 'We all agree the water must be cleaned. The question is HOW, not IF.'",
+            "description": "Kiran reframes the argument from a fight about positions to a joint problem-solving exercise.",
+            "delta": {
+              "negotiation_skill": 15,
+              "community_trust": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Reframing is the single most powerful move in negotiation — turning adversaries into co-solvers.",
+            "memory_tags": [
+              "reframed_debate"
+            ],
+            "next_scene": "ch7_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s3",
+        "chapter": "ch7",
+        "title": "The Breakthrough Question",
+        "narrative": "The tension drops — slightly. But the room is still stuck. Then Advocate Pillai, who has been silent throughout, speaks for the first time.\n\n'May I ask a question?' The room goes quiet. 'What if the treatment plant were funded not by Mr. Sharma alone, but by a combination — a government subsidy, a village cooperative contribution, and Sharma paying his share? The Swachh Bharat Mission has grants for exactly this.'\n\nMurmurs spread through the hall. Nobody had considered government funding. Lakshmi looks interested. Sharma looks relieved. Kiran feels a door opening.\n\n{player_name} realizes that sometimes the best solutions come from outside the conflict — from people who see options that the battling parties cannot.",
+        "image_prompt": "A distinguished lawyer standing and proposing an idea in a village meeting, the room going quiet with attention, a teenage girl's face lighting up with possibility, farmers and factory people both leaning in, watercolor illustration, the moment a solution appears",
+        "coaching_moment": "Creative solutions often come when we stop fighting over a fixed pie and realize the pie can be made bigger.",
+        "choices": [
+          {
+            "id": "ch7_s3_a",
+            "label": "Immediately build on Pillai's idea — propose a three-way funding split with timeline",
+            "description": "Kiran jumps on the opening, drafting a rough proposal on the spot: government 40%, Sharma 40%, village cooperative 20%.",
+            "delta": {
+              "negotiation_skill": 15,
+              "knowledge": 10,
+              "community_trust": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Seizing breakthrough moments requires both preparation and improvisation.",
+            "next_chapter": "ch8"
+          },
+          {
+            "id": "ch7_s3_b",
+            "label": "Ask both sides to go home and return tomorrow with their response to Pillai's idea",
+            "description": "Kiran knows that people need time to process new ideas — rushing agreement leads to buyer's remorse.",
+            "delta": {
+              "community_trust": 12,
+              "respect": 10,
+              "negotiation_skill": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "empathy"
+            ],
+            "consequence_hint": "Giving people time respects their autonomy — but momentum can be lost overnight.",
+            "next_chapter": "ch8"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s1",
+        "chapter": "ch8",
+        "title": "Sharma's Counter-Offer",
+        "narrative": "Mr. Sharma returns with a counter-proposal. He will pay forty percent of the treatment plant cost, but he wants five years to complete it instead of one. He also wants the village to drop the legal threat permanently.\n\nLakshmi's response is immediate: 'Five years? My grandchildren will be sick for five more years? No. One year maximum.'\n\nThe gap between five years and one year feels enormous. But Kiran knows from her reading that most negotiations end up somewhere in the middle — the question is how to get there without either side losing face.\n\n{player_name} needs to find a creative bridge between an impossible demand and an unacceptable offer.",
+        "image_prompt": "A negotiation table in a village hall — a factory owner presenting a document, a farmer leader shaking her head, a teenage mediator looking at both of them calculating the middle ground, charts and documents on the table, watercolor illustration, tense negotiation",
+        "coaching_moment": "In negotiation, the first offer and the first counter-offer are almost never the final answer — the real deal lives in between.",
+        "choices": [
+          {
+            "id": "ch8_s1_a",
+            "label": "Propose a phased plan — emergency fixes in 3 months, full plant in 18 months",
+            "description": "Kiran creates a timeline that gives the farmers early relief while giving Sharma realistic time for the full solution.",
+            "delta": {
+              "negotiation_skill": 15,
+              "community_trust": 10,
+              "knowledge": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Phased approaches satisfy the need for urgency AND the need for feasibility.",
+            "memory_tags": [
+              "phased_plan"
+            ],
+            "next_scene": "ch8_s2"
+          },
+          {
+            "id": "ch8_s1_b",
+            "label": "Ask: 'What can be done in SIX months that would make BOTH sides willing to continue?'",
+            "description": "Kiran splits the difference and asks both sides to define what meaningful progress at the halfway point would look like.",
+            "delta": {
+              "negotiation_skill": 12,
+              "respect": 10,
+              "community_trust": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Milestone-based agreements build trust gradually — each side proves itself step by step.",
+            "next_scene": "ch8_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s2",
+        "chapter": "ch8",
+        "title": "Lakshmi's Concession",
+        "narrative": "Something remarkable happens. Lakshmi, the fiercest voice against the factory, makes a concession. 'If Sharma begins emergency repairs within one month,' she says slowly, 'and if the government subsidy application is filed within two months — I will agree to eighteen months for the full plant. But with quarterly water testing that WE can observe.'\n\nSharma looks surprised. He expected a longer fight. He glances at Kiran, then at Advocate Pillai, then back at Lakshmi. 'I can do that,' he says quietly. 'But I need one more thing. I need the workers to have safety equipment. If we are fixing the water, we should fix the factory floor too.'\n\nRavi, from the workers' section, exhales. Someone has finally included them.\n\n{player_name} watches the deal forming in real time — not perfect, but real. Not imposed, but agreed.",
+        "image_prompt": "A moment of tentative agreement in a village panchayat — a farmer woman and factory owner making cautious eye contact, a young worker looking relieved in the middle, a teenage mediator watching with quiet pride, the sarpanch nodding, watercolor illustration, hope emerging from conflict",
+        "coaching_moment": "The best agreements are the ones where every party gives something and gets something — because those are the ones that last.",
+        "narrative_variants": {
+          "included_workers": "Kiran's early decision to include the workers has paid off — their needs are now part of the deal.",
+          "found_apology_key": "The missing piece falls into place when Sharma adds: 'And Lakshmi — I am sorry. I should have listened sooner.'"
+        },
+        "choices": [
+          {
+            "id": "ch8_s2_a",
+            "label": "Push for a written agreement with specific milestones and accountability",
+            "description": "Kiran insists that verbal agreements are not enough — the deal needs to be documented with clear dates and consequences.",
+            "delta": {
+              "negotiation_skill": 12,
+              "knowledge": 10,
+              "respect": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Written agreements survive changing moods — verbal ones often do not.",
+            "next_scene": "ch8_s3"
+          },
+          {
+            "id": "ch8_s2_b",
+            "label": "Ask Sarpanch Rao to formally endorse the agreement as the panchayat's decision",
+            "description": "Kiran seeks the sarpanch's official endorsement, giving the deal institutional weight and making it harder to break.",
+            "delta": {
+              "community_trust": 12,
+              "respect": 10,
+              "negotiation_skill": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Institutional backing strengthens agreements — but it also binds the sarpanch, who may hesitate.",
+            "next_scene": "ch8_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s3",
+        "chapter": "ch8",
+        "title": "The Unresolved Thread",
+        "narrative": "The agreement is taking shape. But one issue remains: the apology. Lakshmi has not said she needs one, but Kiran can see it in her face. Three years of being called uneducated, of being dismissed, of watching her grandchild get sick — a deal about money and timelines does not heal that wound.\n\nSharma seems to know it too. He keeps glancing at Lakshmi with an expression that looks like it is struggling between pride and guilt.\n\nDadi catches Kiran's eye from the back row. She mouths one word: 'Now.'\n\n{player_name} has to decide whether to push for the emotional closure that could seal this deal — or leave it alone and settle for a practical agreement without the human healing.",
+        "image_prompt": "A close-up of two people at a negotiation — a woman waiting for something unspoken, a man struggling with pride, a teenage girl watching the gap between them, trying to decide whether to bridge it, intimate watercolor illustration, the weight of unspoken apology",
+        "coaching_moment": "Practical agreements fix problems. Emotional acknowledgment heals relationships. The strongest deals do both.",
+        "choices": [
+          {
+            "id": "ch8_s3_a",
+            "label": "Gently prompt Sharma: 'Is there anything you would like to say to the farmers directly?'",
+            "description": "Kiran creates the space for an apology without forcing it — an invitation, not a demand.",
+            "delta": {
+              "community_trust": 15,
+              "respect": 12,
+              "negotiation_skill": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Creating space for vulnerability is a mediator's highest art — but you cannot control what fills it.",
+            "memory_tags": [
+              "facilitated_apology"
+            ],
+            "next_chapter": "ch9"
+          },
+          {
+            "id": "ch8_s3_b",
+            "label": "Leave it — the practical deal is enough. Emotional healing will come with time.",
+            "description": "Kiran decides that pushing for an apology in public might feel forced. Let the actions speak over time.",
+            "delta": {
+              "negotiation_skill": 10,
+              "knowledge": 8,
+              "respect": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Patience is wise — but some wounds fester if never directly addressed.",
+            "next_chapter": "ch9"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s1",
+        "chapter": "ch9",
+        "title": "The Sarpanch's Verdict",
+        "narrative": "Sarpanch Rao stands. The entire hall watches. He has been quiet through most of the meeting, letting the community find its own way — something Kiran respects, even though his earlier approval of the factory was part of the problem.\n\n'I have listened,' he says slowly. 'Three years ago, I approved the factory permit without insisting on a treatment plant. That was my mistake. I was thinking about jobs, not about water. I should have demanded both.'\n\nHe looks at Kiran. 'This young woman has done what I should have done from the beginning — talked to everyone, understood everyone, and found a path through the middle.'\n\nThen he turns to the hall. 'I ask for one final vote. Those in favor of the agreement as presented — raise your hands.'\n\n{player_name} watches as hands go up. First slowly, then in waves. Not every hand — but most. The deal is passed.",
+        "image_prompt": "A village sarpanch standing and calling for a vote, many hands raised in a community hall, a teenage girl standing beside him, farmers and factory workers voting together, golden afternoon light through windows, watercolor illustration, democratic resolution",
+        "coaching_moment": "Democracy works best when it is informed by understanding — a vote after genuine dialogue is worth a hundred votes taken in ignorance.",
+        "choices": [
+          {
+            "id": "ch9_s1_a",
+            "label": "Thank everyone who participated — especially those who disagreed",
+            "description": "Kiran makes a point of acknowledging the dissenting voices, showing that opposition is not the enemy of democracy.",
+            "delta": {
+              "community_trust": 15,
+              "respect": 12,
+              "negotiation_skill": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Honoring disagreement strengthens democracy — the minority needs to know they were heard even if they did not prevail.",
+            "memory_tags": [
+              "honored_dissent"
+            ],
+            "next_scene": "ch9_s2"
+          },
+          {
+            "id": "ch9_s1_b",
+            "label": "Immediately begin planning the implementation — names, dates, responsibilities",
+            "description": "Kiran shifts from negotiation to action, knowing that agreements without implementation plans are just words.",
+            "delta": {
+              "knowledge": 12,
+              "negotiation_skill": 10,
+              "respect": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Moving to implementation shows seriousness — but do not skip the moment of celebration.",
+            "next_scene": "ch9_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s2",
+        "chapter": "ch9",
+        "title": "The Handshake",
+        "narrative": "After the vote, something happens that nobody orchestrated. Lakshmi walks across the hall to Mr. Sharma. The room watches. She extends her hand.\n\n'I do not forgive easily,' she says. 'But I believe you will keep this promise. If you do not — I will be the first person at the district collector's office.'\n\nSharma takes her hand. 'If I break this promise, I will drive you there myself.'\n\nThe hall erupts in relieved laughter. It is not perfect friendship. It is not forgetting the past. But it is a beginning — two people who were enemies an hour ago, choosing to bet on each other's word.\n\n{player_name} feels tears she did not expect. Dadi, from the back row, is smiling — the kind of smile that says: this is how it was always supposed to work.",
+        "image_prompt": "An Indian farmer woman and factory owner shaking hands in a village community hall while the whole village watches, laughter and relief on faces around them, a teenage girl mediator watching with emotional tears, a grandmother smiling from the back, watercolor illustration, reconciliation",
+        "coaching_moment": "Peace is not the absence of conflict — it is the presence of justice and the willingness to trust again.",
+        "choices": [
+          {
+            "id": "ch9_s2_a",
+            "label": "Propose a monitoring committee with members from all three groups",
+            "description": "Kiran ensures the agreement has teeth — a joint committee of farmers, workers, and factory management will track progress.",
+            "delta": {
+              "negotiation_skill": 12,
+              "community_trust": 12,
+              "knowledge": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Monitoring committees turn agreements into reality — shared oversight prevents backsliding.",
+            "next_scene": "ch9_s3"
+          },
+          {
+            "id": "ch9_s2_b",
+            "label": "Suggest a quarterly panchayat review — keep the community engaged in the solution",
+            "description": "Kiran proposes regular check-ins, making the agreement a living process rather than a one-time event.",
+            "delta": {
+              "community_trust": 15,
+              "respect": 10,
+              "negotiation_skill": 5
+            },
+            "skill_tags": [
+              "adaptability",
+              "empathy"
+            ],
+            "consequence_hint": "Regular reviews maintain momentum — but they also create opportunities for renewed conflict if progress stalls.",
+            "next_scene": "ch9_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s3",
+        "chapter": "ch9",
+        "title": "Walking Home",
+        "narrative": "The panchayat meeting ends as the sun sets. Kiran walks home with Dadi, their shadows stretching long across the village road.\n\n'How do you feel?' Dadi asks.\n\nKiran thinks about it. 'Tired. Scared it might not work. Happy that it might. And... grateful. That you taught me to listen before speaking.'\n\nDadi chuckles. 'I did not teach you that. You always knew. You just did not know you knew.'\n\nThey pass the canal. The water is still grey-green. It will take months — maybe a year — before it runs clear. But for the first time in three years, there is a plan to clean it. Not an argument. Not a complaint. A plan, with names and dates and accountability.\n\n{player_name} looks at the canal and thinks: the river does not reach the sea in one straight line. But it always reaches.",
+        "image_prompt": "A grandmother and granddaughter walking home on a village road at sunset, a canal visible beside the road with grey-green water, a factory in the distance, golden sunset light, peace after conflict, watercolor illustration, hope and continuation",
+        "coaching_moment": "The work of building peace does not end with an agreement — it continues every day, in every small act of trust kept.",
+        "choices": [
+          {
+            "id": "ch9_s3_a",
+            "label": "Commit to leading the monitoring committee — see this through to the end",
+            "description": "Kiran decides that starting this process means finishing it. She will stay involved until the water runs clear.",
+            "delta": {
+              "community_trust": 15,
+              "respect": 12,
+              "negotiation_skill": 10
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Commitment to follow-through is the difference between a mediator and a leader.",
+            "memory_tags": [
+              "committed_to_follow_through"
+            ],
+            "next_chapter": "ch10"
+          },
+          {
+            "id": "ch9_s3_b",
+            "label": "Step back and let the adults own the implementation — you have done your part",
+            "description": "Kiran trusts the community to carry the agreement forward, knowing that sustainable solutions do not depend on one person.",
+            "delta": {
+              "respect": 12,
+              "knowledge": 8,
+              "community_trust": 5
+            },
+            "skill_tags": [
+              "adaptability",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Knowing when to step back is as important as knowing when to step up.",
+            "next_chapter": "ch10"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s1",
+        "chapter": "ch10",
+        "title": "Three Months Later",
+        "narrative": "Three months have passed. The emergency pipe repair is complete. The government subsidy application has been filed — Advocate Pillai helped with the paperwork. Sharma has started constructing the foundation for the treatment plant.\n\nThe quarterly water test shows arsenic levels have dropped by half. Not safe yet, but moving in the right direction. Raju's skin condition is improving.\n\nThe monitoring committee meets every month — Kiran, Lakshmi's daughter, Ravi, and Sharma's accountant. It is awkward sometimes. They disagree. But they keep meeting.\n\n{player_name} sits at the canal bank — the same spot where this whole thing started — and realizes that justice is not a single moment. It is a process. An ongoing conversation between people who choose, every day, to keep their word.",
+        "image_prompt": "A teenage Indian girl sitting at a canal bank, the water noticeably less polluted, a treatment plant under construction visible in the distance, three months of progress visible, morning light, watercolor illustration, cautious optimism",
+        "coaching_moment": "Real change is slow, messy, and requires patience — but every small improvement is proof that the effort was worth it.",
+        "choices": [
+          {
+            "id": "ch10_s1_a",
+            "label": "Document the whole process — write it up as a guide for other villages",
+            "description": "Kiran realizes her village's experience could help other communities facing similar disputes.",
+            "delta": {
+              "knowledge": 15,
+              "respect": 10,
+              "community_trust": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Sharing lessons multiplies impact — one village's solution becomes a model for many.",
+            "memory_tags": [
+              "documented_process"
+            ],
+            "next_scene": "ch10_s2"
+          },
+          {
+            "id": "ch10_s1_b",
+            "label": "Focus on the next challenge — the school needs a proper science lab",
+            "description": "Kiran sees that the mediation skills she developed can be applied to other village problems.",
+            "delta": {
+              "negotiation_skill": 10,
+              "community_trust": 10,
+              "respect": 8
+            },
+            "skill_tags": [
+              "adaptability",
+              "resilience"
+            ],
+            "consequence_hint": "Applying skills to new challenges keeps them sharp — a mediator is always needed.",
+            "next_scene": "ch10_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s2",
+        "chapter": "ch10",
+        "title": "Lakshmi's Invitation",
+        "narrative": "Something beautiful happens one morning. Lakshmi invites Sharma to the harvest festival. Not as a business associate. As a neighbour.\n\nSharma arrives with his wife and a box of sweets. Lakshmi serves them food she has grown — from the fields that are slowly recovering. The factory workers come too. Ravi sits with farmers who, three months ago, would not have spoken to him.\n\nIt is not perfect. Some people are still angry. Some wounds are still fresh. But the village is eating together, and that means something.\n\nDadi watches from her usual spot and says to Kiran: 'This is what the two rivers looked like when the stream connected them. Not one big river. Just two rivers flowing side by side, sharing the same land.'\n\n{player_name} helps serve chai and thinks: this is what peace looks like. Not the absence of problems, but the presence of a way to solve them together.",
+        "image_prompt": "A village harvest festival — farmers, factory workers, and the factory owner's family eating together under a decorated shamiana, a teenage girl serving chai, marigolds and festival lights, not perfect harmony but genuine coexistence, watercolor illustration, community healing",
+        "coaching_moment": "Peace is not a destination — it is a practice. Every shared meal, every kept promise, every difficult conversation that you have instead of avoid — that is peace being built.",
+        "narrative_variants": {
+          "facilitated_apology": "Sharma's apology at the panchayat was the seed. Lakshmi's invitation to the harvest festival is the fruit.",
+          "shared_map": "The village map Kiran drew still hangs in the community hall. Someone has updated it — the grey-green canal is now marked with a lighter shade."
+        },
+        "choices": [
+          {
+            "id": "ch10_s2_a",
+            "label": "Propose making the monitoring committee permanent — 'The Ramnagar Water Council'",
+            "description": "Kiran suggests that the temporary committee become a permanent village institution for environmental oversight.",
+            "delta": {
+              "community_trust": 15,
+              "negotiation_skill": 10,
+              "respect": 10
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Institutions outlast individuals — permanent structures ensure the work continues beyond any one person.",
+            "next_scene": "ch10_s3"
+          },
+          {
+            "id": "ch10_s2_b",
+            "label": "Train three younger students to take over the monitoring role — build the next generation",
+            "description": "Kiran thinks about sustainability — she will not always be here, but the skills can be passed on.",
+            "delta": {
+              "respect": 15,
+              "community_trust": 12,
+              "knowledge": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Teaching others your skills is the ultimate form of leadership — it ensures the work outlives you.",
+            "memory_tags": [
+              "trained_successors"
+            ],
+            "next_scene": "ch10_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s3",
+        "chapter": "ch10",
+        "title": "The Clear Water",
+        "narrative": "One year later. Kiran stands at the canal bank again. The treatment plant is operational. The water is not crystal clear yet — that will take another year of soil recovery — but it is clean enough that the fish have returned. Small ones, darting silver in the afternoon light.\n\nRaju plays near the water again. His skin is clear. His mother watches without fear.\n\nAdvocate Pillai sends a letter: the Ramnagar agreement has been cited by the district administration as a model for community-led dispute resolution. Two other villages have asked Kiran to help mediate their own disputes.\n\nDadi is sitting on the charpoy, threading marigolds as always. She calls out: 'Kiran! The fish are back!'\n\n{player_name} smiles. The fish are back. The river found its way to the sea — not in a straight line, but in the only way rivers know. One bend at a time.",
+        "image_prompt": "A teenage Indian girl standing at a now-cleaner canal, small fish visible in the water, a child playing safely nearby, a completed treatment plant in the background, a grandmother waving from a charpoy, golden afternoon light, watercolor illustration, resolution and hope, the fish have returned",
+        "coaching_moment": "The greatest negotiations do not just solve the immediate problem — they create systems, relationships, and trust that prevent the next problem.",
+        "choices": [
+          {
+            "id": "ch10_s3_a",
+            "label": "Accept the invitation to help the next village — this is your calling",
+            "description": "Kiran realizes that mediation is not just a skill she learned — it is who she is becoming.",
+            "delta": {
+              "community_trust": 20,
+              "negotiation_skill": 18,
+              "respect": 15
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "is_ending": true,
+            "ending_type": "peacemaker",
+            "ending_message": "Kiran became known in the district as 'the girl who brought the fish back.' But she would always correct people: 'I did not bring them back. The village did. I just helped everyone remember that they wanted the same thing.' Over the next three years, she mediated seven village disputes. Some worked perfectly. Some needed two or three tries. But the approach was always the same: listen to everyone, find the needs behind the demands, and build a solution that belongs to the whole community. Dadi's lesson had become Kiran's life: the river does not reach the sea in one straight line. But it always reaches."
+          },
+          {
+            "id": "ch10_s3_b",
+            "label": "Write the Ramnagar story as a letter to the Chief Minister — policy should reflect this",
+            "description": "Kiran turns the village experience into an advocacy tool, pushing for systemic change at the state level.",
+            "delta": {
+              "knowledge": 20,
+              "respect": 18,
+              "community_trust": 15
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "is_ending": true,
+            "ending_type": "advocate",
+            "ending_message": "The Chief Minister's office received Kiran's letter — and to everyone's surprise, replied. The Ramnagar model was included in the state's Environmental Dispute Resolution Guidelines the following year. It was a small mention in a long document. But Kiran knew that small mentions in official documents can change the lives of millions — because they give communities a template for solving their own problems. The letter began with a quote from Dadi: 'The river does not reach the sea in one straight line.' The Chief Minister's secretary underlined it twice."
+          },
+          {
+            "id": "ch10_s3_c",
+            "label": "Sit with Dadi and watch the fish — some moments are just for being grateful",
+            "description": "Kiran puts down her notebook, sits on the charpoy, and simply enjoys the fact that the water is clean and the village is at peace.",
+            "delta": {
+              "community_trust": 18,
+              "respect": 15,
+              "negotiation_skill": 12
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "is_ending": true,
+            "ending_type": "peaceful",
+            "ending_message": "Not every story needs a grand ending. Some end with a grandmother and a granddaughter sitting on a charpoy, watching fish return to a canal that was once grey-green. Kiran would go on to study law — inspired by Advocate Pillai. She would negotiate harder deals in harder places. But she would always come back to Ramnagar, to the canal bank, to the charpoy. Because the most important thing she ever learned was not about negotiation tactics or legal frameworks. It was about sitting with someone you love and noticing that the fish are back."
+          }
+        ]
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "panchayat",
+      "definition": "A village council system in India where local disputes are resolved and decisions are made collectively by community members and elected representatives."
+    },
+    {
+      "term": "mediation",
+      "definition": "The process of helping two or more conflicting parties reach an agreement through a neutral third person who facilitates communication."
+    },
+    {
+      "term": "negotiation",
+      "definition": "A discussion between people with different interests aimed at reaching an agreement that works for everyone involved."
+    },
+    {
+      "term": "interest",
+      "definition": "The underlying need or motivation behind a demand — what someone truly wants, as opposed to what they say they want."
+    },
+    {
+      "term": "position",
+      "definition": "The stated demand in a negotiation — often rigid and competitive, as opposed to the flexible underlying interest."
+    },
+    {
+      "term": "BATNA",
+      "definition": "Best Alternative to a Negotiated Agreement — your backup plan if negotiations fail, which determines how much power you have at the table."
+    },
+    {
+      "term": "compromise",
+      "definition": "An agreement where each side gives up something to get something — not ideal for anyone, but acceptable to everyone."
+    },
+    {
+      "term": "restorative_justice",
+      "definition": "An approach to conflict that focuses on repairing harm and rebuilding relationships, rather than simply punishing the wrongdoer."
+    },
+    {
+      "term": "stakeholder",
+      "definition": "Anyone who is affected by or has an interest in the outcome of a decision or dispute."
+    },
+    {
+      "term": "sarpanch",
+      "definition": "The elected head of a village panchayat in India, responsible for presiding over meetings and implementing community decisions."
+    },
+    {
+      "term": "accountability",
+      "definition": "The obligation to explain your actions and accept responsibility for the outcomes, especially when you hold power or authority."
+    },
+    {
+      "term": "coalition",
+      "definition": "A temporary alliance of different groups who come together to achieve a shared goal, even if they disagree on other matters."
+    },
+    {
+      "term": "impasse",
+      "definition": "A point in a negotiation where no progress can be made because both sides are stuck on their positions — often requiring creative reframing to break through."
+    },
+    {
+      "term": "empathy",
+      "definition": "The ability to understand and share what another person is feeling, which is essential for finding solutions that truly address people's needs."
+    },
+    {
+      "term": "RTI",
+      "definition": "Right to Information — an Indian law that gives citizens the right to request information from government bodies, promoting transparency and accountability."
+    },
+    {
+      "term": "subsidy",
+      "definition": "Financial assistance given by the government to support a project or activity that benefits the public, reducing the cost for those involved."
+    },
+    {
+      "term": "environmental_justice",
+      "definition": "The fair treatment of all people regardless of race, income, or status in the development and enforcement of environmental laws and policies."
+    }
+  ],
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.25,
+    "empathy": 0.25,
+    "delayed_gratification": 0.2,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "risk_tolerance": 0.05
+  },
+  "coaching_moment": "Justice is not about one side winning — it is about finding solutions where everyone's core needs are met, even if nobody gets everything they wanted.",
+  "estimated_duration": "40-50 minutes",
+  "target_age": "10-18",
+  "tags": [
+    "story",
+    "negotiation",
+    "justice",
+    "community",
+    "conflict-resolution",
+    "life-skills",
+    "india",
+    "village"
+  ],
+  "cultural_context": "indian",
+  "nep_stage": "middle_school",
+  "nep_competencies": [
+    "critical_thinking",
+    "communication",
+    "social_emotional_learning",
+    "ethical_reasoning",
+    "civic_participation"
+  ],
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}

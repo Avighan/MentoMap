@@ -1,0 +1,1465 @@
+{
+  "game_id": "project_management_mastery",
+  "game_type": "simulation",
+  "title": "📅 Project Management Mastery — The Atlas Migration",
+  "subtitle": "Run a 90-day enterprise platform migration end-to-end — schedule, scope, risk, people",
+  "theme": "First-time PM running a high-stakes enterprise migration with a real critical path",
+  "icon": "📅",
+  "description": "You are the newly appointed Project Manager for the 'Atlas Migration' — moving Atlas Corp's flagship customer platform from a legacy monolith to a new microservices architecture. Budget: $1.8M. Team: 14 people across engineering, design, QA, and ops. Hard deadline: Day 90 (linked to a regulatory cutover). Six rounds across kickoff, sprint planning, mid-project crisis, scope creep, vendor delay, and the launch decision. You'll author OKRs, run a RAID register, and defend your critical path.",
+  "learning_objectives": [
+    "Identify and defend the critical path through forward and backward DAG passes",
+    "Run a RAID register (Risks/Assumptions/Issues/Dependencies) as a living artifact, not a deck slide",
+    "Make calibrated trade-offs between scope, schedule, cost, and quality under pressure",
+    "Communicate schedule slippage to executive sponsors before they ask",
+    "Decide when to crash the schedule, fast-track tasks, or descope ruthlessly"
+  ],
+  "how_to_play": {
+    "title": "How to Play",
+    "steps": [
+      "Each round advances the project clock by 1-3 weeks. Read the project dashboard: critical path, burndown, RAID, sprint state.",
+      "Pick the option that protects the critical path while honoring the iron triangle (scope/schedule/cost).",
+      "Author your OKRs, RAID checkpoint, and post-mortem when prompted.",
+      "Watch the schedule_health pill — once it slips to 'at_risk' you have one round to recover."
+    ],
+    "tips": [
+      "Tasks not on the critical path have float — slip them deliberately, not by accident.",
+      "A RAID risk you don't write down is one your sponsor will surface in front of the steering committee.",
+      "Crashing (adding people) costs money and slows the team for ~1 sprint. Fast-tracking (parallelizing) creates rework.",
+      "The deadline you tell your team should be 1 sprint earlier than the deadline you tell your sponsor."
+    ]
+  },
+  "target_audience": "Accelerator/MBA/PMP/CSM students, first-time PMs, engineering leads moving into delivery roles",
+  "target_age": "22+",
+  "grade": "executive",
+  "nep_stage": "higher_education",
+  "duration_minutes": 35,
+  "estimated_duration": "35 min",
+  "difficulty": "advanced",
+  "tags": [
+    "project-management",
+    "leadership",
+    "agile",
+    "executive",
+    "delivery"
+  ],
+  "cultural_context": "global",
+  "psychological_framework": {
+    "description": "PM dimensions: critical-path thinking, risk management, scope discipline, stakeholder communication, decision quality, team leadership.",
+    "core_skills": [
+      {
+        "id": "critical_path_thinking",
+        "name": "Critical Path Thinking",
+        "icon": "🧭",
+        "description": "Forward/backward DAG reasoning under uncertainty."
+      },
+      {
+        "id": "risk_management",
+        "name": "Risk Management",
+        "icon": "⚠️",
+        "description": "Maintaining a live RAID register, not a stale deck."
+      },
+      {
+        "id": "scope_discipline",
+        "name": "Scope Discipline",
+        "icon": "✂️",
+        "description": "Cutting features without breaking the contract."
+      },
+      {
+        "id": "stakeholder_communication",
+        "name": "Stakeholder Communication",
+        "icon": "📣",
+        "description": "Pre-emptive sponsor and steerco updates."
+      },
+      {
+        "id": "decision_quality",
+        "name": "Decision Quality",
+        "icon": "🎯",
+        "description": "Calibrated forecasts, reversibility tags, kill criteria."
+      },
+      {
+        "id": "team_leadership",
+        "name": "Team Leadership",
+        "icon": "👥",
+        "description": "Sustainable pace, blockers cleared, morale held."
+      }
+    ]
+  },
+  "dimension_scoring_weights": {
+    "critical_path_thinking": {
+      "base": 30,
+      "tag_bonus": 9
+    },
+    "risk_management": {
+      "base": 30,
+      "tag_bonus": 9
+    },
+    "scope_discipline": {
+      "base": 30,
+      "tag_bonus": 9
+    },
+    "stakeholder_communication": {
+      "base": 30,
+      "tag_bonus": 9
+    },
+    "decision_quality": {
+      "base": 30,
+      "tag_bonus": 9
+    },
+    "team_leadership": {
+      "base": 30,
+      "tag_bonus": 9
+    }
+  },
+  "llm_config": {
+    "tone": {
+      "register": "executive",
+      "reading_level": "graduate",
+      "jargon_density": "high"
+    },
+    "audience_default": "First-time PM running a 90-day enterprise migration",
+    "currency": "USD",
+    "cultural_context": "global",
+    "glossary_voice": "academic"
+  },
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid"
+  },
+  "initial_state": {
+    "day": 0,
+    "budget_remaining": 1800000,
+    "team_size": 14,
+    "morale_pct": 75
+  },
+  "simulation_config": {
+    "ui_widgets": [
+      "project_dashboard",
+      "decision_journal",
+      "stakeholder_matrix",
+      "frameworks_panel"
+    ],
+    "industry_benchmark_model": "enterprise_software_delivery",
+    "decision_quality": {
+      "track_calibration": true,
+      "tag_reversibility": true
+    },
+    "stakeholders": [
+      {
+        "id": "sponsor_cto",
+        "label": "Atlas CTO (Sponsor)",
+        "power": 95,
+        "interest": 90,
+        "legitimacy": 95,
+        "stance": "supportive"
+      },
+      {
+        "id": "sponsor_coo",
+        "label": "Atlas COO (co-Sponsor)",
+        "power": 85,
+        "interest": 70,
+        "legitimacy": 90,
+        "stance": "neutral"
+      },
+      {
+        "id": "vendor",
+        "label": "DataMesh (cutover vendor)",
+        "power": 60,
+        "interest": 80,
+        "legitimacy": 70,
+        "stance": "neutral"
+      },
+      {
+        "id": "compliance_lead",
+        "label": "Atlas Compliance Lead",
+        "power": 70,
+        "interest": 95,
+        "legitimacy": 85,
+        "stance": "skeptical"
+      },
+      {
+        "id": "tech_lead",
+        "label": "Migration Tech Lead (Priya)",
+        "power": 50,
+        "interest": 95,
+        "legitimacy": 80,
+        "stance": "supportive"
+      },
+      {
+        "id": "qa_lead",
+        "label": "QA Lead (Marco)",
+        "power": 40,
+        "interest": 90,
+        "legitimacy": 75,
+        "stance": "skeptical"
+      }
+    ],
+    "frameworks": [
+      {
+        "id": "migration_okrs",
+        "type": "okr",
+        "label": "Migration OKRs (90-day)",
+        "schema": "okr_v1"
+      },
+      {
+        "id": "swot_midproject",
+        "type": "swot",
+        "label": "Mid-project SWOT",
+        "schema": "swot_v1"
+      }
+    ],
+    "project_management": {
+      "methodology": "agile",
+      "sprint_length_days": 14,
+      "target_end_day": 90,
+      "tasks": [
+        {
+          "id": "kickoff",
+          "name": "Kickoff & charter sign-off",
+          "duration_days": 3,
+          "dependencies": [],
+          "owner": "pm",
+          "status": "done",
+          "progress_pct": 100
+        },
+        {
+          "id": "discovery",
+          "name": "Discovery & gap analysis",
+          "duration_days": 10,
+          "dependencies": [
+            "kickoff"
+          ],
+          "owner": "tech_lead",
+          "status": "in_progress",
+          "progress_pct": 60
+        },
+        {
+          "id": "arch_design",
+          "name": "Target architecture design",
+          "duration_days": 12,
+          "dependencies": [
+            "discovery"
+          ],
+          "owner": "tech_lead",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "data_mapping",
+          "name": "Legacy → target data mapping",
+          "duration_days": 14,
+          "dependencies": [
+            "discovery"
+          ],
+          "owner": "data_eng",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "build_core",
+          "name": "Build core services",
+          "duration_days": 28,
+          "dependencies": [
+            "arch_design"
+          ],
+          "owner": "tech_lead",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "build_integrations",
+          "name": "Build vendor integrations",
+          "duration_days": 18,
+          "dependencies": [
+            "arch_design"
+          ],
+          "owner": "integ_eng",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "qa_plan",
+          "name": "QA test plan & automation",
+          "duration_days": 8,
+          "dependencies": [
+            "arch_design"
+          ],
+          "owner": "qa_lead",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "data_migration",
+          "name": "Data migration dry runs",
+          "duration_days": 12,
+          "dependencies": [
+            "data_mapping",
+            "build_core"
+          ],
+          "owner": "data_eng",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "uat",
+          "name": "User acceptance testing",
+          "duration_days": 10,
+          "dependencies": [
+            "build_core",
+            "build_integrations",
+            "qa_plan"
+          ],
+          "owner": "qa_lead",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "compliance_audit",
+          "name": "Compliance & security audit",
+          "duration_days": 7,
+          "dependencies": [
+            "build_core"
+          ],
+          "owner": "compliance_lead",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "cutover_rehearse",
+          "name": "Cutover rehearsal",
+          "duration_days": 5,
+          "dependencies": [
+            "data_migration",
+            "uat",
+            "compliance_audit"
+          ],
+          "owner": "pm",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "go_live",
+          "name": "Go-live cutover",
+          "duration_days": 2,
+          "dependencies": [
+            "cutover_rehearse"
+          ],
+          "owner": "pm",
+          "status": "not_started",
+          "progress_pct": 0
+        },
+        {
+          "id": "hypercare",
+          "name": "Hypercare & stabilization",
+          "duration_days": 7,
+          "dependencies": [
+            "go_live"
+          ],
+          "owner": "ops_lead",
+          "status": "not_started",
+          "progress_pct": 0
+        }
+      ],
+      "resources": [
+        {
+          "id": "pm",
+          "name": "Project Manager (you)",
+          "skill": "delivery",
+          "capacity_pct": 100
+        },
+        {
+          "id": "tech_lead",
+          "name": "Priya — Tech Lead",
+          "skill": "engineering",
+          "capacity_pct": 90
+        },
+        {
+          "id": "data_eng",
+          "name": "Sam — Data Engineer",
+          "skill": "data",
+          "capacity_pct": 85
+        },
+        {
+          "id": "integ_eng",
+          "name": "Tariq — Integration Eng",
+          "skill": "engineering",
+          "capacity_pct": 80
+        },
+        {
+          "id": "qa_lead",
+          "name": "Marco — QA Lead",
+          "skill": "qa",
+          "capacity_pct": 70
+        },
+        {
+          "id": "compliance_lead",
+          "name": "Lin — Compliance Lead",
+          "skill": "compliance",
+          "capacity_pct": 40
+        },
+        {
+          "id": "ops_lead",
+          "name": "Dana — Ops Lead",
+          "skill": "ops",
+          "capacity_pct": 60
+        }
+      ],
+      "raid": {
+        "risks": [
+          {
+            "id": "r_vendor",
+            "label": "DataMesh vendor delivery slips by 2+ weeks",
+            "probability": "medium",
+            "impact": "high",
+            "mitigation": "Weekly sync + parallel internal stub",
+            "status": "open"
+          },
+          {
+            "id": "r_data_quality",
+            "label": "Legacy data quality worse than discovery suggests",
+            "probability": "medium",
+            "impact": "high",
+            "mitigation": "Two dry runs before cutover",
+            "status": "open"
+          },
+          {
+            "id": "r_burnout",
+            "label": "Team burnout from compressed schedule",
+            "probability": "medium",
+            "impact": "medium",
+            "mitigation": "Protect weekends, rotate on-call",
+            "status": "open"
+          }
+        ],
+        "assumptions": [
+          {
+            "id": "a_freeze",
+            "label": "Legacy platform feature-freeze holds for 90 days",
+            "validated": false
+          },
+          {
+            "id": "a_capacity",
+            "label": "Compliance team has 40% capacity through go-live",
+            "validated": false
+          }
+        ],
+        "issues": [],
+        "dependencies": [
+          {
+            "id": "d_dns",
+            "label": "Cutover DNS window from network team",
+            "on": "Network ops",
+            "due": "Day 85",
+            "status": "open"
+          }
+        ]
+      }
+    },
+    "stochastic": {
+      "enabled": true,
+      "calibration_enabled": true,
+      "confidence_pct": 80,
+      "default_distribution": "triangular"
+    },
+    "competitors": [
+      {
+        "id": "vendor_partner",
+        "name": "Vendor (Acme Cloud)",
+        "kind": "ally",
+        "policy": "scripted",
+        "state": {
+          "trust": 60,
+          "mood": "rational"
+        },
+        "scripted_moves": [
+          {
+            "round": 1,
+            "label": "Vendor confirms migration timeline",
+            "intensity": "low",
+            "narrative": "Vendor account team commits to your dates."
+          },
+          {
+            "round": 2,
+            "label": "Vendor flags integration risk",
+            "intensity": "medium",
+            "narrative": "Two of three integration tests fail in stage."
+          }
+        ]
+      },
+      {
+        "id": "exec_steerco",
+        "name": "Executive SteerCo",
+        "kind": "regulator",
+        "policy": "regulator_pressure",
+        "state": {
+          "trust": 65,
+          "scrutiny": 30,
+          "mood": "rational"
+        }
+      },
+      {
+        "id": "user_research",
+        "name": "User Research Team",
+        "kind": "ally",
+        "policy": "scripted",
+        "state": {
+          "trust": 55,
+          "mood": "rational"
+        },
+        "scripted_moves": [
+          {
+            "round": 3,
+            "label": "UAT cohort flags 4 critical bugs",
+            "intensity": "high",
+            "narrative": "Power users escalate to your VP."
+          }
+        ]
+      }
+    ],
+    "multiplayer": {
+      "enabled": true,
+      "roles": [
+        {
+          "id": "pm",
+          "label": "Project Manager (You)"
+        },
+        {
+          "id": "cto",
+          "label": "CTO (Engineering Lead)"
+        },
+        {
+          "id": "coo",
+          "label": "COO (Operations Sponsor)"
+        }
+      ]
+    },
+    "market_shocks": {
+      "enabled": true,
+      "max_per_run": 2,
+      "use_defaults": true,
+      "seed": 1234,
+      "library": []
+    },
+    "org_scaling": {
+      "enabled": true,
+      "track_metrics": [
+        "cultural_drift",
+        "communication_overhead",
+        "span_of_control_risk",
+        "team_health"
+      ]
+    },
+    "meta_debrief": {
+      "cohorts": {
+        "high_score": {
+          "threshold": 85,
+          "canonical_choices": {
+            "r1_kickoff_okrs": "outcome_okrs",
+            "r2_critical_path": "fast_track_design",
+            "r3_vendor_delay": "build_internal_stub",
+            "r4_scope_creep": "scope_change_memo",
+            "r5_uat_failure": "structured_recovery",
+            "r6_go_live_call": "go_with_workaround"
+          },
+          "hallmarks": [
+            "Authors outcome-based OKRs in Sprint 1 — not output checklists",
+            "Defends the critical path with explicit forward/backward DAG passes",
+            "Treats RAID as a living artifact, not a deck slide",
+            "Pre-empts sponsor escalations — a brief in week 3 beats a panic in week 6"
+          ]
+        },
+        "low_score": {
+          "threshold": 55,
+          "anti_patterns": {},
+          "hallmarks": [
+            "Skips OKRs because 'we'll know success when we see it'",
+            "Crashes the schedule by hiring 2 architects from an agency at $30K/week",
+            "Absorbs scope creep silently and pushes the team to '110%'",
+            "Goes NO-GO at the last second for a 'perfect rollback script'"
+          ]
+        }
+      },
+      "band_labels": {
+        "high": "Top decile",
+        "mid": "Strong run",
+        "low": "Re-run recommended"
+      }
+    }
+  },
+  "rounds": [
+    {
+      "id": "r1_kickoff_okrs",
+      "round_id": "r1",
+      "title": "Sprint 1 — Kickoff & OKRs",
+      "scenario": "Day 1. You inherit a charter that says 'go-live by Day 90'. The CTO wants OKRs by end of week. The team is anxious — three of them survived the failed migration attempt 18 months ago. You have one shot to set the bar without overcommitting.",
+      "ai_image_prompt": "Project manager standing at a whiteboard with OKR sticky notes, diverse engineering team seated around table",
+      "framework_prompt": {
+        "framework_id": "migration_okrs",
+        "required_for_round_completion": false
+      },
+      "choices": [
+        {
+          "id": "outcome_okrs",
+          "label": "Author outcome-based OKRs (e.g., 'Cut customer-reported defects 60% in hypercare') and publish them.",
+          "feedback": "CTO loved the customer-outcome framing. Tech Lead Priya volunteered to own KR2 herself.",
+          "skill_tags": [
+            "stakeholder_communication",
+            "decision_quality",
+            "team_leadership"
+          ],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "sponsor_cto",
+                "delta": 10
+              },
+              {
+                "id": "tech_lead",
+                "delta": 8
+              }
+            ],
+            "decision_record": {
+              "confidence_pct": 70,
+              "rationale": "Outcome OKRs anchor scope discussions later"
+            },
+            "project_advance_day": {
+              "days": 7
+            },
+            "project_task": {
+              "id": "discovery",
+              "progress_pct": 80
+            }
+          },
+          "post_calc_delta": {
+            "stakeholder_communication": 9,
+            "decision_quality": 6,
+            "team_leadership": 6
+          },
+          "expert_rationale": "Outcome-based OKRs ('cut customer-reported defects 60% in hypercare') anchor the team to what users feel — not what engineers ship. This single decision is the highest-leverage move in the entire project."
+        },
+        {
+          "id": "output_okrs",
+          "label": "Author output-based OKRs ('Ship 12 services', 'Migrate 4 schemas') — easy to track.",
+          "feedback": "OKRs read like a project plan. CTO asked, 'What's the customer outcome?' You didn't have it.",
+          "skill_tags": [
+            "scope_discipline"
+          ],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "sponsor_cto",
+                "delta": -5
+              }
+            ],
+            "decision_record": {
+              "confidence_pct": 55,
+              "rationale": "Outputs are easier to track but harder to defend"
+            },
+            "project_advance_day": {
+              "days": 7
+            }
+          },
+          "post_calc_delta": {
+            "scope_discipline": 3,
+            "stakeholder_communication": -5
+          },
+          "counterfactual_feedback": "'Ship 12 services' is easy to track and easy to game. It's also easy to hit while customers churn."
+        },
+        {
+          "id": "skip_okrs",
+          "label": "Skip OKRs for now — 'we'll know what success looks like by Sprint 3'.",
+          "feedback": "Three weeks later the COO asked, 'How do we know if this is working?' You had no answer.",
+          "skill_tags": [],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "sponsor_cto",
+                "delta": -8
+              },
+              {
+                "id": "sponsor_coo",
+                "delta": -10
+              }
+            ],
+            "project_advance_day": {
+              "days": 7
+            },
+            "project_raid": {
+              "issues": {
+                "add": [
+                  {
+                    "id": "i_no_okrs",
+                    "label": "No success metrics defined",
+                    "severity": "high",
+                    "owner": "pm",
+                    "status": "open"
+                  }
+                ]
+              }
+            }
+          },
+          "post_calc_delta": {
+            "stakeholder_communication": -10,
+            "decision_quality": -8
+          },
+          "counterfactual_feedback": "'We'll know it when we see it' is what teams say in Sprint 1 and regret in Sprint 5 when they're arguing about scope."
+        }
+      ],
+      "expert_pick": "outcome_okrs"
+    },
+    {
+      "id": "r2_critical_path",
+      "round_id": "r2",
+      "title": "Sprint 2 — The Critical Path Reveal",
+      "scenario": "Day 14. Discovery finished. The DAG pass shows your true critical path runs kickoff → discovery → arch_design → build_core → data_migration → cutover_rehearse → go_live → hypercare = 79 days. You have 11 days of float total. Priya asks: 'Should we crash arch_design with two more architects?'",
+      "ai_image_prompt": "Engineering team gathered around a wall-sized DAG diagram with the critical path highlighted in red",
+      "choices": [
+        {
+          "id": "fast_track_design",
+          "label": "Fast-track arch_design — start build_core stubs in parallel, accept ~15% rework risk.",
+          "feedback": "Parallelism cut design wall-clock by 4 days. Priya flagged ~3 weeks of rework risk in build_core if design pivots.",
+          "skill_tags": [
+            "critical_path_thinking",
+            "risk_management"
+          ],
+          "exec_effects": {
+            "project_task": {
+              "id": "arch_design",
+              "progress_pct": 30,
+              "status": "in_progress"
+            },
+            "project_raid": {
+              "risks": {
+                "add": [
+                  {
+                    "id": "r_rework",
+                    "label": "Build rework risk from parallel design (~3w)",
+                    "probability": "medium",
+                    "impact": "medium",
+                    "mitigation": "Design freeze gate before build",
+                    "status": "open"
+                  }
+                ]
+              }
+            },
+            "project_advance_day": {
+              "days": 14
+            },
+            "decision_record": {
+              "confidence_pct": 65,
+              "rationale": "Fast-tracking trades quality risk for schedule"
+            }
+          },
+          "post_calc_delta": {
+            "critical_path_thinking": 9,
+            "risk_management": 9,
+            "decision_quality": 6
+          },
+          "expert_rationale": "Fast-tracking arch_design with parallel build_core stubs accepts ~15% rework in exchange for ~14 days of float. Calculated risk + explicit RAID entry = professional PM."
+        },
+        {
+          "id": "crash_design",
+          "label": "Crash the schedule — hire 2 architects from the agency at $30K/week.",
+          "feedback": "Cost +$120K. Brooks's Law: ramp-up cost meant only 2 days saved. Burned 7% of budget.",
+          "skill_tags": [
+            "critical_path_thinking"
+          ],
+          "exec_effects": {
+            "project_task": {
+              "id": "arch_design",
+              "progress_pct": 25,
+              "status": "in_progress"
+            },
+            "project_advance_day": {
+              "days": 14
+            },
+            "decision_record": {
+              "confidence_pct": 50,
+              "rationale": "Crashing is expensive on knowledge work"
+            }
+          },
+          "post_calc_delta": {
+            "critical_path_thinking": 3,
+            "decision_quality": -3
+          },
+          "counterfactual_feedback": "Hiring 2 architects at $30K/week is the textbook example of crashing a schedule too late — Brooks's Law says you'll lose more than you gain."
+        },
+        {
+          "id": "stay_serial",
+          "label": "Keep design serial — protect quality, eat the schedule slack.",
+          "feedback": "Clean handoff to build, but you've used 9 of your 11 float days before Sprint 3 begins.",
+          "skill_tags": [
+            "scope_discipline"
+          ],
+          "exec_effects": {
+            "project_task": {
+              "id": "arch_design",
+              "progress_pct": 20,
+              "status": "in_progress"
+            },
+            "project_advance_day": {
+              "days": 14
+            }
+          },
+          "post_calc_delta": {
+            "critical_path_thinking": -3,
+            "scope_discipline": 3
+          },
+          "counterfactual_feedback": "Serial design protects quality but eats every day of your float. Schedule risk is irreversible; rework risk is recoverable."
+        }
+      ],
+      "expert_pick": "fast_track_design"
+    },
+    {
+      "id": "r3_vendor_delay",
+      "round_id": "r3",
+      "title": "Sprint 3 — Vendor Slip",
+      "scenario": "Day 28. DataMesh emails: their cutover SDK will be 3 weeks late — landing Day 65 instead of Day 44. This was a known risk (r_vendor). Build_integrations sits behind it on the DAG. Your move.",
+      "ai_image_prompt": "Project manager on phone in a war room with a Gantt chart showing a red delay bar, team watching",
+      "choices": [
+        {
+          "id": "build_internal_stub",
+          "label": "Build an internal SDK stub now; integrate the real one when it lands.",
+          "feedback": "Stub took 8 days. Build_integrations could proceed. Real SDK swap-in in Sprint 5 was clean.",
+          "skill_tags": [
+            "risk_management",
+            "critical_path_thinking",
+            "team_leadership"
+          ],
+          "exec_effects": {
+            "project_task": {
+              "id": "build_integrations",
+              "progress_pct": 25,
+              "status": "in_progress"
+            },
+            "project_raid": {
+              "risks": {
+                "resolve": [
+                  "r_vendor"
+                ]
+              },
+              "issues": {
+                "add": [
+                  {
+                    "id": "i_stub_swap",
+                    "label": "SDK swap-in regression risk",
+                    "severity": "medium",
+                    "owner": "integ_eng",
+                    "status": "open"
+                  }
+                ]
+              }
+            },
+            "project_advance_day": {
+              "days": 14
+            },
+            "stakeholder_alignment": [
+              {
+                "id": "tech_lead",
+                "delta": 6
+              },
+              {
+                "id": "vendor",
+                "delta": -3
+              }
+            ],
+            "forecast_capture": {
+              "id": "vendor_slip_days",
+              "question": "Forecast vendor slip duration in business days. Provide an 80% CI (e.g. 5 to 18)"
+            },
+            "stochastic_outcome": {
+              "key": "vendor_slip_actual_days",
+              "label": "Vendor slip (actual days)",
+              "distribution": "triangular",
+              "low": 3,
+              "mode": 12,
+              "high": 30
+            }
+          },
+          "post_calc_delta": {
+            "risk_management": 9,
+            "critical_path_thinking": 6,
+            "team_leadership": 6
+          },
+          "forecast_prompt": {
+            "id": "vendor_slip_days",
+            "question": "Forecast vendor slip duration in business days. Provide an 80% CI (e.g. 5 to 18). Narrower = more credit if covered.",
+            "format": "interval",
+            "unit": "days"
+          },
+          "expert_rationale": "An internal SDK stub creates an integration boundary you control. When DataMesh ships, you swap implementations behind the boundary. When they slip again, you don't slip."
+        },
+        {
+          "id": "wait_for_vendor",
+          "label": "Wait for DataMesh — escalate to the COO to lean on their CEO.",
+          "feedback": "COO called. Vendor pulled in by 1 week. You still lost 14 days off the critical path.",
+          "skill_tags": [
+            "stakeholder_communication"
+          ],
+          "exec_effects": {
+            "project_advance_day": {
+              "days": 14
+            },
+            "stakeholder_alignment": [
+              {
+                "id": "sponsor_coo",
+                "delta": -3
+              }
+            ],
+            "project_raid": {
+              "issues": {
+                "add": [
+                  {
+                    "id": "i_vendor_slip",
+                    "label": "Vendor slip ate 14 days of float",
+                    "severity": "high",
+                    "owner": "pm",
+                    "status": "open"
+                  }
+                ]
+              }
+            }
+          },
+          "post_calc_delta": {
+            "risk_management": -5,
+            "critical_path_thinking": -8,
+            "stakeholder_communication": 3
+          },
+          "counterfactual_feedback": "Escalating to the COO doesn't change DataMesh's schedule — it just creates a political artifact for your status report."
+        },
+        {
+          "id": "descope_integration",
+          "label": "Descope the vendor integration to Phase 2 — go-live without it.",
+          "feedback": "Compliance lead Lin escalated: the vendor integration is in the regulatory cutover scope.",
+          "skill_tags": [],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "compliance_lead",
+                "delta": -12
+              }
+            ],
+            "project_raid": {
+              "issues": {
+                "add": [
+                  {
+                    "id": "i_compliance_breach",
+                    "label": "Descope violates regulatory cutover scope",
+                    "severity": "high",
+                    "owner": "pm",
+                    "status": "open"
+                  }
+                ]
+              }
+            },
+            "project_advance_day": {
+              "days": 14
+            }
+          },
+          "post_calc_delta": {
+            "scope_discipline": -8,
+            "decision_quality": -8
+          },
+          "counterfactual_feedback": "Descoping the vendor integration to Phase 2 violates the compliance gate. The audit team finds it during pre-prod and you're back in week-3 negotiations in week 8."
+        }
+      ],
+      "expert_pick": "build_internal_stub"
+    },
+    {
+      "id": "r4_scope_creep",
+      "round_id": "r4",
+      "title": "Sprint 4 — The Scope Creep Conversation",
+      "scenario": "Day 42. The COO 'casually' adds two requirements: a new analytics dashboard, and SSO support for an acquired subsidiary. Each is ~10 days of work. Your team is at 92% capacity. Your sponsor is the CTO (who'd say no), but the COO outranks her.",
+      "ai_image_prompt": "Tense meeting with executive pointing at slide showing new feature requests, PM holding up scope-change form",
+      "framework_prompt": {
+        "framework_id": "swot_midproject",
+        "required_for_round_completion": false
+      },
+      "choices": [
+        {
+          "id": "scope_change_memo",
+          "label": "Write a scope-change memo — 'Adding these = +15 days OR drop hypercare. Pick.'",
+          "feedback": "COO blinked. Both items moved to Phase 2. CTO was thrilled you held the line.",
+          "skill_tags": [
+            "scope_discipline",
+            "stakeholder_communication",
+            "decision_quality"
+          ],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "sponsor_cto",
+                "delta": 12
+              },
+              {
+                "id": "sponsor_coo",
+                "delta": 3
+              },
+              {
+                "id": "tech_lead",
+                "delta": 8
+              }
+            ],
+            "decision_record": {
+              "confidence_pct": 80,
+              "rationale": "Surfaced trade-off in writing — forced an executive decision"
+            },
+            "project_advance_day": {
+              "days": 14
+            }
+          },
+          "post_calc_delta": {
+            "scope_discipline": 9,
+            "stakeholder_communication": 9,
+            "decision_quality": 9
+          },
+          "expert_rationale": "A written scope-change memo with the iron-triangle framing forces the sponsor to choose. PMs who don't write the memo end up absorbing the work and missing the date anyway."
+        },
+        {
+          "id": "absorb_quietly",
+          "label": "Absorb the work quietly — push the team to '110%' for two sprints.",
+          "feedback": "Team morale dropped from 75 to 50. Two engineers took mental health days. SSO integration was buggy.",
+          "skill_tags": [],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "tech_lead",
+                "delta": -10
+              },
+              {
+                "id": "qa_lead",
+                "delta": -8
+              }
+            ],
+            "project_raid": {
+              "risks": {
+                "add": [
+                  {
+                    "id": "r_burnout_active",
+                    "label": "Team morale at 50% — burnout active",
+                    "probability": "high",
+                    "impact": "high",
+                    "mitigation": "Cut weekend work, defer SSO",
+                    "status": "open"
+                  }
+                ]
+              }
+            },
+            "project_advance_day": {
+              "days": 14
+            }
+          },
+          "post_calc_delta": {
+            "team_leadership": -10,
+            "scope_discipline": -8
+          },
+          "counterfactual_feedback": "Pushing a team to 110% for two sprints destroys morale and creates the bug pile that explodes during UAT."
+        },
+        {
+          "id": "negotiate_swap",
+          "label": "Offer a swap: take SSO (10d), defer analytics — but only if hypercare gets full team attention.",
+          "feedback": "Reasonable trade. COO accepted. SSO landed clean. Analytics shipped 60 days post-launch.",
+          "skill_tags": [
+            "scope_discipline",
+            "stakeholder_communication"
+          ],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "sponsor_coo",
+                "delta": 8
+              },
+              {
+                "id": "sponsor_cto",
+                "delta": 3
+              }
+            ],
+            "decision_record": {
+              "confidence_pct": 70
+            },
+            "project_advance_day": {
+              "days": 14
+            }
+          },
+          "post_calc_delta": {
+            "scope_discipline": 6,
+            "stakeholder_communication": 6
+          },
+          "counterfactual_feedback": "Trading SSO for analytics + full hypercare protection sounds clever but adds a learning curve mid-sprint. Don't run multi-variable trades without a freeze."
+        }
+      ],
+      "inbox_events": [
+        {
+          "id": "vp_scope_ping",
+          "trigger_after_seconds": 25,
+          "from": "VP of Product (Priya)",
+          "subject": "Can we add SSO to v1?",
+          "body": "Big enterprise prospect needs SSO before signing. Add it now or in v1.1?",
+          "priority": "urgent",
+          "choices": [
+            {
+              "id": "hold_scope",
+              "label": "Hold the line — SSO is v1.1",
+              "exec_effects": {
+                "actor_state": {
+                  "actor_id": "exec_steerco",
+                  "deltas": {
+                    "trust": 5,
+                    "scrutiny": -3
+                  }
+                }
+              }
+            },
+            {
+              "id": "let_it_slip",
+              "label": "Add SSO — re-baseline schedule",
+              "exec_effects": {
+                "actor_state": {
+                  "actor_id": "exec_steerco",
+                  "deltas": {
+                    "trust": -6,
+                    "scrutiny": 8
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "expert_pick": "scope_change_memo"
+    },
+    {
+      "id": "r5_uat_failure",
+      "round_id": "r5",
+      "title": "Sprint 5 — UAT Crisis",
+      "scenario": "Day 70. UAT failed: 12 critical defects, 4 of which are in vendor integration. Schedule_health flipped to 'slipping'. Marco (QA) wants to delay go-live by 2 weeks. The CTO is asking for a recovery plan by Friday. Your hypercare buffer is gone.",
+      "ai_image_prompt": "QA team and engineers reviewing red defect dashboard, project manager building recovery slide on laptop",
+      "choices": [
+        {
+          "id": "structured_recovery",
+          "label": "Triage by severity, freeze new work, run fix-and-retest sprints. Communicate 1-week slip to sponsor.",
+          "feedback": "Disciplined recovery. 11 of 12 defects closed in 9 days. CTO appreciated the early signal.",
+          "skill_tags": [
+            "risk_management",
+            "critical_path_thinking",
+            "stakeholder_communication",
+            "team_leadership"
+          ],
+          "exec_effects": {
+            "project_task": {
+              "id": "uat",
+              "progress_pct": 90,
+              "status": "in_progress"
+            },
+            "project_raid": {
+              "issues": {
+                "add": [
+                  {
+                    "id": "i_uat_defects",
+                    "label": "12 critical UAT defects — recovery plan active",
+                    "severity": "high",
+                    "owner": "qa_lead",
+                    "status": "open"
+                  }
+                ]
+              }
+            },
+            "project_advance_day": {
+              "days": 9
+            },
+            "stakeholder_alignment": [
+              {
+                "id": "sponsor_cto",
+                "delta": 8
+              },
+              {
+                "id": "qa_lead",
+                "delta": 8
+              }
+            ],
+            "decision_record": {
+              "confidence_pct": 75,
+              "rationale": "Pre-emptive sponsor brief is the highest-leverage PM move"
+            }
+          },
+          "post_calc_delta": {
+            "risk_management": 9,
+            "critical_path_thinking": 6,
+            "stakeholder_communication": 9,
+            "team_leadership": 6
+          },
+          "expert_rationale": "Triage by severity, freeze new work, fix-and-retest sprints, weekly comms to sponsor. This is exactly what a PMP-grade PM does in a UAT crisis."
+        },
+        {
+          "id": "ship_with_defects",
+          "label": "Ship on time with known issues — log them, fix in hypercare.",
+          "feedback": "Compliance lead Lin blocked go-live. Two of the defects were regulatory. You went past Day 90 anyway.",
+          "skill_tags": [],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "compliance_lead",
+                "delta": -15
+              },
+              {
+                "id": "qa_lead",
+                "delta": -10
+              }
+            ],
+            "project_raid": {
+              "issues": {
+                "add": [
+                  {
+                    "id": "i_compliance_block",
+                    "label": "Compliance lead blocked go-live",
+                    "severity": "high",
+                    "owner": "pm",
+                    "status": "open"
+                  }
+                ]
+              }
+            },
+            "project_advance_day": {
+              "days": 9
+            }
+          },
+          "post_calc_delta": {
+            "decision_quality": -10,
+            "risk_management": -8
+          },
+          "counterfactual_feedback": "Shipping with 12 critical defects logged 'for hypercare' is how go-lives become rollbacks 36 hours later. Customers don't read your bug log."
+        },
+        {
+          "id": "delay_two_weeks",
+          "label": "Take the full 2-week delay Marco wants — clean go-live or no go-live.",
+          "feedback": "Quality protected. CTO accepted. COO grumbled — 2 weeks is the gap before the regulatory window closes.",
+          "skill_tags": [
+            "scope_discipline",
+            "decision_quality"
+          ],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "qa_lead",
+                "delta": 10
+              },
+              {
+                "id": "sponsor_coo",
+                "delta": -5
+              }
+            ],
+            "project_advance_day": {
+              "days": 14
+            },
+            "decision_record": {
+              "confidence_pct": 70,
+              "rationale": "Schedule slip is recoverable, regulatory miss is not"
+            }
+          },
+          "post_calc_delta": {
+            "decision_quality": 6,
+            "scope_discipline": 6,
+            "stakeholder_communication": -3
+          },
+          "counterfactual_feedback": "A clean 2-week delay is sometimes right — but only if your sponsor map is aligned. At week 5 with no pre-emptive brief, this becomes a no-confidence event."
+        }
+      ],
+      "expert_pick": "structured_recovery"
+    },
+    {
+      "id": "r6_go_live_call",
+      "round_id": "r6",
+      "title": "Sprint 6 — The Go-Live Call",
+      "scenario": "Day 84. Cutover rehearsal: 1 minor issue (rollback script fails on edge case affecting 0.3% of customers). Compliance audit: clean. Vendor SDK: integrated. Team morale: 65% (recovered from r4). You're chairing the go/no-go call tomorrow.",
+      "ai_image_prompt": "Project manager at a podium in a packed war room, big screen showing go/no-go checklist",
+      "choices": [
+        {
+          "id": "go_with_workaround",
+          "label": "GO. Manual workaround for 0.3% edge case, runbook to ops, hypercare hot-fix in week 1.",
+          "feedback": "Cutover succeeded. Edge case hit 6 customers; ops handled it cleanly. CTO promoted you to Senior PM.",
+          "skill_tags": [
+            "decision_quality",
+            "risk_management",
+            "stakeholder_communication"
+          ],
+          "exec_effects": {
+            "project_task": {
+              "id": "go_live",
+              "progress_pct": 100,
+              "status": "done"
+            },
+            "project_raid": {
+              "issues": {
+                "resolve": [
+                  "i_uat_defects",
+                  "i_stub_swap"
+                ]
+              }
+            },
+            "project_advance_day": {
+              "days": 6
+            },
+            "stakeholder_alignment": [
+              {
+                "id": "sponsor_cto",
+                "delta": 12
+              },
+              {
+                "id": "ops_lead",
+                "delta": 8
+              }
+            ],
+            "decision_record": {
+              "confidence_pct": 85,
+              "rationale": "Reversible go-live with documented workaround beats endless polish"
+            }
+          },
+          "post_calc_delta": {
+            "decision_quality": 9,
+            "risk_management": 9,
+            "stakeholder_communication": 6
+          },
+          "expert_rationale": "GO with a documented manual workaround for the 0.3% edge case + runbook + week-2 hot-fix is the calibrated answer. Real PMs ship; they don't chase zero-defect ghosts."
+        },
+        {
+          "id": "delay_for_zero_defect",
+          "label": "NO-GO. Delay 1 week for a perfect rollback script.",
+          "feedback": "Defensible but expensive. Regulatory window narrowed to 2 days. Team morale dropped 10%.",
+          "skill_tags": [
+            "risk_management"
+          ],
+          "exec_effects": {
+            "stakeholder_alignment": [
+              {
+                "id": "sponsor_coo",
+                "delta": -8
+              },
+              {
+                "id": "qa_lead",
+                "delta": 5
+              }
+            ],
+            "project_advance_day": {
+              "days": 7
+            }
+          },
+          "post_calc_delta": {
+            "risk_management": 3,
+            "decision_quality": -3,
+            "team_leadership": -5
+          },
+          "counterfactual_feedback": "A perfect rollback script for a 0.3% edge case is what PMs ask for when they're scared, not when they're running the math. The cost of delay > the cost of the workaround."
+        },
+        {
+          "id": "go_no_workaround",
+          "label": "GO with no workaround — hot-fix in production if it triggers.",
+          "feedback": "Cutover hit 6 customers with a hard error. Two churned. Press release to compliance was painful.",
+          "skill_tags": [],
+          "exec_effects": {
+            "project_raid": {
+              "issues": {
+                "add": [
+                  {
+                    "id": "i_post_launch_churn",
+                    "label": "2 customer churns from edge case",
+                    "severity": "high",
+                    "owner": "ops_lead",
+                    "status": "open"
+                  }
+                ]
+              }
+            },
+            "stakeholder_alignment": [
+              {
+                "id": "compliance_lead",
+                "delta": -10
+              }
+            ],
+            "project_advance_day": {
+              "days": 6
+            }
+          },
+          "post_calc_delta": {
+            "risk_management": -10,
+            "decision_quality": -8
+          },
+          "counterfactual_feedback": "GO with no workaround because 'we'll hot-fix in production' is how data gets lost during the cutover window. The runbook isn't optional."
+        }
+      ],
+      "expert_pick": "go_with_workaround"
+    }
+  ],
+  "score_bands": {
+    "platinum": {
+      "min": 85,
+      "label": "PMP-grade delivery",
+      "description": "Critical path defended, RAID stayed live, sponsors briefed pre-emptively, calibrated trade-offs throughout. You'd be hired into a Senior PM role tomorrow."
+    },
+    "gold": {
+      "min": 70,
+      "label": "Strong PM",
+      "description": "Solid delivery with minor scope/communication misses. You belong in the role; sharpen pre-emptive sponsor briefs."
+    },
+    "silver": {
+      "min": 55,
+      "label": "Capable PM",
+      "description": "Got it shipped but with avoidable rework. Re-read your RAID — what would you have surfaced earlier?"
+    },
+    "bronze": {
+      "min": 0,
+      "label": "Apprentice PM",
+      "description": "Project shipped (or didn't) more on luck than discipline. Re-run with a real critical-path defense in Round 2."
+    }
+  },
+  "glossary_terms": [
+    {
+      "term": "Critical Path",
+      "definition": "Longest dependency chain in a project DAG; slipping any task on it slips the whole project."
+    },
+    {
+      "term": "Float (Slack)",
+      "definition": "Days a non-critical task can slip without delaying the project."
+    },
+    {
+      "term": "Crashing",
+      "definition": "Adding resources to shorten a task — costs money, often hits Brooks's Law on knowledge work."
+    },
+    {
+      "term": "Fast-Tracking",
+      "definition": "Running tasks in parallel that were planned serial — risks rework if upstream pivots."
+    },
+    {
+      "term": "RAID",
+      "definition": "Risks, Assumptions, Issues, Dependencies — the living register of project unknowns."
+    },
+    {
+      "term": "Burndown",
+      "definition": "Cumulative completed-work vs total-work over time; the slope tells you if you'll land."
+    },
+    {
+      "term": "Iron Triangle",
+      "definition": "Scope/Schedule/Cost (with Quality at the center) — pick which two to fix."
+    },
+    {
+      "term": "UAT",
+      "definition": "User Acceptance Testing — the last gate before production cutover."
+    },
+    {
+      "term": "Hypercare",
+      "definition": "Heightened-support window post-launch — on-call rotation, fast triage, rollback ready."
+    },
+    {
+      "term": "Go/No-Go Call",
+      "definition": "Final cutover decision — chaired by PM, attended by sponsors, QA, ops, compliance."
+    }
+  ],
+  "reflection_prompts": [
+    "Which decision moved the schedule_health pill the most — yours or the vendor's?",
+    "What did your RAID register catch in Round 3 that would have blindsided you otherwise?",
+    "When did you choose schedule over scope, and would you make the same trade-off again?"
+  ],
+  "coaching_moment": "The single highest-leverage PM move is the pre-emptive sponsor brief. If your sponsor learns about a slip from anyone but you, you've already lost. Round 5 was the test — and if you took the structured recovery path, you passed it.",
+  "tier": "premium",
+  "age_band": "adult",
+  "domain": "Project Management",
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

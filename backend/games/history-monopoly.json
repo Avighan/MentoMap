@@ -1,0 +1,1791 @@
+{
+  "game_id": "history-monopoly",
+  "title": "History Monopoly",
+  "theme": "World History & Civilizations Empire Building",
+  "description": "Build your civilization empire! Trade, conquer territories, and lead your people through the ages. From the pyramids of Ancient Egypt to the factories of the Industrial Revolution, every decision shapes the fate of nations. Learn real history while mastering strategy — from resource management to diplomatic alliances.",
+  "game_type": "board",
+  "target_audience": "12-25",
+  "duration_minutes": 35,
+  "difficulty": "intermediate",
+  "learning_objectives": [
+    "World History",
+    "Cultural Awareness",
+    "Strategic Thinking",
+    "Resource Management"
+  ],
+  "tags": [
+    "monopoly",
+    "board-game",
+    "history",
+    "civilizations",
+    "strategy",
+    "education"
+  ],
+  "storybook_pages": [
+    {
+      "title": "Welcome to History Monopoly",
+      "text": "You are a rising leader with 5,000 gold coins and a vision for empire. The ancient world awaits — claim territories, collect tribute, and build a civilization that stands the test of time!",
+      "image_prompt": "ancient world map with civilizations, gold coins, scrolls, monuments like pyramids and colosseum, board game style, vibrant cartoon illustration"
+    },
+    {
+      "title": "The World Board",
+      "text": "Roll the dice and traverse the ages. Land on unclaimed territories to conquer them. When rival empires pass through your lands, they pay tribute to your civilization!",
+      "image_prompt": "game board with historical landmarks, ancient temples, castles, trade routes, dice rolling, game pieces shaped like warriors and explorers, cartoon style"
+    },
+    {
+      "title": "Forge Your Legacy",
+      "text": "Upgrade your territories to build wonders and monuments. Control entire regions for bonus tribute. Beware of plagues, invasions, and the tax collector! The greatest empire wins eternal glory!",
+      "image_prompt": "growing civilization empire, monuments getting grander, gold flowing, ancient wonders being built, victory celebration with banners, cartoon style"
+    }
+  ],
+  "how_to_play": [
+    "Roll the dice and move around the 28-tile board. Each lap earns you 1,000 gold in trade revenue from your Silk Road connections.",
+    "Land on an unclaimed territory? Conquer it to start collecting tribute when rival empires pass through.",
+    "Own all territories in a region (color group) to double the tribute collected from that region.",
+    "Use the Bazaar tile to upgrade your territories — build monuments and wonders that increase tribute from rivals.",
+    "Watch out for Tax tiles (you lose gold) and Plague tiles (random negative events that affect everyone).",
+    "Scroll of Fate tiles give random bonuses or penalties — just like the unpredictable tides of history!",
+    "First player to reach 25,000 gold in total empire value (gold + territory values) wins. Or be the last civilization standing!"
+  ],
+  "initial_state": {
+    "gold": {
+      "value": 5000,
+      "label": "Gold",
+      "icon": "🪙"
+    },
+    "territories_owned": {
+      "value": 0,
+      "label": "Territories",
+      "icon": "🏛️"
+    },
+    "total_tribute": {
+      "value": 0,
+      "label": "Tribute Earned",
+      "icon": "📜"
+    },
+    "total_taxes_paid": {
+      "value": 0,
+      "label": "Taxes Paid",
+      "icon": "💸"
+    },
+    "upgrades_bought": {
+      "value": 0,
+      "label": "Monuments Built",
+      "icon": "🏗️"
+    },
+    "laps_completed": {
+      "value": 0,
+      "label": "Ages Passed",
+      "icon": "🔄"
+    },
+    "empire_value": {
+      "value": 5000,
+      "label": "Empire Value",
+      "icon": "👑"
+    },
+    "reputation": {
+      "value": 50,
+      "label": "Reputation",
+      "icon": "⭐"
+    },
+    "strategic_thinking": {
+      "value": 40,
+      "icon": "♟️",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "risk_tolerance": {
+      "value": 40,
+      "icon": "🎲",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "delayed_gratification": {
+      "value": 35,
+      "icon": "⏳",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "impulse_control": {
+      "value": 35,
+      "icon": "🛑",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "resilience": {
+      "value": 40,
+      "icon": "💪",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "adaptability": {
+      "value": 45,
+      "icon": "🦎",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "board_config": {
+    "renderer": "2d",
+    "grid_size": [
+      8,
+      4
+    ],
+    "movement": "dice",
+    "dice_range": [
+      1,
+      6
+    ],
+    "tile_types": {
+      "start": {
+        "label": "Silk Road",
+        "bg": "#06D6A0",
+        "text": "#FFFFFF",
+        "icon": "🐪",
+        "border_color": "#059669"
+      },
+      "event": {
+        "label": "Scroll of Fate",
+        "bg": "#FFD166",
+        "text": "#2D3047",
+        "icon": "📜",
+        "border_color": "#EAB308"
+      },
+      "shop": {
+        "label": "Ancient Bazaar",
+        "bg": "#4CC9F0",
+        "text": "#FFFFFF",
+        "icon": "🏪",
+        "border_color": "#0EA5E9"
+      },
+      "boss": {
+        "label": "History Quiz",
+        "bg": "#EF476F",
+        "text": "#FFFFFF",
+        "icon": "📖",
+        "border_color": "#DC2626"
+      },
+      "empty": {
+        "label": "Rest Stop",
+        "bg": "#E5E7EB",
+        "text": "#6B7280",
+        "icon": "👀",
+        "border_color": "#D1D5DB"
+      },
+      "treasure": {
+        "label": "Ancient Treasure!",
+        "bg": "#FBBF24",
+        "text": "#2D3047",
+        "icon": "💎",
+        "border_color": "#D97706"
+      },
+      "rest": {
+        "label": "Oasis Camp",
+        "bg": "#34D399",
+        "text": "#FFFFFF",
+        "icon": "🏕️",
+        "border_color": "#10B981"
+      },
+      "finish": {
+        "label": "Eternal Glory!",
+        "bg": "#9B5DE5",
+        "text": "#FFFFFF",
+        "icon": "🏆",
+        "border_color": "#7C3AED"
+      },
+      "property": {
+        "label": "Territory",
+        "bg": "#818CF8",
+        "text": "#FFFFFF",
+        "icon": "🏛️",
+        "border_color": "#6366F1"
+      },
+      "tax": {
+        "label": "Imperial Tax",
+        "bg": "#F87171",
+        "text": "#FFFFFF",
+        "icon": "💰",
+        "border_color": "#EF4444"
+      }
+    },
+    "tile_effects": {
+      "start": {
+        "delta": {
+          "gold": 1000
+        },
+        "message": "You traverse the Silk Road and collect 1,000 gold from your trade caravans! 🐪"
+      },
+      "rest": {
+        "delta": {
+          "reputation": 5
+        },
+        "message": "Your people rest at the oasis. Morale is restored and your reputation grows! 🏕️"
+      },
+      "treasure": {
+        "delta": {
+          "gold": 1500,
+          "reputation": 5
+        },
+        "message": "Your explorers discovered an ancient treasure hoard worth 1,500 gold! 💎"
+      },
+      "tax": {
+        "delta": {
+          "gold": -800
+        },
+        "message": "The imperial tax collector demands 800 gold for the empire's treasury! 💰"
+      },
+      "shop": {
+        "shop_items": [
+          {
+            "id": "upgrade_level_1",
+            "label": "Stone Monument",
+            "cost_key": "gold",
+            "cost": 500,
+            "delta": {
+              "reputation": 10,
+              "upgrades_bought": 1
+            },
+            "description": "Erect a stone monument to honor your civilization's achievements and inspire your people."
+          },
+          {
+            "id": "upgrade_level_2",
+            "label": "Grand Library",
+            "cost_key": "gold",
+            "cost": 1200,
+            "delta": {
+              "reputation": 15,
+              "upgrades_bought": 1
+            },
+            "description": "Build a great library like Alexandria to preserve knowledge and attract scholars from distant lands."
+          },
+          {
+            "id": "upgrade_level_3",
+            "label": "War Elephants",
+            "cost_key": "gold",
+            "cost": 800,
+            "delta": {
+              "reputation": 8,
+              "upgrades_bought": 1
+            },
+            "description": "Train a squadron of war elephants like Hannibal's army to intimidate rivals and protect your borders."
+          }
+        ]
+      },
+      "boss": {
+        "challenge": {
+          "question": "A rival scholar challenges you: 'The Great Wall of China was primarily built to defend against which group of invaders from the north?'",
+          "options": [
+            "The Mongols and other nomadic tribes",
+            "The Japanese navy",
+            "The Roman legions",
+            "The Persian army"
+          ],
+          "correct": 0,
+          "success_delta": {
+            "gold": 2000,
+            "reputation": 10
+          },
+          "fail_delta": {
+            "gold": -300,
+            "reputation": -5
+          },
+          "success_message": "Brilliant! Your knowledge of history impresses the scholars, and they reward you with 2,000 gold! 🎉",
+          "fail_message": "Not quite right. The scholars are disappointed, and your failed answer costs you 300 gold in lost credibility. 📚"
+        }
+      }
+    },
+    "power_ups": [
+      {
+        "id": "double_roll",
+        "label": "Forced March",
+        "icon": "⚡",
+        "description": "Command a forced march! Roll twice and move the total — cover more ground this turn!"
+      },
+      {
+        "id": "shield",
+        "label": "Diplomatic Immunity",
+        "icon": "🛡️",
+        "description": "Invoke diplomatic immunity to block the next tribute payment or tax. Your ambassadors handle it!"
+      },
+      {
+        "id": "market_insight",
+        "label": "Scout Report",
+        "icon": "🔭",
+        "description": "Send scouts ahead to reveal the next 3 tiles so you can plan your campaign."
+      }
+    ],
+    "ai_competitors": [
+      {
+        "id": "ai_genghis",
+        "name": "Genghis the Conqueror",
+        "avatar": "🐎",
+        "personality": "aggressive",
+        "color": "#EF4444",
+        "description": "Conquers every territory in sight and wages war constantly. High risk, high reward — just like the real Mongol Empire."
+      },
+      {
+        "id": "ai_confucius",
+        "name": "Sage Confucius",
+        "avatar": "📿",
+        "personality": "balanced",
+        "color": "#22C55E",
+        "description": "Saves gold wisely, invests in culture and education. Slow but steady growth through harmony and balance."
+      }
+    ],
+    "tiles": [
+      {
+        "position": [
+          0,
+          0
+        ],
+        "type": "start",
+        "label": "Silk Road 🐪",
+        "icon": "🐪",
+        "event_id": null
+      },
+      {
+        "position": [
+          1,
+          0
+        ],
+        "type": "event",
+        "label": "Ancient Egypt",
+        "icon": "🏺",
+        "event_id": "evt_ancient_egypt"
+      },
+      {
+        "position": [
+          2,
+          0
+        ],
+        "type": "event",
+        "label": "Scroll of Fate",
+        "icon": "📜",
+        "event_id": "evt_chance_1"
+      },
+      {
+        "position": [
+          3,
+          0
+        ],
+        "type": "event",
+        "label": "Roman Empire",
+        "icon": "🏛️",
+        "event_id": "evt_roman_empire"
+      },
+      {
+        "position": [
+          4,
+          0
+        ],
+        "type": "tax",
+        "label": "Imperial Tax 💰",
+        "icon": "💰",
+        "event_id": null
+      },
+      {
+        "position": [
+          5,
+          0
+        ],
+        "type": "event",
+        "label": "Greek Academy",
+        "icon": "🏫",
+        "event_id": "evt_greek_academy"
+      },
+      {
+        "position": [
+          6,
+          0
+        ],
+        "type": "event",
+        "label": "Scroll of Fate",
+        "icon": "📜",
+        "event_id": "evt_chance_2"
+      },
+      {
+        "position": [
+          7,
+          0
+        ],
+        "type": "rest",
+        "label": "Oasis Camp 🏕️",
+        "icon": "🏕️",
+        "event_id": null
+      },
+      {
+        "position": [
+          7,
+          1
+        ],
+        "type": "event",
+        "label": "Silk Road Post",
+        "icon": "🐪",
+        "event_id": "evt_silk_road"
+      },
+      {
+        "position": [
+          7,
+          2
+        ],
+        "type": "event",
+        "label": "Viking Settlement",
+        "icon": "⚔️",
+        "event_id": "evt_viking_settlement"
+      },
+      {
+        "position": [
+          7,
+          3
+        ],
+        "type": "shop",
+        "label": "Ancient Bazaar 🏪",
+        "icon": "🏪",
+        "event_id": null
+      },
+      {
+        "position": [
+          6,
+          3
+        ],
+        "type": "event",
+        "label": "Mongol Empire",
+        "icon": "🐎",
+        "event_id": "evt_mongol_empire"
+      },
+      {
+        "position": [
+          5,
+          3
+        ],
+        "type": "event",
+        "label": "Scroll of Fate",
+        "icon": "📜",
+        "event_id": "evt_chance_3"
+      },
+      {
+        "position": [
+          4,
+          3
+        ],
+        "type": "event",
+        "label": "Renaissance Studio",
+        "icon": "🎨",
+        "event_id": "evt_renaissance"
+      },
+      {
+        "position": [
+          3,
+          3
+        ],
+        "type": "boss",
+        "label": "History Quiz 📖",
+        "icon": "📖",
+        "event_id": null
+      },
+      {
+        "position": [
+          2,
+          3
+        ],
+        "type": "event",
+        "label": "Mayan Temple",
+        "icon": "🌿",
+        "event_id": "evt_mayan_temple"
+      },
+      {
+        "position": [
+          1,
+          3
+        ],
+        "type": "event",
+        "label": "Scroll of Fate",
+        "icon": "📜",
+        "event_id": "evt_chance_4"
+      },
+      {
+        "position": [
+          0,
+          3
+        ],
+        "type": "finish",
+        "label": "Finish 🏆",
+        "icon": "🏆",
+        "event_id": null
+      },
+      {
+        "position": [
+          0,
+          2
+        ],
+        "type": "event",
+        "label": "Chinese Dynasty",
+        "icon": "🐉",
+        "event_id": "evt_chinese_dynasty"
+      },
+      {
+        "position": [
+          0,
+          1
+        ],
+        "type": "event",
+        "label": "Indian Spice Trade",
+        "icon": "🌶️",
+        "event_id": "evt_indian_spice"
+      },
+      {
+        "position": [
+          1,
+          1
+        ],
+        "type": "treasure",
+        "label": "Ancient Treasure! 💎",
+        "icon": "💎",
+        "event_id": null
+      },
+      {
+        "position": [
+          2,
+          1
+        ],
+        "type": "event",
+        "label": "Ottoman Bazaar",
+        "icon": "🕌",
+        "event_id": "evt_ottoman_bazaar"
+      },
+      {
+        "position": [
+          3,
+          1
+        ],
+        "type": "event",
+        "label": "Aztec Market",
+        "icon": "🦅",
+        "event_id": "evt_aztec_market"
+      },
+      {
+        "position": [
+          4,
+          1
+        ],
+        "type": "empty",
+        "label": "Ancient Ruins 👀",
+        "icon": "👀",
+        "event_id": null
+      },
+      {
+        "position": [
+          5,
+          1
+        ],
+        "type": "event",
+        "label": "Medieval Castle",
+        "icon": "🏰",
+        "event_id": "evt_medieval_castle"
+      },
+      {
+        "position": [
+          6,
+          1
+        ],
+        "type": "event",
+        "label": "Samurai Dojo",
+        "icon": "🥷",
+        "event_id": "evt_samurai_dojo"
+      },
+      {
+        "position": [
+          5,
+          2
+        ],
+        "type": "event",
+        "label": "Industrial Factory",
+        "icon": "🏭",
+        "event_id": "evt_industrial_revolution"
+      },
+      {
+        "position": [
+          3,
+          2
+        ],
+        "type": "event",
+        "label": "Eternal Glory! 🏆",
+        "icon": "❓",
+        "event_id": null
+      }
+    ],
+    "difficulty_modifiers": {
+      "easy": {
+        "resource_multiplier": 1.3,
+        "negative_event_chance": 0.2
+      },
+      "medium": {
+        "resource_multiplier": 1.0,
+        "negative_event_chance": 0.4
+      },
+      "hard": {
+        "resource_multiplier": 0.75,
+        "negative_event_chance": 0.65
+      }
+    }
+  },
+  "events": {
+    "evt_ancient_egypt": {
+      "title": "Ancient Egypt — Kingdom of the Pharaohs",
+      "story": "The Nile River valley is fertile and prosperous. The Pharaoh offers you control of a province near the Great Pyramids of Giza. These pyramids, built around 2560 BC, are among the Seven Wonders of the Ancient World and took over 20 years to construct.",
+      "choices": [
+        {
+          "id": "conquer_egypt",
+          "label": "Invest 1,500 gold to develop the province with irrigation canals",
+          "delta": {
+            "gold": -1500,
+            "territories_owned": 1,
+            "total_tribute": 300,
+            "reputation": 5,
+            "strategic_thinking": 5
+          },
+          "feedback": "Wise choice! The Nile floods bring rich silt to your farmlands. You earn 300 gold tribute per lap from one of history's most productive agricultural regions. 🏺"
+        },
+        {
+          "id": "negotiate_egypt",
+          "label": "Offer 800 gold plus a trade alliance with your homeland",
+          "delta": {
+            "gold": -800,
+            "territories_owned": 1,
+            "total_tribute": 200,
+            "risk_tolerance": 8,
+            "delayed_gratification": 5
+          },
+          "feedback": "The Pharaoh accepts your alliance. You receive a smaller province but with trade access to papyrus and linen — ancient Egypt's greatest exports. 200 gold tribute per lap."
+        },
+        {
+          "id": "skip_egypt",
+          "label": "Pass — the desert is harsh and the Pharaoh unpredictable",
+          "delta": {
+            "delayed_gratification": 10,
+            "impulse_control": 8
+          },
+          "feedback": "You pass on Egypt. The desert heat is brutal, but those who master the Nile control one of the cradles of civilization."
+        }
+      ],
+      "glossary_terms": [
+        "primary_source",
+        "cause_effect"
+      ]
+    },
+    "evt_roman_empire": {
+      "title": "Roman Empire — Eternal City of the Caesars",
+      "story": "At its peak around 117 AD, the Roman Empire controlled the entire Mediterranean, stretching from Britain to Mesopotamia. A senator offers you a seat in the Roman Senate and control of a wealthy province. Roman roads, aqueducts, and law still influence our world today.",
+      "choices": [
+        {
+          "id": "invest_rome",
+          "label": "Pay 2,500 gold for a major province with Roman roads and aqueducts",
+          "delta": {
+            "gold": -2500,
+            "territories_owned": 1,
+            "total_tribute": 500,
+            "reputation": 10,
+            "strategic_thinking": 5
+          },
+          "feedback": "Ave Caesar! Your province thrives thanks to Roman engineering. The famous Roman roads connect you to trade across the empire. 500 gold tribute per lap! 🏛️"
+        },
+        {
+          "id": "negotiate_rome",
+          "label": "Offer 1,500 gold for a border province with military protection",
+          "delta": {
+            "gold": -1500,
+            "territories_owned": 1,
+            "total_tribute": 350,
+            "risk_tolerance": 5,
+            "resilience": 3
+          },
+          "feedback": "Your border province is protected by Roman legions — the most disciplined army in the ancient world. 350 gold tribute per lap."
+        },
+        {
+          "id": "skip_rome",
+          "label": "Decline — empires fall, and Rome's corruption concerns you",
+          "delta": {
+            "impulse_control": 10,
+            "gold": 200
+          },
+          "feedback": "You pass. Wise perhaps — Rome did eventually fall in 476 AD. But for now, it remains the most powerful empire on Earth."
+        }
+      ],
+      "glossary_terms": [
+        "cause_effect",
+        "imperialism"
+      ]
+    },
+    "evt_greek_academy": {
+      "title": "Greek Academy — Birthplace of Democracy and Philosophy",
+      "story": "Athens in the 5th century BC was the golden age of civilization. Socrates, Plato, and Aristotle walked these streets. The Parthenon stands atop the Acropolis, and the first democratic assembly meets in the Agora. An Athenian merchant offers you a share in a prestigious academy.",
+      "choices": [
+        {
+          "id": "invest_greece",
+          "label": "Invest 2,000 gold to fund a philosophical academy like Plato's",
+          "delta": {
+            "gold": -2000,
+            "territories_owned": 1,
+            "total_tribute": 400,
+            "reputation": 12,
+            "strategic_thinking": 10,
+            "delayed_gratification": 5
+          },
+          "feedback": "Your academy attracts the greatest minds of the ancient world! Students flock from across the Mediterranean. Philosophy, mathematics, and science flourish. 400 gold tribute per lap. 🏫"
+        },
+        {
+          "id": "partial_greece",
+          "label": "Invest 1,000 gold in a smaller school of rhetoric and debate",
+          "delta": {
+            "gold": -1000,
+            "territories_owned": 1,
+            "total_tribute": 250,
+            "strategic_thinking": 8,
+            "adaptability": 5
+          },
+          "feedback": "Your school of rhetoric trains future leaders in the art of persuasion — a skill the Greeks valued alongside philosophy. 250 gold tribute per lap."
+        },
+        {
+          "id": "skip_greece",
+          "label": "Pass — philosophers don't generate revenue",
+          "delta": {
+            "impulse_control": 8,
+            "resilience": 3,
+            "gold": 100
+          },
+          "feedback": "You skip the academy. True, Socrates was famously poor. But his ideas shaped Western civilization for 2,500 years."
+        }
+      ],
+      "glossary_terms": [
+        "imperialism",
+        "revolution"
+      ]
+    },
+    "evt_silk_road": {
+      "title": "Silk Road Trading Post — Gateway Between East and West",
+      "story": "The Silk Road was a 4,000-mile network of trade routes connecting China to Rome, active from around 130 BC to 1453 AD. Merchants traded silk, spices, gold, jade, and ideas. A caravan master offers you control of a critical trading post in Samarkand, a jewel of Central Asia.",
+      "choices": [
+        {
+          "id": "invest_silk_road",
+          "label": "Pay 2,200 gold to control the Samarkand trading post",
+          "delta": {
+            "gold": -2200,
+            "territories_owned": 1,
+            "total_tribute": 450,
+            "reputation": 8,
+            "risk_tolerance": 10
+          },
+          "feedback": "Samarkand is yours! Caravans carrying silk, porcelain, and spices pass through daily. The Silk Road doesn't just move goods — it moves ideas, religions, and technologies between civilizations. 450 gold tribute per lap! 🐪"
+        },
+        {
+          "id": "partial_silk_road",
+          "label": "Invest 1,200 gold for a smaller outpost along the route",
+          "delta": {
+            "gold": -1200,
+            "territories_owned": 1,
+            "total_tribute": 250,
+            "strategic_thinking": 8,
+            "adaptability": 5
+          },
+          "feedback": "Your outpost services weary travelers. Not as prestigious as Samarkand, but traders still need water and supplies. 250 gold tribute per lap."
+        },
+        {
+          "id": "skip_silk_road",
+          "label": "Too dangerous — bandits and sandstorms plague the route",
+          "delta": {
+            "impulse_control": 8,
+            "resilience": 3,
+            "gold": 100
+          },
+          "feedback": "You pass. The Silk Road IS dangerous — but for centuries, it was the most important trade route on Earth."
+        }
+      ],
+      "glossary_terms": [
+        "revolution",
+        "democracy"
+      ]
+    },
+    "evt_viking_settlement": {
+      "title": "Viking Settlement — Raiders of the North",
+      "story": "The Vikings (793-1066 AD) were not just raiders — they were skilled navigators, traders, and settlers. Leif Erikson reached North America 500 years before Columbus. A Viking jarl offers you a settlement in the rich farmlands of Normandy, which the Vikings named 'Land of the Northmen.'",
+      "choices": [
+        {
+          "id": "invest_viking",
+          "label": "Invest 1,800 gold to establish a fortified Viking settlement",
+          "delta": {
+            "gold": -1800,
+            "territories_owned": 1,
+            "total_tribute": 380,
+            "reputation": 6,
+            "adaptability": 5
+          },
+          "feedback": "Your Viking settlement thrives! The Norse longships control trade routes across the North Sea and beyond. Fun fact: Vikings used sun compasses and crystal 'sunstones' to navigate. 380 gold tribute per lap. ⚔️"
+        },
+        {
+          "id": "trade_viking",
+          "label": "Offer 1,000 gold for a trading partnership — no raiding",
+          "delta": {
+            "gold": -1000,
+            "territories_owned": 1,
+            "total_tribute": 250,
+            "reputation": 8,
+            "strategic_thinking": 5
+          },
+          "feedback": "You trade instead of raid. The Vikings were actually prolific traders — their trade network stretched from Baghdad to Newfoundland. 250 gold tribute per lap."
+        },
+        {
+          "id": "skip_viking",
+          "label": "The Norse are unpredictable — better to keep my distance",
+          "delta": {
+            "impulse_control": 5
+          },
+          "feedback": "You avoid the Vikings. Their reputation for raiding is fearsome, though they eventually settled down and founded kingdoms across Europe."
+        }
+      ],
+      "glossary_terms": [
+        "democracy",
+        "cultural_exchange"
+      ]
+    },
+    "evt_mongol_empire": {
+      "title": "Mongol Empire — The Largest Contiguous Land Empire",
+      "story": "Under Genghis Khan (1162-1227), the Mongol Empire grew to control 24 million square kilometers — the largest contiguous land empire in history. Despite their fearsome reputation, the Mongols established the Pax Mongolica, a period of peace and trade across Asia. A Mongol general offers you governance of a conquered city.",
+      "choices": [
+        {
+          "id": "invest_mongol",
+          "label": "Pay 3,000 gold to govern a major city along the Mongol trade routes",
+          "delta": {
+            "gold": -3000,
+            "territories_owned": 1,
+            "total_tribute": 600,
+            "reputation": 12,
+            "risk_tolerance": 12,
+            "strategic_thinking": 8
+          },
+          "feedback": "Your city prospers under the Pax Mongolica! The Mongol postal system (Yam) ensures rapid communication across the empire. Merchants travel safely for thousands of miles. 600 gold tribute per lap! 🐎"
+        },
+        {
+          "id": "partial_mongol",
+          "label": "Offer 1,500 gold to manage a smaller outpost",
+          "delta": {
+            "gold": -1500,
+            "territories_owned": 1,
+            "total_tribute": 300,
+            "strategic_thinking": 5,
+            "impulse_control": 5
+          },
+          "feedback": "A smaller role, but still within the world's largest empire. The Mongols valued merit over birth — anyone could rise through skill. 300 gold tribute per lap."
+        },
+        {
+          "id": "skip_mongol",
+          "label": "The Mongols destroy everything — this empire won't last",
+          "delta": {
+            "impulse_control": 5,
+            "adaptability": -3
+          },
+          "feedback": "You refuse. The Mongol Empire did eventually fragment after Genghis Khan's death, splitting into four khanates. But its legacy of connecting East and West endures."
+        }
+      ],
+      "glossary_terms": [
+        "cultural_exchange",
+        "primary_source"
+      ]
+    },
+    "evt_renaissance": {
+      "title": "Renaissance Studio — The Rebirth of Art and Science",
+      "story": "Florence, Italy in the 15th century. The Renaissance (meaning 'rebirth') is transforming Europe. Leonardo da Vinci is painting the Mona Lisa, Michelangelo is sculpting David, and Gutenberg's printing press is spreading knowledge faster than ever. The Medici family offers you patronage of an artist's studio.",
+      "choices": [
+        {
+          "id": "invest_renaissance",
+          "label": "Invest 2,000 gold to become a patron of arts and sciences",
+          "delta": {
+            "gold": -2000,
+            "territories_owned": 1,
+            "total_tribute": 400,
+            "reputation": 15,
+            "delayed_gratification": 12,
+            "strategic_thinking": 5
+          },
+          "feedback": "Your studio attracts geniuses! Da Vinci's famous notebooks contain designs for helicopters, tanks, and solar energy — centuries ahead of their time. Art and science flourish under your patronage. 400 gold tribute per lap. 🎨"
+        },
+        {
+          "id": "small_renaissance",
+          "label": "Invest 1,000 gold in a small printing workshop",
+          "delta": {
+            "gold": -1000,
+            "territories_owned": 1,
+            "total_tribute": 250,
+            "delayed_gratification": 8
+          },
+          "feedback": "Your printing press spreads ideas across Europe. Gutenberg's invention in 1440 was as revolutionary as the internet. Books that once cost a year's wages now reach the masses. 250 gold tribute per lap."
+        },
+        {
+          "id": "skip_renaissance",
+          "label": "Art is nice, but empires need soldiers, not painters",
+          "delta": {
+            "risk_tolerance": 5,
+            "delayed_gratification": -5
+          },
+          "feedback": "You skip the Renaissance. But consider: the Medici funded art AND built one of the most powerful banking empires in history."
+        }
+      ],
+      "glossary_terms": [
+        "primary_source",
+        "cause_effect"
+      ]
+    },
+    "evt_mayan_temple": {
+      "title": "Mayan Temple — Masters of Mathematics and Astronomy",
+      "story": "The Maya civilization (2000 BC - 1500 AD) built magnificent pyramids in the jungles of Central America. They independently invented the concept of zero, developed a 365-day calendar more accurate than the European one, and tracked Venus's orbit with astonishing precision. A Mayan priest offers you stewardship of a sacred temple complex.",
+      "choices": [
+        {
+          "id": "invest_mayan",
+          "label": "Invest 1,800 gold to restore and expand the temple complex",
+          "delta": {
+            "gold": -1800,
+            "territories_owned": 1,
+            "total_tribute": 350,
+            "reputation": 8,
+            "delayed_gratification": 8
+          },
+          "feedback": "The temple complex thrives! Pilgrims and scholars visit to study Mayan mathematics and astronomy. The Maya's concept of zero predated the European adoption of it by centuries. 350 gold tribute per lap. 🌿"
+        },
+        {
+          "id": "trade_mayan",
+          "label": "Offer 900 gold to establish a cacao and jade trade route",
+          "delta": {
+            "gold": -900,
+            "territories_owned": 1,
+            "total_tribute": 200,
+            "strategic_thinking": 8,
+            "adaptability": 5
+          },
+          "feedback": "Cacao beans were so valuable the Maya used them as currency! Your trade route in 'liquid gold' (chocolate) connects Mayan cities. 200 gold tribute per lap."
+        },
+        {
+          "id": "skip_mayan",
+          "label": "The jungle is too dense and dangerous — pass",
+          "delta": {
+            "impulse_control": 3,
+            "resilience": 2
+          },
+          "feedback": "You pass on the Maya. Their civilization mysteriously declined around 900 AD, though millions of Maya descendants still live in Central America today."
+        }
+      ],
+      "glossary_terms": [
+        "cause_effect",
+        "imperialism"
+      ]
+    },
+    "evt_chinese_dynasty": {
+      "title": "Chinese Dynasty — The Middle Kingdom's Golden Age",
+      "story": "China's Tang Dynasty (618-907 AD) was a golden age of poetry, art, and innovation. The Chinese invented paper, gunpowder, the compass, and printing — the 'Four Great Inventions' that transformed the world. Chang'an (modern Xi'an) was the world's largest city with over 1 million people. A Tang official offers you a trade concession.",
+      "choices": [
+        {
+          "id": "invest_china",
+          "label": "Invest 2,500 gold for a major silk and porcelain trading house",
+          "delta": {
+            "gold": -2500,
+            "territories_owned": 1,
+            "total_tribute": 500,
+            "reputation": 10,
+            "strategic_thinking": 10,
+            "risk_tolerance": 5
+          },
+          "feedback": "Your trading house prospers! Chinese silk was so prized that the Romans thought it grew on trees. The Tang Dynasty's openness to foreign cultures made it one of history's greatest cosmopolitan eras. 500 gold tribute per lap. 🐉"
+        },
+        {
+          "id": "small_china",
+          "label": "Invest 1,200 gold in a tea and spice trading outpost",
+          "delta": {
+            "gold": -1200,
+            "territories_owned": 1,
+            "total_tribute": 280,
+            "resilience": 8,
+            "impulse_control": 5
+          },
+          "feedback": "Tea was China's liquid currency — and would eventually spark the Boston Tea Party thousands of years later. 280 gold tribute per lap."
+        },
+        {
+          "id": "skip_china",
+          "label": "China is too far from my empire — pass",
+          "delta": {
+            "risk_tolerance": 5,
+            "gold": 100
+          },
+          "feedback": "You skip China. Distance is real, but the Four Great Inventions — paper, printing, gunpowder, and the compass — eventually reached and transformed every civilization on Earth."
+        }
+      ],
+      "glossary_terms": [
+        "imperialism",
+        "revolution"
+      ]
+    },
+    "evt_indian_spice": {
+      "title": "Indian Spice Trade — Land of Pepper and Prosperity",
+      "story": "India's spice trade was so lucrative that it drove the Age of Exploration. Black pepper was called 'black gold' and was literally used as currency in medieval Europe. The Malabar Coast produced pepper, cardamom, cinnamon, and cloves that the entire world craved. A merchant prince offers you a plantation.",
+      "choices": [
+        {
+          "id": "invest_india",
+          "label": "Invest 2,000 gold for a spice plantation on the Malabar Coast",
+          "delta": {
+            "gold": -2000,
+            "territories_owned": 1,
+            "total_tribute": 420,
+            "reputation": 8,
+            "risk_tolerance": 8
+          },
+          "feedback": "Your plantation flourishes! Black pepper alone accounted for 70% of the world's spice trade. Columbus was actually trying to find a shortcut to India's spices when he stumbled upon the Americas. 420 gold tribute per lap. 🌶️"
+        },
+        {
+          "id": "trade_india",
+          "label": "Offer 1,000 gold for a trading partnership with local merchants",
+          "delta": {
+            "gold": -1000,
+            "territories_owned": 1,
+            "total_tribute": 250,
+            "reputation": 5,
+            "adaptability": 8
+          },
+          "feedback": "Partnership over conquest — a wise approach in a land of ancient trading traditions. Indian merchants had been trading across the Indian Ocean for millennia. 250 gold tribute per lap."
+        },
+        {
+          "id": "skip_india",
+          "label": "Spices are a luxury — invest in necessities instead",
+          "delta": {
+            "impulse_control": 5
+          },
+          "feedback": "You pass on spices. But remember: the desire for Indian pepper literally motivated the European discovery of new continents."
+        }
+      ],
+      "glossary_terms": [
+        "revolution",
+        "democracy"
+      ]
+    },
+    "evt_ottoman_bazaar": {
+      "title": "Ottoman Bazaar — The Grand Bazaar of Constantinople",
+      "story": "The Ottoman Empire (1299-1922) controlled the crossroads between Europe and Asia. Istanbul's Grand Bazaar, built in 1461, is one of the oldest and largest covered markets in the world with over 4,000 shops. It was the Amazon of its era — you could buy anything from Persian carpets to Arabian horses.",
+      "choices": [
+        {
+          "id": "invest_ottoman",
+          "label": "Invest 2,200 gold for a prime shop in the Grand Bazaar",
+          "delta": {
+            "gold": -2200,
+            "territories_owned": 1,
+            "total_tribute": 450,
+            "reputation": 10,
+            "strategic_thinking": 5
+          },
+          "feedback": "Your shop in the Grand Bazaar is perfectly positioned! The Ottomans charged tolls on all East-West trade, making Constantinople one of the richest cities in the world. 450 gold tribute per lap. 🕌"
+        },
+        {
+          "id": "small_ottoman",
+          "label": "Invest 1,000 gold for a carpet and textile stall",
+          "delta": {
+            "gold": -1000,
+            "territories_owned": 1,
+            "total_tribute": 220,
+            "adaptability": 5,
+            "resilience": 3
+          },
+          "feedback": "Ottoman carpets were prized across Europe. Your smaller stall generates steady income from the endless stream of buyers. 220 gold tribute per lap."
+        },
+        {
+          "id": "skip_ottoman",
+          "label": "The Ottomans tax too heavily — not worth the hassle",
+          "delta": {
+            "impulse_control": 3
+          },
+          "feedback": "You skip the bazaar. Ottoman taxes were real, but the sheer volume of trade made even small merchants wealthy."
+        }
+      ],
+      "glossary_terms": [
+        "democracy",
+        "cultural_exchange"
+      ]
+    },
+    "evt_aztec_market": {
+      "title": "Aztec Market — Tlatelolco, the Greatest Market in the Americas",
+      "story": "The Aztec market of Tlatelolco in Tenochtitlan (modern Mexico City) amazed Spanish conquistadors — it served 60,000 people daily, larger than any market in Europe at the time. The Aztecs used cacao beans as currency and built their capital on an island in Lake Texcoco using ingenious floating gardens called chinampas.",
+      "choices": [
+        {
+          "id": "invest_aztec",
+          "label": "Invest 1,600 gold to become a major cacao and obsidian trader",
+          "delta": {
+            "gold": -1600,
+            "territories_owned": 1,
+            "total_tribute": 350,
+            "reputation": 7,
+            "risk_tolerance": 8,
+            "strategic_thinking": 3
+          },
+          "feedback": "Your trading operation thrives! Obsidian was the Aztecs' steel, and cacao their gold. The chinampas floating gardens are so productive they feed an empire of 5 million. 350 gold tribute per lap. 🦅"
+        },
+        {
+          "id": "small_aztec",
+          "label": "Invest 800 gold for a chinampa farm — floating agriculture!",
+          "delta": {
+            "gold": -800,
+            "territories_owned": 1,
+            "total_tribute": 200,
+            "adaptability": 8
+          },
+          "feedback": "Your floating garden feeds the city! Chinampas were an agricultural marvel — these 'floating gardens' were actually stationary platforms built on the lake. 200 gold tribute per lap."
+        },
+        {
+          "id": "skip_aztec",
+          "label": "A city on a lake? Too fragile — pass",
+          "delta": {
+            "impulse_control": 5,
+            "resilience": 3
+          },
+          "feedback": "You pass. Tenochtitlan was indeed vulnerable, but at its peak it was one of the five largest cities in the world."
+        }
+      ],
+      "glossary_terms": [
+        "cultural_exchange",
+        "primary_source"
+      ]
+    },
+    "evt_medieval_castle": {
+      "title": "Medieval Castle — Fortress of the Feudal Age",
+      "story": "Medieval Europe (500-1500 AD) was an age of knights, castles, and feudalism. Castles were not just military fortresses — they were administrative centers, courts of justice, and symbols of power. The feudal system meant that land ownership was the ultimate measure of wealth and influence.",
+      "choices": [
+        {
+          "id": "invest_castle",
+          "label": "Invest 2,400 gold to build a full stone castle with moat and keep",
+          "delta": {
+            "gold": -2400,
+            "territories_owned": 1,
+            "total_tribute": 480,
+            "reputation": 10,
+            "risk_tolerance": 8
+          },
+          "feedback": "Your castle dominates the countryside! Stone castles replaced wooden ones after the Norman Conquest of 1066. Your peasants farm the land, knights patrol the borders, and merchants pay tolls at your gates. 480 gold tribute per lap. 🏰"
+        },
+        {
+          "id": "small_castle",
+          "label": "Invest 1,200 gold for a fortified manor with farmland",
+          "delta": {
+            "gold": -1200,
+            "territories_owned": 1,
+            "total_tribute": 280,
+            "impulse_control": 5
+          },
+          "feedback": "Your fortified manor is modest but productive. Most medieval wealth came from agriculture — land was the original 'real estate.' 280 gold tribute per lap."
+        },
+        {
+          "id": "skip_castle",
+          "label": "Feudalism is backward — I'll wait for better opportunities",
+          "delta": {
+            "delayed_gratification": 5
+          },
+          "feedback": "You skip the medieval world. Feudalism DID eventually give way to the Renaissance and Age of Exploration."
+        }
+      ],
+      "glossary_terms": [
+        "primary_source",
+        "cause_effect"
+      ]
+    },
+    "evt_samurai_dojo": {
+      "title": "Samurai Dojo — Way of the Warrior in Feudal Japan",
+      "story": "Feudal Japan's samurai followed Bushido, the 'Way of the Warrior,' which emphasized loyalty, honor, martial arts, and self-discipline. The samurai class ruled Japan from the 12th to 19th century. A daimyo (feudal lord) offers you a training academy in Kyoto, Japan's ancient capital and cultural heart.",
+      "choices": [
+        {
+          "id": "invest_samurai",
+          "label": "Invest 1,800 gold to establish a prestigious samurai training academy",
+          "delta": {
+            "gold": -1800,
+            "territories_owned": 1,
+            "total_tribute": 380,
+            "reputation": 8,
+            "delayed_gratification": 8
+          },
+          "feedback": "Your dojo becomes legendary! Samurai trained not just in swordsmanship but also calligraphy, poetry, and tea ceremony. The famous swordsmith Masamune crafted blades that are still considered the finest ever made. 380 gold tribute per lap. 🥷"
+        },
+        {
+          "id": "trade_samurai",
+          "label": "Offer 900 gold to trade in Japanese steel and lacquerware",
+          "delta": {
+            "gold": -900,
+            "territories_owned": 1,
+            "total_tribute": 200,
+            "strategic_thinking": 8,
+            "adaptability": 5
+          },
+          "feedback": "Japanese craftsmanship was unrivaled. Katana swords required up to 18 months of folding, hammering, and tempering. Your trade in fine steel and lacquerware prospers. 200 gold tribute per lap."
+        },
+        {
+          "id": "skip_samurai",
+          "label": "Japan is too isolated — their sakoku policy limits trade",
+          "delta": {
+            "impulse_control": 5
+          },
+          "feedback": "You pass. Japan's sakoku (closed country) policy did limit foreign trade from 1633-1853, but its unique culture produced innovations that later amazed the world."
+        }
+      ],
+      "glossary_terms": [
+        "cause_effect",
+        "imperialism"
+      ]
+    },
+    "evt_industrial_revolution": {
+      "title": "Industrial Revolution Factory — The Age of Machines",
+      "story": "Britain in the late 1700s. James Watt's improved steam engine is transforming manufacturing. Factories replace workshops, railways replace horses, and cities grow at unprecedented rates. The Industrial Revolution would change human civilization more in 100 years than the previous 10,000. A factory owner offers you partnership in a textile mill.",
+      "choices": [
+        {
+          "id": "invest_industrial",
+          "label": "Invest 3,000 gold in a fully mechanized textile factory",
+          "delta": {
+            "gold": -3000,
+            "territories_owned": 1,
+            "total_tribute": 600,
+            "reputation": 5,
+            "risk_tolerance": 12,
+            "strategic_thinking": 8
+          },
+          "feedback": "Your factory runs day and night! The spinning jenny and power loom multiply output a hundredfold. Britain's textile industry drove the entire Industrial Revolution. One factory now outproduces a thousand hand weavers. 600 gold tribute per lap. 🏭"
+        },
+        {
+          "id": "small_industrial",
+          "label": "Invest 1,500 gold in a smaller workshop with new steam technology",
+          "delta": {
+            "gold": -1500,
+            "territories_owned": 1,
+            "total_tribute": 320,
+            "strategic_thinking": 5,
+            "impulse_control": 5
+          },
+          "feedback": "Your steam-powered workshop is efficient if modest. Steam power is the future — James Watt's engine improved efficiency by 75% over earlier designs. 320 gold tribute per lap."
+        },
+        {
+          "id": "skip_industrial",
+          "label": "Machines will replace workers — this can't be good for society",
+          "delta": {
+            "impulse_control": 5,
+            "adaptability": -3
+          },
+          "feedback": "You have a point about social costs — child labor and pollution were terrible. But the Industrial Revolution ultimately raised living standards worldwide."
+        }
+      ],
+      "glossary_terms": [
+        "imperialism",
+        "revolution"
+      ]
+    },
+    "evt_chance_1": {
+      "title": "Scroll of Fate!",
+      "story": "Your archaeologists have discovered the Rosetta Stone! This slab of black granite, inscribed in three scripts, holds the key to deciphering Egyptian hieroglyphics — a writing system that had been a mystery for 1,400 years.",
+      "choices": [
+        {
+          "id": "chance1_accept",
+          "label": "Fund a full translation expedition led by your best scholars",
+          "delta": {
+            "gold": 800,
+            "reputation": 10
+          },
+          "feedback": "The translation is a triumph! Just as Jean-Francois Champollion cracked the code in 1822, your scholars unlock ancient Egyptian knowledge. The discovery brings 800 gold in patronage and fame across the known world! 📜"
+        },
+        {
+          "id": "chance1_focus",
+          "label": "Store it safely and continue building your empire — translate later",
+          "delta": {
+            "reputation": 3,
+            "delayed_gratification": 8,
+            "strategic_thinking": 5
+          },
+          "feedback": "You preserve the stone for future study. Patient wisdom — but the secrets of the pharaohs will have to wait."
+        }
+      ],
+      "glossary_terms": [
+        "revolution",
+        "democracy"
+      ]
+    },
+    "evt_chance_2": {
+      "title": "Scroll of Fate!",
+      "story": "Incredible news! A sailor in your fleet claims to have found a sea route around Africa to India. This is what Vasco da Gama achieved in 1498 — a voyage that changed world trade forever by bypassing the Ottoman-controlled overland routes.",
+      "choices": [
+        {
+          "id": "chance2_fund",
+          "label": "Fund the full expedition with 1,000 gold for the sea route",
+          "delta": {
+            "gold": -1000,
+            "total_tribute": 500,
+            "reputation": 8,
+            "strategic_thinking": 8
+          },
+          "feedback": "The expedition succeeds! Just like da Gama's historic voyage, your sailors round the Cape of Good Hope and reach India. Direct sea trade with the East brings 500 gold in new tribute. 🚢"
+        },
+        {
+          "id": "chance2_wait",
+          "label": "Let others risk the voyage — trade overland as usual",
+          "delta": {
+            "gold": 200,
+            "reputation": 3,
+            "impulse_control": 5
+          },
+          "feedback": "You stick with safe overland routes. Others will eventually find the sea passage, but you keep 200 gold in savings."
+        }
+      ],
+      "glossary_terms": [
+        "democracy",
+        "cultural_exchange"
+      ]
+    },
+    "evt_chance_3": {
+      "title": "Scroll of Fate!",
+      "story": "A volcanic eruption has buried a nearby city in ash — just like Mount Vesuvius buried Pompeii in 79 AD! The disaster is devastating, but the preserved ruins may contain priceless artifacts and knowledge for future generations.",
+      "choices": [
+        {
+          "id": "chance3_excavate",
+          "label": "Spend 1,200 gold to excavate and recover treasures from the ruins",
+          "delta": {
+            "gold": -1200,
+            "reputation": 10,
+            "resilience": 10,
+            "strategic_thinking": 5
+          },
+          "feedback": "Your excavation uncovers incredible artifacts! Just as Pompeii's ruins taught us about daily Roman life — from their fast-food restaurants to their graffiti — your finds become invaluable historical records. 🏺"
+        },
+        {
+          "id": "chance3_avoid",
+          "label": "Avoid the danger zone — focus on rebuilding refugee settlements",
+          "delta": {
+            "gold": -200,
+            "reputation": -5,
+            "resilience": 8,
+            "adaptability": 5
+          },
+          "feedback": "You help displaced people instead of treasure hunting. Humanitarian, but the artifacts remain buried. History judges both choices differently."
+        }
+      ],
+      "glossary_terms": [
+        "cultural_exchange",
+        "primary_source"
+      ]
+    },
+    "evt_chance_4": {
+      "title": "Scroll of Fate!",
+      "story": "A mysterious traveler arrives with a gift: an ancient map showing the location of a legendary library. Could it be the fabled Library of Alexandria, which once held an estimated 400,000 scrolls — the sum of all human knowledge in the ancient world?",
+      "choices": [
+        {
+          "id": "chance4_expedition",
+          "label": "Launch a full expedition to find and restore the lost library",
+          "delta": {
+            "gold": 3000,
+            "reputation": 10,
+            "resilience": 10,
+            "delayed_gratification": 5
+          },
+          "feedback": "The expedition finds a hidden cache of ancient scrolls! The Library of Alexandria's destruction (between 48 BC and 642 AD) was one of history's greatest losses. Your discovery restores some of that lost knowledge. 3,000 gold reward! 📚"
+        },
+        {
+          "id": "chance4_pass",
+          "label": "It's probably a myth — too risky to chase legends",
+          "delta": {
+            "impulse_control": 3,
+            "resilience": -3
+          },
+          "feedback": "You dismiss the map. Perhaps wisely — many treasure maps are fakes. But the Library of Alexandria WAS real, and its loss set human knowledge back by centuries."
+        }
+      ],
+      "glossary_terms": [
+        "primary_source",
+        "cause_effect"
+      ]
+    }
+  },
+  "world_events": [
+    {
+      "id": "we_plague",
+      "title": "The Great Plague Sweeps the Land!",
+      "description": "A devastating plague spreads across the known world, much like the Black Death of 1347-1351 that killed an estimated 30-60% of Europe's population. All empires suffer losses.",
+      "trigger_interval": 10,
+      "delta_all": {
+        "gold": -600,
+        "reputation": -5
+      },
+      "icon": "💀"
+    },
+    {
+      "id": "we_golden_age",
+      "title": "A Golden Age of Prosperity and Learning!",
+      "description": "A golden age dawns! Like the Islamic Golden Age (750-1258 AD) when scholars in Baghdad preserved Greek knowledge and advanced mathematics, medicine, and astronomy. All civilizations benefit from shared knowledge.",
+      "trigger_interval": 8,
+      "delta_all": {
+        "gold": 500,
+        "reputation": 5
+      },
+      "icon": "✨"
+    },
+    {
+      "id": "we_invasion",
+      "title": "Barbarian Invasion! Borders Under Siege!",
+      "description": "Nomadic invaders threaten all civilizations, just as the Huns, Goths, and Vandals pressured the Roman Empire. Every empire must spend gold on defense.",
+      "trigger_interval": 12,
+      "delta_all": {
+        "gold": -400
+      },
+      "icon": "🗡️"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "ach_first_territory",
+      "title": "First Conquest",
+      "description": "Claim your first territory and begin building your civilization",
+      "icon": "🏛️",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "territories_owned",
+        "value": 1
+      },
+      "reward": {
+        "delta": {
+          "reputation": 5
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_empire_3",
+      "title": "Empire Builder",
+      "description": "Control 3 or more territories across different regions",
+      "icon": "🗺️",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "territories_owned",
+        "value": 3
+      },
+      "reward": {
+        "delta": {
+          "gold": 800,
+          "reputation": 10
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_gold_hoard",
+      "title": "Treasury of Croesus",
+      "description": "Accumulate 10,000+ gold — rivaling the legendary wealth of King Croesus of Lydia",
+      "icon": "🪙",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "gold",
+        "value": 10000
+      },
+      "reward": {
+        "delta": {
+          "reputation": 15
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_tribute_king",
+      "title": "Lord of Tribute",
+      "description": "Earn 3,000+ gold in total tribute from your territories",
+      "icon": "👑",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "total_tribute",
+        "value": 3000
+      },
+      "reward": {
+        "delta": {
+          "gold": 1000,
+          "reputation": 10
+        }
+      },
+      "xp_reward": 200
+    },
+    {
+      "id": "ach_world_power",
+      "title": "World Power",
+      "description": "Control 5 or more territories to become a true world power",
+      "icon": "🌍",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "territories_owned",
+        "value": 5
+      },
+      "reward": {
+        "delta": {
+          "gold": 1500,
+          "reputation": 15
+        }
+      },
+      "xp_reward": 100
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Silk Road",
+      "definition": "A network of ancient trade routes connecting China to the Mediterranean, active from about 130 BC to 1453 AD. It carried not just silk, but spices, gold, ideas, religions, and technologies between East and West.",
+      "example": "A merchant travels from Chang'an (Xi'an) to Constantinople, trading Chinese silk for Roman glassware along the Silk Road.",
+      "remember_tip": "The Silk Road was the ancient internet — connecting distant civilizations and spreading ideas across continents."
+    },
+    {
+      "term": "Feudalism",
+      "definition": "A medieval social system where lords owned land and granted it to vassals in exchange for military service and loyalty. Peasants (serfs) worked the land and owed a portion of their harvest to the lord.",
+      "example": "A king grants land to a duke, who grants some to a knight, who has peasants farm it — each level owes loyalty to the one above.",
+      "remember_tip": "Feudalism = a pyramid of loyalty. Land was traded for service, from king down to peasant."
+    },
+    {
+      "term": "Renaissance",
+      "definition": "A cultural movement originating in 14th-century Italy meaning 'rebirth,' marking the transition from the medieval to the modern world. It revived interest in Greek and Roman art, science, and philosophy.",
+      "example": "Leonardo da Vinci embodied the Renaissance ideal — he was simultaneously a painter, scientist, engineer, and inventor.",
+      "remember_tip": "Renaissance = rebirth. Europe woke up from the Middle Ages and rediscovered ancient Greek and Roman brilliance."
+    },
+    {
+      "term": "Tribute",
+      "definition": "Payment made by a conquered or subordinate state to a dominant power, often in gold, goods, or labor. It was both a form of taxation and a symbol of political submission.",
+      "example": "The Aztec Empire collected tribute from over 400 conquered cities, including cacao, cotton, jade, and gold.",
+      "remember_tip": "Tribute = rent paid to the conqueror. Control territory, collect tribute — the original passive income."
+    },
+    {
+      "term": "Dynasty",
+      "definition": "A succession of rulers from the same family or lineage. China's history is organized by dynasties, some lasting hundreds of years, such as the Tang (618-907 AD) and Ming (1368-1644 AD).",
+      "example": "The Ming Dynasty ruled China for 276 years, built the Forbidden City, and sent Admiral Zheng He on massive naval expeditions.",
+      "remember_tip": "Dynasty = family power passed from generation to generation. Think royal family running a country like a family business."
+    },
+    {
+      "term": "Pax Mongolica",
+      "definition": "The period of relative peace and stability across the Mongol Empire (13th-14th centuries) that enabled safe trade and cultural exchange across Asia. Similar to Pax Romana in the Roman Empire.",
+      "example": "Marco Polo traveled safely from Venice to China during the Pax Mongolica, writing about wonders Europeans had never seen.",
+      "remember_tip": "Pax = peace. The Mongols were fierce conquerors, but once they won, trade flourished safely across their vast empire."
+    },
+    {
+      "term": "Industrial Revolution",
+      "definition": "The transition from hand production to machine manufacturing, beginning in Britain around 1760-1840. Steam power, factories, and railways transformed society more rapidly than any previous change in human history.",
+      "example": "A textile factory with power looms could produce as much cloth in a day as hundreds of hand weavers working for months.",
+      "remember_tip": "The Industrial Revolution = when machines replaced muscle. It started with textiles in Britain and changed everything."
+    },
+    {
+      "term": "Bushido",
+      "definition": "The 'Way of the Warrior' — the code of honor followed by Japanese samurai, emphasizing loyalty, honor, martial arts, self-discipline, and respect. It influenced Japanese culture for centuries.",
+      "example": "A samurai would rather face death than dishonor, and trained in poetry and tea ceremony as well as swordsmanship.",
+      "remember_tip": "Bushido = the samurai code. It combined fighting skill with artistic refinement and absolute loyalty."
+    }
+  ],
+  "layout_config": {
+    "layout_type": "dashboard",
+    "sidebar_stats": [
+      "gold",
+      "territories_owned",
+      "total_tribute",
+      "empire_value",
+      "reputation"
+    ],
+    "show_board_above_choices": true,
+    "show_leaderboard": true,
+    "stat_display_format": "cards"
+  },
+  "win_conditions": {
+    "style": "reach_finish",
+    "description": "Traverse the ages claiming territories, collecting tribute, and building your civilization empire. Reach the Eternal Glory tile or achieve the highest empire value to win!"
+  },
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "amygdala"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "hippocampus"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "prefrontal_cortex"
+      }
+    ]
+  },
+  "glossary": {
+    "primary_source": {
+      "term": "Primary Source",
+      "definition": "Original, firsthand evidence from the time period being studied — letters, diaries, photographs, official documents.",
+      "example": "Reading a soldier's diary from WWI vs reading a textbook about WWI.",
+      "real_world_example": "The Dead Sea Scrolls are primary sources that revolutionized our understanding of ancient Judaism."
+    },
+    "cause_effect": {
+      "term": "Cause and Effect",
+      "definition": "Understanding how historical events are connected — how one event leads to another in a chain of consequences.",
+      "example": "The assassination of Archduke Franz Ferdinand (cause) triggered World War I (effect).",
+      "real_world_example": "The 2008 financial crisis (cause) led to the Occupy Wall Street movement and major banking reforms (effects)."
+    },
+    "imperialism": {
+      "term": "Imperialism",
+      "definition": "A policy of extending a country's power through colonization, military force, or economic dominance over other nations.",
+      "example": "The British Empire's control over India for nearly 200 years (1757-1947).",
+      "real_world_example": "The Scramble for Africa (1881-1914) saw European powers colonize 90% of the African continent."
+    },
+    "revolution": {
+      "term": "Revolution",
+      "definition": "A fundamental change in political power, social structures, or ways of thinking, often achieved through uprising or dramatic reform.",
+      "example": "The French Revolution overthrew the monarchy and established democratic ideals.",
+      "real_world_example": "The Industrial Revolution transformed society from agriculture-based to manufacturing-based, changing everything."
+    },
+    "democracy": {
+      "term": "Democracy",
+      "definition": "A system of government where power is held by the people through elected representatives or direct participation.",
+      "example": "Citizens voting for their leaders in free and fair elections.",
+      "real_world_example": "Athens, Greece (508 BC) created the world's first democracy — though only male citizens could vote."
+    },
+    "cultural_exchange": {
+      "term": "Cultural Exchange",
+      "definition": "The sharing of ideas, customs, technologies, and art between different civilizations through trade, migration, or conquest.",
+      "example": "The Silk Road facilitated exchange of goods and ideas between China, India, and Europe.",
+      "real_world_example": "Arabic numerals (0-9) were invented in India, refined in the Arab world, and adopted globally — transforming mathematics."
+    }
+  },
+  "win_criteria": [
+    {
+      "id": "highest_gold",
+      "label": "Highest Gold",
+      "metric": "gold",
+      "type": "highest_resource",
+      "icon": "🪙",
+      "weight": 1
+    },
+    {
+      "id": "highest_territories_owned",
+      "label": "Highest Territories",
+      "metric": "territories_owned",
+      "type": "highest_resource",
+      "icon": "🏛️",
+      "weight": 1
+    },
+    {
+      "id": "highest_total_tribute",
+      "label": "Highest Tribute Earned",
+      "metric": "total_tribute",
+      "type": "highest_resource",
+      "icon": "📜",
+      "weight": 1
+    },
+    {
+      "id": "highest_total_taxes_paid",
+      "label": "Highest Taxes Paid",
+      "metric": "total_taxes_paid",
+      "type": "highest_resource",
+      "icon": "💸",
+      "weight": 1
+    },
+    {
+      "id": "resource_balance",
+      "label": "Best Resource Balance",
+      "metric": "all_resources",
+      "type": "balanced_growth",
+      "icon": "⚖️",
+      "weight": 1.5,
+      "description": "Lowest variance across all resource growth percentages"
+    },
+    {
+      "id": "knowledge_mastery",
+      "label": "Knowledge Mastery",
+      "metric": "glossary_terms_learned",
+      "type": "highest_count",
+      "icon": "📚",
+      "weight": 1
+    },
+    {
+      "id": "challenge_champion",
+      "label": "Challenge Champion",
+      "metric": "boss_wins",
+      "type": "highest_count",
+      "icon": "🗡️",
+      "weight": 1
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "resource_multiplier": 1.4,
+      "negative_event_chance": 0.2
+    },
+    "medium": {
+      "resource_multiplier": 1.0,
+      "negative_event_chance": 0.4
+    },
+    "hard": {
+      "resource_multiplier": 0.65,
+      "negative_event_chance": 0.65
+    }
+  },
+  "coach_mode_default": true,
+  "learning_concept": "Strategic Decision Making",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Navigating resource trade-offs on the board",
+      "real_world": "Managing a project budget with competing priorities",
+      "challenge": "List 3 real decisions you made this week that involved trade-offs between short-term and long-term outcomes."
+    },
+    {
+      "skill_tag": "risk_tolerance",
+      "game_context": "Taking bold moves despite uncertain outcomes",
+      "real_world": "Starting a new initiative at school or work without guaranteed success",
+      "challenge": "Identify one situation where you played it too safe. What would you try differently?"
+    }
+  ],
+  "features": {
+    "voice_enabled": true
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.4,
+    "delayed_gratification": 0.35,
+    "risk_tolerance": 0.25
+  },
+  "coaching_moment": "Build your civilization empire! Trade, conquer territories, and lead your people through the ages.",
+  "estimated_duration": 35,
+  "target_age": "12-25",
+  "cultural_context": "History is a compulsory subject in Indian school curricula (CBSE, ICSE, State Boards), and understanding historical events through strategic games supports the deeper contextual analysis required for competitive examinations like UPSC and State PSCs.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "self-regulation",
+    "entrepreneurial-thinking"
+  ],
+  "reflection_prompt": "Which turn was your turning point — and was it skill, luck, or planning?"
+}

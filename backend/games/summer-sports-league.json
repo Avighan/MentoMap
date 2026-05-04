@@ -1,0 +1,4963 @@
+{
+  "game_id": "summer-sports-league",
+  "title": "Summer Sports League",
+  "theme": "A Class 6 student named Avi starts a summer sports league in their housing colony. Make decisions to grow it into something amazing!",
+  "icon": "⚽",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "Build and manage a summer sports league in your housing colony. Navigate financial challenges, rivalry, community dynamics, and learn what it takes to be a young entrepreneur.",
+  "target_audience": "Students",
+  "target_age": "11-12",
+  "grade": "6",
+  "subject": "Entrepreneurship",
+  "topics": [
+    "entrepreneurship",
+    "financial literacy",
+    "leadership",
+    "community building",
+    "decision making"
+  ],
+  "difficulty": "intermediate",
+  "duration_minutes": 45,
+  "tags": [
+    "simulation",
+    "entrepreneurship",
+    "sports",
+    "community",
+    "money management"
+  ],
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "Critical Thinking",
+    "Financial Literacy",
+    "Problem Solving",
+    "Communication"
+  ],
+  "cultural_context": "Indian housing colony, summer vacation setting",
+  "video_url": "/uploads/videos/summer-sports-intro.mp4",
+  "video_label": "Week Story",
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "visual_config": {
+    "theme_preset": "sports_league",
+    "labels": {
+      "subsystems": "League Operations",
+      "resources": "League Status",
+      "news": "Colony News",
+      "stakeholders": "Key People",
+      "decision": "Your Decision"
+    },
+    "icons": {
+      "subsystems": "🏟️",
+      "resources": "📊",
+      "news": "📰",
+      "stakeholders": "👥",
+      "decision": "🤔",
+      "round": "📅"
+    }
+  },
+  "animation_config": {
+    "enabled": true,
+    "intensity": "normal",
+    "scene_transitions": {
+      "type": "slide",
+      "duration_ms": 500,
+      "easing": "easeInOut"
+    },
+    "data_viz_animations": {
+      "counter_roll": true,
+      "sparkline_draw": true,
+      "threshold_pulse": true
+    },
+    "achievement_animations": {
+      "confetti": true,
+      "screen_shake": true,
+      "celebration": true
+    }
+  },
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.15,
+    "delayed_gratification": 0.2,
+    "adaptability": 0.15,
+    "resilience": 0.15,
+    "empathy": 0.15
+  },
+  "how_to_play": [
+    "You are {name}, a {class} student starting a summer sports league in your housing colony.",
+    "Each round (week) presents a real entrepreneurship challenge with 4 choices.",
+    "Watch your League Status dashboard — players, money, reputation, and expenses are all connected.",
+    "Random events like rain, festivals, and equipment damage will test your resilience.",
+    "NPCs (Vikram, Rohit, Sharma Uncle, Meghna, Parents) react to your decisions.",
+    "Hidden metrics track your entrepreneurial thinking, balance, adaptability, vision, and ethics.",
+    "Aim for balanced growth — maximizing one metric at the expense of others will backfire!"
+  ],
+  "learning_objectives": [
+    "Understand basic entrepreneurship concepts: pricing, revenue, expenses, profit",
+    "Practice making decisions with trade-offs and incomplete information",
+    "Develop strategic thinking about resource allocation and growth",
+    "Learn to handle competition, crises, and community dynamics",
+    "Build empathy for diverse stakeholder perspectives",
+    "Understand the difference between short-term gains and long-term sustainability"
+  ],
+  "initial_state": {
+    "players": {
+      "value": 0,
+      "label": "Players",
+      "icon": "👥",
+      "min": 0,
+      "max": 35
+    },
+    "money": {
+      "value": 200,
+      "label": "Money (Rs.)",
+      "icon": "💰",
+      "min": 0,
+      "max": 5000
+    },
+    "reputation": {
+      "value": 30,
+      "label": "Reputation",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "expenses": {
+      "value": 0,
+      "label": "Expenses/Week",
+      "icon": "📉",
+      "min": 0,
+      "max": 500
+    },
+    "eti": {
+      "value": 50,
+      "label": "Entrepreneurial Thinking Index",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "balance_score": {
+      "value": 50,
+      "label": "Balance Score",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "adaptability_quotient": {
+      "value": 50,
+      "label": "Adaptability Quotient",
+      "icon": "🔄",
+      "min": 0,
+      "max": 100
+    },
+    "long_game_vision": {
+      "value": 50,
+      "label": "Long-Game Vision",
+      "icon": "🔭",
+      "min": 0,
+      "max": 100
+    },
+    "ethics_fairness": {
+      "value": 50,
+      "label": "Ethics & Fairness Score",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "simulation_config": {
+    "hidden_resources": [
+      "eti",
+      "balance_score",
+      "adaptability_quotient",
+      "long_game_vision",
+      "ethics_fairness"
+    ],
+    "noise_floor": {
+      "enabled": true,
+      "range": 2
+    },
+    "momentum": {
+      "enabled": true,
+      "min": 0.5,
+      "max": 2.0,
+      "initial": 1.0,
+      "increment": 0.1,
+      "decrement": 0.15
+    },
+    "pattern_penalties": {
+      "enabled": true,
+      "threshold": 6,
+      "tag_penalties": {
+        "Strategic": {
+          "adaptability_quotient": -5
+        },
+        "Grit": {
+          "long_game_vision": -5
+        },
+        "Resilient": {
+          "eti": -3
+        },
+        "Patience": {
+          "_sim_momentum": -0.1
+        },
+        "Risk": {
+          "ethics_fairness": -5
+        },
+        "Empathy": {
+          "balance_score": -5
+        }
+      },
+      "positional_penalty": {
+        "adaptability_quotient": -10
+      }
+    },
+    "scoring_profiles": {
+      "random_selection": true,
+      "profiles": [
+        {
+          "name": "Alpha (The Builder)",
+          "weights": {
+            "eti": 0.25,
+            "balance_score": 0.2,
+            "adaptability_quotient": 0.15,
+            "long_game_vision": 0.25,
+            "ethics_fairness": 0.1
+          }
+        },
+        {
+          "name": "Beta (The Balancer)",
+          "weights": {
+            "eti": 0.15,
+            "balance_score": 0.3,
+            "adaptability_quotient": 0.2,
+            "long_game_vision": 0.1,
+            "ethics_fairness": 0.2
+          }
+        },
+        {
+          "name": "Gamma (The Innovator)",
+          "weights": {
+            "eti": 0.2,
+            "balance_score": 0.1,
+            "adaptability_quotient": 0.3,
+            "long_game_vision": 0.15,
+            "ethics_fairness": 0.1
+          }
+        }
+      ],
+      "grade_table": [
+        {
+          "min": 90,
+          "grade": "S",
+          "title": "Colony Legend"
+        },
+        {
+          "min": 75,
+          "grade": "A",
+          "title": "League Champion"
+        },
+        {
+          "min": 60,
+          "grade": "B",
+          "title": "Solid Organizer"
+        },
+        {
+          "min": 45,
+          "grade": "C",
+          "title": "Decent Try"
+        },
+        {
+          "min": 30,
+          "grade": "D",
+          "title": "Struggling Start"
+        },
+        {
+          "min": 0,
+          "grade": "F",
+          "title": "Back to the Drawing Board"
+        }
+      ],
+      "scoring_formula": "multiplicative"
+    },
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "operations",
+        "label": "League Operations",
+        "icon": "🏟️",
+        "color": "#4F46E5",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, players * 2 + reputation * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "finances",
+        "label": "Finances",
+        "icon": "💰",
+        "color": "#059669",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, money * 0.05 + (200 - expenses) * 0.2))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "community",
+        "label": "Community Trust",
+        "icon": "🤝",
+        "color": "#D97706",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, reputation * 0.6 + ethics_fairness * 0.4))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "growth",
+        "label": "Growth Potential",
+        "icon": "📈",
+        "color": "#7C3AED",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, long_game_vision * 0.5 + adaptability_quotient * 0.3 + eti * 0.2))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "cash_in_hand",
+        "label": "Cash in Hand",
+        "icon": "💵",
+        "formula": "money",
+        "prefix": "₹",
+        "unit": "",
+        "max_value": 5000,
+        "thresholds": {
+          "critical": 50,
+          "warning": 200,
+          "good": 1000
+        }
+      },
+      {
+        "id": "cash_flow",
+        "label": "Cash Flow",
+        "icon": "📊",
+        "formula": "money - (expenses * 4)",
+        "prefix": "₹",
+        "unit": "",
+        "max_value": 5000,
+        "thresholds": {
+          "critical": 0,
+          "warning": 200,
+          "good": 1000
+        }
+      },
+      {
+        "id": "league_health",
+        "label": "League Health",
+        "icon": "❤️",
+        "formula": "max(0, min(100, players * 2 + reputation + money * 0.02))",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 70
+        }
+      },
+      {
+        "id": "sustainability",
+        "label": "Sustainability",
+        "icon": "♻️",
+        "formula": "(money * 0.03 + (100 - expenses * 0.2)) / 2",
+        "unit": "%",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 65
+        }
+      },
+      {
+        "id": "impact",
+        "label": "Community Impact",
+        "icon": "🌟",
+        "formula": "max(0, min(100, reputation * 0.6 + players * 1.5))",
+        "unit": "%",
+        "thresholds": {
+          "critical": 15,
+          "warning": 35,
+          "good": 60
+        }
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "vikram",
+        "name": "Vikram",
+        "role": "friend",
+        "icon": "👦",
+        "initial_mood": "excited",
+        "initial_satisfaction": 70,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "players",
+              "op": ">=",
+              "value": 15
+            },
+            "action": "cheer",
+            "message": "Dude, 15 players! Remember when it was just us two kicking a ball? This is epic!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "money",
+              "op": "<",
+              "value": 100
+            },
+            "action": "warn",
+            "message": "Bro, we're almost out of money. Maybe we should think about cutting something?",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "players",
+                  "op": "<",
+                  "value": 15
+                },
+                {
+                  "resource": "money",
+                  "op": ">=",
+                  "value": 100
+                }
+              ]
+            },
+            "action": "neutral",
+            "message": "Things are okay. Not amazing, not terrible. What's the plan for next week?",
+            "mood_change": "neutral",
+            "satisfaction_delta": 0
+          }
+        ]
+      },
+      {
+        "id": "rohit",
+        "name": "Rohit",
+        "role": "rival",
+        "icon": "😤",
+        "initial_mood": "competitive",
+        "initial_satisfaction": 40,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "reputation",
+              "op": ">",
+              "value": 60
+            },
+            "action": "taunt",
+            "message": "Hmph. Your league is getting popular. Don't get too comfortable — I've got plans too.",
+            "mood_change": "taunting",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "resource": "players",
+              "op": "<",
+              "value": 10
+            },
+            "action": "mock",
+            "message": "Ha! Less than 10 players? My cricket group has more than that. Some 'league' you have there.",
+            "mood_change": "smug",
+            "satisfaction_delta": -5
+          }
+        ]
+      },
+      {
+        "id": "sharma_uncle",
+        "name": "Sharma Uncle",
+        "role": "elder",
+        "icon": "👨",
+        "initial_mood": "skeptical",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "reputation",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "praise",
+            "message": "Beta, I must admit — I didn't think you could pull this off. I'm impressed. Keep going!",
+            "mood_change": "impressed",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "resource": "ethics_fairness",
+              "op": "<",
+              "value": 30
+            },
+            "action": "scold",
+            "message": "Avi, some parents have been talking. They say things aren't being handled fairly. Be careful.",
+            "mood_change": "disapproving",
+            "satisfaction_delta": -8
+          }
+        ]
+      },
+      {
+        "id": "meghna",
+        "name": "Meghna",
+        "role": "sponsor",
+        "icon": "👩",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "players",
+              "op": ">=",
+              "value": 20
+            },
+            "action": "interested",
+            "message": "I've been watching your league. 20 players is impressive for a student-run operation. Let's talk.",
+            "mood_change": "interested",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "reputation",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "offer",
+            "message": "Your reputation is solid. I might have a coaching proposal for you. Stay tuned.",
+            "mood_change": "offering",
+            "satisfaction_delta": 5
+          }
+        ]
+      },
+      {
+        "id": "parents_group",
+        "name": "Parents Group",
+        "role": "stakeholders",
+        "icon": "👪",
+        "initial_mood": "cautious",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "expenses",
+              "op": ">",
+              "value": 80
+            },
+            "action": "concerned",
+            "message": "The weekly expenses seem high. Are you sure this is being managed well? Our children's safety matters most.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "reputation",
+              "op": ">=",
+              "value": 50
+            },
+            "action": "support",
+            "message": "The kids are having a great time and learning too. We support what you're doing, Avi!",
+            "mood_change": "supportive",
+            "satisfaction_delta": 5
+          }
+        ]
+      },
+      {
+        "id": "raju_kaka",
+        "name": "Raju Kaka",
+        "role": "watchman",
+        "emoji": "🧑‍💼",
+        "mood": "helpful",
+        "description": "The colony watchman — sees everything, gossips everything."
+      },
+      {
+        "id": "meera",
+        "name": "Meera",
+        "role": "best_friend",
+        "emoji": "👧",
+        "mood": "supportive",
+        "description": "Your best friend — always there with a 'just try it' push."
+      },
+      {
+        "id": "arjun",
+        "name": "Arjun",
+        "role": "young_player",
+        "emoji": "🧒",
+        "mood": "enthusiastic",
+        "description": "One of the younger players — eager but shy."
+      },
+      {
+        "id": "ananya",
+        "name": "Ananya",
+        "role": "young_player",
+        "emoji": "👧",
+        "mood": "sensitive",
+        "description": "A young player — her father Gupta uncle is protective."
+      },
+      {
+        "id": "gupta_uncle",
+        "name": "Gupta Uncle",
+        "role": "parent",
+        "emoji": "👨‍🦳",
+        "mood": "protective",
+        "description": "Ananya's father — holds you accountable for safety."
+      },
+      {
+        "id": "mrs_kapoor",
+        "name": "Mrs. Kapoor",
+        "role": "neighbor",
+        "emoji": "👩",
+        "mood": "tired",
+        "description": "A night-shift nurse — needs morning quiet."
+      },
+      {
+        "id": "mr_joshi",
+        "name": "Mr. Joshi",
+        "role": "neighbor",
+        "emoji": "👨",
+        "mood": "skeptical",
+        "description": "Retired cricket coach — starts as complainer, can become ally."
+      },
+      {
+        "id": "rakesh",
+        "name": "Rakesh",
+        "role": "shop_owner",
+        "emoji": "🏪",
+        "mood": "friendly",
+        "description": "The local sports shop owner — can be generous if you earn trust."
+      },
+      {
+        "id": "rohan",
+        "name": "Rohan",
+        "role": "assistant",
+        "emoji": "🧑",
+        "mood": "loyal",
+        "description": "One of your assistant organizers — sometimes unfairly blamed."
+      }
+    ],
+    "random_events": [
+      {
+        "id": "rain_day",
+        "label": "Rainy Day",
+        "icon": "🌧️",
+        "description": "Unexpected rain disrupts today's matches.",
+        "probability": 0.2,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 3
+        },
+        "effects": [
+          {
+            "resource": "players",
+            "delta": -3
+          },
+          {
+            "resource": "reputation",
+            "delta": 2
+          }
+        ],
+        "cooldown": 3,
+        "news_text": "Rainy day! Some kids couldn't make it today.",
+        "ai_image_prompt": "Indian housing colony playground in rain, kids running for cover, puddles on cricket pitch, cartoon style, age 11-12 friendly"
+      },
+      {
+        "id": "colony_festival",
+        "label": "Colony Festival",
+        "icon": "🎉",
+        "description": "A colony festival brings new faces and energy.",
+        "probability": 0.15,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 5
+        },
+        "effects": [
+          {
+            "resource": "reputation",
+            "delta": 5
+          },
+          {
+            "resource": "players",
+            "delta": 3
+          }
+        ],
+        "cooldown": 4,
+        "news_text": "Colony festival brings new faces to your league!",
+        "ai_image_prompt": "Indian housing colony festival, colorful decorations, kids playing sports, community gathering, cartoon style, festive and fun"
+      },
+      {
+        "id": "equipment_damage",
+        "label": "Equipment Damage",
+        "icon": "🛠️",
+        "description": "Some equipment got damaged and needs replacement.",
+        "probability": 0.1,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 4
+        },
+        "effects": [
+          {
+            "resource": "money",
+            "delta": -100
+          },
+          {
+            "resource": "expenses",
+            "delta": 20
+          }
+        ],
+        "cooldown": 5,
+        "news_text": "Some equipment got damaged and needs replacement.",
+        "ai_image_prompt": "Broken cricket bat, torn football, damaged sports equipment on Indian playground, cartoon style, slightly sad mood"
+      },
+      {
+        "id": "word_of_mouth",
+        "label": "Word of Mouth",
+        "icon": "🗣️",
+        "description": "Good reviews are spreading about your league.",
+        "probability": 0.25,
+        "condition": {
+          "resource": "reputation",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "players",
+            "delta": 2
+          }
+        ],
+        "cooldown": 2,
+        "news_text": "Good reviews! Word is spreading about your league.",
+        "ai_image_prompt": "Indian parents chatting at colony gate, smiling, kids playing sports in background, word spreading, cartoon style, warm community vibe"
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "money",
+          "op": "<",
+          "value": 100
+        },
+        "icon": "⚠️",
+        "text": "⚠️ Funds running low! You have only Rs.{money} left.",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "resource": "players",
+          "op": ">=",
+          "value": 25
+        },
+        "icon": "🎉",
+        "text": "🎉 Your league has {players} players! That's impressive!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "reputation",
+          "op": ">=",
+          "value": 70
+        },
+        "icon": "⭐",
+        "text": "⭐ People in the colony are talking about how well you run things!",
+        "severity": "positive"
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "reputation",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "players",
+        "equilibrium": 10,
+        "rate": 0.02,
+        "direction": "toward"
+      }
+    ],
+    "difficulty_curve": [
+      {
+        "label": "Tutorial",
+        "rounds": [
+          0,
+          1,
+          2
+        ],
+        "hints_visible": true
+      },
+      {
+        "label": "Core",
+        "rounds": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "hints_visible": false
+      },
+      {
+        "label": "Mastery",
+        "rounds": [
+          10,
+          11
+        ],
+        "hints_visible": false
+      }
+    ],
+    "checkpoints": [
+      {
+        "after_round": 4,
+        "label": "Mid-Season Check",
+        "message": "You've completed the first half of summer! Take a moment to review your league's progress."
+      },
+      {
+        "after_round": 8,
+        "label": "Crisis Recovery Check",
+        "message": "You've survived the toughest weeks. How's your league looking heading into the final stretch?"
+      }
+    ],
+    "ai_scene_prompt_template": "An Indian housing colony summer sports league run by a Class 6 student named Avi, {players} kids playing, Rs.{money} budget, reputation {reputation}/100. Cartoon Pixar style, vibrant colors, age 11-12 friendly. Mood: {'thriving' if reputation > 60 else 'struggling' if reputation < 30 else 'growing'}.",
+    "option_replacements": {
+      "7": [
+        {
+          "requires_flag": "partnership",
+          "replace_index": 1,
+          "new_choice": {
+            "id": "r7_b_cofounder",
+            "label": "B. Negotiate with your co-founder who wants more control",
+            "delta": {
+              "money": -20,
+              "reputation": 2
+            },
+            "delayed_effects": [],
+            "hidden_modifiers": {
+              "eti": 6,
+              "balance_score": 3,
+              "ethics_fairness": 5
+            },
+            "skill_tags": [
+              "Empathy",
+              "Strategic"
+            ],
+            "feedback": "Tough conversation, but the co-founder respects you for listening. A sustainable compromise lets the league keep growing without a power struggle.",
+            "flags_set": {
+              "cofounder_resolved": true
+            }
+          }
+        }
+      ],
+      "10": [
+        {
+          "requires_flag": "moat_builder",
+          "replace_index": 3,
+          "new_choice": {
+            "id": "r10_d_moat_special",
+            "label": "D. Leverage your mentorship program — run an exclusive indoor workshop series",
+            "delta": {
+              "players": 6,
+              "money": -40,
+              "reputation": 10
+            },
+            "delayed_effects": [
+              {
+                "delay_ticks": 2,
+                "effects": [
+                  {
+                    "resource": "players",
+                    "delta": 3
+                  }
+                ]
+              }
+            ],
+            "hidden_modifiers": {
+              "eti": 12,
+              "long_game_vision": 8,
+              "adaptability_quotient": 6,
+              "balance_score": 4
+            },
+            "skill_tags": [
+              "Strategic",
+              "Grit"
+            ],
+            "feedback": "Your Round 6 moat pays off BIG. The workshop series becomes the colony's most-discussed summer program. This is the highest single-round score in the game.",
+            "flags_set": {
+              "moat_activated": true
+            }
+          }
+        }
+      ],
+      "11": [
+        {
+          "requires_flag": "rohit_merger",
+          "replace_index": 0,
+          "new_choice": {
+            "id": "r11_a_three_way",
+            "label": "A. Accept Meghna's offer — but negotiate as a THREE-way with Rohit included",
+            "delta": {
+              "money": 3000,
+              "reputation": 12
+            },
+            "delayed_effects": [],
+            "hidden_modifiers": {
+              "eti": 8,
+              "long_game_vision": 7,
+              "ethics_fairness": 5,
+              "balance_score": 4
+            },
+            "skill_tags": [
+              "Strategic",
+              "Empathy"
+            ],
+            "feedback": "Three-way partnerships are harder, but the combined league has real muscle. Meghna raises upfront to Rs.3000.",
+            "flags_set": {
+              "three_way_partner": true
+            }
+          }
+        }
+      ]
+    }
+  },
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          0,
+          2
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 4
+      },
+      {
+        "name": "core",
+        "rounds": [
+          3,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": null,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          11
+        ],
+        "hints_visible": false,
+        "timer_seconds": null,
+        "max_choices": 4
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "Revenue",
+      "definition": "The total money coming into your business. For Avi's league, revenue comes from player fees and special events. Revenue is NOT the same as profit — you still have to subtract expenses."
+    },
+    {
+      "term": "Expenses",
+      "definition": "The money going OUT of your business to keep it running. Equipment, water, renting space — these are all expenses. Lower expenses mean more profit, but cutting too much can hurt quality."
+    },
+    {
+      "term": "Profit",
+      "definition": "What's left after you subtract expenses from revenue. Profit = Revenue - Expenses. A business needs positive profit to survive long-term."
+    },
+    {
+      "term": "Pricing Strategy",
+      "definition": "How you decide what to charge. Price too high and you lose customers. Price too low and you can't cover costs. The best price balances affordability with sustainability."
+    },
+    {
+      "term": "Market Segmentation",
+      "definition": "Dividing your customers into groups based on their needs. Like having a Junior and Senior division — same league, but tailored experiences for different groups."
+    },
+    {
+      "term": "Competition",
+      "definition": "When someone else offers a similar product or service. Rohit starting his own league is competition. It pushes you to be better, but it can also squeeze your margins."
+    },
+    {
+      "term": "Value Proposition",
+      "definition": "The unique reason someone should choose YOUR league over alternatives. It's not just about price — it's about the total experience: coaching, community, fun, learning."
+    },
+    {
+      "term": "Delegation",
+      "definition": "Giving tasks to others instead of doing everything yourself. Great leaders delegate so they can focus on the big picture. Hiring Priya as assistant coach is delegation."
+    },
+    {
+      "term": "Sustainability",
+      "definition": "Can your business keep running for a long time? A sustainable business covers its costs, keeps customers happy, and doesn't burn out its founder."
+    },
+    {
+      "term": "ROI (Return on Investment)",
+      "definition": "How much value you get back from money you spend. If you spend Rs.900 on equipment and it helps you keep 5 more players (Rs.200/week each), that's a great ROI."
+    },
+    {
+      "term": "Crowdfunding",
+      "definition": "Raising money from a group of people, each contributing a small amount. Asking parents to chip in for equipment is a form of crowdfunding."
+    },
+    {
+      "term": "Pivot",
+      "definition": "Changing your business direction when circumstances change. Moving from outdoor to indoor games during monsoon is a pivot. The best entrepreneurs pivot fast."
+    },
+    {
+      "term": "Franchise",
+      "definition": "A business model where someone creates a system that others can copy and run in different locations. Writing 'The League Playbook' so other colonies can start their own league is creating a franchise model."
+    },
+    {
+      "term": "Stakeholder",
+      "definition": "Anyone who is affected by or has an interest in your business. Players, parents, neighbors, Sharma Uncle — they're all stakeholders in Avi's league."
+    },
+    {
+      "term": "Moat",
+      "definition": "Something that protects your business from competition, like a castle moat. Unique features that competitors can't easily copy — like coaching certificates or a parent WhatsApp group — are your moat."
+    }
+  ],
+  "endings": [
+    {
+      "id": "colony_legend",
+      "type": "triumph",
+      "title": "Colony Legend",
+      "icon": "🏆",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "reputation",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "players",
+            "operator": ">=",
+            "value": 20
+          }
+        ]
+      },
+      "message": "You did it! You built something incredible from nothing — just a kid with Rs.200 and a dream. Your summer sports league became the talk of the entire colony. Parents trust you, kids adore you, and even Rohit secretly admires what you built. Sharma Uncle tells everyone about 'that brilliant Class 6 entrepreneur.' You didn't just run a league — you proved that age is just a number when it comes to leadership. Colony Legend status: UNLOCKED."
+    },
+    {
+      "id": "league_champion",
+      "type": "triumph",
+      "title": "League Champion",
+      "icon": "🏅",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "reputation",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "players",
+            "operator": ">=",
+            "value": 15
+          }
+        ]
+      },
+      "message": "A strong showing! Your league had its ups and downs, but you kept it running all summer. Players had fun, parents were mostly happy, and you learned more about business in 12 weeks than most adults learn in years. You made tough calls, handled crises, and came out stronger. League Champion — well earned!"
+    },
+    {
+      "id": "solid_organizer",
+      "type": "growth",
+      "title": "Solid Organizer",
+      "icon": "👍",
+      "rarity": "common",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "reputation",
+            "operator": ">=",
+            "value": 45
+          },
+          {
+            "resource": "players",
+            "operator": ">=",
+            "value": 8
+          }
+        ]
+      },
+      "message": "Not bad at all! Your league was a decent operation — some weeks were great, some were tough. You kept things going even when it got hard. The experience taught you valuable lessons about money, people, and leadership. With what you know now, next summer could be legendary."
+    },
+    {
+      "id": "learning_experience",
+      "type": "growth",
+      "title": "Learning Experience",
+      "icon": "📝",
+      "rarity": "common",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "reputation",
+            "operator": ">=",
+            "value": 30
+          }
+        ]
+      },
+      "message": "Your league struggled, but every failure teaches something valuable. Maybe the pricing was off, or a crisis hit too hard, or you made a few wrong calls. That's okay! The greatest entrepreneurs in history failed multiple times before succeeding. The fact that you TRIED puts you ahead of everyone who didn't."
+    },
+    {
+      "id": "back_to_drawing_board",
+      "type": "decline",
+      "title": "Back to the Drawing Board",
+      "icon": "📚",
+      "rarity": "common",
+      "conditions": {},
+      "message": "The league didn't survive the summer. Maybe the money ran out, or players left, or the crises were too much. But here's the secret: EVERY great entrepreneur has a story of their first failure. This isn't the end — it's the beginning of your learning journey. Come back, try different strategies, and build something amazing. The playground is waiting."
+    },
+    {
+      "id": "legacy_handoff",
+      "type": "triumph",
+      "title": "The Mentor",
+      "icon": "🌱",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "flag": "legacy_handoff",
+            "op": "set"
+          }
+        ]
+      },
+      "message": "You sit under the banyan tree where it all began. Two younger kids, Kabir and Neha, are huddled next to you, notebook open, taking furious notes. You walk them through the schedule, the payment system, the team rotation — everything. When you hand over the scorebook, Kabir holds it like it's a cricket trophy. Next summer, this won't be your league. It'll be theirs. And the summer after that, someone else's. You're not just leaving a league behind. You're leaving a pattern. Legacy isn't what you keep. It's what keeps going without you."
+    },
+    {
+      "id": "legacy_scale",
+      "type": "triumph",
+      "title": "The Author",
+      "icon": "📚",
+      "rarity": "legendary",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "flag": "legacy_scale",
+            "op": "set"
+          }
+        ]
+      },
+      "message": "The Summer Sports League Manual, printed in crisp blue ink, sits in your hands. Fifty pages. Every mistake you made, every system you built, every NPC you navigated — documented. You've already emailed it to three parent WhatsApp groups in nearby colonies. One mother from Greater Noida messaged back within an hour: 'We're starting this next week.' The most satisfying thing about leadership isn't being the hero of one story. It's writing the playbook so a hundred heroes can rise. You didn't just build a league. You built a template. That's scale."
+    },
+    {
+      "id": "legacy_hold",
+      "type": "growth",
+      "title": "The Loyalist",
+      "icon": "🛡️",
+      "rarity": "common",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "flag": "legacy_hold",
+            "op": "set"
+          }
+        ]
+      },
+      "message": "Weekends are yours now. Saturday mornings, the compound fills up. You've cut the league down — shorter sessions, fewer kids, lower intensity — but it's still alive. Your math teacher notices you're tired. Your cousin says you're 'obsessed.' But every Saturday, Arjun asks when the next tournament is, and that's all you need. The league is smaller. Your ownership is total. This is the quieter choice — the one where you don't let go. Not everything has to scale. Some things just have to survive."
+    },
+    {
+      "id": "legacy_close",
+      "type": "triumph",
+      "title": "The Celebration",
+      "icon": "🎉",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "flag": "legacy_close",
+            "op": "set"
+          }
+        ]
+      },
+      "message": "The final tournament runs on a perfect cloudless Sunday. Three sports, four hours, twenty-five players, sixty parents watching. You hand out medals you spent Rs.100 making. Gupta uncle — yes, Gupta uncle — shakes your hand at the end: 'Well done, beta. Ananya wouldn't stop talking about you at dinner.' When the banyan tree casts its long evening shadow over an empty compound, you feel something strange: peace. You didn't drag the league into the school year where it would've slowly faded. You ended it on its highest note. Sometimes the best founders are the ones who know when to close beautifully."
+    }
+  ],
+  "rounds": [
+    {
+      "round_id": "week_1",
+      "round_title": "Round 1: The Big Idea",
+      "title": "The Big Idea",
+      "situation": "It's Day 10 of summer vacation. You're lying on the sofa watching your ceiling fan spin, the TV remote long lost behind the cushions. Through the window you can see Arjun and his sister sitting on the compound wall, doing absolutely nothing. Down the lane, three kids are throwing stones at a mango tree because there's literally nothing else to do.\n\nThat's when the idea hits you. What if you organized a proper sports league? Not just random games, but a real league with teams, scores, rotations between cricket, football, and badminton, and a winner certificate every Friday. You could charge Rs.50 per week per kid. With 35 kids in the colony, that's potentially Rs.1,750 a week if everyone joins.\n\nBut wait. You've never done anything like this before. Do kids even want a structured league? Will parents pay? Your friend Meera says, \"Just start and see what happens.\" Your older cousin says, \"Do some research first, you'll waste time otherwise.\"",
+      "goal": "Decide how to launch your summer sports league",
+      "coaching_moment": "Market validation means asking one simple question BEFORE you start: does anyone actually want what I'm about to build?",
+      "ai_image_prompt": "A cheerful Indian boy (age 11) standing in an empty housing colony playground during summer vacation, looking at the empty field with a spark of an idea, cricket bat and football nearby, cartoon Pixar style, warm sunny morning, vibrant colors",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-1.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r1_a",
+          "label": "Go door-to-door and ask 10 families if they'd pay",
+          "description": "+ Real data before you invest time; builds early buzz. - Takes 2 days; some families might say no and shake your confidence.",
+          "delta": {
+            "players": 0,
+            "money": 0,
+            "reputation": 5
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 8,
+            "long_game_vision": 6,
+            "adaptability_quotient": 2,
+            "balance_score": 4
+          },
+          "skill_tags": [
+            "Strategic",
+            "Patience"
+          ],
+          "feedback": "Smart move! You talked to 15 families and found 8 interested kids. You didn't spend a single rupee, and now you know exactly what people want. Word is already spreading.",
+          "flags_set": {
+            "prepared_founder": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "Parents noticed — the colony is talking about your league."
+          ]
+        },
+        {
+          "id": "r1_b",
+          "label": "Just start tomorrow with whoever shows up",
+          "description": "+ Instant action; you learn by doing from day one. - No preparation; could be chaotic and turn kids off permanently.",
+          "delta": {
+            "players": 8,
+            "money": 0,
+            "reputation": 2
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": -4
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 2,
+            "long_game_vision": -3,
+            "adaptability_quotient": 5,
+            "balance_score": -2
+          },
+          "skill_tags": [
+            "Risk",
+            "Empathy"
+          ],
+          "feedback": "Wow! 8 kids showed up and had a blast. But some came just for the free fun — will they return when you start charging? The chaos was fun but... was it sustainable?",
+          "flags_set": {
+            "chaos_founder": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 8 new players",
+              "amount": 400,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "8 new kids signed up — word is spreading."
+          ]
+        },
+        {
+          "id": "r1_c",
+          "label": "Start a WhatsApp group and post a cool flyer",
+          "description": "+ Modern approach; reaches everyone at once; feels professional. - Parents might ignore it; no personal touch; flyer doesn't answer questions.",
+          "delta": {
+            "players": 4,
+            "money": 0,
+            "reputation": 8
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": -2
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 5,
+            "long_game_vision": 2,
+            "adaptability_quotient": 3,
+            "balance_score": 1
+          },
+          "skill_tags": [
+            "Strategic",
+            "Grit"
+          ],
+          "feedback": "The posters look great! Parents are impressed by how organized you seem. 4 kids sign up. But... some might lose interest if the actual experience doesn't match the polished image.",
+          "flags_set": {
+            "digital_founder": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 4 new players",
+              "amount": 200,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "4 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league."
+          ]
+        },
+        {
+          "id": "r1_d",
+          "label": "Ask your best friend to co-organize and split the work",
+          "description": "+ Half the effort; built-in support; more fun. - Split the money; disagreements later; dependency on someone else.",
+          "delta": {
+            "players": 2,
+            "money": 0,
+            "reputation": 3
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 5
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 4,
+            "long_game_vision": 4,
+            "ethics_fairness": 6,
+            "balance_score": 3
+          },
+          "skill_tags": [
+            "Empathy",
+            "Strategic"
+          ],
+          "flags_set": {
+            "partnership": true
+          },
+          "feedback": "Vikram is excited! His circle of friends doubles your reach. But remember — 50/50 means sharing all future income too. A partner is for the whole journey.",
+          "cost_tier": "all_in",
+          "ledger_entries": [
+            {
+              "label": "League fees · 2 new players",
+              "amount": 100,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "2 new kids signed up — word is spreading."
+          ]
+        }
+      ],
+      "concept": "Market Validation & Demand Testing",
+      "badge": {
+        "id": "visionary",
+        "label": "Visionary",
+        "icon": "🔭"
+      },
+      "emotional_beat": "Excitement / Hope",
+      "target_emotion": "Excitement / Hope",
+      "emotional_intensity": 7,
+      "ripple_bullets": {
+        "r1_a": [
+          "Parents noticed — the colony is talking about your league."
+        ],
+        "r1_b": [
+          "8 new kids signed up — word is spreading."
+        ],
+        "r1_c": [
+          "4 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league."
+        ],
+        "r1_d": [
+          "2 new kids signed up — word is spreading."
+        ]
+      },
+      "transition_headline": "The thrill of a new idea is real — but every choice plants a seed for what comes next."
+    },
+    {
+      "round_id": "week_2",
+      "round_title": "Round 2: What's the Right Price?",
+      "title": "What's the Right Price?",
+      "situation": "Week 1 of the league is done. You've got players showing up and the energy is real. But now the money question hits hard. You set Rs.50 per week as the entry fee, but reactions are mixed.\n\nRohan's mom stopped you at the gate this morning: \"Rs.50 every week? That's Rs.200 a month! My son can play for free in the park.\" Meanwhile, Arjun's dad actually said, \"Only Rs.50? For a proper organized league with certificates? That's very reasonable, beta.\"\n\nThree kids dropped out after Week 1 saying it's too expensive. But two NEW kids from the adjacent lane want to join because they heard it's 'a real league, not just random play.'\n\nYou sit under the banyan tree, calculator in hand, weighing your options. Your costs are real: shuttlecocks (Rs.60/week), a proper football (Rs.150 one-time), and certificates (Rs.5 each). Price too low, you can't sustain this. Too high, and half the colony walks.",
+      "goal": "Set a sustainable pricing model",
+      "coaching_moment": "Pricing isn't just math — it's psychology. Your price is your first advertisement.",
+      "ai_image_prompt": "An Indian boy (age 11) sitting at a small table in a housing colony park, writing prices on a board, kids playing sports in the background, Rs. symbols, cartoon Pixar style, warm afternoon light, thinking expression",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-2.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r2_a",
+          "label": "Keep Rs.50/week — hold your ground",
+          "description": "+ Consistent; you already set expectations; shows confidence. - Lose the 3 price-sensitive kids permanently.",
+          "delta": {
+            "players": -3,
+            "money": 80,
+            "reputation": 2
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 2
+                },
+                {
+                  "resource": "players",
+                  "delta": 1
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 4,
+            "long_game_vision": 5,
+            "balance_score": 4,
+            "ethics_fairness": 2
+          },
+          "skill_tags": [
+            "Patience",
+            "Grit"
+          ],
+          "feedback": "Some kids grumble but pay. You lose 3 price-sensitive kids permanently, but your income is steady and reliable. Holding your price sent a signal that this league is worth something.",
+          "flags_set": {
+            "price_anchor": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "Extra revenue this week",
+              "amount": 80,
+              "kind": "in",
+              "icon": "💵"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "3 kids walked away this week.",
+            "Cash is flowing in — you have breathing room."
+          ]
+        },
+        {
+          "id": "r2_b",
+          "label": "Drop to Rs.30/week — get everyone in",
+          "description": "+ Maximum players; nobody can complain about price. - Revenue drops 40%; may not cover costs; hard to raise price later.",
+          "delta": {
+            "players": 6,
+            "money": 40,
+            "reputation": 5
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "money",
+                  "delta": -60
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 1,
+            "long_game_vision": -5,
+            "balance_score": -3,
+            "ethics_fairness": 3
+          },
+          "skill_tags": [
+            "Empathy",
+            "Risk"
+          ],
+          "feedback": "Everyone's happy! But Rs.20 barely covers water bottles. You're essentially running a charity. How long can this last?",
+          "flags_set": {
+            "discount_founder": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "metric": "money",
+                "op": "<",
+                "value": 150
+              },
+              "apply": {
+                "eti": -8
+              },
+              "reason": "Dropping price when cash is low is reckless"
+            },
+            {
+              "if": {
+                "metric": "money",
+                "op": ">",
+                "value": 300
+              },
+              "apply": {
+                "eti": 3
+              },
+              "reason": "Price experiment is affordable at this cash level"
+            }
+          ],
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 6 new players",
+              "amount": 300,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Extra revenue this week",
+              "amount": 40,
+              "kind": "in",
+              "icon": "💵"
+            }
+          ],
+          "ripple_bullets": [
+            "6 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league."
+          ]
+        },
+        {
+          "id": "r2_c",
+          "label": "Create two tiers: Rs.30 basic, Rs.70 premium with jersey",
+          "description": "+ Something for everyone; premium kids subsidize others; feels professional. - Complex to manage; creates visible inequality between kids.",
+          "delta": {
+            "players": 4,
+            "money": 100,
+            "reputation": 3
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": -3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 9,
+            "long_game_vision": 6,
+            "ethics_fairness": -2,
+            "balance_score": 2
+          },
+          "skill_tags": [
+            "Strategic",
+            "Risk"
+          ],
+          "flags_set": {
+            "tiered_pricing": true,
+            "segmentation": true
+          },
+          "feedback": "Clever! 6 kids go premium for the jersey. But some basic-tier kids feel like second-class members. Is a two-tier system fair when everyone's playing together?",
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 4 new players",
+              "amount": 200,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Extra revenue this week",
+              "amount": 100,
+              "kind": "in",
+              "icon": "💵"
+            }
+          ],
+          "ripple_bullets": [
+            "4 new kids signed up — word is spreading.",
+            "Cash is flowing in — you have breathing room."
+          ]
+        },
+        {
+          "id": "r2_d",
+          "label": "Make it free this week, then decide later",
+          "description": "+ Buys time; gets maximum data; keeps everyone happy today. - Sets a dangerous precedent; hard to reintroduce payment; you absorb all costs.",
+          "delta": {
+            "players": 8,
+            "money": -20,
+            "reputation": 6
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": -5
+                },
+                {
+                  "resource": "reputation",
+                  "delta": -8
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": -3,
+            "long_game_vision": -7,
+            "adaptability_quotient": -4,
+            "balance_score": -5
+          },
+          "skill_tags": [
+            "Empathy",
+            "Risk"
+          ],
+          "feedback": "Packed house! But you've set a dangerous precedent. When you announce fees next week, expect backlash. Free is very hard to un-do.",
+          "flags_set": {
+            "precedent_trap": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 8 new players",
+              "amount": 400,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "One-time expense",
+              "amount": -20,
+              "kind": "out",
+              "icon": "💸"
+            }
+          ],
+          "ripple_bullets": [
+            "8 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league."
+          ]
+        }
+      ],
+      "concept": "Pricing Strategy & Value Perception",
+      "badge": {
+        "id": "money_mind",
+        "label": "Money Mind",
+        "icon": "💰"
+      },
+      "emotional_beat": "Confidence mixed with first uncertainty",
+      "target_emotion": "Confidence mixed with first uncertainty",
+      "emotional_intensity": 6,
+      "ripple_bullets": {
+        "r2_a": [
+          "3 kids walked away this week.",
+          "Cash is flowing in — you have breathing room."
+        ],
+        "r2_b": [
+          "6 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league."
+        ],
+        "r2_c": [
+          "4 new kids signed up — word is spreading.",
+          "Cash is flowing in — you have breathing room."
+        ],
+        "r2_d": [
+          "8 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league."
+        ]
+      },
+      "transition_headline": "Pricing isn't math. It's psychology — and you just felt it."
+    },
+    {
+      "round_id": "week_3",
+      "round_title": "Round 3: Getting Equipped",
+      "title": "Getting Equipped",
+      "situation": "The league is picking up steam. You've got a routine going: cricket on Monday-Wednesday, football on Thursday-Friday, badminton on Saturday. The problem? Your equipment is embarrassing.\n\nThe old cricket bat has a crack running down the handle, held together with electrical tape. The football you borrowed from Meera is so deflated it barely bounces. And you don't even OWN badminton rackets; you've been borrowing two mismatched ones from Auntie next door (who wants them back for her Pune trip next week).\n\nRakesh, the local sports shop owner on Main Road, knows you've been running the league. He pulls you aside: \"Beta, I can give you a starter kit: 2 cricket bats, a real football, 4 badminton rackets, shuttlecocks (50-pack), and a bag of tennis balls. Full price is Rs.400. For you? Rs.250. But I need cash upfront.\"\n\nYou check your wallet and your collection tin. Rs.250 is a lot when you count every rupee you've earned. Every rupee counts.",
+      "goal": "Decide how to equip the league within your budget",
+      "coaching_moment": "Resource management asks: what do I NEED vs. what do I WANT vs. what can I WAIT for? The best entrepreneurs separate these ruthlessly.",
+      "ai_image_prompt": "A sports equipment shop display in an Indian market, cricket bats, footballs, badminton rackets with price tags in Rupees, a young Indian boy comparing options, cartoon Pixar style, colorful and detailed",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-3.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r3_a",
+          "label": "Buy the full kit for Rs.250 (invest in quality)",
+          "description": "+ Professional equipment; kids will love it; solves ALL equipment problems at once. - Massive cash hit; almost wipes out your reserves.",
+          "delta": {
+            "players": 3,
+            "money": -250,
+            "reputation": 8,
+            "expenses": 0
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 6,
+            "long_game_vision": 5,
+            "balance_score": -3,
+            "ethics_fairness": 1
+          },
+          "skill_tags": [
+            "Strategic",
+            "Risk"
+          ],
+          "feedback": "The full kit looks amazing — 2 bats, a real football, 4 rackets, shuttlecocks, tennis balls. Kids are thrilled. But you just wiped out most of your reserves. One bad week and you're in trouble.",
+          "skill_tags_note": "Strategic, Risk",
+          "flags_set": {
+            "full_kit": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "prepared_founder"
+              },
+              "apply": {
+                "money": 25,
+                "eti": 2
+              },
+              "reason": "Rakesh gives 10% extra off — you seem serious"
+            }
+          ],
+          "cost_tier": "significant",
+          "ledger_entries": [
+            {
+              "label": "League fees · 3 new players",
+              "amount": 150,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Equipment full kit (Rakesh)",
+              "amount": -250,
+              "kind": "out",
+              "icon": "🏏"
+            }
+          ],
+          "ripple_bullets": [
+            "3 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Your cash took a hit — runway is thinner now."
+          ]
+        },
+        {
+          "id": "r3_b",
+          "label": "Buy only essentials: 1 bat + football + 2 rackets (Rs.120)",
+          "description": "+ Covers basics; keeps half your money; smart budgeting. - Still looks somewhat scrappy; badminton days limited to 2 players at a time.",
+          "delta": {
+            "players": 1,
+            "money": -120,
+            "reputation": 4
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 2
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 7,
+            "long_game_vision": 4,
+            "balance_score": 6,
+            "ethics_fairness": 2
+          },
+          "skill_tags": [
+            "Strategic",
+            "Patience"
+          ],
+          "feedback": "Solid choice. New balls and a decent bat — not flashy, but functional. You still have money for emergencies. The best of both worlds.",
+          "flags_set": {
+            "essentials_kit": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "prepared_founder"
+              },
+              "apply": {
+                "money": 12,
+                "eti": 2
+              },
+              "reason": "Rakesh gives 10% extra off — you seem serious"
+            }
+          ],
+          "cost_tier": "significant",
+          "ledger_entries": [
+            {
+              "label": "League fees · 1 new player",
+              "amount": 50,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Essentials purchase",
+              "amount": -120,
+              "kind": "out",
+              "icon": "💸"
+            }
+          ],
+          "ripple_bullets": [
+            "1 new kid signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Your cash took a hit — runway is thinner now."
+          ]
+        },
+        {
+          "id": "r3_c",
+          "label": "Ask each player's family to contribute Rs.20 for equipment",
+          "description": "+ Zero personal cost; collective ownership; parents feel invested. - Awkward to ask; some families will refuse; takes a week to collect.",
+          "delta": {
+            "players": -2,
+            "money": 0,
+            "reputation": -3
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 5
+                },
+                {
+                  "resource": "players",
+                  "delta": 3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 5,
+            "long_game_vision": 6,
+            "ethics_fairness": 5,
+            "balance_score": 4
+          },
+          "skill_tags": [
+            "Empathy",
+            "Strategic"
+          ],
+          "flags_set": {
+            "community_funded": true,
+            "crowdfund_allies": true
+          },
+          "feedback": "Awkward at first — some families feel put on the spot. But the families who contribute feel invested in the league's success. They become your biggest supporters.",
+          "cost_tier": "significant",
+          "ledger_entries": [
+            {
+              "label": "League fees (10 players × Rs.50)",
+              "amount": 500,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 10 active players."
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -50,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "2 kids walked away this week."
+          ]
+        },
+        {
+          "id": "r3_d",
+          "label": "Scrounge free alternatives from colony families",
+          "description": "+ Costs nothing; builds community goodwill; scrappy hustle. - Mismatched, low-quality gear; won't last long; looks unprofessional.",
+          "delta": {
+            "players": 0,
+            "money": 0,
+            "reputation": -2
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": -3
+                },
+                {
+                  "resource": "players",
+                  "delta": -2
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 2,
+            "long_game_vision": -2,
+            "adaptability_quotient": 4,
+            "balance_score": 2
+          },
+          "skill_tags": [
+            "Grit",
+            "Resilient"
+          ],
+          "feedback": "You spend Sunday afternoon with tape and glue. It works... barely. Kids notice the scrappy equipment. Some parents whisper that the league isn't serious.",
+          "flags_set": {
+            "scrounged_gear": true
+          },
+          "cost_tier": "significant",
+          "ledger_entries": [
+            {
+              "label": "League fees (10 players × Rs.50)",
+              "amount": 500,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 10 active players."
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -50,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "The choice settled quietly — but ripples often show up later.",
+            "Your discipline is being noticed, even if nobody says so."
+          ]
+        }
+      ],
+      "concept": "Resource Management & Budgeting",
+      "badge": {
+        "id": "builder",
+        "label": "Builder",
+        "icon": "🔧"
+      },
+      "emotional_beat": "First Doubt",
+      "target_emotion": "First Doubt",
+      "emotional_intensity": 5,
+      "ripple_bullets": {
+        "r3_a": [
+          "3 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Your cash took a hit — runway is thinner now."
+        ],
+        "r3_b": [
+          "1 new kid signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Your cash took a hit — runway is thinner now."
+        ],
+        "r3_c": [
+          "2 kids walked away this week."
+        ],
+        "r3_d": [
+          "The choice settled quietly — but ripples often show up later.",
+          "Your discipline is being noticed, even if nobody says so."
+        ]
+      },
+      "transition_headline": "Every rupee you spent today shapes what crises you'll survive next."
+    },
+    {
+      "round_id": "week_4",
+      "round_title": "Round 4: Not Everyone's Happy",
+      "title": "Not Everyone's Happy",
+      "situation": "Three weeks into the league, and you have a problem you didn't see coming. It's not about money or equipment. It's about PEOPLE.\n\nThe 8-9 year olds are getting completely outplayed in cricket by the 13-14 year olds. Little Ananya came home crying after Vikram's fast bowling scared her and she got hit on the pad. Her father, Gupta uncle, is very upset: \"This is dangerous! My daughter is NOT coming back unless you fix this.\"\n\nMeanwhile, the older kids are bored. Vikram tells you point-blank: \"Bhai, playing with babies is boring. Me and my friends want a REAL challenge. If you don't make it competitive, we'll go play at the municipal ground instead.\"\n\nYour current 22 players are split: roughly 10 younger kids (8-10), 8 middle (11-12), and 4 older (13-14). The older kids are your best players AND your biggest spenders. The younger kids are the majority. You can't afford to lose either group.",
+      "goal": "Resolve the age and skill gap without losing your community",
+      "coaching_moment": "Customer segmentation means your players are not all the same. The 8-year-old playing for fun and the 14-year-old playing to win need different experiences.",
+      "ai_image_prompt": "An Indian housing colony cricket ground, a small girl (age 9) crying while older boys celebrate, mixed emotions, a young organizer looking concerned, cartoon Pixar style, afternoon light, emotional scene",
+      "reflection_prompt": "Think about a time when you saw someone being left out because they weren't as skilled. How did it make you feel? What could have been done differently?",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-4.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r4_a",
+          "label": "Split into two divisions: Junior (8-10) and Senior (11-14)",
+          "description": "+ Fair competition; safety addressed; both groups get what they want. - Doubles your workload; need separate schedules; less variety in each division.",
+          "delta": {
+            "players": 2,
+            "money": 0,
+            "reputation": 6,
+            "expenses": 30
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 8,
+            "long_game_vision": 5,
+            "ethics_fairness": 7,
+            "balance_score": 3
+          },
+          "skill_tags": [
+            "Strategic",
+            "Empathy"
+          ],
+          "feedback": "Ananya is back! The juniors have their own matches now. It costs more to run two divisions, but both groups are thriving. Fair play wins.",
+          "flags_set": {
+            "two_divisions": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "segmentation"
+              },
+              "apply": {
+                "reputation": -8
+              },
+              "reason": "Premium kids demand Senior division regardless of age"
+            }
+          ],
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 2 new players",
+              "amount": 100,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Recurring costs up",
+              "amount": -30,
+              "kind": "out",
+              "icon": "📉"
+            }
+          ],
+          "ripple_bullets": [
+            "2 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league."
+          ]
+        },
+        {
+          "id": "r4_b",
+          "label": "Ask Vikram and the older kids to COACH the younger ones (give them a title)",
+          "description": "+ Turns a problem into a feature; older kids feel important; younger kids get mentors. - Vikram might refuse; coaching quality depends on teenager moods; less competitive for older kids.",
+          "delta": {
+            "players": 1,
+            "money": 0,
+            "reputation": 5,
+            "expenses": 0
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 4
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 5
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 7,
+            "long_game_vision": 4,
+            "ethics_fairness": 8,
+            "balance_score": 5
+          },
+          "skill_tags": [
+            "Empathy",
+            "Strategic"
+          ],
+          "feedback": "Brilliant! The older kids feel important as mentors. The younger ones improve fast. Parents love seeing their kids both teach and learn. This is leadership.",
+          "flags_set": {
+            "handicap_rules": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 1 new player",
+              "amount": 50,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "1 new kid signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league."
+          ]
+        },
+        {
+          "id": "r4_c",
+          "label": "Focus on the older kids and let younger ones play casually",
+          "description": "+ Keep your best customers; higher competition level; simpler management. - Lose 10+ younger kids; word spreads that league is 'exclusive'; Gupta uncle angry.",
+          "delta": {
+            "players": -10,
+            "money": 0,
+            "reputation": -8
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 2
+                },
+                {
+                  "resource": "reputation",
+                  "delta": -5
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 2,
+            "long_game_vision": -3,
+            "ethics_fairness": -6,
+            "balance_score": -5
+          },
+          "skill_tags": [
+            "Risk",
+            "Strategic"
+          ],
+          "feedback": "You just cut your league in half. Ananya's mother is furious. Word spreads that your league excludes younger kids. Was the competitive purity worth losing half your community?",
+          "flags_set": {
+            "older_focus": true,
+            "gupta_angry": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "segmentation"
+              },
+              "apply": {
+                "eti": -3
+              },
+              "reason": "Losing younger kids amplifies earlier pricing mistake"
+            }
+          ],
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees (12 players × Rs.50)",
+              "amount": 600,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 12 active players."
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -60,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "10 kids walked away this week.",
+            "Some aunties are gossiping — not in a good way."
+          ]
+        },
+        {
+          "id": "r4_d",
+          "label": "Keep it mixed but add handicap rules (older kids bat left-handed, etc.)",
+          "description": "+ Creative solution; teaches sportsmanship; keeps the community together. - Older kids might feel put down; hard to enforce; complaints from both sides.",
+          "delta": {
+            "players": 0,
+            "money": 0,
+            "reputation": 2
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 1
+                },
+                {
+                  "resource": "reputation",
+                  "delta": -3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 5,
+            "adaptability_quotient": 6,
+            "ethics_fairness": 3,
+            "balance_score": 1
+          },
+          "skill_tags": [
+            "Risk",
+            "Empathy"
+          ],
+          "feedback": "Creative! Some older kids laugh and enjoy the challenge. Others find it annoying. It's a polarizing move — innovative but risky.",
+          "flags_set": {
+            "vikram_coach": true
+          },
+          "random_outcome": {
+            "branches": [
+              {
+                "probability": 0.5,
+                "label": "vikram_accepts",
+                "apply": {
+                  "players": 1,
+                  "reputation": 5,
+                  "eti": 5
+                },
+                "narration": "Vikram grins: 'Alright bhai, I'll coach them.'"
+              },
+              {
+                "probability": 0.5,
+                "label": "vikram_refuses",
+                "apply": {
+                  "players": -2,
+                  "reputation": -3,
+                  "eti": -2
+                },
+                "narration": "Vikram shakes his head: 'I'm not a teacher.'"
+              }
+            ]
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees (12 players × Rs.50)",
+              "amount": 600,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 12 active players."
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -60,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "The choice settled quietly — but ripples often show up later.",
+            "Your discipline is being noticed, even if nobody says so."
+          ]
+        }
+      ],
+      "concept": "Customer Segmentation & Stakeholder Management",
+      "badge": {
+        "id": "people_reader",
+        "label": "People Reader",
+        "icon": "👥"
+      },
+      "emotional_beat": "Frustration",
+      "target_emotion": "Frustration",
+      "emotional_intensity": 7,
+      "ripple_bullets": {
+        "r4_a": [
+          "2 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league."
+        ],
+        "r4_b": [
+          "1 new kid signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league."
+        ],
+        "r4_c": [
+          "10 kids walked away this week.",
+          "Some aunties are gossiping — not in a good way."
+        ],
+        "r4_d": [
+          "The choice settled quietly — but ripples often show up later.",
+          "Your discipline is being noticed, even if nobody says so."
+        ]
+      },
+      "transition_headline": "Managing money is hard. Managing people is harder."
+    },
+    {
+      "round_id": "week_5",
+      "round_title": "Round 5: The Money Squeeze",
+      "title": "The Money Squeeze",
+      "situation": "It's Week 4. You open your collection tin and your stomach drops. After equipment purchases, shuttlecock replacements, certificate printing, and the football pump you had to buy when the old one broke, your cash is dangerously low.\n\nYou do the math on the back of a notebook. Weekly income from players: variable (some paid late, two haven't paid at all). Weekly expenses: Rs.25 for shuttlecocks, Rs.5 for certificates, Rs.10 for miscellaneous. That's Rs.40/week going OUT. If even three kids skip payment, you're in the red.\n\nTo make matters worse, the monsoon season is approaching. You need to buy a tarpaulin (Rs.150) to cover the badminton court area, or rain will wipe out two of your weekly sessions. That's money you absolutely don't have.\n\nYou feel the first real pang of regret. Maybe you should have just watched TV all summer like everyone else.\n\nEVERY OPTION BELOW HAS A SIGNIFICANT DOWNSIDE. Welcome to cash flow management.",
+      "goal": "Survive the cash crunch with your league intact",
+      "coaching_moment": "Cash flow is not the same as profit. A business can be profitable on paper and still run out of cash. When it's tight: Collect, Cut, Generate, Borrow — in that order.",
+      "ai_image_prompt": "A worried Indian boy (age 11) sitting with a notebook full of numbers and calculations, coins and small rupee notes on a table, housing colony in background, cartoon Pixar style, slightly tense mood, evening light",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-5.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r5_a",
+          "label": "Enforce strict payment: no pay, no play (collect all dues NOW)",
+          "description": "+ Establishes financial discipline; recovers owed money; sets precedent. - Lose 4-5 kids whose families won't pay on time; feels harsh; kids cry.",
+          "delta": {
+            "players": -5,
+            "money": 150,
+            "reputation": -6
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 3
+                },
+                {
+                  "resource": "money",
+                  "delta": 50
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 5,
+            "long_game_vision": 6,
+            "ethics_fairness": -3,
+            "balance_score": -2
+          },
+          "skill_tags": [
+            "Grit",
+            "Strategic"
+          ],
+          "feedback": "Five kids leave, including Arjun. The remaining families pay up immediately. Your finances stabilize, but Arjun's empty spot in the lineup reminds everyone of the cost.",
+          "flags_set": {
+            "strict_payment": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "Extra revenue this week",
+              "amount": 150,
+              "kind": "in",
+              "icon": "💵"
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            }
+          ],
+          "ripple_bullets": [
+            "5 kids walked away this week.",
+            "Some aunties are gossiping — not in a good way.",
+            "Cash is flowing in — you have breathing room."
+          ]
+        },
+        {
+          "id": "r5_b",
+          "label": "Ask your parents for a Rs.150 loan (family safety net)",
+          "description": "+ Immediate cash injection; buys the tarpaulin; reduces stress. - You owe your parents; they might say 'just quit'; feels like failure; dependency.",
+          "delta": {
+            "players": 0,
+            "money": 150,
+            "reputation": 0
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "money",
+                  "delta": -150
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 1,
+            "long_game_vision": -2,
+            "adaptability_quotient": -3,
+            "balance_score": 1
+          },
+          "skill_tags": [
+            "Resilient",
+            "Patience"
+          ],
+          "feedback": "Your parents agree but give you a long lecture about financial discipline. The Rs.150 buys the tarpaulin. But the loan hangs over you — and their 'just quit' comments sting.",
+          "flags_set": {
+            "parent_loan": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "discount_founder"
+              },
+              "apply": {
+                "money": -50,
+                "eti": -3
+              },
+              "reason": "Parents say 'we told you so' — smaller loan (only Rs.100)"
+            }
+          ],
+          "cost_tier": "significant",
+          "ledger_entries": [
+            {
+              "label": "Parent loan (to be repaid)",
+              "amount": 150,
+              "kind": "in",
+              "icon": "💵"
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            }
+          ],
+          "ripple_bullets": [
+            "Cash is flowing in — you have breathing room."
+          ]
+        },
+        {
+          "id": "r5_c",
+          "label": "Organize a paid 'tournament day' with Rs.10 spectator tickets",
+          "description": "+ New revenue stream; exciting event; brings the colony together. - Takes 3 days to organize; might flop; diverts energy from regular league.",
+          "delta": {
+            "players": 2,
+            "money": 300,
+            "reputation": 5,
+            "expenses": 100
+          },
+          "delayed_effects": [],
+          "hidden_modifiers": {
+            "eti": 8,
+            "long_game_vision": 4,
+            "adaptability_quotient": 7,
+            "balance_score": 2
+          },
+          "skill_tags": [
+            "Risk",
+            "Strategic"
+          ],
+          "flags_set": {
+            "fundraiser_success": true,
+            "tournament_attempted": true
+          },
+          "feedback": "What an idea! 30 spectators show up at Rs.10 each. Parents bring snacks to sell. You make Rs.300 and the whole colony is buzzing. You just invented a new revenue model!",
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 2 new players",
+              "amount": 100,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Extra revenue this week",
+              "amount": 300,
+              "kind": "in",
+              "icon": "💵"
+            },
+            {
+              "label": "Recurring costs up",
+              "amount": -100,
+              "kind": "out",
+              "icon": "📉"
+            }
+          ],
+          "ripple_bullets": [
+            "2 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Cash is flowing in — you have breathing room."
+          ]
+        },
+        {
+          "id": "r5_d",
+          "label": "Cut costs drastically: no certificates, cheaper shuttlecocks, skip football days",
+          "description": "+ Immediate expense reduction; stretches remaining cash. - Quality drops visibly; kids notice and complain; feels like league is fading.",
+          "delta": {
+            "players": -3,
+            "money": 45,
+            "reputation": -5,
+            "expenses": -45
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": -2
+                },
+                {
+                  "resource": "reputation",
+                  "delta": -3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 3,
+            "long_game_vision": 2,
+            "balance_score": 3,
+            "ethics_fairness": 1
+          },
+          "skill_tags": [
+            "Resilient",
+            "Grit"
+          ],
+          "feedback": "The league feels noticeably cheaper. No water on hot days? Kids are grumpy. You saved Rs.45/week, but the vibe has changed. Morale is sinking.",
+          "flags_set": {
+            "cost_cutter": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "Extra revenue this week",
+              "amount": 45,
+              "kind": "in",
+              "icon": "💵"
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            }
+          ],
+          "ripple_bullets": [
+            "3 kids walked away this week.",
+            "Some aunties are gossiping — not in a good way."
+          ]
+        }
+      ],
+      "concept": "Cash Flow Management & Financial Survival",
+      "badge": {
+        "id": "survivor",
+        "label": "Survivor",
+        "icon": "🧗"
+      },
+      "emotional_beat": "Pressure",
+      "target_emotion": "Pressure",
+      "emotional_intensity": 2,
+      "valley_round": true,
+      "ripple_bullets": {
+        "r5_a": [
+          "5 kids walked away this week.",
+          "Some aunties are gossiping — not in a good way.",
+          "Cash is flowing in — you have breathing room."
+        ],
+        "r5_b": [
+          "Cash is flowing in — you have breathing room."
+        ],
+        "r5_c": [
+          "2 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Cash is flowing in — you have breathing room."
+        ],
+        "r5_d": [
+          "3 kids walked away this week.",
+          "Some aunties are gossiping — not in a good way."
+        ]
+      },
+      "transition_headline": "Entrepreneurship sometimes means choosing the least-bad option. You just did."
+    },
+    {
+      "round_id": "week_6",
+      "round_title": "Round 6: The Rival League",
+      "title": "The Rival League",
+      "situation": "The blow comes on a Tuesday morning. You're setting up the cricket pitch when Meera runs up, out of breath: \"Rohit from B-Block is starting his own sports league. He's charging only Rs.30. And his dad bought him brand-new equipment.\"\n\nYour heart sinks. Rohit is popular, his family has money, and B-Block has another 20 kids who were never part of your colony league. But now he's openly poaching YOUR players. Three of your regulars already told you they're 'going to check out Rohit's league' this weekend.\n\nYou cycle past B-Block that evening. Rohit has a proper setup: new stumps, colored bibs for teams, and a giant whiteboard with a bracket system. His dad is standing there, arms crossed, looking proud. Rohit waves at you with a smirk.\n\nThis is the first time your league's existence is threatened not by internal problems, but by external competition. What do you do?",
+      "goal": "Respond to Rohit's rival league",
+      "coaching_moment": "Moats aren't built overnight. Competitors can copy equipment fast — trust, community, and experience take weeks to copy.",
+      "ai_image_prompt": "Two Indian boys (age 11-12) standing on opposite sides of a housing colony playground, one with a confident smirk (rival), one determined (hero), kids in between choosing sides, cartoon Pixar style, dramatic afternoon light",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-6.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r6_a",
+          "label": "Ignore Rohit and focus on making YOUR league even better",
+          "description": "+ Keeps your focus on quality; doesn't waste energy on competition; dignity. - Lose 3-5 kids to Rohit; no direct counter-strategy; might look like you're ignoring a threat.",
+          "delta": {
+            "players": -4,
+            "money": -200,
+            "reputation": 3
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 2
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 6,
+            "long_game_vision": 5,
+            "ethics_fairness": 4,
+            "balance_score": 2
+          },
+          "skill_tags": [
+            "Grit",
+            "Patience"
+          ],
+          "feedback": "You lose 3-5 players initially. But you add coaching drills, proper warm-ups, and match analysis. Parents notice the quality difference. Slowly, some kids come back.",
+          "flags_set": {
+            "ignored_rival": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "price_anchor"
+              },
+              "apply": {
+                "eti": 4
+              },
+              "reason": "Your established price gives you room to ignore Rohit"
+            }
+          ],
+          "random_outcome": {
+            "branches": [
+              {
+                "probability": 0.5,
+                "label": "rohit_excellent",
+                "apply": {
+                  "players": -4,
+                  "money": -50,
+                  "reputation": -2
+                },
+                "narration": "Rohit's league is shockingly well-run. You lose more kids than expected."
+              },
+              {
+                "probability": 0.5,
+                "label": "rohit_poor",
+                "apply": {
+                  "players": 2,
+                  "reputation": 4
+                },
+                "narration": "Word spreads that Rohit's league is chaotic. Some kids come back."
+              }
+            ]
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "One-time expense",
+              "amount": -200,
+              "kind": "out",
+              "icon": "💸"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "4 kids walked away this week.",
+            "Your cash took a hit — runway is thinner now.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r6_b",
+          "label": "Match Rohit's price: drop to Rs.30 and compete head-on",
+          "description": "+ Removes price advantage; retains price-sensitive players. - Revenue drops 40%; validates Rohit's strategy; price competition with someone whose dad funds him.",
+          "delta": {
+            "players": 2,
+            "money": -100,
+            "reputation": 0
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "money",
+                  "delta": -100
+                },
+                {
+                  "resource": "reputation",
+                  "delta": -2
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": -2,
+            "long_game_vision": -6,
+            "balance_score": -5,
+            "adaptability_quotient": -3
+          },
+          "skill_tags": [
+            "Risk",
+            "Resilient"
+          ],
+          "feedback": "You keep 2 players from leaving. But your income drops 40%. Rohit drops his price again. This is a race to the bottom — and nobody wins a price war.",
+          "flags_set": {
+            "matched_price": true,
+            "price_war": true
+          },
+          "cost_tier": "moderate",
+          "ledger_entries": [
+            {
+              "label": "League fees · 2 new players",
+              "amount": 100,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "One-time expense",
+              "amount": -100,
+              "kind": "out",
+              "icon": "💸"
+            }
+          ],
+          "ripple_bullets": [
+            "2 new kids signed up — word is spreading.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r6_c",
+          "label": "Propose a merger: combined super-league across both blocks",
+          "description": "+ Eliminates competition; double the players; looks visionary. - Share control with Rohit; his dad might dominate; you built this, now splitting credit.",
+          "delta": {
+            "players": 15,
+            "money": 0,
+            "reputation": 8
+          },
+          "delayed_effects": [],
+          "hidden_modifiers": {
+            "eti": 7,
+            "long_game_vision": 3,
+            "ethics_fairness": 5,
+            "balance_score": 1
+          },
+          "skill_tags": [
+            "Empathy",
+            "Strategic"
+          ],
+          "flags_set": {
+            "merged_with_rival": true,
+            "rohit_merger": true
+          },
+          "feedback": "Bold move! Rohit is surprised but agrees. Combined, you have the biggest league in the colony. But now you share decisions 50/50 with someone who copied you. Can you work together?",
+          "context_rules": [
+            {
+              "if": {
+                "flag": "partnership"
+              },
+              "apply": {
+                "eti": 5
+              },
+              "reason": "You've shown partnership ability before"
+            }
+          ],
+          "cost_tier": "significant",
+          "ledger_entries": [
+            {
+              "label": "League fees · 15 new players",
+              "amount": 750,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "15 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r6_d",
+          "label": "Differentiate hard: mentorship, inter-colony tournament, parent volunteering",
+          "description": "+ Builds an unbeatable experience; creates a 'moat'; justifies premium price. - Requires extra effort and time; not all features will work; takes weeks to show results.",
+          "delta": {
+            "players": -2,
+            "money": -100,
+            "reputation": 4
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 6
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 7
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 9,
+            "long_game_vision": 8,
+            "adaptability_quotient": 6,
+            "balance_score": 3
+          },
+          "skill_tags": [
+            "Strategic",
+            "Grit"
+          ],
+          "flags_set": {
+            "innovation_moat": true,
+            "moat_builder": true
+          },
+          "feedback": "Genius! You can't copyright games, but you can create an EXPERIENCE. The WhatsApp group, skill certificates, and weekly coaching tips create a moat Rohit can't cross.",
+          "cost_tier": "moderate",
+          "ledger_entries": [
+            {
+              "label": "Coach fee",
+              "amount": -100,
+              "kind": "out",
+              "icon": "👨‍🏫"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "2 kids walked away this week.",
+            "Parents noticed — the colony is talking about your league.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        }
+      ],
+      "concept": "Competition, Differentiation & Moats",
+      "badge": {
+        "id": "defender",
+        "label": "Defender",
+        "icon": "🛡️"
+      },
+      "emotional_beat": "Anger / Determination",
+      "target_emotion": "Anger / Determination",
+      "emotional_intensity": 7,
+      "ripple_bullets": {
+        "r6_a": [
+          "4 kids walked away this week.",
+          "Your cash took a hit — runway is thinner now.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r6_b": [
+          "2 new kids signed up — word is spreading.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r6_c": [
+          "15 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r6_d": [
+          "2 kids walked away this week.",
+          "Parents noticed — the colony is talking about your league.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ]
+      },
+      "transition_headline": "Competition isn't an IF, it's a WHEN. You just chose how to answer it."
+    },
+    {
+      "round_id": "week_7",
+      "round_title": "Round 7: Growing Pains",
+      "title": "Growing Pains",
+      "situation": "The league survived Rohit's challenge and is actually growing. You now have 28 players across two blocks. Parents are talking about it at morning walks. Sharma uncle from the society committee said, \"Beta, well done. Maybe we can make this an official society activity.\"\n\nBut you're drowning. You wake up at 7 AM to set up the pitch. You manage teams from 8-10 AM. You collect money during lunch. You update the scoreboard in the evening. You print certificates at night. You haven't done ANYTHING fun this vacation. Your mom said last night: \"You look more stressed than your father going to office.\"\n\nThree things need your attention simultaneously: (1) New kids from C-Block want to join but you physically can't manage more players alone. (2) The scoreboard system is a mess, with hand-written scores getting smudged and lost. (3) Two parents complained that last week's teams were unfair.\n\nYou realize the truth: the league has outgrown YOU. You are the bottleneck.",
+      "goal": "Break out of the founder's trap",
+      "coaching_moment": "The founder who refuses to let go often destroys the very thing they built. Scale through systems AND people.",
+      "ai_image_prompt": "An exhausted Indian boy (age 11) surrounded by schedules, money, complaint notes, and a ringing phone, kids waiting in background, housing colony setting, cartoon Pixar style, chaotic but humorous mood",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-7.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r7_a",
+          "label": "Recruit 2-3 'assistant organizers' from the older kids (give them titles and small pay)",
+          "description": "+ Delegation frees your time; kids feel empowered; management structure. - Costs Rs.15-25/week in pay; assistants might not be reliable; sharing authority is scary.",
+          "delta": {
+            "players": 5,
+            "money": -75,
+            "reputation": 5,
+            "expenses": 75
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 3
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 4
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 9,
+            "long_game_vision": 7,
+            "balance_score": 5,
+            "ethics_fairness": 3
+          },
+          "skill_tags": [
+            "Strategic",
+            "Empathy"
+          ],
+          "feedback": "Priya is amazing! She handles the juniors, and you can focus on strategy. The league runs smoother, players are happier, and you're not burnt out. This is delegation.",
+          "flags_set": {
+            "management_layer": true
+          },
+          "cost_tier": "moderate",
+          "ledger_entries": [
+            {
+              "label": "League fees · 5 new players",
+              "amount": 250,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Coach fee",
+              "amount": -75,
+              "kind": "out",
+              "icon": "👨‍🏫"
+            },
+            {
+              "label": "Recurring costs up",
+              "amount": -75,
+              "kind": "out",
+              "icon": "📉"
+            }
+          ],
+          "ripple_bullets": [
+            "5 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r7_b",
+          "label": "Cap the league at current size and refuse new players",
+          "description": "+ Manageable workload; quality stays high; exclusivity creates demand. - Turns away paying customers; C-Block kids are disappointed; growth stops.",
+          "delta": {
+            "players": 0,
+            "money": 0,
+            "reputation": 2,
+            "expenses": 0
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": -3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 3,
+            "long_game_vision": -2,
+            "adaptability_quotient": -4,
+            "balance_score": 2
+          },
+          "skill_tags": [
+            "Patience",
+            "Strategic"
+          ],
+          "feedback": "Your current members are happy. But three kids were turned away this week, and their parents weren't pleased. You've chosen stability over growth. Safe... but limited.",
+          "flags_set": {
+            "capped_size": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees (20 players × Rs.50)",
+              "amount": 1000,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 20 active players."
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -80,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r7_c",
+          "label": "Automate everything: printed schedule, rotation chart, digital score tracker",
+          "description": "+ Reduces daily effort by 50%; looks professional; scalable for any size. - Takes a full week to set up; costs Rs.60 for printing; complex upfront work.",
+          "delta": {
+            "players": 2,
+            "money": -200,
+            "reputation": 6
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 4
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 7,
+            "long_game_vision": 6,
+            "adaptability_quotient": 5,
+            "balance_score": 4
+          },
+          "skill_tags": [
+            "Grit",
+            "Strategic"
+          ],
+          "flags_set": {
+            "systems_built": true,
+            "systemized": true
+          },
+          "feedback": "The upfront work is tedious — writing rules, making schedules, creating a parent WhatsApp group with a pinned message. But now the league runs itself even when you're not there. Systems beat hustle.",
+          "cost_tier": "moderate",
+          "ledger_entries": [
+            {
+              "label": "League fees · 2 new players",
+              "amount": 100,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Venue rental",
+              "amount": -200,
+              "kind": "out",
+              "icon": "🏟️"
+            }
+          ],
+          "ripple_bullets": [
+            "2 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Your cash took a hit — runway is thinner now."
+          ]
+        },
+        {
+          "id": "r7_d",
+          "label": "Just work harder: wake up earlier, sleep later, do it all yourself",
+          "description": "+ No extra cost; full control; no dependency on others. - Exhaustion guaranteed; quality will drop from exhaustion; your summer is gone.",
+          "delta": {
+            "players": 3,
+            "money": 0,
+            "reputation": 2,
+            "expenses": 0
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": -5
+                },
+                {
+                  "resource": "reputation",
+                  "delta": -8
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": -2,
+            "long_game_vision": -5,
+            "balance_score": -6,
+            "adaptability_quotient": -5
+          },
+          "skill_tags": [
+            "Grit",
+            "Resilient"
+          ],
+          "flags_set": {
+            "burnout": true
+          },
+          "feedback": "You're running on 4 hours of sleep. Matches are disorganized. You snapped at a 9-year-old today. Your body is telling you something your brain won't accept: this doesn't scale.",
+          "context_rules": [
+            {
+              "if": {
+                "flag": "burnout"
+              },
+              "apply": {
+                "reputation": -5,
+                "eti": -4
+              },
+              "reason": "Exhaustion catches up — mistakes compound"
+            }
+          ],
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 3 new players",
+              "amount": 150,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "3 new kids signed up — word is spreading.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        }
+      ],
+      "concept": "Scaling Operations & Delegation",
+      "badge": {
+        "id": "architect",
+        "label": "Architect",
+        "icon": "🏗️"
+      },
+      "emotional_beat": "Overwhelm",
+      "target_emotion": "Overwhelm",
+      "emotional_intensity": 5,
+      "ripple_bullets": {
+        "r7_a": [
+          "5 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r7_b": [
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r7_c": [
+          "2 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Your cash took a hit — runway is thinner now."
+        ],
+        "r7_d": [
+          "3 new kids signed up — word is spreading.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ]
+      },
+      "transition_headline": "Working harder doesn't always scale. Working differently does."
+    },
+    {
+      "round_id": "week_8",
+      "round_title": "Round 8: The Tough Day",
+      "title": "The Tough Day",
+      "situation": "This is the worst day of your summer. Everything that could go wrong, did.\n\nIt started during the cricket match. Vikram accused Arjun of cheating: 'He nicked the ball! That's out!' Arjun shouted back: 'I didn't touch it! You're lying!' Within seconds, eight kids were arguing. Vikram pushed Arjun. Arjun stumbled and hurt his elbow. He started tearing up. Parents appeared on their balconies.\n\nThen Gupta uncle stormed down: 'I KNEW this would happen! This league is a MESS. I'm pulling my daughter AND telling other parents.' Three parents gathered at the gate, arms crossed. They want answers.\n\nMeanwhile, you just discovered that Rs.60 has gone missing from the collection tin. You had asked Rohan (one of your assistants) to collect this week's fees. He swears he collected everything. But the math doesn't add up.\n\nYou're standing in the compound with a hurt kid, angry parents, a missing-money mystery, and a league on the verge of falling apart. EVERY OPTION IS PAINFUL. There is no clean exit.",
+      "goal": "Triage a multi-crisis moment",
+      "coaching_moment": "Crisis leadership: acknowledge, show you care, demonstrate a plan. Stop further harm first, then stabilize, investigate, rebuild.",
+      "ai_image_prompt": "A tense scene in an Indian housing colony, angry parents confronting a worried Indian boy (age 11), an empty money box on a table, other kids watching from behind, cartoon Pixar style, dramatic evening lighting, emotional tension",
+      "reflection_prompt": "Have you ever been blamed for something you didn't do, or seen someone else get blamed unfairly? How did it feel? What's the right way to handle accusations?",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-8.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r8_a",
+          "label": "Address the parents FIRST: apologize, take responsibility, promise safety changes",
+          "description": "+ Stops the immediate crisis; shows maturity; prevents mass walkout. - Vikram and Arjun's conflict stays unresolved; missing money not addressed; looks like you're ignoring the argument.",
+          "delta": {
+            "players": -2,
+            "money": -150,
+            "reputation": -3
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 5
+                },
+                {
+                  "resource": "players",
+                  "delta": 3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 5,
+            "ethics_fairness": 4,
+            "long_game_vision": 3,
+            "balance_score": 2
+          },
+          "skill_tags": [
+            "Empathy",
+            "Strategic"
+          ],
+          "feedback": "The parents listen. Some are still angry. But your honesty earns respect. You promise safety changes and a new secure collection system. Most parents decide to give you another chance — even though Vikram-Arjun and the missing money are still unresolved.",
+          "flags_set": {
+            "parents_first": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "management_layer"
+              },
+              "apply": {
+                "eti": 5,
+                "balance_score": 3
+              },
+              "reason": "Assistants help mediate while you handle parents"
+            }
+          ],
+          "cost_tier": "moderate",
+          "ledger_entries": [
+            {
+              "label": "Venue rental",
+              "amount": -150,
+              "kind": "out",
+              "icon": "🏟️"
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            }
+          ],
+          "ripple_bullets": [
+            "2 kids walked away this week.",
+            "Your cash took a hit — runway is thinner now.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r8_b",
+          "label": "Resolve the argument FIRST: mediate between Vikram and Arjun publicly",
+          "description": "+ Models conflict resolution; addresses root cause; shows you care about the kids. - Parents waiting get angrier; money still missing; you're playing referee not organizer.",
+          "delta": {
+            "players": -1,
+            "money": -150,
+            "reputation": 2
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 2
+                },
+                {
+                  "resource": "reputation",
+                  "delta": -5
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 4,
+            "ethics_fairness": 5,
+            "adaptability_quotient": 3,
+            "balance_score": -2
+          },
+          "skill_tags": [
+            "Empathy",
+            "Grit"
+          ],
+          "feedback": "You sit Vikram and Arjun down. Both apologize. The kids who watched learned something real. But the parents at the gate feel ignored — and the missing money hangs in the air. Right audience, wrong order.",
+          "flags_set": {
+            "kids_first": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "burnout"
+              },
+              "apply": {
+                "ethics_fairness": -2
+              },
+              "reason": "Scheduling mistake caused the conflict"
+            }
+          ],
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "One-time expense",
+              "amount": -150,
+              "kind": "out",
+              "icon": "💸"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "1 kid walked away this week.",
+            "Your cash took a hit — runway is thinner now.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r8_c",
+          "label": "Shut down the league for one week: 'cooling off' period while you investigate",
+          "description": "+ Pauses everything; gives time to investigate money; shows seriousness. - Momentum LOST; kids might not come back; Rohit's league gets every defector; looks like you gave up.",
+          "delta": {
+            "players": -8,
+            "money": -100,
+            "reputation": -6
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 3
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 4
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 3,
+            "long_game_vision": 2,
+            "adaptability_quotient": 2,
+            "balance_score": -4
+          },
+          "skill_tags": [
+            "Patience",
+            "Resilient"
+          ],
+          "feedback": "A week of silence. Players drift to Rohit's league or just stay home. But when you reopen with new security measures, it feels like a fresh start.",
+          "early_exit": {
+            "probability": 0.3,
+            "ends_game": true,
+            "ending_id": "league_ended_early",
+            "ending_message": "The week-long cooling off was too long. By Sunday, most kids had moved on. Rohit's league picked up every defector. The league ended before it could restart. Not every venture survives — and that's a real lesson too."
+          },
+          "flags_set": {
+            "shutdown_week": true
+          },
+          "cost_tier": "significant",
+          "ledger_entries": [
+            {
+              "label": "One-time expense",
+              "amount": -100,
+              "kind": "out",
+              "icon": "💸"
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            }
+          ],
+          "ripple_bullets": [
+            "8 kids walked away this week.",
+            "Some aunties are gossiping — not in a good way.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r8_d",
+          "label": "Confront Rohan about the missing money RIGHT NOW in front of everyone",
+          "description": "+ Shows zero tolerance for dishonesty; establishes accountability; clears the air. - Public embarrassment if Rohan is innocent; loses a helper; trust broken; drama escalates.",
+          "delta": {
+            "players": -3,
+            "money": 0,
+            "reputation": -5
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 2
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": -1,
+            "ethics_fairness": -5,
+            "adaptability_quotient": -2,
+            "balance_score": -4
+          },
+          "skill_tags": [
+            "Grit",
+            "Risk"
+          ],
+          "feedback": "Rohan cries. His mother storms over and threatens to report you to the colony committee. Even if he took it, public humiliation was the wrong move. You've created a bigger mess.",
+          "flags_set": {
+            "public_confrontation": true
+          },
+          "random_outcome": {
+            "branches": [
+              {
+                "probability": 0.6,
+                "label": "rohan_guilty",
+                "apply": {
+                  "money": 60,
+                  "reputation": 2
+                },
+                "narration": "Rohan admits it was a genuine mistake — the money is recovered."
+              },
+              {
+                "probability": 0.4,
+                "label": "rohan_innocent",
+                "apply": {
+                  "ethics_fairness": -12,
+                  "reputation": -5,
+                  "_sim_momentum": -0.3
+                },
+                "narration": "Rohan was innocent. A younger kid had taken the coins. Public confrontation damages trust."
+              }
+            ]
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees (22 players × Rs.50)",
+              "amount": 1100,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 22 active players."
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -90,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "3 kids walked away this week.",
+            "Some aunties are gossiping — not in a good way.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        }
+      ],
+      "concept": "Conflict Resolution & Crisis Leadership",
+      "badge": {
+        "id": "peacekeeper",
+        "label": "Peacekeeper",
+        "icon": "🕊️"
+      },
+      "emotional_beat": "Low Point",
+      "emotional_intensity": 1,
+      "ripple_bullets": {
+        "r8_a": [
+          "2 kids walked away this week.",
+          "Your cash took a hit — runway is thinner now.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r8_b": [
+          "1 kid walked away this week.",
+          "Your cash took a hit — runway is thinner now.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r8_c": [
+          "8 kids walked away this week.",
+          "Some aunties are gossiping — not in a good way.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r8_d": [
+          "3 kids walked away this week.",
+          "Some aunties are gossiping — not in a good way.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ]
+      },
+      "transition_headline": "Every business has a tough day. The ones that survive take a breath, and act anyway."
+    },
+    {
+      "round_id": "week_9",
+      "round_title": "Round 9: Noise Complaint!",
+      "title": "Noise Complaint!",
+      "situation": "Just when you thought the worst was over, a notice appears on the colony notice board. Hand-written in red pen by Sharma uncle, the Society President:\n\n\"NOTICE: Multiple residents have complained about excessive noise from the children's sports activities between 8-10 AM. This is disturbing senior citizens and work-from-home residents. The Management Committee will discuss whether to BAN outdoor sports activities during morning hours at the next meeting (this Sunday). Residents are invited to attend.\"\n\nYour league plays from 8 to 10 AM. If the committee bans morning play, your league is effectively finished.\n\nYou have five days before Sunday's meeting. The watchman Raju kaka tells you quietly: 'Beta, Mrs. Kapoor from third floor and Mr. Joshi from ground floor are the main complainers. Everyone else doesn't care much.'",
+      "goal": "Keep the league alive despite regulatory pressure",
+      "coaching_moment": "Stakeholders aren't just customers. Listen, understand, adapt — that's how you survive the rules around you.",
+      "ai_image_prompt": "An Indian housing colony committee meeting room, an elderly man (Mr. Banerjee) pointing angrily at a notice board, a young Indian boy (age 11) standing bravely before adults, cartoon Pixar style, tense but hopeful mood",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-9.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r9_a",
+          "label": "Visit Mrs. Kapoor and Mr. Joshi personally: listen to their concerns, find compromise",
+          "description": "+ Addresses root cause; shows maturity; might prevent the meeting entirely. - Requires diplomacy skills; they might refuse to talk; compromise might weaken your league.",
+          "delta": {
+            "players": 0,
+            "money": 0,
+            "reputation": 6
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 5
+                },
+                {
+                  "resource": "players",
+                  "delta": 2
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 8,
+            "ethics_fairness": 7,
+            "long_game_vision": 5,
+            "balance_score": 5
+          },
+          "skill_tags": [
+            "Empathy",
+            "Strategic"
+          ],
+          "feedback": "Mr. Joshi turns out to be a retired cricket coach. Mrs. Kapoor works night shifts and just wants sleep until 8:30 AM. You offer a quieter warm-up and a 30-minute delay. Both withdraw their complaints. Diplomacy wins.",
+          "flags_set": {
+            "petition": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees (22 players × Rs.50)",
+              "amount": 1100,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 22 active players."
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -90,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "Parents noticed — the colony is talking about your league.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r9_b",
+          "label": "Move the league to evening (5-7 PM) to avoid the conflict entirely",
+          "description": "+ Removes the complaint; no confrontation; league continues uninterrupted. - 5-7 PM is hotter; overlaps with tuition classes for 8 kids; evenings have mosquitoes.",
+          "delta": {
+            "players": -8,
+            "money": -320,
+            "reputation": 3
+          },
+          "delayed_effects": [],
+          "hidden_modifiers": {
+            "eti": 2,
+            "adaptability_quotient": -4,
+            "long_game_vision": -3,
+            "balance_score": -3
+          },
+          "skill_tags": [
+            "Resilient",
+            "Patience"
+          ],
+          "feedback": "Evenings solve the noise problem. But the ground is hot, mosquitoes arrive, and 8 kids have tuition classes and can't make it. You dodged the fight — but at the cost of some players.",
+          "flags_set": {
+            "evening_slot": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "One-time expense",
+              "amount": -320,
+              "kind": "out",
+              "icon": "💸"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "8 kids walked away this week.",
+            "Your cash took a hit — runway is thinner now.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r9_c",
+          "label": "Go door-to-door with a petition: collect signatures from supportive parents",
+          "description": "+ Democratic approach; shows majority support; hard evidence for the meeting. - Puts neighbors against each other; petition might not get enough signatures; confrontational.",
+          "delta": {
+            "players": 0,
+            "money": 0,
+            "reputation": 3
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 2
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 5,
+            "adaptability_quotient": 4,
+            "ethics_fairness": 2,
+            "balance_score": 2
+          },
+          "skill_tags": [
+            "Strategic",
+            "Grit"
+          ],
+          "feedback": "You gather 15 parent signatures. The committee takes notice. But Mrs. Kapoor and Mr. Joshi see the petition as confrontational. You won the argument but may have made enemies out of neighbors.",
+          "flags_set": {
+            "petition_filed": true
+          },
+          "cost_tier": "moderate",
+          "ledger_entries": [
+            {
+              "label": "League fees (22 players × Rs.50)",
+              "amount": 1100,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 22 active players."
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -90,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r9_d",
+          "label": "Show up at Sunday's meeting and present your case: data, testimonials, compromise offer",
+          "description": "+ Professional approach; lets the committee see your leadership; swing neutral members. - High pressure; if you fail, ban is immediate; public speaking to adults is terrifying.",
+          "delta": {
+            "players": 0,
+            "money": 0,
+            "reputation": 8
+          },
+          "delayed_effects": [],
+          "hidden_modifiers": {
+            "eti": 7,
+            "adaptability_quotient": 6,
+            "ethics_fairness": 3,
+            "balance_score": 1
+          },
+          "skill_tags": [
+            "Risk",
+            "Grit"
+          ],
+          "feedback": "You stand before 20 adults and speak from the heart about what the league means to the kids. Some committee members tear up. The vote goes in your favor. But it was a gamble — if you'd stumbled, it could have gone the other way.",
+          "replace_if": {
+            "flag": "fundraiser_success",
+            "op": "set"
+          },
+          "replacement": {
+            "id": "r9_d_alt",
+            "label": "D. Invite the committee to your next exhibition match — let them see the magic",
+            "delta": {
+              "players": 5,
+              "money": 0,
+              "reputation": 8
+            },
+            "hidden_modifiers": {
+              "eti": 9,
+              "adaptability_quotient": 7,
+              "ethics_fairness": 5,
+              "balance_score": 3
+            },
+            "skill_tags": [
+              "Strategic",
+              "Empathy"
+            ],
+            "feedback": "Genius callback! You already proved exhibition matches work. The committee members watch 30 kids play, laugh, and learn. Mr. Banerjee's daughter asks to join. Complaint withdrawn."
+          },
+          "flags_set": {
+            "meeting_hero": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "crowdfund_allies"
+              },
+              "apply": {
+                "reputation": 10
+              },
+              "reason": "Parents who funded equipment defend the league"
+            },
+            {
+              "if": {
+                "flag": "gupta_angry"
+              },
+              "apply": {
+                "reputation": -8
+              },
+              "reason": "Gupta uncle campaigns against you"
+            }
+          ],
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees (22 players × Rs.50)",
+              "amount": 1100,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 22 active players."
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -90,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "Parents noticed — the colony is talking about your league.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        }
+      ],
+      "concept": "Regulatory Challenges & Stakeholder Management",
+      "badge": {
+        "id": "diplomat",
+        "label": "Diplomat",
+        "icon": "🤝"
+      },
+      "emotional_beat": "Defiance",
+      "target_emotion": "Defiance",
+      "emotional_intensity": 6,
+      "dual_action": {
+        "sequence": [
+          "a",
+          "d"
+        ],
+        "bonus_success_rate": 0.85,
+        "description": "Combining a petition with presenting at the meeting raises success rate to 85%"
+      },
+      "ripple_bullets": {
+        "r9_a": [
+          "Parents noticed — the colony is talking about your league.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r9_b": [
+          "8 kids walked away this week.",
+          "Your cash took a hit — runway is thinner now.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r9_c": [
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r9_d": [
+          "Parents noticed — the colony is talking about your league.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ]
+      },
+      "transition_headline": "Neighbors aren't enemies. They're stakeholders — and today you learned how to listen."
+    },
+    {
+      "round_id": "week_10",
+      "round_title": "Round 10: Monsoon Mayhem",
+      "title": "Monsoon Mayhem",
+      "situation": "The monsoon hits with a vengeance. For three straight days, rain hammers the compound so hard you can't even see across the courtyard. The cricket pitch is a lake. The badminton court is a waterfall. Your WhatsApp group is filled with sad emojis and 'when will it stop?' messages.\n\nDay 4, the rain pauses but the ground is a mud pit. Day 5, it rains again. The forecast shows intermittent heavy rain for the next two weeks. Your outdoor league is effectively paralyzed.\n\nThis is not a problem you can solve by working harder or spending money. The FUNDAMENTAL assumption of your business (outdoor play) has been undermined by something completely outside your control. You need to either innovate or watch your league slowly fade.\n\nYour players are getting restless. Two have already said they're 'done for the summer.' You have one week before the league becomes irrelevant.",
+      "goal": "Pivot the league through the monsoon",
+      "coaching_moment": "A pivot keeps your core purpose but changes your method. Constraints don't end the mission — they redefine how you pursue it.",
+      "ai_image_prompt": "An Indian housing colony playground completely flooded with monsoon rain, a determined Indian boy (age 11) looking at the rain from under a building corridor, thinking with a lightbulb moment, cartoon Pixar style, dramatic rain, hope amid chaos",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-10.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r10_a",
+          "label": "Move indoors: negotiate with Sharma uncle for community hall access (Rs.60/session)",
+          "description": "+ Immediate solution; proper space; rain doesn't matter anymore. - Expensive; community hall has other bookings; can't play cricket indoors.",
+          "delta": {
+            "players": 3,
+            "money": -60,
+            "reputation": 5,
+            "expenses": 60
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 2
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 6,
+            "adaptability_quotient": 5,
+            "long_game_vision": 3,
+            "balance_score": -2
+          },
+          "skill_tags": [
+            "Strategic",
+            "Resilient"
+          ],
+          "feedback": "Smart pivot! Indoor badminton, table tennis, and carrom keep the league alive. Rs.60/session is steep when stacked over weeks, and you can't play cricket indoors. But you're solving the problem.",
+          "flags_set": {
+            "indoor_hall": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "tournament_success"
+              },
+              "apply": {
+                "money": 30
+              },
+              "reason": "Sharma uncle gives 50% discount"
+            }
+          ],
+          "cost_tier": "moderate",
+          "ledger_entries": [
+            {
+              "label": "League fees · 3 new players",
+              "amount": 150,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Community hall rental",
+              "amount": -60,
+              "kind": "out",
+              "icon": "🏟️"
+            },
+            {
+              "label": "Recurring costs up",
+              "amount": -60,
+              "kind": "out",
+              "icon": "📉"
+            }
+          ],
+          "ripple_bullets": [
+            "3 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Your cash took a hit — runway is thinner now."
+          ]
+        },
+        {
+          "id": "r10_b",
+          "label": "Pivot to indoor games: chess tournament, carrom league, table tennis",
+          "description": "+ Zero weather dependency; teaches new skills; fresh excitement. - Completely different from what kids signed up for; need equipment; some kids only like outdoor sports.",
+          "delta": {
+            "players": -4,
+            "money": -300,
+            "reputation": 4
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 5
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 6
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 9,
+            "adaptability_quotient": 8,
+            "long_game_vision": 7,
+            "balance_score": 3
+          },
+          "skill_tags": [
+            "Risk",
+            "Strategic"
+          ],
+          "flags_set": {
+            "indoor_pivot": true,
+            "diversified_business": true
+          },
+          "feedback": "Bold! You add chess, carrom, and board games. Some outdoor purists leave, but a WHOLE NEW audience shows up — kids who never liked outdoor sports! You've diversified your league.",
+          "cost_tier": "significant",
+          "ledger_entries": [
+            {
+              "label": "Tournament prize pool",
+              "amount": -300,
+              "kind": "out",
+              "icon": "🏆"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "4 kids walked away this week.",
+            "Parents noticed — the colony is talking about your league.",
+            "Your cash took a hit — runway is thinner now."
+          ]
+        },
+        {
+          "id": "r10_c",
+          "label": "Wait it out: pause the league, keep the group engaged via WhatsApp",
+          "description": "+ Zero cost; no risk of a bad pivot; monsoon will end eventually. - Momentum fades; 2-3 weeks of inactivity; players drift away permanently; Rohit might not pause.",
+          "delta": {
+            "players": -6,
+            "money": 0,
+            "reputation": -5,
+            "expenses": 0
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 2
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 1,
+            "adaptability_quotient": -5,
+            "long_game_vision": -4,
+            "balance_score": -3
+          },
+          "skill_tags": [
+            "Patience",
+            "Resilient"
+          ],
+          "feedback": "Silence. Three weeks of nothing. Players drift away. When you restart, only half come back. Momentum is a fragile thing — once lost, it's hard to rebuild.",
+          "flags_set": {
+            "monsoon_paused": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees (20 players × Rs.50)",
+              "amount": 1000,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 20 active players."
+            },
+            {
+              "label": "No direct cash move this week",
+              "amount": 0,
+              "kind": "in",
+              "icon": "—"
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -90,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "6 kids walked away this week.",
+            "Some aunties are gossiping — not in a good way.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r10_d",
+          "label": "Create a 'Monsoon Special': rain cricket in the parking basement, with modified rules",
+          "description": "+ Totally unique; massive fun factor; kids will remember this forever; great stories. - Safety risks (wet floor); cars might get hit; society could ban it; parents might worry.",
+          "delta": {
+            "players": 5,
+            "money": 0,
+            "reputation": 8
+          },
+          "delayed_effects": [],
+          "hidden_modifiers": {
+            "eti": 6,
+            "adaptability_quotient": 7,
+            "ethics_fairness": -2,
+            "balance_score": -1
+          },
+          "skill_tags": [
+            "Risk",
+            "Grit"
+          ],
+          "feedback": "EPIC! Kids are sliding in mud, laughing in the rain. Parents take photos. It goes viral on the colony WhatsApp group. But... two kids catch cold. One parent is NOT happy. Safety first?",
+          "flags_set": {
+            "monsoon_legend": true
+          },
+          "random_outcome": {
+            "branches": [
+              {
+                "probability": 0.7,
+                "label": "monsoon_legend",
+                "apply": {
+                  "players": 5,
+                  "reputation": 8,
+                  "eti": 6
+                },
+                "narration": "The basement rain-cricket becomes legendary — kids still talk about it years later.",
+                "flags_set": {
+                  "monsoon_legend": true
+                }
+              },
+              {
+                "probability": 0.3,
+                "label": "monsoon_damage",
+                "apply": {
+                  "money": -500,
+                  "reputation": -10,
+                  "ethics_fairness": -5
+                },
+                "narration": "A car gets scratched. The society is furious — you pay for damages."
+              }
+            ]
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 5 new players",
+              "amount": 250,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "5 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        }
+      ],
+      "concept": "Innovation, Pivot & Creative Problem-Solving",
+      "badge": {
+        "id": "innovator",
+        "label": "Innovator",
+        "icon": "✨"
+      },
+      "emotional_beat": "Creativity / Joy",
+      "target_emotion": "Creativity / Joy",
+      "emotional_intensity": 8,
+      "ripple_bullets": {
+        "r10_a": [
+          "3 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Your cash took a hit — runway is thinner now."
+        ],
+        "r10_b": [
+          "4 kids walked away this week.",
+          "Parents noticed — the colony is talking about your league.",
+          "Your cash took a hit — runway is thinner now."
+        ],
+        "r10_c": [
+          "6 kids walked away this week.",
+          "Some aunties are gossiping — not in a good way.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r10_d": [
+          "5 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ]
+      },
+      "transition_headline": "Limitations breed creativity. The monsoon didn't end your league — it redefined it."
+    },
+    {
+      "round_id": "week_11",
+      "round_title": "Round 11: The Big Offer",
+      "title": "The Big Offer",
+      "situation": "You get an unexpected phone call. It's Meghna Auntie, who runs the 'Little Champions Academy,' a proper coaching institute for kids in your area. She's seen your league and she's impressed.\n\n\"Beta, I have a proposal. Your league has something my academy doesn't: community, fun, and real engagement. My academy has what you don't: professional coaches, indoor facilities, and a brand that parents trust. Let's partner. I'll bring my coaches to your league twice a week, provide indoor space during monsoon, and add your league to my marketing. In return, I want 40% of all revenue and the right to use 'Little Champions x [Your League Name]' branding.\"\n\nShe adds: \"Also, I'm willing to pay you Rs.2,000 upfront as a signing bonus. And if this works, I want to do this every year as a formal program. You'd be the 'Community Engagement Director.' That's a real title on your school applications.\"\n\nThis is the biggest opportunity of the summer. But also the most complex decision.",
+      "goal": "Negotiate or decline Meghna's partnership offer",
+      "coaching_moment": "A great partnership passes the 1+1=3 test. Know your BATNA, understand their needs, and never accept the first offer.",
+      "ai_image_prompt": "An Indian woman (age 30, sporty, confident) shaking hands with a young Indian boy (age 11) in a housing colony, a coaching academy banner in background, kids watching excitedly, cartoon Pixar style, professional yet warm mood",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-11.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r11_a",
+          "label": "Accept the full offer as-is (40% revenue, shared branding, Rs.2,000 upfront)",
+          "description": "+ Immediate cash; professional upgrade; long-term relationship; resume title. - 40% is a LOT; her brand overshadows yours; you become a junior partner in YOUR creation.",
+          "delta": {
+            "players": 8,
+            "money": 2000,
+            "reputation": 10,
+            "expenses": 0
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 5
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 4,
+            "long_game_vision": 5,
+            "ethics_fairness": 3,
+            "balance_score": 2
+          },
+          "skill_tags": [
+            "Strategic",
+            "Patience"
+          ],
+          "feedback": "Professional coaching transforms your league. You pocket Rs.2,000 upfront and get the 'Community Engagement Director' title. But 40% of income is a LOT. Meghna's academy name is now bigger than yours. You accepted without negotiating — did you leave value on the table?",
+          "flags_set": {
+            "meghna_full": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "monsoon_legend"
+              },
+              "apply": {
+                "money": 1000
+              },
+              "reason": "Meghna raises upfront to Rs.3000 after monsoon legend"
+            },
+            {
+              "if": {
+                "flag": "rohit_merger"
+              },
+              "apply": {
+                "money": 1000,
+                "eti": 3
+              },
+              "reason": "Combined league commands higher offer"
+            }
+          ],
+          "cost_tier": "moderate",
+          "ledger_entries": [
+            {
+              "label": "League fees · 8 new players",
+              "amount": 400,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Meghna signing bonus",
+              "amount": 2000,
+              "kind": "in",
+              "icon": "💵"
+            }
+          ],
+          "ripple_bullets": [
+            "8 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Cash is flowing in — you have breathing room."
+          ]
+        },
+        {
+          "id": "r11_b",
+          "label": "Counter-offer: 25% revenue share, YOUR branding stays primary, one-year trial",
+          "description": "+ Better terms; maintains your identity; professional negotiation experience. - She might walk away; negotiation is scary; might settle for less than 40% but more than 25%.",
+          "delta": {
+            "players": 6,
+            "money": 1500,
+            "reputation": 7
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 3
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 5
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 9,
+            "long_game_vision": 7,
+            "adaptability_quotient": 6,
+            "balance_score": 5
+          },
+          "skill_tags": [
+            "Strategic",
+            "Risk"
+          ],
+          "feedback": "Meghna respects the counter. She accepts 25% and agrees to keep your name first. You just negotiated like a real entrepreneur. She tells her friends about 'that sharp Class 6 kid.'",
+          "flags_set": {
+            "meghna_counter": true
+          },
+          "random_outcome": {
+            "branches": [
+              {
+                "probability": 0.6,
+                "label": "meghna_meets_middle",
+                "apply": {
+                  "money": 1500,
+                  "reputation": 5,
+                  "eti": 7
+                },
+                "narration": "Meghna accepts 30% revenue share — a fair middle ground."
+              },
+              {
+                "probability": 0.25,
+                "label": "meghna_accepts",
+                "apply": {
+                  "money": 1500,
+                  "reputation": 7,
+                  "eti": 9
+                },
+                "narration": "Meghna accepts your full counter at 25%. Bold negotiation pays off."
+              },
+              {
+                "probability": 0.15,
+                "label": "meghna_walks",
+                "apply": {
+                  "reputation": 2,
+                  "eti": 2
+                },
+                "narration": "Meghna politely declines: 'I wish you the best, beta.' Deal off."
+              }
+            ]
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 6 new players",
+              "amount": 300,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Meghna signing bonus (negotiated)",
+              "amount": 1500,
+              "kind": "in",
+              "icon": "💵"
+            }
+          ],
+          "ripple_bullets": [
+            "6 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Cash is flowing in — you have breathing room."
+          ]
+        },
+        {
+          "id": "r11_c",
+          "label": "Decline politely: 'Thank you, but I want to keep this independent'",
+          "description": "+ Full ownership; full revenue; your vision stays pure. - Miss the professional upgrade; no safety net; might regret it when summer ends.",
+          "delta": {
+            "players": 0,
+            "money": 0,
+            "reputation": 3
+          },
+          "delayed_effects": [],
+          "hidden_modifiers": {
+            "eti": 5,
+            "long_game_vision": 2,
+            "adaptability_quotient": 3,
+            "ethics_fairness": 4
+          },
+          "skill_tags": [
+            "Grit",
+            "Risk"
+          ],
+          "feedback": "Meghna smiles and says 'I respect that.' You keep full control. But you also keep all the problems. Independence has value — but so does professional expertise.",
+          "flags_set": {
+            "meghna_declined": true
+          },
+          "context_rules": [
+            {
+              "if": {
+                "flag": "joshi_ally"
+              },
+              "apply": {
+                "eti": 4
+              },
+              "reason": "Mr. Joshi offers free coaching — you don't need Meghna"
+            }
+          ],
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees (22 players × Rs.50)",
+              "amount": 1100,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 22 active players."
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -100,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r11_d",
+          "label": "Ask for a one-week trial: 'Let me see if it actually works before committing'",
+          "description": "+ Low risk; real data before decision; shows business maturity. - She might not agree to a trial; delays the benefits; you might overthink it.",
+          "delta": {
+            "players": 3,
+            "money": 0,
+            "reputation": 4
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 2,
+              "effects": [
+                {
+                  "resource": "players",
+                  "delta": 4
+                },
+                {
+                  "resource": "reputation",
+                  "delta": 3
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 7,
+            "long_game_vision": 6,
+            "adaptability_quotient": 4,
+            "balance_score": 4
+          },
+          "skill_tags": [
+            "Strategic",
+            "Patience"
+          ],
+          "feedback": "Smart! A trial period gives you data without commitment. After 2 weeks, you'll know exactly what Meghna brings — and can negotiate from a position of knowledge, not hope.",
+          "flags_set": {
+            "meghna_trial": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 3 new players",
+              "amount": 150,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "3 new kids signed up — word is spreading.",
+            "Parents noticed — the colony is talking about your league.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        }
+      ],
+      "concept": "Partnerships, Negotiation & Knowing Your Worth",
+      "badge": {
+        "id": "dealmaker",
+        "label": "Dealmaker",
+        "icon": "📜"
+      },
+      "emotional_beat": "Pride",
+      "target_emotion": "Pride",
+      "emotional_intensity": 8,
+      "ripple_bullets": {
+        "r11_a": [
+          "8 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Cash is flowing in — you have breathing room."
+        ],
+        "r11_b": [
+          "6 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Cash is flowing in — you have breathing room."
+        ],
+        "r11_c": [
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r11_d": [
+          "3 new kids signed up — word is spreading.",
+          "Parents noticed — the colony is talking about your league.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ]
+      },
+      "transition_headline": "Someone with a real business wanted in. You decided what you're worth."
+    },
+    {
+      "round_id": "week_12",
+      "round_title": "Round 12: Legacy",
+      "title": "Legacy",
+      "situation": "It's the last week of summer vacation. School starts Monday. The monsoon has softened into occasional drizzles. The compound, which was a deserted, boring wasteland eight weeks ago, has been transformed by YOUR league.\n\nYou stand at the banyan tree where you first had the idea. The scoreboard you built hangs from the wall. Twenty-five kids are warming up for today's session. Parents are sitting on the boundary, chatting, some cheering. Even Mrs. Kapoor waved at you from her balcony this morning.\n\nBut reality is setting in. School means homework, tuitions, early mornings. You can't run the league anymore. Or can you? The question isn't whether the league was successful (it was). The question is: what happens to it when you're gone?\n\nRaju kaka walks up: 'Beta, the kids are asking if the league will run on weekends during school. And three parents asked if you can do this again next summer.' You smile. But the smile hides a bigger question: what do you want your legacy to be?",
+      "goal": "Decide the final fate of your league",
+      "coaching_moment": "The ultimate test of what you built is: can it survive without you? If yes, you built something real.",
+      "ai_image_prompt": "A beautiful sunset over an Indian housing colony playground, a young Indian boy (age 11) looking at a group of happy kids playing sports, a sense of accomplishment and bittersweet emotion, cartoon Pixar style, golden hour, warm nostalgic colors",
+      "reflection_prompt": "If you could go back to Week 1 and give yourself one piece of advice, what would it be? What was the hardest decision you made, and would you change it?",
+      "video": {
+        "url": "/uploads/videos/summer-sports-week-12.mp4",
+        "duration_seconds": 90,
+        "auto_play": false
+      },
+      "choices": [
+        {
+          "id": "r12_a",
+          "label": "Hand it over: train two younger kids to run it next year, give them everything",
+          "description": "+ The league lives on; you created something bigger than yourself; mentorship legacy. - They might not run it as well; your 'baby' is in someone else's hands; painful to let go.",
+          "delta": {
+            "players": 0,
+            "money": 0,
+            "reputation": 8
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 1,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 10
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 8,
+            "long_game_vision": 9,
+            "ethics_fairness": 8,
+            "balance_score": 6
+          },
+          "skill_tags": [
+            "Empathy",
+            "Strategic"
+          ],
+          "feedback": "You spend the last week training Ananya and Sahil. They're nervous but excited. When you hand over the equipment box, Ananya says 'I'll make you proud.' You've created something bigger than yourself.",
+          "flags_set": {
+            "legacy_handoff": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees (24 players × Rs.50)",
+              "amount": 1200,
+              "kind": "in",
+              "icon": "💰",
+              "tooltip": "Weekly fees collected from 24 active players."
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            },
+            {
+              "label": "Weekly running costs",
+              "amount": -100,
+              "kind": "out",
+              "icon": "🧾",
+              "tooltip": "Shuttlecocks, snacks, flags and other recurring supplies."
+            }
+          ],
+          "ripple_bullets": [
+            "Parents noticed — the colony is talking about your league.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r12_b",
+          "label": "Scale it: create a 'Summer Sports League Manual' that any colony can use",
+          "description": "+ Unlimited scale; your system spreads; you become a thought leader. - Lot of work; you might never see the impact; others get credit for your blueprint.",
+          "delta": {
+            "players": 0,
+            "money": -200,
+            "reputation": 5,
+            "expenses": 200
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 1,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 15
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 10,
+            "long_game_vision": 10,
+            "adaptability_quotient": 7,
+            "balance_score": 3
+          },
+          "skill_tags": [
+            "Strategic",
+            "Grit"
+          ],
+          "feedback": "You spend nights writing everything down — pricing, schedules, how to handle disputes, equipment maintenance. Sharma uncle prints 10 copies. Kids from other colonies are asking for it. You just created a FRANCHISE MODEL at age 11.",
+          "flags_set": {
+            "legacy_scale": true
+          },
+          "cost_tier": "significant",
+          "ledger_entries": [
+            {
+              "label": "One-time expense",
+              "amount": -200,
+              "kind": "out",
+              "icon": "💸"
+            },
+            {
+              "label": "Recurring costs up",
+              "amount": -200,
+              "kind": "out",
+              "icon": "📉"
+            }
+          ],
+          "ripple_bullets": [
+            "Parents noticed — the colony is talking about your league.",
+            "Your cash took a hit — runway is thinner now.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r12_c",
+          "label": "Keep it yours: run a smaller weekend version during school year",
+          "description": "+ Stay in control; keep the income; don't let go of what you built. - Burns your weekends; competes with school; you never 'graduate' from this.",
+          "delta": {
+            "players": 5,
+            "money": 50,
+            "reputation": 3,
+            "expenses": 30
+          },
+          "delayed_effects": [],
+          "hidden_modifiers": {
+            "eti": 4,
+            "long_game_vision": 2,
+            "adaptability_quotient": -3,
+            "balance_score": -2
+          },
+          "skill_tags": [
+            "Grit",
+            "Patience"
+          ],
+          "feedback": "Weekend sessions are fun but hard to manage with homework. You're stretched thin. Sometimes the best legacy is knowing when to let go gracefully.",
+          "flags_set": {
+            "legacy_hold": true
+          },
+          "cost_tier": "minor",
+          "ledger_entries": [
+            {
+              "label": "League fees · 5 new players",
+              "amount": 250,
+              "kind": "in",
+              "icon": "👥"
+            },
+            {
+              "label": "Extra revenue this week",
+              "amount": 50,
+              "kind": "in",
+              "icon": "💵"
+            },
+            {
+              "label": "Recurring costs up",
+              "amount": -30,
+              "kind": "out",
+              "icon": "📉"
+            }
+          ],
+          "ripple_bullets": [
+            "5 new kids signed up — word is spreading.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        },
+        {
+          "id": "r12_d",
+          "label": "Close it beautifully: throw an epic final tournament, give awards, end on a high",
+          "description": "+ Memorable ending; no messy continuation; clean emotional closure; focus on school. - The league ends; kids are sad; all that momentum just... stops.",
+          "delta": {
+            "players": 0,
+            "money": -300,
+            "reputation": 10
+          },
+          "delayed_effects": [
+            {
+              "delay_ticks": 1,
+              "effects": [
+                {
+                  "resource": "reputation",
+                  "delta": 8
+                }
+              ]
+            }
+          ],
+          "hidden_modifiers": {
+            "eti": 6,
+            "long_game_vision": 4,
+            "ethics_fairness": 6,
+            "balance_score": 4
+          },
+          "skill_tags": [
+            "Resilient",
+            "Empathy"
+          ],
+          "feedback": "Trophies made from recycled materials. Sharma uncle gives a speech. Parents applaud. Arjun, who you thought had quit, shows up to say 'This was the best summer of my life.' You didn't just run a league — you created memories.",
+          "flags_set": {
+            "legacy_close": true
+          },
+          "cost_tier": "all_in",
+          "ledger_entries": [
+            {
+              "label": "One-time expense",
+              "amount": -300,
+              "kind": "out",
+              "icon": "💸"
+            },
+            {
+              "label": "Goodwill earned (non-cash)",
+              "amount": 0,
+              "kind": "in",
+              "icon": "⭐",
+              "tooltip": "You gained reputation without spending — this may pay off later."
+            }
+          ],
+          "ripple_bullets": [
+            "Parents noticed — the colony is talking about your league.",
+            "Your cash took a hit — runway is thinner now.",
+            "Rohit's rival colony is watching — they feel the pressure."
+          ]
+        }
+      ],
+      "concept": "Sustainability, Exit Strategy & Reflection",
+      "badge": {
+        "id": "legend",
+        "label": "Legend",
+        "icon": "🏆"
+      },
+      "emotional_beat": "Bittersweet / Wisdom",
+      "target_emotion": "Bittersweet / Wisdom",
+      "emotional_intensity": 9,
+      "final_round": true,
+      "ripple_bullets": {
+        "r12_a": [
+          "Parents noticed — the colony is talking about your league.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r12_b": [
+          "Parents noticed — the colony is talking about your league.",
+          "Your cash took a hit — runway is thinner now.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r12_c": [
+          "5 new kids signed up — word is spreading.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ],
+        "r12_d": [
+          "Parents noticed — the colony is talking about your league.",
+          "Your cash took a hit — runway is thinner now.",
+          "Rohit's rival colony is watching — they feel the pressure."
+        ]
+      },
+      "transition_headline": "The real product wasn't the sports. It was you — wiser, tougher, and more capable."
+    }
+  ],
+  "multiplayer": {
+    "enabled": true,
+    "mode": "async_turn_based",
+    "min_players": 2,
+    "max_players": 4,
+    "leaderboard_metric": "final_score"
+  },
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

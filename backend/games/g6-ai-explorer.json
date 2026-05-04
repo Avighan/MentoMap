@@ -1,0 +1,2261 @@
+{
+  "game_id": "g6-ai-explorer",
+  "title": "AI Explorer: Friend or Foe?",
+  "theme": "AI & Technology Awareness",
+  "icon": "🤖",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are a curious Grade 6 student who just discovered AI tools! Over 10 weeks, navigate the exciting and tricky world of artificial intelligence — from chatbots and AI art to deepfakes and bias. Every choice you make shapes your AI literacy, ethics, creativity, and how your teachers and classmates see you. Will you become an AI champion or stumble into digital trouble?",
+  "target_audience": "Ages 11-12",
+  "target_age": "11-12",
+  "grade": "6",
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You are a student exploring AI tools over 10 weeks of school.",
+    "Each round presents a real-world AI scenario with choices that affect your resources.",
+    "Watch your dashboard — AI Knowledge, Ethics Score, Creativity, and Teacher Approval are all connected.",
+    "Random events like deepfake discoveries and school debates will test your thinking.",
+    "NPCs (your CS teacher, classmate, and a visiting speaker) react to your decisions.",
+    "Balance learning, ethics, and creativity — going too far in one direction has consequences!"
+  ],
+  "learning_objectives": [
+    "Understand what AI is and what it can do in everyday life",
+    "Develop critical thinking about AI-generated content",
+    "Learn to use AI tools responsibly and ethically",
+    "Recognize AI bias and its real-world impact",
+    "Build creative confidence using AI as a collaborator",
+    "Practice digital citizenship and online safety"
+  ],
+  "tags": [
+    "ai",
+    "technology",
+    "grade-6",
+    "digital-literacy",
+    "ethics"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Digital Literacy",
+    "Critical Thinking",
+    "Ethical Reasoning"
+  ],
+  "cultural_context": "Global student experience with AI tools, digital citizenship, responsible technology use",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.15,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.15,
+    "ethical_reasoning": 0.25
+  },
+  "initial_state": {
+    "ai_knowledge": {
+      "value": 30,
+      "label": "AI Knowledge",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "digital_skills": {
+      "value": 20,
+      "label": "Digital Skills",
+      "icon": "💻",
+      "min": 0,
+      "max": 100
+    },
+    "critical_thinking": {
+      "value": 40,
+      "label": "Critical Thinking",
+      "icon": "🔍",
+      "min": 0,
+      "max": 100
+    },
+    "ethics_score": {
+      "value": 50,
+      "label": "Ethics Score",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "creativity": {
+      "value": 60,
+      "label": "Creativity",
+      "icon": "🎨",
+      "min": 0,
+      "max": 100
+    },
+    "project_quality": {
+      "value": 0,
+      "label": "Project Quality",
+      "icon": "📊",
+      "min": 0,
+      "max": 100
+    },
+    "teacher_approval": {
+      "value": 50,
+      "label": "Teacher Approval",
+      "icon": "👨‍🏫",
+      "min": 0,
+      "max": 100
+    },
+    "curiosity": {
+      "value": 70,
+      "label": "Curiosity",
+      "icon": "✨",
+      "min": 0,
+      "max": 100
+    },
+    "peer_reputation": {
+      "value": 50,
+      "label": "Peer Reputation",
+      "icon": "👫",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "tech_literacy",
+        "label": "Tech Literacy",
+        "icon": "💻",
+        "color": "#6366F1",
+        "initial_health": 25,
+        "health_formula": "min(100, max(0, ai_knowledge * 0.4 + digital_skills * 0.35 + critical_thinking * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "ethics_safety",
+        "label": "Ethics & Safety",
+        "icon": "🛡️",
+        "color": "#EF476F",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, ethics_score * 0.5 + critical_thinking * 0.3 + teacher_approval * 0.2))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "creative_ai",
+        "label": "Creative AI Use",
+        "icon": "🎨",
+        "color": "#FFD166",
+        "initial_health": 60,
+        "health_formula": "min(100, max(0, creativity * 0.5 + digital_skills * 0.25 + curiosity * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "academic_integration",
+        "label": "Academic Integration",
+        "icon": "📚",
+        "color": "#06D6A0",
+        "initial_health": 30,
+        "health_formula": "min(100, max(0, project_quality * 0.35 + teacher_approval * 0.3 + ai_knowledge * 0.2 + critical_thinking * 0.15))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "ai_literacy_score",
+        "label": "AI Literacy Score",
+        "icon": "🧠",
+        "formula": "(ai_knowledge * 0.35 + digital_skills * 0.25 + critical_thinking * 0.25 + curiosity * 0.15)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 70
+        }
+      },
+      {
+        "id": "ethics_rating",
+        "label": "Ethics Rating",
+        "icon": "⚖️",
+        "formula": "(ethics_score * 0.5 + teacher_approval * 0.25 + critical_thinking * 0.25)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 30,
+          "warning": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "creative_innovation",
+        "label": "Creative Innovation",
+        "icon": "🎨",
+        "formula": "(creativity * 0.4 + project_quality * 0.3 + curiosity * 0.3)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "curiosity_learning",
+        "label": "Curiosity Drives Learning",
+        "condition": {
+          "resource": "curiosity",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "ai_knowledge",
+            "formula": "min(100, ai_knowledge + 2)"
+          }
+        ],
+        "description": "High curiosity naturally boosts your AI knowledge over time."
+      },
+      {
+        "id": "ethics_trust",
+        "label": "Ethics Builds Trust",
+        "condition": {
+          "resource": "ethics_score",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "teacher_approval",
+            "formula": "min(100, teacher_approval + 2)"
+          }
+        ],
+        "description": "Consistent ethical behavior earns teacher trust."
+      },
+      {
+        "id": "low_ethics_warning",
+        "label": "Ethics Alarm",
+        "condition": {
+          "resource": "ethics_score",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "teacher_approval",
+            "formula": "max(0, teacher_approval - 3)"
+          },
+          {
+            "resource": "peer_reputation",
+            "formula": "max(0, peer_reputation - 2)"
+          }
+        ],
+        "description": "Low ethics causes teachers and peers to lose trust in you."
+      },
+      {
+        "id": "project_progress",
+        "label": "Project Progress",
+        "effects": [
+          {
+            "resource": "project_quality",
+            "formula": "min(100, max(0, project_quality + (ai_knowledge * 0.03 + creativity * 0.02 + digital_skills * 0.02)))"
+          }
+        ],
+        "description": "Your project quality improves based on your skills over time."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "knowledge_unlocks_creativity",
+        "from_subsystem": "tech_literacy",
+        "to_subsystem": "creative_ai",
+        "label": "Knowledge Fuels Creativity",
+        "condition": {
+          "resource": "ai_knowledge",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "creativity",
+            "formula": "min(100, creativity + (ai_knowledge - 50) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Understanding AI well helps you use it more creatively."
+      },
+      {
+        "id": "ethics_improves_academics",
+        "from_subsystem": "ethics_safety",
+        "to_subsystem": "academic_integration",
+        "label": "Integrity Boosts Grades",
+        "condition": {
+          "resource": "ethics_score",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "project_quality",
+            "formula": "min(100, project_quality + (ethics_score - 65) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Teachers reward honest, ethical work with better evaluations."
+      },
+      {
+        "id": "low_thinking_hurts_ethics",
+        "from_subsystem": "tech_literacy",
+        "to_subsystem": "ethics_safety",
+        "label": "Blind Trust in AI",
+        "condition": {
+          "resource": "critical_thinking",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "ethics_score",
+            "formula": "max(0, ethics_score - (30 - critical_thinking) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Without critical thinking, you blindly trust AI and make ethical mistakes."
+      },
+      {
+        "id": "creativity_boosts_reputation",
+        "from_subsystem": "creative_ai",
+        "to_subsystem": "academic_integration",
+        "label": "Creative Projects Impress",
+        "condition": {
+          "resource": "creativity",
+          "op": ">=",
+          "value": 70
+        },
+        "effects": [
+          {
+            "resource": "peer_reputation",
+            "formula": "min(100, peer_reputation + (creativity - 70) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Cool creative AI projects make you popular with classmates."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "curiosity",
+        "equilibrium": 50,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "peer_reputation",
+        "equilibrium": 45,
+        "rate": 0.04,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "ai_wrong_homework",
+        "label": "AI Gets It Wrong!",
+        "icon": "❌",
+        "description": "A chatbot gave a classmate completely wrong science facts for their homework. The teacher is upset and questions whether AI should be allowed in school.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "critical_thinking",
+              "op": "<",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "teacher_approval",
+            "delta": -8
+          },
+          {
+            "resource": "ai_knowledge",
+            "delta": 5
+          },
+          {
+            "resource": "curiosity",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "SCHOOL NEWS: AI chatbot gives wrong facts! Teacher warns students to double-check AI answers.",
+        "ai_image_prompt": "Cartoon style classroom, teacher holding paper with red X marks, students looking surprised, chatbot on screen showing wrong answers, colorful school setting"
+      },
+      {
+        "id": "deepfake_discovery",
+        "label": "Deepfake Discovered!",
+        "icon": "😱",
+        "description": "Someone shared a deepfake video of the school principal saying funny things. It looks totally real! The school is in an uproar.",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "digital_skills",
+              "op": ">=",
+              "value": 25
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "ethics_score",
+            "delta": -5
+          },
+          {
+            "resource": "critical_thinking",
+            "delta": 8
+          },
+          {
+            "resource": "ai_knowledge",
+            "delta": 5
+          },
+          {
+            "resource": "teacher_approval",
+            "delta": -5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "ALERT: Deepfake video of principal goes viral! School launches investigation into AI misuse.",
+        "ai_image_prompt": "Cartoon style school hallway, students gathered around phone showing a glitchy video, shocked expressions, digital distortion effects, warning signs"
+      },
+      {
+        "id": "school_ai_debate",
+        "label": "The Great AI Debate",
+        "icon": "🗣️",
+        "description": "The school announces a debate competition: 'Should AI be banned from homework?' Everyone has strong opinions!",
+        "probability": 0.22,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 4
+        },
+        "effects": [
+          {
+            "resource": "critical_thinking",
+            "delta": 8
+          },
+          {
+            "resource": "curiosity",
+            "delta": 5
+          },
+          {
+            "resource": "peer_reputation",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "School announces AI debate competition! Students take passionate sides on AI in education.",
+        "ai_image_prompt": "Cartoon style school auditorium, two students at podiums debating, audience of kids, banners saying AI YES and AI NO, energetic atmosphere"
+      },
+      {
+        "id": "cool_ai_art_tool",
+        "label": "Amazing AI Art Tool!",
+        "icon": "🎨",
+        "description": "A free AI art generator goes viral among students. Everyone is making incredible artwork — but whose creativity is it really?",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "creativity",
+              "op": ">=",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "creativity",
+            "delta": 8
+          },
+          {
+            "resource": "digital_skills",
+            "delta": 5
+          },
+          {
+            "resource": "curiosity",
+            "delta": 5
+          },
+          {
+            "resource": "ethics_score",
+            "delta": -3
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "AI art tool goes viral in school! Students create stunning images — but is it really 'their' art?",
+        "ai_image_prompt": "Cartoon style kids gathered around a tablet showing colorful AI-generated art, amazed faces, paint splashes, digital sparkles, creative chaos"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "mr_tech",
+        "name": "Mr. Tech (CS Teacher)",
+        "role": "Computer Science Teacher",
+        "icon": "👨‍💻",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "ai_knowledge",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "Impressive AI knowledge! You really understand how these tools work under the hood.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "ethics_score",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "I'm concerned about how you're using AI tools. We need to have a serious talk about digital responsibility.",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "digital_skills",
+                  "op": ">=",
+                  "value": 55
+                },
+                {
+                  "resource": "project_quality",
+                  "op": ">=",
+                  "value": 40
+                }
+              ]
+            },
+            "action": "encourage",
+            "message": "Your technical skills are growing fast! Have you thought about entering the science fair with an AI project?",
+            "mood_change": "excited",
+            "satisfaction_delta": 6
+          }
+        ]
+      },
+      {
+        "id": "luna",
+        "name": "Luna (AI-Curious Classmate)",
+        "role": "Classmate & Study Partner",
+        "icon": "👧",
+        "initial_mood": "excited",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "creativity",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "collaborate",
+            "message": "Your AI art is SO cool! Can we team up for the school project? I have ideas too!",
+            "mood_change": "happy",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "resource": "peer_reputation",
+              "op": "<",
+              "value": 30
+            },
+            "action": "distance",
+            "message": "I heard some kids saying you've been using AI to cheat. I don't want to get in trouble too...",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "curiosity",
+                  "op": ">=",
+                  "value": 65
+                },
+                {
+                  "resource": "ai_knowledge",
+                  "op": ">=",
+                  "value": 45
+                }
+              ]
+            },
+            "action": "excited",
+            "message": "You know so much about AI! Can you teach me how to use it for our history project?",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          }
+        ]
+      },
+      {
+        "id": "dr_ethics",
+        "name": "Dr. Ethics (Visiting Speaker)",
+        "role": "AI Ethics Researcher",
+        "icon": "🎓",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "ethics_score",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "impressed",
+            "message": "You show remarkable ethical maturity for your age. The AI field needs more thinkers like you!",
+            "mood_change": "happy",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "resource": "critical_thinking",
+              "op": "<",
+              "value": 35
+            },
+            "action": "concerned",
+            "message": "I notice you accept AI outputs without questioning them. Remember: AI can be wrong, biased, or misleading!",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "ethics_score",
+                  "op": "<",
+                  "value": 30
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "intervention",
+            "message": "Dr. Ethics requests an urgent assembly! She presents shocking examples of AI misuse and its consequences for young people.",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "teacher_approval",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_ai_misuse"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "ai_knowledge",
+          "op": ">=",
+          "value": 70
+        },
+        "icon": "🧠",
+        "text": "Student demonstrates advanced AI literacy! Knowledge score: {ai_knowledge}%",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "ethics_score",
+              "op": ">=",
+              "value": 70
+            },
+            {
+              "resource": "creativity",
+              "op": ">=",
+              "value": 65
+            }
+          ]
+        },
+        "icon": "🌟",
+        "text": "Model digital citizen! High ethics and creativity scores earn school recognition.",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A cartoon style school scene. A student exploring AI and technology, AI knowledge level {ai_knowledge}%, creativity {creativity}%, ethics score {ethics_score}%. {'Excited learning atmosphere' if curiosity > 60 else 'Cautious exploration' if ethics_score > 60 else 'Concerned teachers nearby'}. Colorful, kid-friendly, modern classroom with screens and gadgets."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_discovery",
+      "round_title": "Week 1: Hello, AI!",
+      "situation": "Your CS teacher, Mr. Tech, introduces the class to AI chatbots. He lets everyone try asking a chatbot questions. Some kids ask silly things, others ask for homework answers. You get to decide how you want to explore this new tool for the first time.",
+      "goal": "Make your first meaningful interaction with an AI chatbot.",
+      "coaching_moment": "Curiosity is the engine of learning. How you approach something new says a lot about your thinking style.",
+      "reflection_prompt": "When you encounter a new technology, do you jump right in or observe first? Why?",
+      "ai_image_prompt": "Cartoon style classroom, diverse students gathered around a computer screen showing a friendly chatbot, excited faces, colorful tech lab, Mr. Tech teacher pointing at screen",
+      "choices": [
+        {
+          "id": "w1_curious_explore",
+          "label": "A. Ask the chatbot creative questions",
+          "description": "Test the AI's limits — ask it to write a poem, explain black holes, or tell a joke. See what it can really do!",
+          "delta": {
+            "ai_knowledge": 10,
+            "curiosity": 10,
+            "creativity": 8,
+            "digital_skills": 5,
+            "teacher_approval": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Great explorer mindset! By testing the AI's range, you learn what it's good at and where it struggles.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "w1_homework_shortcut",
+          "label": "B. Ask it to do your math homework",
+          "description": "Why not? Copy the homework questions and get instant answers. Save time for playing!",
+          "delta": {
+            "ai_knowledge": 5,
+            "digital_skills": 3,
+            "ethics_score": -12,
+            "teacher_approval": -8,
+            "curiosity": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Quick fix, but dangerous! Using AI to cheat doesn't help you learn — and teachers can often tell.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w1_research",
+          "label": "C. Research how the chatbot works",
+          "description": "Before using it, learn what's behind the magic. How does AI actually generate answers?",
+          "delta": {
+            "ai_knowledge": 15,
+            "critical_thinking": 10,
+            "digital_skills": 8,
+            "curiosity": 5,
+            "teacher_approval": 8
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Deep thinker! Understanding how AI works gives you power over the tool, not the other way around.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w1_cautious",
+          "label": "D. Watch classmates first, then try carefully",
+          "description": "Observe what others do right and wrong before making your move. Learn from their mistakes!",
+          "delta": {
+            "ai_knowledge": 8,
+            "critical_thinking": 8,
+            "ethics_score": 5,
+            "peer_reputation": 3,
+            "teacher_approval": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Smart and observant! Watching others helps you avoid pitfalls and learn best practices.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_homework",
+      "round_title": "Week 2: The Homework Dilemma",
+      "situation": "You have a big English essay due tomorrow about climate change. Luna suggests using AI to write it. 'Everyone does it!' she says. But Mr. Tech warned the class about AI-written work. What do you do?",
+      "goal": "Navigate the tension between AI assistance and academic integrity.",
+      "coaching_moment": "Ethical reasoning: Using AI as a tool vs. using it as a shortcut — the line matters more than you think.",
+      "reflection_prompt": "Where is the line between getting help from AI and letting AI do the work for you?",
+      "ai_image_prompt": "Cartoon style student at desk at night, laptop showing AI chatbot on one side and a blank essay on the other, thought bubbles showing angel and devil, homework papers scattered",
+      "choices": [
+        {
+          "id": "w2_full_ai",
+          "label": "A. Let AI write the whole essay",
+          "description": "Paste the prompt, get the essay, submit. Done in 5 minutes!",
+          "delta": {
+            "ethics_score": -15,
+            "teacher_approval": -12,
+            "creativity": -8,
+            "digital_skills": 3,
+            "peer_reputation": -5,
+            "critical_thinking": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The easy path has consequences. AI-written essays lack your voice, and plagiarism detectors are getting smarter.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w2_brainstorm",
+          "label": "B. Use AI to brainstorm, then write yourself",
+          "description": "Ask the AI for ideas, outlines, and facts — but write every sentence yourself.",
+          "delta": {
+            "ai_knowledge": 8,
+            "ethics_score": 8,
+            "creativity": 5,
+            "critical_thinking": 8,
+            "teacher_approval": 10,
+            "project_quality": 10
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Perfect balance! AI as a brainstorming partner while keeping your authentic voice. This is responsible AI use.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w2_no_ai",
+          "label": "C. Write it completely on your own",
+          "description": "No AI at all. Use books, your notes, and your own brain. The old-fashioned way.",
+          "delta": {
+            "ethics_score": 10,
+            "teacher_approval": 5,
+            "critical_thinking": 5,
+            "creativity": 3,
+            "curiosity": -3
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Honest and hardworking! But remember — learning to use AI responsibly is also a valuable skill.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "w2_ask_teacher",
+          "label": "D. Ask Mr. Tech what's allowed",
+          "description": "Before using AI, ask the teacher to clarify the rules. Better safe than sorry!",
+          "delta": {
+            "ethics_score": 12,
+            "teacher_approval": 12,
+            "ai_knowledge": 5,
+            "peer_reputation": 3,
+            "critical_thinking": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Mature move! Seeking clarity shows integrity. Mr. Tech appreciates students who care about doing the right thing.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_ai_art",
+      "round_title": "Week 3: AI Art Explosion",
+      "situation": "The school art competition is next week. You discover an AI image generator that creates stunning artwork from text descriptions. Luna is already making entries. Some students say using AI art is cheating. The art teacher hasn't said anything yet.",
+      "goal": "Decide how to approach AI-generated art and creative expression.",
+      "coaching_moment": "Creativity isn't just about the final product — it's about the human ideas, emotions, and vision behind it.",
+      "reflection_prompt": "If a machine helps create art, who is the real artist — the human with the idea or the AI with the skill?",
+      "ai_image_prompt": "Cartoon style school art room, student typing prompts into tablet showing AI art generator, beautiful digital art appearing, other students painting by hand nearby, colorful creative atmosphere",
+      "choices": [
+        {
+          "id": "w3_pure_ai_art",
+          "label": "A. Submit pure AI-generated art",
+          "description": "Type in a cool prompt, pick the best result, and submit it as your competition entry.",
+          "delta": {
+            "digital_skills": 8,
+            "creativity": -5,
+            "ethics_score": -10,
+            "teacher_approval": -8,
+            "peer_reputation": -5,
+            "project_quality": 5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The image looks great, but it's the AI's skill, not yours. Other students feel it's unfair.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w3_ai_collab",
+          "label": "B. Combine AI art with your own drawings",
+          "description": "Use AI to generate backgrounds, then add your own characters and story on top. A true collaboration!",
+          "delta": {
+            "creativity": 12,
+            "digital_skills": 8,
+            "ai_knowledge": 5,
+            "ethics_score": 5,
+            "teacher_approval": 8,
+            "project_quality": 12
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Brilliant collaboration! You used AI as a tool while adding your unique creative vision. This is the future of art.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w3_hand_drawn",
+          "label": "C. Create traditional art by hand",
+          "description": "Skip AI entirely. Use paints, pencils, and your imagination. Keep it authentic.",
+          "delta": {
+            "creativity": 8,
+            "ethics_score": 5,
+            "teacher_approval": 5,
+            "peer_reputation": 5,
+            "project_quality": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Pure human creativity! Your art may not be as polished as AI, but it's 100% yours.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "w3_teach_class",
+          "label": "D. Propose an 'AI + Human Art' category",
+          "description": "Suggest to the art teacher that the competition should have separate categories for AI-assisted and traditional art.",
+          "delta": {
+            "ethics_score": 10,
+            "critical_thinking": 10,
+            "teacher_approval": 10,
+            "peer_reputation": 8,
+            "ai_knowledge": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Leadership thinking! You found a fair solution that respects both traditional artists and AI innovators.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_bias",
+      "round_title": "Week 4: The Bias Bug",
+      "situation": "For a social studies project, you ask an AI to generate images of 'a doctor,' 'a nurse,' and 'a scientist.' The results shock you — the doctor and scientist are always shown as men, and the nurse is always a woman. You notice the AI also struggles with representing different cultures accurately.",
+      "goal": "Understand and respond to AI bias in a thoughtful way.",
+      "coaching_moment": "AI learns from human data — including human prejudices. Recognizing bias is the first step to fixing it.",
+      "reflection_prompt": "If AI learns from human data, whose views and biases does it reflect? How can we fix that?",
+      "ai_image_prompt": "Cartoon style student looking at computer screen showing biased AI images, thought bubble with question marks, diverse friends standing behind looking concerned, classroom setting",
+      "choices": [
+        {
+          "id": "w4_ignore",
+          "label": "A. Use the images anyway",
+          "description": "They look fine for the project. Bias isn't your problem to fix — you just need to finish the assignment.",
+          "delta": {
+            "digital_skills": 3,
+            "project_quality": 3,
+            "ethics_score": -10,
+            "critical_thinking": -8,
+            "teacher_approval": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Ignoring bias means spreading it. When we use biased content without thinking, we become part of the problem.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w4_investigate",
+          "label": "B. Research why AI is biased and present findings",
+          "description": "Turn the bias into your project! Investigate why AI shows stereotypes and present it to class.",
+          "delta": {
+            "ai_knowledge": 12,
+            "critical_thinking": 15,
+            "ethics_score": 10,
+            "teacher_approval": 12,
+            "peer_reputation": 8,
+            "project_quality": 10
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Turning a problem into a learning opportunity! Your investigation teaches the whole class about AI limitations.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "w4_fix_prompts",
+          "label": "C. Rewrite prompts to get diverse results",
+          "description": "Modify your text prompts to specifically request diverse, accurate images. Be part of the solution!",
+          "delta": {
+            "digital_skills": 10,
+            "ai_knowledge": 8,
+            "ethics_score": 8,
+            "creativity": 5,
+            "critical_thinking": 8
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Practical problem-solving! Prompt engineering is a real skill, and you're using it for good.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "w4_report",
+          "label": "D. Report the bias to the AI company",
+          "description": "Write feedback to the AI tool's creators explaining the bias you found. Push for change at the source!",
+          "delta": {
+            "ethics_score": 12,
+            "critical_thinking": 10,
+            "ai_knowledge": 5,
+            "teacher_approval": 8,
+            "peer_reputation": 5,
+            "curiosity": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Civic action! You're not just a consumer of technology — you're helping shape it for the better.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_safety",
+      "round_title": "Week 5: Digital Danger Zone",
+      "situation": "A kid in another class shared personal information with an AI chatbot — their address, school name, and parent's phone number. The AI seemed friendly and helpful, like a digital friend. Now strange emails are appearing. Mr. Tech calls an emergency class meeting about AI safety.",
+      "goal": "Learn and apply AI safety practices to protect yourself and others.",
+      "coaching_moment": "AI tools are not your friends — they are programs. Never share personal data with AI systems, no matter how friendly they seem.",
+      "reflection_prompt": "Why might it feel natural to share personal information with a chatbot? What makes it risky?",
+      "ai_image_prompt": "Cartoon style worried students in classroom, teacher pointing at whiteboard showing SAFETY RULES, shield icon, computer screen with a friendly chatbot and warning symbol, bright colors",
+      "choices": [
+        {
+          "id": "w5_safety_guide",
+          "label": "A. Create an AI Safety Guide for the school",
+          "description": "Write and illustrate a simple guide on what to share (and not share) with AI. Distribute to all classes.",
+          "delta": {
+            "ethics_score": 12,
+            "teacher_approval": 15,
+            "peer_reputation": 10,
+            "ai_knowledge": 8,
+            "critical_thinking": 5,
+            "project_quality": 8
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "You're protecting the whole school! Creating safety resources shows real leadership and care for others.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w5_privacy_settings",
+          "label": "B. Learn to check privacy settings on AI tools",
+          "description": "Dive deep into the privacy policies and settings of popular AI tools. Know exactly what data they collect.",
+          "delta": {
+            "digital_skills": 15,
+            "ai_knowledge": 10,
+            "critical_thinking": 8,
+            "ethics_score": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Technical savvy! Understanding privacy settings is a superpower in the digital age.",
+          "requires": {
+            "resource": "digital_skills",
+            "op": ">=",
+            "value": 25,
+            "label": "Requires Digital Skills ≥ 25"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "w5_tell_parents",
+          "label": "C. Talk to parents about AI safety",
+          "description": "Have a family conversation about AI tools, safety rules, and setting up parental monitoring together.",
+          "delta": {
+            "ethics_score": 8,
+            "teacher_approval": 5,
+            "critical_thinking": 5,
+            "peer_reputation": -3,
+            "curiosity": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Family communication matters! Parents can help set healthy AI boundaries, even if some classmates think it's uncool.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "w5_not_worried",
+          "label": "D. It won't happen to me — keep using AI freely",
+          "description": "That kid made a silly mistake. You're smarter than that. No need to change anything.",
+          "delta": {
+            "digital_skills": 3,
+            "curiosity": 5,
+            "ethics_score": -8,
+            "critical_thinking": -5,
+            "teacher_approval": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Overconfidence is dangerous online! Even tech experts fall for digital traps. Safety awareness protects everyone.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_building",
+      "round_title": "Week 6: Build Something Amazing!",
+      "situation": "Mr. Tech announces a mid-term project: 'Use AI to solve a real problem in our school or community.' You have two weeks. Luna wants to partner with you. What problem will you tackle, and how will you use AI?",
+      "goal": "Apply AI skills to build something useful and meaningful.",
+      "coaching_moment": "The best technology solves real human problems. What matters isn't the tech — it's the impact.",
+      "reflection_prompt": "What problem in your school or community could AI help solve? Why does the problem matter to you?",
+      "ai_image_prompt": "Cartoon style students brainstorming at whiteboard, sticky notes with ideas, laptop showing AI tools, lightbulb moment, creative workshop setting, colorful and energetic",
+      "choices": [
+        {
+          "id": "w6_tutor_bot",
+          "label": "A. Build an AI Study Helper for younger kids",
+          "description": "Create a simple chatbot that helps Grade 3-4 students with math and reading. Make learning fun!",
+          "delta": {
+            "project_quality": 15,
+            "ai_knowledge": 10,
+            "digital_skills": 10,
+            "creativity": 8,
+            "teacher_approval": 10,
+            "peer_reputation": 8,
+            "ethics_score": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Helping younger students with AI — that's technology with heart! A project that combines skills with compassion.",
+          "requires": {
+            "resource": "ai_knowledge",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires AI Knowledge ≥ 40"
+          },
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w6_waste_tracker",
+          "label": "B. Create an AI-powered waste sorting guide",
+          "description": "Use image recognition AI to help students sort waste correctly in the cafeteria. Go green!",
+          "delta": {
+            "project_quality": 12,
+            "ai_knowledge": 8,
+            "digital_skills": 8,
+            "creativity": 5,
+            "teacher_approval": 8,
+            "ethics_score": 8
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "adaptability"
+          ],
+          "feedback": "Environment meets technology! AI for sustainability shows you care about the planet and your community.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "w6_story_generator",
+          "label": "C. Make a collaborative AI story game",
+          "description": "Build a choose-your-own-adventure story where AI generates new plot twists based on player choices.",
+          "delta": {
+            "project_quality": 10,
+            "creativity": 15,
+            "digital_skills": 10,
+            "ai_knowledge": 5,
+            "peer_reputation": 10,
+            "curiosity": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Creative and fun! An AI story game shows how technology can amplify human imagination.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w6_simple_presentation",
+          "label": "D. Make a presentation about what AI can do",
+          "description": "Play it safe — create a slideshow explaining AI to the class. No coding required.",
+          "delta": {
+            "project_quality": 5,
+            "ai_knowledge": 5,
+            "critical_thinking": 3,
+            "teacher_approval": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Safe choice, but it misses the chance to apply what you've learned. Sometimes you need to take a creative leap!",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_ai_misuse",
+      "id": "crisis_ai_misuse",
+      "round_title": "CRISIS: The AI Misuse Emergency",
+      "situation": "Dr. Ethics has called a school-wide assembly! Several students have been caught using AI to cheat on exams, one student used AI to create a mean deepfake of a classmate, and parents are demanding the school ban all AI tools. The principal asks you — as someone who knows about AI — to speak at the assembly. What do you say?",
+      "goal": "Address the AI misuse crisis and help the school find a balanced path forward.",
+      "coaching_moment": "Ethical reasoning: Technology itself isn't good or bad — it's how humans choose to use it. Speaking up takes courage.",
+      "reflection_prompt": "Should schools ban AI tools entirely, or teach students to use them responsibly? Why?",
+      "ai_image_prompt": "Cartoon style school assembly hall, worried principal at podium, parents in audience, students looking nervous, large screen showing AI POLICY text, dramatic but kid-friendly atmosphere",
+      "condition": {
+        "resource": "ethics_score",
+        "operator": "<",
+        "value": 30
+      },
+      "choices": [
+        {
+          "id": "cm_ban_ai",
+          "label": "A. Support banning AI from school",
+          "description": "AI causes too many problems. Tell the assembly that the school should block all AI tools completely.",
+          "delta": {
+            "ethics_score": 5,
+            "teacher_approval": 5,
+            "creativity": -15,
+            "curiosity": -15,
+            "digital_skills": -10,
+            "peer_reputation": -8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "A ban feels safe, but it prevents learning. Students will use AI outside school anyway — without guidance.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "cm_responsible_use",
+          "label": "B. Propose an AI Responsibility Code",
+          "description": "Present a student-written code of conduct for AI use — clear rules, fair consequences, and AI literacy classes for all.",
+          "delta": {
+            "ethics_score": 18,
+            "teacher_approval": 15,
+            "critical_thinking": 10,
+            "peer_reputation": 12,
+            "ai_knowledge": 5,
+            "creativity": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "Outstanding leadership! A responsibility code empowers students while preventing misuse. You're shaping the future!",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "cm_blame_others",
+          "label": "C. Stay quiet and let adults handle it",
+          "description": "It's not your problem. Let the principal and parents figure it out. Keep a low profile.",
+          "delta": {
+            "ethics_score": -5,
+            "peer_reputation": -5,
+            "teacher_approval": -3,
+            "curiosity": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Silence when you could help is a missed opportunity. Your knowledge could have made a difference.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "cm_educate",
+          "label": "D. Volunteer to teach AI ethics workshops",
+          "description": "Offer to run weekly workshops teaching younger students how to use AI safely and responsibly.",
+          "delta": {
+            "ethics_score": 15,
+            "teacher_approval": 12,
+            "peer_reputation": 10,
+            "ai_knowledge": 8,
+            "critical_thinking": 5,
+            "creativity": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Teaching others is the highest form of learning! You're becoming a responsible AI leader in your school.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_future",
+      "round_title": "Week 7: AI and the Future of Work",
+      "situation": "Career Day at school! A panel of professionals talks about how AI is changing jobs. A journalist says AI writes articles now. A doctor shows AI that reads X-rays. An artist worries AI will replace creatives. You start wondering: what will jobs look like when you grow up?",
+      "goal": "Think critically about AI's impact on future careers and develop a growth mindset.",
+      "coaching_moment": "Adaptability: The jobs of tomorrow might not exist yet. The key skill isn't knowing — it's learning.",
+      "reflection_prompt": "What skills should you develop now that AI can't easily replace?",
+      "ai_image_prompt": "Cartoon style school career day, professionals at tables showing AI tools, doctor with AI scan, artist with digital tablet, journalist with AI writing, curious students asking questions",
+      "choices": [
+        {
+          "id": "w7_learn_coding",
+          "label": "A. Start learning to code and build AI",
+          "description": "If AI is the future, learn to build it! Sign up for Mr. Tech's after-school coding club.",
+          "delta": {
+            "digital_skills": 15,
+            "ai_knowledge": 10,
+            "curiosity": 8,
+            "project_quality": 5,
+            "creativity": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Building AI, not just using it! Coding gives you the power to create, not just consume technology.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w7_human_skills",
+          "label": "B. Focus on skills AI can't replace",
+          "description": "Practice empathy, creativity, leadership, and teamwork — the human skills that make us irreplaceable.",
+          "delta": {
+            "critical_thinking": 10,
+            "ethics_score": 8,
+            "creativity": 10,
+            "peer_reputation": 8,
+            "teacher_approval": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Wise perspective! Emotional intelligence, creativity, and human connection are your superpowers in an AI world.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "w7_ai_plus_human",
+          "label": "C. Learn to be an AI-human collaborator",
+          "description": "The future isn't AI vs. humans — it's AI + humans. Practice using AI as your partner, not replacement.",
+          "delta": {
+            "ai_knowledge": 10,
+            "digital_skills": 8,
+            "creativity": 8,
+            "critical_thinking": 8,
+            "curiosity": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "The collaboration mindset! The most valuable workers will be those who know how to partner with AI effectively.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w7_worried",
+          "label": "D. Feel worried — AI might take all the jobs",
+          "description": "What if there are no jobs left? Maybe it's pointless to study so hard. The future feels scary.",
+          "delta": {
+            "curiosity": -10,
+            "critical_thinking": -3,
+            "peer_reputation": -3,
+            "ethics_score": 3
+          },
+          "skill_tags": [
+            "resilience"
+          ],
+          "feedback": "It's natural to worry, but history shows that new technology creates more jobs than it destroys. Stay curious and keep learning!",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_voice",
+      "round_title": "Week 8: AI Finds Its Voice",
+      "situation": "Luna shows you an AI voice cloning tool. With just 10 seconds of audio, it can make anyone's voice say anything! She thinks it's hilarious and wants to prank the teacher. But you've been learning about deepfakes and ethics. This could be fun... or very wrong.",
+      "goal": "Navigate the ethical minefield of AI voice and media manipulation.",
+      "coaching_moment": "Just because technology CAN do something doesn't mean it SHOULD. Ethical thinking means considering consequences before acting.",
+      "reflection_prompt": "If you could clone anyone's voice perfectly, what would stop you from misusing it?",
+      "ai_image_prompt": "Cartoon style two students looking at phone showing sound waves and voice clone interface, one student excited one thoughtful, microphone icon, ethical dilemma visualized with angel/devil icons",
+      "choices": [
+        {
+          "id": "w8_prank",
+          "label": "A. Go ahead with the prank — it's just fun!",
+          "description": "Clone Mr. Tech's voice saying something funny. It's harmless, right? Everyone will laugh!",
+          "delta": {
+            "digital_skills": 5,
+            "ethics_score": -15,
+            "teacher_approval": -15,
+            "peer_reputation": -8,
+            "critical_thinking": -5,
+            "creativity": 3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "What seems like a harmless prank can hurt people and destroy trust. Mr. Tech is not amused.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w8_refuse",
+          "label": "B. Refuse and explain why it's wrong",
+          "description": "Tell Luna this crosses a line. Impersonating someone without consent is a form of deception — even as a joke.",
+          "delta": {
+            "ethics_score": 12,
+            "critical_thinking": 8,
+            "teacher_approval": 8,
+            "peer_reputation": 3,
+            "curiosity": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Standing up for what's right, even when your friend disagrees, shows real character. Ethics over entertainment!",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "w8_positive_use",
+          "label": "C. Redirect — use voice AI for a positive project",
+          "description": "Instead of pranks, suggest using AI voice to create an audiobook for visually impaired students at school.",
+          "delta": {
+            "ethics_score": 10,
+            "creativity": 12,
+            "ai_knowledge": 8,
+            "teacher_approval": 10,
+            "peer_reputation": 10,
+            "project_quality": 8
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Brilliant redirect! Taking a potentially harmful tool and finding a positive use — that's ethical innovation at its best.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "w8_research_deepfakes",
+          "label": "D. Research deepfake detection together",
+          "description": "Instead of making fakes, learn how to detect them! Train yourselves to spot AI-generated media.",
+          "delta": {
+            "ai_knowledge": 12,
+            "critical_thinking": 12,
+            "digital_skills": 8,
+            "ethics_score": 5,
+            "curiosity": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Fighting fire with fire! Learning to detect deepfakes makes you a digital media warrior.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_creativity",
+      "id": "crisis_creativity",
+      "round_title": "CRISIS: The Creativity Crisis",
+      "situation": "The school talent show is next week, and something strange has happened — almost every entry is AI-generated! AI songs, AI art, AI-written poems, AI choreography. The judges can't tell what's human anymore. Students who spent weeks practicing real instruments and painting by hand feel devastated. The principal cancels the show until this is sorted out. 'Has AI killed creativity?' the school newspaper asks.",
+      "goal": "Help the school navigate the tension between AI tools and authentic human creativity.",
+      "coaching_moment": "Creativity isn't about perfection — it's about human expression, vulnerability, and originality. AI can enhance creativity, but it can't replace the human spark.",
+      "reflection_prompt": "What makes human creativity special compared to what AI can produce?",
+      "ai_image_prompt": "Cartoon style school talent show stage, half showing AI-generated sparkly but soulless performances, half showing a kid nervously playing guitar with genuine emotion, judges confused, colorful dramatic scene",
+      "condition": {
+        "resource": "creativity",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "cc_ai_ban_show",
+          "label": "A. Ban all AI from the talent show",
+          "description": "Only 100% human-made entries allowed. Restore the original spirit of the talent show.",
+          "delta": {
+            "creativity": 10,
+            "ethics_score": 5,
+            "peer_reputation": 5,
+            "digital_skills": -5,
+            "curiosity": -8
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Protecting authentic expression is important, but completely banning AI might miss opportunities for creative collaboration.",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "cc_two_categories",
+          "label": "B. Create two tracks: 'Human' and 'AI-Enhanced'",
+          "description": "Separate categories celebrate both pure talent and tech-augmented creativity. Everyone gets a fair stage.",
+          "delta": {
+            "creativity": 15,
+            "ethics_score": 10,
+            "critical_thinking": 8,
+            "peer_reputation": 10,
+            "teacher_approval": 12,
+            "curiosity": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "A fair and inclusive solution! Both human artistry and AI collaboration deserve recognition on their own terms.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "cc_process_matters",
+          "label": "C. Judge the creative PROCESS, not just the result",
+          "description": "Change the judging criteria — students must present their creative journey, explain their choices, and show how they added their personal touch.",
+          "delta": {
+            "creativity": 12,
+            "critical_thinking": 12,
+            "ethics_score": 8,
+            "teacher_approval": 10,
+            "peer_reputation": 5,
+            "project_quality": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "Profound insight! When we value the process of creation, we celebrate human thinking and intentionality.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "cc_give_up",
+          "label": "D. Who cares? AI is better at art anyway",
+          "description": "Accept that AI is more talented. Focus on other things. Why bother creating when machines do it better?",
+          "delta": {
+            "creativity": -10,
+            "curiosity": -10,
+            "ethics_score": -5,
+            "peer_reputation": -5,
+            "critical_thinking": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Never give up on human creativity! AI can generate images and text, but it can't feel joy, sadness, or tell YOUR story.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_9_presentation",
+      "round_title": "Week 9: Project Showcase Day",
+      "situation": "It's time to present your AI project to the school! Mr. Tech, Dr. Ethics, the principal, and even some parents are in the audience. Luna is your partner. Your project is ready — but during the final check, you notice the AI tool you used has a small disclaimer: 'May produce inaccurate or biased results.' Do you mention this in your presentation?",
+      "goal": "Practice transparency and honest communication about AI limitations.",
+      "coaching_moment": "Honesty about limitations shows more intelligence than hiding them. The best scientists always discuss what they DON'T know.",
+      "reflection_prompt": "Why is it important to be honest about what AI gets wrong, not just what it gets right?",
+      "ai_image_prompt": "Cartoon style school presentation hall, two students at podium with laptop showing AI project, audience of teachers and parents, science fair vibe, colorful posters, encouraging atmosphere",
+      "choices": [
+        {
+          "id": "w9_hide_flaws",
+          "label": "A. Hide the limitations — keep it impressive",
+          "description": "Don't mention the disclaimer. The project looks great and you don't want to seem uncertain.",
+          "delta": {
+            "project_quality": 3,
+            "ethics_score": -12,
+            "critical_thinking": -5,
+            "teacher_approval": -5,
+            "peer_reputation": 3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Short-term gain, long-term risk. If someone discovers the hidden limitations, your credibility is destroyed.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w9_transparent",
+          "label": "B. Be fully transparent about AI limitations",
+          "description": "Include a 'Limitations & Ethics' slide. Explain what the AI does well and where it fails. Show maturity.",
+          "delta": {
+            "ethics_score": 15,
+            "critical_thinking": 12,
+            "teacher_approval": 15,
+            "ai_knowledge": 8,
+            "project_quality": 10,
+            "peer_reputation": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "The audience is impressed! Dr. Ethics nods approvingly. Transparency about AI limitations IS the mark of a true AI expert.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w9_demo_failures",
+          "label": "C. Live-demo both successes AND failures",
+          "description": "Show the audience examples where AI got it right AND where it went hilariously wrong. Make it educational and fun!",
+          "delta": {
+            "ai_knowledge": 10,
+            "critical_thinking": 10,
+            "creativity": 10,
+            "teacher_approval": 10,
+            "peer_reputation": 10,
+            "ethics_score": 8
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Brilliant presenting! Showing failures takes courage and teaches the audience more than a perfect demo ever could.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "w9_minimal",
+          "label": "D. Give a basic presentation — don't overthink it",
+          "description": "Just present what you built. Keep it simple. Don't complicate things with ethics and limitations talk.",
+          "delta": {
+            "project_quality": 5,
+            "digital_skills": 3,
+            "teacher_approval": -3,
+            "critical_thinking": -3
+          },
+          "skill_tags": [
+            "resilience"
+          ],
+          "feedback": "Playing it safe means missing a chance to shine. The judges wanted to see critical thinking, not just a working demo.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_10_legacy",
+      "round_title": "Week 10: Your AI Manifesto",
+      "situation": "The term is ending. Mr. Tech asks each student to write a personal 'AI Manifesto' — your vision for how you will use AI in the future. Dr. Ethics offers to publish the best ones in the school newsletter. Luna asks if you want to write yours together. This is your chance to define who you are as a digital citizen.",
+      "goal": "Create your personal philosophy for responsible AI use going forward.",
+      "coaching_moment": "Strategic thinking: Your relationship with technology is a lifelong journey. Defining your values now creates a compass for the future.",
+      "reflection_prompt": "If you could tell the whole world one thing about AI, what would it be?",
+      "ai_image_prompt": "Cartoon style student writing thoughtfully at desk, glowing document titled MY AI MANIFESTO, holographic AI symbols floating around, sunrise through window symbolizing future, hopeful and inspiring",
+      "choices": [
+        {
+          "id": "w10_ethics_first",
+          "label": "A. 'Ethics First' Manifesto",
+          "description": "Write about putting human values above technological convenience. AI should serve humanity, not control it.",
+          "delta": {
+            "ethics_score": 15,
+            "critical_thinking": 10,
+            "teacher_approval": 12,
+            "peer_reputation": 8,
+            "project_quality": 10
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "A powerful moral compass! Your manifesto inspires classmates to think about the human side of technology.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "w10_creator",
+          "label": "B. 'AI Creator' Manifesto",
+          "description": "Write about becoming an AI builder, not just a user. You want to create tools that help people and solve problems.",
+          "delta": {
+            "creativity": 12,
+            "ai_knowledge": 10,
+            "digital_skills": 10,
+            "curiosity": 10,
+            "project_quality": 10
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Ambitious and visionary! Wanting to build AI for good shows you're thinking about impact, not just technology.",
+          "requires": {
+            "resource": "ai_knowledge",
+            "op": ">=",
+            "value": 50,
+            "label": "Requires AI Knowledge ≥ 50"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "w10_balanced",
+          "label": "C. 'Balanced Digital Life' Manifesto",
+          "description": "Write about using AI wisely — as a tool, not a crutch. Balance screen time with real-world experiences.",
+          "delta": {
+            "ethics_score": 8,
+            "critical_thinking": 8,
+            "creativity": 8,
+            "teacher_approval": 8,
+            "peer_reputation": 8,
+            "project_quality": 8
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Wise and balanced! Technology is great, but real life — friends, nature, sports — matters too.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "w10_collab",
+          "label": "D. Co-write with Luna: 'AI for Everyone' Manifesto",
+          "description": "Team up with Luna to write about making AI accessible, fair, and bias-free for all communities worldwide.",
+          "delta": {
+            "ethics_score": 10,
+            "peer_reputation": 12,
+            "creativity": 8,
+            "empathy": 5,
+            "critical_thinking": 5,
+            "teacher_approval": 8,
+            "project_quality": 8
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Collaboration amplifies impact! Together, you and Luna create a vision of AI that leaves nobody behind.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "ethics_champion",
+      "label": "Ethics Champion",
+      "condition": "ethics_score >= 80 and critical_thinking >= 70",
+      "icon": "⚖️"
+    },
+    {
+      "id": "digital_creator",
+      "label": "Digital Creator",
+      "condition": "creativity >= 80 and project_quality >= 60",
+      "icon": "🎨"
+    },
+    {
+      "id": "ai_whiz",
+      "label": "AI Whiz",
+      "condition": "ai_knowledge >= 80 and digital_skills >= 70",
+      "icon": "🧠"
+    },
+    {
+      "id": "trusted_student",
+      "label": "Trusted Student",
+      "condition": "teacher_approval >= 80 and peer_reputation >= 70",
+      "icon": "⭐"
+    },
+    {
+      "id": "curious_explorer",
+      "label": "Curious Explorer",
+      "condition": "curiosity >= 80 and ai_knowledge >= 60",
+      "icon": "🔭"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Artificial Intelligence (AI)",
+      "definition": "Computer systems that can perform tasks normally requiring human intelligence, like understanding language, recognizing images, or making decisions."
+    },
+    {
+      "term": "Chatbot",
+      "definition": "An AI program that can have conversations with humans by understanding and generating text responses."
+    },
+    {
+      "term": "Deepfake",
+      "definition": "AI-generated fake images, videos, or audio that look and sound extremely realistic but show things that never actually happened."
+    },
+    {
+      "term": "AI Bias",
+      "definition": "When AI systems produce unfair or prejudiced results because they were trained on data that contains human biases and stereotypes."
+    },
+    {
+      "term": "Prompt Engineering",
+      "definition": "The skill of writing clear, specific instructions (prompts) to get better and more accurate results from AI tools."
+    },
+    {
+      "term": "Digital Citizenship",
+      "definition": "Using technology and the internet responsibly, ethically, and safely while being a positive member of the online community."
+    },
+    {
+      "term": "Machine Learning",
+      "definition": "A type of AI where computers learn patterns from large amounts of data instead of being explicitly programmed with rules."
+    },
+    {
+      "term": "AI Ethics",
+      "definition": "The study of moral questions about AI, including fairness, privacy, transparency, and the impact of AI decisions on people's lives."
+    }
+  ],
+  "endings": [
+    {
+      "id": "ai_ethics_champion",
+      "title": "AI Ethics Champion",
+      "icon": "⚖️",
+      "message": "You've become your school's AI Ethics Champion! Your deep understanding of both AI's power and its risks has made you a trusted voice in every technology conversation. Teachers invite you to help write the school's AI policy, and Dr. Ethics mentions your name in her university lectures. You've proven that the most important AI skill isn't technical — it's moral courage. The future of AI is safer because of people like you!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "ethics_score",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "critical_thinking",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "digital_creator",
+      "title": "Digital Creator",
+      "icon": "🎨",
+      "message": "You've unlocked the magic of AI-powered creativity! Your art, stories, and projects blend human imagination with AI capabilities in ways nobody expected from a 6th grader. The school features your AI-collaborative artwork in the main hall. Luna and you start an after-school 'AI Creators Club' that becomes the most popular club in school. You've shown everyone that AI doesn't replace creativity — it amplifies it!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "creativity",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "project_quality",
+            "operator": ">=",
+            "value": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "tech_scholar",
+      "title": "Tech Scholar",
+      "icon": "🧠",
+      "message": "Your deep understanding of AI technology sets you apart! Mr. Tech recommends you for a national young innovators program. You can explain how neural networks work, spot AI-generated content, and even write simple code. Your parents are amazed at how much you've learned. Colleges and tech companies will one day compete for students like you — people who truly understand AI from the inside out!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "ai_knowledge",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "digital_skills",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "responsible_innovator",
+      "title": "Responsible Innovator",
+      "icon": "🚀",
+      "message": "You've achieved the rare balance of technical skill AND ethical wisdom! Your AI project wins the school science fair, and the judges praise not just its quality but its thoughtful approach to fairness and transparency. Mr. Tech calls you 'the kind of AI developer the world needs.' You've proven that innovation and responsibility aren't opposites — they're partners. The future of technology is bright with people like you leading the way!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "ai_knowledge",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "ethics_score",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "project_quality",
+            "operator": ">=",
+            "value": 45
+          }
+        ]
+      }
+    },
+    {
+      "id": "curious_learner",
+      "title": "Curious Learner",
+      "icon": "✨",
+      "message": "Your AI journey is just beginning! You explored chatbots, tried AI art, learned about bias, and thought about ethics. Not every choice was perfect, but that's how real learning works. The most important thing? You stayed curious. Mr. Tech smiles and says, 'Keep asking questions — that's what science is all about.' The AI world is vast, and you've taken your first steps into a much bigger universe. Keep exploring!",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: AI Explorer: Friend or Foe? Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of AI Explorer: Friend or Foe?. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: AI Explorer: Friend or Foe? Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of AI Explorer: Friend or Foe?. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

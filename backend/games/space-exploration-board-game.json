@@ -1,0 +1,2148 @@
+{
+  "game_id": "space_exploration_board",
+  "title": "Space Explorer: Mission to the Stars",
+  "theme": "Space Science, Astronomy & Space Exploration",
+  "description": "Embark on an epic journey from Earth's Launch Pad to a distant Planet Colony! Navigate asteroid fields, make first contact with alien civilizations, study black holes, and survive solar flares as you command your starship across the cosmos. Every decision tests your scientific knowledge and leadership skills in this educational space adventure.",
+  "game_type": "board",
+  "target_audience": "12-17",
+  "duration_minutes": 20,
+  "difficulty": "intermediate",
+  "learning_objectives": [
+    "Understand key concepts in astronomy, astrophysics, and space science",
+    "Learn about real space exploration challenges and how missions are planned",
+    "Practice resource management and risk assessment in high-stakes scenarios",
+    "Develop scientific decision-making skills using real physics and astronomy facts",
+    "Explore the solar system, stars, galaxies, and phenomena like black holes and nebulae"
+  ],
+  "how_to_play": {
+    "title": "How to Play",
+    "steps": [
+      "Roll the dice to move your starship along the board from the Launch Pad toward the distant Planet Colony",
+      "Land on Space Encounter tiles to face choices about navigation, research, and crew management",
+      "Visit Space Station tiles to purchase upgrades like fuel cells, shield modules, and research drones",
+      "Survive Alien Challenge tiles by answering space science questions about planets, stars, and physics",
+      "Race against AI commanders Nova, Orion, and Vega to be the first to establish a Planet Colony"
+    ],
+    "tips": [
+      "Balance fuel and crew morale carefully -- running out of either can end your mission early",
+      "Invest in research points whenever possible -- they unlock bonus rewards at the finish",
+      "Use power-ups like Warp Drive strategically to leap ahead or Emergency Shield to survive crises",
+      "Ship health is critical -- a damaged ship moves slower and is vulnerable to space hazards"
+    ]
+  },
+  "initial_state": {
+    "fuel": 100,
+    "crew_morale": 70,
+    "research_points": 0,
+    "ship_health": 80,
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "board_config": {
+    "grid_size": [
+      6,
+      5
+    ],
+    "movement": "dice",
+    "dice_range": [
+      1,
+      6
+    ],
+    "tile_types": {
+      "start": {
+        "label": "Launch Pad",
+        "bg": "#06D6A0",
+        "text": "#FFFFFF",
+        "icon": "🚀",
+        "border_color": "#059669"
+      },
+      "event": {
+        "label": "Space Encounter",
+        "bg": "#FFD166",
+        "text": "#2D3047",
+        "icon": "🌌",
+        "border_color": "#EAB308"
+      },
+      "shop": {
+        "label": "Space Station",
+        "bg": "#4CC9F0",
+        "text": "#FFFFFF",
+        "icon": "🛰️",
+        "border_color": "#0EA5E9"
+      },
+      "boss": {
+        "label": "Alien Challenge",
+        "bg": "#EF476F",
+        "text": "#FFFFFF",
+        "icon": "👾",
+        "border_color": "#DC2626"
+      },
+      "empty": {
+        "label": "Deep Space",
+        "bg": "#E5E7EB",
+        "text": "#6B7280",
+        "icon": "✨",
+        "border_color": "#D1D5DB"
+      },
+      "treasure": {
+        "label": "Discovery",
+        "bg": "#FBBF24",
+        "text": "#2D3047",
+        "icon": "💎",
+        "border_color": "#D97706"
+      },
+      "rest": {
+        "label": "Orbit Rest",
+        "bg": "#34D399",
+        "text": "#FFFFFF",
+        "icon": "🌙",
+        "border_color": "#10B981"
+      },
+      "finish": {
+        "label": "Planet Colony",
+        "bg": "#9B5DE5",
+        "text": "#FFFFFF",
+        "icon": "🏆",
+        "border_color": "#7C3AED"
+      }
+    },
+    "tile_effects": {
+      "rest": {
+        "delta": {
+          "crew_morale": 10,
+          "ship_health": 5
+        },
+        "message": "Your crew takes a well-deserved rest in stable orbit. Morale restored and minor ship repairs completed."
+      },
+      "treasure": {
+        "delta": {
+          "research_points": 15,
+          "fuel": 5
+        },
+        "message": "An extraordinary discovery! Your science team collects valuable data and samples."
+      },
+      "shop": {
+        "shop_items": [
+          {
+            "id": "fuel_cells",
+            "label": "Fusion Fuel Cells",
+            "cost_key": "research_points",
+            "cost": 10,
+            "delta": {
+              "fuel": 25
+            }
+          },
+          {
+            "id": "shield_upgrade",
+            "label": "Electromagnetic Shield Upgrade",
+            "cost_key": "research_points",
+            "cost": 15,
+            "delta": {
+              "ship_health": 20
+            }
+          },
+          {
+            "id": "crew_training",
+            "label": "Advanced Crew Training Module",
+            "cost_key": "research_points",
+            "cost": 12,
+            "delta": {
+              "crew_morale": 20
+            }
+          },
+          {
+            "id": "research_drone",
+            "label": "Autonomous Research Drone",
+            "cost_key": "fuel",
+            "cost": 15,
+            "delta": {
+              "research_points": 25
+            }
+          }
+        ]
+      },
+      "boss": {
+        "challenge": {
+          "question": "Which planet in our solar system has the strongest magnetic field, approximately 20,000 times stronger than Earth's?",
+          "options": [
+            "Saturn",
+            "Jupiter",
+            "Neptune",
+            "Uranus"
+          ],
+          "correct": 1,
+          "success_delta": {
+            "research_points": 20,
+            "crew_morale": 10
+          },
+          "fail_delta": {
+            "crew_morale": -10,
+            "ship_health": -5
+          },
+          "success_message": "Correct! Jupiter's magnetic field is generated by metallic hydrogen deep in its interior. The alien observers are impressed by your knowledge!",
+          "fail_message": "Incorrect. The aliens question your scientific competence. Jupiter's immense magnetic field is powered by currents of metallic hydrogen.",
+          "explanation": "Jupiter has the strongest magnetic field in our solar system, approximately 20,000 times stronger than Earth's. This immense field is generated by currents of metallic hydrogen -- hydrogen compressed so intensely by Jupiter's enormous gravity that it behaves like a liquid metal conductor. Jupiter's magnetosphere extends millions of kilometers into space and can even influence the orbits of its moons."
+        }
+      }
+    },
+    "power_ups": [
+      {
+        "id": "warp_drive",
+        "label": "Warp Drive",
+        "icon": "⚡",
+        "description": "Engage warp speed! Roll dice twice and add both values for a massive leap forward."
+      },
+      {
+        "id": "emergency_shield",
+        "label": "Emergency Shield",
+        "icon": "🛡️",
+        "description": "Activate emergency shields to completely block the next negative event or boss penalty."
+      },
+      {
+        "id": "scanner_boost",
+        "label": "Scanner Boost",
+        "icon": "🔭",
+        "description": "Enhanced sensors reveal the next 3 tiles, letting you plan your route strategically."
+      }
+    ],
+    "ai_competitors": [
+      {
+        "id": "ai_nova",
+        "name": "Commander Nova",
+        "avatar": "👩‍🚀",
+        "personality": "aggressive",
+        "color": "#EF476F",
+        "description": "A fearless risk-taker who pushes engines to maximum thrust and takes every shortcut through asteroid fields."
+      },
+      {
+        "id": "ai_orion",
+        "name": "Captain Orion",
+        "avatar": "👨‍🚀",
+        "personality": "balanced",
+        "color": "#4CC9F0",
+        "description": "A methodical strategist who balances speed with safety, always calculating the optimal trajectory."
+      },
+      {
+        "id": "ai_vega",
+        "name": "Dr. Vega",
+        "avatar": "🧑‍🔬",
+        "personality": "quality_focused",
+        "color": "#06D6A0",
+        "description": "A brilliant scientist who prioritizes research over speed, often stopping to study every phenomenon encountered."
+      }
+    ],
+    "tiles": [
+      {
+        "position": [
+          0,
+          0
+        ],
+        "type": "start",
+        "label": "Launch Pad",
+        "icon": "🚀",
+        "event_id": null
+      },
+      {
+        "position": [
+          1,
+          0
+        ],
+        "type": "event",
+        "label": "Asteroid Field",
+        "icon": "☄️",
+        "event_id": "evt_asteroid_field"
+      },
+      {
+        "position": [
+          2,
+          0
+        ],
+        "type": "empty",
+        "label": "Deep Space Cruise",
+        "icon": "✨",
+        "event_id": null
+      },
+      {
+        "position": [
+          3,
+          0
+        ],
+        "type": "event",
+        "label": "Alien Contact",
+        "icon": "👽",
+        "event_id": "evt_alien_contact"
+      },
+      {
+        "position": [
+          4,
+          0
+        ],
+        "type": "treasure",
+        "label": "Rare Mineral Deposit",
+        "icon": "💎",
+        "event_id": "evt_rare_mineral"
+      },
+      {
+        "position": [
+          5,
+          0
+        ],
+        "type": "shop",
+        "label": "Orbital Station Alpha",
+        "icon": "🛰️",
+        "event_id": "evt_station_alpha"
+      },
+      {
+        "position": [
+          5,
+          1
+        ],
+        "type": "event",
+        "label": "Black Hole Detection",
+        "icon": "🕳️",
+        "event_id": "evt_black_hole"
+      },
+      {
+        "position": [
+          4,
+          1
+        ],
+        "type": "empty",
+        "label": "Interstellar Void",
+        "icon": "🌑",
+        "event_id": null
+      },
+      {
+        "position": [
+          3,
+          1
+        ],
+        "type": "boss",
+        "label": "Alien Knowledge Test",
+        "icon": "👾",
+        "event_id": "evt_boss_planets"
+      },
+      {
+        "position": [
+          2,
+          1
+        ],
+        "type": "rest",
+        "label": "Crew Rotation",
+        "icon": "😴",
+        "event_id": "evt_crew_rotation"
+      },
+      {
+        "position": [
+          1,
+          1
+        ],
+        "type": "event",
+        "label": "Solar Flare",
+        "icon": "☀️",
+        "event_id": "evt_solar_flare"
+      },
+      {
+        "position": [
+          0,
+          1
+        ],
+        "type": "event",
+        "label": "Meteor Shower",
+        "icon": "🌠",
+        "event_id": "evt_meteor_shower"
+      },
+      {
+        "position": [
+          0,
+          2
+        ],
+        "type": "treasure",
+        "label": "Alien Artifact",
+        "icon": "🏺",
+        "event_id": "evt_alien_artifact"
+      },
+      {
+        "position": [
+          1,
+          2
+        ],
+        "type": "event",
+        "label": "Space Station Docking",
+        "icon": "🔗",
+        "event_id": "evt_station_docking"
+      },
+      {
+        "position": [
+          2,
+          2
+        ],
+        "type": "shop",
+        "label": "Deep Space Outpost",
+        "icon": "🏪",
+        "event_id": "evt_deep_space_outpost"
+      },
+      {
+        "position": [
+          3,
+          2
+        ],
+        "type": "event",
+        "label": "Distress Signal",
+        "icon": "🆘",
+        "event_id": "evt_distress_signal"
+      },
+      {
+        "position": [
+          4,
+          2
+        ],
+        "type": "event",
+        "label": "Gravity Assist",
+        "icon": "🪐",
+        "event_id": "evt_gravity_assist"
+      },
+      {
+        "position": [
+          5,
+          2
+        ],
+        "type": "boss",
+        "label": "Stellar Physics Quiz",
+        "icon": "⭐",
+        "event_id": "evt_boss_stars"
+      },
+      {
+        "position": [
+          5,
+          3
+        ],
+        "type": "rest",
+        "label": "Ship Maintenance",
+        "icon": "🔧",
+        "event_id": "evt_ship_maintenance"
+      },
+      {
+        "position": [
+          4,
+          3
+        ],
+        "type": "event",
+        "label": "Nebula Research",
+        "icon": "🌈",
+        "event_id": "evt_nebula_research"
+      },
+      {
+        "position": [
+          3,
+          3
+        ],
+        "type": "treasure",
+        "label": "New Star System",
+        "icon": "🌟",
+        "event_id": "evt_new_star_system"
+      },
+      {
+        "position": [
+          2,
+          3
+        ],
+        "type": "event",
+        "label": "Comet Flyby",
+        "icon": "💫",
+        "event_id": "evt_comet_flyby"
+      },
+      {
+        "position": [
+          1,
+          3
+        ],
+        "type": "shop",
+        "label": "Frontier Trading Post",
+        "icon": "🛒",
+        "event_id": "evt_frontier_post"
+      },
+      {
+        "position": [
+          0,
+          3
+        ],
+        "type": "event",
+        "label": "Space Junk Field",
+        "icon": "🗑️",
+        "event_id": "evt_space_junk"
+      },
+      {
+        "position": [
+          0,
+          4
+        ],
+        "type": "boss",
+        "label": "Final Exam: Space Physics",
+        "icon": "🧠",
+        "event_id": "evt_boss_physics"
+      },
+      {
+        "position": [
+          1,
+          4
+        ],
+        "type": "event",
+        "label": "Fuel Depot",
+        "icon": "⛽",
+        "event_id": "evt_fuel_depot"
+      },
+      {
+        "position": [
+          2,
+          4
+        ],
+        "type": "event",
+        "label": "Wormhole Discovery",
+        "icon": "🌀",
+        "event_id": "evt_wormhole"
+      },
+      {
+        "position": [
+          3,
+          4
+        ],
+        "type": "empty",
+        "label": "Final Approach",
+        "icon": "🛸",
+        "event_id": null
+      },
+      {
+        "position": [
+          4,
+          4
+        ],
+        "type": "event",
+        "label": "Colony Landing Prep",
+        "icon": "🌍",
+        "event_id": "evt_colony_prep"
+      },
+      {
+        "position": [
+          5,
+          4
+        ],
+        "type": "finish",
+        "label": "Planet Colony!",
+        "icon": "🏆",
+        "event_id": null
+      }
+    ],
+    "difficulty_modifiers": {
+      "easy": {
+        "resource_multiplier": 1.3,
+        "negative_event_chance": 0.2
+      },
+      "medium": {
+        "resource_multiplier": 1.0,
+        "negative_event_chance": 0.4
+      },
+      "hard": {
+        "resource_multiplier": 0.75,
+        "negative_event_chance": 0.65
+      }
+    }
+  },
+  "events": {
+    "evt_asteroid_field": {
+      "title": "Asteroid Field Navigation",
+      "story": "Your ship enters a dense asteroid belt similar to the one between Mars and Jupiter. In reality, our solar system's asteroid belt contains millions of rocky bodies, remnants from the early solar system that never formed into a planet due to Jupiter's immense gravitational influence. Your navigation officer reports three possible routes through the field.",
+      "choices": [
+        {
+          "id": "af_careful",
+          "label": "Navigate slowly through the safest mapped corridor",
+          "delta": {
+            "fuel": -15,
+            "ship_health": 5,
+            "crew_morale": 5
+          },
+          "feedback": "Excellent caution! Your careful navigation avoids all major asteroids. The slow speed uses extra fuel for constant thruster corrections, but the ship and crew are perfectly safe. Fun fact: Despite what movies show, real asteroid belts have vast spaces between rocks -- the average distance between asteroids in our belt is about 600,000 miles!",
+          "skill_tags": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "af_mine",
+          "label": "Detour to mine valuable platinum-group metals from asteroids",
+          "delta": {
+            "fuel": -20,
+            "research_points": 15,
+            "ship_health": -10
+          },
+          "feedback": "Your mining operation extracts precious iridium and platinum! These metals are rare on Earth but abundant in asteroids. NASA estimates a single metallic asteroid could contain trillions of dollars worth of metals. However, the mining maneuvers caused some hull scraping against smaller debris.",
+          "skill_tags": [
+            "risk_tolerance",
+            "delayed_gratification"
+          ]
+        },
+        {
+          "id": "af_blast",
+          "label": "Use laser cannons to clear a direct path through",
+          "delta": {
+            "fuel": -10,
+            "ship_health": -20,
+            "crew_morale": -5
+          },
+          "feedback": "The lasers fragment larger asteroids, but the resulting debris shower is worse than the original rocks! Newton's Third Law in action -- blasting rocks creates unpredictable fragments flying in all directions. Your hull takes significant damage from the shrapnel.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "af_gravity",
+          "label": "Use the largest asteroid's gravity to slingshot around the field",
+          "delta": {
+            "fuel": -5,
+            "research_points": 10,
+            "crew_morale": 10
+          },
+          "feedback": "Brilliant orbital mechanics! By using the gravitational pull of the largest asteroid (similar to how NASA uses gravity assists), you save fuel and gather research data on asteroid composition. Your crew is thrilled by the elegant maneuver that Kepler and Newton would have been proud of.",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "gravity",
+        "orbit"
+      ]
+    },
+    "evt_alien_contact": {
+      "title": "First Contact with Alien Intelligence",
+      "story": "Your communications array picks up a structured, repeating signal from a nearby moon -- unmistakably artificial. This is humanity's first confirmed contact with extraterrestrial intelligence! The signal uses prime numbers (2, 3, 5, 7, 11...) as a mathematical handshake, exactly as scientists have theorized aliens might communicate. The crew is equal parts excited and terrified. How do you respond?",
+      "choices": [
+        {
+          "id": "ac_math",
+          "label": "Respond with the next prime numbers in the sequence to show intelligence",
+          "delta": {
+            "research_points": 25,
+            "crew_morale": 15,
+            "fuel": -5
+          },
+          "feedback": "You transmit 13, 17, 19, 23 back toward the source. Minutes later, the signal changes to a more complex mathematical pattern -- the Fibonacci sequence! This is extraordinary. You have established a mathematical dialogue with an alien civilization. Scientists on Earth will study this exchange for centuries. The crew is euphoric!",
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ]
+        },
+        {
+          "id": "ac_observe",
+          "label": "Stay silent and observe the signal from a safe distance",
+          "delta": {
+            "research_points": 15,
+            "crew_morale": 5,
+            "ship_health": 5
+          },
+          "feedback": "A cautious but scientifically sound approach, following the recommendation of many real SETI scientists who argue we should listen before broadcasting. You record hours of signal data. Analysis reveals the signal contains what appears to be a star map. This data alone is invaluable for understanding where other civilizations exist.",
+          "skill_tags": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "ac_approach",
+          "label": "Fly closer to the moon and attempt a face-to-face meeting",
+          "delta": {
+            "fuel": -20,
+            "research_points": 20,
+            "crew_morale": -10,
+            "ship_health": -10
+          },
+          "feedback": "Bold and historic! As you approach, you discover the signal comes from an automated beacon -- the civilization that placed it may be long gone. However, the beacon itself is a technological marvel, using materials and energy systems beyond your understanding. Your engineers study it but the unknown radiation damages some ship systems. The crew is unsettled by the implications of a vanished civilization.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "ac_flee",
+          "label": "Immediately change course and put distance between your ship and the signal",
+          "delta": {
+            "fuel": -15,
+            "crew_morale": 10,
+            "research_points": -5
+          },
+          "feedback": "Physicist Stephen Hawking once warned that contacting alien civilizations could be dangerous, comparing it to Native Americans meeting Columbus. Your crew feels safer, but mission scientists are frustrated at the lost opportunity. You did expend significant fuel on the evasive maneuver, and the signal data you already recorded is limited.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "orbit",
+        "light_year"
+      ],
+      "reflection_prompt": "First contact with the unknown is one of the biggest decisions a leader can face. How do you typically respond when encountering something completely unfamiliar -- with curiosity, caution, or avoidance? What does your choice here reveal about how you balance the desire to learn with the need to stay safe?"
+    },
+    "evt_rare_mineral": {
+      "title": "Rare Mineral Deposit Discovery",
+      "story": "Your geological scanners detect an extraordinary concentration of rare earth elements on a nearby planetoid -- neodymium, europium, and dysprosium, essential for advanced technology. On Earth, these elements are scarce and expensive, driving geopolitical tensions. This deposit could revolutionize space-based manufacturing. How do you proceed?",
+      "choices": [
+        {
+          "id": "rm_full_survey",
+          "label": "Conduct a comprehensive geological survey before mining",
+          "delta": {
+            "fuel": -10,
+            "research_points": 25,
+            "crew_morale": 5
+          },
+          "feedback": "Your thorough survey reveals the deposit is even richer than initial scans suggested! You discover traces of an unknown crystalline structure that could be a new mineral entirely. The scientific community will be amazed. Named after your ship, this discovery goes into the geological record books."
+        },
+        {
+          "id": "rm_quick_mine",
+          "label": "Quick extraction -- grab what you can and continue the mission",
+          "delta": {
+            "fuel": -5,
+            "research_points": 10,
+            "ship_health": -5
+          },
+          "feedback": "Your crew extracts several kilograms of valuable rare earths. The hasty mining operation causes minor damage to the drilling equipment and hull. Still, these materials are incredibly valuable -- a single kilogram of some rare earth elements can be worth more than gold on Earth."
+        },
+        {
+          "id": "rm_mark",
+          "label": "Mark the coordinates for a future dedicated mining mission",
+          "delta": {
+            "research_points": 15,
+            "crew_morale": 10
+          },
+          "feedback": "A strategic decision! You plant a transponder beacon and take detailed scans. This data will allow a specialized mining vessel to return. Your crew appreciates the focus on the primary mission, and the coordinates alone are enormously valuable to humanity's space mining future."
+        }
+      ],
+      "glossary_terms": [
+        "light_year",
+        "rocket_propulsion"
+      ]
+    },
+    "evt_station_alpha": {
+      "title": "Orbital Station Alpha -- Resupply Point",
+      "story": "You dock at Orbital Station Alpha, a massive rotating space station that uses centripetal acceleration to simulate gravity -- the same principle proposed by physicist Wernher von Braun in the 1950s. The station spins at precisely the right rate to create 0.8g in the outer ring. Your crew can stretch their legs in something close to normal gravity for the first time in weeks. The station marketplace has supplies and upgrades available.",
+      "choices": [
+        {
+          "id": "sa_resupply",
+          "label": "Full resupply and crew shore leave",
+          "delta": {
+            "fuel": 20,
+            "crew_morale": 20,
+            "ship_health": 10,
+            "research_points": -10
+          },
+          "feedback": "Your crew enjoys 24 hours of rest, real food (not freeze-dried!), and simulated gravity. The station engineers top off your fuel tanks and patch minor hull damage. The only cost is some research data you trade for the premium services. Morale has never been higher!"
+        },
+        {
+          "id": "sa_upgrade",
+          "label": "Focus on ship upgrades from the station's engineering bay",
+          "delta": {
+            "fuel": 5,
+            "ship_health": 25,
+            "research_points": -5
+          },
+          "feedback": "The station engineers install improved radiation shielding -- critical for deep space travel. In real space, cosmic radiation is one of the biggest threats to astronauts. NASA studies show that even with shielding, a Mars mission would expose astronauts to significant radiation. Your new shields reduce this risk substantially."
+        },
+        {
+          "id": "sa_trade",
+          "label": "Trade research data for advanced navigational charts",
+          "delta": {
+            "research_points": -15,
+            "fuel": 15,
+            "crew_morale": 5
+          },
+          "feedback": "The station's astronomers have mapped optimal routes through the sector using gravitational lensing data. These charts will save you enormous amounts of fuel by identifying the most efficient trajectories -- the same principle NASA uses when planning interplanetary missions with gravity assists."
+        }
+      ],
+      "glossary_terms": [
+        "rocket_propulsion",
+        "atmosphere"
+      ]
+    },
+    "evt_black_hole": {
+      "title": "Black Hole Detection -- Gravitational Anomaly",
+      "story": "Your sensors detect extreme gravitational lensing ahead -- the telltale signature of a stellar-mass black hole! Light from distant stars bends visibly around the invisible monster. This black hole was formed when a massive star (at least 25 times the mass of our Sun) collapsed at the end of its life. The event horizon is estimated at 30 kilometers across, yet it warps spacetime for millions of kilometers around it. Your science team is eager to study it, but the danger is extreme.",
+      "choices": [
+        {
+          "id": "bh_study_safe",
+          "label": "Study from a safe distance using remote probes",
+          "delta": {
+            "fuel": -10,
+            "research_points": 30,
+            "crew_morale": 10
+          },
+          "feedback": "You launch three probes toward the black hole. As predicted by Einstein's General Relativity, the probes experience extreme time dilation as they approach -- clocks on the probes tick measurably slower than your ship's clocks! One probe captures data on Hawking radiation near the event horizon before being pulled in. This data is scientifically priceless and could help unify quantum mechanics with general relativity.",
+          "skill_tags": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "bh_orbit",
+          "label": "Enter a distant but stable orbit to gather extended observations",
+          "delta": {
+            "fuel": -20,
+            "research_points": 25,
+            "ship_health": -15,
+            "crew_morale": -5
+          },
+          "feedback": "Your ship enters orbit at a safe distance, but 'safe' is relative near a black hole! Tidal forces -- the difference in gravitational pull between the near and far sides of your ship -- cause structural stress. You observe the accretion disk glowing at millions of degrees as matter spirals inward at nearly the speed of light. The data is remarkable, but your ship's hull groans under the gravitational strain.",
+          "skill_tags": [
+            "risk_tolerance",
+            "delayed_gratification"
+          ]
+        },
+        {
+          "id": "bh_avoid",
+          "label": "Plot a wide course around it -- too dangerous to approach",
+          "delta": {
+            "fuel": -15,
+            "crew_morale": 15,
+            "ship_health": 5
+          },
+          "feedback": "Discretion is the better part of valor! You give the black hole a wide berth. Even at this distance, your instruments detect gravitational waves rippling through spacetime -- predicted by Einstein in 1916 and first detected by LIGO in 2015. The crew sleeps easier knowing they are far from the point of no return.",
+          "skill_tags": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "bh_slingshot",
+          "label": "Attempt a daring gravitational slingshot for a massive speed boost",
+          "delta": {
+            "fuel": 20,
+            "ship_health": -25,
+            "research_points": 15,
+            "crew_morale": -15
+          },
+          "feedback": "An incredibly risky maneuver! You skim the outer edges of the black hole's influence, using its immense gravity to accelerate your ship like a cosmic catapult. The ship shakes violently as tidal forces stretch and compress the hull. Your clocks temporarily run slower than mission control's -- time dilation in action! You gain enormous speed and save fuel, but the structural damage is severe and the crew is shaken.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "atmosphere",
+        "space_exploration"
+      ],
+      "reflection_prompt": "A black hole offers incredible scientific knowledge but at great risk. Think about times when a high-reward opportunity also carried serious danger. How do you decide when the potential reward justifies the risk? What role does preparation play in your willingness to take bold actions?"
+    },
+    "evt_boss_planets": {
+      "title": "Alien Knowledge Test: Planetary Science",
+      "story": "An advanced alien probe intercepts your ship and projects a holographic interface. It appears to be an automated test -- the aliens want to verify that any species traveling through their space possesses basic astronomical knowledge. A question materializes in perfect English (they must have decoded your radio transmissions). You must answer correctly to be granted passage.",
+      "choices": [
+        {
+          "id": "bp_answer",
+          "label": "Answer the challenge question",
+          "delta": {
+            "research_points": 20,
+            "crew_morale": 10
+          },
+          "feedback": "The alien probe processes your answer and emits a green pulse. Passage granted! The probe also transmits a data packet containing a partial star chart of this region -- a generous gift from a civilization that values knowledge."
+        }
+      ],
+      "glossary_terms": [
+        "space_exploration",
+        "gravity"
+      ],
+      "explanation": "Jupiter has the strongest magnetic field in our solar system, approximately 20,000 times stronger than Earth's. This is generated by metallic hydrogen deep in Jupiter's interior -- hydrogen under such extreme pressure that it becomes an electrically conductive liquid metal. This magnetosphere is so powerful it creates intense radiation belts and auroras, and even traps charged particles from the solar wind."
+    },
+    "evt_crew_rotation": {
+      "title": "Crew Rotation and Rest Period",
+      "story": "Your ship enters a calm region of space -- no anomalies, no hazards, just the quiet hum of the engines and the vast starfield outside. This is the perfect time for crew rotation. On real space missions like those aboard the ISS, astronauts follow strict schedules: 8.5 hours for sleep, 6.5 hours for work, and time for exercise, meals, and personal activities. In microgravity, astronauts must exercise 2 hours daily to prevent bone density loss and muscle atrophy. How do you organize the rest period?",
+      "choices": [
+        {
+          "id": "cr_full_rest",
+          "label": "Full 48-hour rest cycle with mandatory exercise and recreation",
+          "delta": {
+            "crew_morale": 25,
+            "ship_health": 10,
+            "fuel": -5
+          },
+          "feedback": "The crew follows a structured rest protocol: 10 hours sleep, 2 hours exercise on the centrifuge, communal meals, and even a movie night watching classic space films. Bone density scans show the exercise protocol is working -- your crew remains healthy for the long journey. Morale is at an all-time high!"
+        },
+        {
+          "id": "cr_half_rest",
+          "label": "24-hour rotating rest -- half the crew rests while half works",
+          "delta": {
+            "crew_morale": 15,
+            "ship_health": 5,
+            "research_points": 10
+          },
+          "feedback": "An efficient compromise! While half the crew sleeps, the other half conducts routine maintenance and passive research scans. The science team discovers interesting spectral data from nearby stars during the quiet observation window. Everyone gets rest without losing momentum."
+        },
+        {
+          "id": "cr_minimal",
+          "label": "Minimal rest -- push through to maintain mission pace",
+          "delta": {
+            "crew_morale": -10,
+            "research_points": 15,
+            "fuel": 5
+          },
+          "feedback": "NASA research shows that sleep deprivation significantly impairs cognitive function and reaction time -- the same reason the ISS enforces strict sleep schedules. Your crew pushes through and makes progress, but fatigue errors increase. Two crew members report symptoms of space adaptation syndrome, and morale drops noticeably."
+        }
+      ],
+      "glossary_terms": [
+        "gravity",
+        "orbit"
+      ]
+    },
+    "evt_solar_flare": {
+      "title": "Solar Flare -- Coronal Mass Ejection Incoming!",
+      "story": "Emergency! A nearby star has erupted with a massive coronal mass ejection (CME) -- a billion tons of magnetized plasma hurtling toward your ship at 3 million kilometers per hour! On Earth, our magnetosphere protects us from most solar radiation, but in deep space, your ship's shields are the only defense. The radiation levels could be lethal without protection. CMEs are caused by magnetic reconnection events on the star's surface, where twisted magnetic field lines suddenly snap and release enormous energy. You have approximately 15 minutes before the wavefront arrives.",
+      "choices": [
+        {
+          "id": "sf_shelter",
+          "label": "Route all power to electromagnetic shields and shelter crew in the storm room",
+          "delta": {
+            "fuel": -15,
+            "crew_morale": 5,
+            "ship_health": -10
+          },
+          "feedback": "Your storm shelter -- a small room at the center of the ship surrounded by water tanks and polyethylene shielding (hydrogen-rich materials that absorb radiation effectively) -- protects the crew from the worst radiation. The ship's exterior takes a beating, with electronics glitching from the electromagnetic pulse, but everyone survives. This is exactly how NASA plans to protect astronauts on deep space missions!",
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "sf_run",
+          "label": "Burn maximum fuel to outrun the expanding plasma cloud",
+          "delta": {
+            "fuel": -25,
+            "ship_health": 5,
+            "crew_morale": 10
+          },
+          "feedback": "Full thrust! Your engines roar as you accelerate perpendicular to the CME's path. It is actually impossible to outrun a CME head-on (they travel at millions of km/h), but by moving laterally, you escape the densest part of the plasma cloud. The fuel cost is enormous, but the ship takes minimal damage and the crew cheers your decisive action.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "sf_shadow",
+          "label": "Use a nearby planetoid as a radiation shadow shield",
+          "delta": {
+            "fuel": -10,
+            "ship_health": 5,
+            "crew_morale": 15,
+            "research_points": 5
+          },
+          "feedback": "Brilliant! You position your ship in the magnetic shadow of a large iron-rich planetoid, which deflects the charged particles around you like a rock in a stream. This is analogous to how Earth's magnetosphere creates a protective bubble. Your science team even collects data on how the CME interacts with the planetoid's weak magnetic field. A textbook maneuver!",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        },
+        {
+          "id": "sf_study",
+          "label": "Maintain position and use the flare as a research opportunity with partial shields",
+          "delta": {
+            "fuel": -5,
+            "ship_health": -25,
+            "research_points": 20,
+            "crew_morale": -15
+          },
+          "feedback": "Your instruments capture incredible data on the CME's magnetic structure, particle composition, and energy levels -- data that would normally require a dedicated solar observation mission. However, the radiation exposure exceeds safe limits. Several crew members develop mild radiation sickness, and ship electronics are severely damaged. The science is groundbreaking, but at a steep cost.",
+          "skill_tags": [
+            "risk_tolerance",
+            "delayed_gratification"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "orbit",
+        "light_year"
+      ]
+    },
+    "evt_meteor_shower": {
+      "title": "Meteor Shower -- Debris from an Ancient Comet",
+      "story": "Your ship passes through a dense stream of meteoroids -- debris left behind by a comet that passed through this region thousands of years ago. On Earth, meteor showers like the Perseids and Leonids occur when our planet passes through similar debris trails. In space, these tiny particles (some as small as grains of sand) travel at speeds up to 72 km/s relative to your ship. At those velocities, even a grain of sand carries the kinetic energy of a rifle bullet!",
+      "choices": [
+        {
+          "id": "ms_whipple",
+          "label": "Deploy Whipple shields and ride through at reduced speed",
+          "delta": {
+            "fuel": -5,
+            "ship_health": -10,
+            "research_points": 10
+          },
+          "feedback": "Whipple shields -- dual-layer barriers invented by astronomer Fred Whipple in the 1940s -- work by breaking up incoming particles on the outer layer, spreading the impact energy before it reaches the inner hull. Your shields perform admirably! Minor hull pitting occurs, but the ship's integrity holds. You collect particle samples for spectral analysis, revealing the comet was rich in water ice and organic compounds.",
+          "skill_tags": [
+            "resilience"
+          ]
+        },
+        {
+          "id": "ms_detour",
+          "label": "Calculate the debris stream's orbital path and navigate around it",
+          "delta": {
+            "fuel": -15,
+            "crew_morale": 10,
+            "ship_health": 5
+          },
+          "feedback": "Using Kepler's laws of orbital mechanics, your navigator predicts the exact boundaries of the debris stream and plots a course around it. The detour costs extra fuel but keeps the ship pristine. Your navigator receives commendation for the elegant calculation -- the same math that allows astronomers to predict meteor showers on Earth years in advance."
+        },
+        {
+          "id": "ms_collect",
+          "label": "Deploy collection nets to capture meteoroid samples",
+          "delta": {
+            "fuel": -10,
+            "ship_health": -15,
+            "research_points": 20,
+            "crew_morale": 5
+          },
+          "feedback": "Your collection nets capture dozens of pristine meteoroid samples! Analysis reveals amino acids -- the building blocks of life -- embedded in the ice and rock. This supports the theory of panspermia: the idea that the building blocks of life can be transported between worlds via comets and asteroids. However, several larger fragments punch through the nets and dent the hull.",
+          "skill_tags": [
+            "risk_tolerance",
+            "delayed_gratification"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "light_year",
+        "rocket_propulsion"
+      ]
+    },
+    "evt_alien_artifact": {
+      "title": "Ancient Alien Artifact Discovery",
+      "story": "Floating in the void between star systems, your sensors detect an object of clearly artificial origin -- a geometric structure approximately 100 meters across, made of an unknown alloy, emitting a faint but steady electromagnetic signal. It appears to be incredibly ancient, perhaps millions of years old. Carbon dating is impossible (no carbon), but the level of micrometeorite erosion on its surface suggests extreme age. This could be humanity's most significant archaeological find ever.",
+      "choices": [
+        {
+          "id": "aa_full_study",
+          "label": "Comprehensive study: deploy all science teams and instruments",
+          "delta": {
+            "fuel": -15,
+            "research_points": 35,
+            "crew_morale": 15
+          },
+          "feedback": "Your teams spend 72 hours studying the artifact from every angle. The alloy contains elements arranged in configurations that should not be stable according to known chemistry -- evidence of technology far beyond human understanding. The electromagnetic signal appears to be a recording of some kind, possibly a message or a star map. This discovery will reshape humanity's understanding of our place in the universe."
+        },
+        {
+          "id": "aa_careful",
+          "label": "Study it remotely with probes first -- we do not know what it does",
+          "delta": {
+            "fuel": -10,
+            "research_points": 20,
+            "crew_morale": 10,
+            "ship_health": 5
+          },
+          "feedback": "Wise caution! Your probes approach the artifact and conduct surface scans. When a probe touches the surface, the electromagnetic signal briefly intensifies -- the artifact is responsive! Your remote study captures detailed scans without risking the crew. The data reveals mathematical patterns encoded in the signal that match the prime number sequence -- a universal language of intelligence."
+        },
+        {
+          "id": "aa_sample",
+          "label": "Extract a small physical sample for laboratory analysis",
+          "delta": {
+            "fuel": -5,
+            "research_points": 15,
+            "ship_health": -10,
+            "crew_morale": -5
+          },
+          "feedback": "Your engineering team carefully cuts a 10-centimeter sample from the artifact's surface. The moment the cut is complete, the artifact's signal changes frequency -- almost as if it noticed. The sample is extraordinary: it has a molecular structure that appears to self-repair, similar to biological tissue but entirely metallic. However, the artifact's changed signal makes the crew nervous about what they may have triggered."
+        }
+      ],
+      "glossary_terms": [
+        "rocket_propulsion",
+        "atmosphere"
+      ]
+    },
+    "evt_station_docking": {
+      "title": "Space Station Docking -- International Research Hub",
+      "story": "You approach a massive international research station, a successor to the ISS, orbiting a gas giant's habitable moon. The station uses the gas giant's powerful magnetic field to generate electricity through magnetohydrodynamic (MHD) generators -- essentially harvesting energy from charged particles in the magnetosphere. Docking requires precise orbital mechanics: you must match the station's orbital velocity of 7.8 km/s while approaching at a gentle 0.1 m/s relative speed. One wrong calculation and it is a catastrophic collision.",
+      "choices": [
+        {
+          "id": "sd_auto",
+          "label": "Use the automated docking system -- tried and tested",
+          "delta": {
+            "fuel": -5,
+            "crew_morale": 10,
+            "ship_health": 5
+          },
+          "feedback": "Your automated docking system executes a perfect approach, just like the SpaceX Dragon capsule docks with the ISS. Laser rangefinders measure distance to the millimeter, and thrusters fire in precise micro-bursts. You dock smoothly, and the station crew greets you warmly. They share fresh food grown in their hydroponic bays -- lettuce, tomatoes, and even strawberries cultivated under LED grow lights in microgravity."
+        },
+        {
+          "id": "sd_manual",
+          "label": "Manual docking -- your pilot wants the challenge",
+          "delta": {
+            "fuel": -10,
+            "crew_morale": 15,
+            "research_points": 5
+          },
+          "feedback": "Your pilot takes manual control, just as astronauts sometimes do aboard Soyuz capsules. The approach is textbook -- a series of orbital burns to match velocity, then gentle thruster pulses to close the final meters. The station crew is impressed by the precision. Your pilot earns bragging rights, and the experience hones their skills for future maneuvers."
+        },
+        {
+          "id": "sd_flyby",
+          "label": "Skip docking -- conduct a high-speed flyby scan instead",
+          "delta": {
+            "fuel": 5,
+            "research_points": 15,
+            "crew_morale": -5
+          },
+          "feedback": "You scan the station and the gas giant's moon at high speed, collecting valuable atmospheric and geological data. The science team is happy, but the crew is disappointed about missing the chance for fresh food and human contact. Long-duration spaceflight studies show that social isolation is one of the biggest psychological challenges astronauts face -- your crew feels it now."
+        }
+      ],
+      "glossary_terms": [
+        "atmosphere",
+        "space_exploration"
+      ]
+    },
+    "evt_deep_space_outpost": {
+      "title": "Deep Space Outpost -- Trading and Upgrades",
+      "story": "A remote outpost at the edge of explored space serves as the last supply point before uncharted territory. Run by a consortium of independent space miners and scientists, the outpost has a gritty, frontier-town atmosphere. Supplies are expensive this far out, but the equipment is top-quality. The outpost also houses a powerful radio telescope array that has been mapping the region ahead of you.",
+      "choices": [
+        {
+          "id": "dso_full_refit",
+          "label": "Full ship refit: hull repairs, system upgrades, and fuel top-off",
+          "delta": {
+            "fuel": 15,
+            "ship_health": 20,
+            "crew_morale": 10,
+            "research_points": -20
+          },
+          "feedback": "Your ship gets the full treatment: new hull plating, refreshed life support filters, recalibrated navigation systems, and a complete fuel load. The outpost engineers are skilled -- many are former space agency techs who chose the frontier life. The cost in research data is steep (they trade in information out here), but your ship is now in peak condition for the journey ahead."
+        },
+        {
+          "id": "dso_intel",
+          "label": "Purchase navigational intelligence about the uncharted sector ahead",
+          "delta": {
+            "research_points": -10,
+            "fuel": 10,
+            "crew_morale": 5
+          },
+          "feedback": "The outpost's astronomers share their radio telescope data, revealing gravitational anomalies, radiation zones, and potential resource-rich systems ahead. This information could save your life in the uncharted sector. They also warn you about a region of intense gamma radiation to avoid -- a remnant from a nearby supernova that occurred 10,000 years ago."
+        },
+        {
+          "id": "dso_quick_stop",
+          "label": "Quick stop: essential supplies only, then press on",
+          "delta": {
+            "fuel": 10,
+            "ship_health": 5,
+            "research_points": -5
+          },
+          "feedback": "You grab the essentials -- fuel, food rations, and water recycling filters -- and push on. The outpost crew warns you that the next supply point is very far away. In real space exploration, resupply logistics are one of the biggest challenges. The Mars missions being planned today must carry everything needed for a 2-3 year round trip!"
+        }
+      ],
+      "glossary_terms": [
+        "space_exploration",
+        "gravity"
+      ]
+    },
+    "evt_distress_signal": {
+      "title": "Distress Signal from an Unknown Vessel",
+      "story": "Your communications array receives a repeating distress signal on the universal emergency frequency (121.5 MHz -- the same frequency used for emergency locator transmitters on Earth). The signal is coming from a small vessel approximately 2 hours away at full thrust. Analysis shows the vessel's life support has failed, and you estimate 4-6 hours of breathable air remain for the occupants. However, detouring will cost significant fuel and time. Maritime law on Earth requires ships to render assistance to vessels in distress -- but does that apply in space?",
+      "choices": [
+        {
+          "id": "ds_rescue",
+          "label": "Full speed rescue mission -- every life matters",
+          "delta": {
+            "fuel": -25,
+            "crew_morale": 20,
+            "ship_health": -5,
+            "research_points": 5
+          },
+          "feedback": "You arrive to find a damaged research vessel with a crew of three. Their oxygen recycler failed due to a micrometeorite puncture -- a common hazard in space. Your engineers repair their life support in 90 minutes. The grateful researchers share their data on an undiscovered exoplanet they were studying. Your crew feels proud -- in the vast emptiness of space, compassion is what makes us human.",
+          "skill_tags": [
+            "empathy",
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "ds_redirect",
+          "label": "Relay the distress signal to the nearest outpost and continue your mission",
+          "delta": {
+            "fuel": -5,
+            "crew_morale": -10,
+            "research_points": 5
+          },
+          "feedback": "You boost the signal toward the outpost, but the outpost is 8 hours away -- there is a real risk help may not arrive in time. Your crew is conflicted. Some argue the mission takes priority; others feel guilt. The ethical weight of this decision hangs heavy. Days later, you receive word that the outpost rescue team arrived just in time. The crew survived, but the close call haunts your team.",
+          "skill_tags": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "ds_partial",
+          "label": "Send a supply pod with emergency oxygen, then continue your mission",
+          "delta": {
+            "fuel": -15,
+            "crew_morale": 10,
+            "ship_health": -5
+          },
+          "feedback": "You launch an emergency supply pod loaded with oxygen canisters, water, and food -- enough to sustain the distressed crew for 48 hours until the outpost can reach them. It is a good compromise: you provide immediate life-saving aid without a full detour. Your crew feels good about the decision, though launching the pod required jettisoning some non-essential ship components to make room.",
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "ds_investigate",
+          "label": "Investigate cautiously -- it could be a trap or a lure",
+          "delta": {
+            "fuel": -10,
+            "crew_morale": -5,
+            "research_points": 10,
+            "ship_health": 5
+          },
+          "feedback": "You approach cautiously with shields raised and weapons armed. It turns out to be a genuine emergency -- not a pirate trap. Your careful approach delayed the rescue by an hour, but the extra caution allowed your sensors to detect a hidden radiation leak on the damaged ship. You warn the distressed crew, potentially saving them from long-term radiation exposure. A balanced approach, though some crew members feel the initial suspicion was cold.",
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "gravity",
+        "orbit"
+      ],
+      "reflection_prompt": "You had to weigh helping someone in trouble against your own mission and safety. In real life, when have you faced a situation where helping others came at a cost to yourself? What values guided your decision, and would you make the same choice again?"
+    },
+    "evt_gravity_assist": {
+      "title": "Gravity Assist Opportunity -- Gas Giant Slingshot",
+      "story": "A massive gas giant -- similar to Jupiter but orbiting a different star -- lies along your trajectory. Its enormous gravity offers a rare opportunity for a gravity assist, or 'slingshot' maneuver. This is the same technique NASA used to send Voyager 1 and 2 past Jupiter and Saturn, gaining speed without burning fuel. The physics is elegant: your ship 'borrows' a tiny fraction of the planet's orbital momentum. The planet is so massive it does not even notice, but your ship gets a significant speed boost. The closer you fly to the planet, the bigger the boost -- but the risk increases too.",
+      "choices": [
+        {
+          "id": "ga_close",
+          "label": "Aggressive close flyby for maximum speed boost",
+          "delta": {
+            "fuel": 25,
+            "ship_health": -15,
+            "crew_morale": -5,
+            "research_points": 10
+          },
+          "feedback": "Your ship skims the upper atmosphere of the gas giant at terrifying speed. The gravitational forces reach 3g, pressing the crew into their seats. Atmospheric friction heats the hull, but the speed boost is phenomenal -- you gain velocity equivalent to months of continuous thrust! The Voyager 2 probe gained over 35,000 km/h from its Jupiter flyby in 1979. Your maneuver is even more dramatic."
+        },
+        {
+          "id": "ga_moderate",
+          "label": "Standard gravity assist at a moderate distance",
+          "delta": {
+            "fuel": 15,
+            "ship_health": 5,
+            "crew_morale": 10,
+            "research_points": 15
+          },
+          "feedback": "A textbook gravity assist! You pass at a safe distance, gaining a substantial speed boost while your instruments study the gas giant's atmosphere, magnetic field, and ring system. The crew enjoys the spectacular view -- bands of swirling clouds in shades of orange, red, and cream, with lightning storms larger than Earth flickering in the depths. The maneuver is exactly how NASA's Cassini mission approached Saturn."
+        },
+        {
+          "id": "ga_orbit",
+          "label": "Enter temporary orbit to study the planet's moons before slingshotting",
+          "delta": {
+            "fuel": -5,
+            "research_points": 25,
+            "crew_morale": 15
+          },
+          "feedback": "You enter orbit and discover the gas giant has 67 moons! Several show promising signs: one has a subsurface ocean (like Jupiter's moon Europa), another has a thick nitrogen atmosphere (like Saturn's moon Titan), and a third has active volcanic geysers (like Io). Your extended study produces groundbreaking research data. When you finally execute the slingshot, you have mapped an entire mini solar system."
+        }
+      ],
+      "glossary_terms": [
+        "orbit",
+        "light_year"
+      ]
+    },
+    "evt_boss_stars": {
+      "title": "Stellar Physics Challenge -- Prove Your Worth",
+      "story": "Your ship encounters an ancient automated defense system protecting a stellar research zone. The system, clearly built by an advanced civilization, requires vessels to demonstrate scientific knowledge before granting access. A holographic display presents a question about stellar astrophysics. Your entire science team gathers on the bridge to help.",
+      "choices": [
+        {
+          "id": "bs_answer",
+          "label": "Answer the stellar physics challenge",
+          "delta": {
+            "research_points": 20,
+            "crew_morale": 10
+          },
+          "feedback": "Your knowledge of stellar physics impresses the automated system. It grants you access to the research zone and downloads a data package about the local stellar environment, including the locations of several interesting phenomena: a binary star system, a white dwarf, and a region of active star formation."
+        }
+      ],
+      "glossary_terms": [
+        "light_year",
+        "rocket_propulsion"
+      ],
+      "explanation": "Stellar astrophysics governs how stars form, live, and die. Understanding concepts like nuclear fusion (which powers stars by converting hydrogen to helium), stellar classification (O, B, A, F, G, K, M types by temperature), and stellar evolution (main sequence to red giant to white dwarf/neutron star/black hole) is fundamental to navigating space safely and understanding the cosmos."
+    },
+    "evt_ship_maintenance": {
+      "title": "Ship Maintenance and Systems Overhaul",
+      "story": "You find a stable Lagrange point -- one of five special positions where the gravitational forces of two large bodies and the centrifugal force of a smaller body all balance out, allowing objects to remain stationary relative to the larger bodies. The mathematician Joseph-Louis Lagrange calculated these points in 1772. The James Webb Space Telescope orbits the Sun-Earth L2 point for this exact reason -- gravitational stability. This is the perfect location for a thorough ship maintenance overhaul.",
+      "choices": [
+        {
+          "id": "sm_full_overhaul",
+          "label": "Complete systems overhaul: engines, life support, hull, and electronics",
+          "delta": {
+            "ship_health": 30,
+            "crew_morale": 10,
+            "fuel": -10
+          },
+          "feedback": "Your engineering team conducts a top-to-bottom overhaul. They replace worn thruster nozzles, recalibrate the inertial navigation system, flush the coolant loops, and patch 17 micrometeorite impacts on the hull. The life support system gets new CO2 scrubbers -- on the ISS, these must be replaced regularly to keep the air breathable. Your ship hums like new!"
+        },
+        {
+          "id": "sm_targeted",
+          "label": "Focus repairs on the most critical systems only",
+          "delta": {
+            "ship_health": 15,
+            "crew_morale": 5,
+            "fuel": -5
+          },
+          "feedback": "Your chief engineer prioritizes: hull integrity first, then life support, then navigation. The Pareto principle (80/20 rule) applies even in space -- 80% of the risk comes from 20% of the systems. By focusing on the critical 20%, you achieve solid improvement with minimal downtime and fuel expenditure."
+        },
+        {
+          "id": "sm_innovate",
+          "label": "Use the downtime to install experimental modifications from research data",
+          "delta": {
+            "ship_health": 10,
+            "research_points": 15,
+            "fuel": -5
+          },
+          "feedback": "Your science team works with engineers to implement improvements based on discoveries made during the journey. They optimize the shield harmonics based on the solar flare data, improve the fuel injection system using gas giant atmospheric readings, and calibrate sensors using black hole gravitational data. Innovation in the field -- just like how Apollo 13 astronauts improvised life-saving solutions from available materials!"
+        }
+      ],
+      "glossary_terms": [
+        "rocket_propulsion",
+        "atmosphere"
+      ]
+    },
+    "evt_nebula_research": {
+      "title": "Nebula Research -- Stellar Nursery",
+      "story": "You enter the outer regions of a vast emission nebula -- a cloud of ionized hydrogen gas glowing in vivid pinks and reds, illuminated by the ultraviolet radiation of hot young stars within it. This is a stellar nursery, where new stars and planetary systems are being born right now! The Orion Nebula (visible from Earth with the naked eye) is a famous example: it is 24 light-years across and contains thousands of young stars. Inside the nebula, dense knots of gas called Bok globules are collapsing under their own gravity, each one potentially forming a new star system.",
+      "choices": [
+        {
+          "id": "nr_deep",
+          "label": "Fly deep into the nebula to study star formation up close",
+          "delta": {
+            "fuel": -20,
+            "research_points": 30,
+            "ship_health": -10,
+            "crew_morale": 10
+          },
+          "feedback": "Inside the nebula, you witness the birth of a star! A Bok globule 10,000 AU across is collapsing, its center heating up as gravitational potential energy converts to thermal energy. When the core reaches 10 million Kelvin, hydrogen fusion will ignite -- a new star will be born! Your instruments record this process in unprecedented detail. The nebular gas is mildly corrosive to your hull, but the scientific payoff is extraordinary."
+        },
+        {
+          "id": "nr_edge",
+          "label": "Study from the nebula's edge using long-range spectroscopy",
+          "delta": {
+            "fuel": -5,
+            "research_points": 20,
+            "crew_morale": 15
+          },
+          "feedback": "Your spectrometers reveal the chemical composition of the nebula: 75% hydrogen, 23% helium, and trace amounts of carbon, nitrogen, oxygen, and heavier elements forged in the cores of long-dead stars. Every atom of carbon in your body was once inside a star that exploded as a supernova billions of years ago. As Carl Sagan said, 'We are made of star stuff.' The crew reflects on this profound connection to the cosmos."
+        },
+        {
+          "id": "nr_collect",
+          "label": "Collect nebular gas samples for laboratory analysis",
+          "delta": {
+            "fuel": -10,
+            "research_points": 25,
+            "ship_health": -5
+          },
+          "feedback": "Your collection systems capture pristine samples of interstellar gas and dust. Analysis reveals complex organic molecules -- including amino acids and nucleobases -- forming spontaneously in the nebula's chemistry. This supports the Miller-Urey hypothesis that the building blocks of life form naturally in space. You have captured a bottle of the raw ingredients from which planets and possibly life itself are born!"
+        }
+      ],
+      "glossary_terms": [
+        "atmosphere",
+        "space_exploration"
+      ]
+    },
+    "evt_new_star_system": {
+      "title": "Discovery of a New Star System",
+      "story": "Your long-range telescopes detect an uncharted star system with a G-type main-sequence star -- the same spectral class as our Sun! Orbiting it are at least six planets, including one in the habitable zone (the 'Goldilocks zone' where liquid water could exist on the surface). This planet shows spectral signatures of water vapor and oxygen in its atmosphere. As of 2024, astronomers have confirmed over 5,500 exoplanets, but finding one this promising is incredibly rare. This could be a second Earth!",
+      "choices": [
+        {
+          "id": "ns_full_survey",
+          "label": "Conduct a comprehensive survey of all six planets",
+          "delta": {
+            "fuel": -20,
+            "research_points": 35,
+            "crew_morale": 15
+          },
+          "feedback": "Your survey reveals a remarkably diverse system: a scorched Mercury-like inner planet, two rocky terrestrial worlds (one in the habitable zone!), a ringed gas giant, an ice giant, and a distant dwarf planet. The habitable world has a nitrogen-oxygen atmosphere, liquid water oceans covering 60% of its surface, and vegetation-like spectral signatures. You name it 'New Terra' and your crew celebrates the discovery that could change humanity's future!"
+        },
+        {
+          "id": "ns_habitable",
+          "label": "Focus all instruments on the habitable zone planet",
+          "delta": {
+            "fuel": -10,
+            "research_points": 25,
+            "crew_morale": 20
+          },
+          "feedback": "Detailed spectroscopy reveals the planet's atmosphere contains oxygen at 18% (Earth is 21%), nitrogen at 74%, and water vapor. The surface temperature averages 15 degrees Celsius -- remarkably Earth-like! You detect possible biosignatures: unexplained methane spikes that on Earth are primarily produced by living organisms. The implications stagger the crew. This data alone justifies the entire mission!"
+        },
+        {
+          "id": "ns_probe",
+          "label": "Launch a long-duration atmospheric probe toward the habitable planet",
+          "delta": {
+            "fuel": -15,
+            "research_points": 20,
+            "ship_health": -5
+          },
+          "feedback": "You launch a probe designed to enter the planet's atmosphere and transmit data for years to come. As it descends, it returns stunning images: blue oceans, green continents, white cloud patterns -- hauntingly similar to Earth. The probe detects complex organic chemistry in the upper atmosphere. Even after you continue your mission, the probe will keep sending data that could confirm extraterrestrial life!"
+        }
+      ],
+      "glossary_terms": [
+        "space_exploration",
+        "gravity"
+      ]
+    },
+    "evt_comet_flyby": {
+      "title": "Comet Flyby -- Ancient Wanderer",
+      "story": "A long-period comet swings through the system on its millennia-long orbit, its brilliant tail stretching millions of kilometers across space. Comets are essentially frozen time capsules -- 'dirty snowballs' of ice, rock, and organic compounds left over from the formation of the solar system 4.6 billion years ago. The European Space Agency's Rosetta mission made history in 2014 by landing on comet 67P/Churyumov-Gerasimenko, discovering that comets contain the amino acid glycine and the element phosphorus -- both essential for life on Earth.",
+      "choices": [
+        {
+          "id": "cf_intercept",
+          "label": "Match the comet's velocity and fly alongside it for close study",
+          "delta": {
+            "fuel": -20,
+            "research_points": 30,
+            "crew_morale": 10
+          },
+          "feedback": "Matching the comet's velocity (roughly 40 km/s) is a fuel-intensive maneuver, but the results are spectacular! You fly through the coma -- the cloud of gas and dust surrounding the nucleus. Your instruments detect water ice, carbon dioxide, methanol, ammonia, and complex organic molecules. You even identify deuterium-to-hydrogen ratios that match Earth's ocean water, supporting the theory that comets delivered water to early Earth!"
+        },
+        {
+          "id": "cf_tail",
+          "label": "Fly through the comet's tail to collect samples",
+          "delta": {
+            "fuel": -5,
+            "ship_health": -15,
+            "research_points": 20,
+            "crew_morale": 5
+          },
+          "feedback": "The comet's ion tail -- created by solar radiation stripping electrons from gas molecules -- is a stream of charged particles. Flying through it is like navigating an electric storm. Your collection systems grab pristine samples of cometary material, including tiny grains of pre-solar stardust that are older than the solar system itself! However, the charged particles cause electrical arcing on the hull and damage some external sensors."
+        },
+        {
+          "id": "cf_observe",
+          "label": "Observe from a safe distance with telescopes and spectrometers",
+          "delta": {
+            "fuel": -5,
+            "research_points": 15,
+            "crew_morale": 15
+          },
+          "feedback": "From a safe distance, you capture stunning images and detailed spectra. The comet's nucleus is roughly 5 km across, irregularly shaped like a rubber duck (similar to Rosetta's comet!). Jets of gas erupt from the sunlit side as ices sublimate directly from solid to gas in the vacuum of space. Your crew gathers on the observation deck to watch the natural fireworks show -- a comet tail glowing against the backdrop of stars."
+        }
+      ],
+      "glossary_terms": [
+        "gravity",
+        "orbit"
+      ]
+    },
+    "evt_frontier_post": {
+      "title": "Frontier Trading Post -- Last Stop Before the Unknown",
+      "story": "This small, rugged outpost is the absolute frontier of human-explored space. Beyond it lies uncharted territory where no human ship has ventured. The outpost is populated by prospectors, scientists, and adventurers. They trade in rare materials, information, and survival gear. The outpost commander, a weathered veteran of deep space, offers you advice: 'Out there, knowledge is worth more than fuel, and a well-maintained ship is worth more than speed.'",
+      "choices": [
+        {
+          "id": "fp_survival",
+          "label": "Stock up on emergency survival equipment",
+          "delta": {
+            "fuel": 10,
+            "ship_health": 15,
+            "research_points": -10
+          },
+          "feedback": "You purchase redundant life support components, emergency rations, and a portable radiation shelter. The outpost mechanic also installs backup navigation gyroscopes -- in deep space, if your primary navigation fails, you could drift forever. Redundancy is the golden rule of space engineering: every critical system on the ISS has at least two backups."
+        },
+        {
+          "id": "fp_info",
+          "label": "Buy intelligence from returning scouts about what lies ahead",
+          "delta": {
+            "research_points": 15,
+            "crew_morale": 10,
+            "fuel": -5
+          },
+          "feedback": "A returning scout shares her data: ahead lies a region with unusual gravitational readings, possibly a binary star system or neutron star. She also reports a planet with promising atmospheric composition. Armed with this intelligence, your navigator plots optimized routes. Knowledge truly is power in space exploration -- NASA's Mars missions succeed partly because decades of prior missions mapped the terrain."
+        },
+        {
+          "id": "fp_recruit",
+          "label": "Recruit a veteran deep-space navigator from the outpost",
+          "delta": {
+            "crew_morale": 15,
+            "research_points": 5,
+            "fuel": -5
+          },
+          "feedback": "A seasoned navigator named Kai joins your crew. Kai has spent 15 years in deep space and knows tricks that no training simulation teaches: how to read subtle gravitational perturbations, how to identify safe harbors in asteroid fields, and how to conserve fuel using micro-gravity assists. The existing crew is delighted to have such experienced guidance for the uncharted sector."
+        }
+      ],
+      "glossary_terms": [
+        "orbit",
+        "light_year"
+      ]
+    },
+    "evt_space_junk": {
+      "title": "Space Junk Field -- Orbital Debris Hazard",
+      "story": "You encounter a dense field of artificial debris -- the remnants of a destroyed space station or perhaps the aftermath of an ancient space battle. In Earth orbit, space debris is already a critical problem: over 27,000 pieces of orbital junk larger than 10 cm are tracked by the U.S. Space Surveillance Network, and millions of smaller fragments orbit at speeds up to 28,000 km/h. The Kessler Syndrome, proposed by NASA scientist Donald Kessler in 1978, warns that cascading collisions could eventually make certain orbits unusable. This debris field is a stark example.",
+      "choices": [
+        {
+          "id": "sj_navigate",
+          "label": "Carefully navigate through, using radar to dodge major fragments",
+          "delta": {
+            "fuel": -10,
+            "ship_health": -10,
+            "crew_morale": -5
+          },
+          "feedback": "Your radar system tracks the largest fragments, and your pilot weaves through with impressive skill. Despite the precautions, several small fragments (undetectable by radar) impact the hull. On the ISS, even a paint chip traveling at orbital velocity can crack a window -- the damage from millimeter-scale debris is not trivial. You emerge battered but intact."
+        },
+        {
+          "id": "sj_clear",
+          "label": "Deploy your laser array to vaporize debris and clear a path",
+          "delta": {
+            "fuel": -15,
+            "ship_health": 5,
+            "research_points": 5
+          },
+          "feedback": "Your lasers systematically vaporize fragments in your path. This is actually a proposed real-world solution for space debris: ground-based or orbital lasers could ablate the surface of debris, creating tiny thrust that deorbits them. Your approach works perfectly -- you clear a safe corridor and your ship passes through unscathed. The technique could be shared with future missions traversing this region."
+        },
+        {
+          "id": "sj_salvage",
+          "label": "Salvage useful components from the debris for spare parts",
+          "delta": {
+            "fuel": -10,
+            "ship_health": 10,
+            "research_points": 10,
+            "crew_morale": -10
+          },
+          "feedback": "Your EVA team suits up and ventures into the debris field to collect usable components: intact solar cells, structural alloys, and electronic modules. The salvaged parts are valuable, but the EVA is nerve-wracking -- the crew must dodge tumbling fragments while working in bulky space suits. Real spacewalks are among the most dangerous activities astronauts perform; every ISS EVA is meticulously planned to minimize risk."
+        },
+        {
+          "id": "sj_detour",
+          "label": "Take a long detour around the entire debris field",
+          "delta": {
+            "fuel": -20,
+            "crew_morale": 10,
+            "ship_health": 5
+          },
+          "feedback": "The safest option, but the most fuel-expensive. Your detour adds considerable distance to the journey. On the positive side, the crew is relieved not to risk the ship, and your sensors map the full extent of the debris field from the outside. The data helps you understand the scale of the destruction that created it -- and serves as a cautionary tale about the importance of responsible space development."
+        }
+      ],
+      "glossary_terms": [
+        "light_year",
+        "rocket_propulsion"
+      ]
+    },
+    "evt_boss_physics": {
+      "title": "Final Exam: Space Physics -- Gateway Guardian",
+      "story": "At the gateway to the final sector stands an enormous automated defense platform, clearly ancient and incredibly powerful. It scans your ship and begins communicating in a synthesized voice: 'To pass, demonstrate your understanding of the physical laws that govern the cosmos. The universe rewards knowledge.' A complex physics question appears on your main screen. Your entire crew gathers -- this is the final intellectual challenge before the home stretch to the Planet Colony.",
+      "choices": [
+        {
+          "id": "bph_answer",
+          "label": "Answer the space physics challenge",
+          "delta": {
+            "research_points": 25,
+            "crew_morale": 15,
+            "fuel": 10
+          },
+          "feedback": "The guardian platform processes your answer and responds: 'Knowledge confirmed. You are worthy travelers.' The defense systems stand down, and the platform transmits a data burst containing optimized navigation coordinates to the Planet Colony, along with detailed scans of the region. Your crew erupts in celebration -- the final stretch is clear!"
+        }
+      ],
+      "glossary_terms": [
+        "rocket_propulsion",
+        "atmosphere"
+      ],
+      "explanation": "The physical laws governing space -- Newton's laws of motion, Einstein's general relativity, and the conservation of energy and momentum -- are essential for space travel. For example, orbital mechanics relies on the balance between gravitational pull and an object's velocity: too slow and you fall inward, too fast and you escape orbit. These principles make all space navigation and mission planning possible."
+    },
+    "evt_fuel_depot": {
+      "title": "Abandoned Fuel Depot -- Risk and Reward",
+      "story": "Your sensors detect an abandoned automated fuel depot drifting in space. It appears to be a relic from an earlier era of space exploration, similar to how fuel depots have been proposed for real Mars missions -- pre-positioned fuel stations that spacecraft can visit to refuel during long journeys. NASA's Artemis program has explored the concept of propellant depots in lunar orbit. The depot's tanks appear to still contain hydrogen and oxygen propellant, but the facility has been unpowered for years. Systems may have degraded.",
+      "choices": [
+        {
+          "id": "fd_full_refuel",
+          "label": "Power up the depot and attempt a full refueling operation",
+          "delta": {
+            "fuel": 35,
+            "ship_health": -10,
+            "crew_morale": 5
+          },
+          "feedback": "Your engineers manage to restart the depot's aging power systems. The fuel transfer pumps groan to life, and cryogenic hydrogen begins flowing into your tanks. The process is not smooth -- a corroded valve causes a minor hydrogen leak that damages some external panels -- but you take on a massive fuel load. In space, fuel is life. The depot's ancient systems performed admirably for their age."
+        },
+        {
+          "id": "fd_careful",
+          "label": "Carefully extract only what you can safely access without powering up the depot",
+          "delta": {
+            "fuel": 15,
+            "ship_health": 5,
+            "crew_morale": 10
+          },
+          "feedback": "Your engineers use manual valves and portable pumps to carefully extract fuel from the most accessible tanks. It is slower and yields less fuel, but avoids the risk of activating degraded systems. The operation goes smoothly. Real space refueling technology is advancing rapidly -- SpaceX's Starship architecture relies on orbital refueling to reach the Moon and Mars."
+        },
+        {
+          "id": "fd_scan_only",
+          "label": "Just scan the depot for technical data -- the risk of old fuel systems is too high",
+          "delta": {
+            "research_points": 15,
+            "crew_morale": 15
+          },
+          "feedback": "Your scans reveal fascinating engineering data about the depot's construction and fuel storage technology. The cryogenic insulation design is innovative -- it uses multi-layer insulation (MLI) with gold-coated reflective surfaces, the same technology used on the James Webb Space Telescope to maintain instruments at -233 degrees Celsius. The data is valuable for future depot designs, and your crew appreciates the cautious approach."
+        },
+        {
+          "id": "fd_scavenge",
+          "label": "Scavenge the depot for spare parts and useful technology",
+          "delta": {
+            "fuel": 5,
+            "ship_health": 15,
+            "research_points": 10
+          },
+          "feedback": "Your team strips the depot of useful components: radiation-hardened circuit boards, intact solar panels, thruster components, and sealed containers of rare catalysts. In the resource-scarce environment of space, being able to repurpose existing hardware is a crucial survival skill. The Apollo 13 mission survived because astronauts and engineers improvised solutions from available materials -- your scavenging follows that same spirit of resourcefulness."
+        }
+      ],
+      "glossary_terms": [
+        "atmosphere",
+        "space_exploration"
+      ]
+    },
+    "evt_wormhole": {
+      "title": "Wormhole Discovery -- Theoretical Physics Made Real",
+      "story": "Your sensors detect something that should be impossible: a stable wormhole -- a tunnel through spacetime connecting two distant points in the universe. Predicted by Einstein's general relativity equations (specifically the Einstein-Rosen bridge solution from 1935), wormholes have remained purely theoretical because they would require exotic matter with negative energy density to remain stable. Yet here one is, stabilized by unknown technology. The wormhole's mouth shimmers with Cherenkov-like blue radiation, approximately 500 meters in diameter. On the other side could be... anywhere.",
+      "choices": [
+        {
+          "id": "wh_enter",
+          "label": "Enter the wormhole -- the greatest discovery in physics history awaits",
+          "delta": {
+            "fuel": 20,
+            "research_points": 25,
+            "ship_health": -20,
+            "crew_morale": -10
+          },
+          "feedback": "Your ship enters the wormhole throat. For 37 seconds, the laws of physics seem to break down: space stretches, time distorts, and your instruments record impossible readings. You emerge in a completely different region of space -- much closer to your destination! The ship took structural damage from the intense gravitational tidal forces inside the wormhole, and several crew members experienced disorientation, but you just traversed a wormhole -- something physicists debated was even possible!"
+        },
+        {
+          "id": "wh_probe",
+          "label": "Send a probe through first to see if it survives",
+          "delta": {
+            "fuel": -10,
+            "research_points": 30,
+            "crew_morale": 15
+          },
+          "feedback": "Your probe enters the wormhole and... telemetry continues! It emerges in a region of space approximately 50 light-years from your current position. The probe sends back images of unfamiliar constellations and detailed readings of the wormhole's internal structure. The data reveals the wormhole is stabilized by a framework of exotic matter -- possibly engineered by an advanced civilization. You map the wormhole for future missions without risking your crew."
+        },
+        {
+          "id": "wh_study",
+          "label": "Study the wormhole extensively but do not enter -- too risky",
+          "delta": {
+            "fuel": -5,
+            "research_points": 20,
+            "crew_morale": 10,
+            "ship_health": 5
+          },
+          "feedback": "You spend 48 hours studying the wormhole from the outside. Your instruments detect frame-dragging effects around the mouth, gravitational lensing of background stars, and quantum fluctuations at the event horizon. The data alone would revolutionize theoretical physics. You detect faint signals emerging from the wormhole -- possibly from the other side. The responsible scientific approach earns respect from the crew, even if some wish you had gone through."
+        }
+      ],
+      "glossary_terms": [
+        "space_exploration",
+        "gravity"
+      ]
+    },
+    "evt_colony_prep": {
+      "title": "Colony Landing Preparation -- The Final Decision",
+      "story": "You have reached the target planet's orbit! Below you lies a world of stunning beauty: turquoise oceans, green-brown continents, white polar caps, and swirling cloud patterns. Atmospheric analysis confirms breathable air (19% oxygen, 78% nitrogen), moderate temperatures, and liquid water. Your mission objective is to establish the first human colony here. But choosing where to land is critical -- it will determine the colony's success or failure for generations to come.",
+      "choices": [
+        {
+          "id": "cp_coast",
+          "label": "Land on the temperate coast near freshwater rivers and ocean access",
+          "delta": {
+            "fuel": -10,
+            "crew_morale": 20,
+            "research_points": 10,
+            "ship_health": -5
+          },
+          "feedback": "The coastal landing site offers everything a colony needs: fresh water, fertile soil, abundant marine resources, and a natural harbor for future water-based transport. The moderate climate (similar to Earth's Mediterranean region) will make the transition easier for colonists. History shows that most successful civilizations on Earth began near water -- from Mesopotamia to the Indus Valley. Your colony has an excellent foundation!"
+        },
+        {
+          "id": "cp_plateau",
+          "label": "Land on a high plateau with mineral-rich geology and natural defenses",
+          "delta": {
+            "fuel": -10,
+            "crew_morale": 10,
+            "research_points": 15,
+            "ship_health": 5
+          },
+          "feedback": "The elevated plateau offers rich mineral deposits for construction and manufacturing, plus natural elevation provides protection from potential flooding and easier long-range observation. The thinner atmosphere at altitude means more UV exposure, but your advanced shielding technology handles it. Geological scans reveal deposits of iron, copper, silicon, and rare earths -- everything needed to build an advanced technological civilization from scratch."
+        },
+        {
+          "id": "cp_forest",
+          "label": "Land in a dense forest biome for maximum biodiversity research",
+          "delta": {
+            "fuel": -10,
+            "research_points": 25,
+            "crew_morale": 15,
+            "ship_health": -10
+          },
+          "feedback": "The forest biome is a xenobiologist's dream! Towering organisms (not quite trees, not quite anything on Earth) create a canopy ecosystem teeming with alien life forms. Your scientists immediately begin cataloging species -- the biodiversity rivals Earth's Amazon rainforest. Landing in dense vegetation caused minor ship damage, but the research potential is extraordinary. Understanding alien biology could revolutionize medicine, agriculture, and our understanding of life itself."
+        },
+        {
+          "id": "cp_equator",
+          "label": "Land near the equator for maximum solar energy and launch advantage",
+          "delta": {
+            "fuel": -5,
+            "crew_morale": 10,
+            "research_points": 10,
+            "ship_health": 5
+          },
+          "feedback": "The equatorial site receives maximum solar radiation for energy generation and offers a rotational velocity advantage for future space launches -- the same reason Earth's major launch sites (like Kennedy Space Center and Kourou) are near the equator. A rocket launched from the equator gets a free speed boost from the planet's rotation! Your engineers immediately begin deploying solar arrays and marking out a future launch facility. The colony is designed for growth."
+        }
+      ],
+      "glossary_terms": [
+        "gravity",
+        "orbit"
+      ]
+    }
+  },
+  "glossary_terms": [
+    {
+      "term": "Black Hole",
+      "definition": "A region of spacetime where gravity is so intense that nothing, not even light, can escape. Formed when massive stars collapse at the end of their lives.",
+      "example": "The supermassive black hole at the center of the Milky Way, Sagittarius A*, has a mass of about 4 million Suns.",
+      "remember_tip": "Black Hole = a cosmic vacuum cleaner that even traps light"
+    },
+    {
+      "term": "Gravity Assist",
+      "definition": "A technique where a spacecraft uses a planet's gravitational pull to gain speed and change direction without burning fuel, also called a slingshot maneuver.",
+      "example": "Voyager 2 used gravity assists from Jupiter, Saturn, Uranus, and Neptune to explore all four gas giants in a single mission.",
+      "remember_tip": "Think of it as cosmic hitchhiking -- borrowing speed from a planet!"
+    },
+    {
+      "term": "Lagrange Point",
+      "definition": "One of five positions in space where the gravitational forces of two large bodies balance with the centrifugal force of a smaller body, creating stable positions.",
+      "example": "The James Webb Space Telescope orbits the Sun-Earth L2 Lagrange point, 1.5 million km from Earth.",
+      "remember_tip": "L-points = Parking spots in space where gravity balances out"
+    },
+    {
+      "term": "Habitable Zone",
+      "definition": "The range of orbital distances from a star where conditions could allow liquid water to exist on a planet's surface, also called the Goldilocks Zone.",
+      "example": "Earth sits in the Sun's habitable zone. Mars is at the outer edge, which is why its water is mostly frozen.",
+      "remember_tip": "Goldilocks Zone = Not too hot, not too cold, just right for water!"
+    },
+    {
+      "term": "Spectroscopy",
+      "definition": "The study of how matter interacts with electromagnetic radiation. By splitting light into its component wavelengths, scientists can determine the chemical composition of distant objects.",
+      "example": "Astronomers used spectroscopy to discover helium on the Sun before it was found on Earth -- that is why it is named after Helios, the Greek sun god.",
+      "remember_tip": "Spectroscopy = Reading the rainbow fingerprint of every element"
+    },
+    {
+      "term": "Coronal Mass Ejection",
+      "definition": "A massive burst of magnetized plasma ejected from the Sun's corona, traveling at speeds up to 3,000 km/s. Can disrupt electronics and endanger astronauts.",
+      "example": "The 1859 Carrington Event was a CME so powerful it caused telegraph wires to spark and catch fire.",
+      "remember_tip": "CME = the Sun sneezing a billion tons of hot plasma into space"
+    },
+    {
+      "term": "Exoplanet",
+      "definition": "A planet orbiting a star other than our Sun. Over 5,500 exoplanets have been confirmed as of 2024, with thousands more candidates.",
+      "example": "TRAPPIST-1 has seven Earth-sized exoplanets, three of which are in the habitable zone.",
+      "remember_tip": "Exo = outside, so exoplanet = planet outside our solar system"
+    },
+    {
+      "term": "Kessler Syndrome",
+      "definition": "A theoretical scenario where the density of space debris in orbit becomes so high that collisions cascade, creating ever more debris and making certain orbits unusable.",
+      "example": "A 2009 collision between Iridium 33 and Cosmos 2251 created over 2,000 trackable debris fragments.",
+      "remember_tip": "Think of it as a chain reaction of space crashes that makes orbit a junkyard"
+    }
+  ],
+  "layout_config": {
+    "layout_type": "dashboard",
+    "theme": {
+      "primary_color": "#1A1A2E",
+      "secondary_color": "#16213E",
+      "accent_color": "#0F3460",
+      "font_family": "Poppins, sans-serif"
+    }
+  },
+  "win_conditions": {
+    "style": "reach_finish",
+    "description": "Reach the Planet Colony tile to establish humanity's first interstellar settlement! Your final score depends on remaining fuel, crew morale, total research points accumulated, and ship health. A true Space Explorer maximizes all four!"
+  },
+  "world_events": [
+    {
+      "id": "we_solar_storm",
+      "title": "Interstellar Solar Storm!",
+      "description": "A wave of intense radiation from a distant supernova remnant sweeps through the region. All ships must divert power to shields.",
+      "trigger_interval": 5,
+      "delta_all": {
+        "ship_health": -10,
+        "fuel": -5
+      },
+      "icon": "🌞"
+    },
+    {
+      "id": "we_cosmic_wind",
+      "title": "Favorable Cosmic Wind!",
+      "description": "A surge of solar wind from a nearby star provides a free speed boost to all ships, pushing them forward like cosmic sails.",
+      "trigger_interval": 8,
+      "delta_all": {
+        "fuel": 10,
+        "crew_morale": 5
+      },
+      "icon": "💨"
+    },
+    {
+      "id": "we_discovery_signal",
+      "title": "Galactic Discovery Broadcast!",
+      "description": "A burst of encoded scientific data from an unknown source reaches all ships, advancing everyone's research.",
+      "trigger_interval": 12,
+      "delta_all": {
+        "research_points": 15
+      },
+      "icon": "📡"
+    },
+    {
+      "id": "we_micrometeorite",
+      "title": "Micrometeorite Swarm!",
+      "description": "A dense cloud of tiny, high-velocity particles pummels all ships in the sector. Hull damage is unavoidable.",
+      "trigger_interval": 10,
+      "delta_all": {
+        "ship_health": -8,
+        "crew_morale": -5
+      },
+      "icon": "💥"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "ach_pathfinder",
+      "title": "Pathfinder",
+      "description": "Be the first to reach tile 10",
+      "condition": {
+        "type": "first_to_tile",
+        "tile_index": 10
+      },
+      "reward": {
+        "fuel": 15
+      },
+      "icon": "🧭",
+      "xp_reward": 150
+    },
+    {
+      "id": "ach_alien_whisperer",
+      "title": "Alien Whisperer",
+      "description": "Successfully pass all 3 Alien Challenge boss tiles",
+      "condition": {
+        "type": "boss_wins",
+        "count": 3
+      },
+      "reward": {
+        "research_points": 25
+      },
+      "icon": "👾",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_space_shopper",
+      "title": "Space Station Regular",
+      "description": "Purchase items from 3 different Space Station shops",
+      "condition": {
+        "type": "shop_purchases",
+        "count": 3
+      },
+      "reward": {
+        "crew_morale": 15
+      },
+      "icon": "🛒",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_scientist",
+      "title": "Chief Science Officer",
+      "description": "Accumulate 100 or more research points",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "research_points",
+        "value": 100
+      },
+      "reward": {
+        "fuel": 10,
+        "crew_morale": 10
+      },
+      "icon": "🔬",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_survivor",
+      "title": "Iron Hull",
+      "description": "Finish the game with ship health above 60",
+      "condition": {
+        "type": "stat_threshold_at_finish",
+        "stat": "ship_health",
+        "value": 60
+      },
+      "reward": {
+        "research_points": 15
+      },
+      "icon": "🛡️",
+      "xp_reward": 100
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "ethical_reasoning",
+        "name": "Ethical Reasoning",
+        "icon": "⚖️",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "emotional_regulation",
+        "name": "Emotional Regulation",
+        "icon": "🧘",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "self_awareness",
+        "name": "Self Awareness",
+        "icon": "🪞",
+        "brain_region": "occipital_posterior"
+      },
+      {
+        "id": "growth_mindset",
+        "name": "Growth Mindset",
+        "icon": "🌱",
+        "brain_region": "occipital_posterior"
+      }
+    ]
+  },
+  "glossary": {
+    "gravity": {
+      "term": "Gravity",
+      "definition": "The fundamental force that attracts objects with mass toward each other. It keeps planets in orbit and us on Earth.",
+      "example": "A dropped ball falls to the ground because Earth's gravity pulls it downward at 9.8 m/s².",
+      "real_world_example": "NASA uses gravity assists — slingshotting spacecraft around planets — to reach distant destinations with less fuel."
+    },
+    "orbit": {
+      "term": "Orbit",
+      "definition": "The curved path an object follows as it moves around another object due to gravity. Can be circular or elliptical.",
+      "example": "The International Space Station orbits Earth every 90 minutes at 28,000 km/h.",
+      "real_world_example": "GPS satellites orbit at exactly 20,200 km altitude — any higher or lower and GPS wouldn't work accurately."
+    },
+    "light_year": {
+      "term": "Light Year",
+      "definition": "The distance light travels in one year — about 9.46 trillion kilometers. Used to measure vast cosmic distances.",
+      "example": "The nearest star to our Sun, Proxima Centauri, is 4.24 light years away.",
+      "real_world_example": "The James Webb Space Telescope can see galaxies 13.5 billion light years away — looking back to the early universe."
+    },
+    "rocket_propulsion": {
+      "term": "Rocket Propulsion",
+      "definition": "The principle that expelling mass in one direction generates thrust in the opposite direction (Newton's Third Law).",
+      "example": "A balloon released flies forward as air rushes out the back — same principle as a rocket.",
+      "real_world_example": "SpaceX's Falcon 9 generates 7.6 million newtons of thrust — enough to launch 22,800 kg to orbit."
+    },
+    "atmosphere": {
+      "term": "Atmosphere",
+      "definition": "The layer of gases surrounding a planet, held in place by gravity. Earth's atmosphere protects us from solar radiation.",
+      "example": "Mars has a thin CO2 atmosphere with 1% of Earth's air pressure — too thin to breathe.",
+      "real_world_example": "The ozone layer in Earth's atmosphere blocks 97% of the Sun's harmful UV radiation."
+    },
+    "space_exploration": {
+      "term": "Space Exploration",
+      "definition": "The use of astronomy and space technology to explore outer space through crewed and uncrewed spacecraft.",
+      "example": "Sending the Curiosity rover to Mars to analyze soil and search for signs of past life.",
+      "real_world_example": "The Apollo 11 mission in 1969 landed humans on the Moon — watched by 600 million people worldwide."
+    }
+  },
+  "win_criteria": [
+    {
+      "id": "highest_fuel",
+      "label": "Highest Fuel",
+      "metric": "fuel",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "highest_crew_morale",
+      "label": "Highest Crew Morale",
+      "metric": "crew_morale",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "highest_research_points",
+      "label": "Highest Research Points",
+      "metric": "research_points",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "highest_ship_health",
+      "label": "Highest Ship Health",
+      "metric": "ship_health",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "resource_balance",
+      "label": "Best Resource Balance",
+      "metric": "all_resources",
+      "type": "balanced_growth",
+      "icon": "⚖️",
+      "weight": 1.5,
+      "description": "Lowest variance across all resource growth percentages"
+    },
+    {
+      "id": "knowledge_mastery",
+      "label": "Knowledge Mastery",
+      "metric": "glossary_terms_learned",
+      "type": "highest_count",
+      "icon": "📚",
+      "weight": 1
+    },
+    {
+      "id": "challenge_champion",
+      "label": "Challenge Champion",
+      "metric": "boss_wins",
+      "type": "highest_count",
+      "icon": "🗡️",
+      "weight": 1
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "resource_multiplier": 1.4,
+      "negative_event_chance": 0.2
+    },
+    "medium": {
+      "resource_multiplier": 1.0,
+      "negative_event_chance": 0.4
+    },
+    "hard": {
+      "resource_multiplier": 0.65,
+      "negative_event_chance": 0.65
+    }
+  },
+  "coach_mode_default": true,
+  "learning_concept": "Strategic Decision Making",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Navigating resource trade-offs on the board",
+      "real_world": "Managing a project budget with competing priorities",
+      "challenge": "List 3 real decisions you made this week that involved trade-offs between short-term and long-term outcomes."
+    },
+    {
+      "skill_tag": "risk_tolerance",
+      "game_context": "Taking bold moves despite uncertain outcomes",
+      "real_world": "Starting a new initiative at school or work without guaranteed success",
+      "challenge": "Identify one situation where you played it too safe. What would you try differently?"
+    }
+  ],
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.4,
+    "adaptability": 0.35,
+    "resilience": 0.25
+  },
+  "coaching_moment": "Understand key concepts in astronomy, astrophysics, and space science. Learn about real space exploration challenges and how missions are planned.",
+  "estimated_duration": 20,
+  "target_age": "12-17",
+  "tags": [
+    "board-game",
+    "creativity",
+    "intermediate",
+    "leadership",
+    "stem",
+    "strategic-thinking"
+  ],
+  "cultural_context": "ISRO has made India a global space power with low-cost, high-impact missions. This game channels the inspiration of India's space programme into strategic thinking about exploration, resource allocation, and risk management.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "social-emotional-learning"
+  ],
+  "reflection_prompt": "Which turn was your turning point — and was it skill, luck, or planning?"
+}

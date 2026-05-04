@@ -1,0 +1,1625 @@
+{
+  "game_id": "the-treaty",
+  "title": "The Treaty: House Unity",
+  "game_type": "story_branching",
+  "visible": true,
+  "description": "Two rival school houses are forced to collaborate on a joint event. As the lead negotiator for House Phoenix, you must navigate decades of rivalry, manage hardliners on both sides, and discover that the hardest treaties are not between enemies — they are between people who have forgotten they are on the same side.",
+  "theme": "Negotiation, collaboration, and building trust across divides",
+  "difficulty": "intermediate",
+  "duration_minutes": 45,
+  "target_audience": "students",
+  "icon": "🤝",
+  "cover_image_prompt": "Two Indian teenagers shaking hands in a school library, one wearing red (Phoenix) and one wearing blue (Griffin), other students watching with mixed expressions, school setting with house banners, vibrant watercolor illustration, age 10-18 friendly",
+  "learning_objectives": [
+    "Learn to negotiate with people who have fundamentally different perspectives and priorities",
+    "Practice managing internal stakeholders who resist compromise",
+    "Understand that creative collaboration produces better outcomes than competition alone",
+    "Develop the skill of building personal rapport as a foundation for professional agreements",
+    "Explore how trust is built, tested, and strengthened through shared challenges"
+  ],
+  "learning_concept": "The walls between us are not made of stone — they are made of assumptions. And assumptions crumble the moment you choose to see the other person as a partner instead of an enemy.",
+  "psychological_framework": "Interest-Based Negotiation (Fisher & Ury) — focus on interests, not positions; In-Group/Out-Group Theory (Tajfel) — understanding tribal dynamics and how to bridge them; Creative Collaboration — generating value through diversity of perspective",
+  "ai_image_config": {
+    "style": "vibrant watercolor illustration, Indian school setting, house rivalry, school houses in red and blue, collaborative energy, age 10-18 friendly",
+    "provider": "dalle",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/story_branching"
+  },
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "The Announcement",
+      "icon": "📢",
+      "teaser": "Phoenix and Griffin — forced to work together. The school holds its breath.",
+      "always_unlocked": true,
+      "color": "#ef4444"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "Secret Meeting",
+      "icon": "🤫",
+      "teaser": "Neutral ground. Two negotiators. One impossible task.",
+      "unlocks_after": "ch1",
+      "color": "#f97316"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "Hidden Constraints",
+      "icon": "🔒",
+      "teaser": "Both sides have limits they cannot cross. Can {player_name} find the overlap?",
+      "unlocks_after": "ch2",
+      "color": "#10b981"
+    },
+    {
+      "chapter_id": "ch4",
+      "number": 4,
+      "title": "Building Rapport",
+      "icon": "☕",
+      "teaser": "Behind the negotiation, two people discover they have more in common than they thought.",
+      "unlocks_after": "ch3",
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch5",
+      "number": 5,
+      "title": "First Proposal Rejected",
+      "icon": "❌",
+      "teaser": "The first plan collapses. The hardliners say 'I told you so.' Now what?",
+      "unlocks_after": "ch4",
+      "color": "#ec4899"
+    },
+    {
+      "chapter_id": "ch6",
+      "number": 6,
+      "title": "Finding Common Ground",
+      "icon": "🌱",
+      "teaser": "A creative idea emerges from the collision of different strengths.",
+      "unlocks_after": "ch5",
+      "color": "#8b5cf6"
+    },
+    {
+      "chapter_id": "ch7",
+      "number": 7,
+      "title": "The Saboteur",
+      "icon": "🕵️",
+      "teaser": "Someone is trying to destroy the collaboration. From BOTH sides.",
+      "unlocks_after": "ch6",
+      "color": "#0ea5e9"
+    },
+    {
+      "chapter_id": "ch8",
+      "number": 8,
+      "title": "Emergency Collaboration",
+      "icon": "🚨",
+      "teaser": "A real crisis forces both houses to prove the partnership is genuine.",
+      "unlocks_after": "ch7",
+      "color": "#f59e0b"
+    },
+    {
+      "chapter_id": "ch9",
+      "number": 9,
+      "title": "The Joint Event",
+      "icon": "🎭",
+      "teaser": "The lights dim. Two houses. One stage. History is about to be made.",
+      "unlocks_after": "ch8",
+      "color": "#14b8a6"
+    },
+    {
+      "chapter_id": "ch10",
+      "number": 10,
+      "title": "Legacy",
+      "icon": "🏆",
+      "teaser": "The trophy is shared. But something more lasting was built along the way.",
+      "unlocks_after": "ch9",
+      "color": "#f59e0b"
+    }
+  ],
+  "initial_state": {
+    "trust": {
+      "value": 30,
+      "label": "Trust",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "creativity": {
+      "value": 40,
+      "label": "Creativity",
+      "icon": "🎨",
+      "min": 0,
+      "max": 100
+    },
+    "house_pride": {
+      "value": 60,
+      "label": "House Pride",
+      "icon": "🔥",
+      "min": 0,
+      "max": 100
+    },
+    "compromise": {
+      "value": 35,
+      "label": "Compromise",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "title": "The Announcement",
+        "narrative": "The announcement hit like a thunderbolt during Monday assembly. Mrs. D'Souza, the principal of Kendriya Vidyalaya, stood at the podium and said: 'The Annual Inter-House Championship will have a new format this year. Instead of competing separately, two houses will be paired for a joint cultural event. House Phoenix and House Griffin will work together.'\n\nThe auditorium erupted. House Phoenix and House Griffin had been rivals for decades. Their competition was legendary — fierce sports matches, bitter debates, and a mutual suspicion that bordered on tribal.\n\n{player_name} sat in the Phoenix section, watching the Griffin students on the other side of the aisle. Riya had been a Phoenix member since Class 6. She knew every chant, every rivalry story, every grudge. Kabir, Griffin's negotiator, caught her eye from across the room. He did not smile. Neither did she.\n\nCoach Vikram, who managed inter-house sports, whispered to Riya: 'This is going to be a disaster. Unless someone figures out how to make it work.'",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the announcement scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch1_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch1_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ],
+        "transitions_to_gameplay": true
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "The Rival Houses",
+        "narrative": "After assembly, Aadhya — House Phoenix's captain and a hardliner who believed Griffin was 'fundamentally untrustworthy' — pulled Riya aside. 'Do not agree to anything without my approval. Griffin will try to take over. They always do.'\n\nBut Riya had noticed something during the announcement: Kabir had looked just as uncomfortable as she felt. Neither side wanted this. But both sides had to make it work — the Championship carried serious points toward the House Trophy, and losing meant dropping to last place.\n\nMrs. D'Souza had given them three weeks. Three weeks to plan and execute a joint cultural event with people they had spent years opposing.\n\n{player_name} went home that evening and made a list: what does Phoenix want? What does Griffin want? Where could they overlap? It was a negotiation problem — and Riya had always been better at solving problems than at holding grudges.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the rival houses scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch1_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions."
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch1_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "title": "First Steps",
+        "narrative": "The first challenge was logistics. Who leads? Where do they meet? What is the event format? Every decision was a potential flashpoint.\n\nRiya proposed meeting on neutral ground — the school library, not either house's common room. She suggested co-chairs: herself for Phoenix, Kabir for Griffin. Equal representation from the start.\n\nAadhya was skeptical: 'Co-chairs? That means Griffin has the same power as us. They will use it.'\n\nBut Riya knew from experience that unequal power at the start of any collaboration breeds resentment. If this was going to work, it had to be fair from day one.\n\n{player_name} sent a message to Kabir: 'Library. Tomorrow. 3 PM. Neutral ground. Bring your ideas — I will bring mine.'",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a first steps scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "Lock in the agreement and move to implementation",
+            "description": "Riya formalizes whatever progress has been made, creating written agreements before momentum fades.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch2",
+            "consequence_hint": "Written agreements prevent backsliding — but moving too fast can leave unresolved tensions."
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "Take time to celebrate the progress — morale matters as much as milestones",
+            "description": "Riya organizes a small joint celebration, reinforcing the positive energy before tackling the next challenge.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch2",
+            "consequence_hint": "Celebrating progress builds team spirit — but the clock is still ticking."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "Secret Meeting",
+        "narrative": "The first meeting was awkward. Riya brought three Phoenix members. Kabir brought three Griffins. They sat on opposite sides of the library table like diplomats at a border negotiation.\n\nKabir opened: 'Let us be honest. Neither of us chose this. But the points matter. If we fail, both houses lose. So what is the minimum we need to agree on?'\n\nRiya appreciated the directness. 'Format first. Mrs. D'Souza wants a cultural event. What does that mean to each house?'\n\nPhoenix wanted music — they had the school's best singers. Griffin wanted drama — they had won the last three drama competitions. Neither wanted to give ground on their strength.\n\n{player_name} saw the impasse forming and realized: this was not about music versus drama. It was about pride. Both houses wanted to showcase what made them special.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a secret meeting scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch2_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch2_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "Creative Clash",
+        "narrative": "The meeting stalled. Sameer, Griffin's class clown, cracked a joke about Phoenix's singing being 'so loud it scares the crows.' Two Phoenix members stood up. Kabir grabbed Sameer's arm. Riya raised her hand: 'We are here to plan, not to fight.'\n\nThe tension was real. Years of rivalry cannot be erased by a principal's announcement. Every joke had an edge. Every suggestion was tested for hidden agenda.\n\nBut Riya noticed something: when the conversation turned to actual creative ideas — what songs, what scenes, what themes — the energy shifted. People leaned in. A Griffin girl suggested a fusion piece combining Phoenix's musical strengths with Griffin's theatrical flair. The room went quiet — not with hostility, but with the silence of an idea taking hold.\n\n{player_name} jumped on it: 'A musical drama. Phoenix provides the soundtrack. Griffin provides the story. Both houses on stage together.'",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a creative clash scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch2_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions."
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch2_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "title": "The Concept",
+        "narrative": "The musical drama concept was revolutionary — and terrifying. It had never been done before. It required both houses to share the spotlight equally. It required trust.\n\nKabir looked at Riya. 'If we do this and it fails, both houses will blame the other. Are you willing to take that risk?'\n\nRiya thought about it. A safe, separate performance would protect each house's reputation. A joint production could be spectacular — or spectacularly bad.\n\n'Yes,' she said. 'But we need rules. Written agreements. Clear roles. And a shared vision that both houses genuinely believe in.'\n\nKabir nodded. 'Then let us write the treaty.'\n\n{player_name} smiled at the word. Treaty. As if they were nations at peace talks. In a way, they were.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the concept scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "Lock in the agreement and move to implementation",
+            "description": "Riya formalizes whatever progress has been made, creating written agreements before momentum fades.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch3",
+            "consequence_hint": "Written agreements prevent backsliding — but moving too fast can leave unresolved tensions."
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "Take time to celebrate the progress — morale matters as much as milestones",
+            "description": "Riya organizes a small joint celebration, reinforcing the positive energy before tackling the next challenge.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch3",
+            "consequence_hint": "Celebrating progress builds team spirit — but the clock is still ticking."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "Hidden Constraints",
+        "narrative": "The 'treaty' negotiations began in earnest. Riya and Kabir met daily, each representing their house's interests while trying to find common ground.\n\nThe first constraint emerged quickly: Griffin's drama team had already been rehearsing a play about climate change for months. They did not want to abandon it. Phoenix's choir had prepared Bollywood medleys. Neither wanted to start from scratch with three weeks left.\n\nKabir was transparent: 'I cannot tell my team to drop six weeks of work. They will revolt.'\n\nRiya understood. 'Same with our choir. So the question is: can we weave a climate change drama around Bollywood music? It sounds crazy. But what if the story uses songs to express emotions the dialogue cannot?'\n\n{player_name} watched Kabir's face shift from skepticism to curiosity. That was the moment — when curiosity replaced suspicion.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a hidden constraints scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch3_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch3_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "Managing Hardliners",
+        "narrative": "The creative sessions that followed were electric. Phoenix's music director proposed using 'Kal Ho Naa Ho' as a theme for hope. Griffin's writer rewrote scenes to include musical interludes that advanced the plot. A Griffin boy who played guitar and a Phoenix girl who played violin discovered they could create something beautiful together.\n\nBut the hidden constraints were not just creative. Aadhya, Phoenix's captain, was uncomfortable with how much Riya was compromising. 'You are giving Griffin too much. Their play, their theme. Where is Phoenix in this?'\n\nAnd Kabir faced similar pressure: 'Griffin always leads. Why is Phoenix music getting equal billing? This should be a GRIFFIN production with Phoenix support.'\n\nThe negotiators were being squeezed by their own hardliners. {player_name} realized that the real negotiation was not between Phoenix and Griffin — it was between the moderates who wanted collaboration and the hardliners who wanted dominance.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a managing hardliners scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch3_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions."
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch3_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "title": "Securing Your Side",
+        "narrative": "Riya called Aadhya for a private conversation. 'I understand your concerns. But think about it — if this fusion works, Phoenix will be famous for creating something no house has ever done. That is a BIGGER win than just singing well.'\n\nAadhya was not convinced. 'And if it fails, Phoenix looks weak for compromising.'\n\n'We look weak if we cannot work with anyone,' Riya said quietly. 'Strength is not about always winning. It is about being able to collaborate when needed — and that takes more skill than competition.'\n\nAadhya stared at her for a long moment. 'Fine. But if Griffin tries to sideline us, I am pulling Phoenix out. Non-negotiable.'\n\n{player_name} had secured her own side — for now. The question was whether Kabir could secure his.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a securing your side scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "Lock in the agreement and move to implementation",
+            "description": "Riya formalizes whatever progress has been made, creating written agreements before momentum fades.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch4",
+            "consequence_hint": "Written agreements prevent backsliding — but moving too fast can leave unresolved tensions."
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "Take time to celebrate the progress — morale matters as much as milestones",
+            "description": "Riya organizes a small joint celebration, reinforcing the positive energy before tackling the next challenge.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch4",
+            "consequence_hint": "Celebrating progress builds team spirit — but the clock is still ticking."
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s1",
+        "chapter": "ch4",
+        "title": "Building Rapport",
+        "narrative": "Kabir and Riya met for coffee at the school canteen — the first time they had met without their respective delegations. It felt different without the audience.\n\n'Aadhya is difficult,' Riya admitted.\n\n'Sameer is worse,' Kabir said. 'He thinks any agreement is surrender. Yesterday he called me a traitor for sitting at your library table.'\n\nThey both laughed — and the laughter broke something. For the first time, they were not Phoenix and Griffin negotiators. They were two fifteen-year-olds trying to solve an impossible problem while their friends made it harder.\n\n{player_name} realized that rapport — genuine human connection — was the single most important tool in any negotiation. Technique mattered. But trust between negotiators was the foundation everything else was built on.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a building rapport scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch4_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch4_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch4_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch4_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch4_s2",
+        "chapter": "ch4",
+        "title": "Common Ground",
+        "narrative": "The rapport-building continued. Kabir told Riya about his family — his father was a diplomat, which explained Kabir's natural negotiation skills. Riya shared her anxiety about letting Phoenix down — the house had invested so much trust in her.\n\nThey discovered shared interests: both loved old Hindi movies. Both hated the school's canteen samosas. Both felt the pressure of representing groups that did not always understand the value of compromise.\n\n'My father says: the best diplomats are the ones who make the other side feel heard, even when they cannot give them what they want,' Kabir said.\n\n{player_name} filed that away. Making people feel heard was different from giving them what they wanted. It was a subtler, more powerful skill.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a common ground scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch4_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch4_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions.",
+            "memory_tags": [
+              "ch4s2_choice"
+            ]
+          },
+          {
+            "id": "ch4_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch4_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence.",
+            "memory_tags": [
+              "ch4s2_choice"
+            ]
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch4_s3",
+        "chapter": "ch4",
+        "title": "The Draft Treaty",
+        "narrative": "The personal connection translated into professional trust. Kabir and Riya began making faster decisions — trading concessions efficiently because they understood each other's real constraints.\n\nA breakthrough: Griffin agreed to let Phoenix lead the musical direction. In exchange, Phoenix accepted Griffin's climate change theme. Both houses would share stage time equally, with scenes alternating between dialogue and song.\n\nThe treaty was taking shape. Written on a Google Doc that both sides could edit, it included: event concept, role allocation, rehearsal schedule, credit sharing, and — most importantly — a dispute resolution mechanism.\n\n{player_name} felt proud of the document. It was not perfect. But it was fair. And fairness, she was learning, was the currency of sustainable agreements.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the draft treaty scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch4_s3_a",
+            "label": "Lock in the agreement and move to implementation",
+            "description": "Riya formalizes whatever progress has been made, creating written agreements before momentum fades.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch5",
+            "consequence_hint": "Written agreements prevent backsliding — but moving too fast can leave unresolved tensions."
+          },
+          {
+            "id": "ch4_s3_b",
+            "label": "Take time to celebrate the progress — morale matters as much as milestones",
+            "description": "Riya organizes a small joint celebration, reinforcing the positive energy before tackling the next challenge.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch5",
+            "consequence_hint": "Celebrating progress builds team spirit — but the clock is still ticking."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch5_s1",
+        "chapter": "ch5",
+        "title": "First Proposal Rejected",
+        "narrative": "The first joint rehearsal was a disaster. Phoenix students arrived in formation, rehearsed and polished. Griffin students arrived in creative chaos, improvising and experimenting. The clash of styles was immediate.\n\nPhoenix's music director wanted precision: 'Everyone hits the note at the same time.' Griffin's drama coach wanted spontaneity: 'Feel the emotion first, then find the expression.'\n\nThe fusion piece — the climactic scene where music and drama combined — collapsed after three failed attempts. Phoenix blamed Griffin's disorganization. Griffin blamed Phoenix's rigidity.\n\n{player_name} watched the joint rehearsal unravel and realized: the treaty covered what to do. It did not cover HOW to work together. Process agreements are only the beginning — cultural integration is the real challenge.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a first proposal rejected scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch5_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch5_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch5_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch5_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch5_s2",
+        "chapter": "ch5",
+        "title": "Finding the Rhythm",
+        "narrative": "The second rehearsal attempt started with a new approach. Riya suggested a creative exercise: each house would teach the other their core skill. Phoenix members tried improvisation. Griffin members tried harmonizing.\n\nThe results were hilarious. A Phoenix soprano tried method acting and burst into laughter. A Griffin actor tried sight-reading music and produced sounds that made the piano teacher wince. But they were laughing together — and shared laughter was building what formal agreements could not.\n\nSameer, the Griffin prankster, surprised everyone by being an excellent singer. 'My mother is a music teacher,' he admitted sheepishly. 'I just never told Griffin because... well, music is a Phoenix thing.'\n\n{player_name} saw the labels dissolving. 'Phoenix thing' and 'Griffin thing' were starting to become 'our thing.'",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a finding the rhythm scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch5_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch5_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions."
+          },
+          {
+            "id": "ch5_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch5_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch5_s3",
+        "chapter": "ch5",
+        "title": "The Breakthrough",
+        "narrative": "By the end of the week, the first proposal for the fusion performance was ready. It was ambitious: a thirty-minute musical drama about a village facing a climate crisis, told through Hindi film songs reimagined with new lyrics, with Griffin's actors and Phoenix's singers sharing the stage in integrated scenes.\n\nKabir presented it to the Griffin contingent. Riya presented it to Phoenix. Both houses had reservations — but both also felt the creative pull of something genuinely new.\n\nAadhya said grudgingly: 'The concept is good. If they actually follow through.'\n\nCoach Vikram, who had been watching the whole process from the sidelines, said to Mrs. D'Souza: 'I think something unexpected is happening here.'\n\n{player_name} knew it too. Something was being built that was bigger than a school event.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the breakthrough scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch5_s3_a",
+            "label": "Lock in the agreement and move to implementation",
+            "description": "Riya formalizes whatever progress has been made, creating written agreements before momentum fades.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch6",
+            "consequence_hint": "Written agreements prevent backsliding — but moving too fast can leave unresolved tensions."
+          },
+          {
+            "id": "ch5_s3_b",
+            "label": "Take time to celebrate the progress — morale matters as much as milestones",
+            "description": "Riya organizes a small joint celebration, reinforcing the positive energy before tackling the next challenge.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch6",
+            "consequence_hint": "Celebrating progress builds team spirit — but the clock is still ticking."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch6_s1",
+        "chapter": "ch6",
+        "title": "Finding Common Ground",
+        "narrative": "The first real conflict erupted over the lead role. Griffin wanted their best actor — a boy named Amir — to play the village chief. Phoenix wanted their best singer — a girl named Meera — to have the central musical moment. Both roles were essential. Both were written as the emotional climax.\n\nThe argument got heated. Both houses felt their contribution was being diminished. Kabir and Riya called an emergency negotiation session.\n\n{player_name} realized this was the test. Every collaboration hits a point where competing interests clash head-on — and how you handle that moment determines whether the partnership survives or breaks.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a finding common ground scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch6_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch6_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch6_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch6_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch6_s2",
+        "chapter": "ch6",
+        "title": "The Creative Solution",
+        "narrative": "Riya proposed a solution that came from listening to both sides: create two climactic moments instead of one. Amir's dramatic speech would lead directly into Meera's musical response, creating a call-and-answer that was more powerful than either could be alone.\n\nThe idea was elegant. It honoured both houses' strengths. It also made the performance better — because the contrast between spoken drama and musical emotion created a texture that neither approach alone could achieve.\n\nKabir tested the idea with his team. 'The dialogue builds the tension. The music releases it. Together, it is cinema.'\n\n{player_name} watched the creative solution emerge from the constraint itself — and realized that the best compromises are not fifty-fifty splits. They are entirely new ideas that emerge from the collision of different perspectives.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the creative solution scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch6_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch6_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions."
+          },
+          {
+            "id": "ch6_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch6_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch6_s3",
+        "chapter": "ch6",
+        "title": "Fragile Progress",
+        "narrative": "The agreement on the lead roles stabilized the collaboration. Rehearsals improved. The fusion scenes started to gel. The guitar-violin duet became the talk of the school. A Phoenix-Griffin dance ensemble formed spontaneously after someone played 'Chaiyya Chaiyya' during a break.\n\nBut Aadhya was still watching. And Sameer was still testing boundaries. The alliance was fragile — held together by Riya and Kabir's relationship, the creative momentum, and the approaching deadline.\n\nMrs. D'Souza checked in: 'How is the collaboration going?' Riya said: 'Better than expected.' Kabir said: 'Worse than I hoped.' Both were true.\n\n{player_name} learned that collaboration does not mean everyone is happy. It means everyone is committed — and that is a lower but more sustainable bar.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a fragile progress scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch6_s3_a",
+            "label": "Lock in the agreement and move to implementation",
+            "description": "Riya formalizes whatever progress has been made, creating written agreements before momentum fades.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch7",
+            "consequence_hint": "Written agreements prevent backsliding — but moving too fast can leave unresolved tensions."
+          },
+          {
+            "id": "ch6_s3_b",
+            "label": "Take time to celebrate the progress — morale matters as much as milestones",
+            "description": "Riya organizes a small joint celebration, reinforcing the positive energy before tackling the next challenge.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch7",
+            "consequence_hint": "Celebrating progress builds team spirit — but the clock is still ticking."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch7_s1",
+        "chapter": "ch7",
+        "title": "The Saboteur",
+        "narrative": "Ten days before the performance. Someone sabotaged the rehearsal. The backing track was deleted from the shared drive. The costume designs were altered to make Phoenix's costumes less visible. And an anonymous message was sent to Mrs. D'Souza claiming 'creative differences' were making the joint event impossible.\n\nRiya investigated. The evidence pointed to someone within Griffin — possibly Sameer, who had been vocal about his opposition. But Kabir investigated too, and found that the costume changes came from a Phoenix member sympathetic to Aadhya's hardline position.\n\nSabotage from BOTH sides. The treaty was under attack from its own signatories.\n\n{player_name} realized that the greatest threats to peace agreements come not from the other side, but from within your own — from the people who never wanted agreement in the first place.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the saboteur scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch7_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch7_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch7_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch7_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch7_s2",
+        "chapter": "ch7",
+        "title": "The Joint Response",
+        "narrative": "The confrontation was explosive. Riya faced the Phoenix saboteur — a girl named Divya who admitted she thought 'Phoenix was being weak.' Kabir confronted Sameer, who shrugged: 'I was just testing how committed we are.'\n\nRiya and Kabir met that evening, both exhausted. 'We cannot control everyone,' Kabir said. 'But we can make the cost of sabotage higher than the cost of cooperation.'\n\nRiya agreed: 'If we respond to sabotage with transparency — showing both houses what happened and why it hurt everyone — the saboteurs lose support.'\n\n{player_name} proposed a joint statement: 'To both houses. The joint event was sabotaged from within — by members of BOTH houses. This proves that the real enemy is not each other. It is the idea that working together is weakness.'",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the joint response scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch7_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch7_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions.",
+            "memory_tags": [
+              "ch7s2_choice"
+            ]
+          },
+          {
+            "id": "ch7_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch7_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence.",
+            "memory_tags": [
+              "ch7s2_choice"
+            ]
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch7_s3",
+        "chapter": "ch7",
+        "title": "Stronger Together",
+        "narrative": "The joint statement had an electric effect. Students from both houses were embarrassed that their own members had acted destructively. The saboteurs were isolated — not punished, but clearly out of step with the majority.\n\nSomething shifted. The collaboration was no longer fragile — it was actively defended by people who had invested creative energy and did not want to see it destroyed. The backing track was re-recorded. The costumes were redesigned — this time with both houses contributing ideas.\n\nAadhya came to Riya after the joint statement. 'I did not authorize Divya,' she said. 'And... I am starting to see what you are building. It is bigger than I thought.'\n\n{player_name} accepted Aadhya's words carefully — not as a full conversion, but as a step. Hardliners do not change overnight. But they do change when the alternative becomes undeniably better.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a stronger together scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch7_s3_a",
+            "label": "Lock in the agreement and move to implementation",
+            "description": "Riya formalizes whatever progress has been made, creating written agreements before momentum fades.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch8",
+            "consequence_hint": "Written agreements prevent backsliding — but moving too fast can leave unresolved tensions."
+          },
+          {
+            "id": "ch7_s3_b",
+            "label": "Take time to celebrate the progress — morale matters as much as milestones",
+            "description": "Riya organizes a small joint celebration, reinforcing the positive energy before tackling the next challenge.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch8",
+            "consequence_hint": "Celebrating progress builds team spirit — but the clock is still ticking."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch8_s1",
+        "chapter": "ch8",
+        "title": "Emergency Collaboration",
+        "narrative": "Five days before the performance. A real crisis: the school auditorium's sound system blew out during a thunderstorm. The backup equipment was inadequate for a musical drama. Without professional sound, Phoenix's musical contribution would be inaudible.\n\nThis was not sabotage — it was bad luck. But it threatened to destroy weeks of work. Griffin's drama could survive without perfect sound. Phoenix's music could not.\n\nKabir came to Riya immediately: 'This is not a Phoenix problem. This is OUR problem. We are in this together.'\n\n{player_name} watched Kabir rally his own house to help solve Phoenix's problem — and understood that this moment, more than any treaty or agreement, was when the collaboration became real.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a emergency collaboration scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch8_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch8_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch8_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch8_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch8_s2",
+        "chapter": "ch8",
+        "title": "Unexpected Help",
+        "narrative": "The solution came from unexpected teamwork. Sameer — the same Sameer who had tried to sabotage the project — turned out to know a sound engineer. His uncle ran a wedding band company. Within hours, professional speakers and mixing equipment arrived at the school.\n\nSameer shrugged when thanked: 'I was stupid before. This project is actually good. And if Phoenix cannot be heard, the whole thing fails, which means Griffin looks bad too.'\n\nSelf-interest aligned with collective interest. That was the moment the alliance became self-sustaining — when even the skeptics had a personal reason to make it work.\n\n{player_name} hugged Sameer, which made him deeply uncomfortable and everyone else laugh.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a unexpected help scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch8_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch8_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions.",
+            "memory_tags": [
+              "ch8s2_choice"
+            ]
+          },
+          {
+            "id": "ch8_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch8_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence.",
+            "memory_tags": [
+              "ch8s2_choice"
+            ]
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch8_s3",
+        "chapter": "ch8",
+        "title": "Final Preparations",
+        "narrative": "The final rehearsals were intense but unified. Both houses worked late, sharing food from the canteen, helping each other with lines and notes and choreography. The barriers were not gone — they would probably never be completely gone — but they were lower.\n\nCoach Vikram sat in the empty auditorium watching the dress rehearsal and said to Riya: 'You know what is remarkable? Not the performance — although that is good. What is remarkable is that forty students who could not sit in the same room three weeks ago are now building something together. That is the real event.'\n\n{player_name} looked at the stage. Phoenix red and Griffin blue, mixed together in every scene. It was messy and imperfect and beautiful.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a final preparations scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch8_s3_a",
+            "label": "Lock in the agreement and move to implementation",
+            "description": "Riya formalizes whatever progress has been made, creating written agreements before momentum fades.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch9",
+            "consequence_hint": "Written agreements prevent backsliding — but moving too fast can leave unresolved tensions."
+          },
+          {
+            "id": "ch8_s3_b",
+            "label": "Take time to celebrate the progress — morale matters as much as milestones",
+            "description": "Riya organizes a small joint celebration, reinforcing the positive energy before tackling the next challenge.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch9",
+            "consequence_hint": "Celebrating progress builds team spirit — but the clock is still ticking."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch9_s1",
+        "chapter": "ch9",
+        "title": "The Joint Event",
+        "narrative": "Performance night. The auditorium was full — students, parents, teachers, the school board. Mrs. D'Souza was in the front row. Both house alumni were present, watching their houses share a stage for the first time in school history.\n\nBackstage was chaos in the best way. Last-minute adjustments, nervous energy, whispered encouragements across house lines. Amir and Meera rehearsed their climactic scene-and-song one final time.\n\nRiya gathered both houses in a circle. 'We were told this was impossible,' she said. 'That Phoenix and Griffin cannot work together. Tonight, we prove them wrong. Not because we erased our differences — but because we made our differences into something beautiful.'\n\n{player_name} looked at Kabir across the circle. He nodded. She nodded back. The lights dimmed.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the joint event scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch9_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch9_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch9_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch9_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch9_s2",
+        "chapter": "ch9",
+        "title": "The Performance",
+        "narrative": "The performance was extraordinary. The climate drama unfolded with a power that neither house could have achieved alone. Amir's passionate speech about the dying river built tension that Meera's voice — soaring, aching, hopeful — released into something transcendent.\n\nThe guitar-violin duet brought the audience to tears. The dance ensemble — Phoenix energy, Griffin expressiveness — created a visual spectacle. And the chorus, forty voices from two houses singing in harmony for the first time, filled the auditorium like a wave.\n\nHalfway through, Riya looked out from the wings and saw something that would stay with her forever: Mrs. D'Souza, the principal who engineered this entire experiment, was crying.\n\n{player_name} realized: the principal had not paired the houses to create a better performance. She had done it to teach them something that no textbook could — that collaboration is harder than competition, and infinitely more rewarding.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the performance scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch9_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch9_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions."
+          },
+          {
+            "id": "ch9_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch9_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch9_s3",
+        "chapter": "ch9",
+        "title": "Standing Ovation",
+        "narrative": "The performance ended. The audience rose in a standing ovation — the first in the school's memory for an inter-house event. Phoenix and Griffin students on stage looked at each other, soaked in the applause, and did something spontaneous: they hugged. Not house by house. Person by person. Across lines that three weeks ago seemed permanent.\n\nBackstage, Aadhya found Riya. The hardliner captain had tears in her eyes. 'I was wrong,' she said simply. 'This was better than winning alone.'\n\nSameer, covered in stage makeup, walked up to Kabir and said: 'If you ever tell anyone I cried during Meera's song, I will deny it.' Then he hugged Kabir too.\n\n{player_name} stood in the middle of it all, surrounded by people who three weeks ago were rivals and were now — not friends exactly, but something deeper. Partners. People who had built something together that none of them could have built alone.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a standing ovation scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch9_s3_a",
+            "label": "Lock in the agreement and move to implementation",
+            "description": "Riya formalizes whatever progress has been made, creating written agreements before momentum fades.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch10",
+            "consequence_hint": "Written agreements prevent backsliding — but moving too fast can leave unresolved tensions."
+          },
+          {
+            "id": "ch9_s3_b",
+            "label": "Take time to celebrate the progress — morale matters as much as milestones",
+            "description": "Riya organizes a small joint celebration, reinforcing the positive energy before tackling the next challenge.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch10",
+            "consequence_hint": "Celebrating progress builds team spirit — but the clock is still ticking."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch10_s1",
+        "chapter": "ch10",
+        "title": "The Trophy",
+        "narrative": "Mrs. D'Souza made the announcement the next morning: the joint Phoenix-Griffin performance had received the highest score in the Championship's history — from all three judges, unanimously. Both houses received full marks.\n\nBut the real announcement was bigger: starting next year, the Inter-House Championship would permanently include collaborative events alongside competitive ones. Mrs. D'Souza said: 'Two houses showed us that unity does not require uniformity — it requires respect, creativity, and the courage to try something new.'\n\nCoach Vikram leaned over to Riya: 'You changed the school. You know that, right?'\n\n{player_name} looked at the trophy — a new one, created for joint events, with both Phoenix and Griffin crests engraved. It would be kept in the main hall, belonging to both houses. Neither and both.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a the trophy scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch10_s1_a",
+            "label": "Take the diplomatic approach — find common ground first",
+            "description": "Riya focuses on shared interests and builds bridges before addressing difficult points.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch10_s2",
+            "consequence_hint": "Diplomacy builds trust — but it can look like weakness to hardliners on both sides."
+          },
+          {
+            "id": "ch10_s1_b",
+            "label": "Be direct and transparent — put the hard issues on the table immediately",
+            "description": "Riya addresses the conflicts head-on, believing that honesty accelerates resolution even if it creates initial tension.",
+            "delta": {
+              "compromise": 10,
+              "trust": 8,
+              "creativity": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch10_s2",
+            "consequence_hint": "Directness saves time — but it can also trigger defensive reactions before trust is built."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch10_s2",
+        "chapter": "ch10",
+        "title": "Lasting Change",
+        "narrative": "In the days that followed, something quiet and lasting happened. Phoenix and Griffin students started sitting together at lunch. Not always. Not everyone. But enough that the rigid house boundaries became more porous.\n\nThe guitar-violin pair formed a permanent duo, playing at school events. The dance ensemble continued practicing together. Amir and Meera collaborated on a social awareness video for the school's YouTube channel.\n\nKabir and Riya continued meeting — no longer as negotiators but as friends. They started a Diplomacy Club, teaching younger students negotiation, mediation, and conflict resolution.\n\n{player_name} realized: the treaty was never about one event. It was about proving that a different way of relating was possible — and once people experience it, they do not want to go back.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a lasting change scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch10_s2_a",
+            "label": "Focus on creative solutions that give both sides what they truly need",
+            "description": "Riya looks for 'expanding the pie' solutions where both houses gain something genuinely valuable.",
+            "delta": {
+              "creativity": 12,
+              "trust": 5,
+              "house_pride": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "next_scene": "ch10_s3",
+            "consequence_hint": "Creative solutions can satisfy everyone — but they require both sides to think beyond their original positions."
+          },
+          {
+            "id": "ch10_s2_b",
+            "label": "Prioritize the relationship — protect trust even if it means compromising on specifics",
+            "description": "Riya makes concessions on smaller points to maintain the relationship that underpins everything.",
+            "delta": {
+              "trust": 10,
+              "creativity": 8,
+              "compromise": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch10_s3",
+            "consequence_hint": "Investing in relationship capital pays dividends — but too many concessions can erode your own side's confidence."
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      },
+      {
+        "scene_id": "ch10_s3",
+        "chapter": "ch10",
+        "title": "Legacy",
+        "narrative": "Graduation day, two years later. Riya and Kabir were both in Class 12 now, heading to different universities. The Diplomacy Club had thirty members. The joint event had become the highlight of every Championship. And the trophy sat in the main hall, polished and proud.\n\nMrs. D'Souza asked Riya to speak at graduation. She said: 'Two years ago, I was asked to negotiate a treaty between two rival houses. I thought I was saving a school event. Instead, I learned the most important lesson of my life: the walls between us are not made of stone. They are made of assumptions. And assumptions crumble the moment you sit across from someone, share a cup of chai, and discover that they are just as scared, just as passionate, and just as human as you.'\n\nKabir, sitting in the audience, caught her eye and smiled. {player_name} smiled back — and thought: every great peace starts with two people choosing to see each other as partners instead of enemies.",
+        "image_prompt": "A school setting — House Phoenix (red) and House Griffin (blue) students in a legacy scene, teenage negotiators, Indian school, watercolor illustration",
+        "coaching_moment": "Every great collaboration starts with two people choosing to see each other as partners instead of enemies.",
+        "choices": [
+          {
+            "id": "ch10_s3_a",
+            "label": "End with a challenge: 'Build your own treaties — in school, at home, in the world'",
+            "description": "Riya turns her graduation speech into a call to action, challenging every student to become a bridge-builder.",
+            "delta": {
+              "trust": 20,
+              "creativity": 18,
+              "compromise": 15
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "is_ending": true,
+            "ending_type": "bridge_builder",
+            "ending_message": "Riya studied International Relations at university, inspired by three weeks of school house diplomacy that taught her more about negotiation than any textbook ever would. Kabir became a conflict mediator, working with community disputes across the country. The Diplomacy Club they founded became the school's most popular extracurricular. And every year, the joint Phoenix-Griffin event got better — not because the houses stopped competing, but because they learned that competition and collaboration are not opposites. They are partners, like music and drama, like a guitar and a violin, like two fifteen-year-olds who sat across a library table and chose to build something bigger than either of them."
+          },
+          {
+            "id": "ch10_s3_b",
+            "label": "End by inviting Kabir to the stage: 'This treaty had two authors — and peace always does'",
+            "description": "Riya shares the graduation spotlight with her former rival turned partner, modeling the collaboration she preaches.",
+            "delta": {
+              "trust": 20,
+              "compromise": 18,
+              "creativity": 15
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "is_ending": true,
+            "ending_type": "shared_stage",
+            "ending_message": "The image of Riya and Kabir standing together at the graduation podium — Phoenix red and Griffin blue, side by side — became the school's most shared photograph that year. It hung in the main hall next to the joint trophy. Below it, someone (possibly Sameer) added a handwritten note: 'They made us sit together. We chose to stay.' Riya and Kabir stayed friends for life. They served as joint chief guests at the school's 50th anniversary. And when their own children attended the same school, they told them: 'Phoenix and Griffin used to be enemies. Then two people decided that building something together was braver than winning alone. Be that kind of brave.'"
+          }
+        ],
+        "narrative_variants": {
+          "took_diplomatic_approach": "Riya's early investment in diplomacy was paying dividends — the trust between negotiators made hard conversations easier.",
+          "built_rapport_early": "The personal connection between Riya and Kabir continued to be the foundation on which every agreement rested."
+        }
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "negotiation",
+      "definition": "A discussion aimed at reaching an agreement between parties with different interests and goals."
+    },
+    {
+      "term": "treaty",
+      "definition": "A formal agreement between groups — in diplomacy, it carries binding commitments and mutual obligations."
+    },
+    {
+      "term": "coalition",
+      "definition": "An alliance formed between groups that may disagree on some things but unite around a shared goal."
+    },
+    {
+      "term": "hardliner",
+      "definition": "A person who takes an uncompromising position, refusing to accept any concessions or compromises."
+    },
+    {
+      "term": "compromise",
+      "definition": "An agreement where each side gives up something to achieve a mutually acceptable outcome."
+    },
+    {
+      "term": "rapport",
+      "definition": "A harmonious relationship built on mutual trust, understanding, and respect — the foundation of effective negotiation."
+    },
+    {
+      "term": "stakeholder",
+      "definition": "Anyone with an interest in the outcome — in negotiations, managing stakeholders on your own side is often harder than managing the other side."
+    },
+    {
+      "term": "BATNA",
+      "definition": "Best Alternative to a Negotiated Agreement — what you will do if the negotiation fails."
+    },
+    {
+      "term": "anchor",
+      "definition": "The first offer in a negotiation, which sets the reference point for all subsequent bargaining."
+    },
+    {
+      "term": "sabotage",
+      "definition": "Deliberate destruction of a process or agreement — in collaboration, often coming from people within your own group."
+    },
+    {
+      "term": "creative_collaboration",
+      "definition": "A process where diverse perspectives combine to produce outcomes better than any single group could achieve."
+    },
+    {
+      "term": "dispute_resolution",
+      "definition": "A method for resolving disagreements — can be formal (mediation, arbitration) or informal (direct negotiation)."
+    },
+    {
+      "term": "in_group_bias",
+      "definition": "The tendency to favour members of your own group over outsiders — a natural instinct that collaboration must consciously overcome."
+    },
+    {
+      "term": "mutual_gain",
+      "definition": "An outcome where all parties benefit — the gold standard of negotiation, where the total value increases rather than just being divided."
+    },
+    {
+      "term": "transparency",
+      "definition": "Openness about intentions, constraints, and information — builds trust but also creates vulnerability."
+    },
+    {
+      "term": "implementation",
+      "definition": "Turning an agreement into action — often the hardest part, because plans meet reality."
+    }
+  ],
+  "dimension_scoring_weights": {
+    "empathy": 0.25,
+    "strategic_thinking": 0.25,
+    "adaptability": 0.2,
+    "delayed_gratification": 0.15,
+    "resilience": 0.1,
+    "risk_tolerance": 0.05
+  },
+  "coaching_moment": "The walls between us are not made of stone — they are made of assumptions. And assumptions crumble the moment you choose to see the other person as a partner instead of an enemy.",
+  "estimated_duration": "40-50 minutes",
+  "target_age": "10-18",
+  "tags": [
+    "story",
+    "negotiation",
+    "collaboration",
+    "school",
+    "teamwork",
+    "conflict-resolution",
+    "life-skills",
+    "india"
+  ],
+  "cultural_context": "indian",
+  "nep_stage": "middle_school",
+  "nep_competencies": [
+    "critical_thinking",
+    "communication",
+    "social_emotional_learning",
+    "leadership",
+    "creative_thinking"
+  ],
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}
