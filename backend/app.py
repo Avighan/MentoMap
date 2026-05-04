@@ -99,6 +99,7 @@ from engines.sim_ux_enrichment import build_ux_payload, snapshot_state, annotate
 from engines.executive_ux import build_executive_payload as _build_executive_payload
 from engines.escape_room_engine import EscapeRoomEngine
 _ESCAPE_ROOM_ENGINE = EscapeRoomEngine()
+from security.leaderboard_privacy import apply_k_anonymity
 
 load_dotenv()
 
@@ -10564,11 +10565,25 @@ def api_skill_leaderboard():
 
         ranked = sorted(player_scores.items(), key=lambda x: x[1]["best"], reverse=True)
         entries = [
-            {"rank": i + 1, "user_id": uid, "name": info["name"],
+            {"rank": i + 1, "user_id": uid, "display_name": info["name"],
              "score": info["best"], "games_played": len(info["scores"])}
             for i, (uid, info) in enumerate(ranked[:limit])
         ]
-        out = {"dimension": dimension, "entries": entries, "total": len(ranked)}
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
+        _priv = apply_k_anonymity(entries, k=5, viewer_user_id=viewer_id)
+        out = {
+            "dimension": dimension,
+            "entries": _priv["rows"],
+            "total": len(ranked),
+            "suppressed": _priv["suppressed"],
+            "reason": _priv.get("reason"),
+            "k": 5,
+        }
         if caller_org_id:
             out["cohort"] = "org"
             out["org_id"] = caller_org_id
@@ -10751,8 +10766,20 @@ def api_get_leaderboard_all():
     try:
         game_id = request.args.get("game_id")
         limit = min(int(request.args.get("limit", 10)), 100)
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
         if game_id:
             leaderboard_data = get_leaderboard(game_id, limit)
+            rows = leaderboard_data.get("entries", [])
+            _priv = apply_k_anonymity(rows, k=5, viewer_user_id=viewer_id)
+            leaderboard_data["entries"] = _priv["rows"]
+            leaderboard_data["suppressed"] = _priv["suppressed"]
+            leaderboard_data["reason"] = _priv.get("reason")
+            leaderboard_data["k"] = 5
             return jsonify(leaderboard_data)
         # No game_id: return aggregated leaderboard across all games
         all_entries = []
@@ -10765,7 +10792,15 @@ def api_get_leaderboard_all():
             except Exception as _e:
                 logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
         all_entries.sort(key=lambda x: x.get("score", 0), reverse=True)
-        return jsonify({"leaderboard": all_entries[:limit], "entries": all_entries[:limit]})
+        sliced = all_entries[:limit]
+        _priv = apply_k_anonymity(sliced, k=5, viewer_user_id=viewer_id)
+        return jsonify({
+            "leaderboard": _priv["rows"],
+            "entries": _priv["rows"],
+            "suppressed": _priv["suppressed"],
+            "reason": _priv.get("reason"),
+            "k": 5,
+        })
     except Exception as e:
         logger.error(f"Failed to get leaderboard: {e}")
         return jsonify({"error": "Failed to retrieve leaderboard", "entries": [], "leaderboard": []}), 500
@@ -10800,9 +10835,19 @@ def api_get_leaderboard(game_id):
     try:
         limit = int(request.args.get("limit", 10))
         limit = min(limit, 100)  # Max 100 entries
-        
         leaderboard_data = get_leaderboard(game_id, limit)
-        
+        rows = leaderboard_data.get("entries", [])
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
+        _priv = apply_k_anonymity(rows, k=5, viewer_user_id=viewer_id)
+        leaderboard_data["entries"] = _priv["rows"]
+        leaderboard_data["suppressed"] = _priv["suppressed"]
+        leaderboard_data["reason"] = _priv.get("reason")
+        leaderboard_data["k"] = 5
         return jsonify(leaderboard_data)
     except Exception as e:
         logger.error(f"Failed to get leaderboard: {e}")
@@ -10836,18 +10881,27 @@ def api_get_all_leaderboards():
     Get summary of all game leaderboards.
     """
     try:
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
         summaries = []
         for game_id, game in GAMES.items():
             leaderboard_data = get_leaderboard(game_id, limit=3)
+            top_rows = leaderboard_data.get("entries", [])[:3]
+            _priv = apply_k_anonymity(top_rows, k=5, viewer_user_id=viewer_id)
             summaries.append({
                 "game_id": game_id,
                 "game_title": game.get("title", game_id),
                 "total_players": leaderboard_data.get("total_entries", 0),
-                "top_3": leaderboard_data.get("entries", [])[:3]
+                "top_3": _priv["rows"],
+                "suppressed": _priv["suppressed"],
             })
-        
         return jsonify({
-            "leaderboards": summaries
+            "leaderboards": summaries,
+            "k": 5,
         })
     except Exception as e:
         logger.error(f"Failed to get all leaderboards: {e}")
@@ -10866,21 +10920,29 @@ def api_get_public_leaderboard(game_id):
     try:
         limit = int(request.args.get("limit", 50))
         limit = min(limit, 50)  # Max 50 for public view
-        
         leaderboard_data = get_leaderboard(game_id, limit)
         game = GAMES.get(game_id)
-        
         if not game:
             return jsonify({"error": "Game not found"}), 404
-        
+        rows = leaderboard_data.get("entries", [])
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
+        _priv = apply_k_anonymity(rows, k=5, viewer_user_id=viewer_id)
         # Return public-safe data (no sensitive info)
         return jsonify({
             "game_id": game_id,
             "game_title": game.get("title", game_id),
             "game_goal": game.get("goal", "Complete the game"),
             "total_players": leaderboard_data.get("total_entries", 0),
-            "entries": leaderboard_data.get("entries", []),
-            "last_updated": leaderboard_data.get("last_updated", "")
+            "entries": _priv["rows"],
+            "last_updated": leaderboard_data.get("last_updated", ""),
+            "suppressed": _priv["suppressed"],
+            "reason": _priv.get("reason"),
+            "k": 5,
         })
     except Exception as e:
         logger.error(f"Failed to get public leaderboard: {e}")
@@ -13884,7 +13946,19 @@ def global_leaderboard():
     """Get global leaderboard ranked by lifetime coins."""
     limit = request.args.get("limit", 20, type=int)
     entries = wallet.get_global_leaderboard(limit)
-    return jsonify({"entries": entries})
+    viewer_id = None
+    try:
+        if hasattr(g, "user") and g.user:
+            viewer_id = g.user.get("user_id") or g.user.get("id")
+    except Exception:
+        viewer_id = None
+    _priv = apply_k_anonymity(entries, k=5, viewer_user_id=viewer_id)
+    return jsonify({
+        "entries": _priv["rows"],
+        "suppressed": _priv["suppressed"],
+        "reason": _priv.get("reason"),
+        "k": 5,
+    })
 
 
 # ============================================
