@@ -186,6 +186,12 @@ app.register_blueprint(additional_engines_bp)
 from routes.research_routes import research_bp
 app.register_blueprint(research_bp)
 
+# Register audit-followup blueprints (12 grader engines + 5 retention endpoints)
+from routes.grader_routes import grader_bp
+from routes.retention_routes import retention_bp
+app.register_blueprint(grader_bp)
+app.register_blueprint(retention_bp)
+
 # Add no-cache decorator to prevent browser caching
 def nocache(view):
     @wraps(view)
@@ -1178,7 +1184,8 @@ def build_round_payload(game: dict, state_obj):
                         "psychological_focus", "expert_pick", "reflection_prompt",
                         "concept", "badge", "emotional_beat", "emotional_intensity",
                         "title_override", "video_script", "npc_spotlight",
-                        "dynamic_intros"):
+                        "dynamic_intros", "decision_panel", "expert_debrief",
+                        "inbox_events"):
         if rnd.get(_sim_field) is not None:
             payload[_sim_field] = rnd[_sim_field]
 
@@ -1774,6 +1781,11 @@ _PUBLIC_GAME_TYPES = {
     'stakeholder_update', 'ai_discussion',
     'story_branching',
     'mystery_room',
+    'music_match', 'lab_titration',
+    # Audit-followup grader types (12)
+    'pendulum_lab', 'optics_lab', 'circuit_debugger', 'genetics_cross', 'stoichiometry_mixer',
+    'mental_math', 'typing_drill', 'boggle', 'mock_interview',
+    'sudoku', 'logic_grid', 'geometry_constructor',
 }
 
 
@@ -10693,6 +10705,172 @@ def api_skill_leaderboard():
         return jsonify({"dimension": dimension, "entries": [], "error": str(e)}), 200
 
 
+# ─── Cohort leaderboard (privacy-preserving) ──────────────────────────
+# Returns ranked dimension scores within a cohort. Designed to never
+# expose PII (no names, no emails, no user_ids of peers). Suppressed
+# entirely when cohort has fewer than 5 scored members (k-anonymity).
+# Read-only; reuses the same aggregation logic as api_skill_leaderboard.
+@app.get("/api/leaderboard/cohort/<cohort_id>")
+def api_cohort_leaderboard(cohort_id):
+    """Cohort-scoped dimension leaderboard with privacy guards.
+
+    Auth: caller must be an admin / school_admin / teacher who owns the cohort,
+    OR a student/parent whose user_id is a member of the cohort.
+
+    Privacy guards:
+      - If fewer than 5 scored members → suppressed:true, entries:[] (k-anon).
+      - Peer entries carry NO names, NO emails, NO user_ids.
+      - Caller's own entry is labeled "You" with a true rank.
+      - Other entries are labeled "Peer" + anonymous index ("Peer #2").
+
+    Query: ?dimension=strategic_thinking (default) | resilience | ...
+    """
+    MIN_N = 5  # k-anonymity threshold
+    try:
+        dimension = request.args.get("dimension", "strategic_thinking")
+        valid_dims = {
+            "strategic_thinking", "risk_tolerance", "delayed_gratification",
+            "adaptability", "resilience", "empathy",
+            "ethical_reasoning", "creativity",
+        }
+        if dimension not in valid_dims:
+            dimension = "strategic_thinking"
+
+        # Resolve caller identity
+        caller_uid = None
+        caller_role = None
+        try:
+            _tok = get_token_from_request()
+            _pay = verify_token(_tok) if _tok else None
+            if _pay:
+                caller_uid = _pay.get("user_id") or _pay.get("sub")
+                caller_role = _pay.get("role")
+        except Exception:
+            pass
+        if not caller_uid:
+            return jsonify({
+                "cohort_id": cohort_id, "dimension": dimension,
+                "suppressed": False, "entries": [], "error": "auth_required",
+            }), 401
+
+        # Load cohort
+        try:
+            cohorts = (_load_cohorts() or {}).get("cohorts", [])
+        except Exception:
+            cohorts = []
+        cohort = next((c for c in cohorts if c.get("id") == cohort_id), None)
+        if not cohort:
+            return jsonify({
+                "cohort_id": cohort_id, "dimension": dimension,
+                "suppressed": False, "entries": [], "error": "cohort_not_found",
+            }), 404
+
+        members = list(cohort.get("students") or [])
+        # Authorization: caller must be member OR cohort owner OR admin/teacher
+        is_admin_like = caller_role in ("admin", "school_admin", "teacher")
+        is_owner = (cohort.get("owner_id") == caller_uid) or (cohort.get("teacher_id") == caller_uid)
+        is_member = caller_uid in members
+        if not (is_admin_like or is_owner or is_member):
+            return jsonify({
+                "cohort_id": cohort_id, "dimension": dimension,
+                "suppressed": False, "entries": [], "error": "access_denied",
+            }), 403
+
+        # Aggregate one score per member from completed runs (avg across runs)
+        # Reuse the same pattern as api_skill_leaderboard so we stay consistent.
+        member_set = set(members)
+        agg = {}  # uid -> {scores: [...], best: float}
+        try:
+            run_ids = storage.list_runs() if hasattr(storage, "list_runs") else list(RUNS.keys())
+        except Exception:
+            run_ids = list(RUNS.keys())
+        for rid in run_ids:
+            try:
+                r = RUNS.get(rid) or get_run(rid)
+                if not r:
+                    continue
+                uid = r.get("user_id")
+                if uid not in member_set:
+                    continue
+                fs = state_to_dict(r.get("state")) if r.get("state") else {}
+                score = (fs.get("dimension_scores") or {}).get(dimension)
+                if score is None:
+                    continue
+                agg.setdefault(uid, {"scores": []})["scores"].append(float(score))
+            except Exception:
+                continue
+
+        # Compute per-user average
+        scored_users = []
+        for uid, info in agg.items():
+            scores = info.get("scores") or []
+            if not scores:
+                continue
+            avg = sum(scores) / len(scores)
+            scored_users.append({"uid": uid, "score": round(avg, 1), "n": len(scores)})
+
+        # K-anonymity suppression
+        if len(scored_users) < MIN_N:
+            return jsonify({
+                "cohort_id": cohort_id,
+                "cohort_name": cohort.get("name", ""),
+                "dimension": dimension,
+                "suppressed": True,
+                "min_n": MIN_N,
+                "scored_count": len(scored_users),
+                "total_members": len(members),
+                "entries": [],
+                "message": f"Need at least {MIN_N} cohort members with scores to show a leaderboard.",
+            })
+
+        # Rank and anonymize
+        ranked = sorted(scored_users, key=lambda x: x["score"], reverse=True)
+        entries = []
+        peer_counter = 0
+        caller_rank = None
+        for i, e in enumerate(ranked):
+            rank = i + 1
+            is_caller = (e["uid"] == caller_uid)
+            if is_caller:
+                caller_rank = rank
+                label = "You"
+            else:
+                peer_counter += 1
+                label = f"Peer #{peer_counter}"
+            entries.append({
+                "rank": rank,
+                "label": label,
+                "is_you": is_caller,
+                "score": e["score"],
+                "games_counted": e["n"],
+                # Deliberately NO uid, name, or email.
+            })
+
+        # Cohort summary stats (also no PII)
+        all_scores = [e["score"] for e in scored_users]
+        avg_score = round(sum(all_scores) / len(all_scores), 1) if all_scores else 0
+        median = round(sorted(all_scores)[len(all_scores) // 2], 1) if all_scores else 0
+        return jsonify({
+            "cohort_id": cohort_id,
+            "cohort_name": cohort.get("name", ""),
+            "dimension": dimension,
+            "suppressed": False,
+            "min_n": MIN_N,
+            "scored_count": len(scored_users),
+            "total_members": len(members),
+            "your_rank": caller_rank,
+            "cohort_avg": avg_score,
+            "cohort_median": median,
+            "entries": entries,
+        })
+    except Exception as e:
+        # Defensive: never crash the route — return empty + error string.
+        return jsonify({
+            "cohort_id": cohort_id, "dimension": "strategic_thinking",
+            "suppressed": False, "entries": [], "error": str(e),
+        }), 200
+
+
 @app.get("/api/leaderboard/story-paths")
 def api_story_path_leaderboard():
     """R8 — story_branching canonical-path match leaderboard.
@@ -14125,6 +14303,138 @@ def puzzle_complete(run_id):
     except Exception as _e:
         logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
     _submit_strategy_leaderboard(run_id, game_id, game_data.get("title", game_id), summary, "puzzle_match")
+    return jsonify({"success": True, "summary": summary})
+
+
+# ==================== MUSIC MATCH ENDPOINTS ====================
+
+@app.route('/api/run/<run_id>/music-match/complete', methods=['POST'])
+def music_match_complete(run_id):
+    """Finalize a music_match game.
+
+    The frontend MusicGameRenderer plays the game purely client-side and POSTs
+    its per-round picks here on completion. We re-grade against the JSON
+    answer_id (never trust the client) and write the resulting score and
+    dimension scores onto the run state so the existing /report pipeline
+    picks them up via state.dimension_scores + run["log"].
+    """
+    from engines.music_match_engine import MusicMatchEngine
+    load_bundle()
+    run = storage.get_run(run_id)
+    if not run:
+        return jsonify({"error": "Run not found"}), 404
+    game_id = run.get("game_id")
+    game_data, err = get_game_or_400(game_id)
+    if err:
+        return err
+    if game_data.get("game_type") != "music_match":
+        return jsonify({"error": "Not a music_match game"}), 400
+
+    body = request.json or {}
+    picks = body.get("results") or body.get("picks") or []
+    if not isinstance(picks, list):
+        return jsonify({"error": "results must be a list"}), 400
+
+    engine = MusicMatchEngine(game_data)
+    summary = engine.grade_results(picks)
+
+    state_obj = run.get("state")
+    dimension_scores = summary.get("dimension_scores", {}) or {}
+    if state_obj is not None:
+        for skill_id, score_val in dimension_scores.items():
+            try:
+                setattr(state_obj, skill_id, score_val)
+            except Exception:
+                pass
+        try:
+            state_obj.dimension_scores = dimension_scores
+        except Exception:
+            pass
+
+    log_entry = {
+        "round_id": "music_match",
+        "round_title": game_data.get("title", "Music Match"),
+        "choice": {
+            "id": "music_match_result",
+            "label": f"Score: {summary.get('correct', 0)}/{summary.get('total', 0)}",
+        },
+        "events": [
+            f"Correct: {summary.get('correct', 0)}/{summary.get('total', 0)}",
+            f"Score: {summary.get('score', 0)}",
+        ],
+        "state_before": {},
+        "state_after_events": {},
+    }
+    if not any(e.get("round_id") == "music_match" for e in run.get("log", [])):
+        run.setdefault("log", []).append(log_entry)
+
+    storage.update_run(run_id, run)
+    return jsonify({"success": True, "summary": summary})
+
+
+# ==================== LAB TITRATION ENDPOINTS ====================
+
+@app.route('/api/run/<run_id>/lab-titration/complete', methods=['POST'])
+def lab_titration_complete(run_id):
+    """Finalize a lab_titration game.
+
+    Mirrors music_match_complete. The frontend TitrationLabRenderer simulates
+    pH locally and posts the volume of titrant the student stopped at; the
+    engine re-derives the equivalence point and scores against tolerance.
+    """
+    from engines.lab_titration_engine import LabTitrationEngine
+    load_bundle()
+    run = storage.get_run(run_id)
+    if not run:
+        return jsonify({"error": "Run not found"}), 404
+    game_id = run.get("game_id")
+    game_data, err = get_game_or_400(game_id)
+    if err:
+        return err
+    if game_data.get("game_type") != "lab_titration":
+        return jsonify({"error": "Not a lab_titration game"}), 400
+
+    body = request.json or {}
+    added_mL = body.get("added_mL")
+    if added_mL is None:
+        return jsonify({"error": "added_mL required"}), 400
+
+    engine = LabTitrationEngine(game_data)
+    summary = engine.grade_result(added_mL)
+
+    state_obj = run.get("state")
+    dimension_scores = summary.get("dimension_scores", {}) or {}
+    if state_obj is not None:
+        for skill_id, score_val in dimension_scores.items():
+            try:
+                setattr(state_obj, skill_id, score_val)
+            except Exception:
+                pass
+        try:
+            state_obj.dimension_scores = dimension_scores
+        except Exception:
+            pass
+
+    log_entry = {
+        "round_id": "lab_titration",
+        "round_title": game_data.get("title", "Titration Lab"),
+        "choice": {
+            "id": "lab_titration_result",
+            "label": f"Stopped at {summary.get('added_mL', 0)} mL (target {summary.get('ideal_mL', 0)} mL)",
+        },
+        "events": [
+            f"Added: {summary.get('added_mL', 0)} mL",
+            f"Ideal: {summary.get('ideal_mL', 0)} mL",
+            f"Diff: {summary.get('diff_mL', 0)} mL ({summary.get('band')})",
+            f"Score: {summary.get('score', 0)}",
+        ],
+        "state_before": {},
+        "state_after_events": {},
+    }
+    if not any(e.get("round_id") == "lab_titration" for e in run.get("log", [])):
+        run.setdefault("log", []).append(log_entry)
+
+    storage.update_run(run_id, run)
     return jsonify({"success": True, "summary": summary})
 
 
@@ -26309,6 +26619,237 @@ def api_my_cohort_modules():
 def _safe_load_json(path, default):
     """Local fallback alias for the modules_engine JSON helper."""
     return _modules_engine._safe_load_json(path, default)
+
+
+# --- Simulation config author (Item 9) --------------------------------------
+@app.get("/api/admin/game/<game_id>/simulation-config")
+@require_admin_or_school_admin
+def admin_get_simulation_config(game_id):
+    """Return the simulation_config block + a few related top-level keys."""
+    try:
+        game_data, err = get_game_or_400(game_id)
+        if err:
+            return err
+        return jsonify({
+            "game_id": game_id,
+            "title": game_data.get("title"),
+            "game_type": game_data.get("game_type"),
+            "simulation_config": game_data.get("simulation_config") or {},
+            "ui_widgets": (game_data.get("simulation_config") or {}).get("ui_widgets") or [],
+        }), 200
+    except Exception as e:  # pragma: no cover — defensive
+        logger.exception("get sim_config failed: %s", e)
+        return jsonify({"error": "fetch_failed"}), 500
+
+
+@app.patch("/api/admin/game/<game_id>/simulation-config")
+@require_admin_or_school_admin
+def admin_patch_simulation_config(game_id):
+    """Replace the simulation_config block on a game.
+
+    Body: { simulation_config: {...} }   # full replacement of the block
+    Returns: { ok: true, simulation_config: {...} }
+    """
+    try:
+        game_data, err = get_game_or_400(game_id)
+        if err:
+            return err
+        body = request.get_json(silent=True) or {}
+        new_cfg = body.get("simulation_config")
+        if not isinstance(new_cfg, dict):
+            return jsonify({"error": "simulation_config must be an object"}), 400
+        # Light shape validation — keys must be strings, values JSON-friendly
+        for k in new_cfg.keys():
+            if not isinstance(k, str) or len(k) > 80:
+                return jsonify({"error": f"invalid key: {k!r}"}), 400
+        game_data["simulation_config"] = new_cfg
+        from game_storage import save_game as _save_g
+        _save_g(game_data)
+        return jsonify({"ok": True, "simulation_config": new_cfg}), 200
+    except Exception as e:  # pragma: no cover — defensive
+        logger.exception("patch sim_config failed: %s", e)
+        return jsonify({"error": "save_failed"}), 500
+
+
+# --- Coding live-pair route (Item 10) ---------------------------------------
+@app.post("/api/coding/copair")
+def api_coding_copair():
+    """Generate a Socratic-style coding hint for a live pair-programming session.
+
+    Body: { problem: str, language: str, code: str, focus?: str,
+            history?: [{role,text}] }
+    Returns: { hint_type, message, suggested_question, fallback }
+
+    The pair never writes the solution — it asks clarifying questions or
+    points at a bug type, leaving the student to fix it.
+    """
+    try:
+        body = request.get_json(silent=True) or {}
+        problem = (body.get("problem") or "").strip()[:2000]
+        language = (body.get("language") or "python").strip()[:30]
+        code = (body.get("code") or "")[:6000]
+        focus = (body.get("focus") or "").strip()[:200]
+        history = body.get("history") or []
+        if not isinstance(history, list):
+            history = []
+        # compact last 4 turns
+        hist_lines = []
+        for turn in history[-4:]:
+            r = turn.get("role", "student")
+            t = (turn.get("text") or "")[:400]
+            hist_lines.append(f"{r.upper()}: {t}")
+        hist_str = "\n".join(hist_lines) if hist_lines else "(none)"
+
+        if not problem and not code:
+            return jsonify({"error": "problem_or_code_required"}), 400
+
+        try:
+            from llm import llm_call, llm_enabled
+            if llm_enabled():
+                sys_prompt = (
+                    "You are a pair-programming coach for a student in a coding "
+                    "interview. NEVER write the full solution. Always reply with "
+                    "ONE of: a clarifying question, a high-level approach hint, "
+                    "or a pointer at a bug type ('look at your loop bounds') "
+                    "without quoting fixed code. Keep replies under 60 words. "
+                    "Return JSON: hint_type ('question'|'approach'|'bug_pointer'|'edge_case'), "
+                    "message (string), suggested_question (one short prompt the "
+                    "student could ask themselves)."
+                )
+                user_prompt = (
+                    f"Problem: {problem}\n"
+                    f"Language: {language}\n"
+                    f"Focus area: {focus or '(none)'}\n"
+                    f"Recent dialogue:\n{hist_str}\n"
+                    f"Student's current code:\n```\n{code}\n```\n"
+                    f"Reply with ONE coaching turn."
+                )
+                raw = llm_call(
+                    system_prompt=sys_prompt, user_prompt=user_prompt,
+                    response_json=True, temperature=0.4, max_tokens=300,
+                    purpose="coding_copair", fallback=None,
+                )
+                if isinstance(raw, dict) and isinstance(raw.get("message"), str):
+                    return jsonify({
+                        "hint_type": str(raw.get("hint_type") or "question")[:32],
+                        "message": raw["message"][:600],
+                        "suggested_question": str(raw.get("suggested_question") or "")[:240],
+                        "fallback": False,
+                    }), 200
+        except Exception as e:  # pragma: no cover — defensive
+            logger.warning("copair LLM call failed: %s", e)
+
+        # Heuristic fallback — rotate through standard interview prompts
+        fallback_bank = [
+            ("question",
+             "Walk me through your approach in plain English before we look at code.",
+             "What inputs and outputs am I really dealing with?"),
+            ("edge_case",
+             "What happens on an empty input or single element?",
+             "Have I tested the smallest valid input?"),
+            ("approach",
+             "Could you state the time and space complexity of your current plan?",
+             "Is there a more efficient data structure for this access pattern?"),
+            ("bug_pointer",
+             "Take another look at your loop bounds — could you be off by one?",
+             "Does my loop start and stop at the right indices?"),
+        ]
+        idx = (len(history)) % len(fallback_bank)
+        ht, msg, q = fallback_bank[idx]
+        return jsonify({
+            "hint_type": ht, "message": msg,
+            "suggested_question": q, "fallback": True,
+        }), 200
+    except Exception as e:  # pragma: no cover — defensive
+        logger.exception("coding copair failed: %s", e)
+        return jsonify({"error": "copair_failed"}), 500
+
+
+# --- Forecast / what-if route (Item 8) --------------------------------------
+@app.post("/api/forecast/compute")
+def api_forecast_compute():
+    """Run a deterministic what-if forecast.
+
+    Body: { inputs: {price, volume, unit_cost, fixed_cost, tax_rate,
+                     growth_rate, price_growth}, periods?: int }
+    Returns: { inputs, summary, table, notes } (see forecast_engine).
+    """
+    try:
+        from engines import forecast_engine as _fc
+        body = request.get_json(silent=True) or {}
+        inputs = body.get("inputs") or {}
+        if not isinstance(inputs, dict):
+            inputs = {}
+        periods = body.get("periods", 1)
+        result = _fc.compute_forecast(inputs, periods=periods)
+        return jsonify(result), 200
+    except Exception as e:  # pragma: no cover — defensive
+        logger.exception("forecast compute failed: %s", e)
+        return jsonify({"error": "forecast_compute_failed"}), 500
+
+
+# --- Socratic discussion routes (Item 6) -------------------------------------
+# Stateless Q/A surface backed by engines.discussion_engine. Caller owns the
+# transcript; backend stays sessionless. Two endpoints: turn + finalize.
+@app.post("/api/discussion/turn")
+def api_discussion_turn():
+    """Generate the next Socratic tutor turn.
+
+    Body: { topic: str, transcript: [{role,text}], student_message: str,
+            grade_band?: 'kid'|'teen'|'exec' }
+    Returns: { response, move, thinking_hint, fallback }
+    """
+    try:
+        from engines import discussion_engine as _disc
+        body = request.get_json(silent=True) or {}
+        topic = (body.get("topic") or "").strip()
+        if not topic:
+            return jsonify({"error": "topic_required"}), 400
+        transcript = body.get("transcript") or []
+        if not isinstance(transcript, list):
+            transcript = []
+        student_message = body.get("student_message") or ""
+        grade_band = body.get("grade_band") or "teen"
+        if grade_band not in ("kid", "teen", "exec"):
+            grade_band = "teen"
+        result = _disc.generate_socratic_response(
+            topic=topic,
+            transcript=transcript,
+            student_message=student_message,
+            grade_band=grade_band,
+        )
+        return jsonify(result), 200
+    except Exception as e:  # pragma: no cover — defensive
+        logger.exception("discussion turn failed: %s", e)
+        return jsonify({"error": "discussion_turn_failed"}), 500
+
+
+@app.post("/api/discussion/finalize")
+def api_discussion_finalize():
+    """Score and summarize a finished Socratic discussion.
+
+    Body: { topic: str, transcript: [{role,text}], grade_band?: ... }
+    Returns: { summary, strengths, growth_areas, score, fallback }
+    """
+    try:
+        from engines import discussion_engine as _disc
+        body = request.get_json(silent=True) or {}
+        topic = (body.get("topic") or "").strip()
+        transcript = body.get("transcript") or []
+        if not isinstance(transcript, list):
+            transcript = []
+        grade_band = body.get("grade_band") or "teen"
+        if grade_band not in ("kid", "teen", "exec"):
+            grade_band = "teen"
+        result = _disc.finalize_discussion(
+            topic=topic,
+            transcript=transcript,
+            grade_band=grade_band,
+        )
+        return jsonify(result), 200
+    except Exception as e:  # pragma: no cover — defensive
+        logger.exception("discussion finalize failed: %s", e)
+        return jsonify({"error": "discussion_finalize_failed"}), 500
 
 
 if __name__ == "__main__":
