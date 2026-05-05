@@ -25,11 +25,14 @@ const CardBoardRenderer = React.lazy(() => import('./renderers/CardBoardRenderer
 const TrumpCardRenderer = React.lazy(() => import('./renderers/TrumpCardRenderer'));
 const SimulationRenderer = React.lazy(() => import('./renderers/SimulationRenderer'));
 const MysteryRoomRenderer = React.lazy(() => import('./renderers/MysteryRoomRenderer'));
+const MusicGameRenderer = React.lazy(() => import('./renderers/MusicGameRenderer'));
+const TitrationLabRenderer = React.lazy(() => import('./renderers/TitrationLabRenderer'));
 
 const KNOWN_TYPES = new Set([
   'rounds', 'board', 'minigame', 'card', 'strategy', 'story_branching', 'ai_arena',
   'chess_strategy', 'go_territory', 'reversi', 'tower_defense', 'puzzle_match', 'strategy_grid',
   'card_board', 'trump_card', 'simulation', 'mystery_room',
+  'music_match', 'lab_titration',
 ]);
 
 const UnknownGameType = ({ type, onBack }) => (
@@ -84,6 +87,12 @@ const GameTypeRouter = ({ gameType, currentGame, gameState, runId, onGameEnd, on
         {type === 'trump_card' && <TrumpCardRenderer {...commonProps} />}
         {type === 'simulation' && <SimulationRenderer {...commonProps} />}
         {type === 'mystery_room' && <MysteryRoomRenderer {...commonProps} />}
+        {type === 'music_match' && (
+          <MusicGameRenderer game={currentGame} runId={runId} onComplete={onGameEnd} />
+        )}
+        {type === 'lab_titration' && (
+          <TitrationLabRenderer game={currentGame} onComplete={onGameEnd} />
+        )}
       </Suspense>
     </ErrorBoundary>
   );
