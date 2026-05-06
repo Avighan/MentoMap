@@ -1,5 +1,5 @@
 import pytest
-from schemas import _validate_story_branching_type_game
+from schemas import _validate_story_branching_type_game, validate_bundle
 
 
 def _make_game(scene_extra=None):
@@ -69,3 +69,76 @@ def test_no_chat_breakout_block_is_valid():
     _validate_story_branching_type_game(g, errors)
     # Other validation may produce errors unrelated to chat_breakout, but no chat_breakout-related errors
     assert not any("chat_breakout" in e for e in errors), errors
+
+
+def _make_terminal_scene(extra=None):
+    scene = {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "title": "Test",
+        "narrative": "Test narrative",
+        "transitions_to_gameplay": True,
+        "choices": [],
+    }
+    if extra:
+        scene.update(extra)
+    return scene
+
+
+def test_validate_bundle_propagates_chat_breakout_errors():
+    """validate_bundle must raise when chat_breakout block is malformed."""
+    bundle = {
+        "games": [
+            {
+                "game_id": "bad-cb",
+                "title": "Bad CB",
+                "game_type": "story_branching",
+                "initial_state": {},
+                "story_intro": {
+                    "scenes": [
+                        _make_terminal_scene({
+                            "chat_breakout": {
+                                "ai_persona": {"name": "A"},
+                                "opening_message": "hi",
+                                "max_turns": 3,
+                                "outcome_bands": {"great": {"min_score": 75, "label": "x"}},
+                                "next_scene_by_outcome": {"poor": "x"},
+                            }
+                        })
+                    ]
+                },
+            }
+        ]
+    }
+    with pytest.raises(ValueError, match="next_scene_by_outcome"):
+        validate_bundle(bundle)
+
+
+def test_validate_bundle_passes_with_valid_chat_breakout():
+    bundle = {
+        "games": [
+            {
+                "game_id": "ok-cb",
+                "title": "OK CB",
+                "game_type": "story_branching",
+                "initial_state": {},
+                "story_intro": {
+                    "scenes": [
+                        _make_terminal_scene({
+                            "chat_breakout": {
+                                "ai_persona": {"name": "Marlow", "avatar": "🦅"},
+                                "opening_message": "We're listening.",
+                                "max_turns": 5,
+                                "outcome_bands": {
+                                    "great": {"min_score": 75, "label": "ok"},
+                                    "poor": {"min_score": 0, "label": "ok"},
+                                },
+                                "next_scene_by_outcome": {"great": "ch1_s1", "poor": "ch1_s1"},
+                            }
+                        })
+                    ]
+                },
+            }
+        ]
+    }
+    validate_bundle(bundle)  # must not raise

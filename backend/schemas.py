@@ -36,6 +36,13 @@ def validate_bundle(b: dict) -> None:
             _validate_debate_game(g)
         elif game_type == "story_branching":
             _validate_story_branching_game(g)
+            _sb_errors = []
+            _validate_story_branching_type_game(g, _sb_errors)
+            if _sb_errors:
+                raise ValueError(
+                    f"Story branching game '{g.get('game_id','unknown')}' validation errors: "
+                    + "; ".join(_sb_errors)
+                )
         elif game_type == "chess_strategy":
             _validate_chess_strategy_game(g)
         elif game_type == "go_territory":
