@@ -266,3 +266,96 @@ def test_score_breakout_turn_handles_dict_impact_objects():
         "empathy_impact": {"value": 5, "confidence": "medium"},
     })
     assert s > 50
+
+
+import json as _json
+
+
+@pytest.fixture
+def client():
+    from app import app
+    app.config["TESTING"] = True
+    with app.test_client() as c:
+        yield c
+
+
+def _seed_run(monkeypatch, scene):
+    """Seed a fake run + game so the endpoint can resolve them."""
+    fake_run = {
+        "run_id": "r1",
+        "game_id": "test-game",
+        "state": type("S", (), {})(),  # bare object — set attrs as needed
+        "log": [],
+        "breakouts": {},
+        "current_scene_id": scene["scene_id"],
+    }
+    fake_game = {
+        "game_id": "test-game",
+        "game_type": "story_branching",
+        "story_intro": {"scenes": [scene]},
+    }
+    import app as appmod
+    monkeypatch.setattr(appmod, "get_run", lambda rid: fake_run if rid == "r1" else (_ for _ in ()).throw(KeyError(rid)))
+    monkeypatch.setattr(appmod, "get_game_or_400", lambda gid: (fake_game, None))
+    return fake_run, fake_game
+
+
+def test_breakout_chat_returns_ai_message_and_increments_turn(monkeypatch, client):
+    scene = {
+        "scene_id": "ch3_s2",
+        "narrative": "x",
+        "chat_breakout": {
+            "ai_persona": {"name": "Marlow", "avatar": "🦅"},
+            "opening_message": "We're listening.",
+            "max_turns": 3,
+            "outcome_bands": {"great": {"min_score": 75, "label": "ok"}, "poor": {"min_score": 0, "label": "no"}},
+            "next_scene_by_outcome": {"great": "ch3_s3_g", "poor": "ch3_s3_p"},
+            "state_delta_by_outcome": {"great": {}, "poor": {}},
+        },
+    }
+    _seed_run(monkeypatch, scene)
+    import app as appmod
+    monkeypatch.setattr(
+        appmod, "negotiation_ai_response",
+        lambda **kw: {"response": "We hear you.", "analysis": {"relationship_impact": 5, "empathy_impact": 5}},
+    )
+    resp = client.post("/api/run/r1/breakout-chat", json={"scene_id": "ch3_s2", "message": "Hello captain"})
+    assert resp.status_code == 200, resp.data
+    body = resp.get_json()
+    assert body["ai_message"] == "We hear you."
+    assert body["turn"] == 1
+    assert body["closed"] is False
+
+
+def test_breakout_chat_closes_at_max_turns_and_returns_outcome(monkeypatch, client):
+    scene = {
+        "scene_id": "ch3_s2",
+        "narrative": "x",
+        "chat_breakout": {
+            "ai_persona": {"name": "Marlow"},
+            "opening_message": "ok",
+            "max_turns": 1,
+            "outcome_bands": {"great": {"min_score": 75, "label": "ok"}, "poor": {"min_score": 0, "label": "no"}},
+            "next_scene_by_outcome": {"great": "ch3_s3_g", "poor": "ch3_s3_p"},
+            "state_delta_by_outcome": {"great": {}, "poor": {}},
+        },
+    }
+    _seed_run(monkeypatch, scene)
+    import app as appmod
+    monkeypatch.setattr(
+        appmod, "negotiation_ai_response",
+        lambda **kw: {"response": "Deal.", "analysis": {"relationship_impact": 30, "empathy_impact": 30, "assertiveness_impact": 10}},
+    )
+    resp = client.post("/api/run/r1/breakout-chat", json={"scene_id": "ch3_s2", "message": "Let's share credit"})
+    body = resp.get_json()
+    assert body["closed"] is True
+    assert body["outcome"] in ("great", "poor")
+    assert body["next_scene_id"] in ("ch3_s3_g", "ch3_s3_p")
+
+
+def test_breakout_chat_400_when_scene_not_a_breakout(monkeypatch, client):
+    scene = {"scene_id": "ch1_s1", "narrative": "x", "choices": [{"id": "a", "next_scene": "x"}]}
+    _seed_run(monkeypatch, scene)
+    resp = client.post("/api/run/r1/breakout-chat", json={"scene_id": "ch1_s1", "message": "hi"})
+    assert resp.status_code == 400
+    assert "not a chat_breakout" in resp.get_json()["error"].lower() or "breakout" in resp.get_json()["error"].lower()

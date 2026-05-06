@@ -15674,6 +15674,112 @@ def story_branching_choice(run_id):
     })
 
 
+@app.post("/api/run/<run_id>/breakout-chat")
+@limiter.limit("60 per minute")
+def breakout_chat(run_id):
+    """One turn in a chat_breakout scene.
+    Body: {"scene_id": "...", "message": "..."}
+    Returns: {ai_message, turn, closed, outcome?, next_scene_id?, state_delta?, score}
+    """
+    try:
+        r = get_run(run_id)
+    except (KeyError, Exception):
+        return jsonify({"error": f"Run not found: {run_id}"}), 404
+
+    payload = request.get_json(silent=True) or {}
+    scene_id = (payload.get("scene_id") or "").strip()
+    user_msg = (payload.get("message") or "").strip()[:2000]
+    if not scene_id or not user_msg:
+        return jsonify({"error": "scene_id and message are required"}), 400
+
+    game, err = get_game_or_400(r["game_id"])
+    if err:
+        return err
+    scene_map = _build_story_scene_map(game)
+    scene = scene_map.get(scene_id)
+    if not scene:
+        return jsonify({"error": f"Scene not found: {scene_id}"}), 404
+    cb = scene.get("chat_breakout")
+    if not cb:
+        return jsonify({"error": f"Scene '{scene_id}' is not a chat_breakout"}), 400
+
+    bo = _get_breakout_state(r, scene_id)
+    if bo["closed"]:
+        return jsonify({"error": "Breakout already closed", "outcome": bo.get("outcome")}), 409
+
+    bo["history"].append({"speaker": "student", "message": user_msg})
+    bo["turn"] = bo.get("turn", 0) + 1
+
+    # Build a synthetic scenario for negotiation_ai_response
+    synthetic_scenario = {
+        "scenario_id": f"breakout::{scene_id}",
+        "title": scene.get("title") or "Breakout",
+        "context": scene.get("narrative", ""),
+        "other_party": cb["ai_persona"],
+        "win_conditions": cb.get("win_conditions", []),
+        "difficulty": cb.get("difficulty", "intermediate"),
+    }
+    ai_result = negotiation_ai_response(
+        user_message=user_msg,
+        scenario_data=synthetic_scenario,
+        conversation_history=bo["history"],
+        current_turn=bo["turn"],
+        state={},
+        scores_history=[],
+        difficulty=synthetic_scenario["difficulty"],
+        coaching_tone=game.get("coaching_tone", "supportive"),
+    )
+    ai_text = ai_result.get("response", "")
+    bo["history"].append({"speaker": cb["ai_persona"].get("name", "AI"), "message": ai_text})
+
+    turn_score = _score_breakout_turn(ai_result.get("analysis", {}))
+    # Running average — keeps single-turn breakouts viable too
+    n = max(1, bo["turn"])
+    bo["score"] = int(round(((bo.get("score", 50) * (n - 1)) + turn_score) / n))
+
+    closed = bo["turn"] >= cb.get("max_turns", 5)
+    response = {
+        "ai_message": ai_text,
+        "ai_analysis": ai_result.get("analysis", {}),
+        "turn": bo["turn"],
+        "max_turns": cb.get("max_turns", 5),
+        "score": bo["score"],
+        "closed": closed,
+    }
+
+    if closed:
+        outcome_key = _pick_breakout_outcome(bo["score"], cb["outcome_bands"])
+        bo["closed"] = True
+        bo["outcome"] = outcome_key
+        next_scene_id = cb["next_scene_by_outcome"].get(outcome_key) if outcome_key else None
+        state_delta = (cb.get("state_delta_by_outcome") or {}).get(outcome_key, {}) if outcome_key else {}
+        # Apply delta to run state (same pattern as branching_choice)
+        state_obj = r["state"]
+        for key, val in state_delta.items():
+            if hasattr(state_obj, key):
+                cur = getattr(state_obj, key)
+                if isinstance(cur, dict) and "value" in cur:
+                    cur["value"] = max(0, min(100, cur.get("value", 0) + val))
+                elif isinstance(cur, (int, float)):
+                    setattr(state_obj, key, cur + val)
+        response.update({
+            "outcome": outcome_key,
+            "outcome_label": cb["outcome_bands"].get(outcome_key, {}).get("label", "") if outcome_key else "",
+            "next_scene_id": next_scene_id,
+            "state_delta": state_delta,
+        })
+        # Append to run log so report scorer sees this beat
+        r.setdefault("log", []).append({
+            "type": "chat_breakout",
+            "scene_id": scene_id,
+            "outcome": outcome_key,
+            "score": bo["score"],
+            "turn_count": bo["turn"],
+        })
+
+    return jsonify(response)
+
+
 @app.post("/api/run/<run_id>/story-challenge")
 def story_challenge(run_id):
     """Live-LLM 'challenge me on this' beat for story_branching games.
