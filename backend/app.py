@@ -15441,6 +15441,19 @@ def _get_breakout_state(run, scene_id):
     return bo
 
 
+def _pick_breakout_outcome(score, outcome_bands):
+    """Return the band key with the highest min_score that score satisfies, else None."""
+    candidates = sorted(
+        ((k, b.get("min_score", 0)) for k, b in outcome_bands.items()),
+        key=lambda kv: kv[1],
+        reverse=True,
+    )
+    for key, min_score in candidates:
+        if score >= min_score:
+            return key
+    return None
+
+
 @app.post("/api/run/<run_id>/branching-choice")
 @limiter.limit("60 per minute")
 def story_branching_choice(run_id):

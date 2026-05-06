@@ -217,3 +217,24 @@ def test_get_breakout_state_creates_scoped_state():
     # Different scene = isolated
     s3 = _get_breakout_state(run, "ch4_s1")
     assert s3 is not s
+
+
+def test_pick_breakout_outcome_chooses_highest_band_below_score():
+    from app import _pick_breakout_outcome
+    bands = {
+        "great": {"min_score": 75, "label": "x"},
+        "ok":    {"min_score": 45, "label": "y"},
+        "poor":  {"min_score": 0,  "label": "z"},
+    }
+    assert _pick_breakout_outcome(80, bands) == "great"
+    assert _pick_breakout_outcome(75, bands) == "great"
+    assert _pick_breakout_outcome(60, bands) == "ok"
+    assert _pick_breakout_outcome(45, bands) == "ok"
+    assert _pick_breakout_outcome(20, bands) == "poor"
+    assert _pick_breakout_outcome(0, bands) == "poor"
+
+
+def test_pick_breakout_outcome_returns_none_if_no_band_matches():
+    from app import _pick_breakout_outcome
+    bands = {"great": {"min_score": 90, "label": "x"}}
+    assert _pick_breakout_outcome(50, bands) is None
