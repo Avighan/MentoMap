@@ -23,10 +23,15 @@ def _make_game(scene_extra=None):
 
 
 def test_chat_breakout_missing_ai_persona():
-    g = _make_game({"chat_breakout": {"opening_message": "hi", "max_turns": 3, "outcome_bands": {}, "next_scene_by_outcome": {}}})
+    g = _make_game({"chat_breakout": {
+        "opening_message": "hi",
+        "max_turns": 3,
+        "outcome_bands": {"ok": {"min_score": 0, "label": "x"}},
+        "next_scene_by_outcome": {"ok": "ch1_s1"},
+    }})
     errors = []
     _validate_story_branching_type_game(g, errors)
-    assert any("chat_breakout" in e and "ai_persona" in e for e in errors), errors
+    assert any("ai_persona" in e for e in errors), errors
 
 
 def test_chat_breakout_missing_opening_message():
@@ -112,6 +117,60 @@ def test_validate_bundle_propagates_chat_breakout_errors():
     }
     with pytest.raises(ValueError, match="next_scene_by_outcome"):
         validate_bundle(bundle)
+
+
+def test_chat_breakout_max_turns_out_of_range():
+    g = _make_game({"chat_breakout": {
+        "ai_persona": {"name": "A"},
+        "opening_message": "hi",
+        "max_turns": 0,
+        "outcome_bands": {"ok": {"min_score": 0, "label": "x"}},
+        "next_scene_by_outcome": {"ok": "ch1_s1"},
+    }})
+    errors = []
+    _validate_story_branching_type_game(g, errors)
+    assert any("max_turns" in e for e in errors), errors
+
+
+def test_chat_breakout_max_turns_bool_rejected():
+    g = _make_game({"chat_breakout": {
+        "ai_persona": {"name": "A"},
+        "opening_message": "hi",
+        "max_turns": True,  # bool subclass of int — must be rejected
+        "outcome_bands": {"ok": {"min_score": 0, "label": "x"}},
+        "next_scene_by_outcome": {"ok": "ch1_s1"},
+    }})
+    errors = []
+    _validate_story_branching_type_game(g, errors)
+    assert any("max_turns" in e for e in errors), errors
+
+
+def test_chat_breakout_band_missing_min_score_or_label():
+    g = _make_game({"chat_breakout": {
+        "ai_persona": {"name": "A"},
+        "opening_message": "hi",
+        "max_turns": 3,
+        "outcome_bands": {"ok": {"label": "x"}, "bad": {"min_score": 50}},
+        "next_scene_by_outcome": {"ok": "ch1_s1", "bad": "ch1_s1"},
+    }})
+    errors = []
+    _validate_story_branching_type_game(g, errors)
+    assert any("min_score" in e for e in errors), errors
+    assert any("label" in e for e in errors), errors
+
+
+def test_chat_breakout_next_scene_value_must_be_nonempty_string():
+    g = _make_game({"chat_breakout": {
+        "ai_persona": {"name": "A"},
+        "opening_message": "hi",
+        "max_turns": 3,
+        "outcome_bands": {"ok": {"min_score": 0, "label": "x"}, "bad": {"min_score": 50, "label": "y"}},
+        "next_scene_by_outcome": {"ok": "", "bad": 42},
+    }})
+    errors = []
+    _validate_story_branching_type_game(g, errors)
+    assert any("next_scene_by_outcome.ok" in e for e in errors), errors
+    assert any("next_scene_by_outcome.bad" in e for e in errors), errors
 
 
 def test_validate_bundle_passes_with_valid_chat_breakout():

@@ -501,6 +501,11 @@ def _validate_chat_breakout(scene, scene_id, errors):
             f"{prefix} next_scene_by_outcome keys must match outcome_bands "
             f"(missing={sorted(missing)}, extra={sorted(extra)})"
         )
+    for outcome_key, target in nsbo.items():
+        if not isinstance(target, str) or not target.strip():
+            errors.append(
+                f"{prefix} next_scene_by_outcome.{outcome_key} must be a non-empty scene_id string"
+            )
 
 
 def _validate_story_branching_type_game(game, errors):
