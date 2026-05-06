@@ -238,3 +238,31 @@ def test_pick_breakout_outcome_returns_none_if_no_band_matches():
     from app import _pick_breakout_outcome
     bands = {"great": {"min_score": 90, "label": "x"}}
     assert _pick_breakout_outcome(50, bands) is None
+
+
+def test_score_breakout_turn_baseline_50():
+    from app import _score_breakout_turn
+    assert _score_breakout_turn({}) == 50
+
+
+def test_score_breakout_turn_positive_impacts_raise_score():
+    from app import _score_breakout_turn
+    s = _score_breakout_turn({"relationship_impact": 10, "assertiveness_impact": 5, "empathy_impact": 8})
+    assert s > 50
+    assert s <= 100
+
+
+def test_score_breakout_turn_negative_impacts_lower_score():
+    from app import _score_breakout_turn
+    s = _score_breakout_turn({"relationship_impact": -10, "assertiveness_impact": -5, "empathy_impact": -8})
+    assert s < 50
+    assert s >= 0
+
+
+def test_score_breakout_turn_handles_dict_impact_objects():
+    from app import _score_breakout_turn
+    s = _score_breakout_turn({
+        "relationship_impact": {"value": 10, "confidence": "high"},
+        "empathy_impact": {"value": 5, "confidence": "medium"},
+    })
+    assert s > 50

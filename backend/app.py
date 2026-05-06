@@ -15454,6 +15454,22 @@ def _pick_breakout_outcome(score, outcome_bands):
     return None
 
 
+def _score_breakout_turn(analysis):
+    """Map negotiation analysis dict {relationship_impact, assertiveness_impact, empathy_impact}
+    to a 0..100 turn score. Baseline 50, +/- impacts each scaled by 1.5x.
+    Each impact is either int/float or {value, confidence} dict.
+    """
+    def _val(v):
+        if isinstance(v, dict):
+            return v.get("value", 0)
+        return v if isinstance(v, (int, float)) else 0
+    score = 50
+    score += _val(analysis.get("relationship_impact", 0)) * 1.5
+    score += _val(analysis.get("assertiveness_impact", 0)) * 1.0
+    score += _val(analysis.get("empathy_impact", 0)) * 1.5
+    return max(0, min(100, int(round(score))))
+
+
 @app.post("/api/run/<run_id>/branching-choice")
 @limiter.limit("60 per minute")
 def story_branching_choice(run_id):
