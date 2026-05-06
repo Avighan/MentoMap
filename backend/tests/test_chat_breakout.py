@@ -201,3 +201,19 @@ def test_validate_bundle_passes_with_valid_chat_breakout():
         ]
     }
     validate_bundle(bundle)  # must not raise
+
+
+def test_get_breakout_state_creates_scoped_state():
+    from app import _get_breakout_state
+    run = {"breakouts": {}}
+    s = _get_breakout_state(run, "ch3_s2")
+    assert s["history"] == []
+    assert s["turn"] == 0
+    assert s["closed"] is False
+    # Idempotent
+    s["history"].append({"speaker": "ai", "message": "hi"})
+    s2 = _get_breakout_state(run, "ch3_s2")
+    assert s2 is s
+    # Different scene = isolated
+    s3 = _get_breakout_state(run, "ch4_s1")
+    assert s3 is not s

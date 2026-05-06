@@ -8,6 +8,7 @@ import logging
 import os
 import time
 from pathlib import Path
+from typing import Optional
 from flask import Flask, jsonify, request, send_from_directory, session, make_response
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -181,6 +182,12 @@ app.register_blueprint(additional_engines_bp)
 # Register research dashboard blueprint
 from routes.research_routes import research_bp
 app.register_blueprint(research_bp)
+
+# Register audit-followup grader + retention blueprints
+from routes.grader_routes import grader_bp
+from routes.retention_routes import retention_bp
+app.register_blueprint(grader_bp)
+app.register_blueprint(retention_bp)
 
 # Add no-cache decorator to prevent browser caching
 def nocache(view):
@@ -545,25 +552,45 @@ def get_game_or_400(game_id: str):
 
 
 CATEGORY_MAP = {
-    "chess_strategy": "Strategy & Tactics",
-    "board": "Board & Monopoly",
     "rounds": "Story & Narrative",
     "story_branching": "Story & Narrative",
+    "simulation": "Life Simulation",
     "minigame": "Quick Challenge",
-    "card": "Card Battle",
-    "go_territory": "Territory Control",
-    "reversi": "Flip & Persuade",
-    "tower_defense": "Tower Defense",
-    "puzzle_match": "Puzzle & Match",
+    "board": "Board Game",
+    "card_board": "Board Game",
     "ai_arena": "AI Arena",
-    "strategy": "Build & Manage",
-    "card_board": "Board & Monopoly",
-    "trump_card": "Card Battle",
+    "ai_discussion": "AI Arena",
+    "chess_strategy": "Strategy & Tactics",
+    "strategy_grid": "Strategy & Tactics",
+    "debate": "Debate",
+    "negotiation": "Negotiation",
+    "mystery_room": "Mystery & Investigation",
+    "wellbeing_survey": "Wellbeing",
+    "go_territory": "Territory & Influence",
+    "reversi": "Territory & Influence",
+    "puzzle_match": "Logic Puzzle",
+    "sudoku": "Logic Puzzle",
+    "logic_grid": "Logic Puzzle",
+    "boggle": "Logic Puzzle",
+    "geometry_constructor": "Logic Puzzle",
+    "tower_defense": "Tower Defense",
+    "pendulum_lab": "STEM Lab",
+    "optics_lab": "STEM Lab",
+    "circuit_debugger": "STEM Lab",
+    "genetics_cross": "STEM Lab",
+    "stoichiometry_mixer": "STEM Lab",
+    "mental_math": "Skill Drill",
+    "typing_drill": "Skill Drill",
+    "mock_interview": "Skill Drill",
+    "visual_novel": "Story & Narrative",
+    "dating_sim": "Story & Narrative",
+    "escape_room": "Escape Room",
+    "trump_card": "Card Game",
 }
 
 def _derive_category(game_type):
     """Derive a category from game_type if not explicitly set."""
-    return CATEGORY_MAP.get(game_type, "Other")
+    return CATEGORY_MAP.get(game_type, "Simulation")
 
 
 def _parse_duration(val) -> int:
@@ -770,7 +797,7 @@ def make_json_serializable(obj):
         return str(obj)
 
 
-def _derive_image_prompt(rnd: dict, game: dict) -> str | None:
+def _derive_image_prompt(rnd: dict, game: dict) -> Optional[str]:
     """Return image_prompt for a round.
     Uses explicit round image_prompt if set; otherwise derives from scenario/title.
     Only skips generation when ai_image_config.generate_on_first_play is explicitly False.
@@ -1174,7 +1201,8 @@ def build_round_payload(game: dict, state_obj):
                         "psychological_focus", "expert_pick", "reflection_prompt",
                         "concept", "badge", "emotional_beat", "emotional_intensity",
                         "title_override", "video_script", "npc_spotlight",
-                        "dynamic_intros"):
+                        "dynamic_intros", "decision_panel", "expert_debrief",
+                        "inbox_events"):
         if rnd.get(_sim_field) is not None:
             payload[_sim_field] = rnd[_sim_field]
 
@@ -1765,11 +1793,88 @@ def _contextual_sort_games(games_list, persona_type, age, baseline_complete, rol
 
 # Game types visible to all users; unlisted types require admin/dev/trainer/school_admin role
 _PUBLIC_GAME_TYPES = {
-    'rounds', 'simulation', 'negotiation', 'debate', 'job_interview', 'group_discussion',
+    'rounds', 'simulation', 'negotiation', 'negotiation_series', 'debate',
+    'job_interview', 'group_discussion',
     'client_meeting', 'conflict_mediation', 'public_speaking',
     'stakeholder_update', 'ai_discussion',
     'story_branching',
     'mystery_room',
+    'ai_lab',
+    # Audit-followup grader types (12)
+    'pendulum_lab', 'optics_lab', 'circuit_debugger', 'genetics_cross', 'stoichiometry_mixer',
+    'mental_math', 'typing_drill', 'boggle', 'mock_interview',
+    'sudoku', 'logic_grid', 'geometry_constructor',
+}
+
+# Curated discover whitelist — games surfaced on the public /discover (GameHub) page
+# for non-privileged users. Modules and admin still see the full catalog. Games not
+# in this set remain playable via direct link (/play/<id>) and via module curricula.
+_DISCOVER_WHITELIST = {
+    # User-mandated highlights
+    'summer_money_challenge_complete_v2',
+    'summer-sports-league',
+    'summer-sports-league-v2',
+    'the-substitute-teacher',  # mystery_room pilot
+    'ai-prompt-lab-school',    # ai_lab pilot (AI Literacy module W2)
+    # Audit-followup grader pilots (12 new game types)
+    'pendulum-lab-physics',
+    'optics-lab-lens',
+    'circuit-debugger-basics',
+    'genetics-cross-mendel',
+    'stoichiometry-mixer-acid-base',
+    'mental-math-arithmetic-drill',
+    'typing-drill-accuracy',
+    'boggle-word-hunt',
+    'mock-interview-product-mgr',
+    'sudoku-easy-9x9',
+    'logic-grid-detective',
+    'geometry-constructor-triangle',
+    # Young-adult soft-skill games (audience: young_adults)
+    'first-job-conversations',
+    'roommate-negotiations',
+    'career-path-crossroads',
+    'team-project-chaos',
+    'interview-mastery',
+    'financial-decision-lab',
+    # Professional soft-skill games (audience: professionals)
+    'pro-1on1-like-a-pro',
+    'pro-stakeholder-dance',
+    'pro-deadline-triage',
+    # Best simulation engagement
+    'cfo_quarterly_close',
+    'cfo_quarterly_close_q2',
+    'g7-batna-negotiator',
+    'g7-startup-sprint',
+    'g8-crisis-capstone',
+    'smart-city-builder',
+    'team-crisis-manager',
+    'the-boardroom',
+    # HBR-parity executive simulations (Phase A–E uplift)
+    'project_management_mastery',
+    'series_a_founders_journey',
+    'new_bu_launch',
+    'skunkworks_atlas_corp',
+    'the_founders_gauntlet',  # flagship 10-round entrepreneur sim (HBR/CapSim parity + Big-5)
+    # Story-driven engagement
+    'the-startup-decision',
+    'city-mayor',
+    'climate-champions',
+    'space-explorer-expanded',
+    # Age-band content (Phase 4 audit follow-up): 5 kids + 5 professionals
+    'kids-kindness-quest',
+    'kids-piggy-bank',
+    'kids-share-the-toys',
+    'kids-feelings-detective',
+    'kids-tiny-leader',
+    'pro-difficult-1on1',
+    'pro-stakeholder-pushback',
+    'pro-burnout-recovery',
+    'pro-cross-functional-blocker',
+    'pro-promotion-case',
+    # Phase B.1 negotiation chat conversions (game_type: negotiation)
+    'negotiate-your-allowance',
+    'the-peace-table',
+    'diplomacy-summit',
 }
 
 
@@ -1866,6 +1971,11 @@ def games_list():
         # Non-privileged users only see public game types
         if not is_privileged and g.get("game_type", "rounds") not in _PUBLIC_GAME_TYPES:
             continue
+        # Curated discover surface: non-privileged users see only the whitelist on
+        # the public catalog. Module/curriculum routes use different endpoints, so
+        # this filter does not affect lessons.
+        if not is_privileged and g["game_id"] not in _DISCOVER_WHITELIST:
+            continue
         # Per-org feature flag gating: hide games whose feature_flag is not enabled
         _ff = g.get("feature_flag")
         if _ff and not org_module.get_org_feature(_viewer_org_id, _ff):
@@ -1908,6 +2018,9 @@ def games_list():
             "target_age": g.get("target_age", g.get("target_audience", "")),
             "grade": g.get("grade", ""),
             "target_grade": g.get("target_grade", g.get("grade", "")),
+            "min_age": g.get("min_age", 12),
+            "max_age": g.get("max_age", 65),
+            "audience": g.get("audience", "teens"),
             "subject": g.get("subject", ""),
             "game_category": _derive_game_category(g),
             "cognitive_framework": _derive_cognitive_framework(g),
@@ -2193,8 +2306,19 @@ def run_start():
                 game["rounds"] = [r for r in game["base_rounds"] if not r.get("ai_generatable")]
 
     # Mystery Room: initialise escape-room state
-    if game.get("game_type") == "mystery_room":
+    if game.get("game_type") == "mystery_room" or game.get("type") == "mystery_room":
         RUNS[run_id] = _ESCAPE_ROOM_ENGINE.start(RUNS[run_id], game)
+
+    # AI Lab: initialise live-prompt lab state
+    if game.get("game_type") == "ai_lab":
+        RUNS[run_id]["ai_lab"] = {
+            "current_task_index": 0,
+            "attempts": {},   # task_id -> [{prompt, output, score, feedback, ts}]
+            "best_scores": {},  # task_id -> best score
+            "completed_tasks": [],
+            "skill_tag_history": [],
+        }
+        update_run(run_id, RUNS[run_id])
 
     # Feature 5: Track active session for live cohort monitoring
     try:
@@ -2646,6 +2770,9 @@ def run_choose(run_id):
         game["_coach_mode"] = True
 
     if game.get("type") == "mystery_room" or game.get("game_type") == "mystery_room":
+        # Lazy-init for runs created before mystery_room init was wired in.
+        if "current_room" not in r or "puzzles_solved" not in r:
+            r = _ESCAPE_ROOM_ENGINE.start(r, game)
         try:
             r, deltas = _ESCAPE_ROOM_ENGINE.handle_action(r, game, payload)
         except ValueError as e:
@@ -2678,8 +2805,14 @@ def run_choose(run_id):
         except Exception as _mr_e:
             logger.debug("Suppressed mystery analytics: %s: %s", type(_mr_e).__name__, _mr_e)
         update_run(run_id, r)
+        # Build a JSON-safe view of the run. r["state"] is a RunState
+        # instance (not directly JSON-serializable); convert via to_dict.
+        _r_safe = {k: v for k, v in r.items() if k != "state"}
+        _state_obj = r.get("state")
+        if _state_obj is not None:
+            _r_safe["state"] = _state_obj.to_dict() if hasattr(_state_obj, "to_dict") else _state_obj
         return jsonify({
-            "state": r,
+            "state": _r_safe,
             "events": deltas.get("events", []),
             "climax_unlocked": _ESCAPE_ROOM_ENGINE.gating_status(r, game),
         })
@@ -4506,6 +4639,72 @@ def _compute_board_dimension_scores(board_choices, boss_wins=0, total_turns=0, f
     return scores
 
 
+# --- Mystery Room Dimension Score Computation ---
+# Maps the mystery_room engine's skill_tag_log into the 8 canonical dimensions
+# used across the rest of the app (PostGameInsights, leaderboard, profile).
+#
+# Mystery_room uses a richer tag vocabulary than the canonical 8 — these aliases
+# fold the extras into the closest canonical dimension so the teacher debrief
+# stays consistent with other game types.
+_MYSTERY_ROOM_TAG_ALIASES = {
+    "critical_thinking":   "strategic_thinking",  # weighing evidence ≈ strategic reasoning
+    "courage":             "risk_tolerance",       # acting under social cost
+    "curiosity":           "creativity",           # open-ended inquiry
+}
+
+
+def _compute_mystery_room_dimension_scores(skill_tag_log, knowledge_score=0, evidence_board_state=None):
+    """Compute 8-dim scores for a mystery_room run from the engine's skill_tag_log.
+
+    Inputs:
+      skill_tag_log         — list of {action, target, tags} from RunState.
+      knowledge_score       — 0-100 factual-puzzle accuracy.
+      evidence_board_state  — {correct, accuracy, attempts, ...}.
+    """
+    evidence_board_state = evidence_board_state or {}
+    counts = {}
+    for entry in (skill_tag_log or []):
+        for tag in entry.get("tags", []) or []:
+            # Strip _positive / _negative suffix the engine uses for signed tags.
+            base = tag
+            sign = 1
+            if tag.endswith("_negative"):
+                base = tag[:-len("_negative")]
+                sign = -1
+            elif tag.endswith("_positive"):
+                base = tag[:-len("_positive")]
+            canonical = _MYSTERY_ROOM_TAG_ALIASES.get(base, base)
+            counts[canonical] = counts.get(canonical, 0) + sign
+
+    # Reflection bonuses for outcomes the engine signals but tags don't capture.
+    # Strategic thinking gets a knowledge-score lift (factual reasoning correctness).
+    knowledge_bonus = int(round((knowledge_score or 0) / 5))   # up to +20
+    # Adaptability lift when the player corrected a wrong synthesis attempt.
+    if evidence_board_state.get("correct") and (evidence_board_state.get("attempts") or 0) > 1:
+        counts["adaptability"] = counts.get("adaptability", 0) + 2
+
+    base = 30
+    weight = 9
+    dims = [
+        "strategic_thinking",
+        "risk_tolerance",
+        "delayed_gratification",
+        "adaptability",
+        "resilience",
+        "empathy",
+        "ethical_reasoning",
+        "creativity",
+    ]
+    scores = {}
+    for d in dims:
+        c = counts.get(d, 0)
+        score = base + c * weight
+        if d == "strategic_thinking":
+            score += knowledge_bonus
+        scores[d] = max(0, min(100, score))
+    return scores
+
+
 # --- AI Arena Dimension Score Computation ---
 # Maps AI Arena resource changes to standard soft-skill dimensions.
 _AI_ARENA_RESOURCE_DIMENSION_MAP = {
@@ -5161,6 +5360,233 @@ def card_board_complete(run_id):
 
 
 # ---------------------------------------------------------------------------
+# AI Lab — live LLM prompt practice with rubric scoring
+# ---------------------------------------------------------------------------
+# Mechanics: each task has an instruction + rubric. Student writes a prompt,
+# backend calls the configured LLM provider to produce an output, then a
+# second LLM-as-judge call grades the prompt-output pair against the rubric
+# (returning {score:0..10, feedback, dimension_deltas}). Per-task best score
+# is tracked. Hard caps protect cost: prompt <= 2000 chars, max 5 attempts /
+# task / run, output <= 600 tokens.
+
+_AI_LAB_MAX_PROMPT_CHARS = 2000
+_AI_LAB_MAX_ATTEMPTS_PER_TASK = 5
+_AI_LAB_MAX_OUTPUT_TOKENS = 600
+_AI_LAB_BANNED_TERMS = (
+    # Light-touch safety; the moderation module is the heavier net.
+    "system prompt", "ignore previous", "jailbreak",
+)
+
+
+def _ai_lab_get_task(game, task_id):
+    cfg = game.get("ai_lab_config") or {}
+    for t in cfg.get("tasks", []):
+        if t.get("id") == task_id:
+            return t
+    return None
+
+
+def _ai_lab_run_state(run):
+    if "ai_lab" not in run:
+        run["ai_lab"] = {
+            "current_task_index": 0,
+            "attempts": {},
+            "best_scores": {},
+            "completed_tasks": [],
+            "skill_tag_history": [],
+        }
+    return run["ai_lab"]
+
+
+def _ai_lab_grade(task, prompt, model_output):
+    """LLM-as-judge against task rubric. Falls back to heuristic if LLM is off."""
+    rubric = task.get("rubric", {})
+    skill_tags = task.get("skill_tags", []) or []
+
+    if not llm_enabled():
+        # Heuristic fallback: length + keyword presence
+        score = 5
+        if len(prompt) >= 60: score += 1
+        if any(k.lower() in prompt.lower() for k in (rubric.get("must_include") or [])): score += 2
+        if model_output and len(model_output) > 80: score += 1
+        score = max(0, min(10, score))
+        return {
+            "score": score,
+            "feedback": "Heuristic score (LLM grader offline). Tip: write longer, more specific prompts.",
+            "dimension_deltas": {t: 1 for t in skill_tags},
+        }
+
+    sys = (
+        "You are a strict but encouraging AI literacy coach grading a student's prompt. "
+        "Score 0-10 based ONLY on the rubric provided. Reply with valid JSON only: "
+        "{\"score\": int, \"feedback\": str (<=2 sentences), \"dimension_deltas\": object}. "
+        "dimension_deltas keys must be from this list and values 0-3: " + ", ".join(skill_tags or ["strategic_thinking"]) + "."
+    )
+    user = json.dumps({
+        "task_instruction": task.get("instruction", ""),
+        "rubric": rubric,
+        "student_prompt": prompt[:_AI_LAB_MAX_PROMPT_CHARS],
+        "model_output": (model_output or "")[:1500],
+        "skill_tags": skill_tags,
+    })
+    out = llm_call(sys, user, response_json=True, temperature=0.2, max_tokens=300,
+                   purpose="ai_lab_grade",
+                   fallback={"score": 5, "feedback": "Grader unavailable.", "dimension_deltas": {}})
+    # Sanitise
+    try:
+        out["score"] = int(max(0, min(10, out.get("score", 5))))
+    except Exception:
+        out["score"] = 5
+    out.setdefault("feedback", "")
+    deltas = out.get("dimension_deltas") or {}
+    if not isinstance(deltas, dict):
+        deltas = {}
+    out["dimension_deltas"] = {k: int(max(0, min(3, v))) for k, v in deltas.items()
+                               if isinstance(k, str) and k in (skill_tags or [])}
+    return out
+
+
+def _ai_lab_call_model(task, prompt):
+    """Run the student prompt through the LLM as the 'AI under test'."""
+    if not llm_enabled():
+        return ("[LLM offline — example output] " + prompt[:200]), False
+    sys_role = task.get("system_role") or (
+        "You are a helpful general-purpose assistant. Respond concisely to the user's prompt."
+    )
+    out = llm_call(sys_role, prompt, response_json=False, temperature=0.7,
+                   max_tokens=_AI_LAB_MAX_OUTPUT_TOKENS,
+                   purpose="ai_lab_model",
+                   fallback="")
+    return (out or ""), True
+
+
+@app.route("/api/run/<run_id>/ai-lab/state", methods=["GET"])
+@require_auth
+def ai_lab_state(run_id):
+    try:
+        r = storage.get_run(run_id)
+    except Exception:
+        return jsonify({"error": "run_not_found"}), 404
+    game_id = r.get("game_id")
+    game, err = get_game_or_400(game_id)
+    if err:
+        return err
+    if game.get("game_type") != "ai_lab":
+        return jsonify({"error": "not_ai_lab"}), 400
+    state = _ai_lab_run_state(r)
+    return jsonify({
+        "ai_lab_config": game.get("ai_lab_config", {}),
+        "state": state,
+    })
+
+
+@app.route("/api/run/<run_id>/ai-lab/prompt", methods=["POST"])
+@require_auth
+def ai_lab_prompt(run_id):
+    try:
+        r = storage.get_run(run_id)
+    except Exception:
+        return jsonify({"error": "run_not_found"}), 404
+    game_id = r.get("game_id")
+    game, err = get_game_or_400(game_id)
+    if err:
+        return err
+    if game.get("game_type") != "ai_lab":
+        return jsonify({"error": "not_ai_lab"}), 400
+    if r.get("completed"):
+        return jsonify({"error": "already_completed", "code": 409}), 409
+
+    payload = request.get_json(silent=True) or {}
+    task_id = (payload.get("task_id") or "").strip()
+    prompt = (payload.get("prompt") or "").strip()
+
+    if not task_id or not prompt:
+        return jsonify({"error": "task_id and prompt required"}), 400
+    if len(prompt) > _AI_LAB_MAX_PROMPT_CHARS:
+        return jsonify({"error": f"prompt too long (max {_AI_LAB_MAX_PROMPT_CHARS} chars)"}), 400
+    low = prompt.lower()
+    if any(b in low for b in _AI_LAB_BANNED_TERMS):
+        return jsonify({"error": "prompt blocked by safety filter"}), 400
+
+    task = _ai_lab_get_task(game, task_id)
+    if not task:
+        return jsonify({"error": "unknown_task"}), 404
+
+    state = _ai_lab_run_state(r)
+    attempts = state["attempts"].setdefault(task_id, [])
+    if len(attempts) >= _AI_LAB_MAX_ATTEMPTS_PER_TASK:
+        return jsonify({"error": "max_attempts_reached", "max": _AI_LAB_MAX_ATTEMPTS_PER_TASK}), 429
+
+    # Run the model
+    model_output, llm_used = _ai_lab_call_model(task, prompt)
+
+    # Grade the prompt-output pair
+    grade = _ai_lab_grade(task, prompt, model_output)
+
+    attempt_record = {
+        "prompt": prompt,
+        "output": model_output,
+        "score": grade["score"],
+        "feedback": grade["feedback"],
+        "dimension_deltas": grade.get("dimension_deltas", {}),
+        "ts": int(time.time()),
+        "llm_used": llm_used,
+    }
+    attempts.append(attempt_record)
+
+    # Update best score
+    prev_best = int(state["best_scores"].get(task_id, 0))
+    if grade["score"] > prev_best:
+        state["best_scores"][task_id] = grade["score"]
+
+    # Track skill tags for end-of-game dimension scoring
+    for tag, delta in (grade.get("dimension_deltas") or {}).items():
+        if delta > 0:
+            state["skill_tag_history"].extend([tag] * int(delta))
+
+    # Auto-mark task completed if score >= pass_threshold
+    pass_threshold = int(task.get("pass_threshold", 7))
+    if grade["score"] >= pass_threshold and task_id not in state["completed_tasks"]:
+        state["completed_tasks"].append(task_id)
+
+    storage.update_run(run_id, r)
+
+    # Has the run completed all tasks?
+    total_tasks = len(game.get("ai_lab_config", {}).get("tasks", []))
+    all_done = total_tasks > 0 and len(state["completed_tasks"]) >= total_tasks
+
+    return jsonify({
+        "attempt": attempt_record,
+        "best_score": state["best_scores"].get(task_id, 0),
+        "attempts_remaining": _AI_LAB_MAX_ATTEMPTS_PER_TASK - len(attempts),
+        "task_completed": task_id in state["completed_tasks"],
+        "pass_threshold": pass_threshold,
+        "all_tasks_complete": all_done,
+    })
+
+
+@app.route("/api/run/<run_id>/ai-lab/advance", methods=["POST"])
+@require_auth
+def ai_lab_advance(run_id):
+    """Move to next task. Optional convenience for the UI."""
+    try:
+        r = storage.get_run(run_id)
+    except Exception:
+        return jsonify({"error": "run_not_found"}), 404
+    game_id = r.get("game_id")
+    game, err = get_game_or_400(game_id)
+    if err:
+        return err
+    if game.get("game_type") != "ai_lab":
+        return jsonify({"error": "not_ai_lab"}), 400
+    state = _ai_lab_run_state(r)
+    total = len(game.get("ai_lab_config", {}).get("tasks", []))
+    state["current_task_index"] = min(total - 1, state["current_task_index"] + 1)
+    storage.update_run(run_id, r)
+    return jsonify({"current_task_index": state["current_task_index"]})
+
+
+# ---------------------------------------------------------------------------
 # Trump Card game endpoints
 # ---------------------------------------------------------------------------
 
@@ -5726,6 +6152,80 @@ def run_report(run_id):
             storage.update_run(run_id, r)
         except Exception as e:
             logger.warning(f"Auto-finalize story branching game failed: {e}")
+    # Auto-finalize Mystery Room games — fold engine skill_tag_log into 8-dim scores
+    # so the teacher debrief, profile aggregation, and leaderboard pick this up the
+    # same way they do for every other game type.
+    if game.get("game_type") == "mystery_room" or game.get("type") == "mystery_room":
+        try:
+            dimension_scores = _compute_mystery_room_dimension_scores(
+                r.get("skill_tag_log", []),
+                knowledge_score=r.get("knowledge_score", 0),
+                evidence_board_state=r.get("evidence_board_state", {}),
+            )
+            for sid, sv in dimension_scores.items():
+                setattr(st_obj, sid, sv)
+            st_obj.dimension_scores = dimension_scores
+            final_state = state_to_dict(st_obj)
+            if not r["log"]:
+                r["log"].append({
+                    "round_id": "mystery_room",
+                    "round_title": game.get("title", "Mystery Room"),
+                    "choice": {
+                        "id": r.get("outcome_label") or "mystery_result",
+                        "label": r.get("outcome_label") or "Completed investigation",
+                    },
+                    "events": [
+                        f"Evidence collected: {len(r.get('evidence_collected', []))}",
+                        f"Knowledge score: {r.get('knowledge_score', 0)}",
+                    ],
+                    "state_before": {},
+                    "state_after_events": {},
+                })
+            storage.update_run(run_id, r)
+        except Exception as e:
+            logger.warning(f"Auto-finalize mystery_room game failed: {e}")
+    # Auto-finalize AI Lab games — convert task best_scores + skill_tag_history
+    # into 8-dim scores via the same minigame-style rollup the rest of the app uses.
+    if game.get("game_type") == "ai_lab":
+        try:
+            ai_lab_state = r.get("ai_lab", {})
+            tags = ai_lab_state.get("skill_tag_history", [])
+            best_scores = ai_lab_state.get("best_scores", {})
+            tasks = (game.get("ai_lab_config") or {}).get("tasks", [])
+            # Per-dim: count of tags weighted, normalised to 0-100.
+            dim_counts = {}
+            for t in tags:
+                dim_counts[t] = dim_counts.get(t, 0) + 1
+            max_per_dim = max(dim_counts.values()) if dim_counts else 1
+            dimension_scores = {}
+            for dim, c in dim_counts.items():
+                dimension_scores[dim] = int(round(50 + 50 * (c / max_per_dim)))
+            # Average task score (0-10) as overall knowledge score equivalent.
+            if tasks:
+                avg_task = sum(int(best_scores.get(tk.get("id"), 0)) for tk in tasks) / len(tasks)
+                r["knowledge_score"] = int(round(avg_task * 10))
+            for sid, sv in dimension_scores.items():
+                setattr(st_obj, sid, sv)
+            st_obj.dimension_scores = dimension_scores
+            final_state = state_to_dict(st_obj)
+            if not r["log"]:
+                r["log"].append({
+                    "round_id": "ai_lab",
+                    "round_title": game.get("title", "AI Lab"),
+                    "choice": {
+                        "id": "ai_lab_result",
+                        "label": f"Completed {len(ai_lab_state.get('completed_tasks', []))}/{len(tasks)} tasks",
+                    },
+                    "events": [
+                        f"Tasks completed: {len(ai_lab_state.get('completed_tasks', []))}/{len(tasks)}",
+                        f"Average task score: {r.get('knowledge_score', 0)/10:.1f}/10",
+                    ],
+                    "state_before": {},
+                    "state_after_events": {},
+                })
+            storage.update_run(run_id, r)
+        except Exception as e:
+            logger.warning(f"Auto-finalize ai_lab game failed: {e}")
     # Auto-finalize Simulation games (use same rounds scoring + simulation state)
     if game.get("game_type") == "simulation" and r["log"]:
         try:
@@ -6833,7 +7333,7 @@ def run_report(run_id):
         logger.debug("scaling snapshot failed: %s", _os_err)
 
     # mystery_room: surface escape-room-specific fields
-    if game.get("game_type") == "mystery_room":
+    if game.get("game_type") == "mystery_room" or game.get("type") == "mystery_room":
         try:
             report_core["outcome_label"] = r.get("outcome_label")
             report_core["knowledge_score"] = r.get("knowledge_score", 0)
@@ -6841,8 +7341,92 @@ def run_report(run_id):
             report_core["evidence_board_state"] = r.get("evidence_board_state", {})
             report_core["fingerprint"] = _ESCAPE_ROOM_ENGINE.compute_fingerprint(r)
             report_core["hints_used"] = r.get("hints_used", {})
+            # 8-dim teacher debrief — derived from engine skill_tag_log so the
+            # mystery_room report shows the same shape as every other game type.
+            try:
+                _mr_dims = getattr(st_obj, "dimension_scores", None) or _compute_mystery_room_dimension_scores(
+                    r.get("skill_tag_log", []),
+                    knowledge_score=r.get("knowledge_score", 0),
+                    evidence_board_state=r.get("evidence_board_state", {}),
+                )
+                report_core["dimension_scores"] = _mr_dims
+                # Pre/post baseline so the epilogue can show "Empathy +12 since
+                # last run" deltas — motivates replay and makes growth visible.
+                report_core["pre_game_dimension_scores"] = r.get("pre_game_dimension_scores", {}) or {}
+                # Skill provenance — for each canonical dimension, list the
+                # in-game actions (hotspot examined / puzzle solved) that
+                # contributed to it. Lets the epilogue answer the teacher's
+                # question "why is empathy 68 and not 75?".
+                try:
+                    _hotspot_label_map = {}
+                    for _room in (game.get("rooms", []) or []):
+                        for _hs in (_room.get("hotspots", []) or []):
+                            _hotspot_label_map[_hs.get("id")] = _hs.get("label") or _hs.get("hint") or _hs.get("id")
+                    _puzzle_label_map = {}
+                    for _pz in (game.get("puzzles", []) or []):
+                        _puzzle_label_map[_pz.get("id")] = (_pz.get("prompt") or _pz.get("id") or "")[:80]
+                    _provenance = {}
+                    for _entry in (r.get("skill_tag_log", []) or []):
+                        _action = _entry.get("action", "")
+                        _target = _entry.get("target", "")
+                        _tags = _entry.get("tags", []) or []
+                        if not _tags:
+                            continue
+                        # Translate target to a human label
+                        if _action == "examine":
+                            _label = _hotspot_label_map.get(_target) or _target
+                            _verb = "Examined"
+                        elif _action == "solve_puzzle":
+                            _label = _puzzle_label_map.get(_target) or _target
+                            _verb = "Solved"
+                        elif _action == "pickup":
+                            _label = _hotspot_label_map.get(_target) or _target
+                            _verb = "Picked up"
+                        elif _action == "evidence_board":
+                            _label = "Evidence board synthesis"
+                            _verb = "Built"
+                        elif _action == "climax":
+                            _label = (_target or "climax").replace("_", " ").title()
+                            _verb = "Chose"
+                        else:
+                            _label = _target or _action
+                            _verb = _action.title()
+                        for _tag in _tags:
+                            _base = _tag
+                            _sign = "+"
+                            if _tag.endswith("_negative"):
+                                _base = _tag[:-len("_negative")]
+                                _sign = "-"
+                            elif _tag.endswith("_positive"):
+                                _base = _tag[:-len("_positive")]
+                            _canonical = _MYSTERY_ROOM_TAG_ALIASES.get(_base, _base)
+                            _provenance.setdefault(_canonical, []).append({
+                                "action": _verb,
+                                "target": _label,
+                                "sign": _sign,
+                            })
+                    report_core["skill_provenance"] = _provenance
+                except Exception as _prov_err:
+                    logger.debug("mystery_room skill_provenance failed: %s", _prov_err)
+            except Exception as _dim_err:
+                logger.debug("mystery_room dimension_scores fallback failed: %s", _dim_err)
             epilogues = game.get("epilogues", {})
             report_core["epilogue"] = epilogues.get(r.get("outcome_label", ""), None)
+            # Override the generic compute_score() neutral-fallback (which always
+            # returns 50 for mystery_room because none of its tracked resource
+            # keys exist in the run state). For mystery_room, blend the 8-dim
+            # average with the knowledge score and a synthesis-correct bonus so
+            # the headline score actually reflects investigation quality.
+            try:
+                _mr_dim_vals = [v for v in (_mr_dims or {}).values() if isinstance(v, (int, float))]
+                _mr_dim_avg = sum(_mr_dim_vals) / len(_mr_dim_vals) if _mr_dim_vals else 0
+                _mr_know = float(r.get("knowledge_score", 0) or 0)
+                _mr_synth_bonus = 10 if r.get("evidence_board_state", {}).get("correct") else 0
+                # Weight: 60% soft-skill avg, 30% factual reasoning, 10% synthesis correctness.
+                _mr_score = 0.6 * _mr_dim_avg + 0.3 * _mr_know + _mr_synth_bonus
+                report_core["final_score"] = max(0, min(100, int(round(_mr_score))))
+            except Exception as _score_err:
+                logger.debug("mystery_room final_score override failed: %s", _score_err)
         except Exception as _mr_err:
             logger.warning("mystery_room report block failed: %s", _mr_err)
 
@@ -8827,29 +9411,62 @@ Mood affects your tone:
 
 
 
+def _negotiation_source_for(game_id=None):
+    """Resolve the negotiation-content source (a dict with 'scenarios' + optional 'initial_state'/'help_content'/'title').
+
+    If `game_id` is provided and matches a game in GAMES with game_type='negotiation', use that game's
+    `negotiation_config` (or `negotiation_game` / `session_game` historic wrappers). Otherwise fall back
+    to the global engine NEGOTIATION_GAME bundle. Returns None if nothing usable was found.
+    """
+    if game_id:
+        g = GAMES.get(game_id)
+        if isinstance(g, dict) and g.get("game_type") == "negotiation":
+            for k in ("negotiation_config", "negotiation_game", "session_game"):
+                v = g.get(k)
+                if isinstance(v, dict) and isinstance(v.get("scenarios"), list):
+                    return v
+            if isinstance(g.get("scenarios"), list):
+                return {"scenarios": g["scenarios"], "title": g.get("title", ""), "initial_state": g.get("initial_state", {})}
+    return NEGOTIATION_GAME
+
+
+def _resolve_negotiation_scenario(scenario_id, game_id=None):
+    """Find a scenario by id, preferring the per-game source then global. Returns scenario dict or None."""
+    src = _negotiation_source_for(game_id)
+    if not isinstance(src, dict):
+        return None
+    for s in src.get("scenarios", []) or []:
+        if s.get("scenario_id") == scenario_id:
+            return s
+    return None
+
+
 @app.get("/api/negotiation/scenarios")
 def negotiation_scenarios():
-    """Get all negotiation scenarios."""
-    if not NEGOTIATION_GAME:
+    """Get all negotiation scenarios. Optional ?game_id=<id> scopes to a per-game negotiation."""
+    game_id = request.args.get("game_id", "").strip() or None
+    src = _negotiation_source_for(game_id)
+    if not src:
         return jsonify({"error": "Negotiation game not found"}), 404
-    
+
     scenarios = []
-    for scenario in NEGOTIATION_GAME.get("scenarios", []):
+    for scenario in src.get("scenarios", []):
         scenarios.append({
-            "scenario_id": scenario["scenario_id"],
-            "title": scenario["title"],
-            "description": scenario["description"],
-            "difficulty": scenario["difficulty"],
-            "setting": scenario["setting"],
+            "scenario_id": scenario.get("scenario_id"),
+            "title": scenario.get("title", ""),
+            "description": scenario.get("description", ""),
+            "difficulty": scenario.get("difficulty", "intermediate"),
+            "setting": scenario.get("setting", ""),
             "other_party": scenario.get("other_party", {}),
             "conversation_turns": scenario.get("conversation_turns", 6),
             "storybook_pages": scenario.get("storybook_pages", []),
         })
-    
+
     return jsonify({
-        "game_title": NEGOTIATION_GAME.get("title", ""),
+        "game_title": src.get("title", "") or (GAMES.get(game_id, {}).get("title", "") if game_id else ""),
+        "game_id": game_id,
         "scenarios": scenarios,
-        "help_content": NEGOTIATION_GAME.get("help_content", {})
+        "help_content": src.get("help_content", {})
     })
 
 
@@ -8867,12 +9484,14 @@ def negotiation_generate_context_endpoint():
 
 @app.post("/api/negotiation/start")
 def negotiation_start():
-    """Start a negotiation scenario (curated or custom)."""
+    """Start a negotiation scenario (curated or custom). Optional `game_id` selects a per-game negotiation."""
     payload = request.get_json(silent=True) or {}
     scenario_id = payload.get("scenario_id", "")
     custom_negotiation = payload.get("custom_negotiation")
+    game_id = (payload.get("game_id") or "").strip() or None
 
-    if not NEGOTIATION_GAME:
+    src = _negotiation_source_for(game_id)
+    if not src:
         return jsonify({"error": "Negotiation game not found"}), 404
 
     if custom_negotiation:
@@ -8892,17 +9511,22 @@ def negotiation_start():
             "storybook_pages": [],
         }
     else:
-        scenario = next((s for s in NEGOTIATION_GAME["scenarios"] if s["scenario_id"] == scenario_id), None)
+        scenario = _resolve_negotiation_scenario(scenario_id, game_id) if game_id else None
+        if not scenario:
+            scenario = next((s for s in NEGOTIATION_GAME["scenarios"] if s["scenario_id"] == scenario_id), None)
         if not scenario:
             return jsonify({"error": "Invalid scenario_id"}), 400
 
-    # Create run with negotiation-specific state
-    initial_state = NEGOTIATION_GAME["initial_state"].copy()
+    # Create run with negotiation-specific state. Use the per-game initial_state if provided.
+    initial_state = (src.get("initial_state") or NEGOTIATION_GAME.get("initial_state") or {}).copy()
     run_id = create_run("negotiation", initial_state)
 
-    # Store scenario_id in run metadata
+    # Store scenario_id + game_id in run metadata so message/outcome endpoints can look up the
+    # right scenario source on subsequent calls.
     r = get_run(run_id)
     r["scenario_id"] = scenario.get("scenario_id", "custom_negotiation")
+    if game_id:
+        r["negotiation_game_id"] = game_id
     r["conversation_history"] = []
     r["current_turn"] = 0
 
@@ -8968,19 +9592,19 @@ def negotiation_message(run_id):
     if not user_message:
         return jsonify({"error": "Message cannot be empty"}), 400
     
-    if not NEGOTIATION_GAME:
-        return jsonify({"error": "Negotiation game not found"}), 404
-    
-    # Get scenario
+    # Resolve scenario from per-game source if present, else global engine.
     scenario_id = r.get("scenario_id", "")
-    scenario = next((s for s in NEGOTIATION_GAME["scenarios"] if s["scenario_id"] == scenario_id), None)
+    neg_game_id = r.get("negotiation_game_id")
+    scenario = _resolve_negotiation_scenario(scenario_id, neg_game_id)
+    if not scenario and NEGOTIATION_GAME:
+        scenario = next((s for s in NEGOTIATION_GAME.get("scenarios", []) if s.get("scenario_id") == scenario_id), None)
     if not scenario:
         return jsonify({"error": "Scenario not found"}), 404
-    
+
     # Get current state
     state_obj = r["state"]
     current_state = state_to_dict(state_obj)
-    
+
     # Increment turn
     r["current_turn"] = r.get("current_turn", 0) + 1
     current_turn = r["current_turn"]
@@ -9172,15 +9796,15 @@ def negotiation_outcome(run_id):
     except KeyError as e:
         return jsonify({"error": "Resource not found"}), 404
     
-    if not NEGOTIATION_GAME:
-        return jsonify({"error": "Negotiation game not found"}), 404
-    
-    # Get scenario
+    # Resolve scenario from per-game source if present, else global engine.
     scenario_id = r.get("scenario_id", "")
-    scenario = next((s for s in NEGOTIATION_GAME["scenarios"] if s["scenario_id"] == scenario_id), None)
+    neg_game_id = r.get("negotiation_game_id")
+    scenario = _resolve_negotiation_scenario(scenario_id, neg_game_id)
+    if not scenario and NEGOTIATION_GAME:
+        scenario = next((s for s in NEGOTIATION_GAME.get("scenarios", []) if s.get("scenario_id") == scenario_id), None)
     if not scenario:
         return jsonify({"error": "Scenario not found"}), 404
-    
+
     # Get final state
     state_obj = r["state"]
     final_state = state_to_dict(state_obj)
@@ -14804,6 +15428,17 @@ def _build_story_scene_map(game: dict) -> dict:
         if branch.get("id"):
             scene_map[branch["id"]] = branch
     return scene_map
+
+
+def _get_breakout_state(run, scene_id):
+    """Per-scene breakout chat state stored under run['breakouts'][scene_id]."""
+    if not isinstance(run.get("breakouts"), dict):
+        run["breakouts"] = {}
+    bo = run["breakouts"].get(scene_id)
+    if bo is None:
+        bo = {"history": [], "turn": 0, "closed": False, "outcome": None, "score": 0}
+        run["breakouts"][scene_id] = bo
+    return bo
 
 
 @app.post("/api/run/<run_id>/branching-choice")
