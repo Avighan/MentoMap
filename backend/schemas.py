@@ -30,6 +30,8 @@ def validate_bundle(b: dict) -> None:
             _validate_ai_arena_game(g)
         elif game_type == "negotiation":
             _validate_negotiation_type_game(g)
+        elif game_type == "negotiation_series":
+            _validate_negotiation_series_game(g)
         elif game_type == "debate":
             _validate_debate_game(g)
         elif game_type == "story_branching":
@@ -61,6 +63,58 @@ def validate_bundle(b: dict) -> None:
         elif game_type == "mystery_room":
             if not (g.get("rooms") and g.get("puzzles") and g.get("climax")):
                 raise ValueError(f"mystery_room game '{g['game_id']}' missing 'rooms', 'puzzles', or 'climax' key")
+        elif game_type == "ai_lab":
+            if not g.get("ai_lab_config"):
+                raise ValueError(f"ai_lab game '{g['game_id']}' missing 'ai_lab_config' key")
+            tasks = g["ai_lab_config"].get("tasks")
+            if not isinstance(tasks, list) or not tasks:
+                raise ValueError(f"ai_lab game '{g['game_id']}' must have ai_lab_config.tasks[] with >=1 task")
+            for t in tasks:
+                for k in ("id", "title", "instruction", "rubric"):
+                    if k not in t:
+                        raise ValueError(f"ai_lab task missing '{k}' in '{g['game_id']}'")
+        elif game_type == "music_match":
+            if not g.get("music_rounds"):
+                raise ValueError(f"music_match game '{g['game_id']}' missing 'music_rounds' key")
+        elif game_type == "lab_titration":
+            if not g.get("titration"):
+                raise ValueError(f"lab_titration game '{g['game_id']}' missing 'titration' key")
+        elif game_type == "pendulum_lab":
+            if not (g.get("pendulum_lab") and g["pendulum_lab"].get("trials")):
+                raise ValueError(f"pendulum_lab game '{g['game_id']}' missing 'pendulum_lab.trials'")
+        elif game_type == "optics_lab":
+            if not (g.get("optics_lab") and g["optics_lab"].get("trials")):
+                raise ValueError(f"optics_lab game '{g['game_id']}' missing 'optics_lab.trials'")
+        elif game_type == "circuit_debugger":
+            if not (g.get("circuit_debugger") and g["circuit_debugger"].get("nodes")):
+                raise ValueError(f"circuit_debugger game '{g['game_id']}' missing 'circuit_debugger.nodes'")
+        elif game_type == "genetics_cross":
+            if not (g.get("genetics_cross") and g["genetics_cross"].get("phenotypes")):
+                raise ValueError(f"genetics_cross game '{g['game_id']}' missing 'genetics_cross.phenotypes'")
+        elif game_type == "stoichiometry_mixer":
+            if not g.get("stoichiometry_mixer"):
+                raise ValueError(f"stoichiometry_mixer game '{g['game_id']}' missing 'stoichiometry_mixer' key")
+        elif game_type == "mental_math":
+            if not (g.get("mental_math") and g["mental_math"].get("problems")):
+                raise ValueError(f"mental_math game '{g['game_id']}' missing 'mental_math.problems'")
+        elif game_type == "typing_drill":
+            if not (g.get("typing_drill") and g["typing_drill"].get("passages")):
+                raise ValueError(f"typing_drill game '{g['game_id']}' missing 'typing_drill.passages'")
+        elif game_type == "boggle":
+            if not (g.get("boggle") and g["boggle"].get("grid")):
+                raise ValueError(f"boggle game '{g['game_id']}' missing 'boggle.grid'")
+        elif game_type == "mock_interview":
+            if not (g.get("mock_interview") and g["mock_interview"].get("questions")):
+                raise ValueError(f"mock_interview game '{g['game_id']}' missing 'mock_interview.questions'")
+        elif game_type == "sudoku":
+            if not (g.get("sudoku") and g["sudoku"].get("puzzle")):
+                raise ValueError(f"sudoku game '{g['game_id']}' missing 'sudoku.puzzle'")
+        elif game_type == "logic_grid":
+            if not (g.get("logic_grid") and g["logic_grid"].get("solution")):
+                raise ValueError(f"logic_grid game '{g['game_id']}' missing 'logic_grid.solution'")
+        elif game_type == "geometry_constructor":
+            if not (g.get("geometry_constructor") and g["geometry_constructor"].get("features")):
+                raise ValueError(f"geometry_constructor game '{g['game_id']}' missing 'geometry_constructor.features'")
         else:
             raise ValueError(f"Game {g['game_id']}: invalid game_type '{game_type}'")
 
@@ -272,36 +326,96 @@ def _validate_ai_arena_game(g):
     print(f"✓ AI Arena game validated: {gid}")
 
 
+def _find_scenarios_wrapper(g, canonical_keys=("negotiation_config", "debate_config")):
+    """Locate a scenarios array across the canonical and historical wrapper shapes.
+    Returns (wrapper_key, scenarios_list, wrapper_obj) or (None, None, None) if not found.
+    Accepts: negotiation_config.scenarios, debate_config.scenarios, session_game.scenarios,
+    negotiation_game.scenarios, debate_game.scenarios, investor_pitch_game.scenarios,
+    mock_interview.scenarios, top-level scenarios.
+    """
+    for k in canonical_keys:
+        v = g.get(k)
+        if isinstance(v, dict) and isinstance(v.get("scenarios"), list) and len(v["scenarios"]) >= 1:
+            return k, v["scenarios"], v
+    for k in ("session_game", "negotiation_game", "debate_game", "investor_pitch_game", "mock_interview"):
+        v = g.get(k)
+        if isinstance(v, dict) and isinstance(v.get("scenarios"), list) and len(v["scenarios"]) >= 1:
+            return k, v["scenarios"], v
+    if isinstance(g.get("scenarios"), list) and len(g["scenarios"]) >= 1:
+        return "scenarios", g["scenarios"], g
+    return None, None, None
+
+
+def _has_persona_pool(g, wrapper_obj):
+    """A persona/role pool may live at game-level or inside the wrapper.
+    Supported keys: persona_pool, investor_pool, interviewer_pool, mentor_pool, opponent_pool.
+    """
+    pool_keys = ("persona_pool", "investor_pool", "interviewer_pool", "mentor_pool", "opponent_pool")
+    for src in (g, wrapper_obj):
+        if not isinstance(src, dict):
+            continue
+        for k in pool_keys:
+            v = src.get(k)
+            if isinstance(v, list) and len(v) >= 1:
+                return True
+    return False
+
+
 def _validate_negotiation_type_game(g):
-    """Validate a negotiation game_type game."""
+    """Validate a negotiation game_type game.
+    Accepts the canonical 'negotiation_config.scenarios' shape AND historical
+    wrappers used by Live AI Sessions: session_game.scenarios,
+    negotiation_game.scenarios, investor_pitch_game.scenarios, mock_interview.scenarios.
+    """
     gid = g.get('game_id', 'unknown')
-    if "negotiation_config" not in g:
-        raise ValueError(f"Negotiation game {gid} missing 'negotiation_config'")
-    nc = g["negotiation_config"]
-    if "scenarios" not in nc or not isinstance(nc["scenarios"], list) or len(nc["scenarios"]) < 1:
-        raise ValueError(f"Negotiation game {gid}: negotiation_config needs 'scenarios' array with at least 1 scenario")
-    for s in nc["scenarios"]:
+    wrapper, scenarios, wrapper_obj = _find_scenarios_wrapper(g, canonical_keys=("negotiation_config",))
+    if scenarios is None:
+        raise ValueError(f"Negotiation game {gid} missing 'negotiation_config' (or recognised scenario wrapper)")
+    has_pool = _has_persona_pool(g, wrapper_obj)
+    for s in scenarios:
         if "scenario_id" not in s or "title" not in s:
             raise ValueError(f"Negotiation game {gid}: each scenario needs 'scenario_id' and 'title'")
-        if "other_party" not in s or not isinstance(s["other_party"], dict):
-            raise ValueError(f"Negotiation game {gid}: scenario '{s.get('scenario_id')}' needs 'other_party' dict")
-    print(f"✓ Negotiation game validated: {gid} ({len(nc['scenarios'])} scenarios)")
+        if not has_pool:
+            other = s.get("other_party") or s.get("opponent") or s.get("ai_persona")
+            if not isinstance(other, dict):
+                raise ValueError(f"Negotiation game {gid}: scenario '{s.get('scenario_id')}' needs 'other_party'/'opponent'/'ai_persona' dict (or persona_pool)")
+    print(f"✓ Negotiation game validated: {gid} ({len(scenarios)} scenarios via {wrapper})")
+
+
+def _validate_negotiation_series_game(g):
+    """Validate a negotiation_series wrapper game (dispatches to negotiation_game scenarios)."""
+    gid = g.get('game_id', 'unknown')
+    series = g.get("scenario_series")
+    if not isinstance(series, dict):
+        raise ValueError(f"negotiation_series game {gid} missing 'scenario_series' dict")
+    ordered = series.get("ordered_scenarios")
+    if not isinstance(ordered, list) or len(ordered) < 1:
+        raise ValueError(f"negotiation_series game {gid}: scenario_series.ordered_scenarios must be non-empty list")
+    print(f"✓ Negotiation series wrapper validated: {gid} ({len(ordered)} scenarios)")
 
 
 def _validate_debate_game(g):
-    """Validate a debate game_type game."""
+    """Validate a debate game_type game.
+    A debate game can either embed scenarios via debate_config, or be a thin
+    wrapper that dispatches to a scenario in the bundle's debate_game via
+    engine_scenario_id. Both shapes are allowed.
+    """
     gid = g.get('game_id', 'unknown')
-    if "debate_config" not in g:
-        raise ValueError(f"Debate game {gid} missing 'debate_config'")
-    dc = g["debate_config"]
-    if "scenarios" not in dc or not isinstance(dc["scenarios"], list) or len(dc["scenarios"]) < 1:
-        raise ValueError(f"Debate game {gid}: debate_config needs 'scenarios' array with at least 1 scenario")
-    for s in dc["scenarios"]:
+    if g.get("engine_scenario_id"):
+        print(f"✓ Debate wrapper validated: {gid} -> {g['engine_scenario_id']}")
+        return
+    wrapper, scenarios, wrapper_obj = _find_scenarios_wrapper(g, canonical_keys=("debate_config",))
+    if scenarios is None:
+        raise ValueError(f"Debate game {gid} missing 'debate_config' or 'engine_scenario_id' (or recognised scenario wrapper)")
+    has_pool = _has_persona_pool(g, wrapper_obj)
+    for s in scenarios:
         if "scenario_id" not in s or "title" not in s:
             raise ValueError(f"Debate game {gid}: each scenario needs 'scenario_id' and 'title'")
-        if "opponent" not in s or not isinstance(s["opponent"], dict):
-            raise ValueError(f"Debate game {gid}: scenario '{s.get('scenario_id')}' needs 'opponent' dict")
-    print(f"✓ Debate game validated: {gid} ({len(dc['scenarios'])} scenarios)")
+        if not has_pool:
+            opp = s.get("opponent") or s.get("other_party") or s.get("ai_persona")
+            if not isinstance(opp, dict):
+                raise ValueError(f"Debate game {gid}: scenario '{s.get('scenario_id')}' needs 'opponent'/'other_party'/'ai_persona' dict (or persona_pool)")
+    print(f"✓ Debate game validated: {gid} ({len(scenarios)} scenarios via {wrapper})")
 
 
 def _validate_story_branching_game(g):
@@ -331,6 +445,76 @@ def _validate_story_branching_game(g):
             if next_scene and next_scene not in scene_ids:
                 raise ValueError(f"Story branching game {gid}: choice references unknown scene '{next_scene}'")
     print(f"✓ Story branching game validated: {gid} ({len(si['scenes'])} scenes)")
+
+
+def _validate_chat_breakout(scene, scene_id, errors):
+    """Validate optional chat_breakout block on a story_branching scene.
+
+    If absent, no-op. If present, enforces the schema described in the
+    Hybrid Narrative-Negotiation plan: ai_persona.name, opening_message,
+    max_turns 1..20, outcome_bands (non-empty), next_scene_by_outcome
+    whose keys equal outcome_bands keys.
+    """
+    cb = scene.get("chat_breakout")
+    if cb is None:
+        return
+    prefix = f"scene '{scene_id}' chat_breakout"
+    if not isinstance(cb, dict):
+        errors.append(f"{prefix} must be an object")
+        return
+    if not isinstance(cb.get("ai_persona"), dict) or not cb["ai_persona"].get("name"):
+        errors.append(f"{prefix} missing ai_persona.name")
+    if not isinstance(cb.get("opening_message"), str) or not cb["opening_message"].strip():
+        errors.append(f"{prefix} missing opening_message")
+    max_turns = cb.get("max_turns")
+    if not isinstance(max_turns, int) or isinstance(max_turns, bool) or max_turns < 1 or max_turns > 20:
+        errors.append(f"{prefix} max_turns must be int 1..20")
+    bands = cb.get("outcome_bands")
+    if not isinstance(bands, dict) or not bands:
+        errors.append(f"{prefix} outcome_bands must be a non-empty object")
+        return
+    for band_key, band in bands.items():
+        if not isinstance(band, dict):
+            errors.append(f"{prefix} outcome_bands.{band_key} must be an object")
+            continue
+        if not isinstance(band.get("min_score"), (int, float)) or isinstance(band.get("min_score"), bool):
+            errors.append(f"{prefix} outcome_bands.{band_key}.min_score must be a number")
+        if not isinstance(band.get("label"), str):
+            errors.append(f"{prefix} outcome_bands.{band_key}.label must be a string")
+    nsbo = cb.get("next_scene_by_outcome")
+    if not isinstance(nsbo, dict) or not nsbo:
+        errors.append(f"{prefix} next_scene_by_outcome must be a non-empty object")
+        return
+    band_keys = set(bands.keys())
+    nsbo_keys = set(nsbo.keys())
+    if band_keys != nsbo_keys:
+        missing = band_keys - nsbo_keys
+        extra = nsbo_keys - band_keys
+        errors.append(
+            f"{prefix} next_scene_by_outcome keys must match outcome_bands "
+            f"(missing={sorted(missing)}, extra={sorted(extra)})"
+        )
+
+
+def _validate_story_branching_type_game(game, errors):
+    """Error-accumulating validator for story_branching games.
+
+    Unlike _validate_story_branching_game (which raises), this function
+    appends strings to `errors` so callers can collect all problems.
+    Validates chat_breakout blocks on each scene.
+    """
+    gid = game.get("game_id", "unknown")
+    si = game.get("story_intro")
+    if not isinstance(si, dict):
+        errors.append(f"Story branching game {gid} missing 'story_intro'")
+        return
+    scenes = si.get("scenes")
+    if not isinstance(scenes, list) or len(scenes) < 1:
+        errors.append(f"Story branching game {gid}: story_intro needs 'scenes' array with at least 1 scene")
+        return
+    for scene in scenes:
+        scene_id = scene.get("scene_id") or scene.get("id") or "?"
+        _validate_chat_breakout(scene, scene_id, errors)
 
 
 def validate_negotiation_game(ng: dict) -> None:
