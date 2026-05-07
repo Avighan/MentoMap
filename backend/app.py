@@ -1815,6 +1815,10 @@ _DISCOVER_WHITELIST = {
     'summer-sports-league',
     'summer-sports-league-v2',
     'the-substitute-teacher',  # mystery_room pilot
+    # Hybrid narrative-negotiation pilot (chat_breakout)
+    'the-treaty',
+    'the-great-bazaar-deal',
+    'the-street-market-negotiator',
     'ai-prompt-lab-school',    # ai_lab pilot (AI Literacy module W2)
     # Audit-followup grader pilots (12 new game types)
     'pendulum-lab-physics',
