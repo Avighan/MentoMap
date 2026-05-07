@@ -315,6 +315,7 @@ def test_breakout_chat_returns_ai_message_and_increments_turn(monkeypatch, clien
     }
     _seed_run(monkeypatch, scene)
     import app as appmod
+    monkeypatch.setattr(appmod, "update_run", lambda rid, r: None)
     monkeypatch.setattr(
         appmod, "negotiation_ai_response",
         lambda **kw: {"response": "We hear you.", "analysis": {"relationship_impact": 5, "empathy_impact": 5}},
@@ -342,6 +343,7 @@ def test_breakout_chat_closes_at_max_turns_and_returns_outcome(monkeypatch, clie
     }
     _seed_run(monkeypatch, scene)
     import app as appmod
+    monkeypatch.setattr(appmod, "update_run", lambda rid, r: None)
     monkeypatch.setattr(
         appmod, "negotiation_ai_response",
         lambda **kw: {"response": "Deal.", "analysis": {"relationship_impact": 30, "empathy_impact": 30, "assertiveness_impact": 10}},
@@ -349,8 +351,11 @@ def test_breakout_chat_closes_at_max_turns_and_returns_outcome(monkeypatch, clie
     resp = client.post("/api/run/r1/breakout-chat", json={"scene_id": "ch3_s2", "message": "Let's share credit"})
     body = resp.get_json()
     assert body["closed"] is True
-    assert body["outcome"] in ("great", "poor")
-    assert body["next_scene_id"] in ("ch3_s3_g", "ch3_s3_p")
+    assert body["outcome"] == "great"
+    assert body["next_scene_id"] == "ch3_s3_g"
+    # Verify the breakout was logged for the report scorer
+    log = appmod.get_run("r1").get("log", [])
+    assert any(e.get("type") == "chat_breakout" and e.get("scene_id") == "ch3_s2" for e in log)
 
 
 def test_breakout_chat_400_when_scene_not_a_breakout(monkeypatch, client):
@@ -359,3 +364,52 @@ def test_breakout_chat_400_when_scene_not_a_breakout(monkeypatch, client):
     resp = client.post("/api/run/r1/breakout-chat", json={"scene_id": "ch1_s1", "message": "hi"})
     assert resp.status_code == 400
     assert "not a chat_breakout" in resp.get_json()["error"].lower() or "breakout" in resp.get_json()["error"].lower()
+
+
+def test_breakout_chat_applies_state_delta_on_close(monkeypatch, client):
+    # State object with a numeric attribute that should get the delta applied
+    class FakeState:
+        pass
+    fake_state = FakeState()
+    fake_state.trust = 40  # plain int
+
+    scene = {
+        "scene_id": "ch3_s2",
+        "narrative": "x",
+        "chat_breakout": {
+            "ai_persona": {"name": "Marlow"},
+            "opening_message": "ok",
+            "max_turns": 1,
+            "outcome_bands": {"great": {"min_score": 75, "label": "ok"}, "poor": {"min_score": 0, "label": "no"}},
+            "next_scene_by_outcome": {"great": "ch3_s3_g", "poor": "ch3_s3_p"},
+            "state_delta_by_outcome": {"great": {"trust": 15}, "poor": {"trust": -10}},
+        },
+    }
+    fake_run = {
+        "run_id": "r2",
+        "game_id": "test-game",
+        "state": fake_state,
+        "log": [],
+        "breakouts": {},
+        "current_scene_id": scene["scene_id"],
+    }
+    fake_game = {
+        "game_id": "test-game",
+        "game_type": "story_branching",
+        "story_intro": {"scenes": [scene]},
+    }
+    import app as appmod
+    monkeypatch.setattr(appmod, "get_run", lambda rid: fake_run if rid == "r2" else (_ for _ in ()).throw(KeyError(rid)))
+    monkeypatch.setattr(appmod, "get_game_or_400", lambda gid: (fake_game, None))
+    monkeypatch.setattr(appmod, "update_run", lambda rid, r: None)  # no-op persist
+    monkeypatch.setattr(
+        appmod, "negotiation_ai_response",
+        lambda **kw: {"response": "Deal.", "analysis": {"relationship_impact": 30, "empathy_impact": 30, "assertiveness_impact": 10}},
+    )
+    resp = client.post("/api/run/r2/breakout-chat", json={"scene_id": "ch3_s2", "message": "Let's share credit"})
+    assert resp.status_code == 200, resp.data
+    body = resp.get_json()
+    assert body["closed"] is True
+    assert body["outcome"] == "great"
+    # Delta of +15 should have been applied
+    assert fake_state.trust == 55

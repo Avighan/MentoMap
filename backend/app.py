@@ -15702,6 +15702,10 @@ def breakout_chat(run_id):
     cb = scene.get("chat_breakout")
     if not cb:
         return jsonify({"error": f"Scene '{scene_id}' is not a chat_breakout"}), 400
+    required = {"ai_persona", "outcome_bands", "next_scene_by_outcome"}
+    missing = required - set(cb.keys())
+    if missing:
+        return jsonify({"error": f"chat_breakout missing required keys: {sorted(missing)}"}), 400
 
     bo = _get_breakout_state(r, scene_id)
     if bo["closed"]:
@@ -15777,6 +15781,7 @@ def breakout_chat(run_id):
             "turn_count": bo["turn"],
         })
 
+    update_run(run_id, r)
     return jsonify(response)
 
 
