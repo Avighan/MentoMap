@@ -413,3 +413,42 @@ def test_breakout_chat_applies_state_delta_on_close(monkeypatch, client):
     assert body["outcome"] == "great"
     # Delta of +15 should have been applied
     assert fake_state.trust == 55
+
+
+def test_the_treaty_loads_with_breakouts():
+    import json, os
+    path = os.path.join(os.path.dirname(__file__), "..", "games", "the-treaty.json")
+    d = json.load(open(path))
+    scenes = (d.get("story_intro") or {}).get("scenes", []) or (d.get("story") or {}).get("branches", [])
+    breakout_scenes = [s for s in scenes if "chat_breakout" in s]
+    assert len(breakout_scenes) == 3, f"expected 3 breakouts, got {len(breakout_scenes)}"
+    from schemas import _validate_story_branching_type_game
+    errors = []
+    _validate_story_branching_type_game(d, errors)
+    assert errors == [], errors
+
+
+def test_bazaar_deal_loads_with_breakouts():
+    import json, os
+    path = os.path.join(os.path.dirname(__file__), "..", "games", "the-great-bazaar-deal.json")
+    d = json.load(open(path))
+    scenes = (d.get("story_intro") or {}).get("scenes", []) or (d.get("story") or {}).get("branches", [])
+    breakout_scenes = [s for s in scenes if "chat_breakout" in s]
+    assert len(breakout_scenes) == 3
+    from schemas import _validate_story_branching_type_game
+    errors = []
+    _validate_story_branching_type_game(d, errors)
+    assert errors == [], errors
+
+
+def test_street_market_loads_with_breakouts():
+    import json, os
+    path = os.path.join(os.path.dirname(__file__), "..", "games", "the-street-market-negotiator.json")
+    d = json.load(open(path))
+    scenes = (d.get("story_intro") or {}).get("scenes", []) or (d.get("story") or {}).get("branches", [])
+    breakout_scenes = [s for s in scenes if "chat_breakout" in s]
+    assert len(breakout_scenes) == 3
+    from schemas import _validate_story_branching_type_game
+    errors = []
+    _validate_story_branching_type_game(d, errors)
+    assert errors == [], errors
