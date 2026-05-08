@@ -331,3 +331,73 @@ def test_invalid_qty_rejected():
     })
     assert result["status"] == "rejected"
     assert result["error_code"] == "INVALID_ORDER"
+
+
+def test_t1_blocks_same_day_sell():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    eng.place_order(state, {"tick": 1, "symbol": "TECHV",
+                            "side": "buy", "qty": 5, "order_type": "market"})
+    result = eng.place_order(state, {"tick": 5, "symbol": "TECHV",
+                                     "side": "sell", "qty": 5, "order_type": "market"})
+    assert result["status"] == "rejected"
+    assert result["error_code"] == "SETTLEMENT_PENDING"
+
+
+def test_t1_allows_next_day_sell_after_advance():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    eng.place_order(state, {"tick": 1, "symbol": "TECHV",
+                            "side": "buy", "qty": 5, "order_type": "market"})
+    eng.advance_to_tick(state, 22)
+    result = eng.place_order(state, {"tick": 22, "symbol": "TECHV",
+                                     "side": "sell", "qty": 5, "order_type": "market"})
+    assert result["status"] == "filled"
+
+
+def test_stop_loss_triggers_on_price_cross():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    state["holdings"]["TECHV"] = {"qty": 10, "avg_price": 1200.0, "settled_qty": 10}
+    state["pending_orders"].append({
+        "order_id": "sl-1", "type": "stop_loss", "side": "sell",
+        "symbol": "TECHV", "qty": 10, "stop_price": 99999.0,
+        "placed_tick": 0,
+    })
+    eng.advance_to_tick(state, 5)
+    assert state["holdings"].get("TECHV") is None or state["holdings"]["TECHV"]["qty"] == 0
+    assert any(t.get("symbol") == "TECHV" and t.get("side") == "sell"
+               for t in state["trade_log"])
+
+
+def test_circuit_breaker_blocks_orders():
+    cfg = {**VALID_CONFIG, "circuit_breaker_pct": [3]}
+    eng = StockMarketEngine(cfg)
+    state = eng.start_session(seed=42, profile="day_trader")
+    triggered_tick = None
+    for t in range(1, 23):
+        q = eng.price_at(state, "TECHV", t)
+        if abs(q["mid"] - 1200.0) / 1200.0 > 0.03:
+            triggered_tick = t
+            break
+    if triggered_tick is None:
+        pytest.skip("seed 42 didn't move TECHV >3% in 22 ticks")
+    eng.advance_to_tick(state, triggered_tick)
+    result = eng.place_order(state, {"tick": triggered_tick, "symbol": "TECHV",
+                                     "side": "buy", "qty": 1, "order_type": "market"})
+    assert result["status"] == "rejected"
+    assert result["error_code"] == "MARKET_HALTED"
+
+
+def test_sip_executes_on_scheduled_tick():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    state["pending_orders"].append({
+        "order_id": "sip-1", "type": "sip", "side": "buy",
+        "symbol": "TECHV", "amount": 1000.0, "schedule_tick": 5,
+        "placed_tick": 0,
+    })
+    eng.advance_to_tick(state, 5)
+    assert state["holdings"].get("TECHV", {}).get("qty", 0) > 0
+    assert any(t.get("symbol") == "TECHV" and "sip" in str(t.get("order_id", ""))
+               or t.get("symbol") == "TECHV" for t in state["trade_log"])

@@ -83,3 +83,7 @@ class StockMarketEngine:
     def place_order(self, state: dict, order: dict) -> dict:
         from engines.stocksim.orders import place_order
         return place_order(state, order, self.config)
+
+    def advance_to_tick(self, state: dict, tick: int) -> dict:
+        from engines.stocksim.orders import advance_to_tick
+        return advance_to_tick(state, tick, self.config)
