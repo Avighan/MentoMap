@@ -252,7 +252,15 @@ def _sweep_pending_orders(state: dict, config: dict, current_tick: int) -> None:
 
 
 def advance_to_tick(state: dict, tick: int, config: dict) -> dict:
-    """Lazy sweep: fire pending orders, T+1 settle, then update circuit breakers."""
+    """Lazy sweep: fire pending orders, T+1 settle, then update circuit breakers.
+
+    Order rationale (deviates from initial spec): halted_symbols is a flat
+    per-session flag, not per-tick. If breakers were checked first, a halt set
+    at the destination tick would retroactively block fills that historically
+    triggered at earlier (un-halted) ticks during the sweep. Filling pending
+    orders first preserves their tick-of-trigger semantics; the halt then takes
+    effect for any subsequent direct place_order calls in this session.
+    """
     if tick <= state.get("current_tick", 0):
         return {"current_tick": state["current_tick"]}
     _sweep_pending_orders(state, config, tick)
