@@ -5,7 +5,6 @@ Matching against bid-ask spread. Charges applied per Task 3.
 T+1 settlement queue tracked here; sells of unsettled qty are rejected.
 """
 from __future__ import annotations
-from typing import Any
 import uuid
 
 from engines.stocksim.pricing import price_from_seed
