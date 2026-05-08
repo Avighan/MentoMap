@@ -12,7 +12,7 @@ class ChargesError(Exception):
 
 
 def compute_charges(side: str, qty: int, price: float, cfg: dict) -> dict:
-    """Return charges breakdown {brokerage, stt, exchange, gst, total} in Rs.
+    """Return charges breakdown {brokerage, stt, exchange, gst, total} in ₹.
 
     Args:
         side: 'buy' or 'sell'
@@ -20,6 +20,13 @@ def compute_charges(side: str, qty: int, price: float, cfg: dict) -> dict:
         price: per-share fill price
         cfg: charges sub-config
     """
+    if side not in ("buy", "sell"):
+        raise ValueError(f"side must be 'buy' or 'sell', got {side!r}")
+    if qty <= 0:
+        raise ValueError(f"qty must be positive, got {qty}")
+    if price <= 0:
+        raise ValueError(f"price must be positive, got {price}")
+
     trade_value = qty * price
     brokerage = float(cfg.get("brokerage_per_trade", 0))
 
@@ -38,10 +45,14 @@ def compute_charges(side: str, qty: int, price: float, cfg: dict) -> dict:
             f"charges {total:.2f} exceed 5% of trade value {trade_value:.2f}"
         )
 
+    brokerage_r = round(brokerage, 2)
+    stt_r = round(stt, 2)
+    exchange_r = round(exchange, 2)
+    gst_r = round(gst, 2)
     return {
-        "brokerage": round(brokerage, 2),
-        "stt": round(stt, 2),
-        "exchange": round(exchange, 2),
-        "gst": round(gst, 2),
-        "total": round(total, 2),
+        "brokerage": brokerage_r,
+        "stt": stt_r,
+        "exchange": exchange_r,
+        "gst": gst_r,
+        "total": round(brokerage_r + stt_r + exchange_r + gst_r, 2),
     }

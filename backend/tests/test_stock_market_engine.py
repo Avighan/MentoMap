@@ -191,8 +191,11 @@ def test_charges_breakdown_buy():
 def test_charges_breakdown_sell():
     from engines.stocksim.charges import compute_charges
     c = compute_charges(side="sell", qty=10, price=1000.0, cfg=VALID_CONFIG["charges"])
-    assert c["stt"] > 0  # STT applies on sell
-    assert c["total"] > 0
+    # STT on sell = 10000 * 0.001 = 10.0
+    assert abs(c["stt"] - 10.0) < 0.01
+    assert c["brokerage"] == 20.0
+    # total ≈ 30.345 + GST(18% of 20.345) = 30.345 + 3.66 ≈ 34.01
+    assert 33.5 < c["total"] < 34.5
 
 
 def test_charges_capped_at_5pct_raises():
@@ -202,3 +205,29 @@ def test_charges_capped_at_5pct_raises():
     # Trade value is ₹100, brokerage alone ₹9999 → way above 5%
     with pytest.raises(ChargesError):
         compute_charges(side="buy", qty=1, price=100.0, cfg=bad_cfg)
+
+
+def test_charges_rejects_invalid_side():
+    from engines.stocksim.charges import compute_charges
+    with pytest.raises(ValueError, match="side must be"):
+        compute_charges(side="LIMIT", qty=1, price=100.0, cfg=VALID_CONFIG["charges"])
+
+
+def test_charges_rejects_zero_qty():
+    from engines.stocksim.charges import compute_charges
+    with pytest.raises(ValueError, match="qty must be positive"):
+        compute_charges(side="buy", qty=0, price=100.0, cfg=VALID_CONFIG["charges"])
+
+
+def test_charges_rejects_negative_price():
+    from engines.stocksim.charges import compute_charges
+    with pytest.raises(ValueError, match="price must be positive"):
+        compute_charges(side="buy", qty=1, price=-50.0, cfg=VALID_CONFIG["charges"])
+
+
+def test_charges_total_equals_sum_of_components():
+    """Regression: total must equal sum of rounded components."""
+    from engines.stocksim.charges import compute_charges
+    c = compute_charges(side="buy", qty=10, price=1000.0, cfg=VALID_CONFIG["charges"])
+    expected = round(c["brokerage"] + c["stt"] + c["exchange"] + c["gst"], 2)
+    assert c["total"] == expected
