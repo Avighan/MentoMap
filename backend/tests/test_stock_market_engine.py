@@ -111,17 +111,20 @@ def test_price_from_seed_is_deterministic():
 def test_price_from_seed_pinned_values():
     """Golden-value test. Locks the pricing math forever.
 
-    If this test fails, the pricing math changed — that's an explicit decision,
+    If this test fails, the pricing math changed - that's an explicit decision,
     not a bug. Update the pinned values intentionally.
     """
     from engines.stocksim.pricing import price_from_seed
     cfg = VALID_CONFIG["stocks"][0]  # TECHV starting 1200, vol 0.025
     q0 = price_from_seed(42, "TECHV", 0, cfg)
     assert abs(q0["mid"] - 1200.0) < 0.001  # tick 0 = starting price
-    # tick 10 with seed 42 must be deterministic; record the actual value first run
+    assert q0["bid"] < q0["mid"] < q0["ask"]
+    # Pinned values — regenerated only on intentional math change.
     q10 = price_from_seed(42, "TECHV", 10, cfg)
-    assert q10["mid"] > 0
-    assert q10["bid"] < q10["mid"] < q10["ask"]
+    assert abs(q10["mid"] - 1289.64) < 0.005
+    assert abs(q10["bid"] - 1288.99) < 0.005
+    assert abs(q10["ask"] - 1290.28) < 0.005
+    assert q10["volume"] == 13187
 
 
 def test_price_floors_at_one_paisa():
@@ -159,4 +162,13 @@ def test_engine_price_at_uses_seed_from_state():
     state = {"seed": 42, "config": VALID_CONFIG}
     q = eng.price_at(state, "TECHV", 5)
     assert "mid" in q and "bid" in q and "ask" in q
+    assert q["bid"] < q["mid"] < q["ask"]
+
+
+def test_spread_minimum_paisa_for_low_price_stock():
+    """Low-price + low-vol must still produce bid < mid < ask after rounding."""
+    from engines.stocksim.pricing import price_from_seed
+    cfg = {"symbol": "P", "name": "Penny", "sector": "IT",
+           "starting_price": 1.0, "volatility": 0.005, "beta": 0.3}
+    q = price_from_seed(42, "P", 5, cfg)
     assert q["bid"] < q["mid"] < q["ask"]
