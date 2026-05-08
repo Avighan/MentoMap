@@ -172,3 +172,33 @@ def test_spread_minimum_paisa_for_low_price_stock():
            "starting_price": 1.0, "volatility": 0.005, "beta": 0.3}
     q = price_from_seed(42, "P", 5, cfg)
     assert q["bid"] < q["mid"] < q["ask"]
+
+
+def test_charges_breakdown_buy():
+    from engines.stocksim.charges import compute_charges
+    charges_cfg = VALID_CONFIG["charges"]
+    # Buy 10 shares @ ₹1000 = ₹10,000
+    c = compute_charges(side="buy", qty=10, price=1000.0, cfg=charges_cfg)
+    # brokerage 20 + STT (10000 * 0.001) = 10 + exchange (10000 * 0.0000345) = 0.345
+    # = 30.345 + GST (18% on brokerage+exchange = 18% of 20.345 = 3.66)
+    assert c["brokerage"] == 20.0
+    assert abs(c["stt"] - 10.0) < 0.01
+    assert abs(c["exchange"] - 0.345) < 0.01
+    assert abs(c["gst"] - 3.66) < 0.05
+    assert c["total"] > 30 and c["total"] < 35
+
+
+def test_charges_breakdown_sell():
+    from engines.stocksim.charges import compute_charges
+    c = compute_charges(side="sell", qty=10, price=1000.0, cfg=VALID_CONFIG["charges"])
+    assert c["stt"] > 0  # STT applies on sell
+    assert c["total"] > 0
+
+
+def test_charges_capped_at_5pct_raises():
+    from engines.stocksim.charges import compute_charges, ChargesError
+    bad_cfg = {"brokerage_per_trade": 9999, "stt_buy_pct": 0, "stt_sell_pct": 0,
+               "exchange_pct": 0, "gst_pct": 0}
+    # Trade value is ₹100, brokerage alone ₹9999 → way above 5%
+    with pytest.raises(ChargesError):
+        compute_charges(side="buy", qty=1, price=100.0, cfg=bad_cfg)
