@@ -44,7 +44,7 @@ def test_engine_constructs_with_valid_config():
 
 
 def test_engine_rejects_missing_tick_count():
-    bad = dict(VALID_CONFIG)
+    bad = {**VALID_CONFIG}
     del bad["tick_count"]
     eng = StockMarketEngine(bad)
     result = eng.validate()
@@ -74,6 +74,23 @@ def test_engine_rejects_negative_starting_price():
     result = eng.validate()
     assert result["valid"] is False
     assert any("starting_price" in e for e in result["errors"])
+
+
+def test_engine_rejects_zero_starting_price():
+    bad = {**VALID_CONFIG, "stocks": [{"symbol": "X", "name": "X",
+           "sector": "IT", "starting_price": 0, "volatility": 0.02, "beta": 1.0}]}
+    eng = StockMarketEngine(bad)
+    result = eng.validate()
+    assert result["valid"] is False
+    assert any("starting_price" in e for e in result["errors"])
+
+
+def test_engine_rejects_bool_tick_count():
+    bad = {**VALID_CONFIG, "tick_count": True}
+    eng = StockMarketEngine(bad)
+    result = eng.validate()
+    assert result["valid"] is False
+    assert any("tick_count" in e for e in result["errors"])
 
 
 def test_engine_rejects_volatility_out_of_range():

@@ -21,7 +21,7 @@ class StockMarketEngine:
 
         if "tick_count" not in cfg:
             errors.append("missing required key 'tick_count'")
-        elif not isinstance(cfg["tick_count"], int) or cfg["tick_count"] < 1:
+        elif not isinstance(cfg["tick_count"], int) or isinstance(cfg["tick_count"], bool) or cfg["tick_count"] < 1:
             errors.append("'tick_count' must be a positive integer")
 
         if "stocks" not in cfg or not isinstance(cfg.get("stocks"), list) or len(cfg["stocks"]) == 0:
