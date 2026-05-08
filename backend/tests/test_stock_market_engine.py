@@ -431,3 +431,46 @@ def test_event_at_returns_none_when_quiet():
     eng = StockMarketEngine(VALID_CONFIG)
     state = eng.start_session(seed=42, profile="day_trader")
     assert eng.event_at(state, 3) is None
+
+
+def test_news_once_at_T_fires_only_on_T():
+    cfg = {**VALID_CONFIG, "events": [
+        {"id": "earnings_call", "tick_pattern": "once_at_7",
+         "headline": "Q3 results", "category": "earnings", "severity": "major"},
+    ]}
+    eng = StockMarketEngine(cfg)
+    state = eng.start_session(seed=42, profile="day_trader")
+    assert len(eng.news_at(state, 6)) == 0
+    assert len(eng.news_at(state, 7)) == 1
+    assert eng.news_at(state, 7)[0]["id"] == "earnings_call"
+    assert len(eng.news_at(state, 8)) == 0
+
+
+def test_event_at_returns_major_severity_when_present():
+    cfg = {**VALID_CONFIG, "events": [
+        {"id": "info_blip", "tick_pattern": "every_3",
+         "headline": "minor blip", "severity": "info"},
+        {"id": "rate_decision", "tick_pattern": "once_at_3",
+         "headline": "RBI rate decision", "severity": "major"},
+    ]}
+    eng = StockMarketEngine(cfg)
+    state = eng.start_session(seed=42, profile="day_trader")
+    ev = eng.event_at(state, 3)
+    assert ev is not None
+    assert ev["id"] == "rate_decision"
+    assert ev["severity"] == "major"
+
+
+def test_news_returns_multiple_when_overlapping():
+    cfg = {**VALID_CONFIG, "events": [
+        {"id": "fii_in", "tick_pattern": "every_5",
+         "headline": "FII inflow", "category": "fii_flow"},
+        {"id": "dii_in", "tick_pattern": "every_5",
+         "headline": "DII inflow", "category": "dii_flow"},
+    ]}
+    eng = StockMarketEngine(cfg)
+    state = eng.start_session(seed=42, profile="day_trader")
+    items = eng.news_at(state, 5)
+    assert len(items) == 2
+    ids = {n["id"] for n in items}
+    assert ids == {"fii_in", "dii_in"}
