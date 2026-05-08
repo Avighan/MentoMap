@@ -87,3 +87,11 @@ class StockMarketEngine:
     def advance_to_tick(self, state: dict, tick: int) -> dict:
         from engines.stocksim.orders import advance_to_tick
         return advance_to_tick(state, tick, self.config)
+
+    def news_at(self, state: dict, tick: int) -> list:
+        from engines.stocksim.events import news_at
+        return news_at(state, tick, self.config)
+
+    def event_at(self, state: dict, tick: int):
+        from engines.stocksim.events import event_at
+        return event_at(state, tick, self.config)

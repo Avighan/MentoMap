@@ -401,3 +401,33 @@ def test_sip_executes_on_scheduled_tick():
     assert state["holdings"].get("TECHV", {}).get("qty", 0) > 0
     assert any(t.get("symbol") == "TECHV" and "sip" in str(t.get("order_id", ""))
                or t.get("symbol") == "TECHV" for t in state["trade_log"])
+
+
+def test_news_at_is_deterministic():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    n1 = eng.news_at(state, 5)
+    n2 = eng.news_at(state, 5)
+    assert n1 == n2
+
+
+def test_news_drops_periodically():
+    cfg_with_events = {**VALID_CONFIG, "events": [
+        {"id": "fii_flow_positive", "tick_pattern": "every_5",
+         "symbols": ["TECHV"], "headline": "FII inflow ₹2400cr",
+         "category": "fii_flow", "severity": "info"},
+    ]}
+    eng = StockMarketEngine(cfg_with_events)
+    state = eng.start_session(seed=42, profile="day_trader")
+    n5 = eng.news_at(state, 5)
+    n10 = eng.news_at(state, 10)
+    n6 = eng.news_at(state, 6)
+    assert len(n5) >= 1
+    assert len(n10) >= 1
+    assert len(n6) == 0
+
+
+def test_event_at_returns_none_when_quiet():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    assert eng.event_at(state, 3) is None
