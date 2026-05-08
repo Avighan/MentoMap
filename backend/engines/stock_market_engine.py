@@ -45,3 +45,13 @@ class StockMarketEngine:
                     errors.append(f"unknown dimension '{dim}' in dimensions_config")
 
         return {"valid": not errors, "errors": errors, "warnings": warnings}
+
+    # ---- pricing ----
+    def price_at(self, state: dict, symbol: str, tick: int) -> dict:
+        """Public price lookup. Reads seed from state; delegates to pure function."""
+        from engines.stocksim.pricing import price_from_seed
+        seed = state["seed"]
+        cfg = next((s for s in self.config["stocks"] if s["symbol"] == symbol), None)
+        if cfg is None:
+            raise ValueError(f"unknown symbol: {symbol}")
+        return price_from_seed(seed, symbol, tick, cfg)

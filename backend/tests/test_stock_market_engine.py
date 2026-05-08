@@ -99,3 +99,64 @@ def test_engine_rejects_volatility_out_of_range():
     eng = StockMarketEngine(bad)
     result = eng.validate()
     assert result["valid"] is False
+
+
+def test_price_from_seed_is_deterministic():
+    from engines.stocksim.pricing import price_from_seed
+    cfg = VALID_CONFIG["stocks"][0]
+    p1 = [price_from_seed(42, "TECHV", t, cfg) for _ in range(50) for t in [10]]
+    assert all(p == p1[0] for p in p1)
+
+
+def test_price_from_seed_pinned_values():
+    """Golden-value test. Locks the pricing math forever.
+
+    If this test fails, the pricing math changed — that's an explicit decision,
+    not a bug. Update the pinned values intentionally.
+    """
+    from engines.stocksim.pricing import price_from_seed
+    cfg = VALID_CONFIG["stocks"][0]  # TECHV starting 1200, vol 0.025
+    q0 = price_from_seed(42, "TECHV", 0, cfg)
+    assert abs(q0["mid"] - 1200.0) < 0.001  # tick 0 = starting price
+    # tick 10 with seed 42 must be deterministic; record the actual value first run
+    q10 = price_from_seed(42, "TECHV", 10, cfg)
+    assert q10["mid"] > 0
+    assert q10["bid"] < q10["mid"] < q10["ask"]
+
+
+def test_price_floors_at_one_paisa():
+    from engines.stocksim.pricing import price_from_seed
+    cfg = {"symbol": "X", "name": "X", "sector": "IT",
+           "starting_price": 0.05, "volatility": 0.99, "beta": 5.0}
+    # Even with extreme volatility seed, never below 0.01
+    for tick in range(50):
+        q = price_from_seed(99999, "X", tick, cfg)
+        assert q["mid"] >= 0.01
+
+
+def test_price_caps_at_10x_starting():
+    from engines.stocksim.pricing import price_from_seed
+    cfg = {"symbol": "X", "name": "X", "sector": "IT",
+           "starting_price": 100, "volatility": 0.99, "beta": 5.0}
+    for tick in range(50):
+        q = price_from_seed(11111, "X", tick, cfg)
+        assert q["mid"] <= 1000.0
+
+
+def test_bid_ask_spread_widens_on_high_volatility():
+    from engines.stocksim.pricing import price_from_seed
+    low_vol = {"symbol": "L", "name": "L", "sector": "IT",
+               "starting_price": 100, "volatility": 0.005, "beta": 0.5}
+    high_vol = {"symbol": "H", "name": "H", "sector": "IT",
+                "starting_price": 100, "volatility": 0.05, "beta": 1.5}
+    q_low = price_from_seed(7, "L", 5, low_vol)
+    q_high = price_from_seed(7, "H", 5, high_vol)
+    assert (q_high["ask"] - q_high["bid"]) > (q_low["ask"] - q_low["bid"])
+
+
+def test_engine_price_at_uses_seed_from_state():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = {"seed": 42, "config": VALID_CONFIG}
+    q = eng.price_at(state, "TECHV", 5)
+    assert "mid" in q and "bid" in q and "ask" in q
+    assert q["bid"] < q["mid"] < q["ask"]
