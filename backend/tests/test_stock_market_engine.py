@@ -231,3 +231,103 @@ def test_charges_total_equals_sum_of_components():
     c = compute_charges(side="buy", qty=10, price=1000.0, cfg=VALID_CONFIG["charges"])
     expected = round(c["brokerage"] + c["stt"] + c["exchange"] + c["gst"], 2)
     assert c["total"] == expected
+
+
+def test_start_session_initializes_state():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    assert state["seed"] == 42
+    assert state["cash"] == 100000
+    assert state["holdings"] == {}
+    assert state["pending_orders"] == []
+    assert state["settlement_queue"] == []
+    assert state["trade_log"] == []
+    assert state["current_tick"] == 0
+    assert state["realized_pnl"] == 0
+    assert state["completed"] is False
+    assert "dimension_counters" in state
+
+
+def test_market_buy_fills_at_ask():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    quote = eng.price_at(state, "TECHV", 1)
+    result = eng.place_order(state, {
+        "tick": 1, "symbol": "TECHV", "side": "buy", "qty": 5,
+        "order_type": "market"
+    })
+    assert result["status"] == "filled"
+    assert abs(result["fill"]["price"] - quote["ask"]) < 0.01
+    assert state["holdings"].get("TECHV", {}).get("qty") == 5
+    assert state["cash"] < 100000
+
+
+def test_market_sell_fills_at_bid():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    state["holdings"]["TECHV"] = {"qty": 10, "avg_price": 1100.0, "settled_qty": 10}
+    quote = eng.price_at(state, "TECHV", 1)
+    result = eng.place_order(state, {
+        "tick": 1, "symbol": "TECHV", "side": "sell", "qty": 5,
+        "order_type": "market"
+    })
+    assert result["status"] == "filled"
+    assert abs(result["fill"]["price"] - quote["bid"]) < 0.01
+
+
+def test_limit_buy_below_ask_queues():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    quote = eng.price_at(state, "TECHV", 1)
+    result = eng.place_order(state, {
+        "tick": 1, "symbol": "TECHV", "side": "buy", "qty": 5,
+        "order_type": "limit", "limit_price": quote["ask"] - 50.0
+    })
+    assert result["status"] == "queued"
+    assert len(state["pending_orders"]) == 1
+
+
+def test_limit_buy_above_ask_fills_immediately():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    quote = eng.price_at(state, "TECHV", 1)
+    result = eng.place_order(state, {
+        "tick": 1, "symbol": "TECHV", "side": "buy", "qty": 5,
+        "order_type": "limit", "limit_price": quote["ask"] + 50.0
+    })
+    assert result["status"] == "filled"
+    assert state["pending_orders"] == []
+
+
+def test_insufficient_funds_rejected():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    state["cash"] = 100
+    result = eng.place_order(state, {
+        "tick": 1, "symbol": "TECHV", "side": "buy", "qty": 100,
+        "order_type": "market"
+    })
+    assert result["status"] == "rejected"
+    assert result["error_code"] == "INSUFFICIENT_FUNDS"
+
+
+def test_insufficient_holdings_rejected():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    result = eng.place_order(state, {
+        "tick": 1, "symbol": "TECHV", "side": "sell", "qty": 5,
+        "order_type": "market"
+    })
+    assert result["status"] == "rejected"
+    assert result["error_code"] == "INSUFFICIENT_HOLDINGS"
+
+
+def test_invalid_qty_rejected():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    result = eng.place_order(state, {
+        "tick": 1, "symbol": "TECHV", "side": "buy", "qty": 0,
+        "order_type": "market"
+    })
+    assert result["status"] == "rejected"
+    assert result["error_code"] == "INVALID_ORDER"

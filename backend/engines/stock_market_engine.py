@@ -55,3 +55,31 @@ class StockMarketEngine:
         if cfg is None:
             raise ValueError(f"unknown symbol: {symbol}")
         return price_from_seed(seed, symbol, tick, cfg)
+
+    # ---- session ----
+    def start_session(self, seed: int, profile: str = "day_trader") -> dict:
+        """Initialize fresh session state. Pure (no I/O)."""
+        starting_capital = float(self.config.get("starting_capital", 100000))
+        return {
+            "seed": int(seed),
+            "profile": profile,
+            "cash": starting_capital,
+            "holdings": {},
+            "pending_orders": [],
+            "settlement_queue": [],
+            "trade_log": [],
+            "current_tick": 0,
+            "realized_pnl": 0.0,
+            "completed": False,
+            "dimension_counters": {
+                "risk_tolerance": 0.0,
+                "delayed_gratification": 0.0,
+                "strategic_thinking": 0.0,
+                "financial_literacy": 0.0,
+            },
+        }
+
+    # ---- orders ----
+    def place_order(self, state: dict, order: dict) -> dict:
+        from engines.stocksim.orders import place_order
+        return place_order(state, order, self.config)
