@@ -12,12 +12,7 @@
  */
 import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const SEVERITY = {
-  info: 'bg-blue-50 text-blue-700 border-blue-200',
-  warning: 'bg-amber-50 text-amber-800 border-amber-200',
-  crisis: 'bg-red-50 text-red-700 border-red-200',
-};
+import { THEME } from './theme';
 
 const NewsTickerStrip = ({ newsStrip = [], currentTick = 0 }) => {
   const items = useMemo(() => {
@@ -37,11 +32,21 @@ const NewsTickerStrip = ({ newsStrip = [], currentTick = 0 }) => {
   return (
     <div
       data-testid="stocksim-news-strip"
-      className="px-6 py-2 overflow-x-auto whitespace-nowrap flex gap-2 bg-white/60 border-b border-gray-100"
+      className="px-6 py-2 overflow-x-auto whitespace-nowrap flex gap-2 items-center"
+      style={{
+        backgroundColor: THEME.bgTile,
+        borderBottom: `1px solid ${THEME.borderTile}`,
+      }}
     >
+      <span
+        aria-hidden="true"
+        className="text-base mr-1"
+        style={{ color: THEME.accentWarm }}
+      >
+        📰
+      </span>
       <AnimatePresence initial={false}>
         {items.map((item, idx) => {
-          const cls = SEVERITY[item.severity] || SEVERITY.info;
           return (
             <motion.span
               key={`${item.tick}-${idx}`}
@@ -49,9 +54,17 @@ const NewsTickerStrip = ({ newsStrip = [], currentTick = 0 }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.25 }}
-              className={`inline-flex items-center text-xs font-medium px-3 py-1 rounded-full border ${cls}`}
+              className="inline-flex items-center text-xs font-medium px-3 py-1 rounded-full"
+              style={{
+                color: THEME.textPrimary,
+                border: `1px solid ${THEME.borderTile}`,
+                backgroundColor: THEME.bgPage,
+              }}
             >
-              <span className="mr-2 text-[10px] uppercase tracking-wider opacity-70">
+              <span
+                className="mr-2 text-[10px] uppercase tracking-wider opacity-70"
+                style={{ color: THEME.textMuted }}
+              >
                 T{item.tick}
               </span>
               <span className="truncate max-w-[320px]">{item.text}</span>

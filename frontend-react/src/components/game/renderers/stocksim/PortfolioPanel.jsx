@@ -15,6 +15,7 @@
  *   pnl           { total, realized, unrealized }
  */
 import React from 'react';
+import { THEME, gainLossColor } from './theme';
 
 function fmt(n, digits = 2) {
   if (n === undefined || n === null || Number.isNaN(Number(n))) return '-';
@@ -41,34 +42,54 @@ const PortfolioPanel = ({
   return (
     <div data-testid="stocksim-portfolio-panel" className="flex flex-col gap-3">
       {/* Summary */}
-      <div className="bg-gray-50 rounded-xl p-4">
+      <div
+        className="rounded-xl p-4"
+        style={{
+          backgroundColor: THEME.bgTile,
+          border: `1px solid ${THEME.borderTile}`,
+        }}
+      >
         <div className="grid grid-cols-3 gap-3 text-center">
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-gray-400">
+            <div
+              className="text-[10px] uppercase tracking-wider"
+              style={{ color: THEME.textMuted }}
+            >
               Total
             </div>
             <div
               data-testid="stocksim-portfolio-value"
-              className="text-sm font-bold text-gray-800"
+              className="text-sm font-bold"
+              style={{ color: THEME.textPrimary }}
             >
               ₹{fmt(totalValue, 0)}
             </div>
           </div>
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-gray-400">
+            <div
+              className="text-[10px] uppercase tracking-wider"
+              style={{ color: THEME.textMuted }}
+            >
               Cash
             </div>
-            <div className="text-sm font-bold text-gray-800">₹{fmt(cash, 0)}</div>
+            <div
+              className="text-sm font-bold"
+              style={{ color: THEME.textPrimary }}
+            >
+              ₹{fmt(cash, 0)}
+            </div>
           </div>
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-gray-400">
+            <div
+              className="text-[10px] uppercase tracking-wider"
+              style={{ color: THEME.textMuted }}
+            >
               P&L
             </div>
             <div
               data-testid="stocksim-pnl"
-              className={`text-sm font-bold ${
-                (pnl?.total || 0) >= 0 ? 'text-green-600' : 'text-red-600'
-              }`}
+              className="text-sm font-bold"
+              style={{ color: gainLossColor(pnl?.total || 0) }}
             >
               {(pnl?.total || 0) >= 0 ? '+' : ''}₹{fmt(pnl?.total || 0, 0)}
             </div>
@@ -77,12 +98,24 @@ const PortfolioPanel = ({
       </div>
 
       {/* Holdings */}
-      <div className="bg-gray-50 rounded-xl p-4">
-        <h4 className="text-xs uppercase tracking-wider text-gray-400 font-semibold mb-3">
+      <div
+        className="rounded-xl p-4"
+        style={{
+          backgroundColor: THEME.bgTile,
+          border: `1px solid ${THEME.borderTile}`,
+        }}
+      >
+        <h4
+          className="text-xs uppercase tracking-wider font-semibold mb-3"
+          style={{ color: THEME.textMuted }}
+        >
           Holdings
         </h4>
         {heldSymbols.length === 0 ? (
-          <p className="text-xs text-gray-400 text-center py-2">
+          <p
+            className="text-xs text-center py-2"
+            style={{ color: THEME.textMuted }}
+          >
             No stocks held yet
           </p>
         ) : (
@@ -103,17 +136,26 @@ const PortfolioPanel = ({
                   className="flex items-center justify-between text-xs"
                 >
                   <div className="flex flex-col">
-                    <span className="font-bold text-gray-800">{sym}</span>
-                    <span className="text-[10px] text-gray-400">
+                    <span
+                      className="font-bold"
+                      style={{ color: THEME.textPrimary }}
+                    >
+                      {sym}
+                    </span>
+                    <span
+                      className="text-[10px]"
+                      style={{ color: THEME.textMuted }}
+                    >
                       {h.qty}× @ ₹{fmt(h.avg_price, 2)}
                     </span>
                   </div>
                   <div className="text-right">
-                    <div className="text-gray-700">₹{fmt(cur, 2)}</div>
+                    <div style={{ color: THEME.textPrimary }}>
+                      ₹{fmt(cur, 2)}
+                    </div>
                     <div
-                      className={`text-[10px] font-bold ${
-                        pos ? 'text-green-600' : 'text-red-600'
-                      }`}
+                      className="text-[10px] font-bold"
+                      style={{ color: gainLossColor(u) }}
                     >
                       {pos ? '+' : ''}₹{fmt(u, 0)} ({pos ? '+' : ''}
                       {upct.toFixed(1)}%)
@@ -128,8 +170,17 @@ const PortfolioPanel = ({
 
       {/* Recent trades */}
       {recentTrades.length > 0 && (
-        <div className="bg-gray-50 rounded-xl p-4">
-          <h4 className="text-xs uppercase tracking-wider text-gray-400 font-semibold mb-2">
+        <div
+          className="rounded-xl p-4"
+          style={{
+            backgroundColor: THEME.bgTile,
+            border: `1px solid ${THEME.borderTile}`,
+          }}
+        >
+          <h4
+            className="text-xs uppercase tracking-wider font-semibold mb-2"
+            style={{ color: THEME.textMuted }}
+          >
             Recent Trades
           </h4>
           <div className="space-y-1 max-h-32 overflow-y-auto">
@@ -141,12 +192,10 @@ const PortfolioPanel = ({
                   key={`${t.tick ?? 'x'}-${t.symbol ?? ''}-${t.side ?? ''}-${i}`}
                   className="flex items-center justify-between text-xs"
                 >
-                  <span
-                    className={isBuy ? 'text-green-600' : 'text-red-600'}
-                  >
+                  <span style={{ color: isBuy ? THEME.gain : THEME.loss }}>
                     {isBuy ? '▲ Buy' : '▼ Sell'} {t.qty}× {t.symbol || t.stock}
                   </span>
-                  <span className="text-gray-400">
+                  <span style={{ color: THEME.textMuted }}>
                     @₹{fmt(t.price, 2)}
                     {t.tick !== undefined ? ` T${t.tick}` : ''}
                   </span>

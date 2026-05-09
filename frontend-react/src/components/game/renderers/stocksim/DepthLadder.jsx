@@ -14,6 +14,7 @@
  *   volume  number  current tick volume (used to taper synthesised sizes)
  */
 import React, { useMemo } from 'react';
+import { THEME } from './theme';
 
 function buildLadder(bid, ask, mid, volume) {
   const safeMid = Number(mid) || Number(bid) || 0;
@@ -50,44 +51,67 @@ const DepthLadder = ({ bid, ask, mid, volume }) => {
   return (
     <div
       data-testid="stocksim-depth-ladder"
-      className="bg-white rounded-xl border border-gray-100 p-2 text-[11px] font-mono"
-      style={{ width: 160 }}
+      className="rounded-xl p-2 text-[11px] font-mono"
+      style={{
+        width: 160,
+        backgroundColor: THEME.bgTile,
+        border: `1px solid ${THEME.borderTile}`,
+      }}
     >
-      <div className="flex justify-between text-[9px] uppercase tracking-wider text-gray-400 px-1 pb-1 border-b border-gray-100">
+      <div
+        className="flex justify-between text-[9px] uppercase tracking-wider px-1 pb-1"
+        style={{
+          color: THEME.textMuted,
+          borderBottom: `1px solid ${THEME.borderTile}`,
+        }}
+      >
         <span>Price</span>
         <span>Qty</span>
       </div>
 
-      {/* Ask side (red) */}
+      {/* Ask side (loss) */}
       <div className="py-1">
         {asks.map((row, idx) => (
           <div
             key={`a-${idx}`}
             className="flex justify-between items-center px-1 py-0.5 rounded"
-            style={{ backgroundColor: `rgba(239, 68, 68, ${0.05 + idx * 0.02})` }}
+            style={{ backgroundColor: `rgba(163, 45, 45, ${0.05 + idx * 0.02})` }}
           >
-            <span className="text-red-600">{row.px.toFixed(2)}</span>
-            <span className="text-gray-500">{row.qty}</span>
+            <span style={{ color: THEME.loss }}>{row.px.toFixed(2)}</span>
+            <span style={{ color: THEME.textMuted }}>{row.qty}</span>
           </div>
         ))}
       </div>
 
       {/* Mid */}
-      <div className="my-1 py-1 text-center bg-gray-50 rounded border border-dashed border-gray-200">
-        <span className="text-[10px] uppercase text-gray-400 mr-1">Mid</span>
-        <span className="font-bold text-gray-800">₹{safeMid.toFixed(2)}</span>
+      <div
+        className="my-1 py-1 text-center rounded"
+        style={{
+          backgroundColor: THEME.bgPage,
+          border: `1px dashed ${THEME.borderTile}`,
+        }}
+      >
+        <span
+          className="text-[10px] uppercase mr-1"
+          style={{ color: THEME.textMuted }}
+        >
+          Mid
+        </span>
+        <span className="font-bold" style={{ color: THEME.textPrimary }}>
+          ₹{safeMid.toFixed(2)}
+        </span>
       </div>
 
-      {/* Bid side (green) */}
+      {/* Bid side (gain) */}
       <div className="py-1">
         {bids.map((row, idx) => (
           <div
             key={`b-${idx}`}
             className="flex justify-between items-center px-1 py-0.5 rounded"
-            style={{ backgroundColor: `rgba(34, 197, 94, ${0.05 + idx * 0.02})` }}
+            style={{ backgroundColor: `rgba(15, 110, 86, ${0.05 + idx * 0.02})` }}
           >
-            <span className="text-green-600">{row.px.toFixed(2)}</span>
-            <span className="text-gray-500">{row.qty}</span>
+            <span style={{ color: THEME.gain }}>{row.px.toFixed(2)}</span>
+            <span style={{ color: THEME.textMuted }}>{row.qty}</span>
           </div>
         ))}
       </div>
