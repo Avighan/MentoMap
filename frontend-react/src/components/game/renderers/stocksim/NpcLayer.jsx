@@ -2,7 +2,8 @@ import React, { createContext, useCallback, useContext, useRef, useState } from 
 import { useTranslation } from 'react-i18next';
 import { THEME } from './theme';
 
-const NpcContext = createContext(null);
+const NOOP_NPC = { say: () => {}, dismiss: () => {}, active: null };
+const NpcContext = createContext(NOOP_NPC);
 
 const COOLDOWNS = {
   broker: 4,
@@ -36,9 +37,7 @@ export function NpcLayerProvider({ currentTick = 0, children }) {
 }
 
 export function useNpc() {
-  const ctx = useContext(NpcContext);
-  if (!ctx) throw new Error('useNpc must be used inside NpcLayerProvider');
-  return ctx;
+  return useContext(NpcContext);
 }
 
 const PERSONA_ICON = { broker: '💼', journalist: '📰', analyst: '🤖', mentor: '🧭' };

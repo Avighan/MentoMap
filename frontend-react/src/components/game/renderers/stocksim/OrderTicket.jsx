@@ -123,8 +123,8 @@ const OrderTicket = ({
     if (orderType === 'limit') payload.limit_price = parseFloat(limitPrice) || mid;
     if (orderType === 'stop') payload.stop_price = parseFloat(stopPrice) || mid;
     if (orderType !== 'sip') {
-      payload.target_pct = targetOn ? 5 : null;
-      payload.stop_pct = stopOn ? -3 : null;
+      if (targetOn) payload.target_pct = 5;
+      if (stopOn) payload.stop_pct = -3;
       const line = brokerOnTrade(payload, riskPct);
       if (line) npc.say('broker', line);
     }
@@ -280,7 +280,7 @@ const OrderTicket = ({
           </div>
           <div data-testid="order-sizer" style={{ fontSize: 10, color: THEME.textMuted, marginTop: 4 }}>
             @ qty={qty || 0} → ₹{totalCost.toLocaleString('en-IN')} ({riskPct.toFixed(1)}% of cash) ·
-            +5% = +₹{fivePctMove.toFixed(2)} / −5% = −₹{fivePctMove.toFixed(2)}
+            +5% = +₹{fivePctMove.toFixed(2)} / −3% = −₹{(totalCost * 0.03).toFixed(2)}
           </div>
           <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
             <button
