@@ -811,14 +811,14 @@ def _validate_stock_market_minigame(g):
                 raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers' max length is 3")
             for pidx, peer in enumerate(peers):
                 if not isinstance(peer, dict):
-                    raise ValueError(f"stock_market game {gid} stock[{i}].peers[{pidx}] must be an object")
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers[{pidx}]' must be an object")
                 for required in ("symbol", "name"):
                     if not isinstance(peer.get(required), str) or not peer.get(required):
-                        raise ValueError(f"stock_market game {gid} stock[{i}].peers[{pidx}].{required} required string")
+                        raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers[{pidx}].{required}' must be a non-empty string")
                 for num_field in ("pe", "growth_yoy", "roe", "market_cap_cr"):
                     val = peer.get(num_field)
                     if val is not None and (not isinstance(val, (int, float)) or isinstance(val, bool)):
-                        raise ValueError(f"stock_market game {gid} stock[{i}].peers[{pidx}].{num_field} must be numeric")
+                        raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers[{pidx}].{num_field}' must be numeric")
 
         # v2 optional: about
         about = s.get("about")

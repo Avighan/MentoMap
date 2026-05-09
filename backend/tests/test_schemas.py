@@ -177,3 +177,18 @@ def test_stock_market_v2_legacy_config_still_valid():
         "events": [{"id": "e1", "tick": 4, "headline": "h", "symbols": ["X"], "impact": {"X": 0.02}}],
     }
     _validate_stock_market_minigame(_wrap(cfg))  # must not raise
+
+
+def test_stock_market_v2_rejects_bool_as_numeric_in_fundamentals():
+    """Python's `isinstance(True, int)` is True; the validator must catch bool-as-numeric."""
+    cfg = {
+        "tick_interval_ms": 8000, "tick_count": 22, "starting_cash": 100000,
+        "stocks": [{
+            "symbol": "X", "name": "X", "sector": "X",
+            "starting_price": 100, "volatility": 0.02,
+            "fundamentals": {"pe": True},
+        }],
+        "events": [],
+    }
+    with pytest.raises(ValueError, match="fundamentals.pe"):
+        _validate_stock_market_minigame(_wrap(cfg))
