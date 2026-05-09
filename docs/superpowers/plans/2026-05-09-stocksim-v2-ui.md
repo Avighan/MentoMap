@@ -2433,25 +2433,78 @@ Expected: PASS, 2 tests.
 
 - [ ] **Step 5: Wire into `StockMarketGame.jsx`**
 
-Inside the v2 orchestrator branch, add:
+Brownfield reality check: there is no separate "v2 orchestrator branch" yet — Task 11 wires into the existing single `return (...)` block of `StockMarketGame.jsx`. The state variable holding server-authoritative session is `serverState`, not `state`. Tick count derivation already exists at line ~397 as `const tickCount = sessionConfig?.tick_count || 22`. PersistentStrip is not mounted yet (Task 13).
+
+Add the import at the top of the file:
 
 ```jsx
-const [mentorShown, setMentorShown] = useState(false);
-const halfTick = Math.floor((cfg.tick_count || 0) / 2);
-useEffect(() => {
-  if (!mentorShown && state?.current_tick === halfTick) setMentorShown('open');
-}, [state?.current_tick, halfTick, mentorShown]);
+import MentorCheckIn from './stocksim/MentorCheckIn';
+```
 
-function handleMentorReply(choiceId, dim) {
+After the existing `cash`/`holdings`/`currentTick`/`transactions` derivations (~line 402), add:
+
+```jsx
+const [mentorShown, setMentorShown] = useState(false); // false → 'open' → 'done'
+const halfTick = Math.floor((tickCount || 0) / 2);
+useEffect(() => {
+  if (!mentorShown && halfTick > 0 && currentTick === halfTick) setMentorShown('open');
+}, [currentTick, halfTick, mentorShown]);
+
+// Map holdings/stocks into the shape mentorCheckIn() expects.
+const mentorState = useMemo(() => {
+  const positions = {};
+  Object.entries(holdings).forEach(([sym, h]) => {
+    if (h?.qty) positions[sym] = h.qty;
+  });
+  const stocks_by_sector = {};
+  stocks.forEach(s => { stocks_by_sector[s.symbol] = s.sector; });
+  return { positions, stocks_by_sector };
+}, [holdings, stocks]);
+
+function handleMentorReply(choiceId, _dim) {
   setMentorShown('done');
-  // Persist to dimension_counters via existing /choice or telemetry endpoint:
-  axios.post(`/api/run/${runId}/stocksim/mentor`, { choice: choiceId, dim_delta: dim }).catch(() => {});
+  // TODO(stocksim-v2): persist to dimension_counters once
+  // POST /api/run/<id>/stocksim/mentor exists. Local state only for now.
 }
 ```
 
-Render `<MentorCheckIn ... />` when `mentorShown === 'open'`, between the persistent strip and the stock grid.
+Then, inside the main `return (...)` JSX, render the modal **immediately after the existing "Trade message banner" block (~line 622) and before `<div className="flex h-[calc(100vh-56px)]">` (~line 624)**, gated on `v2Enabled`:
 
-> If the `/api/run/<id>/stocksim/mentor` endpoint does not exist yet, leave the call commented with TODO and instead store the response in local state. Backend wiring is intentionally out of scope for this task — the dimension counter side-effect can be plumbed in a follow-up because telemetry already tracks reply choices.
+```jsx
+{v2Enabled && mentorShown === 'open' && (
+  <div className="mx-6">
+    <MentorCheckIn state={mentorState} onReply={handleMentorReply} />
+  </div>
+)}
+```
+
+> The `/api/run/<id>/stocksim/mentor` endpoint does not exist yet — keep the call out and persist only to local state. Backend wiring is intentionally out of scope for this task — the dimension counter side-effect can be plumbed in a follow-up because telemetry already tracks reply choices.
+
+**Also bundle the Task 4 deferred mentor cooldown test** in this commit. Append to `frontend-react/src/components/game/renderers/stocksim/NpcLayer.test.jsx`:
+
+```jsx
+  it('honors mentor one-shot semantics (cooldown Infinity)', () => {
+    function MentorProbe() {
+      const npc = useNpc();
+      return <button onClick={() => npc.say('mentor', { key: 'stocksim.npc.mentor.diversified', props: {} })}>mentor</button>;
+    }
+    const { rerender } = render(
+      <NpcLayerProvider currentTick={1}>
+        <MentorProbe />
+      </NpcLayerProvider>
+    );
+    act(() => { screen.getByText('mentor').click(); });
+    expect(screen.getAllByTestId('npc-chip').length).toBe(1);
+    // Advance many ticks; mentor should still be suppressed (one-shot).
+    rerender(
+      <NpcLayerProvider currentTick={9999}>
+        <MentorProbe />
+      </NpcLayerProvider>
+    );
+    act(() => { screen.getByText('mentor').click(); });
+    expect(screen.getAllByTestId('npc-chip').length).toBe(1);
+  });
+```
 
 - [ ] **Step 6: Commit**
 
