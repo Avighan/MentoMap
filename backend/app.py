@@ -1844,6 +1844,9 @@ _DISCOVER_WHITELIST = {
     'pro-1on1-like-a-pro',
     'pro-stakeholder-dance',
     'pro-deadline-triage',
+    # Realtime stock market sim (Phase B Tier 2)
+    'stock-market-day-trader',
+    'stock-market-simulator',
     # Best simulation engagement
     'cfo_quarterly_close',
     'cfo_quarterly_close_q2',

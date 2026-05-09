@@ -1,0 +1,67 @@
+{
+  "game_id": "stock-market-day-trader",
+  "title": "Day Trader Sprint",
+  "title_translations": { "en": "Day Trader Sprint", "hi": "डे ट्रेडर स्प्रिंट" },
+  "description": "A 3-minute sandbox: 22 live ticks, 8 NSE stocks, real spreads, real charges, real circuit breakers. Learn what a Zerodha terminal feels like — without losing real rupees.",
+  "game_type": "minigame",
+  "subtype": "stock_market",
+  "visible": true,
+  "tags": ["finance", "stock_market", "real_time", "india"],
+  "skill_tags": ["risk_tolerance", "delayed_gratification", "strategic_thinking", "financial_literacy"],
+  "nep_stage": "secondary",
+  "grade": "9",
+  "estimated_minutes": 3,
+  "initial_state": {
+    "resources": {
+      "cash": 100000,
+      "portfolio_value": 100000,
+      "trades": 0
+    },
+    "dimension_scores": {
+      "risk_tolerance": 0,
+      "delayed_gratification": 0,
+      "strategic_thinking": 0,
+      "financial_literacy": 0
+    }
+  },
+  "minigame_config": {
+    "subtype": "stock_market",
+    "stock_market_config": {
+      "realism_tier": 2,
+      "tick_authority": "hybrid",
+      "tick_count": 22,
+      "starting_capital": 100000,
+      "circuit_breaker_pct": [10],
+      "charges": { "brokerage_pct": 0.0003, "stt_pct": 0.001, "exchange_pct": 0.0000345, "gst_pct": 0.18 },
+      "settlement": "T+1",
+      "sectors": ["IT", "Energy", "Banking", "Pharma", "FMCG", "Auto", "Infra", "Retail"],
+      "stocks": [
+        { "symbol": "TECHV",      "name": "TechVista Solutions", "sector": "IT",      "starting_price": 850,  "volatility": 0.02 },
+        { "symbol": "GREENX",     "name": "GreenX Energy",       "sector": "Energy",  "starting_price": 420,  "volatility": 0.025 },
+        { "symbol": "BHARATBANK", "name": "Bharat Bank",         "sector": "Banking", "starting_price": 1180, "volatility": 0.015 },
+        { "symbol": "PHARMAXR",   "name": "PharmaX Research",    "sector": "Pharma",  "starting_price": 540,  "volatility": 0.022 },
+        { "symbol": "AGRINOW",    "name": "AgriNow Foods",       "sector": "FMCG",    "starting_price": 215,  "volatility": 0.018 },
+        { "symbol": "AUTOIND",    "name": "AutoInd Motors",      "sector": "Auto",    "starting_price": 720,  "volatility": 0.02 },
+        { "symbol": "INFRACO",    "name": "InfraCo Builders",    "sector": "Infra",   "starting_price": 310,  "volatility": 0.024 },
+        { "symbol": "RETAILK",    "name": "RetailKart",          "sector": "Retail",  "starting_price": 980,  "volatility": 0.021 }
+      ],
+      "events": [
+        { "id": "evt_rbi_hold",      "tick": 6,  "type": "rbi_rate_decision", "headline": "RBI holds repo at 6.5%",                  "symbols": ["BHARATBANK"], "severity": "info" },
+        { "id": "evt_fii_outflow",   "tick": 11, "type": "fii_outflow",       "headline": "FIIs sell ₹2,400 Cr — IT under pressure", "symbols": ["TECHV"],      "severity": "warning" },
+        { "id": "evt_greenx_beat",   "tick": 16, "type": "earnings_beat",     "headline": "GreenX beats Q4 estimates",               "symbols": ["GREENX"],     "severity": "info" }
+      ],
+      "news_strip": [
+        { "tick": 3,  "text": "Nifty opens flat as Asian markets mixed",   "severity": "info" },
+        { "tick": 9,  "text": "India VIX up 4% — caution ahead of RBI",    "severity": "warning" },
+        { "tick": 14, "text": "Crude oil at $82 — auto stocks watch",      "severity": "info" }
+      ],
+      "dimensions_config": {
+        "risk_tolerance":        { "weight": 0.30, "tag": "leverage_or_concentration" },
+        "delayed_gratification": { "weight": 0.25, "tag": "hold_through_dip" },
+        "strategic_thinking":    { "weight": 0.30, "tag": "diversification_and_timing" },
+        "financial_literacy":    { "weight": 0.15, "tag": "uses_limit_or_stop" }
+      }
+    }
+  },
+  "coaching_moment": "Day trading rewards patience, not panic. Watch the spread, respect the stop-loss, and remember — most traders lose money chasing tips."
+}
