@@ -111,3 +111,7 @@ class StockMarketEngine:
     def score_dimensions(self, state):
         from engines.stocksim.scoring import score_dimensions
         return score_dimensions(state, self.config)
+
+    def replay(self, seed, config, trade_log):
+        from engines.stocksim.replay import replay
+        return replay(seed, config, trade_log)

@@ -546,3 +546,23 @@ def test_dimension_scores_clamped_0_to_100():
     scores = eng.score_dimensions(state)
     for dim, val in scores.items():
         assert 0 <= val <= 100
+
+
+def test_replay_reproduces_pnl_and_dimensions():
+    """Live session vs. replay-from-trade-log must produce identical scores."""
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    eng.place_order(state, {"tick": 1, "symbol": "TECHV", "side": "buy",
+                            "qty": 5, "order_type": "market"})
+    eng.place_order(state, {"tick": 3, "symbol": "FRESHB", "side": "buy",
+                            "qty": 10, "order_type": "limit",
+                            "limit_price": 99999})  # marketable limit
+    eng.advance_to_tick(state, 22)
+    live_pnl = eng.compute_pnl(state)
+    live_dims = eng.score_dimensions(state)
+
+    # Replay using the trade log
+    replayed = eng.replay(seed=42, config=VALID_CONFIG, trade_log=state["trade_log"])
+    assert abs(replayed["pnl"]["total"] - live_pnl["total"]) < 0.5
+    assert replayed["dimensions"]["risk_tolerance"] == live_dims["risk_tolerance"]
+    assert replayed["dimensions"]["strategic_thinking"] == live_dims["strategic_thinking"]
