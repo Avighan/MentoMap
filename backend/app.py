@@ -26664,7 +26664,10 @@ def stocksim_complete(run_id):
                 psych = {k: {"final": v, "name": k.replace("_", " ").title()}
                          for k, v in dims.items()}
                 award_xp(user_id, xp, "Stock market sim", "minigame",
-                         int(pnl["total"]), psych)
+                         game_title="Stock Market Sim",
+                         score=int(pnl["total"]),
+                         psychological_scores=psych,
+                         dimension_scores=dims)
         except Exception as _e:
             logger.debug("stocksim award_xp: %s", _e)
     else:
