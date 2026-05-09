@@ -26493,6 +26493,69 @@ def stocksim_start(run_id):
     })
 
 
+@app.route('/api/run/<run_id>/stocksim/state', methods=['GET'])
+@require_auth
+def stocksim_state(run_id):
+    """Resume after page reload."""
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+    return jsonify({"state": state})
+
+
+@app.route('/api/run/<run_id>/stocksim/cancel', methods=['POST'])
+@require_auth
+def stocksim_cancel(run_id):
+    """Cancel a pending limit/SL/SIP order."""
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+    if state.get("completed"):
+        return jsonify({"error": "Session already completed",
+                        "error_code": "SESSION_COMPLETED"}), 409
+
+    body = request.get_json(silent=True) or {}
+    order_id = body.get("order_id")
+    if not order_id:
+        return jsonify({"error": "order_id required"}), 400
+
+    pending = state.get("pending_orders", [])
+    matching = [p for p in pending if p.get("order_id") == order_id]
+    if not matching:
+        return jsonify({"error": "Order not found",
+                        "error_code": "ORDER_NOT_FOUND"}), 404
+    state["pending_orders"] = [p for p in pending if p.get("order_id") != order_id]
+    storage.update_run(run_id, run)
+    return jsonify({"cancelled": True, "order_id": order_id,
+                    "remaining_pending": len(state["pending_orders"])})
+
+
 if __name__ == "__main__":
     # Warn about insecure JWT secret
     jwt_secret = os.getenv("JWT_SECRET_KEY", os.getenv("SECRET_KEY", ""))

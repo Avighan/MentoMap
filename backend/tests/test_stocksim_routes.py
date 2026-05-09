@@ -138,3 +138,48 @@ def test_stocksim_start_response_includes_meta(client, stocksim_run):
     assert data["tick_schedule_meta"]["tick_interval_seconds"] == 8
     assert data["opening_state"]["current_tick"] == 0
     assert data["market_calendar"]["shorting_enabled"] is False
+
+
+def test_stocksim_state_returns_session(client, stocksim_run):
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                headers=_auth_headers())
+    resp = client.get(f"/api/run/{stocksim_run}/stocksim/state",
+                      headers=_auth_headers())
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert "state" in data
+    assert data["state"]["cash"] == 100000
+
+
+def test_stocksim_state_404_when_no_session(client, stocksim_run):
+    # No /start call
+    resp = client.get(f"/api/run/{stocksim_run}/stocksim/state",
+                      headers=_auth_headers())
+    assert resp.status_code == 404
+
+
+def test_stocksim_cancel_removes_pending_order(client, stocksim_run):
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                headers=_auth_headers())
+    # Inject a fake pending order via storage
+    run = storage.get_run(stocksim_run)
+    run["stocksim"]["pending_orders"] = [{
+        "order_id": "lim-1", "type": "limit", "side": "buy",
+        "symbol": "TECHV", "qty": 5, "limit_price": 100.0, "placed_tick": 1,
+    }]
+    storage.update_run(stocksim_run, run)
+    resp = client.post(f"/api/run/{stocksim_run}/stocksim/cancel",
+                       json={"order_id": "lim-1"},
+                       headers=_auth_headers())
+    assert resp.status_code == 200
+    assert resp.get_json()["cancelled"] is True
+    assert storage.get_run(stocksim_run)["stocksim"]["pending_orders"] == []
+
+
+def test_stocksim_cancel_404_for_unknown_order(client, stocksim_run):
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                headers=_auth_headers())
+    resp = client.post(f"/api/run/{stocksim_run}/stocksim/cancel",
+                       json={"order_id": "nope"},
+                       headers=_auth_headers())
+    assert resp.status_code == 404
