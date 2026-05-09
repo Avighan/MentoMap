@@ -2087,9 +2087,11 @@ def games_get(game_id):
     game, err = get_game_or_400(game_id)
     if err:
         return err
-    # Check if the requesting user has permission to view this game type
+    # Check if the requesting user has permission to view this game type.
+    # Whitelisted games bypass this check (matches games_list filter logic) so
+    # curated minigame/ai_lab pilots can be loaded by all roles.
     _game_type = game.get("game_type", "rounds")
-    if _game_type not in _PUBLIC_GAME_TYPES:
+    if _game_type not in _PUBLIC_GAME_TYPES and game_id not in _DISCOVER_WHITELIST:
         _caller_role = None
         try:
             _tok = get_token_from_request()
