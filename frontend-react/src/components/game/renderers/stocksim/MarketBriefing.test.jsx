@@ -18,7 +18,7 @@ describe('MarketBriefing', () => {
     render(<MarketBriefing briefing={briefing} stocks={stocks} onBegin={() => {}} />);
     expect(screen.getByText(briefing.headline)).toBeInTheDocument();
     expect(screen.getByText(briefing.sub)).toBeInTheDocument();
-    expect(screen.getByText(/IT/)).toBeInTheDocument();
+    expect(screen.getByText(/IT · positive/)).toBeInTheDocument();
     expect(screen.getByText(/TECHV/)).toBeInTheDocument();
   });
 

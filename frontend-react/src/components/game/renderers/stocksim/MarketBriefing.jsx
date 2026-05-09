@@ -17,17 +17,8 @@ export default function MarketBriefing({ briefing, stocks = [], onBegin }) {
       <p style={{ margin: '0 0 14px', color: THEME.textMuted, fontSize: 13 }}>{b.sub}</p>
 
       {b.macro_tone && (
-        <div style={{ background: THEME.bgTile, borderLeft: `3px solid ${THEME.accentWarm}`, padding: 10, borderRadius: 6, marginBottom: 12 }}>
-          <input
-            readOnly
-            aria-label="macro trend"
-            value={`🌐 ${b.macro_tone}`}
-            style={{
-              border: 'none', background: 'transparent', width: '100%',
-              fontSize: 12, color: THEME.textPrimary, cursor: 'default', outline: 'none',
-              fontFamily: 'inherit',
-            }}
-          />
+        <div style={{ background: THEME.bgTile, borderLeft: `3px solid ${THEME.accentWarm}`, padding: 10, borderRadius: 6, fontSize: 12, color: THEME.textPrimary, marginBottom: 12 }}>
+          🌐 {b.macro_tone}
         </div>
       )}
 
@@ -47,6 +38,7 @@ export default function MarketBriefing({ briefing, stocks = [], onBegin }) {
         {stocks.map(s => (
           <div key={s.symbol} style={{ background: THEME.bgTile, borderRadius: 6, padding: 6 }}>
             <div style={{ fontSize: 11, fontWeight: 800, color: THEME.textPrimary }}>{s.symbol}</div>
+            <div style={{ fontSize: 9, color: THEME.textMuted }}>{s.sector}</div>
             <div style={{ fontSize: 11, color: THEME.textPrimary }}>₹{s.starting_price}</div>
           </div>
         ))}
