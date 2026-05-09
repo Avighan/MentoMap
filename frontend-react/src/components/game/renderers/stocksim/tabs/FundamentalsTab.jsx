@@ -48,17 +48,19 @@ export default function FundamentalsTab({ fundamentals }) {
         <>
           <div style={sectionLabel}>QUARTERLY REVENUE (₹ Cr)</div>
           <div style={{ display: 'flex', gap: 6, alignItems: 'flex-end', height: 60, background: THEME.bgTile, borderRadius: 6, padding: 6 }}>
-            {f.quarterly_revenue_cr.map((q, i) => {
-              const max = Math.max(...f.quarterly_revenue_cr);
-              const h = (q / max) * 48;
-              const rising = i > 0 && q >= f.quarterly_revenue_cr[i - 1];
-              return (
-                <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                  <div style={{ background: rising ? THEME.gain : THEME.textMuted, width: 18, height: h, borderRadius: '3px 3px 0 0' }} />
-                  <div style={{ fontSize: 9, color: THEME.textMuted }}>Q{i + 1} · {q}</div>
-                </div>
-              );
-            })}
+            {(() => {
+              const maxRev = Math.max(...f.quarterly_revenue_cr);
+              return f.quarterly_revenue_cr.map((q, i) => {
+                const h = (q / maxRev) * 48;
+                const rising = i > 0 && q >= f.quarterly_revenue_cr[i - 1];
+                return (
+                  <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                    <div style={{ background: rising ? THEME.gain : THEME.textMuted, width: 18, height: h, borderRadius: '3px 3px 0 0' }} />
+                    <div style={{ fontSize: 9, color: THEME.textMuted }}>Q{i + 1} · {q}</div>
+                  </div>
+                );
+              });
+            })()}
           </div>
         </>
       )}

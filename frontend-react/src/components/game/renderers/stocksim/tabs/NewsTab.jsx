@@ -6,7 +6,7 @@ import { journalistFlavor } from '../npcDialog';
 export default function NewsTab({ news = [], symbol, currentTick = 0 }) {
   const { t } = useTranslation();
   const items = (news || []).filter(n => {
-    const syms = n.affected_symbols || n.symbols || [];
+    const syms = n.symbols || n.affected_symbols || [];
     return Array.isArray(syms) && syms.includes(symbol);
   });
   if (items.length === 0) {

@@ -2,7 +2,7 @@ import React from 'react';
 import { THEME } from '../theme';
 import { rsi, ma, supportResistance, crossover } from '../technicals';
 
-export default function TechnicalsTab({ priceHistory = [], stockCfg }) {
+export default function TechnicalsTab({ priceHistory = [] }) {
   const closes = priceHistory.map(p => p.mid ?? p);
   const rsiVal = rsi(closes, 14);
   const ma20 = ma(closes, 20);
@@ -12,6 +12,7 @@ export default function TechnicalsTab({ priceHistory = [], stockCfg }) {
     closes.length >= 21 ? closes.slice(-3).map((_, i, a) => ma(closes.slice(0, closes.length - 2 + i), 20)) : [],
     closes.length >= 51 ? closes.slice(-3).map((_, i, a) => ma(closes.slice(0, closes.length - 2 + i), 50)) : []
   );
+  const haveBothMAs = closes.length >= 51;
   const cell = { background: THEME.bgTile, borderRadius: 6, padding: 6 };
   const label = { fontSize: 9, color: THEME.textMuted, fontWeight: 600 };
   const val = { fontWeight: 700, fontSize: 12, color: THEME.textPrimary };
@@ -22,7 +23,7 @@ export default function TechnicalsTab({ priceHistory = [], stockCfg }) {
       <div style={cell}><div style={label}>SUPPORT</div><div style={val}>{sr.support?.toFixed?.(2) ?? '—'}</div></div>
       <div style={cell}><div style={label}>RESISTANCE</div><div style={val}>{sr.resistance?.toFixed?.(2) ?? '—'}</div></div>
       <div style={{ ...cell, gridColumn: 'span 2' }}>
-        <div style={label}>CROSSOVER</div><div style={val}>{cross}</div>
+        <div style={label}>CROSSOVER</div><div style={val}>{haveBothMAs ? cross : '—'}</div>
       </div>
     </div>
   );
