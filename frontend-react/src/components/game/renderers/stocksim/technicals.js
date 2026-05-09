@@ -28,17 +28,19 @@ export function rsi(prices, period = 14) {
 }
 
 export function supportResistance(prices, lookback = 10) {
-  if (!Array.isArray(prices) || prices.length === 0) return { support: null, resistance: null };
+  if (!Array.isArray(prices) || prices.length < 2) return { support: null, resistance: null };
   const slice = prices.slice(-lookback);
   return { support: Math.min(...slice), resistance: Math.max(...slice) };
 }
 
 export function crossover(maShort, maLong) {
   if (!Array.isArray(maShort) || !Array.isArray(maLong)) return 'none';
-  if (maShort.length === 0 || maLong.length === 0) return 'none';
+  if (maShort.length < 2 || maLong.length < 2) return 'none';
   const lastShort = maShort[maShort.length - 1];
   const lastLong = maLong[maLong.length - 1];
-  if (lastShort > lastLong) return 'bullish';
-  if (lastShort < lastLong) return 'bearish';
+  const prevShort = maShort[maShort.length - 2];
+  const prevLong = maLong[maLong.length - 2];
+  if (prevShort <= prevLong && lastShort > lastLong) return 'bullish';
+  if (prevShort >= prevLong && lastShort < lastLong) return 'bearish';
   return 'none';
 }

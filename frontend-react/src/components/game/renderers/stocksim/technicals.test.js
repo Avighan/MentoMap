@@ -23,9 +23,36 @@ describe('technicals', () => {
     expect(out.resistance).toBe(14);
   });
 
-  it('crossover detects bullish/bearish/none', () => {
-    expect(crossover([5, 6, 7], [4, 5, 6])).toBe('bullish'); // short above long, increasing
-    expect(crossover([5, 5, 5], [6, 6, 6])).toBe('bearish');
-    expect(crossover([5, 5], [5, 5])).toBe('none');
+  it('crossover detects bullish event when short crosses above long', () => {
+    // prev: short=5 ≤ long=6 ; last: short=7 > long=6 ⇒ bullish cross
+    expect(crossover([4, 5, 7], [5, 6, 6])).toBe('bullish');
+  });
+
+  it('crossover detects bearish event when short crosses below long', () => {
+    // prev: short=6 ≥ long=5 ; last: short=4 < long=5 ⇒ bearish cross
+    expect(crossover([7, 6, 4], [4, 5, 5])).toBe('bearish');
+  });
+
+  it('crossover returns none when short stays above long (no cross event)', () => {
+    // short above long for both prev and last — relative position, not a cross
+    expect(crossover([7, 8, 9], [4, 5, 6])).toBe('none');
+  });
+
+  it('crossover returns none for equal-length arrays without crossing', () => {
+    expect(crossover([5, 5, 5], [6, 6, 6])).toBe('none');
+  });
+
+  it('crossover returns none when arrays are too short', () => {
+    expect(crossover([5], [5])).toBe('none');
+    expect(crossover([], [])).toBe('none');
+  });
+
+  it('rsi returns null when prices length is exactly period (insufficient data)', () => {
+    expect(rsi(new Array(14).fill(1), 14)).toBeNull();
+  });
+
+  it('supportResistance returns nulls when fewer than 2 prices', () => {
+    expect(supportResistance([], 5)).toEqual({ support: null, resistance: null });
+    expect(supportResistance([42], 5)).toEqual({ support: null, resistance: null });
   });
 });
