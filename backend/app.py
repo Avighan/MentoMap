@@ -26426,6 +26426,60 @@ def _safe_load_json(path, default):
     return _modules_engine._safe_load_json(path, default)
 
 
+# ==================== STOCK MARKET SIM (REAL-TIME) ====================
+
+@app.route('/api/run/<run_id>/stocksim/start', methods=['POST'])
+def stocksim_start(run_id):
+    """Initialize a real-time stock market session."""
+    from engines.stock_market_engine import StockMarketEngine
+    import time
+    load_bundle()
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    game = run.get("game") or {}
+    if game.get("game_type") != "minigame":
+        return jsonify({"error": "Not a mini-game"}), 400
+    mc = game.get("minigame_config") or {}
+    if mc.get("subtype") != "stock_market":
+        return jsonify({"error": "Not a stock_market mini-game"}), 400
+    sm_cfg = mc.get("stock_market_config")
+    if not sm_cfg:
+        return jsonify({"error": "stock_market_config missing"}), 400
+
+    body = request.get_json(silent=True) or {}
+    profile = body.get("profile", "day_trader")
+
+    user_id = run.get("user_id") or "anon"
+    seed_str = f"{run_id}|{user_id}|{int(time.time() * 1000)}"
+    seed = abs(hash(seed_str)) % (2**31)
+
+    eng = StockMarketEngine(sm_cfg)
+    state = eng.start_session(seed=seed, profile=profile)
+    state["config_hash"] = abs(hash(json.dumps(sm_cfg, sort_keys=True))) % (2**31)
+
+    run["stocksim"] = state
+    storage.update_run(run_id, run)
+
+    return jsonify({
+        "seed": seed,
+        "opening_state": {
+            "cash": state["cash"],
+            "holdings": state["holdings"],
+            "current_tick": state["current_tick"],
+        },
+        "tick_schedule_meta": {
+            "tick_count": sm_cfg.get("tick_count", 22),
+            "tick_interval_seconds": sm_cfg.get("tick_interval_seconds", 8),
+        },
+        "market_calendar": {
+            "settlement": sm_cfg.get("settlement", "T+1"),
+            "shorting_enabled": sm_cfg.get("shorting_enabled", False),
+        },
+    })
+
+
 if __name__ == "__main__":
     # Warn about insecure JWT secret
     jwt_secret = os.getenv("JWT_SECRET_KEY", os.getenv("SECRET_KEY", ""))
