@@ -2313,19 +2313,18 @@ const briefing = cfg.briefing;
 const [phase, setPhase] = useState(v2Enabled && briefing ? 'briefing' : 'playing');
 ```
 
-Replace the existing `OnboardingFlow` mount block (currently around line 832) with:
+> **Implementation note (verified against actual file):** `<OnboardingFlow>` in `StockMarketGame.jsx` is mounted unconditionally as a sibling element (~line 832) inside the main render's returned tree, NOT as a guarded early return. Do NOT delete or wrap it. Instead, add a single early-return BEFORE the existing main `return (...)`:
 
 ```jsx
 if (v2Enabled && phase === 'briefing') {
   return <MarketBriefing briefing={briefing} stocks={cfg.stocks || []} onBegin={() => setPhase('playing')} />;
 }
-// Legacy path:
-if (!v2Enabled && /* existing onboarding condition */) {
-  return <OnboardingFlow ... />;
-}
+// fall through to existing render (which still mounts <OnboardingFlow> for v1 — leave that as-is)
 ```
 
-(Leave the legacy `OnboardingFlow` import in place so the v1 path keeps working when the flag is off.)
+Place this early return immediately before the component's main `return (` statement (search for the return statement that opens the main JSX tree). The `useOrg()` hook is safe outside any provider — it returns a `DEFAULT_ORG` fallback — so the destructure can simply be `const { org } = useOrg();` (no `|| {}` defensive wrapper needed).
+
+Leave the existing `OnboardingFlow` import and JSX mount in place so v1 (flag off) is byte-identical to today.
 
 - [ ] **Step 6: Lint + build sanity**
 
