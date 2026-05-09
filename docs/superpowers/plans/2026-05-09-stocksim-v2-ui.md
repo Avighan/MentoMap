@@ -1066,39 +1066,61 @@ git commit -m "feat(stocksim): extend schema with v2 fundamentals/peers/about/br
 **Files:**
 - Modify: `backend/engines/stocksim/events.py`
 - Modify: `backend/app.py` (stocksim_state route)
-- Test: `backend/tests/test_stocksim_engine.py`
-- Test: `backend/tests/test_stocksim_routes.py`
+- Test: `backend/tests/test_stocksim_engine.py` (NEW file — engine layer has no dedicated test today)
+- Modify: `backend/tests/test_stocksim_routes.py`
 
 The chip "Why is it moving?" requires the latest news/event reason to ride along on each quote for up to 2 ticks after the event.
 
+**Pre-existing engine bugs we must fix in this task** (verified by reading `backend/engines/stocksim/events.py:1-58` and `backend/games/stock-market-day-trader.json:183-186`):
+
+1. `news_at` only matches events whose `tick_pattern` starts with `every_` or `once_at_`. The production JSONs use `"tick": N` (a direct integer field), with no `tick_pattern`. So **events never fire today**. Task 6 must extend `news_at` to also match `ev.get("tick") == tick`.
+2. `event_at` returns only events with `severity == "major"`. Production severities are `"info"` and `"warning"`. We do NOT change `event_at`'s contract — but the `recent_reasons` stamping must live in `news_at` so it fires for any matched event regardless of severity.
+3. The run's stocksim state lives at `run["stocksim"]` (see `backend/app.py:26732` and `backend/tests/test_stocksim_routes.py:166`), NOT `run["state"]`. The route patch must use the correct key.
+4. `stocksim_state` is GET-only and has no `force_tick` parameter. The route test must seed state directly via `storage.update_run` rather than passing a body.
+
 - [ ] **Step 1: Write the failing engine test**
 
-Add to `backend/tests/test_stocksim_engine.py`:
+Create `backend/tests/test_stocksim_engine.py` (new file). Top-of-file imports:
 
 ```python
-def test_event_at_stamps_recent_reasons():
-    from backend.engines.stocksim.events import event_at, news_at
-    state = {"recent_reasons": {}}
-    config = {
-        "events": [
-            {"tick": 4, "headline": "TechVista wins ₹500Cr", "symbols": ["TECHV"],
-             "affected_symbols": ["TECHV"], "reason": "Large contract → revenue", "impact": {"TECHV": 0.025}}
-        ]
-    }
-    ev = event_at(state, 4, config)
-    assert ev is not None
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from engines.stocksim.events import news_at, event_at
+```
+
+Then add three tests:
+
+```python
+def test_news_at_matches_direct_tick_field():
+    """Production JSONs use {"tick": N}, not {"tick_pattern": "once_at_N"}. news_at must match both."""
+    state = {}
+    config = {"events": [{"id": "e1", "tick": 4, "headline": "h", "symbols": ["TECHV"],
+                          "severity": "info", "reason": "Large contract"}]}
+    out = news_at(state, 4, config)
+    assert any(item["id"] == "e1" for item in out), "news_at should match events with bare 'tick' field"
+
+
+def test_news_at_stamps_recent_reasons():
+    """When an event with a reason matches, news_at must populate state['recent_reasons']."""
+    state = {}
+    config = {"events": [{"id": "e1", "tick": 4, "headline": "TechVista wins ₹500Cr",
+                          "symbols": ["TECHV"], "severity": "info",
+                          "reason": "Large contract → revenue"}]}
+    news_at(state, 4, config)
+    assert "TECHV" in state.get("recent_reasons", {})
     assert state["recent_reasons"]["TECHV"]["tick"] == 4
     assert "Large contract" in state["recent_reasons"]["TECHV"]["reason"]
 
 
 def test_recent_reason_visible_within_two_ticks():
-    """Reason should propagate to /state for ticks 4, 5, 6, then disappear at 7."""
-    from backend.engines.stocksim.events import event_at
-    state = {"recent_reasons": {}}
-    config = {"events": [{"tick": 4, "symbols": ["TECHV"], "affected_symbols": ["TECHV"],
-                          "reason": "r", "impact": {"TECHV": 0.02}, "headline": "h"}]}
-    event_at(state, 4, config)
-    # Helper that mirrors what /state route does:
+    """Reason should be readable for ticks 4, 5, 6, then expire at 7. Mirrors /state route logic."""
+    state = {}
+    config = {"events": [{"id": "e1", "tick": 4, "headline": "h", "symbols": ["TECHV"],
+                          "severity": "info", "reason": "r"}]}
+    news_at(state, 4, config)
+
     def visible_reason(state, tick, sym):
         rec = state.get("recent_reasons", {}).get(sym)
         if not rec:
@@ -1106,6 +1128,7 @@ def test_recent_reason_visible_within_two_ticks():
         if tick - rec["tick"] <= 2:
             return rec["reason"]
         return None
+
     assert visible_reason(state, 4, "TECHV") == "r"
     assert visible_reason(state, 5, "TECHV") == "r"
     assert visible_reason(state, 6, "TECHV") == "r"
@@ -1114,65 +1137,137 @@ def test_recent_reason_visible_within_two_ticks():
 
 - [ ] **Step 2: Run to verify failure**
 
-Run: `cd backend && python -m pytest tests/test_stocksim_engine.py::test_event_at_stamps_recent_reasons tests/test_stocksim_engine.py::test_recent_reason_visible_within_two_ticks -v`
-Expected: FAIL — `recent_reasons` not populated.
+Run: `cd backend && python -m pytest tests/test_stocksim_engine.py -v`
+Expected: all three tests FAIL — `news_at` does not match bare-tick events, and never stamps `recent_reasons`.
 
-- [ ] **Step 3: Update `event_at` in `engines/stocksim/events.py`**
+- [ ] **Step 3: Extend `news_at` in `engines/stocksim/events.py`**
 
-Find the `event_at(state, tick, config)` function. Inside the branch where an event matches `tick`, after determining the `affected` symbol list, add:
+The current `news_at` (at `backend/engines/stocksim/events.py:13-45`) iterates `for ev in events:` and dispatches on `tick_pattern`. Add a third branch that matches the direct `tick` field, and stamp `recent_reasons` from a single helper at the point of match.
+
+After the existing `pat = ev.get("tick_pattern", "")` line, add this block (replacing the existing `if pat.startswith(...)` chain). The full updated body of the loop should read:
 
 ```python
+    for ev in events:
+        matched = False
+        pat = ev.get("tick_pattern", "")
+        if pat.startswith("every_"):
+            try:
+                n = int(pat.split("_")[1])
+                if n > 0 and tick > 0 and tick % n == 0:
+                    matched = True
+            except (ValueError, IndexError):
+                pass
+        elif pat.startswith("once_at_"):
+            try:
+                t = int(pat.split("_")[2])
+                if tick == t:
+                    matched = True
+            except (ValueError, IndexError):
+                pass
+        else:
+            # v2 canonical: bare {"tick": N}
+            ev_tick = ev.get("tick")
+            if isinstance(ev_tick, int) and ev_tick == tick:
+                matched = True
+
+        if not matched:
+            continue
+
+        out.append({
+            "id": ev["id"],
+            "headline": ev.get("headline", ""),
+            "category": ev.get("category", "info"),
+            "severity": ev.get("severity", "info"),
+            "symbols": ev.get("symbols", []),
+        })
+
+        # v2: stamp recent_reasons for the why-moving chip (any severity, any matcher).
         reason = ev.get("reason") or ev.get("headline") or ""
-        recent = state.setdefault("recent_reasons", {})
-        for sym in (ev.get("symbols") or ev.get("affected_symbols") or []):
-            recent[sym] = {"tick": tick, "reason": reason}
+        if reason:
+            recent = state.setdefault("recent_reasons", {})
+            for sym in (ev.get("symbols") or ev.get("affected_symbols") or []):
+                recent[sym] = {"tick": tick, "reason": reason}
 ```
 
-Do NOT change return shape; keep it backward-compatible.
+Do NOT touch `event_at` — it continues to filter for `severity == "major"`. Side effect propagates because `event_at` calls `news_at`.
 
 - [ ] **Step 4: Run the engine tests**
 
 Run: `cd backend && python -m pytest tests/test_stocksim_engine.py -v`
-Expected: PASS — including the 2 new tests.
+Expected: all three new tests PASS.
+
+Also run the broader stocksim suite to confirm no regression:
+Run: `cd backend && python -m pytest tests/test_stocksim_engine.py tests/test_stocksim_bundles.py tests/test_schemas.py -v`
+Expected: all green.
 
 - [ ] **Step 5: Echo `last_reason` in `/state` route**
 
-Open `backend/app.py`. Find the `stocksim_state` route handler. After it builds the `quotes` dict, add:
+Open `backend/app.py:26714-26783` (the `stocksim_state` route). Right after the `pnl = eng.compute_pnl(...)` line at `~26767` and before `active_event = ...`, insert:
 
 ```python
-        recent = (run.get("state") or {}).get("recent_reasons") or {}
-        for sym, q in quotes.items():
-            rec = recent.get(sym)
-            if rec and (current_tick - rec.get("tick", -999)) <= 2:
-                q["last_reason"] = rec.get("reason", "")
+    # v2: surface "why is it moving?" reason for ≤2 ticks after the event.
+    recent = state.get("recent_reasons") or {}
+    for _sym, _q in quotes.items():
+        _rec = recent.get(_sym)
+        if _rec and (current_tick - _rec.get("tick", -999)) <= 2:
+            _q["last_reason"] = _rec.get("reason", "")
 ```
 
-`current_tick` should already be in scope (it is the tick the lazy-advance produced). If it is named differently, use the existing variable.
+`state` and `current_tick` are already in scope at that point (set at lines 26732 and 26756 respectively).
 
 - [ ] **Step 6: Add a route test**
 
-Add to `backend/tests/test_stocksim_routes.py`:
+Append to `backend/tests/test_stocksim_routes.py` (the existing `client` and `stocksim_run` fixtures are already defined in the file — reuse them; do not introduce a new fixture):
 
 ```python
-def test_state_echoes_last_reason_after_event(client, started_run_with_event_at_tick_4):
-    """After server has advanced past tick 4, the affected symbol should carry last_reason."""
-    run_id = started_run_with_event_at_tick_4
-    # Force advance to tick 5
-    resp = client.post(f"/api/run/{run_id}/stocksim/state", json={"force_tick": 5})
+def test_state_echoes_last_reason_after_event(client, stocksim_run):
+    """When recent_reasons is populated and current_tick is within 2 ticks, /state must echo last_reason."""
+    # Start the session so /state returns 200.
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                headers=_auth_headers())
+
+    # Seed state directly: simulate an event having fired at tick 4, with the run now at tick 5.
+    run = storage.get_run(stocksim_run)
+    sim = run["stocksim"]
+    sim["current_tick"] = 5
+    sim["recent_reasons"] = {"TECHV": {"tick": 4, "reason": "Large contract → revenue"}}
+    # Ensure the lazy-advance does NOT roll forward and clobber our seed:
+    # set started_at_ms to "now" so elapsed_ticks ≈ 0, which is < current_tick = 5,
+    # so the route's `if target_tick > current_tick` branch does not advance.
+    sim["started_at_ms"] = int(time.time() * 1000)
+    storage.update_run(stocksim_run, run)
+
+    resp = client.get(f"/api/run/{stocksim_run}/stocksim/state",
+                      headers=_auth_headers())
     assert resp.status_code == 200
     body = resp.get_json()
-    quotes = body.get("quotes", {})
-    techv = quotes.get("TECHV", {})
-    assert "last_reason" in techv
-    assert techv["last_reason"]
-```
+    techv = (body.get("quotes") or {}).get("TECHV") or {}
+    assert techv.get("last_reason") == "Large contract → revenue"
 
-> If the existing test file does not yet have a `started_run_with_event_at_tick_4` fixture, add one that builds a minimal stocksim run whose config has an event at tick 4 affecting TECHV. Mirror the style of fixtures already in the file. If `force_tick` is not a real test hook, instead drive the route via `time.sleep` mocks already used in the file — keep it consistent with neighbours.
+
+def test_state_drops_last_reason_after_three_ticks(client, stocksim_run):
+    """When current_tick is >2 ticks past the recorded event tick, last_reason must NOT be echoed."""
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                headers=_auth_headers())
+    run = storage.get_run(stocksim_run)
+    sim = run["stocksim"]
+    sim["current_tick"] = 8  # 8 - 4 = 4 ticks past, well outside the 2-tick window
+    sim["recent_reasons"] = {"TECHV": {"tick": 4, "reason": "Large contract"}}
+    sim["started_at_ms"] = int(time.time() * 1000)
+    storage.update_run(stocksim_run, run)
+
+    resp = client.get(f"/api/run/{stocksim_run}/stocksim/state",
+                      headers=_auth_headers())
+    assert resp.status_code == 200
+    body = resp.get_json()
+    techv = (body.get("quotes") or {}).get("TECHV") or {}
+    assert "last_reason" not in techv
+```
 
 - [ ] **Step 7: Run route tests**
 
 Run: `cd backend && python -m pytest tests/test_stocksim_routes.py -v`
-Expected: PASS — all stocksim route tests including the new one.
+Expected: all stocksim route tests PASS, including the 2 new ones.
 
 - [ ] **Step 8: Commit**
 
