@@ -4,11 +4,11 @@
  * JWT, so callers don't need to pass any auth headers.
  *
  * Routes (backend/app.py, Tasks 10-12):
- *   POST   /api/run/<run_id>/stocksim/start
- *   GET    /api/run/<run_id>/stocksim/state
- *   POST   /api/run/<run_id>/stocksim/trade
- *   DELETE /api/run/<run_id>/stocksim/cancel/<order_id>
- *   POST   /api/run/<run_id>/stocksim/complete
+ *   POST /api/run/<run_id>/stocksim/start
+ *   GET  /api/run/<run_id>/stocksim/state
+ *   POST /api/run/<run_id>/stocksim/trade
+ *   POST /api/run/<run_id>/stocksim/cancel       body: { order_id }
+ *   POST /api/run/<run_id>/stocksim/complete
  */
 
 import apiClient from './client';
@@ -52,8 +52,9 @@ export async function placeStocksimTrade(runId, payload) {
  * @returns {Promise<object>}
  */
 export async function cancelStocksimOrder(runId, orderId) {
-  const res = await apiClient.delete(
-    `/api/run/${runId}/stocksim/cancel/${orderId}`,
+  const res = await apiClient.post(
+    `/api/run/${runId}/stocksim/cancel`,
+    { order_id: orderId },
   );
   return res.data;
 }
