@@ -2675,11 +2675,25 @@ def enrich_trade_log(state, config, news):
     return enriched
 ```
 
-In the existing `finalize_run(state, config, run)` (or its frontend-facing equivalent), include `trade_log_enriched` in the returned dict:
+There is no `finalize_run` function. The actual finalize site is the `stocksim_complete` route in `backend/app.py` (~line 26927). At the existing response builder (~line 26995, the `return jsonify({...})` block), add `trade_log_enriched` to the dict:
 
 ```python
-    out["trade_log_enriched"] = enrich_trade_log(state, config, config.get("news") or config.get("events") or [])
+    return jsonify({
+        "pnl": pnl,
+        "dimensions": dims,
+        "trade_log": state.get("trade_log", []),
+        "trade_log_enriched": enrich_trade_log(state, sm_cfg, sm_cfg.get("news") or sm_cfg.get("events") or []),
+        "recap_messages": _stocksim_recap_messages(state, pnl, dims),
+    })
 ```
+
+Add the import at the top of the function (or wherever the other engine-level imports live in the file). The simplest local import:
+
+```python
+    from engines.stocksim.scoring import enrich_trade_log
+```
+
+> Production runs do not currently populate `state["quote_history"]`, so on real sessions `peer_perf_at_tick` will be `{}`. The test fixture sets it directly so the unit test passes. This is acceptable for Task 12 because `TradeAutopsy.jsx` consumes only `news_at_tick`, `realized_pnl`, `symbol`, `side`, and `tick`. Populating `quote_history` is a follow-up.
 
 - [ ] **Step 8: Run, expect PASS**
 
@@ -2765,7 +2779,19 @@ Expected: PASS, 2 tests.
 
 - [ ] **Step 13: Wire into `StockMarketGame.jsx`**
 
-In the v2 orchestrator branch, when `state.completed` is true, render `<TradeAutopsy final={finalResult} />` BEFORE the existing `<PostGameInsights ... />` block. `finalResult` is what `/api/run/<id>/stocksim/complete` returns.
+There is no v2 orchestrator branch. `recap` (StockMarketGame's local state, set by `finishGame()` from the `/api/run/<id>/stocksim/complete` response) is the equivalent of `finalResult`. Inside the existing `if (recap) { ... }` block (~line 486), immediately **before** the `<PostGameInsights ... />` mount (~line 551), insert:
+
+```jsx
+            {v2Enabled && (
+              <TradeAutopsy final={recap} />
+            )}
+```
+
+Add the import alongside the existing `./stocksim/...` imports near the top of the file:
+
+```jsx
+import TradeAutopsy from './stocksim/TradeAutopsy';
+```
 
 - [ ] **Step 14: Commit**
 
