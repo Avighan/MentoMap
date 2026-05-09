@@ -840,174 +840,181 @@ The spec adds these optional fields to `stock_market_config`:
 
 All optional — backward-compatible.
 
+**Validator contract (existing — confirmed in `backend/schemas.py:752` and `backend/tests/test_stocksim_bundles.py:18`):**
+- Signature: `_validate_stock_market_minigame(g)` where `g` is the **full game bundle dict** with `g["game_id"]` and `g["minigame_config"]["stock_market_config"]`.
+- Returns `None`. Raises `ValueError` on the first invalid field. Called from `_validate_minigame` at `backend/schemas.py:257`.
+- Existing positive test pattern: `_validate(bundle)  # must not raise`.
+
+Keep this contract. New validation paths must also `raise ValueError(...)`.
+
+**Canonical events key:** `symbols`. Both `backend/games/stock-market-day-trader.json` and `backend/games/stock-market-simulator.json` use `symbols` (not `affected_symbols`). Test fixtures must use `symbols` to mirror production.
+
 - [ ] **Step 1: Write the failing test**
 
-Add to `backend/tests/test_schemas.py`:
+Add to `backend/tests/test_schemas.py` (create the file if missing — top-of-file imports: `import pytest`; `import sys`; `from pathlib import Path`; `sys.path.insert(0, str(Path(__file__).resolve().parent.parent))`; `from schemas import _validate_stock_market_minigame`):
 
 ```python
-def test_stock_market_v2_optional_fields_accepted():
-    from backend.schemas import _validate_stock_market_minigame
-    cfg = {
-        "stock_market_config": {
-            "tick_interval_ms": 8000,
-            "tick_count": 22,
-            "starting_cash": 100000,
-            "briefing": {
-                "macro_tone": "RBI policy day. IT and banks in focus.",
-                "sector_mood": {"IT": "positive", "Banking": "neutral"},
-                "headline": "8 stocks. 22 ticks. Trade smart.",
-                "sub": "Each tick = ~8 seconds.",
-            },
-            "stocks": [
-                {
-                    "symbol": "TECHV", "name": "TechVista", "sector": "IT",
-                    "starting_price": 215, "volatility": 0.04,
-                    "fundamentals": {
-                        "pe": 28.4, "sector_pe": 24.0, "roe": 22.1,
-                        "debt_equity": 0.12, "market_cap_cr": 420000,
-                        "quarterly_revenue_cr": [9400, 9820, 10250, 11140],
-                    },
-                    "peers": [{"symbol": "INFOS", "name": "InfoSwift", "pe": 24.0, "growth_yoy": 14, "roe": 25.0, "market_cap_cr": 720000}],
-                    "about": {"description": "Mid-cap IT services.", "key_people": [{"role": "CEO", "name": "R. Iyer"}], "founded": 1998, "hq": "Bengaluru"},
-                    "image_prompt": "modern server racks glowing blue",
-                }
-            ],
-            "events": [{"tick": 4, "headline": "h", "affected_symbols": ["TECHV"], "reason": "Large contract", "impact": {"TECHV": 0.025}}],
-        }
+def _wrap(cfg):
+    """Wrap a stock_market_config in a full game bundle the validator expects."""
+    return {
+        "game_id": "test-stock-market",
+        "minigame_config": {"subtype": "stock_market", "stock_market_config": cfg},
     }
-    errors = _validate_stock_market_minigame(cfg)
-    assert errors == [], f"Unexpected errors: {errors}"
+
+
+def test_stock_market_v2_optional_fields_accepted():
+    cfg = {
+        "tick_interval_ms": 8000,
+        "tick_count": 22,
+        "starting_cash": 100000,
+        "briefing": {
+            "macro_tone": "RBI policy day. IT and banks in focus.",
+            "sector_mood": {"IT": "positive", "Banking": "neutral"},
+            "headline": "8 stocks. 22 ticks. Trade smart.",
+            "sub": "Each tick = ~8 seconds.",
+        },
+        "stocks": [
+            {
+                "symbol": "TECHV", "name": "TechVista", "sector": "IT",
+                "starting_price": 215, "volatility": 0.04,
+                "fundamentals": {
+                    "pe": 28.4, "sector_pe": 24.0, "roe": 22.1,
+                    "debt_equity": 0.12, "market_cap_cr": 420000,
+                    "quarterly_revenue_cr": [9400, 9820, 10250, 11140],
+                },
+                "peers": [{"symbol": "INFOS", "name": "InfoSwift", "pe": 24.0, "growth_yoy": 14, "roe": 25.0, "market_cap_cr": 720000}],
+                "about": {"description": "Mid-cap IT services.", "key_people": [{"role": "CEO", "name": "R. Iyer"}], "founded": 1998, "hq": "Bengaluru"},
+                "image_prompt": "modern server racks glowing blue",
+            }
+        ],
+        "events": [{"id": "e1", "tick": 4, "headline": "h", "symbols": ["TECHV"], "reason": "Large contract", "impact": {"TECHV": 0.025}}],
+    }
+    _validate_stock_market_minigame(_wrap(cfg))  # must not raise
 
 
 def test_stock_market_v2_rejects_quarterly_wrong_length():
-    from backend.schemas import _validate_stock_market_minigame
     cfg = {
-        "stock_market_config": {
-            "tick_interval_ms": 8000, "tick_count": 22, "starting_cash": 100000,
-            "stocks": [{
-                "symbol": "X", "name": "X", "sector": "X",
-                "starting_price": 100, "volatility": 0.02,
-                "fundamentals": {"quarterly_revenue_cr": [1, 2, 3]},
-            }],
-            "events": [],
-        }
+        "tick_interval_ms": 8000, "tick_count": 22, "starting_cash": 100000,
+        "stocks": [{
+            "symbol": "X", "name": "X", "sector": "X",
+            "starting_price": 100, "volatility": 0.02,
+            "fundamentals": {"quarterly_revenue_cr": [1, 2, 3]},
+        }],
+        "events": [],
     }
-    errors = _validate_stock_market_minigame(cfg)
-    assert any("quarterly_revenue_cr" in e for e in errors)
+    with pytest.raises(ValueError, match="quarterly_revenue_cr"):
+        _validate_stock_market_minigame(_wrap(cfg))
 
 
 def test_stock_market_v2_legacy_config_still_valid():
     """A v1 config with no fundamentals/peers/about/briefing must still validate."""
-    from backend.schemas import _validate_stock_market_minigame
     cfg = {
-        "stock_market_config": {
-            "tick_interval_ms": 8000, "tick_count": 22, "starting_cash": 100000,
-            "stocks": [{"symbol": "X", "name": "X", "sector": "X", "starting_price": 100, "volatility": 0.02}],
-            "events": [{"tick": 4, "headline": "h", "affected_symbols": ["X"], "impact": {"X": 0.02}}],
-        }
+        "tick_interval_ms": 8000, "tick_count": 22, "starting_cash": 100000,
+        "stocks": [{"symbol": "X", "name": "X", "sector": "X", "starting_price": 100, "volatility": 0.02}],
+        "events": [{"id": "e1", "tick": 4, "headline": "h", "symbols": ["X"], "impact": {"X": 0.02}}],
     }
-    errors = _validate_stock_market_minigame(cfg)
-    assert errors == [], f"Unexpected errors: {errors}"
+    _validate_stock_market_minigame(_wrap(cfg))  # must not raise
 ```
 
 - [ ] **Step 2: Run to verify the new tests fail**
 
 Run: `cd backend && python -m pytest tests/test_schemas.py::test_stock_market_v2_optional_fields_accepted tests/test_schemas.py::test_stock_market_v2_rejects_quarterly_wrong_length tests/test_schemas.py::test_stock_market_v2_legacy_config_still_valid -v`
-Expected: FAIL on the two positive tests if `_validate_stock_market_minigame` chokes on the new fields, or PASS unexpectedly if it ignored them. Either way, the `quarterly_revenue_cr` length check must FAIL until implemented.
+Expected: `test_stock_market_v2_rejects_quarterly_wrong_length` FAILs (no ValueError raised — validator does not yet check `quarterly_revenue_cr`). The two positive tests may PASS already (unknown fields are silently accepted today); that's fine — they guard against regressions once Step 3 lands.
 
 - [ ] **Step 3: Extend `_validate_stock_market_minigame`**
 
-Open `backend/schemas.py:752-803`. Inside the per-stock loop, after the existing checks for `symbol`/`name`/`sector`/`starting_price`/`volatility`, add:
+Open `backend/schemas.py:752-803`. The existing function uses `gid = g["game_id"]` and iterates `for i, s in enumerate(cfg["stocks"]):` — keep those names. Use `raise ValueError(...)` (matching the existing style); do NOT introduce an `errors` list.
+
+Inside the per-stock loop (right after the existing volatility check at L780), add:
 
 ```python
         # v2 optional: fundamentals
-        fund = stock.get("fundamentals")
+        fund = s.get("fundamentals")
         if fund is not None:
             if not isinstance(fund, dict):
-                errors.append(f"stocks[{idx}].fundamentals must be an object")
-            else:
-                for num_field in (
-                    "pe", "pb", "ev_ebitda", "peg", "eps_ttm",
-                    "roe", "roce", "debt_equity",
-                    "market_cap_cr", "free_float_pct", "promoter_pct",
-                    "fii_pct", "dii_pct",
-                    "fifty_two_week_high", "fifty_two_week_low",
-                    "div_yield_pct", "beta", "volume_x_avg", "sector_pe",
-                ):
-                    val = fund.get(num_field)
-                    if val is not None and not isinstance(val, (int, float)):
-                        errors.append(f"stocks[{idx}].fundamentals.{num_field} must be numeric")
-                qrev = fund.get("quarterly_revenue_cr")
-                if qrev is not None:
-                    if not isinstance(qrev, list) or len(qrev) != 4:
-                        errors.append(f"stocks[{idx}].fundamentals.quarterly_revenue_cr must be a list of 4 numbers")
-                    elif not all(isinstance(v, (int, float)) for v in qrev):
-                        errors.append(f"stocks[{idx}].fundamentals.quarterly_revenue_cr entries must be numeric")
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals' must be an object")
+            for num_field in (
+                "pe", "pb", "ev_ebitda", "peg", "eps_ttm",
+                "roe", "roce", "debt_equity",
+                "market_cap_cr", "free_float_pct", "promoter_pct",
+                "fii_pct", "dii_pct",
+                "fifty_two_week_high", "fifty_two_week_low",
+                "div_yield_pct", "beta", "volume_x_avg", "sector_pe",
+            ):
+                val = fund.get(num_field)
+                if val is not None and (not isinstance(val, (int, float)) or isinstance(val, bool)):
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals.{num_field}' must be numeric")
+            qrev = fund.get("quarterly_revenue_cr")
+            if qrev is not None:
+                if not isinstance(qrev, list) or len(qrev) != 4:
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals.quarterly_revenue_cr' must be a list of 4 numbers")
+                if not all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in qrev):
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals.quarterly_revenue_cr' entries must be numeric")
 
         # v2 optional: peers
-        peers = stock.get("peers")
+        peers = s.get("peers")
         if peers is not None:
             if not isinstance(peers, list):
-                errors.append(f"stocks[{idx}].peers must be a list")
-            else:
-                if len(peers) > 3:
-                    errors.append(f"stocks[{idx}].peers max length is 3")
-                for pidx, peer in enumerate(peers):
-                    if not isinstance(peer, dict):
-                        errors.append(f"stocks[{idx}].peers[{pidx}] must be an object")
-                        continue
-                    for required in ("symbol", "name"):
-                        if not isinstance(peer.get(required), str) or not peer.get(required):
-                            errors.append(f"stocks[{idx}].peers[{pidx}].{required} required string")
-                    for num_field in ("pe", "growth_yoy", "roe", "market_cap_cr"):
-                        val = peer.get(num_field)
-                        if val is not None and not isinstance(val, (int, float)):
-                            errors.append(f"stocks[{idx}].peers[{pidx}].{num_field} must be numeric")
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers' must be a list")
+            if len(peers) > 3:
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers' max length is 3")
+            for pidx, peer in enumerate(peers):
+                if not isinstance(peer, dict):
+                    raise ValueError(f"stock_market game {gid} stock[{i}].peers[{pidx}] must be an object")
+                for required in ("symbol", "name"):
+                    if not isinstance(peer.get(required), str) or not peer.get(required):
+                        raise ValueError(f"stock_market game {gid} stock[{i}].peers[{pidx}].{required} required string")
+                for num_field in ("pe", "growth_yoy", "roe", "market_cap_cr"):
+                    val = peer.get(num_field)
+                    if val is not None and (not isinstance(val, (int, float)) or isinstance(val, bool)):
+                        raise ValueError(f"stock_market game {gid} stock[{i}].peers[{pidx}].{num_field} must be numeric")
 
         # v2 optional: about
-        about = stock.get("about")
+        about = s.get("about")
         if about is not None:
             if not isinstance(about, dict):
-                errors.append(f"stocks[{idx}].about must be an object")
-            else:
-                if about.get("description") is not None and not isinstance(about["description"], str):
-                    errors.append(f"stocks[{idx}].about.description must be a string")
-                kp = about.get("key_people")
-                if kp is not None and not isinstance(kp, list):
-                    errors.append(f"stocks[{idx}].about.key_people must be a list")
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'about' must be an object")
+            if about.get("description") is not None and not isinstance(about["description"], str):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'about.description' must be a string")
+            kp = about.get("key_people")
+            if kp is not None and not isinstance(kp, list):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'about.key_people' must be a list")
 
         # v2 optional: image_prompt
-        ip = stock.get("image_prompt")
+        ip = s.get("image_prompt")
         if ip is not None and not isinstance(ip, str):
-            errors.append(f"stocks[{idx}].image_prompt must be a string")
+            raise ValueError(f"stock_market game {gid} stock[{i}]: 'image_prompt' must be a string")
 ```
 
-After the existing event loop, also accept optional `reason`:
+The existing event loop currently reads:
+```python
+for ev in cfg.get("events", []):
+    for sym in ev.get("symbols", []):
+        ...
+```
+Replace the loop header with `for ev_idx, ev in enumerate(cfg.get("events", [])):` (so we have an index), keep the existing `for sym in ev.get("symbols", []):` body unchanged, then at the end of each `ev` iteration add:
 
 ```python
         # v2 optional: events[i].reason
         reason = ev.get("reason")
         if reason is not None and not isinstance(reason, str):
-            errors.append(f"events[{ev_idx}].reason must be a string")
+            raise ValueError(f"stock_market game {gid}: events[{ev_idx}].reason must be a string")
 ```
 
-(Use whatever loop variable is already in scope — likely `ev_idx, ev`. If the existing loop does not give an index, switch to `for ev_idx, ev in enumerate(events):` while you are there. Do NOT rename anything else.)
-
-After the per-stock loop, accept optional `briefing`:
+After the per-stock loop and before the existing `dimensions_config` block, accept optional `briefing`:
 
 ```python
     briefing = cfg.get("briefing")
     if briefing is not None:
         if not isinstance(briefing, dict):
-            errors.append("briefing must be an object")
-        else:
-            for str_field in ("macro_tone", "headline", "sub"):
-                v = briefing.get(str_field)
-                if v is not None and not isinstance(v, str):
-                    errors.append(f"briefing.{str_field} must be a string")
-            sm = briefing.get("sector_mood")
-            if sm is not None and not isinstance(sm, dict):
-                errors.append("briefing.sector_mood must be an object")
+            raise ValueError(f"stock_market game {gid}: 'briefing' must be an object")
+        for str_field in ("macro_tone", "headline", "sub"):
+            v = briefing.get(str_field)
+            if v is not None and not isinstance(v, str):
+                raise ValueError(f"stock_market game {gid}: 'briefing.{str_field}' must be a string")
+        sm = briefing.get("sector_mood")
+        if sm is not None and not isinstance(sm, dict):
+            raise ValueError(f"stock_market game {gid}: 'briefing.sector_mood' must be an object")
 ```
 
 - [ ] **Step 4: Run schema tests**
