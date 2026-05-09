@@ -2026,6 +2026,8 @@ Open `frontend-react/src/components/game/renderers/stocksim/OrderTicket.jsx`. No
 
 - [ ] **Step 2: Write the failing test**
 
+> **Verified upstream contracts (from existing OrderTicket on disk):** the component uses `selectedSymbol`, `currentQuote`, `cashAvailable`, `stocks`, `holdings`, `onSubmit` props (NOT `symbol`/`quote`/`cash`). The qty input has no testid yet — add `data-testid="order-qty"`. The Buy button already has `data-testid="stocksim-buy-btn"` (use it; do not rename). The component finds the stock via `stocks.find(s => s.symbol === selectedSymbol)`, so test fixtures must include a `stocks` array with the matching symbol. The Sell button is disabled when `holdings[selectedSymbol].qty <= 0`, so the test that exercises Buy via `target_pct`/`stop_pct` should click `stocksim-buy-btn`.
+
 Create `frontend-react/src/components/game/renderers/stocksim/OrderTicket.test.jsx`:
 
 ```jsx
@@ -2042,9 +2044,19 @@ const wrap = (ui) => (
   </I18nextProvider>
 );
 
+const STOCKS = [{ symbol: 'TECHV', name: 'TechVista', sector: 'IT', starting_price: 215 }];
+
 describe('OrderTicket v2 additions', () => {
   it('shows position sizer line with total cost and risk %', () => {
-    render(wrap(<OrderTicket symbol="TECHV" quote={{ ask: 215, bid: 214.95 }} cash={10000} onSubmit={() => {}} />));
+    render(wrap(
+      <OrderTicket
+        stocks={STOCKS}
+        selectedSymbol="TECHV"
+        currentQuote={{ mid: 215, ask: 215, bid: 214.95 }}
+        cashAvailable={10000}
+        onSubmit={() => {}}
+      />
+    ));
     fireEvent.change(screen.getByTestId('order-qty'), { target: { value: '10' } });
     expect(screen.getByTestId('order-sizer').textContent).toMatch(/₹2,150/);
     expect(screen.getByTestId('order-sizer').textContent).toMatch(/21\.5%/);
@@ -2052,11 +2064,19 @@ describe('OrderTicket v2 additions', () => {
 
   it('toggles Target/Stop chips and includes them in submitted payload', () => {
     const onSubmit = vi.fn();
-    render(wrap(<OrderTicket symbol="TECHV" quote={{ ask: 215, bid: 214.95 }} cash={10000} onSubmit={onSubmit} />));
+    render(wrap(
+      <OrderTicket
+        stocks={STOCKS}
+        selectedSymbol="TECHV"
+        currentQuote={{ mid: 215, ask: 215, bid: 214.95 }}
+        cashAvailable={10000}
+        onSubmit={onSubmit}
+      />
+    ));
     fireEvent.change(screen.getByTestId('order-qty'), { target: { value: '5' } });
     fireEvent.click(screen.getByTestId('chip-target'));
     fireEvent.click(screen.getByTestId('chip-stop'));
-    fireEvent.click(screen.getByTestId('order-buy'));
+    fireEvent.click(screen.getByTestId('stocksim-buy-btn'));
     expect(onSubmit).toHaveBeenCalled();
     const payload = onSubmit.mock.calls[0][0];
     expect(payload.target_pct).toBe(5);
@@ -2072,36 +2092,43 @@ Expected: FAIL — sizer/chips not present yet.
 
 - [ ] **Step 4: Extend `OrderTicket.jsx`**
 
-Inside the component, after existing state, add:
+> **Implementation note:** The existing `submit(side)` function builds and submits the payload (`OrderTicket.jsx:85`). DO NOT replace it. Instead: (a) add new state for chips + npc, (b) compute `totalCost`/`riskPct`/`fivePctMove` from existing `ask`/`bid`/`cashAvailable`/`qty` locals, (c) inside the existing `submit()` function, attach `target_pct`/`stop_pct` to the existing payload object before `onSubmit?.(payload)`, and call `npc.say('broker', brokerOnTrade(payload, riskPct))` if non-null. SIP path stays as-is — chips only apply to non-SIP orders.
+
+Add imports:
 
 ```jsx
 import { useNpc } from './NpcLayer';
 import { brokerOnTrade } from './npcDialog';
 import { THEME } from './theme';
+```
 
-// inside component:
+Inside the component, after the existing state declarations:
+
+```jsx
 const [targetOn, setTargetOn] = useState(false);
 const [stopOn, setStopOn] = useState(false);
 const npc = useNpc();
 
-const px = side === 'sell' ? (quote?.bid ?? 0) : (quote?.ask ?? 0);
-const totalCost = (Number(qty) || 0) * px;
-const riskPct = cash > 0 ? (totalCost / cash) * 100 : 0;
+// Position sizer (use existing `ask`/`bid` locals).
+const totalCost = (Number(qty) || 0) * (ask || 0);
+const riskPct = cashAvailable > 0 ? (totalCost / cashAvailable) * 100 : 0;
 const fivePctMove = totalCost * 0.05;
+```
 
-function handleSubmit(submitSide) {
-  const payload = {
-    symbol, side: submitSide, qty: Number(qty) || 0,
-    target_pct: targetOn ? 5 : null,
-    stop_pct: stopOn ? -3 : null,
-  };
+Inside the existing `submit(side)` function, just before the final `onSubmit?.(payload)` call (i.e., after `if (orderType === 'limit') payload.limit_price = ...`), attach the chip values and emit the broker NPC line:
+
+```jsx
+if (orderType !== 'sip') {
+  payload.target_pct = targetOn ? 5 : null;
+  payload.stop_pct = stopOn ? -3 : null;
   const line = brokerOnTrade(payload, riskPct);
   if (line) npc.say('broker', line);
-  onSubmit?.(payload);
 }
 ```
 
-In JSX, after the qty input row, render:
+Add `data-testid="order-qty"` to the existing qty `<input type="number">` element.
+
+In JSX, after the qty input row (the stepper block), render:
 
 ```jsx
 <div data-testid="order-sizer" style={{ fontSize: 10, color: THEME.textMuted, marginTop: 4 }}>
@@ -2134,7 +2161,7 @@ In JSX, after the qty input row, render:
 </div>
 ```
 
-Wire the Buy button to `data-testid="order-buy"` calling `handleSubmit('buy')`. Mirror for Sell.
+The existing Buy/Sell buttons (`data-testid="stocksim-buy-btn"` / `stocksim-sell-btn`) already call `submit('buy')` / `submit('sell')`. Do not rename them or replace the handler — the in-place edit above ensures the existing flow now attaches chip values + fires the broker NPC.
 
 - [ ] **Step 5: Run, expect PASS**
 
