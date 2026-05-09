@@ -110,8 +110,10 @@ export default defineConfig({
 Create `frontend-react/src/tests/setup.js`:
 
 ```js
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 ```
+
+Note: use the `/vitest` entry point, not the root entry. With `globals: false` (set in `vitest.config.js`), the root entry throws `ReferenceError: expect is not defined` because it expects a Jest-style global. The `/vitest` entry imports `expect` from vitest and calls `expect.extend(...)` itself, which is the supported path for `globals: false`.
 
 - [ ] **Step 5: Verify existing tests still run**
 
