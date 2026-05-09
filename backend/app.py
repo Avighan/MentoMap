@@ -8320,6 +8320,40 @@ def get_story_image(game_id, round_id):
     return jsonify(result)
 
 
+@app.get("/api/games/<game_id>/stock/<symbol>/image")
+def stocksim_stock_image(game_id, symbol):
+    """Return cached AI hero image for a stock; 202 while generating; 404 if symbol unknown."""
+    from game_storage import load_game
+    from services import story_image_service
+
+    bundle = load_game(game_id)
+    if not bundle:
+        return jsonify({"error": "Unknown game"}), 404
+    cfg = (bundle.get("minigame_config") or {}).get("stock_market_config") or {}
+    stock = next((s for s in cfg.get("stocks", []) if s.get("symbol") == symbol), None)
+    if not stock:
+        return jsonify({"error": "Unknown symbol"}), 404
+
+    prompt = stock.get("image_prompt")
+    if not prompt:
+        return jsonify({"image_url": None, "fallback": True}), 200
+
+    try:
+        result = story_image_service.generate_story_image(
+            game_id=f"stocksim_{game_id}",
+            round_id=f"stock_{symbol}",
+            image_prompt=prompt,
+            scene_hint=f"{stock.get('name', symbol)} - {stock.get('sector', '')}",
+            image_style="semi-realistic",
+        )
+        if not result or not result.get("image_url"):
+            return jsonify({"status": "generating"}), 202
+        return jsonify({"image_url": result["image_url"], "cached": result.get("cached", False)}), 200
+    except Exception as exc:
+        app.logger.warning("stock image generation failed for %s/%s: %s", game_id, symbol, exc)
+        return jsonify({"image_url": None, "fallback": True}), 200
+
+
 @app.get("/api/games/<game_id>/scenes/<scene_id>/story-image")
 def get_scene_story_image(game_id, scene_id):
     """On-demand story image generation for a story_branching scene. No auth required."""

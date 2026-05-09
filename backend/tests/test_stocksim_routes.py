@@ -323,3 +323,25 @@ def test_state_returns_no_last_reason_when_recent_reasons_absent(client, stocksi
     body = resp.get_json()
     techv = (body.get("quotes") or {}).get("TECHV") or {}
     assert "last_reason" not in techv
+
+
+def test_stock_image_returns_url_when_cached(client, monkeypatch):
+    """Second call to image route should return a cached URL."""
+    from services import story_image_service
+
+    calls = {"n": 0}
+    def fake_generate(**kwargs):
+        calls["n"] += 1
+        return {"image_url": "/uploads/stocksim_techv.png", "cached": calls["n"] > 1}
+    monkeypatch.setattr(story_image_service, "generate_story_image", fake_generate)
+
+    r1 = client.get("/api/games/stock-market-day-trader/stock/TECHV/image")
+    r2 = client.get("/api/games/stock-market-day-trader/stock/TECHV/image")
+    assert r1.status_code in (200, 202)
+    assert r2.status_code == 200
+    assert r2.get_json()["image_url"].endswith(".png")
+
+
+def test_stock_image_returns_404_for_unknown_symbol(client):
+    r = client.get("/api/games/stock-market-day-trader/stock/NOPE/image")
+    assert r.status_code == 404
