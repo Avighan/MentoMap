@@ -259,3 +259,47 @@ def test_dimension_scores_match_engine_directly(client, stocksim_run):
     eng = StockMarketEngine(sm_cfg)
     direct_dims = eng.score_dimensions(state)
     assert route_dims == direct_dims
+
+
+def test_state_echoes_last_reason_after_event(client, stocksim_run):
+    """When recent_reasons is populated and current_tick is within 2 ticks, /state must echo last_reason."""
+    # Start the session so /state returns 200.
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                headers=_auth_headers())
+
+    # Seed state directly: simulate an event having fired at tick 4, with the run now at tick 5.
+    run = storage.get_run(stocksim_run)
+    sim = run["stocksim"]
+    sim["current_tick"] = 5
+    sim["recent_reasons"] = {"TECHV": {"tick": 4, "reason": "Large contract → revenue"}}
+    # Ensure the lazy-advance does NOT roll forward and clobber our seed:
+    # set started_at_ms to "now" so elapsed_ticks ≈ 0, which is < current_tick = 5,
+    # so the route's `if target_tick > current_tick` branch does not advance.
+    sim["started_at_ms"] = int(time.time() * 1000)
+    storage.update_run(stocksim_run, run)
+
+    resp = client.get(f"/api/run/{stocksim_run}/stocksim/state",
+                      headers=_auth_headers())
+    assert resp.status_code == 200
+    body = resp.get_json()
+    techv = (body.get("quotes") or {}).get("TECHV") or {}
+    assert techv.get("last_reason") == "Large contract → revenue"
+
+
+def test_state_drops_last_reason_after_three_ticks(client, stocksim_run):
+    """When current_tick is >2 ticks past the recorded event tick, last_reason must NOT be echoed."""
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                headers=_auth_headers())
+    run = storage.get_run(stocksim_run)
+    sim = run["stocksim"]
+    sim["current_tick"] = 8  # 8 - 4 = 4 ticks past, well outside the 2-tick window
+    sim["recent_reasons"] = {"TECHV": {"tick": 4, "reason": "Large contract"}}
+    sim["started_at_ms"] = int(time.time() * 1000)
+    storage.update_run(stocksim_run, run)
+
+    resp = client.get(f"/api/run/{stocksim_run}/stocksim/state",
+                      headers=_auth_headers())
+    assert resp.status_code == 200
+    body = resp.get_json()
+    techv = (body.get("quotes") or {}).get("TECHV") or {}
+    assert "last_reason" not in techv

@@ -26585,6 +26585,13 @@ def stocksim_state(run_id):
 
     pnl = eng.compute_pnl(state, latest_quotes={k: v.get("mid") for k, v in quotes.items()})
 
+    # v2: surface "why is it moving?" reason for ≤2 ticks after the event.
+    recent = state.get("recent_reasons") or {}
+    for _sym, _q in quotes.items():
+        _rec = recent.get(_sym)
+        if _rec and (current_tick - _rec.get("tick", -999)) <= 2:
+            _q["last_reason"] = _rec.get("reason", "")
+
     # Active event (if any) at the current tick.
     active_event = None
     try:
