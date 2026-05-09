@@ -1,11 +1,17 @@
-"""Deterministic news + market event scheduler.
+"""Deterministic news + market event scheduler with recent-reason side effect.
 
-Events defined in config['events'][] with `tick_pattern`:
-  - "every_N"   → fires on ticks N, 2N, 3N…
-  - "once_at_T" → fires only on tick T
-  - "random_p" + seed → probability per tick (not used in v1, hook for later)
+Events defined in config['events'][] match a tick via either:
+  - tick_pattern: "every_N"   → fires on ticks N, 2N, 3N…
+  - tick_pattern: "once_at_T" → fires only on tick T
+  - "tick": N (canonical v2)  → fires only on tick N
 
 Each event has: id, headline, category, severity, optional symbols[].
+
+Side effect: when an event matches AND has a non-empty `reason` or
+`headline`, news_at writes state['recent_reasons'][sym] = {tick, reason}
+for each affected symbol. The `/state` route reads this within a
+2-tick window to power the "Why is it moving?" chip on each quote.
+event_at() delegates to news_at() and inherits this side effect.
 """
 from __future__ import annotations
 
@@ -34,7 +40,7 @@ def news_at(state: dict, tick: int, config: dict) -> list[dict]:
         else:
             # v2 canonical: bare {"tick": N}
             ev_tick = ev.get("tick")
-            if isinstance(ev_tick, int) and ev_tick == tick:
+            if isinstance(ev_tick, int) and not isinstance(ev_tick, bool) and ev_tick == tick:
                 matched = True
 
         if not matched:

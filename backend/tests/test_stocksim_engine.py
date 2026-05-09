@@ -45,3 +45,19 @@ def test_recent_reason_visible_within_two_ticks():
     assert visible_reason(state, 5, "TECHV") == "r"
     assert visible_reason(state, 6, "TECHV") == "r"
     assert visible_reason(state, 7, "TECHV") is None
+
+
+def test_news_at_legacy_tick_pattern_still_matches():
+    """Legacy tick_pattern matchers must continue to fire after the bare-tick refactor."""
+    state = {}
+    config = {"events": [
+        {"id": "every3", "tick_pattern": "every_3", "headline": "h", "symbols": ["X"], "severity": "info"},
+        {"id": "once5",  "tick_pattern": "once_at_5", "headline": "h", "symbols": ["X"], "severity": "info"},
+    ]}
+    # every_3 fires on tick 3, 6, 9...
+    assert any(item["id"] == "every3" for item in news_at(state, 3, config))
+    assert any(item["id"] == "every3" for item in news_at(state, 6, config))
+    assert not any(item["id"] == "every3" for item in news_at(state, 4, config))
+    # once_at_5 fires only on tick 5
+    assert any(item["id"] == "once5" for item in news_at(state, 5, config))
+    assert not any(item["id"] == "once5" for item in news_at(state, 4, config))

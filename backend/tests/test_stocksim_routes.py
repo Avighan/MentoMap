@@ -303,3 +303,23 @@ def test_state_drops_last_reason_after_three_ticks(client, stocksim_run):
     body = resp.get_json()
     techv = (body.get("quotes") or {}).get("TECHV") or {}
     assert "last_reason" not in techv
+
+
+def test_state_returns_no_last_reason_when_recent_reasons_absent(client, stocksim_run):
+    """Backward compat: sessions that predate the recent_reasons feature must work without it."""
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                headers=_auth_headers())
+    run = storage.get_run(stocksim_run)
+    sim = run["stocksim"]
+    sim["current_tick"] = 5
+    # Explicitly do NOT set recent_reasons. Pin started_at_ms.
+    sim.pop("recent_reasons", None)
+    sim["started_at_ms"] = int(time.time() * 1000)
+    storage.update_run(stocksim_run, run)
+
+    resp = client.get(f"/api/run/{stocksim_run}/stocksim/state",
+                      headers=_auth_headers())
+    assert resp.status_code == 200
+    body = resp.get_json()
+    techv = (body.get("quotes") or {}).get("TECHV") or {}
+    assert "last_reason" not in techv
