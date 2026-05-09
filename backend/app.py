@@ -26451,7 +26451,9 @@ def stocksim_start(run_id):
         if role not in ("admin", "school_admin", "teacher"):
             return jsonify({"error": "Not authorized for this run"}), 403
 
-    game = run.get("game") or {}
+    game, _err = get_game_or_400(run.get("game_id"))
+    if _err:
+        return _err
     if game.get("game_type") != "minigame":
         return jsonify({"error": "Not a mini-game"}), 400
     mc = game.get("minigame_config") or {}
@@ -26587,7 +26589,10 @@ def stocksim_trade(run_id):
                         "error_code": "SESSION_COMPLETED",
                         "recoverable": False}), 409
 
-    sm_cfg = (run.get("game", {}).get("minigame_config") or {}).get("stock_market_config") or {}
+    _g, _err = get_game_or_400(run.get("game_id"))
+    if _err:
+        return _err
+    sm_cfg = ((_g.get("minigame_config") or {}).get("stock_market_config")) or {}
     tick_count = sm_cfg.get("tick_count", 22)
     body = request.get_json(silent=True) or {}
     requested_tick = body.get("tick", 0)
@@ -26636,7 +26641,10 @@ def stocksim_complete(run_id):
     if not state:
         return jsonify({"error": "No stocksim session"}), 404
 
-    sm_cfg = (run.get("game", {}).get("minigame_config") or {}).get("stock_market_config") or {}
+    _g, _err = get_game_or_400(run.get("game_id"))
+    if _err:
+        return _err
+    sm_cfg = ((_g.get("minigame_config") or {}).get("stock_market_config")) or {}
     tick_count = sm_cfg.get("tick_count", 22)
     eng = StockMarketEngine(sm_cfg)
 
