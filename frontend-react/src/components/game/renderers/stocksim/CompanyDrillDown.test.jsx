@@ -20,16 +20,24 @@ describe('CompanyDrillDown', () => {
   });
 
   it('switches to Fundamentals when clicked', () => {
-    render(wrap(<CompanyDrillDown stock={stock} quote={quote} priceHistory={[]} news={[]} imageUrl={null} onClose={() => {}} />));
+    render(wrap(<CompanyDrillDown stock={stock} quote={quote} priceHistory={[{ mid: 210 }, { mid: 215 }]} news={[]} imageUrl={null} onClose={() => {}} />));
     fireEvent.click(screen.getByTestId('drilldown-tab-fundamentals'));
     expect(screen.getByTestId('drilldown-tab-fundamentals')).toHaveAttribute('data-active', 'true');
     expect(screen.getByText(/VALUATION/)).toBeInTheDocument();
+    expect(screen.queryByText(/MA-20/)).toBeNull();
   });
 
   it('calls onClose when backdrop clicked', () => {
     const onClose = vi.fn();
     render(wrap(<CompanyDrillDown stock={stock} quote={quote} priceHistory={[]} news={[]} imageUrl={null} onClose={onClose} />));
     fireEvent.click(screen.getByTestId('drilldown-backdrop'));
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('calls onClose when Escape key pressed', () => {
+    const onClose = vi.fn();
+    render(wrap(<CompanyDrillDown stock={stock} quote={quote} priceHistory={[]} news={[]} imageUrl={null} onClose={onClose} />));
+    fireEvent.keyDown(window, { key: 'Escape' });
     expect(onClose).toHaveBeenCalled();
   });
 });

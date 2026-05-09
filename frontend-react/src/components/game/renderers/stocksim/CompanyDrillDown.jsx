@@ -37,7 +37,7 @@ export default function CompanyDrillDown({
     roe: stock?.fundamentals?.roe,
     debt_equity: stock?.fundamentals?.debt_equity,
   });
-  const change = quote?.last_change_pct ?? 0;
+  const change = Number.isFinite(quote?.last_change_pct) ? quote.last_change_pct : 0;
 
   return (
     <div
@@ -114,8 +114,8 @@ export default function CompanyDrillDown({
               {position?.qty ? `${position.qty} shares · cost ₹${position.cost_basis?.toFixed?.(2) ?? '—'}` : '—'}
             </div>
           </div>
-          <button onClick={() => onTrade?.('buy', { symbol: stock.symbol })} style={{ background: THEME.gain, color: '#fff', border: 'none', padding: '6px 14px', borderRadius: 18, fontWeight: 700, fontSize: 11, cursor: 'pointer' }}>Buy</button>
-          <button onClick={() => onTrade?.('sell', { symbol: stock.symbol })} style={{ background: THEME.loss, color: '#fff', border: 'none', padding: '6px 14px', borderRadius: 18, fontWeight: 700, fontSize: 11, cursor: 'pointer' }}>Sell</button>
+          <button onClick={() => onTrade?.('buy', { symbol: stock?.symbol })} style={{ background: THEME.gain, color: '#fff', border: 'none', padding: '6px 14px', borderRadius: 18, fontWeight: 700, fontSize: 11, cursor: 'pointer' }}>Buy</button>
+          <button onClick={() => onTrade?.('sell', { symbol: stock?.symbol })} style={{ background: THEME.loss, color: '#fff', border: 'none', padding: '6px 14px', borderRadius: 18, fontWeight: 700, fontSize: 11, cursor: 'pointer' }}>Sell</button>
         </div>
       </div>
     </div>
