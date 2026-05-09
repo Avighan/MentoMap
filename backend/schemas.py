@@ -778,6 +778,63 @@ def _validate_stock_market_minigame(g):
             raise ValueError(f"stock_market game {gid} stock[{i}]: 'starting_price' must be a positive number")
         if not isinstance(s["volatility"], (int, float)) or isinstance(s["volatility"], bool) or not (0 <= s["volatility"] <= 1):
             raise ValueError(f"stock_market game {gid} stock[{i}]: 'volatility' must be a number in [0, 1]")
+
+        # v2 optional: fundamentals
+        fund = s.get("fundamentals")
+        if fund is not None:
+            if not isinstance(fund, dict):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals' must be an object")
+            for num_field in (
+                "pe", "pb", "ev_ebitda", "peg", "eps_ttm",
+                "roe", "roce", "debt_equity",
+                "market_cap_cr", "free_float_pct", "promoter_pct",
+                "fii_pct", "dii_pct",
+                "fifty_two_week_high", "fifty_two_week_low",
+                "div_yield_pct", "beta", "volume_x_avg", "sector_pe",
+            ):
+                val = fund.get(num_field)
+                if val is not None and (not isinstance(val, (int, float)) or isinstance(val, bool)):
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals.{num_field}' must be numeric")
+            qrev = fund.get("quarterly_revenue_cr")
+            if qrev is not None:
+                if not isinstance(qrev, list) or len(qrev) != 4:
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals.quarterly_revenue_cr' must be a list of 4 numbers")
+                if not all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in qrev):
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals.quarterly_revenue_cr' entries must be numeric")
+
+        # v2 optional: peers
+        peers = s.get("peers")
+        if peers is not None:
+            if not isinstance(peers, list):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers' must be a list")
+            if len(peers) > 3:
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers' max length is 3")
+            for pidx, peer in enumerate(peers):
+                if not isinstance(peer, dict):
+                    raise ValueError(f"stock_market game {gid} stock[{i}].peers[{pidx}] must be an object")
+                for required in ("symbol", "name"):
+                    if not isinstance(peer.get(required), str) or not peer.get(required):
+                        raise ValueError(f"stock_market game {gid} stock[{i}].peers[{pidx}].{required} required string")
+                for num_field in ("pe", "growth_yoy", "roe", "market_cap_cr"):
+                    val = peer.get(num_field)
+                    if val is not None and (not isinstance(val, (int, float)) or isinstance(val, bool)):
+                        raise ValueError(f"stock_market game {gid} stock[{i}].peers[{pidx}].{num_field} must be numeric")
+
+        # v2 optional: about
+        about = s.get("about")
+        if about is not None:
+            if not isinstance(about, dict):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'about' must be an object")
+            if about.get("description") is not None and not isinstance(about["description"], str):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'about.description' must be a string")
+            kp = about.get("key_people")
+            if kp is not None and not isinstance(kp, list):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'about.key_people' must be a list")
+
+        # v2 optional: image_prompt
+        ip = s.get("image_prompt")
+        if ip is not None and not isinstance(ip, str):
+            raise ValueError(f"stock_market game {gid} stock[{i}]: 'image_prompt' must be a string")
     sectors_in_stocks = {s["sector"] for s in cfg["stocks"]}
     declared = set(cfg.get("sectors", []))
     if declared and not sectors_in_stocks.issubset(declared):
@@ -785,13 +842,28 @@ def _validate_stock_market_minigame(g):
             f"stock_market game {gid}: stocks reference undeclared sectors "
             f"{sectors_in_stocks - declared}"
         )
-    for ev in cfg.get("events", []):
+    for ev_idx, ev in enumerate(cfg.get("events", [])):
         for sym in ev.get("symbols", []):
             if not any(s["symbol"] == sym for s in cfg["stocks"]):
                 raise ValueError(
                     f"stock_market game {gid}: event '{ev.get('id')}' references "
                     f"unknown symbol '{sym}'"
                 )
+        # v2 optional: events[i].reason
+        reason = ev.get("reason")
+        if reason is not None and not isinstance(reason, str):
+            raise ValueError(f"stock_market game {gid}: events[{ev_idx}].reason must be a string")
+    briefing = cfg.get("briefing")
+    if briefing is not None:
+        if not isinstance(briefing, dict):
+            raise ValueError(f"stock_market game {gid}: 'briefing' must be an object")
+        for str_field in ("macro_tone", "headline", "sub"):
+            v = briefing.get(str_field)
+            if v is not None and not isinstance(v, str):
+                raise ValueError(f"stock_market game {gid}: 'briefing.{str_field}' must be a string")
+        sm = briefing.get("sector_mood")
+        if sm is not None and not isinstance(sm, dict):
+            raise ValueError(f"stock_market game {gid}: 'briefing.sector_mood' must be an object")
     allowed_dims = {"risk_tolerance", "delayed_gratification", "strategic_thinking",
                     "financial_literacy", "empathy", "adaptability", "resilience",
                     "ethical_reasoning", "creativity"}

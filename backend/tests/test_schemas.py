@@ -1,6 +1,12 @@
 """Schema validation tests."""
+import sys
+from pathlib import Path
+
 import pytest
-from schemas import validate_bundle
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from schemas import _validate_stock_market_minigame, validate_bundle
 
 
 def _stock_market_game(overrides: dict = None) -> dict:
@@ -109,3 +115,65 @@ def test_stock_market_v2_bad_event_symbol_rejected():
     ]
     with pytest.raises(ValueError, match="unknown symbol"):
         validate_bundle({"games": [g]})
+
+
+def _wrap(cfg):
+    """Wrap a stock_market_config in a full game bundle the validator expects."""
+    return {
+        "game_id": "test-stock-market",
+        "minigame_config": {"subtype": "stock_market", "stock_market_config": cfg},
+    }
+
+
+def test_stock_market_v2_optional_fields_accepted():
+    cfg = {
+        "tick_interval_ms": 8000,
+        "tick_count": 22,
+        "starting_cash": 100000,
+        "briefing": {
+            "macro_tone": "RBI policy day. IT and banks in focus.",
+            "sector_mood": {"IT": "positive", "Banking": "neutral"},
+            "headline": "8 stocks. 22 ticks. Trade smart.",
+            "sub": "Each tick = ~8 seconds.",
+        },
+        "stocks": [
+            {
+                "symbol": "TECHV", "name": "TechVista", "sector": "IT",
+                "starting_price": 215, "volatility": 0.04,
+                "fundamentals": {
+                    "pe": 28.4, "sector_pe": 24.0, "roe": 22.1,
+                    "debt_equity": 0.12, "market_cap_cr": 420000,
+                    "quarterly_revenue_cr": [9400, 9820, 10250, 11140],
+                },
+                "peers": [{"symbol": "INFOS", "name": "InfoSwift", "pe": 24.0, "growth_yoy": 14, "roe": 25.0, "market_cap_cr": 720000}],
+                "about": {"description": "Mid-cap IT services.", "key_people": [{"role": "CEO", "name": "R. Iyer"}], "founded": 1998, "hq": "Bengaluru"},
+                "image_prompt": "modern server racks glowing blue",
+            }
+        ],
+        "events": [{"id": "e1", "tick": 4, "headline": "h", "symbols": ["TECHV"], "reason": "Large contract", "impact": {"TECHV": 0.025}}],
+    }
+    _validate_stock_market_minigame(_wrap(cfg))  # must not raise
+
+
+def test_stock_market_v2_rejects_quarterly_wrong_length():
+    cfg = {
+        "tick_interval_ms": 8000, "tick_count": 22, "starting_cash": 100000,
+        "stocks": [{
+            "symbol": "X", "name": "X", "sector": "X",
+            "starting_price": 100, "volatility": 0.02,
+            "fundamentals": {"quarterly_revenue_cr": [1, 2, 3]},
+        }],
+        "events": [],
+    }
+    with pytest.raises(ValueError, match="quarterly_revenue_cr"):
+        _validate_stock_market_minigame(_wrap(cfg))
+
+
+def test_stock_market_v2_legacy_config_still_valid():
+    """A v1 config with no fundamentals/peers/about/briefing must still validate."""
+    cfg = {
+        "tick_interval_ms": 8000, "tick_count": 22, "starting_cash": 100000,
+        "stocks": [{"symbol": "X", "name": "X", "sector": "X", "starting_price": 100, "volatility": 0.02}],
+        "events": [{"id": "e1", "tick": 4, "headline": "h", "symbols": ["X"], "impact": {"X": 0.02}}],
+    }
+    _validate_stock_market_minigame(_wrap(cfg))  # must not raise
