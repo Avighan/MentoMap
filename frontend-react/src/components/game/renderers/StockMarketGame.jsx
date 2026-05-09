@@ -41,6 +41,8 @@ import DepthLadder from './stocksim/DepthLadder';
 import NewsTickerStrip from './stocksim/NewsTickerStrip';
 import PortfolioPanel from './stocksim/PortfolioPanel';
 import EventOverlay from './stocksim/EventOverlay';
+import MarketBriefing from './stocksim/MarketBriefing';
+import { useOrg } from '../../../contexts/OrgContext';
 
 const CHART_HEIGHT = 160;
 const CHART_WIDTH_PER_TICK = 28;
@@ -144,6 +146,12 @@ const StockMarketGame = ({
   const [recap, setRecap] = useState(null);
   const [completing, setCompleting] = useState(false);
   const [loadError, setLoadError] = useState(null);
+
+  const { org } = useOrg();
+  const v2Enabled = !!org?.flags?.stocksim_v2_ui;
+  const cfg = gameData?.minigame_config?.stock_market_config || {};
+  const briefing = cfg.briefing;
+  const [phase, setPhase] = useState(v2Enabled && briefing ? 'briefing' : 'playing');
 
   const pollTimerRef = useRef(null);
   const smoothingTimerRef = useRef(null);
@@ -542,6 +550,11 @@ const StockMarketGame = ({
         </motion.div>
       </div>
     );
+  }
+
+  // ── v2 Market Briefing screen ────────────────────────────────────────
+  if (v2Enabled && phase === 'briefing') {
+    return <MarketBriefing briefing={briefing} stocks={cfg.stocks || []} onBegin={() => setPhase('playing')} />;
   }
 
   // ── Main UI ─────────────────────────────────────────────────────────
