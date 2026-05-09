@@ -1294,7 +1294,7 @@ Add to `backend/tests/test_stocksim_routes.py`:
 ```python
 def test_stock_image_returns_url_when_cached(client, monkeypatch):
     """Second call to image route should return a cached URL."""
-    from backend.services import story_image_service
+    from services import story_image_service
 
     calls = {"n": 0}
     def fake_generate(**kwargs):
@@ -1314,6 +1314,8 @@ def test_stock_image_returns_404_for_unknown_symbol(client):
     assert r.status_code == 404
 ```
 
+**Note on monkeypatching:** the route MUST do `from services import story_image_service` then call `story_image_service.generate_story_image(...)` (module-attribute access) so `monkeypatch.setattr(story_image_service, "generate_story_image", ...)` actually intercepts the call. A `from services.story_image_service import generate_story_image` direct import inside the route would bind the original function and bypass the patch.
+
 - [ ] **Step 2: Run to verify failure**
 
 Run: `cd backend && python -m pytest tests/test_stocksim_routes.py::test_stock_image_returns_url_when_cached tests/test_stocksim_routes.py::test_stock_image_returns_404_for_unknown_symbol -v`
@@ -1324,10 +1326,13 @@ Expected: FAIL — route does not exist.
 Near the existing `/api/games/<game_id>/rounds/<round_id>/story-image` route (~line 8333), add:
 
 ```python
-@app.route("/api/games/<game_id>/stock/<symbol>/image", methods=["GET"])
+@app.get("/api/games/<game_id>/stock/<symbol>/image")
 def stocksim_stock_image(game_id, symbol):
     """Return cached AI hero image for a stock; 202 while generating; 404 if symbol unknown."""
-    bundle = _load_game_bundle(game_id)
+    from game_storage import load_game
+    from services import story_image_service
+
+    bundle = load_game(game_id)
     if not bundle:
         return jsonify({"error": "Unknown game"}), 404
     cfg = (bundle.get("minigame_config") or {}).get("stock_market_config") or {}
@@ -1340,7 +1345,6 @@ def stocksim_stock_image(game_id, symbol):
         return jsonify({"image_url": None, "fallback": True}), 200
 
     try:
-        from backend.services import story_image_service
         result = story_image_service.generate_story_image(
             game_id=f"stocksim_{game_id}",
             round_id=f"stock_{symbol}",
@@ -1356,7 +1360,7 @@ def stocksim_stock_image(game_id, symbol):
         return jsonify({"image_url": None, "fallback": True}), 200
 ```
 
-(`_load_game_bundle` is the existing helper used elsewhere in `app.py`. If the actual helper name differs, use that name.)
+The bundle helper is `load_game(game_id)` from `game_storage` (this matches the existing `/api/games/<game_id>/rounds/<round_id>/story-image` route at `app.py:8336`). The service module import is `from services import story_image_service` (NOT `backend.services`) — `backend/` is the project root on the Python path, so the package is just `services`.
 
 - [ ] **Step 4: Run route tests, then commit**
 
