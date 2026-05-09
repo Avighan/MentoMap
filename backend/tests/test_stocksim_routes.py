@@ -183,3 +183,79 @@ def test_stocksim_cancel_404_for_unknown_order(client, stocksim_run):
                        json={"order_id": "nope"},
                        headers=_auth_headers())
     assert resp.status_code == 404
+
+
+def test_stocksim_trade_market_buy_filled(client, stocksim_run):
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={}, headers=_auth_headers())
+    resp = client.post(f"/api/run/{stocksim_run}/stocksim/trade", json={
+        "tick": 1, "symbol": "TECHV", "side": "buy",
+        "qty": 5, "order_type": "market"
+    }, headers=_auth_headers())
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert data["status"] == "filled"
+    assert data["fill"]["qty"] == 5
+    assert "charges" in data
+    state = storage.get_run(stocksim_run)["stocksim"]
+    assert state["holdings"]["TECHV"]["qty"] == 5
+
+
+def test_stocksim_trade_in_future_tick_rejected(client, stocksim_run):
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={}, headers=_auth_headers())
+    resp = client.post(f"/api/run/{stocksim_run}/stocksim/trade", json={
+        "tick": 999, "symbol": "TECHV", "side": "buy",
+        "qty": 1, "order_type": "market"
+    }, headers=_auth_headers())
+    assert resp.status_code == 400
+    assert resp.get_json().get("error_code") == "INVALID_TICK"
+
+
+def test_stocksim_trade_after_complete_rejected(client, stocksim_run):
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={}, headers=_auth_headers())
+    client.post(f"/api/run/{stocksim_run}/stocksim/complete", json={}, headers=_auth_headers())
+    resp = client.post(f"/api/run/{stocksim_run}/stocksim/trade", json={
+        "tick": 1, "symbol": "TECHV", "side": "buy",
+        "qty": 1, "order_type": "market"
+    }, headers=_auth_headers())
+    assert resp.status_code == 409
+    assert resp.get_json().get("error_code") == "SESSION_COMPLETED"
+
+
+def test_stocksim_complete_returns_pnl_and_dimensions(client, stocksim_run):
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={}, headers=_auth_headers())
+    client.post(f"/api/run/{stocksim_run}/stocksim/trade", json={
+        "tick": 1, "symbol": "TECHV", "side": "buy",
+        "qty": 5, "order_type": "market"
+    }, headers=_auth_headers())
+    resp = client.post(f"/api/run/{stocksim_run}/stocksim/complete", json={}, headers=_auth_headers())
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert "pnl" in data
+    assert "dimensions" in data
+    assert "risk_tolerance" in data["dimensions"]
+    assert storage.get_run(stocksim_run)["stocksim"]["completed"] is True
+
+
+def test_stocksim_complete_idempotent(client, stocksim_run):
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={}, headers=_auth_headers())
+    r1 = client.post(f"/api/run/{stocksim_run}/stocksim/complete", json={}, headers=_auth_headers())
+    r2 = client.post(f"/api/run/{stocksim_run}/stocksim/complete", json={}, headers=_auth_headers())
+    assert r1.status_code == 200
+    assert r2.status_code in (200, 409)
+
+
+def test_dimension_scores_match_engine_directly(client, stocksim_run):
+    """Route output should match engine.score_dimensions() called directly."""
+    from engines.stock_market_engine import StockMarketEngine
+    client.post(f"/api/run/{stocksim_run}/stocksim/start", json={}, headers=_auth_headers())
+    client.post(f"/api/run/{stocksim_run}/stocksim/trade", json={
+        "tick": 1, "symbol": "TECHV", "side": "buy",
+        "qty": 5, "order_type": "market"
+    }, headers=_auth_headers())
+    resp = client.post(f"/api/run/{stocksim_run}/stocksim/complete", json={}, headers=_auth_headers())
+    route_dims = resp.get_json()["dimensions"]
+    state = storage.get_run(stocksim_run)["stocksim"]
+    sm_cfg = (storage.get_run(stocksim_run).get("game", {}).get("minigame_config") or {}).get("stock_market_config")
+    eng = StockMarketEngine(sm_cfg)
+    direct_dims = eng.score_dimensions(state)
+    assert route_dims == direct_dims

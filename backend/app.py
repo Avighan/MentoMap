@@ -26556,6 +26556,148 @@ def stocksim_cancel(run_id):
                     "remaining_pending": len(state["pending_orders"])})
 
 
+@app.route('/api/run/<run_id>/stocksim/trade', methods=['POST'])
+@require_auth
+def stocksim_trade(run_id):
+    """Place a trade. Server validates tick, funds, holdings, halts."""
+    from engines.stock_market_engine import StockMarketEngine
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+    if state.get("completed"):
+        return jsonify({"error": "Session completed",
+                        "error_code": "SESSION_COMPLETED",
+                        "recoverable": False}), 409
+
+    sm_cfg = (run.get("game", {}).get("minigame_config") or {}).get("stock_market_config") or {}
+    tick_count = sm_cfg.get("tick_count", 22)
+    body = request.get_json(silent=True) or {}
+    requested_tick = body.get("tick", 0)
+
+    if not isinstance(requested_tick, int) or requested_tick < 0 or requested_tick > tick_count:
+        return jsonify({"error": "Invalid tick",
+                        "error_code": "INVALID_TICK",
+                        "recoverable": True}), 400
+    # Anti-cheat: reject if claiming a tick more than 1 ahead of authoritative
+    if requested_tick > state.get("current_tick", 0) + 1:
+        return jsonify({"error": "Tick out of sync",
+                        "error_code": "INVALID_TICK",
+                        "recoverable": True}), 400
+
+    eng = StockMarketEngine(sm_cfg)
+    eng.advance_to_tick(state, requested_tick)  # lazy sweep first
+    result = eng.place_order(state, body)
+    storage.update_run(run_id, run)
+
+    if result.get("status") == "rejected":
+        return jsonify(result), 400 if result.get("error_code") == "INVALID_ORDER" else 402
+    return jsonify(result)
+
+
+@app.route('/api/run/<run_id>/stocksim/complete', methods=['POST'])
+@require_auth
+def stocksim_complete(run_id):
+    """Finalize session: settle, compute P&L + dimensions, record outcome."""
+    from engines.stock_market_engine import StockMarketEngine
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+
+    sm_cfg = (run.get("game", {}).get("minigame_config") or {}).get("stock_market_config") or {}
+    tick_count = sm_cfg.get("tick_count", 22)
+    eng = StockMarketEngine(sm_cfg)
+
+    if not state.get("completed"):
+        eng.advance_to_tick(state, tick_count)
+        pnl = eng.compute_pnl(state)
+        dims = eng.score_dimensions(state)
+        state["completed"] = True
+        state["final_pnl"] = pnl
+        state["final_dimensions"] = dims
+        storage.update_run(run_id, run)
+
+        # Hook into existing dimension storage on RunState
+        st_obj = run.get("state")
+        if st_obj is not None:
+            try:
+                st_obj.dimension_scores = dims
+                for dim, val in dims.items():
+                    setattr(st_obj, dim, val)
+            except Exception as _e:
+                logger.debug("stocksim dim attach: %s", _e)
+
+        # Award XP + record_outcome (best-effort)
+        try:
+            user_id = run.get("user_id") or get_current_user_id()
+            if user_id:
+                xp = max(50, int(pnl["total"] / 100) + 100)
+                psych = {k: {"final": v, "name": k.replace("_", " ").title()}
+                         for k, v in dims.items()}
+                award_xp(user_id, xp, "Stock market sim", "minigame",
+                         int(pnl["total"]), psych)
+        except Exception as _e:
+            logger.debug("stocksim award_xp: %s", _e)
+    else:
+        pnl = state.get("final_pnl", {})
+        dims = state.get("final_dimensions", {})
+
+    return jsonify({
+        "pnl": pnl,
+        "dimensions": dims,
+        "trade_log": state.get("trade_log", []),
+        "recap_messages": _stocksim_recap_messages(state, pnl, dims),
+    })
+
+
+def _stocksim_recap_messages(state: dict, pnl: dict, dims: dict) -> list:
+    """Build short coaching recap based on the session."""
+    msgs = []
+    n_trades = len(state.get("trade_log", []))
+    if n_trades == 0:
+        msgs.append("You watched the market without trading. Next time, try placing at least one order.")
+    elif n_trades > 15:
+        msgs.append("Lots of activity! Consider whether each trade had a clear thesis.")
+    if pnl.get("total", 0) > 0:
+        msgs.append(f"Net positive: \u20b9{pnl['total']:,.0f}. Nice work managing risk.")
+    elif pnl.get("total", 0) < -5000:
+        msgs.append("Tough session. Review which trades hurt most \u2014 was it sizing or timing?")
+    if dims.get("strategic_thinking", 0) >= 70:
+        msgs.append("You diversified well across sectors.")
+    if dims.get("financial_literacy", 0) >= 70:
+        msgs.append("You used multiple order types \u2014 sign of growing market literacy.")
+    return msgs
+
+
 if __name__ == "__main__":
     # Warn about insecure JWT secret
     jwt_secret = os.getenv("JWT_SECRET_KEY", os.getenv("SECRET_KEY", ""))
