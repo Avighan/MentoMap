@@ -340,8 +340,61 @@ def test_stock_image_returns_url_when_cached(client, monkeypatch):
     assert r1.status_code in (200, 202)
     assert r2.status_code == 200
     assert r2.get_json()["image_url"].endswith(".png")
+    assert r2.get_json().get("cached") is True
 
 
 def test_stock_image_returns_404_for_unknown_symbol(client):
     r = client.get("/api/games/stock-market-day-trader/stock/NOPE/image")
     assert r.status_code == 404
+    assert r.get_json()["error"] == "Stock not found"
+
+
+def test_stock_image_returns_404_for_unknown_game(client):
+    r = client.get("/api/games/no-such-game/stock/TECHV/image")
+    assert r.status_code == 404
+    assert r.get_json()["error"] == "Game not found"
+
+
+def test_stock_image_returns_fallback_when_no_prompt(client, monkeypatch):
+    """If a stock entry has no image_prompt, route returns 200 with fallback=True (no DALL-E call)."""
+    fake_bundle = {
+        "minigame_config": {
+            "stock_market_config": {
+                "stocks": [{"symbol": "BARE", "name": "BareCo", "sector": "Test"}]
+            }
+        }
+    }
+    # The route does `from game_storage import load_game` lazily — patch that:
+    import game_storage
+    monkeypatch.setattr(game_storage, "load_game", lambda _gid: fake_bundle)
+
+    r = client.get("/api/games/any-game/stock/BARE/image")
+    assert r.status_code == 200
+    body = r.get_json()
+    assert body["fallback"] is True
+    assert body["image_url"] is None
+
+
+def test_stock_image_returns_202_when_generation_pending(client, monkeypatch):
+    """When generate returns no image_url, route returns 202 + status:generating."""
+    from services import story_image_service
+    monkeypatch.setattr(story_image_service, "generate_story_image",
+                        lambda **kw: {})
+
+    r = client.get("/api/games/stock-market-day-trader/stock/TECHV/image")
+    assert r.status_code == 202
+    assert r.get_json()["status"] == "generating"
+
+
+def test_stock_image_returns_fallback_on_exception(client, monkeypatch):
+    """When generate raises, route logs warning and returns 200 + fallback:true (does not 5xx)."""
+    from services import story_image_service
+    def boom(**kw):
+        raise RuntimeError("DALL-E down")
+    monkeypatch.setattr(story_image_service, "generate_story_image", boom)
+
+    r = client.get("/api/games/stock-market-day-trader/stock/TECHV/image")
+    assert r.status_code == 200
+    body = r.get_json()
+    assert body["fallback"] is True
+    assert body["image_url"] is None

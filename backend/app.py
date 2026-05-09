@@ -8328,23 +8328,27 @@ def stocksim_stock_image(game_id, symbol):
 
     bundle = load_game(game_id)
     if not bundle:
-        return jsonify({"error": "Unknown game"}), 404
+        return jsonify({"error": "Game not found"}), 404
     cfg = (bundle.get("minigame_config") or {}).get("stock_market_config") or {}
     stock = next((s for s in cfg.get("stocks", []) if s.get("symbol") == symbol), None)
     if not stock:
-        return jsonify({"error": "Unknown symbol"}), 404
+        return jsonify({"error": "Stock not found"}), 404
 
     prompt = stock.get("image_prompt")
     if not prompt:
         return jsonify({"image_url": None, "fallback": True}), 200
 
     try:
+        ai_cfg = bundle.get("ai_image_config", {}) or {}
+        dalle_style = ai_cfg.get("dalle_style", "vivid")
+        image_style = ai_cfg.get("image_style", "semi-realistic")
         result = story_image_service.generate_story_image(
             game_id=f"stocksim_{game_id}",
             round_id=f"stock_{symbol}",
             image_prompt=prompt,
             scene_hint=f"{stock.get('name', symbol)} - {stock.get('sector', '')}",
-            image_style="semi-realistic",
+            style=dalle_style,
+            image_style=image_style,
         )
         if not result or not result.get("image_url"):
             return jsonify({"status": "generating"}), 202
