@@ -761,7 +761,10 @@ def _validate_stock_market_minigame(g):
             f"stock_market game {gid} missing 'stock_market_config' (v2 format required)"
         )
     # Tier-2 v2 schema checks
-    if "tick_count" not in cfg or not isinstance(cfg["tick_count"], int) or cfg["tick_count"] < 1:
+    if ("tick_count" not in cfg
+            or not isinstance(cfg["tick_count"], int)
+            or isinstance(cfg["tick_count"], bool)
+            or cfg["tick_count"] < 1):
         raise ValueError(f"stock_market game {gid}: 'tick_count' must be a positive integer")
     if not isinstance(cfg.get("stocks"), list) or len(cfg["stocks"]) == 0:
         raise ValueError(f"stock_market game {gid}: 'stocks' must be a non-empty list")
@@ -769,6 +772,12 @@ def _validate_stock_market_minigame(g):
         for k in ("symbol", "name", "sector", "starting_price", "volatility"):
             if k not in s:
                 raise ValueError(f"stock_market game {gid} stock[{i}] missing '{k}'")
+        if not isinstance(s["symbol"], str) or not s["symbol"]:
+            raise ValueError(f"stock_market game {gid} stock[{i}]: 'symbol' must be a non-empty string")
+        if not isinstance(s["starting_price"], (int, float)) or isinstance(s["starting_price"], bool) or s["starting_price"] <= 0:
+            raise ValueError(f"stock_market game {gid} stock[{i}]: 'starting_price' must be a positive number")
+        if not isinstance(s["volatility"], (int, float)) or isinstance(s["volatility"], bool) or not (0 <= s["volatility"] <= 1):
+            raise ValueError(f"stock_market game {gid} stock[{i}]: 'volatility' must be a number in [0, 1]")
     sectors_in_stocks = {s["sector"] for s in cfg["stocks"]}
     declared = set(cfg.get("sectors", []))
     if declared and not sectors_in_stocks.issubset(declared):

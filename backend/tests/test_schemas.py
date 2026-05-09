@@ -64,3 +64,48 @@ def test_stock_market_v2_invalid_dimension_key_raises():
     }
     with pytest.raises(ValueError, match="dimension"):
         validate_bundle({"games": [g]})
+
+
+def test_stock_market_v2_boolean_tick_count_rejected():
+    g = _stock_market_game()
+    g["minigame_config"]["stock_market_config"]["tick_count"] = True
+    with pytest.raises(ValueError, match="tick_count"):
+        validate_bundle({"games": [g]})
+
+
+def test_stock_market_v2_invalid_stock_field_types_rejected():
+    # starting_price as string
+    g = _stock_market_game()
+    g["minigame_config"]["stock_market_config"]["stocks"][0]["starting_price"] = "100"
+    with pytest.raises(ValueError, match="starting_price"):
+        validate_bundle({"games": [g]})
+    # volatility out of range
+    g = _stock_market_game()
+    g["minigame_config"]["stock_market_config"]["stocks"][0]["volatility"] = 5.0
+    with pytest.raises(ValueError, match="volatility"):
+        validate_bundle({"games": [g]})
+
+
+def test_stock_market_legacy_format_passes():
+    """Legacy stock_market games (direct keys, no stock_market_config) must still validate."""
+    g = {
+        "game_id": "legacy-stocksim-v1",
+        "title": "Legacy",
+        "initial_state": {},
+        "game_type": "minigame",
+        "minigame_config": {
+            "subtype": "stock_market",
+            "stocks": [{"symbol": "T", "starting_price": 100}],
+            "num_ticks": 10,
+        },
+    }
+    validate_bundle({"games": [g]})  # should not raise
+
+
+def test_stock_market_v2_bad_event_symbol_rejected():
+    g = _stock_market_game()
+    g["minigame_config"]["stock_market_config"]["events"] = [
+        {"id": "ev1", "symbols": ["BOGUS"]}
+    ]
+    with pytest.raises(ValueError, match="unknown symbol"):
+        validate_bundle({"games": [g]})
