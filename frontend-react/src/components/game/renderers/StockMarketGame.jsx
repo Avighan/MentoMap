@@ -42,6 +42,7 @@ import NewsTickerStrip from './stocksim/NewsTickerStrip';
 import PortfolioPanel from './stocksim/PortfolioPanel';
 import EventOverlay from './stocksim/EventOverlay';
 import MarketBriefing from './stocksim/MarketBriefing';
+import MentorCheckIn from './stocksim/MentorCheckIn';
 import { useOrg } from '../../../contexts/OrgContext';
 
 const CHART_HEIGHT = 160;
@@ -401,6 +402,29 @@ const StockMarketGame = ({
   const currentTick = serverState?.current_tick ?? 0;
   const transactions = serverState?.trade_log || [];
 
+  const [mentorShown, setMentorShown] = useState(false); // false → 'open' → 'done'
+  const halfTick = Math.floor((tickCount || 0) / 2);
+  useEffect(() => {
+    if (!mentorShown && halfTick > 0 && currentTick === halfTick) setMentorShown('open');
+  }, [currentTick, halfTick, mentorShown]);
+
+  // Map holdings/stocks into the shape mentorCheckIn() expects.
+  const mentorState = useMemo(() => {
+    const positions = {};
+    Object.entries(holdings).forEach(([sym, h]) => {
+      if (h?.qty) positions[sym] = h.qty;
+    });
+    const stocks_by_sector = {};
+    stocks.forEach(s => { stocks_by_sector[s.symbol] = s.sector; });
+    return { positions, stocks_by_sector };
+  }, [holdings, stocks]);
+
+  function handleMentorReply(_choiceId, _dim) {
+    setMentorShown('done');
+    // TODO(stocksim-v2): persist to dimension_counters once
+    // POST /api/run/<id>/stocksim/mentor exists. Local state only for now.
+  }
+
   const portfolioValue = useMemo(() => {
     let v = 0;
     Object.entries(holdings).forEach(([sym, h]) => {
@@ -618,6 +642,12 @@ const StockMarketGame = ({
           }`}
         >
           {tradeMessage.text}
+        </div>
+      )}
+
+      {v2Enabled && mentorShown === 'open' && (
+        <div className="mx-6">
+          <MentorCheckIn state={mentorState} onReply={handleMentorReply} />
         </div>
       )}
 

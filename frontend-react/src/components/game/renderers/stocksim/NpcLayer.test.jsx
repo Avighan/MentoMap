@@ -45,4 +45,26 @@ describe('NpcLayer', () => {
     // Still showing earliest; not duplicated
     expect(screen.getAllByTestId('npc-chip').length).toBe(1);
   });
+
+  it('honors mentor one-shot semantics (cooldown Infinity)', () => {
+    function MentorProbe() {
+      const npc = useNpc();
+      return <button onClick={() => npc.say('mentor', { key: 'stocksim.npc.mentor.diversified', props: {} })}>mentor</button>;
+    }
+    const { rerender } = render(
+      <NpcLayerProvider currentTick={1}>
+        <MentorProbe />
+      </NpcLayerProvider>
+    );
+    act(() => { screen.getByText('mentor').click(); });
+    expect(screen.getAllByTestId('npc-chip').length).toBe(1);
+    // Advance many ticks; mentor should still be suppressed (one-shot).
+    rerender(
+      <NpcLayerProvider currentTick={9999}>
+        <MentorProbe />
+      </NpcLayerProvider>
+    );
+    act(() => { screen.getByText('mentor').click(); });
+    expect(screen.getAllByTestId('npc-chip').length).toBe(1);
+  });
 });
