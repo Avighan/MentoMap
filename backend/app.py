@@ -1975,8 +1975,12 @@ def games_list():
         # Hide games marked as not visible or testing from non-privileged users
         if not is_privileged and (g.get("visible") is False or g.get("status") == "testing"):
             continue
-        # Non-privileged users only see public game types
-        if not is_privileged and g.get("game_type", "rounds") not in _PUBLIC_GAME_TYPES:
+        # Non-privileged users only see public game types — unless the game is
+        # explicitly whitelisted on the curated discover surface (lets us pilot
+        # individual minigames/special types without exposing the whole class).
+        if (not is_privileged
+                and g.get("game_type", "rounds") not in _PUBLIC_GAME_TYPES
+                and g["game_id"] not in _DISCOVER_WHITELIST):
             continue
         # Curated discover surface: non-privileged users see only the whitelist on
         # the public catalog. Module/curriculum routes use different endpoints, so
