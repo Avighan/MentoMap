@@ -111,9 +111,17 @@ Create `frontend-react/src/tests/setup.js`:
 
 ```js
 import '@testing-library/jest-dom/vitest';
+import { afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
+
+afterEach(() => {
+  cleanup();
+});
 ```
 
-Note: use the `/vitest` entry point, not the root entry. With `globals: false` (set in `vitest.config.js`), the root entry throws `ReferenceError: expect is not defined` because it expects a Jest-style global. The `/vitest` entry imports `expect` from vitest and calls `expect.extend(...)` itself, which is the supported path for `globals: false`.
+Notes:
+- Use the `/vitest` entry point of `@testing-library/jest-dom`, not the root entry. With `globals: false` (set in `vitest.config.js`), the root entry throws `ReferenceError: expect is not defined` because it expects a Jest-style global. The `/vitest` entry imports `expect` from vitest and calls `expect.extend(...)` itself.
+- Explicitly register `afterEach(cleanup)`. RTL only auto-registers cleanup when vitest globals are enabled. With `globals: false` we must register it ourselves, otherwise tests with multiple `it()` blocks find duplicated DOM nodes from the prior render.
 
 - [ ] **Step 5: Verify existing tests still run**
 
