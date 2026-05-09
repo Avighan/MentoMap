@@ -18,6 +18,9 @@
  *   disabled        boolean
  */
 import React, { useMemo, useState, useEffect } from 'react';
+import { useNpc } from './NpcLayer';
+import { brokerOnTrade } from './npcDialog';
+import { THEME } from './theme';
 
 const TABS = [
   { id: 'market', label: 'Market' },
@@ -50,12 +53,20 @@ const OrderTicket = ({
   const [stopPrice, setStopPrice] = useState('');
   const [sipAmount, setSipAmount] = useState(1000);
   const [scheduleTick, setScheduleTick] = useState(1);
+  const [targetOn, setTargetOn] = useState(false);
+  const [stopOn, setStopOn] = useState(false);
+  const npc = useNpc();
 
   const stock = stocks.find((s) => s.symbol === selectedSymbol);
   const mid = currentQuote?.mid ?? stock?.starting_price ?? 0;
   const bid = currentQuote?.bid ?? mid;
   const ask = currentQuote?.ask ?? mid;
   const held = holdings?.[selectedSymbol]?.qty || 0;
+
+  // Position sizer (uses existing ask local).
+  const totalCost = (Number(qty) || 0) * (ask || 0);
+  const riskPct = cashAvailable > 0 ? (totalCost / cashAvailable) * 100 : 0;
+  const fivePctMove = totalCost * 0.05;
 
   // When stock changes, reset limit/stop defaults to mid.
   useEffect(() => {
@@ -111,6 +122,12 @@ const OrderTicket = ({
     };
     if (orderType === 'limit') payload.limit_price = parseFloat(limitPrice) || mid;
     if (orderType === 'stop') payload.stop_price = parseFloat(stopPrice) || mid;
+    if (orderType !== 'sip') {
+      payload.target_pct = targetOn ? 5 : null;
+      payload.stop_pct = stopOn ? -3 : null;
+      const line = brokerOnTrade(payload, riskPct);
+      if (line) npc.say('broker', line);
+    }
     onSubmit?.(payload);
   };
 
@@ -217,6 +234,7 @@ const OrderTicket = ({
             </button>
             <input
               type="number"
+              data-testid="order-qty"
               value={qty}
               min="1"
               onChange={(e) => setQty(Math.max(1, parseInt(e.target.value, 10) || 1))}
@@ -259,6 +277,34 @@ const OrderTicket = ({
             >
               Max
             </button>
+          </div>
+          <div data-testid="order-sizer" style={{ fontSize: 10, color: THEME.textMuted, marginTop: 4 }}>
+            @ qty={qty || 0} → ₹{totalCost.toLocaleString('en-IN')} ({riskPct.toFixed(1)}% of cash) ·
+            +5% = +₹{fivePctMove.toFixed(2)} / −5% = −₹{fivePctMove.toFixed(2)}
+          </div>
+          <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
+            <button
+              data-testid="chip-target"
+              data-active={targetOn ? 'true' : 'false'}
+              onClick={() => setTargetOn(v => !v)}
+              style={{
+                background: targetOn ? THEME.gain : THEME.bgTile,
+                color: targetOn ? '#fff' : THEME.textPrimary,
+                border: `1px solid ${THEME.borderTile}`, borderRadius: 12, padding: '2px 8px',
+                fontSize: 10, cursor: 'pointer',
+              }}
+            >Target +5%</button>
+            <button
+              data-testid="chip-stop"
+              data-active={stopOn ? 'true' : 'false'}
+              onClick={() => setStopOn(v => !v)}
+              style={{
+                background: stopOn ? THEME.loss : THEME.bgTile,
+                color: stopOn ? '#fff' : THEME.textPrimary,
+                border: `1px solid ${THEME.borderTile}`, borderRadius: 12, padding: '2px 8px',
+                fontSize: 10, cursor: 'pointer',
+              }}
+            >Stop −3%</button>
           </div>
         </div>
       )}
