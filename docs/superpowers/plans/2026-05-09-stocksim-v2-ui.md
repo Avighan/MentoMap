@@ -2210,7 +2210,9 @@ describe('MarketBriefing', () => {
     render(<MarketBriefing briefing={briefing} stocks={stocks} onBegin={() => {}} />);
     expect(screen.getByText(briefing.headline)).toBeInTheDocument();
     expect(screen.getByText(briefing.sub)).toBeInTheDocument();
-    expect(screen.getByText(/IT/)).toBeInTheDocument();
+    // Sector chip text is "IT · positive" — be specific so we don't collide with
+    // the same letters appearing in macro_tone or in stock-card sector lines.
+    expect(screen.getByText(/IT · positive/)).toBeInTheDocument();
     expect(screen.getByText(/TECHV/)).toBeInTheDocument();
   });
 
