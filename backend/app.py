@@ -26429,15 +26429,25 @@ def _safe_load_json(path, default):
 # ==================== STOCK MARKET SIM (REAL-TIME) ====================
 
 @app.route('/api/run/<run_id>/stocksim/start', methods=['POST'])
+@require_auth
 def stocksim_start(run_id):
     """Initialize a real-time stock market session."""
     from engines.stock_market_engine import StockMarketEngine
-    import time
-    load_bundle()
     try:
         run = storage.get_run(run_id)
     except (KeyError, SessionNotFoundError, SessionExpiredError):
         return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+
     game = run.get("game") or {}
     if game.get("game_type") != "minigame":
         return jsonify({"error": "Not a mini-game"}), 400
@@ -26447,6 +26457,9 @@ def stocksim_start(run_id):
     sm_cfg = mc.get("stock_market_config")
     if not sm_cfg:
         return jsonify({"error": "stock_market_config missing"}), 400
+
+    if run.get("stocksim"):
+        return jsonify({"error": "Session already started"}), 409
 
     body = request.get_json(silent=True) or {}
     profile = body.get("profile", "day_trader")

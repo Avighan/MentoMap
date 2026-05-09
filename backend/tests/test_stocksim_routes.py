@@ -1,9 +1,27 @@
 """Integration tests for /api/run/<id>/stocksim/* routes."""
 import json
 import os
+import time
 import pytest
+import jwt
 from app import app as flask_app
 import storage
+from auth import JWT_SECRET
+
+
+def _make_token(user_id: str = "test-user-1", role: str = "student") -> str:
+    """Generate a valid JWT for the given user_id / role using the app's JWT_SECRET."""
+    payload = {
+        "user_id": user_id,
+        "username": user_id,
+        "role": role,
+        "exp": int(time.time()) + 3600,
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
+
+
+def _auth_headers(user_id: str = "test-user-1", role: str = "student") -> dict:
+    return {"Authorization": f"Bearer {_make_token(user_id, role)}"}
 
 
 @pytest.fixture
@@ -66,7 +84,8 @@ def stocksim_run():
 
 def test_stocksim_start_creates_session(client, stocksim_run):
     resp = client.post(f"/api/run/{stocksim_run}/stocksim/start",
-                       json={"profile": "day_trader"})
+                       json={"profile": "day_trader"},
+                       headers=_auth_headers())
     assert resp.status_code == 200
     data = resp.get_json()
     assert "seed" in data
@@ -76,7 +95,8 @@ def test_stocksim_start_creates_session(client, stocksim_run):
 
 
 def test_stocksim_start_404_when_run_missing(client):
-    resp = client.post("/api/run/no-such-run/stocksim/start", json={})
+    resp = client.post("/api/run/no-such-run/stocksim/start", json={},
+                       headers=_auth_headers())
     assert resp.status_code == 404
 
 
@@ -84,16 +104,37 @@ def test_stocksim_start_400_when_not_stock_market(client):
     run_id = "wrong-type-run"
     run_data = {
         "run_id": run_id,
-        "user_id": "u",
+        "user_id": "test-user-1",
         "game_id": "x",
         "game": {"game_type": "rounds"},
     }
     file_path = _write_run_to_disk(run_id, run_data)
     try:
-        resp = client.post(f"/api/run/{run_id}/stocksim/start", json={})
+        resp = client.post(f"/api/run/{run_id}/stocksim/start", json={},
+                           headers=_auth_headers())
         assert resp.status_code == 400
     finally:
         storage.RUNS.pop(run_id, None)
         storage.RUNS_MTIME.pop(run_id, None)
         if os.path.exists(file_path):
             os.remove(file_path)
+
+
+def test_stocksim_start_409_when_already_started(client, stocksim_run):
+    r1 = client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                     headers=_auth_headers())
+    assert r1.status_code == 200
+    r2 = client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                     headers=_auth_headers())
+    assert r2.status_code == 409
+
+
+def test_stocksim_start_response_includes_meta(client, stocksim_run):
+    resp = client.post(f"/api/run/{stocksim_run}/stocksim/start", json={},
+                       headers=_auth_headers())
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert data["tick_schedule_meta"]["tick_count"] == 22
+    assert data["tick_schedule_meta"]["tick_interval_seconds"] == 8
+    assert data["opening_state"]["current_tick"] == 0
+    assert data["market_calendar"]["shorting_enabled"] is False
