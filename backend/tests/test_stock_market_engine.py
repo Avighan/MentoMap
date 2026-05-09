@@ -474,3 +474,75 @@ def test_news_returns_multiple_when_overlapping():
     assert len(items) == 2
     ids = {n["id"] for n in items}
     assert ids == {"fii_in", "dii_in"}
+
+
+# ---- Task 7: Scoring (4 dimensions + financial_literacy tag) ----
+
+def test_compute_pnl_realized_and_unrealized():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    state["cash"] = 95000.0
+    state["realized_pnl"] = -2000.0
+    state["holdings"] = {"TECHV": {"qty": 5, "avg_price": 1200.0, "settled_qty": 0}}
+    state["current_tick"] = 5
+    pnl = eng.compute_pnl(state)
+    assert pnl["realized"] == -2000.0
+    assert "unrealized" in pnl
+    assert "total" in pnl
+    assert pnl["cash"] == 95000.0
+
+
+def test_score_risk_tolerance_scales_with_position_size():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state_small = eng.start_session(seed=42, profile="day_trader")
+    state_small["trade_log"] = [
+        {"side": "buy", "qty": 1, "price": 1200.0, "symbol": "TECHV"}
+    ]
+    state_big = eng.start_session(seed=42, profile="day_trader")
+    state_big["trade_log"] = [
+        {"side": "buy", "qty": 25, "price": 1200.0, "symbol": "TECHV"}
+    ]
+    s_small = eng.score_dimensions(state_small)
+    s_big = eng.score_dimensions(state_big)
+    assert s_big["risk_tolerance"] > s_small["risk_tolerance"]
+
+
+def test_score_strategic_thinking_rewards_diversification():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state_focused = eng.start_session(seed=42, profile="day_trader")
+    state_focused["trade_log"] = [
+        {"side": "buy", "qty": 5, "price": 1200.0, "symbol": "TECHV"}
+    ]
+    state_diverse = eng.start_session(seed=42, profile="day_trader")
+    state_diverse["trade_log"] = [
+        {"side": "buy", "qty": 5, "price": 1200.0, "symbol": "TECHV"},
+        {"side": "buy", "qty": 10, "price": 450.0, "symbol": "FRESHB"},
+    ]
+    s_focused = eng.score_dimensions(state_focused)
+    s_diverse = eng.score_dimensions(state_diverse)
+    assert s_diverse["strategic_thinking"] > s_focused["strategic_thinking"]
+
+
+def test_financial_literacy_tag_awarded_for_diverse_order_types():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    state["trade_log"] = [
+        {"side": "buy", "qty": 5, "price": 1200.0, "symbol": "TECHV",
+         "order_type_used": "market"},
+        {"side": "buy", "qty": 5, "price": 450.0, "symbol": "FRESHB",
+         "order_type_used": "limit"},
+    ]
+    scores = eng.score_dimensions(state)
+    assert scores.get("financial_literacy", 0) >= 60  # tag awarded
+
+
+def test_dimension_scores_clamped_0_to_100():
+    eng = StockMarketEngine(VALID_CONFIG)
+    state = eng.start_session(seed=42, profile="day_trader")
+    state["trade_log"] = [
+        {"side": "buy", "qty": 999, "price": 1200.0, "symbol": "TECHV"}
+        for _ in range(50)
+    ]
+    scores = eng.score_dimensions(state)
+    for dim, val in scores.items():
+        assert 0 <= val <= 100

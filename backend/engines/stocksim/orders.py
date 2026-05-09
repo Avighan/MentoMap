@@ -66,6 +66,7 @@ def _fill_or_reject_market(state: dict, order: dict, quote: dict, charges_cfg: d
         "order_id": str(uuid.uuid4()),
         "tick": order["tick"], "symbol": symbol, "side": side,
         "qty": qty, "price": price, "charges": charges,
+        "order_type_used": order.get("order_type", "market"),
     }
     state["trade_log"].append(fill)
     return {"status": "filled", "fill": fill, "charges": charges,

@@ -95,3 +95,19 @@ class StockMarketEngine:
     def event_at(self, state: dict, tick: int):
         from engines.stocksim.events import event_at
         return event_at(state, tick, self.config)
+
+    # ---- scoring ----
+    def compute_pnl(self, state, latest_quotes=None):
+        from engines.stocksim.scoring import compute_pnl
+        if latest_quotes is None:
+            tick = state.get("current_tick", 0)
+            latest_quotes = {}
+            for s in self.config["stocks"]:
+                if s["symbol"] in state.get("holdings", {}):
+                    q = self.price_at(state, s["symbol"], tick)
+                    latest_quotes[s["symbol"]] = q["mid"]
+        return compute_pnl(state, latest_quotes)
+
+    def score_dimensions(self, state):
+        from engines.stocksim.scoring import score_dimensions
+        return score_dimensions(state, self.config)
