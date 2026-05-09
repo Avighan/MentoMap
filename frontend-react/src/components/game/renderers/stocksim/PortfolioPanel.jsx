@@ -138,7 +138,7 @@ const PortfolioPanel = ({
               const isBuy = side === 'buy';
               return (
                 <div
-                  key={i}
+                  key={`${t.tick ?? 'x'}-${t.symbol ?? ''}-${t.side ?? ''}-${i}`}
                   className="flex items-center justify-between text-xs"
                 >
                   <span

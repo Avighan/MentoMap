@@ -115,7 +115,14 @@ const SECTOR_COLORS = {
 const colorForStock = (s) =>
   s.color || SECTOR_COLORS[s.sector] || '#3b82f6';
 
-const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
+const StockMarketGame = ({
+  config = {},
+  gameData,
+  runId,
+  onComplete,
+  allowEarlyExit = false,
+}) => {
+  const showEarlyExit = allowEarlyExit || config?.allow_early_exit || false;
   const navigate = useNavigate();
   const engagement = useEngagementSystem();
   const [onboardingPhase, setOnboardingPhase] = useState('story');
@@ -141,6 +148,14 @@ const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
   const pollTimerRef = useRef(null);
   const smoothingTimerRef = useRef(null);
   const completedSentRef = useRef(false);
+  const tradeMessageTimerRef = useRef(null);
+  const pnlRef = useRef({ total: 0, realized: 0, unrealized: 0 });
+  const currentTickRef = useRef(0);
+
+  // Cleanup trade-message timer on unmount.
+  useEffect(() => () => {
+    if (tradeMessageTimerRef.current) clearTimeout(tradeMessageTimerRef.current);
+  }, []);
 
   // ── Bootstrap session ───────────────────────────────────────────────
   useEffect(() => {
@@ -183,8 +198,11 @@ const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
       const data = await getStocksimState(runId);
       if (!data) return;
       setServerState(data.state || {});
+      currentTickRef.current = data.state?.current_tick ?? 0;
       setQuotes(data.quotes || {});
-      setPnl(data.pnl || { total: 0, realized: 0, unrealized: 0 });
+      const nextPnl = data.pnl || { total: 0, realized: 0, unrealized: 0 };
+      setPnl(nextPnl);
+      pnlRef.current = nextPnl;
       setHaltedSymbols(data.halted_symbols || {});
       if (data.event) setActiveEvent(data.event);
       // Append authoritative mid to price history at the new tick.
@@ -230,7 +248,7 @@ const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
       Math.floor((sessionConfig.tick_interval_ms || DEFAULT_POLL_MS) / 4),
     );
     smoothingTimerRef.current = setInterval(() => {
-      const tick = serverState?.current_tick ?? 0;
+      const tick = currentTickRef.current ?? 0;
       // Pull "next tick" preview just so the line nudges visually.
       setPriceHistory((prev) => {
         const next = { ...prev };
@@ -256,7 +274,7 @@ const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
     return () => {
       if (smoothingTimerRef.current) clearInterval(smoothingTimerRef.current);
     };
-  }, [sessionConfig, seed, serverState?.current_tick]);
+  }, [sessionConfig, seed]);
 
   // ── Auto-complete when reaching final tick ──────────────────────────
   const finishGame = useCallback(async () => {
@@ -270,7 +288,7 @@ const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
       // eslint-disable-next-line no-console
       console.error('stocksim complete failed', err);
       setRecap({
-        pnl,
+        pnl: pnlRef.current,
         dimensions: {},
         recap_messages: ['Could not load recap from server.'],
         xp_awarded: 0,
@@ -279,7 +297,7 @@ const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
     } finally {
       setCompleting(false);
     }
-  }, [runId, pnl]);
+  }, [runId]);
 
   useEffect(() => {
     const tickCount = sessionConfig?.tick_count;
@@ -343,11 +361,14 @@ const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
           text: err?.message || 'Network error placing trade',
         });
       }
-      // Auto-clear the message after 3.5s.
-      setTimeout(() => setTradeMessage(null), 3500);
+      // Auto-clear the message after 3.5s (cleared on unmount via effect).
+      if (tradeMessageTimerRef.current) clearTimeout(tradeMessageTimerRef.current);
+      tradeMessageTimerRef.current = setTimeout(() => setTradeMessage(null), 3500);
     },
     [runId, serverState?.current_tick, engagement, pollState],
   );
+
+  const handleDismissEvent = useCallback(() => setActiveEvent(null), []);
 
   const handleCancelOrder = useCallback(
     async (orderId) => {
@@ -570,7 +591,7 @@ const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
       <NewsTickerStrip newsStrip={newsStrip} currentTick={currentTick} />
 
       {/* Event overlay */}
-      <EventOverlay event={activeEvent} onDismiss={() => setActiveEvent(null)} />
+      <EventOverlay event={activeEvent} onDismiss={handleDismissEvent} />
 
       {/* Trade message banner */}
       {tradeMessage && (
@@ -797,13 +818,15 @@ const StockMarketGame = ({ config = {}, gameData, runId, onComplete }) => {
           />
 
           {/* Manual complete escape hatch (e.g. for teachers/tests). */}
-          <button
-            onClick={finishGame}
-            disabled={completing}
-            className="w-full py-2 text-xs text-gray-500 hover:text-gray-700 underline"
-          >
-            {completing ? 'Completing…' : 'End session early'}
-          </button>
+          {showEarlyExit && (
+            <button
+              onClick={finishGame}
+              disabled={completing}
+              className="w-full py-2 text-xs text-gray-500 hover:text-gray-700 underline"
+            >
+              {completing ? 'Completing…' : 'End session early'}
+            </button>
+          )}
         </aside>
       </div>
       <OnboardingFlow

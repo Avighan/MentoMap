@@ -1,3 +1,6 @@
+/* ASPIRATIONAL TEST — vitest not yet installed. This file documents the
+ * intended test contract. When vitest is added, move back to ../ and run.
+ */
 /**
  * StockMarketGame.test.jsx — aspirational vitest suite for the Tier-2
  * realtime stocksim renderer. NOTE: vitest and @testing-library/react are
@@ -7,8 +10,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import StockMarketGame from '../components/game/renderers/StockMarketGame';
-import * as stocksimApi from '../api/stocksim';
+import StockMarketGame from '../../components/game/renderers/StockMarketGame';
+import * as stocksimApi from '../../api/stocksim';
 
 vi.mock('../api/stocksim');
 

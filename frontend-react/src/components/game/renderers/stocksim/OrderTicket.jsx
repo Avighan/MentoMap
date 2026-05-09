@@ -84,6 +84,14 @@ const OrderTicket = ({
 
   const submit = (side) => {
     if (disabled || !selectedSymbol) return;
+    if (orderType === 'limit') {
+      const lp = parseFloat(limitPrice);
+      if (!lp || lp <= 0) return;
+    }
+    if (orderType === 'stop' || orderType === 'stop_loss') {
+      const sp = parseFloat(stopPrice);
+      if (!sp || sp <= 0) return;
+    }
     if (orderType === 'sip') {
       onSubmit?.({
         symbol: selectedSymbol,
