@@ -253,6 +253,8 @@ def _validate_minigame(g):
     ]
     if mc.get("subtype") not in valid_subtypes:
         raise ValueError(f"Mini-game {g['game_id']}: invalid subtype '{mc.get('subtype')}'")
+    if mc.get("subtype") == "stock_market":
+        _validate_stock_market_minigame(g)
     print(f"✓ Mini-game validated: {g['game_id']}")
 
 
@@ -745,3 +747,47 @@ def _validate_strategy_grid_game(g: dict) -> None:
         if len(ap) == 0:
             print(f"[WARNING] Game {gid}: strategy_grid has no ai_pieces defined")
     print(f"✓ Strategy grid config validated for game {gid}")
+
+
+def _validate_stock_market_minigame(g):
+    """Validate stock_market subtype config (Tier 2 real-time simulator)."""
+    gid = g["game_id"]
+    cfg = g["minigame_config"].get("stock_market_config")
+    if not cfg:
+        # Legacy stock_market games used direct minigame_config keys; allow if no v2 config
+        if "stocks" in g["minigame_config"] or "num_ticks" in g["minigame_config"]:
+            return  # legacy-format pass-through
+        raise ValueError(
+            f"stock_market game {gid} missing 'stock_market_config' (v2 format required)"
+        )
+    # Tier-2 v2 schema checks
+    if "tick_count" not in cfg or not isinstance(cfg["tick_count"], int) or cfg["tick_count"] < 1:
+        raise ValueError(f"stock_market game {gid}: 'tick_count' must be a positive integer")
+    if not isinstance(cfg.get("stocks"), list) or len(cfg["stocks"]) == 0:
+        raise ValueError(f"stock_market game {gid}: 'stocks' must be a non-empty list")
+    for i, s in enumerate(cfg["stocks"]):
+        for k in ("symbol", "name", "sector", "starting_price", "volatility"):
+            if k not in s:
+                raise ValueError(f"stock_market game {gid} stock[{i}] missing '{k}'")
+    sectors_in_stocks = {s["sector"] for s in cfg["stocks"]}
+    declared = set(cfg.get("sectors", []))
+    if declared and not sectors_in_stocks.issubset(declared):
+        raise ValueError(
+            f"stock_market game {gid}: stocks reference undeclared sectors "
+            f"{sectors_in_stocks - declared}"
+        )
+    for ev in cfg.get("events", []):
+        for sym in ev.get("symbols", []):
+            if not any(s["symbol"] == sym for s in cfg["stocks"]):
+                raise ValueError(
+                    f"stock_market game {gid}: event '{ev.get('id')}' references "
+                    f"unknown symbol '{sym}'"
+                )
+    allowed_dims = {"risk_tolerance", "delayed_gratification", "strategic_thinking",
+                    "financial_literacy", "empathy", "adaptability", "resilience",
+                    "ethical_reasoning", "creativity"}
+    for dim in cfg.get("dimensions_config", {}).keys():
+        if dim not in allowed_dims:
+            raise ValueError(
+                f"stock_market game {gid}: unknown dimension '{dim}' in dimensions_config"
+            )
