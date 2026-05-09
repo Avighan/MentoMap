@@ -402,7 +402,12 @@ const StockMarketGame = ({
   const currentTick = serverState?.current_tick ?? 0;
   const transactions = serverState?.trade_log || [];
 
-  const [mentorShown, setMentorShown] = useState(false); // false → 'open' → 'done'
+  // mentorShown state machine:
+  //   false   — initial; not yet triggered
+  //   'open'  — banner is visible to the user
+  //   'done'  — user replied; never re-opens for this run
+  // Always set with a string value (never `true`); the `=== 'open'` JSX check is strict.
+  const [mentorShown, setMentorShown] = useState(false);
   const halfTick = Math.floor((tickCount || 0) / 2);
   useEffect(() => {
     if (!mentorShown && halfTick > 0 && currentTick === halfTick) setMentorShown('open');

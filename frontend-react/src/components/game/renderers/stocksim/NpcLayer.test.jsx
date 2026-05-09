@@ -49,22 +49,32 @@ describe('NpcLayer', () => {
   it('honors mentor one-shot semantics (cooldown Infinity)', () => {
     function MentorProbe() {
       const npc = useNpc();
-      return <button onClick={() => npc.say('mentor', { key: 'stocksim.npc.mentor.diversified', props: {} })}>mentor</button>;
+      return (
+        <div>
+          <button onClick={() => npc.say('mentor', { key: 'stocksim.npc.mentor.diversified', props: {} })}>mentor</button>
+          <button onClick={() => npc.dismiss()}>dismiss</button>
+        </div>
+      );
     }
     const { rerender } = render(
       <NpcLayerProvider currentTick={1}>
         <MentorProbe />
       </NpcLayerProvider>
     );
+    // First say() should surface a chip.
     act(() => { screen.getByText('mentor').click(); });
     expect(screen.getAllByTestId('npc-chip').length).toBe(1);
-    // Advance many ticks; mentor should still be suppressed (one-shot).
+    // Dismiss the chip so the slate is clean before testing suppression.
+    act(() => { screen.getByText('dismiss').click(); });
+    expect(screen.queryByTestId('npc-chip')).toBeNull();
+    // Advance many ticks; mentor cooldown is Infinity so a second say() must be suppressed.
     rerender(
       <NpcLayerProvider currentTick={9999}>
         <MentorProbe />
       </NpcLayerProvider>
     );
     act(() => { screen.getByText('mentor').click(); });
-    expect(screen.getAllByTestId('npc-chip').length).toBe(1);
+    // Infinity cooldown means NO chip appears — this is the actual assertion.
+    expect(screen.queryByTestId('npc-chip')).toBeNull();
   });
 });
