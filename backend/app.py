@@ -26486,20 +26486,46 @@ def stocksim_start(run_id):
     run["stocksim"] = state
     storage.update_run(run_id, run)
 
+    # Build a client-facing config payload. Stripped down to fields the
+    # renderer needs (stocks, tick meta, news_strip, charges/dimensions for
+    # cost previews and scoring rubric tooltips).
+    tick_interval_seconds = sm_cfg.get("tick_interval_seconds", 8)
+    config_for_client = {
+        "stocks": sm_cfg.get("stocks", []),
+        "sectors": sm_cfg.get("sectors", []),
+        "tick_count": sm_cfg.get("tick_count", 22),
+        "tick_interval_seconds": tick_interval_seconds,
+        "tick_interval_ms": int(tick_interval_seconds * 1000),
+        "starting_capital": sm_cfg.get("starting_capital", 100000),
+        "charges": sm_cfg.get("charges", {}),
+        "circuit_breaker_pct": sm_cfg.get("circuit_breaker_pct", []),
+        "settlement": sm_cfg.get("settlement", "T+1"),
+        "shorting_enabled": sm_cfg.get("shorting_enabled", False),
+        "realism_tier": sm_cfg.get("realism_tier", 2),
+        "tick_authority": sm_cfg.get("tick_authority", "server"),
+        "dimensions_config": sm_cfg.get("dimensions_config", {}),
+    }
+    news_strip = sm_cfg.get("news_strip", [])
+
     return jsonify({
         "seed": seed,
+        "config": config_for_client,
+        "state": state,
+        "news_strip": news_strip,
+        # Backward-compatible aliases (kept so the smoke script + any older
+        # client snapshots still resolve familiar fields).
         "opening_state": {
             "cash": state["cash"],
             "holdings": state["holdings"],
             "current_tick": state["current_tick"],
         },
         "tick_schedule_meta": {
-            "tick_count": sm_cfg.get("tick_count", 22),
-            "tick_interval_seconds": sm_cfg.get("tick_interval_seconds", 8),
+            "tick_count": config_for_client["tick_count"],
+            "tick_interval_seconds": tick_interval_seconds,
         },
         "market_calendar": {
-            "settlement": sm_cfg.get("settlement", "T+1"),
-            "shorting_enabled": sm_cfg.get("shorting_enabled", False),
+            "settlement": config_for_client["settlement"],
+            "shorting_enabled": config_for_client["shorting_enabled"],
         },
     })
 
@@ -26507,7 +26533,8 @@ def stocksim_start(run_id):
 @app.route('/api/run/<run_id>/stocksim/state', methods=['GET'])
 @require_auth
 def stocksim_state(run_id):
-    """Resume after page reload."""
+    """Authoritative tick poll. Returns state + quotes + pnl + halts + event."""
+    from engines.stock_market_engine import StockMarketEngine
     try:
         run = storage.get_run(run_id)
     except (KeyError, SessionNotFoundError, SessionExpiredError):
@@ -26524,7 +26551,55 @@ def stocksim_state(run_id):
     state = run.get("stocksim")
     if not state:
         return jsonify({"error": "No stocksim session"}), 404
-    return jsonify({"state": state})
+
+    _g, _err = get_game_or_400(run.get("game_id"))
+    if _err:
+        return _err
+    sm_cfg = ((_g.get("minigame_config") or {}).get("stock_market_config")) or {}
+    tick_count = sm_cfg.get("tick_count", 22)
+    eng = StockMarketEngine(sm_cfg)
+
+    # Server-authoritative tick clock. Compute the tick that should be live
+    # now from session start + tick_interval, advance state lazily, persist.
+    started_at = state.get("started_at_ms")
+    interval_s = sm_cfg.get("tick_interval_seconds", 8)
+    if started_at is None:
+        state["started_at_ms"] = int(time.time() * 1000)
+        started_at = state["started_at_ms"]
+    elapsed_ticks = int((time.time() * 1000 - started_at) / max(1, int(interval_s * 1000)))
+    target_tick = min(elapsed_ticks, tick_count)
+    if not state.get("completed") and target_tick > state.get("current_tick", 0):
+        eng.advance_to_tick(state, target_tick)
+        storage.update_run(run_id, run)
+
+    current_tick = state.get("current_tick", 0)
+
+    # Per-stock quotes at current tick.
+    quotes = {}
+    for s in sm_cfg.get("stocks", []):
+        sym = s["symbol"]
+        try:
+            quotes[sym] = eng.price_at(state, sym, current_tick)
+        except Exception as _e:
+            logger.debug("price_at %s @ tick %s: %s", sym, current_tick, _e)
+
+    pnl = eng.compute_pnl(state, latest_quotes={k: v.get("mid") for k, v in quotes.items()})
+
+    # Active event (if any) at the current tick.
+    active_event = None
+    try:
+        active_event = eng.event_at(state, current_tick)
+    except Exception as _e:
+        logger.debug("event_at suppressed: %s", _e)
+
+    return jsonify({
+        "state": state,
+        "quotes": quotes,
+        "pnl": pnl,
+        "halted_symbols": state.get("halted_symbols", {}),
+        "event": active_event,
+        "tick_count": tick_count,
+    })
 
 
 @app.route('/api/run/<run_id>/stocksim/cancel', methods=['POST'])
