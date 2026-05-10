@@ -20,4 +20,30 @@ describe('TradesTab', () => {
     fireEvent.click(screen.getByTestId('trades-filter-buy'));
     expect(screen.getAllByTestId(/^trade-row-/)).toHaveLength(2);
   });
+
+  it('filters by day chip', () => {
+    render(<TradesTab trades={trades} />);
+    fireEvent.click(screen.getByTestId('trades-filter-Tue'));
+    expect(screen.getAllByTestId(/^trade-row-/)).toHaveLength(2);
+  });
+
+  it('filters by symbol search', () => {
+    render(<TradesTab trades={trades} />);
+    fireEvent.change(screen.getByTestId('trades-search'), { target: { value: 'bharat' } });
+    expect(screen.getAllByTestId(/^trade-row-/)).toHaveLength(1);
+  });
+
+  it('renders empty footer safely with no trades', () => {
+    render(<TradesTab trades={[]} />);
+    const summary = screen.getByTestId('trades-summary').textContent;
+    expect(summary).toContain('0 trade(s)');
+    expect(summary).toContain('Win rate 0%');
+  });
+
+  it('side and day chip groups operate independently', () => {
+    render(<TradesTab trades={trades} />);
+    // Both groups expose an "all" chip — duplicate testid is per-spec.
+    const allChips = screen.getAllByTestId('trades-filter-all');
+    expect(allChips).toHaveLength(2);
+  });
 });

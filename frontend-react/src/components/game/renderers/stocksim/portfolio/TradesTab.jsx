@@ -5,6 +5,36 @@ import { hitRatio } from './portfolioMetrics';
 
 const fmt = (n) => `₹${Math.round(n).toLocaleString('en-IN')}`;
 
+/**
+ * Trades tab of the portfolio dashboard. Renders a filterable, searchable
+ * log of executed trades plus an aggregate hit-rate footer.
+ *
+ * Caller contract:
+ *  - `trades` must be an array of trade records shaped like
+ *    `{ tick: number, dayLabel?: string, symbol: string, side: 'buy'|'sell',
+ *       qty: number, price: number, charges?: number, realized_pnl?: number }`.
+ *    `symbol`, `price`, and `qty` are required to be a non-empty string and
+ *    finite numbers respectively — `symbol.toLowerCase()` is called during
+ *    search filtering, and `price` flows through `Math.round` in `fmt`.
+ *    Passing `null`/`undefined` for these fields will throw or render `NaN`.
+ *  - `charges` and `realized_pnl` are optional. `realized_pnl` distinguishes
+ *    `null`/`undefined` (renders `'—'`) from `0` (renders `₹0`).
+ *  - `dayLabel` is optional but must be a string when present; only trades
+ *    with truthy `dayLabel` populate the day-filter chips.
+ *
+ * Filter chips: side (`all/buy/sell`) and day (`all` + dynamic per-trade
+ * day labels) are independent groups. Both groups intentionally include an
+ * `id="all"` chip; this produces two `data-testid="trades-filter-all"`
+ * elements in the DOM. This is per-spec — tests should target the unique
+ * side or day testids (e.g. `trades-filter-buy`, `trades-filter-Tue`)
+ * rather than `trades-filter-all`. The `group` prop on the inner `Chip`
+ * component is reserved for a future testid-namespacing refactor and is
+ * intentionally unused today.
+ *
+ * Footer: `hitRatio([])` is safe and returns zeros, so the empty-trades
+ * state renders `0 trade(s) · 0 closed · Win rate 0% · Avg win ₹0 · Avg
+ * loss ₹0`.
+ */
 export default function TradesTab({ trades = [] }) {
   const [side, setSide] = useState('all');
   const [day, setDay] = useState('all');
