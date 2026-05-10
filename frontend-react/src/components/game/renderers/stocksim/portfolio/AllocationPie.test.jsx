@@ -17,4 +17,12 @@ describe('AllocationPie', () => {
     fireEvent.click(container.querySelector('path[data-slice="IT"]'));
     expect(onClick).toHaveBeenCalledWith('IT');
   });
+
+  it('renders empty pie placeholder when total is zero', () => {
+    const slices = [{ label: 'Cash', value: 0 }];
+    const { container } = render(<AllocationPie slices={slices} />);
+    const svg = container.querySelector('svg[aria-label="pie-empty"]');
+    expect(svg).toBeTruthy();
+    expect(container.querySelectorAll('path[data-slice]')).toHaveLength(0);
+  });
 });

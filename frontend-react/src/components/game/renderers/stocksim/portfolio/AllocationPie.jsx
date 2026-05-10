@@ -1,7 +1,13 @@
 // AllocationPie.jsx
 import React from 'react';
+import { THEME } from '../theme';
 
-const PALETTE = ['#B46B1E', '#0F6E56', '#A32D2D', '#854F0B', '#3F6FB0', '#7A3FA8', '#D4A645', '#5B7C2F'];
+const PALETTE = [
+  THEME.accentWarm,  // matches stocksim primary brand
+  THEME.gain,
+  THEME.loss,
+  '#854F0B', '#3F6FB0', '#7A3FA8', '#D4A645', '#5B7C2F',
+];
 
 function arcPath(cx, cy, r, startAngle, endAngle) {
   const x1 = cx + r * Math.cos(startAngle);
@@ -20,11 +26,12 @@ export default function AllocationPie({ slices = [], size = 120, onSliceClick })
   return (
     <svg width={size} height={size} aria-label="allocation-pie">
       {slices.map((s, i) => {
+        if (!s.value || s.value <= 0) return null;
         const angle = (s.value / total) * Math.PI * 2;
         const d = arcPath(r, r, r, acc, acc + angle);
         const path = (
           <path
-            key={s.label}
+            key={`${s.label}-${i}`}
             d={d}
             fill={PALETTE[i % PALETTE.length]}
             data-slice={s.label}
