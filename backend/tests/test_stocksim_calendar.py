@@ -68,3 +68,40 @@ def test_day_index_to_id_negative_clamps_to_first():
 
 def test_day_index_to_id_empty_days_returns_none():
     assert day_index_to_id(0, []) is None
+
+
+import math
+from engines.stocksim.calendar import apply_overnight_drift
+
+SM_CFG_WEEK = {
+    "calendar_mode": "week",
+    "days": DAYS,
+    "earnings_schedule": {
+        "TECHN":      {"day": "tue", "surprise": 0.05},
+        "BHARATBANK": {"day": "wed", "surprise": -0.03},
+    },
+}
+
+def test_apply_overnight_drift_zero_when_seed_makes_noise_zero(monkeypatch):
+    state = {"current_tick": 4, "drift": {}}
+    # Force base_noise = 0 by stubbing the gaussian
+    import engines.stocksim.calendar as calmod
+    monkeypatch.setattr(calmod, "_normal", lambda mu, sigma, seed: 0.0)
+    apply_overnight_drift(state, SM_CFG_WEEK, "mon", "tue")
+    # No earnings on Monday → drift for both should be 0 (no noise + no earnings)
+    assert state["drift"].get("TECHN", 0.0) == 0.0
+    assert state["drift"].get("BHARATBANK", 0.0) == 0.0
+
+def test_apply_overnight_drift_applies_earnings_when_day_matches(monkeypatch):
+    state = {"current_tick": 8, "drift": {}}
+    import engines.stocksim.calendar as calmod
+    monkeypatch.setattr(calmod, "_normal", lambda mu, sigma, seed: 0.0)
+    # Tue earnings for TECHN: surprise +0.05, factor 0.6 → drift = 0.03
+    apply_overnight_drift(state, SM_CFG_WEEK, "tue", "wed")
+    assert math.isclose(state["drift"]["TECHN"], 0.03, abs_tol=1e-9)
+    assert state["drift"].get("BHARATBANK", 0.0) == 0.0
+
+def test_apply_overnight_drift_noop_when_calendar_mode_absent():
+    state = {"current_tick": 0, "drift": {}}
+    apply_overnight_drift(state, {}, "mon", "tue")
+    assert state["drift"] == {}
