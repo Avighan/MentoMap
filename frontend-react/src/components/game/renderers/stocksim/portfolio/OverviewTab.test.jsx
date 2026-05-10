@@ -28,4 +28,20 @@ describe('OverviewTab', () => {
     expect(screen.getByTestId('overview-best').textContent).toContain('TECHV');
     expect(screen.getByTestId('overview-worst').textContent).toContain('BHARATBANK');
   });
+
+  it('shows +0.00% total return when startingCash is 0', () => {
+    render(<OverviewTab netWorth={5000} startingCash={0} />);
+    expect(screen.getByTestId('overview-total-return').textContent).toBe('+0.00%');
+  });
+
+  it('renders dash sentinel when bestToday and worstToday are absent', () => {
+    render(<OverviewTab />);
+    expect(screen.getByTestId('overview-best').textContent).toContain('—');
+    expect(screen.getByTestId('overview-worst').textContent).toContain('—');
+  });
+
+  it('renders without crashing when allocation is empty', () => {
+    render(<OverviewTab {...fixture} allocation={[]} />);
+    expect(screen.getByTestId('overview-networth').textContent).toContain('52,000');
+  });
 });

@@ -6,6 +6,27 @@ import { THEME, gainLossColor } from '../theme';
 const fmt = (n) => `₹${Math.round(n).toLocaleString('en-IN')}`;
 const pct = (n) => `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
 
+/**
+ * Overview tab of the portfolio dashboard. Renders a snapshot of net worth,
+ * today's P&L, allocation, and best/worst positions.
+ *
+ * Caller contract:
+ *  - All numeric props (`netWorth`, `startingCash`, `todayPnL`, `cash`,
+ *    `holdingsValue`, `realizedPnL`, `unrealizedPnL`) must be finite numbers
+ *    when supplied; defaults to 0 if omitted.
+ *  - `netWorthSeries` must be an array of finite numbers.
+ *  - `allocation` must be an array of `{ label: string, value: number }` —
+ *    `value` is a percentage (0–100) and is required to be numeric. The
+ *    legend calls `value.toFixed(1)` directly; non-numeric values will
+ *    throw. Pass `0` rather than `null`/`undefined` for unknown values.
+ *  - `bestToday` / `worstToday` are optional; when omitted, position cards
+ *    render a "—" sentinel.
+ *  - `onAllocationClick(label)` is forwarded to `AllocationPie` as
+ *    `onSliceClick` and fires when a pie slice is clicked.
+ *
+ * Total-return percent guards `startingCash === 0` and falls back to `0`
+ * (rendered as `+0.00%`) rather than producing `Infinity` or `NaN`.
+ */
 export default function OverviewTab({
   netWorth = 0,
   startingCash = 0,
