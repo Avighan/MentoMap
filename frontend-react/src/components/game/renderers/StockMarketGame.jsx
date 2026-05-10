@@ -46,6 +46,7 @@ import MentorCheckIn from './stocksim/MentorCheckIn';
 import TradeAutopsy from './stocksim/TradeAutopsy';
 import StockCard from './stocksim/StockCard';
 import PersistentStrip from './stocksim/PersistentStrip';
+import PortfolioModal from './stocksim/PortfolioModal';
 import StockListFilters from './stocksim/StockListFilters';
 import CompanyDrillDown from './stocksim/CompanyDrillDown';
 import { NpcLayerProvider } from './stocksim/NpcLayer';
@@ -152,6 +153,7 @@ const StockMarketGame = ({
   const [starred, setStarred] = useState(() => new Set());
   const [filterMode, setFilterMode] = useState('all'); // v2 list filter
   const [drilldownSymbol, setDrilldownSymbol] = useState(null); // v2 6-tab modal
+  const [portfolioOpen, setPortfolioOpen] = useState(false);
   const [tradeMessage, setTradeMessage] = useState(null); // { type, text }
   const [recap, setRecap] = useState(null);
   const [completing, setCompleting] = useState(false);
@@ -693,15 +695,25 @@ const StockMarketGame = ({
         <div className="flex-1 p-5 overflow-y-auto">
           {/* v2 PersistentStrip — sticky cash/holdings/net-worth/P&L bar */}
           {v2Enabled && (
-            <div className="mb-4 sticky top-0 z-30">
-              <PersistentStrip
-                cash={cash}
-                holdingsValue={portfolioValue}
-                netWorth={totalValue}
-                pnl={profitAbs}
-                currentTick={currentTick}
-                tickCount={tickCount}
-              />
+            <div className="mb-4 sticky top-0 z-30" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ flex: 1 }}>
+                <PersistentStrip
+                  cash={cash}
+                  holdingsValue={portfolioValue}
+                  netWorth={totalValue}
+                  pnl={profitAbs}
+                  currentTick={currentTick}
+                  tickCount={tickCount}
+                />
+              </div>
+              <button
+                data-testid="portfolio-open"
+                onClick={() => setPortfolioOpen(true)}
+                style={{
+                  padding: '8px 12px', borderRadius: 8, border: '1px solid #F5E6C8',
+                  background: '#fff', color: '#633806', fontWeight: 700, cursor: 'pointer',
+                }}
+              >📊 Portfolio</button>
             </div>
           )}
           {/* Portfolio summary (v1 only) */}
@@ -1015,6 +1027,25 @@ const StockMarketGame = ({
           />
         );
       })()}
+      {v2Enabled && (
+        <PortfolioModal
+          open={portfolioOpen}
+          onClose={() => setPortfolioOpen(false)}
+          cash={cash}
+          startingCash={sessionConfig?.starting_capital ?? 0}
+          netWorth={totalValue}
+          todayPnL={serverState?.today_pnl?.total ?? 0}
+          pnl={{ realized: pnl?.realized ?? 0, unrealized: pnl?.unrealized ?? 0 }}
+          holdings={serverState?.holdings || {}}
+          quotes={quotes}
+          transactions={serverState?.trade_log || []}
+          priceHistory={priceHistory}
+          currentTick={currentTick}
+          stocks={sessionConfig?.stocks || []}
+          days={sessionConfig?.days || []}
+          onOpenSymbol={(sym) => { setSelectedSymbol(sym); setDrilldownSymbol(sym); }}
+        />
+      )}
     </div>
   );
 
