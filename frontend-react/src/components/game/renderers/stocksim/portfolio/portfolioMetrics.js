@@ -82,9 +82,26 @@ export function hitRatio(transactions) {
   };
 }
 
-// Replays trades to track holdings, then aggregates market value by sector at each tick.
-// sectorBySymbol: { [symbol]: sectorString }
-// Returns: Array<{ [sectorName]: pct, total: number }>
+/**
+ * Per-tick sector market-value distribution computed by replaying
+ * transactions over the price history.
+ *
+ * Returns one object per tick (length = `currentTick + 1`) of shape
+ * `{ total: number, [sectorName]: percent }`. Symbols with no `sectorBySymbol`
+ * entry are bucketed into `'Other'`. When `total <= 0` (no positions, or net
+ * short positions dominating), every sector percent is forced to 0 but the
+ * `total` field reflects the raw signed market value — a negative `total`
+ * therefore signals a caller data issue (the function expects long-only
+ * positions). The internal `cash` variable tracks running cash for symmetry
+ * with `netWorthSeries`; it is not emitted, since this view is equity-only.
+ *
+ * @param {Array<{ tick: number, symbol: string, side: 'buy'|'sell', qty: number, price: number, charges?: number }>} transactions
+ * @param {Record<string, number[]>} priceHistory
+ * @param {Record<string, string>} sectorBySymbol
+ * @param {number} startingCash
+ * @param {number} currentTick
+ * @returns {Array<Record<string, number>>}
+ */
 export function sectorExposureSeries(transactions, priceHistory, sectorBySymbol, startingCash, currentTick) {
   const sorted = [...(transactions || [])].sort((a, b) => (a.tick ?? 0) - (b.tick ?? 0));
   const holdings = {};
@@ -125,7 +142,19 @@ export function sectorExposureSeries(transactions, priceHistory, sectorBySymbol,
   return out;
 }
 
-// Equal-weight cumulative return % across all symbols in priceHistory.
+/**
+ * Equal-weight cumulative return percent across all symbols in
+ * `priceHistory`, evaluated at every tick from 0 to `currentTick` inclusive.
+ *
+ * Symbols whose tick-0 price is `0`, `null`, or `undefined` are excluded
+ * from the average to avoid division-by-zero — the caller is responsible
+ * for ensuring opening prices are positive when those symbols should
+ * participate in the benchmark.
+ *
+ * @param {Record<string, number[]>} priceHistory
+ * @param {number} currentTick
+ * @returns {number[]} cumulative return percent per tick
+ */
 export function benchmarkSeries(priceHistory, currentTick) {
   const symbols = Object.keys(priceHistory || {});
   if (symbols.length === 0) return [];
@@ -147,8 +176,16 @@ export function benchmarkSeries(priceHistory, currentTick) {
   return out;
 }
 
-// Sums realized pnl per day window. days: Array<{ id, label, ticks }>.
-// Tick t belongs to day k when sum(days[0..k-1].ticks) <= t < sum(days[0..k].ticks).
+/**
+ * Sums realized P&L per day window, grouping `sell`-side transactions that
+ * carry a numeric `realized_pnl` field. Day window k owns ticks in the
+ * half-open range `[sum(days[0..k-1].ticks), sum(days[0..k].ticks))`.
+ * Transactions whose tick falls outside every window are silently dropped.
+ *
+ * @param {Array<{ tick?: number, side: string, realized_pnl?: number }>} transactions
+ * @param {Array<{ id: string, label: string, ticks: number }>} days
+ * @returns {Array<{ dayId: string, label: string, pnl: number }>}
+ */
 export function dayPnL(transactions, days) {
   const out = (days || []).map((d) => ({ dayId: d.id, label: d.label, pnl: 0 }));
   let cumulative = 0;
