@@ -86,6 +86,12 @@ async function main() {
     }
   }
 
+  // v2 assertion: trade_log_enriched present on /complete (Task 12).
+  if (!Array.isArray(final.trade_log_enriched)) {
+    throw new Error(`trade_log_enriched missing on /complete: ${JSON.stringify(Object.keys(final))}`);
+  }
+  console.log(`  v2: trade_log_enriched length: ${final.trade_log_enriched.length}`);
+
   // Idempotency check: complete again, expect same shape
   const complete2 = await fetch(`${BASE}/api/run/${runId}/stocksim/complete`, {
     method: 'POST',

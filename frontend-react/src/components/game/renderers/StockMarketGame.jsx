@@ -44,6 +44,8 @@ import EventOverlay from './stocksim/EventOverlay';
 import MarketBriefing from './stocksim/MarketBriefing';
 import MentorCheckIn from './stocksim/MentorCheckIn';
 import TradeAutopsy from './stocksim/TradeAutopsy';
+import StockCard from './stocksim/StockCard';
+import { NpcLayerProvider } from './stocksim/NpcLayer';
 import { useOrg } from '../../../contexts/OrgContext';
 
 const CHART_HEIGHT = 160;
@@ -144,6 +146,7 @@ const StockMarketGame = ({
 
   const [selectedSymbol, setSelectedSymbol] = useState(null);
   const [priceHistory, setPriceHistory] = useState({});
+  const [starred, setStarred] = useState(() => new Set());
   const [tradeMessage, setTradeMessage] = useState(null); // { type, text }
   const [recap, setRecap] = useState(null);
   const [completing, setCompleting] = useState(false);
@@ -593,6 +596,7 @@ const StockMarketGame = ({
 
   // ── Main UI ─────────────────────────────────────────────────────────
   return (
+    <NpcLayerProvider currentTick={currentTick}>
     <div className="min-h-screen" style={{ backgroundColor: '#F0F4FF' }}>
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b shadow-sm px-6 py-3 flex items-center justify-between sticky top-0 z-40">
@@ -756,6 +760,26 @@ const StockMarketGame = ({
                 h.length >= 2 ? ((h[h.length - 1] - h[0]) / h[0]) * 100 : 0;
               const isSelected = selectedSymbol === s.symbol;
               const shareCount = holdings?.[s.symbol]?.qty || 0;
+
+              if (v2Enabled) {
+                const enrichedQuote = { ...q, last_change_pct: changePct };
+                return (
+                  <StockCard
+                    key={s.symbol}
+                    stock={s}
+                    quote={enrichedQuote}
+                    position={shareCount > 0 ? { qty: shareCount } : null}
+                    starred={starred.has(s.symbol)}
+                    onOpen={(sym) => setSelectedSymbol(sym)}
+                    onStar={(sym) => setStarred((prev) => {
+                      const next = new Set(prev);
+                      if (next.has(sym)) next.delete(sym); else next.add(sym);
+                      return next;
+                    })}
+                  />
+                );
+              }
+
               return (
                 <motion.button
                   key={s.symbol}
@@ -893,6 +917,7 @@ const StockMarketGame = ({
         streakMultiplier={engagement.streakMultiplier}
       />
     </div>
+    </NpcLayerProvider>
   );
 };
 
