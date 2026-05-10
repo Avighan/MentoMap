@@ -48,13 +48,9 @@ class StockMarketEngine:
 
     # ---- pricing ----
     def price_at(self, state: dict, symbol: str, tick: int) -> dict:
-        """Public price lookup. Reads seed from state; delegates to pure function."""
-        from engines.stocksim.pricing import price_from_seed
-        seed = state["seed"]
-        cfg = next((s for s in self.config["stocks"] if s["symbol"] == symbol), None)
-        if cfg is None:
-            raise ValueError(f"unknown symbol: {symbol}")
-        return price_from_seed(seed, symbol, tick, cfg)
+        """Public price lookup. Reads seed from state; delegates to pricing.price_at."""
+        from engines.stocksim.pricing import price_at as _price_at
+        return _price_at(state, symbol, tick, self.config)
 
     # ---- session ----
     def start_session(self, seed: int, profile: str = "day_trader") -> dict:

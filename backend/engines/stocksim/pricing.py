@@ -92,3 +92,35 @@ def price_from_seed(seed: int, symbol: str, tick: int, stock_cfg: dict) -> dict:
         "ask": round(ask, 2),
         "volume": volume,
     }
+
+
+def price_at(state: dict, symbol: str, tick: int, config: dict) -> dict:
+    """Quote lookup with overnight-drift overlay applied to mid/bid/ask.
+
+    Pure layering on top of `price_from_seed`: the seed/volatility walk is
+    untouched; drift is multiplicative and re-rounds the quote to 2 dp.
+
+    Args:
+        state: Run state dict. Reads `state["seed"]` and optional `state["drift"]`.
+        symbol: Stock ticker.
+        tick: Tick index.
+        config: stock_market_config dict; must contain `stocks` list with the
+            given symbol. Raises ValueError if not found.
+
+    Returns:
+        Dict shaped like price_from_seed: {"mid", "bid", "ask", "volume"}.
+    """
+    stock_cfg = next((s for s in (config.get("stocks") or []) if s.get("symbol") == symbol), None)
+    if stock_cfg is None:
+        raise ValueError(f"unknown symbol: {symbol}")
+    quote = price_from_seed(int(state["seed"]), symbol, int(tick), stock_cfg)
+    drift_pct = float((state.get("drift") or {}).get(symbol, 0.0))
+    if drift_pct == 0.0:
+        return quote
+    factor = 1.0 + drift_pct
+    return {
+        "mid": round(quote["mid"] * factor, 2),
+        "bid": round(quote["bid"] * factor, 2),
+        "ask": round(quote["ask"] * factor, 2),
+        "volume": quote["volume"],
+    }
