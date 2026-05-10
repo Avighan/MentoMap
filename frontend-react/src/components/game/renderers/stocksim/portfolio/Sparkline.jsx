@@ -1,6 +1,6 @@
 // Sparkline.jsx
 import React from 'react';
-import { THEME, gainLossColor } from '../theme';
+import { gainLossColor } from '../theme';
 
 export default function Sparkline({
   values = [],
