@@ -105,3 +105,56 @@ def test_apply_overnight_drift_noop_when_calendar_mode_absent():
     state = {"current_tick": 0, "drift": {}}
     apply_overnight_drift(state, {}, "mon", "tue")
     assert state["drift"] == {}
+
+
+def test_apply_overnight_drift_compounds_across_calls(monkeypatch):
+    state = {"current_tick": 0, "seed": 7, "drift": {}}
+    import engines.stocksim.calendar as calmod
+    monkeypatch.setattr(calmod, "_normal", lambda mu, sigma, seed: 0.0)
+    # First call: Mon → Tue. TECHN earnings on Tue (no match yet for Mon).
+    apply_overnight_drift(state, SM_CFG_WEEK, "mon", "tue")
+    assert state["drift"].get("TECHN", 0.0) == 0.0
+    # Second call: Tue → Wed. TECHN earnings on Tue match → +0.03.
+    apply_overnight_drift(state, SM_CFG_WEEK, "tue", "wed")
+    assert math.isclose(state["drift"]["TECHN"], 0.03, abs_tol=1e-9)
+    # Third call: Wed → Thu. BHARATBANK earnings on Wed → -0.018; TECHN unchanged.
+    apply_overnight_drift(state, SM_CFG_WEEK, "wed", "thu")
+    assert math.isclose(state["drift"]["TECHN"], 0.03, abs_tol=1e-9)
+    assert math.isclose(state["drift"]["BHARATBANK"], -0.018, abs_tol=1e-9)
+
+
+def test_apply_overnight_drift_per_symbol_seeds_differ():
+    # With real _normal, two different syms on the same overnight produce
+    # distinct drift values (intra-process determinism is enough).
+    state = {"current_tick": 0, "seed": 99, "drift": {}}
+    apply_overnight_drift(state, SM_CFG_WEEK, "mon", "tue")
+    techn = state["drift"].get("TECHN")
+    bbank = state["drift"].get("BHARATBANK")
+    assert techn is not None and bbank is not None
+    assert techn != bbank
+
+
+def test_apply_overnight_drift_includes_stocks_only_path(monkeypatch):
+    # OTHER is in stocks but not in earnings_schedule → second loop fires.
+    cfg = dict(SM_CFG_WEEK)
+    cfg["stocks"] = [{"symbol": "OTHER", "name": "OtherCo", "sector": "X"}]
+    state = {"current_tick": 0, "seed": 11, "drift": {}}
+    import engines.stocksim.calendar as calmod
+    # Stub noise to 0.001 to confirm second-loop runs without doubling.
+    monkeypatch.setattr(calmod, "_normal", lambda mu, sigma, seed: 0.001)
+    apply_overnight_drift(state, cfg, "mon", "tue")
+    # OTHER receives noise once (only second loop adds it).
+    assert math.isclose(state["drift"]["OTHER"], 0.001, abs_tol=1e-12)
+    # TECHN/BHARATBANK still receive noise via first loop (no double-counting).
+    assert math.isclose(state["drift"]["TECHN"], 0.001, abs_tol=1e-12)
+
+
+def test_apply_overnight_drift_unknown_from_day_falls_back_to_index_zero(monkeypatch):
+    # `bogus` is not in DAYS → day_idx silently falls back to 0; no crash.
+    state = {"current_tick": 0, "seed": 5, "drift": {}}
+    import engines.stocksim.calendar as calmod
+    monkeypatch.setattr(calmod, "_normal", lambda mu, sigma, seed: 0.0)
+    apply_overnight_drift(state, SM_CFG_WEEK, "bogus", "tue")
+    # No earnings match (no day matches "bogus") → drift stays at 0 for all syms.
+    assert state["drift"]["TECHN"] == 0.0
+    assert state["drift"]["BHARATBANK"] == 0.0

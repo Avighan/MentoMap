@@ -1,8 +1,11 @@
 # backend/engines/stocksim/calendar.py
 """Calendar-week helpers for the week-format stock market simulator.
 
-These helpers are pure: they take a state dict + sm_cfg dict and return
-metadata. They never mutate state (drift application lives separately).
+Most helpers are pure (``current_day``, ``tick_to_day``, ``day_index_to_id``):
+they take a state dict + sm_cfg dict and return metadata.
+
+``apply_overnight_drift`` is the exception: it mutates ``state["drift"]`` in
+place to apply per-symbol overnight drift between trading days.
 """
 from typing import Optional
 
@@ -93,12 +96,33 @@ def _normal(mu: float, sigma: float, seed: int) -> float:
 
 
 def apply_overnight_drift(state: dict, sm_cfg: dict, from_day_id: str, to_day_id: str) -> None:
-    """Mutates state['drift'] (per-symbol multiplicative drift) for the overnight gap.
+    """Mutate ``state['drift']`` per-symbol for the overnight gap from from_day_id → to_day_id.
 
-    Drift formula:
-      drift[sym] = N(mu=0, sigma=0.005) + (surprise * 0.6 if day-N hosted that earnings else 0)
+    Drift formula (per call, per symbol):
+        drift[sym] += N(mu=0, sigma=_BASE_NOISE_SIGMA)
+                    + (surprise * _EARNINGS_DRIFT_FACTOR  if earnings hosted on from_day_id else 0)
 
-    Drift is additive on top of any prior drift so multiple overnights compound.
+    Compounding: drift is additive on top of any prior drift so multiple overnights compound.
+
+    Args:
+        state: Run state dict (mutated). Reads ``state.get("seed", 0)``;
+            creates ``state["drift"]`` if absent.
+        sm_cfg: ``stock_market_config`` dict. Returns silently when
+            ``calendar_mode != "week"``.
+        from_day_id: ID of the day just ended. Earnings whose ``cfg["day"]``
+            matches this value contribute ``surprise * _EARNINGS_DRIFT_FACTOR``.
+            If absent from ``sm_cfg["days"]``, ``day_idx`` falls back to 0.
+        to_day_id: Currently unused; accepted for API symmetry with future
+            helpers that may bridge two specific day IDs. Only ``from_day_id``
+            is consulted in the drift formula.
+
+    Returns:
+        None. Mutation is in-place on ``state["drift"]``.
+
+    Determinism note: per-symbol RNG seeds incorporate Python's ``hash(sym)``,
+    which is randomized per-process when ``PYTHONHASHSEED`` is unset. Drift
+    values are therefore deterministic within a single process but not across
+    process restarts. Tests stub ``_normal`` to bypass this concern.
     """
     if (sm_cfg or {}).get("calendar_mode") != "week":
         return
