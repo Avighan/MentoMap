@@ -4,6 +4,30 @@ import { THEME, gainLossColor } from '../theme';
 
 const fmt = (n) => `₹${Math.round(n).toLocaleString('en-IN')}`;
 
+/**
+ * Holdings tab of the portfolio dashboard. Renders a sortable, filterable
+ * table of open positions with click-through to a per-symbol drilldown.
+ *
+ * Caller contract:
+ *  - `rows` must be an array of objects shaped like
+ *    `{ symbol: string, sector: string, qty: number, avgCost: number,
+ *       ltp: number, pnlAbs: number, pnlPct: number, dayDelta: number }`.
+ *    All numeric fields must be finite numbers — `pnlPct.toFixed(2)` is
+ *    called directly at render time, so passing `null`/`undefined` will
+ *    throw. Pass `0` for unknown values.
+ *  - `onOpenSymbol(symbol)` is optional; row clicks no-op when it is absent.
+ *  - `sectorFilter` is an optional sector name; when set, only rows with
+ *    matching `sector` are shown and a "× Sector: …" chip appears.
+ *  - `onClearSectorFilter()` is the callback for the sector-clear chip.
+ *
+ * Internal sort: rows are always sorted by `pnlPct` descending. The
+ * `setSortKey` setter is reserved for a future column-header sort feature
+ * (TODO: wire setSortKey to column header clicks) and is intentionally
+ * unused today. Do not delete it.
+ *
+ * Internal filter chips: `all | profit | loss` are mutually exclusive and
+ * apply before `sectorFilter`.
+ */
 export default function HoldingsTab({ rows = [], onOpenSymbol, sectorFilter = null, onClearSectorFilter }) {
   const [filter, setFilter] = useState('all');  // all | profit | loss
   const [sortKey, setSortKey] = useState('pnlPct');

@@ -27,4 +27,34 @@ describe('HoldingsTab', () => {
     expect(screen.getByTestId('holding-row-TECHV')).toBeTruthy();
     expect(screen.queryByTestId('holding-row-BHARATBANK')).toBeNull();
   });
+
+  it('filters by Loss chip', () => {
+    render(<HoldingsTab rows={rows} />);
+    fireEvent.click(screen.getByTestId('holdings-filter-loss'));
+    expect(screen.queryByTestId('holding-row-TECHV')).toBeNull();
+    expect(screen.getByTestId('holding-row-BHARATBANK')).toBeTruthy();
+  });
+
+  it('applies sectorFilter prop', () => {
+    render(<HoldingsTab rows={rows} sectorFilter="IT" />);
+    expect(screen.getByTestId('holding-row-TECHV')).toBeTruthy();
+    expect(screen.queryByTestId('holding-row-BHARATBANK')).toBeNull();
+  });
+
+  it('clear-sector button fires onClearSectorFilter', () => {
+    const onClear = vi.fn();
+    render(<HoldingsTab rows={rows} sectorFilter="IT" onClearSectorFilter={onClear} />);
+    fireEvent.click(screen.getByTestId('holdings-clear-sector'));
+    expect(onClear).toHaveBeenCalled();
+  });
+
+  it('renders empty-state row when nothing matches', () => {
+    render(<HoldingsTab rows={[]} />);
+    expect(screen.getByText('No holdings match.')).toBeTruthy();
+  });
+
+  it('does not throw when row is clicked without onOpenSymbol', () => {
+    render(<HoldingsTab rows={rows} />);
+    expect(() => fireEvent.click(screen.getByTestId('holding-row-TECHV'))).not.toThrow();
+  });
 });
