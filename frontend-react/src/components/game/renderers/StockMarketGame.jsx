@@ -45,6 +45,9 @@ import MarketBriefing from './stocksim/MarketBriefing';
 import MentorCheckIn from './stocksim/MentorCheckIn';
 import TradeAutopsy from './stocksim/TradeAutopsy';
 import StockCard from './stocksim/StockCard';
+import PersistentStrip from './stocksim/PersistentStrip';
+import StockListFilters from './stocksim/StockListFilters';
+import CompanyDrillDown from './stocksim/CompanyDrillDown';
 import { NpcLayerProvider } from './stocksim/NpcLayer';
 import { useOrg } from '../../../contexts/OrgContext';
 
@@ -147,13 +150,31 @@ const StockMarketGame = ({
   const [selectedSymbol, setSelectedSymbol] = useState(null);
   const [priceHistory, setPriceHistory] = useState({});
   const [starred, setStarred] = useState(() => new Set());
+  const [filterMode, setFilterMode] = useState('all'); // v2 list filter
+  const [drilldownSymbol, setDrilldownSymbol] = useState(null); // v2 6-tab modal
   const [tradeMessage, setTradeMessage] = useState(null); // { type, text }
   const [recap, setRecap] = useState(null);
   const [completing, setCompleting] = useState(false);
   const [loadError, setLoadError] = useState(null);
 
   const { org } = useOrg();
-  const v2Enabled = !!org?.flags?.stocksim_v2_ui;
+  // v2 UI gate: org flag OR ?stocksim_v2=1 query-string override (per-session).
+  // Override is sticky for the tab via sessionStorage so deep-link refreshes
+  // keep v2 on without re-appending the param.
+  const v2Enabled = (() => {
+    try {
+      if (org?.flags?.stocksim_v2_ui) return true;
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('stocksim_v2') === '1') {
+          window.sessionStorage?.setItem('stocksim_v2_override', '1');
+          return true;
+        }
+        if (window.sessionStorage?.getItem('stocksim_v2_override') === '1') return true;
+      }
+    } catch (_e) { /* sandboxed storage – fall through */ }
+    return false;
+  })();
   const cfg = gameData?.minigame_config?.stock_market_config || {};
   const briefing = cfg.briefing;
   const [phase, setPhase] = useState(v2Enabled && briefing ? 'briefing' : 'playing');
@@ -670,7 +691,21 @@ const StockMarketGame = ({
       <div className="flex h-[calc(100vh-56px)]">
         {/* Main area */}
         <div className="flex-1 p-5 overflow-y-auto">
-          {/* Portfolio summary */}
+          {/* v2 PersistentStrip — sticky cash/holdings/net-worth/P&L bar */}
+          {v2Enabled && (
+            <div className="mb-4 sticky top-0 z-30">
+              <PersistentStrip
+                cash={cash}
+                holdingsValue={portfolioValue}
+                netWorth={totalValue}
+                pnl={profitAbs}
+                currentTick={currentTick}
+                tickCount={tickCount}
+              />
+            </div>
+          )}
+          {/* Portfolio summary (v1 only) */}
+          {!v2Enabled && (
           <div className="grid grid-cols-3 gap-4 mb-5">
             <div className="bg-white text-gray-900 rounded-xl p-4 shadow-sm border border-gray-100">
               <p className="text-xs text-gray-400 uppercase tracking-wide">
@@ -716,6 +751,7 @@ const StockMarketGame = ({
               </p>
             </div>
           </div>
+          )}
 
           {/* Selected stock chart */}
           {selectedStockInfo && (
@@ -752,9 +788,42 @@ const StockMarketGame = ({
             </div>
           )}
 
+          {/* v2 list filters */}
+          {v2Enabled && (() => {
+            // Build counts per filter mode for the chip bar.
+            const counts = { all: 0, gainers: 0, losers: 0, mine: 0, starred: 0 };
+            stocks.forEach((s) => {
+              const h = priceHistory[s.symbol] || [];
+              const cp = h.length >= 2 ? ((h[h.length - 1] - h[0]) / h[0]) * 100 : 0;
+              const owned = (holdings?.[s.symbol]?.qty || 0) > 0;
+              counts.all += 1;
+              if (cp > 0) counts.gainers += 1;
+              if (cp < 0) counts.losers += 1;
+              if (owned) counts.mine += 1;
+              if (starred.has(s.symbol)) counts.starred += 1;
+            });
+            return (
+              <div className="mb-3">
+                <StockListFilters mode={filterMode} setMode={setFilterMode} counts={counts} />
+              </div>
+            );
+          })()}
+
           {/* Stock cards */}
           <div className="grid grid-cols-2 gap-3">
-            {stocks.map((s) => {
+            {(v2Enabled
+              ? stocks.filter((s) => {
+                  const h = priceHistory[s.symbol] || [];
+                  const cp = h.length >= 2 ? ((h[h.length - 1] - h[0]) / h[0]) * 100 : 0;
+                  const owned = (holdings?.[s.symbol]?.qty || 0) > 0;
+                  if (filterMode === 'gainers') return cp > 0;
+                  if (filterMode === 'losers') return cp < 0;
+                  if (filterMode === 'mine') return owned;
+                  if (filterMode === 'starred') return starred.has(s.symbol);
+                  return true;
+                })
+              : stocks
+            ).map((s) => {
               const q = quotes[s.symbol] || {};
               const px = q.mid ?? s.starting_price;
               const h = priceHistory[s.symbol] || [];
@@ -772,7 +841,7 @@ const StockMarketGame = ({
                     quote={enrichedQuote}
                     position={shareCount > 0 ? { qty: shareCount } : null}
                     starred={starred.has(s.symbol)}
-                    onOpen={(sym) => setSelectedSymbol(sym)}
+                    onOpen={(sym) => { setSelectedSymbol(sym); setDrilldownSymbol(sym); }}
                     onStar={(sym) => setStarred((prev) => {
                       const next = new Set(prev);
                       if (next.has(sym)) next.delete(sym); else next.add(sym);
@@ -920,6 +989,32 @@ const StockMarketGame = ({
         streakCount={engagement.streakCount}
         streakMultiplier={engagement.streakMultiplier}
       />
+      {/* v2 6-tab drill-down modal */}
+      {v2Enabled && drilldownSymbol && (() => {
+        const s = stocks.find((x) => x.symbol === drilldownSymbol);
+        if (!s) return null;
+        const q = quotes[s.symbol] || {};
+        const h = priceHistory[s.symbol] || [];
+        const cp = h.length >= 2 ? ((h[h.length - 1] - h[0]) / h[0]) * 100 : 0;
+        const ownedQty = holdings?.[s.symbol]?.qty || 0;
+        const ownedCost = holdings?.[s.symbol]?.cost_basis;
+        return (
+          <CompanyDrillDown
+            stock={s}
+            quote={{ ...q, last_change_pct: cp }}
+            position={ownedQty > 0 ? { qty: ownedQty, cost_basis: ownedCost } : null}
+            priceHistory={h}
+            news={(newsStrip || []).filter((n) => !n.symbol || n.symbol === s.symbol)}
+            imageUrl={s.image_url || s.image}
+            currentTick={currentTick}
+            onClose={() => setDrilldownSymbol(null)}
+            onTrade={() => {
+              setSelectedSymbol(s.symbol);
+              setDrilldownSymbol(null);
+            }}
+          />
+        );
+      })()}
     </div>
   );
 
