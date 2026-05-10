@@ -81,3 +81,87 @@ export function hitRatio(transactions) {
     avgLoss: losses.length ? sum(losses) / losses.length : 0,
   };
 }
+
+// Replays trades to track holdings, then aggregates market value by sector at each tick.
+// sectorBySymbol: { [symbol]: sectorString }
+// Returns: Array<{ [sectorName]: pct, total: number }>
+export function sectorExposureSeries(transactions, priceHistory, sectorBySymbol, startingCash, currentTick) {
+  const sorted = [...(transactions || [])].sort((a, b) => (a.tick ?? 0) - (b.tick ?? 0));
+  const holdings = {};
+  let cash = startingCash;
+  let i = 0;
+  const out = [];
+  for (let t = 0; t <= currentTick; t++) {
+    while (i < sorted.length && (sorted[i].tick ?? 0) <= t) {
+      const tx = sorted[i++];
+      const cost = tx.qty * tx.price;
+      const charges = tx.charges ?? 0;
+      if (tx.side === 'buy') {
+        cash -= cost + charges;
+        holdings[tx.symbol] = (holdings[tx.symbol] ?? 0) + tx.qty;
+      } else {
+        cash += cost - charges;
+        holdings[tx.symbol] = (holdings[tx.symbol] ?? 0) - tx.qty;
+      }
+    }
+    const sectors = {};
+    let total = 0;
+    for (const sym of Object.keys(holdings)) {
+      const qty = holdings[sym];
+      if (!qty) continue;
+      const series = priceHistory?.[sym] ?? [];
+      const px = series[t] ?? series[series.length - 1] ?? 0;
+      const mv = qty * px;
+      total += mv;
+      const sec = sectorBySymbol?.[sym] ?? 'Other';
+      sectors[sec] = (sectors[sec] ?? 0) + mv;
+    }
+    const pcts = { total };
+    for (const sec of Object.keys(sectors)) {
+      pcts[sec] = total > 0 ? (sectors[sec] / total) * 100 : 0;
+    }
+    out.push(pcts);
+  }
+  return out;
+}
+
+// Equal-weight cumulative return % across all symbols in priceHistory.
+export function benchmarkSeries(priceHistory, currentTick) {
+  const symbols = Object.keys(priceHistory || {});
+  if (symbols.length === 0) return [];
+  const out = [];
+  for (let t = 0; t <= currentTick; t++) {
+    let sum = 0;
+    let n = 0;
+    for (const sym of symbols) {
+      const arr = priceHistory[sym] ?? [];
+      const start = arr[0];
+      const cur = arr[t] ?? arr[arr.length - 1];
+      if (start && cur != null) {
+        sum += (cur - start) / start;
+        n += 1;
+      }
+    }
+    out.push(n ? (sum / n) * 100 : 0);
+  }
+  return out;
+}
+
+// Sums realized pnl per day window. days: Array<{ id, label, ticks }>.
+// Tick t belongs to day k when sum(days[0..k-1].ticks) <= t < sum(days[0..k].ticks).
+export function dayPnL(transactions, days) {
+  const out = (days || []).map((d) => ({ dayId: d.id, label: d.label, pnl: 0 }));
+  let cumulative = 0;
+  const ranges = (days || []).map((d) => {
+    const range = { start: cumulative, end: cumulative + d.ticks };
+    cumulative = range.end;
+    return range;
+  });
+  for (const tx of transactions || []) {
+    if (tx.side !== 'sell' || typeof tx.realized_pnl !== 'number') continue;
+    const tick = tx.tick ?? 0;
+    const idx = ranges.findIndex((r) => tick >= r.start && tick < r.end);
+    if (idx >= 0) out[idx].pnl += tx.realized_pnl;
+  }
+  return out;
+}

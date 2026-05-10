@@ -1,6 +1,6 @@
 // portfolioMetrics.test.js
 import { describe, it, expect } from 'vitest';
-import { maxDrawdown, concentration, hitRatio } from './portfolioMetrics';
+import { maxDrawdown, concentration, hitRatio, sectorExposureSeries, benchmarkSeries, dayPnL } from './portfolioMetrics';
 
 describe('maxDrawdown', () => {
   it('returns 0 for monotonically rising series', () => {
@@ -74,5 +74,45 @@ describe('hitRatio', () => {
     expect(r.winRate).toBe(0);
     expect(r.avgWin).toBe(0);
     expect(r.avgLoss).toBeCloseTo(-150);
+  });
+});
+
+describe('sectorExposureSeries', () => {
+  it('returns per-tick sector pct from transactions and price history', () => {
+    const txs = [{ tick: 0, symbol: 'A', side: 'buy', qty: 10, price: 100 }]; // sector IT
+    const prices = { A: [100, 110], B: [50, 50] };
+    const sectorBySymbol = { A: 'IT', B: 'Pharma' };
+    const series = sectorExposureSeries(txs, prices, sectorBySymbol, 10000, 1);
+    expect(series).toHaveLength(2);
+    expect(series[0].IT).toBeCloseTo(100); // 100% of holdings value is IT
+    expect(series[1].IT).toBeCloseTo(100);
+  });
+});
+
+describe('benchmarkSeries', () => {
+  it('returns equal-weight cumulative return %', () => {
+    const prices = { A: [100, 110], B: [200, 220] };  // both +10%
+    const series = benchmarkSeries(prices, 1);
+    expect(series[0]).toBeCloseTo(0);
+    expect(series[1]).toBeCloseTo(10, 1);
+  });
+});
+
+describe('dayPnL', () => {
+  it('groups realized pnl by day window', () => {
+    const days = [
+      { id: 'mon', label: 'Monday', ticks: 4 },
+      { id: 'tue', label: 'Tuesday', ticks: 4 },
+    ];
+    const txs = [
+      { tick: 1, side: 'sell', realized_pnl: 100 },  // mon
+      { tick: 5, side: 'sell', realized_pnl: -50 },  // tue
+      { tick: 6, side: 'sell', realized_pnl: 200 },  // tue
+    ];
+    const result = dayPnL(txs, days);
+    expect(result).toEqual([
+      { dayId: 'mon', label: 'Monday', pnl: 100 },
+      { dayId: 'tue', label: 'Tuesday', pnl: 150 },
+    ]);
   });
 });
