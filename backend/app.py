@@ -26811,10 +26811,12 @@ def stocksim_complete(run_id):
         pnl = state.get("final_pnl", {})
         dims = state.get("final_dimensions", {})
 
+    from engines.stocksim.scoring import enrich_trade_log
     return jsonify({
         "pnl": pnl,
         "dimensions": dims,
         "trade_log": state.get("trade_log", []),
+        "trade_log_enriched": enrich_trade_log(state, sm_cfg, sm_cfg.get("news") or sm_cfg.get("events") or []),
         "recap_messages": _stocksim_recap_messages(state, pnl, dims),
     })
 

@@ -43,6 +43,7 @@ import PortfolioPanel from './stocksim/PortfolioPanel';
 import EventOverlay from './stocksim/EventOverlay';
 import MarketBriefing from './stocksim/MarketBriefing';
 import MentorCheckIn from './stocksim/MentorCheckIn';
+import TradeAutopsy from './stocksim/TradeAutopsy';
 import { useOrg } from '../../../contexts/OrgContext';
 
 const CHART_HEIGHT = 160;
@@ -547,6 +548,10 @@ const StockMarketGame = ({
               +{recap.xp_awarded} XP awarded
             </div>
           ) : null}
+
+          {v2Enabled && (
+            <TradeAutopsy final={recap} />
+          )}
 
           <PostGameInsights
             summary={null}

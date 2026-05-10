@@ -61,3 +61,23 @@ def test_news_at_legacy_tick_pattern_still_matches():
     # once_at_5 fires only on tick 5
     assert any(item["id"] == "once5" for item in news_at(state, 5, config))
     assert not any(item["id"] == "once5" for item in news_at(state, 4, config))
+
+
+def test_finalize_run_emits_trade_log_enriched():
+    from engines.stocksim.scoring import enrich_trade_log
+    state = {
+        "trade_log": [
+            {"tick": 4, "symbol": "TECHV", "side": "buy", "qty": 5, "price": 215, "realized_pnl": 0},
+            {"tick": 10, "symbol": "TECHV", "side": "sell", "qty": 5, "price": 225, "realized_pnl": 50},
+        ],
+        "quote_history": {
+            "TECHV": {4: {"mid": 215}, 10: {"mid": 225}},
+            "INFOS": {4: {"mid": 380}, 10: {"mid": 390}},
+        },
+    }
+    config = {"news": [{"tick": 4, "affected_symbols": ["TECHV"], "headline": "h", "reason": "r"}],
+              "stocks": [{"symbol": "TECHV", "peers": [{"symbol": "INFOS"}]}]}
+    enriched = enrich_trade_log(state, config, config["news"])
+    assert len(enriched) == 2
+    assert enriched[0]["news_at_tick"][0]["reason"] == "r"
+    assert "INFOS" in enriched[0]["peer_perf_at_tick"]

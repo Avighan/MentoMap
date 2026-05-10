@@ -75,3 +75,32 @@ def score_dimensions(state: dict, config: dict) -> dict:
         "strategic_thinking": round(strategic_thinking, 1),
         "financial_literacy": round(financial_literacy, 1),
     }
+
+
+def _peers_for(symbol, config):
+    for s in config.get("stocks", []):
+        if s.get("symbol") == symbol:
+            return [p.get("symbol") for p in s.get("peers", []) if p.get("symbol")]
+    return []
+
+
+def enrich_trade_log(state, config, news):
+    trade_log = state.get("trade_log", []) or []
+    quote_history = state.get("quote_history", {}) or {}
+    enriched = []
+    for trade in trade_log:
+        tick = trade.get("tick")
+        if tick is None:
+            continue
+        ev_at_tick = [
+            e for e in (news or [])
+            if e.get("tick") is not None and e["tick"] <= tick <= e["tick"] + 3
+            and trade.get("symbol") in (e.get("affected_symbols") or e.get("symbols") or [])
+        ]
+        peer_perf = {}
+        for psym in _peers_for(trade.get("symbol"), config):
+            qh = quote_history.get(psym, {})
+            if tick in qh:
+                peer_perf[psym] = qh[tick].get("mid")
+        enriched.append({**trade, "news_at_tick": ev_at_tick, "peer_perf_at_tick": peer_perf})
+    return enriched
