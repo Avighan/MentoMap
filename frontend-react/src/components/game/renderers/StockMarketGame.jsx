@@ -810,7 +810,7 @@ const StockMarketGame = ({
           })()}
 
           {/* Stock cards */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className={v2Enabled ? 'grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3' : 'grid grid-cols-2 gap-3'}>
             {(v2Enabled
               ? stocks.filter((s) => {
                   const h = priceHistory[s.symbol] || [];
@@ -901,8 +901,8 @@ const StockMarketGame = ({
         </div>
 
         {/* Sidebar */}
-        <aside className="w-96 border-l bg-white/90 backdrop-blur-sm p-5 flex flex-col gap-4 overflow-y-auto">
-          <div className="flex gap-3">
+        <aside className={`${v2Enabled ? 'w-[420px]' : 'w-96'} border-l bg-white/90 backdrop-blur-sm p-5 flex flex-col gap-4 overflow-y-auto`}>
+          <div className={v2Enabled ? 'flex flex-col gap-3' : 'flex gap-3'}>
             <div className="flex-1">
               <OrderTicket
                 stocks={stocks}
