@@ -81,3 +81,39 @@ def test_finalize_run_emits_trade_log_enriched():
     assert len(enriched) == 2
     assert enriched[0]["news_at_tick"][0]["reason"] == "r"
     assert "INFOS" in enriched[0]["peer_perf_at_tick"]
+
+
+def test_market_sell_fill_includes_realized_pnl():
+    """Per-trade realized_pnl on sell fills is required for TradeAutopsy."""
+    from engines.stock_market_engine import StockMarketEngine
+    cfg = {
+        "starting_capital": 100000.0,
+        "session_id": "test_pnl",
+        "tick_count": 60,
+        "stocks": [
+            {"symbol": "TECHV", "starting_price": 100.0, "sector": "tech", "vol": 0.02}
+        ],
+        "charges": {"brokerage_pct": 0.0003, "stt_pct": 0.001, "stamp_pct": 0.00015,
+                    "exchange_pct": 0.0000345, "gst_pct": 0.18, "sebi_pct": 0.000001},
+    }
+    engine = StockMarketEngine(cfg)
+    state = engine.start_session(seed=12345)
+    # Buy 10 at tick 1
+    buy = engine.place_order(state, {"side": "buy", "qty": 10, "symbol": "TECHV",
+                                     "order_type": "market", "tick": 1})
+    assert buy["status"] == "filled"
+    # Settle T+1 manually
+    state["holdings"]["TECHV"]["settled_qty"] = 10
+    # Sell 10 at tick 30
+    sell = engine.place_order(state, {"side": "sell", "qty": 10, "symbol": "TECHV",
+                                      "order_type": "market", "tick": 30})
+    assert sell["status"] == "filled"
+    # Sell fill must carry realized_pnl
+    sell_fill = state["trade_log"][-1]
+    assert sell_fill["side"] == "sell"
+    assert "realized_pnl" in sell_fill
+    assert isinstance(sell_fill["realized_pnl"], (int, float))
+    # Buy fill must NOT carry realized_pnl
+    buy_fill = state["trade_log"][0]
+    assert buy_fill["side"] == "buy"
+    assert "realized_pnl" not in buy_fill

@@ -31,4 +31,22 @@ describe('autopsy', () => {
     expect(pickBestTrade([])).toBeNull();
     expect(pickWorstTrade([])).toBeNull();
   });
+
+  it('pickBestTrade ignores NaN realized_pnl', () => {
+    const log = [
+      { realized_pnl: 100, symbol: 'A' },
+      { realized_pnl: NaN, symbol: 'B' },
+      { realized_pnl: 50, symbol: 'C' },
+    ];
+    expect(pickBestTrade(log)).toEqual({ realized_pnl: 100, symbol: 'A' });
+  });
+
+  it('pickWorstTrade ignores NaN realized_pnl', () => {
+    const log = [
+      { realized_pnl: -100, symbol: 'A' },
+      { realized_pnl: NaN, symbol: 'B' },
+      { realized_pnl: -50, symbol: 'C' },
+    ];
+    expect(pickWorstTrade(log)).toEqual({ realized_pnl: -100, symbol: 'A' });
+  });
 });

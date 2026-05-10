@@ -1,13 +1,13 @@
 export function pickBestTrade(log) {
   if (!Array.isArray(log) || log.length === 0) return null;
-  const closed = log.filter(t => typeof t.realized_pnl === 'number');
+  const closed = log.filter(t => typeof t.realized_pnl === 'number' && !isNaN(t.realized_pnl));
   if (closed.length === 0) return null;
   return closed.reduce((a, b) => (a.realized_pnl >= b.realized_pnl ? a : b));
 }
 
 export function pickWorstTrade(log) {
   if (!Array.isArray(log) || log.length === 0) return null;
-  const closed = log.filter(t => typeof t.realized_pnl === 'number');
+  const closed = log.filter(t => typeof t.realized_pnl === 'number' && !isNaN(t.realized_pnl));
   if (closed.length === 0) return null;
   return closed.reduce((a, b) => (a.realized_pnl <= b.realized_pnl ? a : b));
 }

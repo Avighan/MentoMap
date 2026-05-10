@@ -56,7 +56,8 @@ def _fill_or_reject_market(state: dict, order: dict, quote: dict, charges_cfg: d
         proceeds = qty * price - charges["total"]
         state["cash"] += proceeds
         cost_basis = h["avg_price"] * qty
-        state["realized_pnl"] += (qty * price - cost_basis - charges["total"])
+        trade_pnl = qty * price - cost_basis - charges["total"]
+        state["realized_pnl"] += trade_pnl
         h["qty"] -= qty
         h["settled_qty"] -= qty
         if h["qty"] == 0:
@@ -68,6 +69,8 @@ def _fill_or_reject_market(state: dict, order: dict, quote: dict, charges_cfg: d
         "qty": qty, "price": price, "charges": charges,
         "order_type_used": order.get("order_type", "market"),
     }
+    if side == "sell":
+        fill["realized_pnl"] = trade_pnl
     state["trade_log"].append(fill)
     return {"status": "filled", "fill": fill, "charges": charges,
             "new_cash": state["cash"], "new_holdings": dict(state["holdings"])}
