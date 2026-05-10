@@ -595,8 +595,10 @@ const StockMarketGame = ({
   }
 
   // ── Main UI ─────────────────────────────────────────────────────────
-  return (
-    <NpcLayerProvider currentTick={currentTick}>
+  // NpcLayerProvider must NOT mount for v1 users — OrderTicket calls
+  // npc.say('broker', ...) on submit and useNpc() returns NOOP_NPC
+  // when no Provider wraps it, so v1 stays chip-free.
+  const playingTree = (
     <div className="min-h-screen" style={{ backgroundColor: '#F0F4FF' }}>
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b shadow-sm px-6 py-3 flex items-center justify-between sticky top-0 z-40">
@@ -906,19 +908,24 @@ const StockMarketGame = ({
           )}
         </aside>
       </div>
-      <OnboardingFlow
-        gameData={gameData}
-        phase={onboardingPhase}
-        setPhase={setOnboardingPhase}
-      />
+      {!v2Enabled && (
+        <OnboardingFlow
+          gameData={gameData}
+          phase={onboardingPhase}
+          setPhase={setOnboardingPhase}
+        />
+      )}
       <FloatingDeltaLayer floatingDeltas={engagement.floatingDeltas} />
       <StreakBanner
         streakCount={engagement.streakCount}
         streakMultiplier={engagement.streakMultiplier}
       />
     </div>
-    </NpcLayerProvider>
   );
+
+  return v2Enabled ? (
+    <NpcLayerProvider currentTick={currentTick}>{playingTree}</NpcLayerProvider>
+  ) : playingTree;
 };
 
 export default StockMarketGame;
