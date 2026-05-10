@@ -38,3 +38,33 @@ def test_day_index_to_id():
     assert day_index_to_id(0, DAYS) == "mon"
     assert day_index_to_id(4, DAYS) == "fri"
     assert day_index_to_id(99, DAYS) == "fri"
+
+
+def test_tick_to_day_empty_days_returns_none():
+    assert tick_to_day(0, []) is None
+
+
+def test_tick_to_day_negative_tick_returns_first_day():
+    # Documented behavior: negative ticks fall through to first day.
+    assert tick_to_day(-1, DAYS) == DAYS[0]
+
+
+def test_current_day_missing_current_tick_defaults_to_zero():
+    state = {}
+    sm_cfg = {"calendar_mode": "week", "days": DAYS}
+    d = current_day(state, sm_cfg)
+    assert d["id"] == "mon"
+    assert d["index"] == 0
+
+
+def test_current_day_returns_none_when_days_empty():
+    sm_cfg = {"calendar_mode": "week", "days": []}
+    assert current_day({"current_tick": 0}, sm_cfg) is None
+
+
+def test_day_index_to_id_negative_clamps_to_first():
+    assert day_index_to_id(-5, DAYS) == "mon"
+
+
+def test_day_index_to_id_empty_days_returns_none():
+    assert day_index_to_id(0, []) is None
