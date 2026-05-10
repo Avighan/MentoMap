@@ -4,6 +4,27 @@ import { THEME, gainLossColor } from '../theme';
 
 const fmt = (n) => `₹${Math.round(n).toLocaleString('en-IN')}`;
 
+/**
+ * Performance tab of the portfolio dashboard. Renders a day-by-day P&L bar
+ * chart, portfolio-vs-benchmark return lines, and three key risk metrics.
+ *
+ * Caller contract:
+ *  - `dayPnL` must be an array of `{ dayId: string, label: string, pnl: number }`.
+ *    All `dayId` values must be unique within the array — they are used as
+ *    React keys and `data-testid` suffixes. All `pnl` values must be finite
+ *    numbers; missing or non-numeric `pnl` causes silent bar corruption and
+ *    renders `₹NaN` in the label.
+ *  - `portfolioReturnSeries` and `benchmarkReturnSeries` must be arrays of
+ *    finite numbers; both empty renders nothing (ReturnLines returns null).
+ *  - `maxDD` must be a finite number; defaults to 0 when omitted. Non-numeric
+ *    values will throw at `maxDD.toFixed(1)`.
+ *  - `topConcentration` is optional. When present, both `symbol` (string) and
+ *    `pct` (number) must be defined; `pct.toFixed(0)` is called directly.
+ *    Pass the whole object as `undefined`/`null` rather than partial.
+ *  - `hitRatio` is optional. When present, `winRate` (number 0–1) and
+ *    `totalClosed` (integer) must be defined. `winRate * 100` and
+ *    `totalClosed` are interpolated directly into the rendered string.
+ */
 export default function PerformanceTab({
   dayPnL = [],
   portfolioReturnSeries = [],

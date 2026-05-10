@@ -18,4 +18,34 @@ describe('PerformanceTab', () => {
     expect(screen.getByTestId('perf-day-tue')).toBeTruthy();
     expect(screen.getByTestId('perf-max-dd').textContent).toContain('4.2');
   });
+
+  it('handles empty dayPnL gracefully', () => {
+    render(<PerformanceTab />);
+    expect(screen.getByText('P&L by day')).toBeTruthy();
+  });
+
+  it('renders zero-pnl bars without divide-by-zero', () => {
+    render(
+      <PerformanceTab
+        dayPnL={[{ dayId: 'mon', label: 'Mon', pnl: 0 }]}
+      />
+    );
+    expect(screen.getByTestId('perf-day-mon')).toBeTruthy();
+  });
+
+  it('shows dash sentinel when topConcentration is absent', () => {
+    render(<PerformanceTab />);
+    const tiles = screen.getAllByText('—');
+    expect(tiles.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('omits return-lines svg when both series are empty', () => {
+    const { container } = render(<PerformanceTab />);
+    expect(container.querySelector('svg[aria-label="return-lines"]')).toBeNull();
+  });
+
+  it('uses default maxDD of 0.0% when omitted', () => {
+    render(<PerformanceTab />);
+    expect(screen.getByTestId('perf-max-dd').textContent).toContain('0.0%');
+  });
 });
