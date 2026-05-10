@@ -26,6 +26,13 @@ describe('concentration', () => {
   it('returns null on empty holdings', () => {
     expect(concentration({}, {})).toBeNull();
   });
+  it('skips holdings with qty=0 when computing total and best', () => {
+    const holdings = { A: { qty: 0 }, B: { qty: 5 } };
+    const prices = { A: 999, B: 100 };
+    const result = concentration(holdings, prices);
+    expect(result.symbol).toBe('B');
+    expect(result.pct).toBeCloseTo(100, 1);
+  });
 });
 
 describe('hitRatio', () => {
@@ -44,5 +51,28 @@ describe('hitRatio', () => {
   });
   it('handles no closed trades', () => {
     expect(hitRatio([])).toEqual({ winRate: 0, avgWin: 0, avgLoss: 0, totalClosed: 0 });
+  });
+  it('returns avgLoss=0 when every closed trade is a winner', () => {
+    const txs = [
+      { side: 'sell', realized_pnl: 100 },
+      { side: 'sell', realized_pnl: 50 },
+    ];
+    const r = hitRatio(txs);
+    expect(r.totalClosed).toBe(2);
+    expect(r.winRate).toBe(1);
+    expect(r.avgWin).toBeCloseTo(75);
+    expect(r.avgLoss).toBe(0);
+  });
+
+  it('returns avgWin=0 when every closed trade is a loss', () => {
+    const txs = [
+      { side: 'sell', realized_pnl: -200 },
+      { side: 'sell', realized_pnl: -100 },
+    ];
+    const r = hitRatio(txs);
+    expect(r.totalClosed).toBe(2);
+    expect(r.winRate).toBe(0);
+    expect(r.avgWin).toBe(0);
+    expect(r.avgLoss).toBeCloseTo(-150);
   });
 });

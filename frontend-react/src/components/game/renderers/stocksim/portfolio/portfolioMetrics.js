@@ -1,4 +1,23 @@
 // portfolioMetrics.js
+/**
+ * Pure portfolio analytics helpers consumed by the portfolio modal.
+ *
+ * All functions are pure and accept the shapes produced by the stocksim
+ * client component (transactions, holdings keyed by symbol, prices keyed by
+ * symbol). They tolerate `null`/`undefined` inputs by returning a neutral
+ * value rather than throwing.
+ */
+
+/**
+ * Maximum peak-to-trough percent decline across a value series.
+ *
+ * Precondition: series values are expected to be positive (e.g. net worth
+ * with non-zero starting cash). When the running peak is non-positive the
+ * percent formula is undefined; this function returns 0 in that branch.
+ *
+ * @param {number[]} series
+ * @returns {number} drawdown percent in [0, 100]
+ */
 export function maxDrawdown(series) {
   if (!series || series.length < 2) return 0;
   let peak = series[0];
@@ -13,6 +32,18 @@ export function maxDrawdown(series) {
   return maxDD;
 }
 
+/**
+ * Largest position by market value as a percent of total portfolio market
+ * value.
+ *
+ * Holdings with `qty === 0` are skipped. Holdings with a missing price are
+ * valued at 0 and contribute 0 to the total — they cannot become `best`
+ * unless every other position is also zero-valued.
+ *
+ * @param {Record<string, { qty: number }>} holdings
+ * @param {Record<string, number>} prices
+ * @returns {{ symbol: string, pct: number } | null}
+ */
 export function concentration(holdings, prices) {
   let total = 0;
   let best = null;
@@ -28,6 +59,13 @@ export function concentration(holdings, prices) {
   return { symbol: best.symbol, pct: (best.mv / total) * 100 };
 }
 
+/**
+ * Win/loss statistics over closed (sell-side) trades that carry a numeric
+ * `realized_pnl` field. Sells without that field are silently excluded.
+ *
+ * @param {Array<{ side: string, realized_pnl?: number }>} transactions
+ * @returns {{ winRate: number, avgWin: number, avgLoss: number, totalClosed: number }}
+ */
 export function hitRatio(transactions) {
   const closed = (transactions || []).filter(
     (t) => t.side === 'sell' && typeof t.realized_pnl === 'number'
