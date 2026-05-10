@@ -1,4 +1,42 @@
 // PortfolioModal.jsx
+/**
+ * PortfolioModal — host shell that wires four pre-built tab components
+ * (Overview, Holdings, Trades, Performance) into a single modal.
+ *
+ * IMPLEMENTATION NOTE: This file's function body is byte-for-byte from
+ * the implementation plan at docs/superpowers/plans/2026-05-10-stocksim-week-and-portfolio.md
+ * (Task 10). Concerns surfaced during code-quality review are tracked
+ * here as `// NOTE:` comments rather than behavioral changes.
+ *
+ * Known quirks (intentional, do not "fix" without spec update):
+ *   - `sectorExposureSeries` is imported but unused. Reserved for a future
+ *     PerformanceTab enhancement; eslint-disabled inline.
+ *   - The 3rd arg to `netWorthSeries` includes a no-op reducer
+ *     `Object.values(holdings).reduce((s, h) => s, 0)` whose result is
+ *     always 0; the expression therefore reduces to
+ *     `startingCash || cash`. Treat as a cash-baseline fallback.
+ *   - `nwSeries[0] || 1` silently substitutes 1 when the first net-worth
+ *     value is 0, to avoid divide-by-zero in `portfolioPctSeries`.
+ *   - `bestToday` / `worstToday` may be `undefined` when there are no
+ *     holdings; `OverviewTab` is responsible for empty-state rendering.
+ *
+ * @param {Object} props
+ * @param {boolean} props.open
+ * @param {() => void} props.onClose
+ * @param {number} [props.cash=0]
+ * @param {number} [props.startingCash=0]
+ * @param {number} [props.netWorth=0]
+ * @param {number} [props.todayPnL=0]
+ * @param {{realized:number, unrealized:number}} [props.pnl]
+ * @param {Object<string,{qty:number, avg_price:number}>} [props.holdings]
+ * @param {Object<string,{mid:number}>} [props.quotes]
+ * @param {Array<{symbol:string, side:string, qty:number, price:number, tick:number}>} [props.transactions]
+ * @param {Object<string, number[]>} [props.priceHistory]
+ * @param {number} [props.currentTick=0]
+ * @param {Array<{symbol:string, sector:string, name:string}>} [props.stocks]
+ * @param {Array<{id:string, label:string, ticks:number}>} [props.days]
+ * @param {(symbol:string) => void} [props.onOpenSymbol]
+ */
 import React, { useState, useEffect, useMemo } from 'react';
 import { THEME } from './theme';
 import OverviewTab from './portfolio/OverviewTab';
@@ -7,6 +45,7 @@ import TradesTab from './portfolio/TradesTab';
 import PerformanceTab from './portfolio/PerformanceTab';
 import { netWorthSeries } from './portfolio/netWorthSeries';
 import {
+  // eslint-disable-next-line no-unused-vars -- sectorExposureSeries reserved for future PerformanceTab wiring
   maxDrawdown, concentration, hitRatio, sectorExposureSeries, benchmarkSeries, dayPnL,
 } from './portfolio/portfolioMetrics';
 
@@ -40,6 +79,7 @@ export default function PortfolioModal({
     return m;
   }, [stocks]);
 
+  // NOTE: 3rd arg's reducer is a no-op (returns startingCash || cash) — see file header.
   const nwSeries = useMemo(
     () => netWorthSeries(transactions, priceHistory, startingCash || (cash + Object.values(holdings).reduce((s, h) => s, 0)), currentTick),
     [transactions, priceHistory, startingCash, cash, holdings, currentTick]
@@ -96,6 +136,7 @@ export default function PortfolioModal({
 
   const perfDayPnL  = useMemo(() => dayPnL(transactions, days), [transactions, days]);
   const benchmark   = useMemo(() => benchmarkSeries(priceHistory, currentTick), [priceHistory, currentTick]);
+  // NOTE: nwSeries[0] || 1 silently substitutes 1 when first net-worth is 0 — see file header.
   const portfolioPctSeries = useMemo(() => {
     if (!nwSeries.length) return [];
     const start = nwSeries[0] || 1;
