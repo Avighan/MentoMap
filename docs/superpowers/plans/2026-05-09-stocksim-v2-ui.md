@@ -2971,89 +2971,111 @@ export default function StockCard({ stock, quote = {}, position, starred, imageU
 Run: `cd frontend-react && npx vitest run src/components/game/renderers/stocksim/StockCard.test.jsx`
 Expected: PASS, 3 tests.
 
-- [ ] **Step 6: Wire orchestrator (`StockMarketGame.jsx`) — final v2 path**
+- [ ] **Step 6: Wire orchestrator (`StockMarketGame.jsx`) — minimal v2 wiring**
 
-Inside the v2 (`v2Enabled === true`) branch of `StockMarketGame.jsx`, replace any inline stock-card markup with the new orchestration:
+Brownfield reality: the existing `phase === 'playing'` render (~lines 590-895) has its own header / news-strip / portfolio-summary / inline-card-grid / sidebar layout. The variables the plan originally referenced (`filter/counts/filteredStocks/positions/openSymbol/setOrderState/state.completed/state.holdings_value/state.net_worth`) do not exist. `<TradeAutopsy>` is already mounted by Task 12 inside the existing `if (recap)` block (~line 552). `<MentorCheckIn>` is already mounted by Task 11 (~line 658).
+
+This task therefore makes only TWO additive changes to `StockMarketGame.jsx`:
+
+1. **Wrap the `phase === 'playing'` return tree in `<NpcLayerProvider currentTick={currentTick}>`** so future broker/journalist/analyst NPC chips have a provider. NpcLayerProvider is a no-op in the tree until consumers call `useNpc().say()`, so this is safe even though no consumers exist yet.
+
+2. **Conditionally swap the inline `motion.button` stock card** (currently at ~lines 749-805 inside the `<div className="grid grid-cols-2 gap-3">`) for `<StockCard>` when `v2Enabled === true`. `<StockCard>` consumes `quote.last_change_pct` (from Task 6 last_reason work) and `quote.last_reason` for the why-chip. Keep the v1 card on the false branch.
+
+3. **Add watchlist state** (`starred` as `useState(() => new Set())`) and pass `starred.has(sym)` + an `onStar` toggle to `<StockCard>`.
+
+The CompanyDrillDown modal mount, PersistentStrip mount, StockListFilters mount, and lazy imageUrl fetching are explicitly **out of scope** for this task — they touch the existing layout in ways that warrant a follow-up plan. PersistentStrip/StockListFilters already exist as standalone tested components from Tasks 2-3 and can be wired in a follow-up. CompanyDrillDown exists from Task 8c and works standalone.
+
+Concrete edits:
+
+**6a.** Add imports near the existing stocksim imports (`OrderTicket`, `NewsTickerStrip`, etc., around lines 39-41):
 
 ```jsx
-import PersistentStrip from './stocksim/PersistentStrip';
-import StockListFilters from './stocksim/StockListFilters';
 import StockCard from './stocksim/StockCard';
-import CompanyDrillDown from './stocksim/CompanyDrillDown';
-import TradeAutopsy from './stocksim/TradeAutopsy';
 import { NpcLayerProvider } from './stocksim/NpcLayer';
-// ... + MarketBriefing + MentorCheckIn already imported
+```
 
-// inside render, when phase === 'playing':
+**6b.** Add the `starred` state near the other useState hooks (group with `selectedSymbol`/`priceHistory` at ~lines 145-148):
+
+```jsx
+const [starred, setStarred] = useState(() => new Set());
+```
+
+**6c.** Find the `phase === 'playing'` return — the outermost JSX is `<div className="flex flex-col h-screen ...">` (the wrapper that contains the header, news strip, banner, mentor mount, and `<div className="flex h-[calc(100vh-56px)]">`). Wrap that outer div with `<NpcLayerProvider>`:
+
+```jsx
 return (
-  <NpcLayerProvider currentTick={state.current_tick || 0}>
-    <PersistentStrip
-      cash={state.cash} holdingsValue={state.holdings_value || 0}
-      netWorth={state.net_worth || state.cash}
-      pnl={pnl?.total_pnl ?? 0}
-      currentTick={state.current_tick || 0} tickCount={cfg.tick_count || 22}
-    />
-    <StockListFilters mode={filter} setMode={setFilter} counts={counts} />
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8, margin: '8px 0' }}>
-      {filteredStocks.map(s => (
-        <StockCard
-          key={s.symbol} stock={s}
-          quote={quotes?.[s.symbol] || {}}
-          position={positions?.[s.symbol]}
-          starred={starred.has(s.symbol)}
-          imageUrl={imageUrls[s.symbol]}
-          onOpen={setOpenSymbol}
-          onStar={(sym) => setStarred(prev => {
-            const next = new Set(prev);
-            next.has(sym) ? next.delete(sym) : next.add(sym);
-            return next;
-          })}
-        />
-      ))}
+  <NpcLayerProvider currentTick={currentTick}>
+    <div className="flex flex-col h-screen ...">
+      {/* existing header, news strip, banner, mentor, content/sidebar */}
     </div>
-    {/* Existing NewsTickerStrip + OrderTicket below, re-skinned in Task 1 */}
-    {openSymbol && (
-      <CompanyDrillDown
-        stock={cfg.stocks.find(s => s.symbol === openSymbol)}
-        quote={quotes?.[openSymbol] || {}}
-        position={positions?.[openSymbol]}
-        priceHistory={priceHistory[openSymbol] || []}
-        news={cfg.events || cfg.news || []}
-        imageUrl={imageUrls[openSymbol]}
-        currentTick={state.current_tick || 0}
-        onClose={() => setOpenSymbol(null)}
-        onTrade={(side, payload) => {
-          setOrderState({ ...payload, side });
-          setOpenSymbol(null);
-        }}
-      />
-    )}
-    {mentorShown === 'open' && <MentorCheckIn state={state} onReply={handleMentorReply} />}
-    {state.completed && <TradeAutopsy final={finalResult} />}
   </NpcLayerProvider>
 );
 ```
 
-`filteredStocks`, `counts`, `imageUrls`, `priceHistory` are derived from existing `state`/`cfg`/`quotes`. Compute `imageUrls` lazily on drill-down open (one fetch per symbol, cached in state).
+**6d.** Inside the inline-cards `<div className="grid grid-cols-2 gap-3">` (currently `{stocks.map((s) => { ... return (<motion.button ...>...) })}` at ~lines 750-805), conditionally render `<StockCard>` when `v2Enabled`. The cleanest shape:
+
+```jsx
+{stocks.map((s) => {
+  const q = quotes[s.symbol] || {};
+  const px = q.mid ?? s.starting_price;
+  const h_ = priceHistory[s.symbol] || [];
+  const changePct = h_.length >= 2 ? ((h_[h_.length - 1] - h_[0]) / h_[0]) * 100 : 0;
+  const isSelected = selectedSymbol === s.symbol;
+  const shareCount = holdings?.[s.symbol]?.qty || 0;
+
+  if (v2Enabled) {
+    const enrichedQuote = { ...q, last_change_pct: changePct };
+    return (
+      <StockCard
+        key={s.symbol}
+        stock={s}
+        quote={enrichedQuote}
+        position={shareCount > 0 ? { qty: shareCount } : null}
+        starred={starred.has(s.symbol)}
+        onOpen={(sym) => setSelectedSymbol(sym)}
+        onStar={(sym) => setStarred((prev) => {
+          const next = new Set(prev);
+          if (next.has(sym)) next.delete(sym); else next.add(sym);
+          return next;
+        })}
+      />
+    );
+  }
+
+  return (
+    <motion.button
+      key={s.symbol}
+      data-testid={`stocksim-stock-${s.symbol}`}
+      onClick={() => setSelectedSymbol(s.symbol)}
+      className={`text-left p-4 rounded-xl border-2 transition-all shadow-sm ${
+        isSelected ? 'border-blue-400 bg-blue-50 shadow-md' : 'border-gray-100 bg-white hover:border-gray-300'
+      }`}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      {/* existing v1 card body — keep verbatim */}
+    </motion.button>
+  );
+})}
+```
+
+Do NOT delete the existing v1 card markup; move it into the `else` branch so v1 (flag off) keeps rendering identically.
+
+**6e.** Confirm `<TradeAutopsy>` is **NOT** added in this task — it's already mounted by Task 12 inside `if (recap) { ... }` immediately before `<PostGameInsights />`. This avoids double-rendering.
 
 - [ ] **Step 7: Extend `test-stocksim-e2e.mjs` smoke**
 
-Open `frontend-react/test-stocksim-e2e.mjs`. After existing assertions, add:
+Brownfield reality: the existing e2e script does NOT have `fetchState()` or `fetchComplete()` helpers. It builds `final` directly from the inline `complete` response (after `final = await complete.json()`). Add the v2 assertion immediately after the existing `requiredDims` loop and before the idempotency check (~line 89 in the current file):
 
 ```js
-// v2 assertions
-const stateBody = await fetchState();
-const symKeys = Object.keys(stateBody.quotes || {});
-if (symKeys.length === 0) throw new Error('no quotes in /state');
-// At least one quote should have tick metadata; last_reason may or may not exist depending on tick.
-// If we have advanced past an event tick, we expect at least one last_reason in the run.
-
-const completeBody = await fetchComplete();
-if (!Array.isArray(completeBody.trade_log_enriched)) {
-  throw new Error('trade_log_enriched missing on /complete');
+// v2 assertion: trade_log_enriched present on /complete (Task 12).
+if (!Array.isArray(final.trade_log_enriched)) {
+  throw new Error(`trade_log_enriched missing on /complete: ${JSON.stringify(Object.keys(final))}`);
 }
-console.log('v2 smoke OK — trade_log_enriched length:', completeBody.trade_log_enriched.length);
+console.log(`  v2: trade_log_enriched length: ${final.trade_log_enriched.length}`);
 ```
+
+Do not invent new helpers. Insert ONLY this block.
 
 - [ ] **Step 8: Run frontend tests once more**
 
@@ -3067,14 +3089,19 @@ Expected: all PASS.
 
 - [ ] **Step 10: Commit**
 
+Stage ONLY the 6 files below (use explicit paths — do NOT use `git add -A`/`git add .`). Verify staged scope first with `git diff --cached --name-only` before committing.
+
 ```bash
 git add frontend-react/src/locales/en.json frontend-react/src/locales/hi.json \
         frontend-react/src/components/game/renderers/stocksim/StockCard.jsx \
         frontend-react/src/components/game/renderers/stocksim/StockCard.test.jsx \
         frontend-react/src/components/game/renderers/StockMarketGame.jsx \
         frontend-react/test-stocksim-e2e.mjs
-git commit -m "feat(stocksim): StockCard + orchestrator wire-up + i18n keys + e2e smoke v2 assertions"
+git diff --cached --name-only  # MUST show exactly these 6 files
+git commit -m "feat(stocksim): StockCard + minimal v2 wire-up + i18n keys + e2e smoke v2 assertion"
 ```
+
+Note: `backend/app.py` and `frontend-react/src/api/profile.js` are expected to remain unstaged in the working tree (pre-existing audit-followups work). Do not stage them.
 
 - [ ] **Step 11: Flag flip prep (manual, post-deploy)**
 
