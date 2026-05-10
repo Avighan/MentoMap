@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaLightbulb, FaArrowUp, FaStar, FaBolt, FaChevronDown, FaChevronUp, FaGraduationCap, FaChartPie, FaCommentDots, FaHandsHelping, FaBullseye, FaHistory, FaPlay, FaChevronRight, FaTrophy, FaClipboardList } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SkillDashboard from './SkillDashboard';
 import SkillDefinition from './SkillDefinition';
 import { getTransferExercises } from '../../api/profile';
@@ -207,6 +208,7 @@ function TransferPromptSection({ gameId }) {
  */
 export default function PostGameInsights({ summary, state, gameType, won, reportCore, runId, recommendations = [], mentoPercentile = null, uxExecutive = null, execActionsLog = [], currency = 'USD', epilogueSlot = null }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { customDimensions } = useOrg();
   // Merge org custom dimension labels over defaults
@@ -460,11 +462,34 @@ export default function PostGameInsights({ summary, state, gameType, won, report
         <ShareCard shareCard={v2ShareCard} />
       )}
 
+      {/* P0 Task 18 — Methodology banner. Explains v2 score honesty
+          (timing/recovery/consistency signals + 90% CI). Shown above the
+          dimension breakdown so learners read it before the bars. */}
+      {dimensionScores && Object.keys(dimensionScores).length > 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-1 flex items-start gap-2">
+          <span aria-hidden="true">📊</span>
+          <div className="flex-1 text-sm text-blue-900">
+            <strong>
+              {t('insights.methodology_banner.title',
+                'Score now reflects how you played, not just what you chose.')}
+            </strong>{' '}
+            <span>
+              {t('insights.methodology_banner.body',
+                'We added timing, recovery, and consistency signals.')}
+            </span>{' '}
+            <a href="/methodology" className="text-blue-700 underline whitespace-nowrap">
+              {t('insights.methodology_banner.link', 'Learn how')}
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* V2 — Dimension Breakdown with deltas */}
       {dimensionScores && Object.keys(dimensionScores).length > 0 && (
         <DimBreakdown
           dimensions={dimensionScores}
           initialDimensions={reportCore?.initial_dimension_scores || {}}
+          confidenceIntervals={reportCore?.confidence_intervals || {}}
           enabled={!!v2CompleteData || !!v2ShareCard}
         />
       )}

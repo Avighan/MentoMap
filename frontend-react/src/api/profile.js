@@ -8,6 +8,13 @@ export const getProfile = async () => {
   return response.data;
 };
 
+// Task 12 (P0): submit a reflection rationale for LLM grading.
+// Returns: { ok, score, dim_signals, strengths, improvements }
+export const submitReflection = async (runId, payload) => {
+  const response = await apiClient.post(`/api/run/${runId}/reflection`, payload);
+  return response.data;
+};
+
 export const getBadges = async () => {
   const response = await apiClient.get('/api/profile/badges');
   return response.data;

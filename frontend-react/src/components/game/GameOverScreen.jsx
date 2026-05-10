@@ -296,7 +296,7 @@ const GameOverScreen = ({ finalReport, onPlayAgain, onBackToMenu, runId, epilogu
                   <h2 className="text-xs uppercase tracking-wider font-semibold mb-3" style={{ color: colors.textLight }}>
                     Mento Score
                   </h2>
-                  <MentoScoreBreakdown mentoScore={mentoScore} />
+                  <MentoScoreBreakdown mentoScore={mentoScore} dimensionScores={dimensionScores} />
                 </div>
               )}
 

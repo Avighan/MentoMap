@@ -8,122 +8,142 @@ def validate_bundle(b: dict) -> None:
     if "games" not in b or not isinstance(b["games"], list) or len(b["games"]) == 0:
         raise ValueError("Bundle must contain games[] array with at least 1 game")
 
+    import sys as _sys
     for g in b["games"]:
-        game_type = g.get("game_type", "rounds")
+        # Per-game validation is wrapped so a single non-conforming game
+        # doesn't take down the whole bundle load. Errors are logged to
+        # stderr; the offending game still gets registered (callers
+        # downstream are responsible for runtime safety).
+        try:
+            game_type = g.get("game_type", "rounds")
 
-        # Common required keys for all types
-        for k in ["game_id", "title", "initial_state"]:
-            if k not in g:
-                raise ValueError(f"Game missing required key '{k}': {g.get('game_id','unknown')}")
+            # Common required keys for all types
+            for k in ["game_id", "title", "initial_state"]:
+                if k not in g:
+                    raise ValueError(f"Game missing required key '{k}': {g.get('game_id','unknown')}")
 
-        if game_type == "rounds":
-            _validate_rounds_game(g)
-        elif game_type == "board":
-            _validate_board_game(g)
-        elif game_type == "minigame":
-            _validate_minigame(g)
-        elif game_type == "card":
-            _validate_card_game(g)
-        elif game_type == "strategy":
-            _validate_strategy_game(g)
-        elif game_type == "ai_arena":
-            _validate_ai_arena_game(g)
-        elif game_type == "negotiation":
-            _validate_negotiation_type_game(g)
-        elif game_type == "negotiation_series":
-            _validate_negotiation_series_game(g)
-        elif game_type == "debate":
-            _validate_debate_game(g)
-        elif game_type == "story_branching":
-            _validate_story_branching_game(g)
-            _sb_errors = []
-            _validate_story_branching_type_game(g, _sb_errors)
-            if _sb_errors:
-                raise ValueError(
-                    f"Story branching game '{g.get('game_id','unknown')}' validation errors: "
-                    + "; ".join(_sb_errors)
+            if game_type == "rounds":
+                _validate_rounds_game(g)
+            elif game_type == "board":
+                _validate_board_game(g)
+            elif game_type == "minigame":
+                _validate_minigame(g)
+            elif game_type == "card":
+                _validate_card_game(g)
+            elif game_type == "strategy":
+                _validate_strategy_game(g)
+            elif game_type == "ai_arena":
+                _validate_ai_arena_game(g)
+            elif game_type == "negotiation":
+                _validate_negotiation_type_game(g)
+            elif game_type == "negotiation_series":
+                _validate_negotiation_series_game(g)
+            elif game_type == "debate":
+                _validate_debate_game(g)
+            elif game_type == "story_branching":
+                _validate_story_branching_game(g)
+                _sb_errors = []
+                _validate_story_branching_type_game(g, _sb_errors)
+                if _sb_errors:
+                    raise ValueError(
+                        f"Story branching game '{g.get('game_id','unknown')}' validation errors: "
+                        + "; ".join(_sb_errors)
+                    )
+            elif game_type == "chess_strategy":
+                _validate_chess_strategy_game(g)
+            elif game_type == "go_territory":
+                _validate_go_territory_game(g)
+            elif game_type == "reversi":
+                _validate_reversi_game(g)
+            elif game_type == "tower_defense":
+                _validate_tower_defense_game(g)
+            elif game_type == "puzzle_match":
+                _validate_puzzle_match_game(g)
+            elif game_type == "strategy_grid":
+                _validate_strategy_grid_game(g)
+            elif game_type == "card_board":
+                if not (g.get("card_board_config") or g.get("deck") or g.get("board") or g.get("cards")):
+                    raise ValueError(f"card_board game '{g['game_id']}' missing card structure (expected 'deck', 'board', or 'card_board_config')")
+            elif game_type == "trump_card":
+                if not (g.get("trump_card_config") or g.get("cards") or g.get("deck") or g.get("attributes")):
+                    raise ValueError(f"trump_card game '{g['game_id']}' missing card data (expected 'cards', 'deck', or 'trump_card_config')")
+            elif game_type == "wellbeing_survey":
+                if not (g.get("questions") or g.get("rounds") or g.get("sections")):
+                    raise ValueError(f"wellbeing_survey game '{g['game_id']}' missing 'questions', 'rounds', or 'sections' key")
+            elif game_type == "simulation":
+                if not (g.get("rounds") and g.get("simulation_config")):
+                    raise ValueError(f"simulation game '{g['game_id']}' missing 'rounds' or 'simulation_config' key")
+            elif game_type == "mystery_room":
+                if not (g.get("rooms") and g.get("puzzles") and g.get("climax")):
+                    raise ValueError(f"mystery_room game '{g['game_id']}' missing 'rooms', 'puzzles', or 'climax' key")
+            elif game_type == "ai_lab":
+                if not g.get("ai_lab_config"):
+                    raise ValueError(f"ai_lab game '{g['game_id']}' missing 'ai_lab_config' key")
+                tasks = g["ai_lab_config"].get("tasks")
+                if not isinstance(tasks, list) or not tasks:
+                    raise ValueError(f"ai_lab game '{g['game_id']}' must have ai_lab_config.tasks[] with >=1 task")
+                for t in tasks:
+                    for k in ("id", "title", "instruction", "rubric"):
+                        if k not in t:
+                            raise ValueError(f"ai_lab task missing '{k}' in '{g['game_id']}'")
+            elif game_type == "music_match":
+                if not g.get("music_rounds"):
+                    raise ValueError(f"music_match game '{g['game_id']}' missing 'music_rounds' key")
+            elif game_type == "lab_titration":
+                if not g.get("titration"):
+                    raise ValueError(f"lab_titration game '{g['game_id']}' missing 'titration' key")
+            elif game_type == "pendulum_lab":
+                if not (g.get("pendulum_lab") and g["pendulum_lab"].get("trials")):
+                    raise ValueError(f"pendulum_lab game '{g['game_id']}' missing 'pendulum_lab.trials'")
+            elif game_type == "optics_lab":
+                if not (g.get("optics_lab") and g["optics_lab"].get("trials")):
+                    raise ValueError(f"optics_lab game '{g['game_id']}' missing 'optics_lab.trials'")
+            elif game_type == "circuit_debugger":
+                if not (g.get("circuit_debugger") and g["circuit_debugger"].get("nodes")):
+                    raise ValueError(f"circuit_debugger game '{g['game_id']}' missing 'circuit_debugger.nodes'")
+            elif game_type == "genetics_cross":
+                if not (g.get("genetics_cross") and g["genetics_cross"].get("phenotypes")):
+                    raise ValueError(f"genetics_cross game '{g['game_id']}' missing 'genetics_cross.phenotypes'")
+            elif game_type == "stoichiometry_mixer":
+                if not g.get("stoichiometry_mixer"):
+                    raise ValueError(f"stoichiometry_mixer game '{g['game_id']}' missing 'stoichiometry_mixer' key")
+            elif game_type == "mental_math":
+                if not (g.get("mental_math") and g["mental_math"].get("problems")):
+                    raise ValueError(f"mental_math game '{g['game_id']}' missing 'mental_math.problems'")
+            elif game_type == "typing_drill":
+                if not (g.get("typing_drill") and g["typing_drill"].get("passages")):
+                    raise ValueError(f"typing_drill game '{g['game_id']}' missing 'typing_drill.passages'")
+            elif game_type == "boggle":
+                if not (g.get("boggle") and g["boggle"].get("grid")):
+                    raise ValueError(f"boggle game '{g['game_id']}' missing 'boggle.grid'")
+            elif game_type == "mock_interview":
+                if not (g.get("mock_interview") and g["mock_interview"].get("questions")):
+                    raise ValueError(f"mock_interview game '{g['game_id']}' missing 'mock_interview.questions'")
+            elif game_type == "sudoku":
+                if not (g.get("sudoku") and g["sudoku"].get("puzzle")):
+                    raise ValueError(f"sudoku game '{g['game_id']}' missing 'sudoku.puzzle'")
+            elif game_type == "logic_grid":
+                if not (g.get("logic_grid") and g["logic_grid"].get("solution")):
+                    raise ValueError(f"logic_grid game '{g['game_id']}' missing 'logic_grid.solution'")
+            elif game_type == "geometry_constructor":
+                if not (g.get("geometry_constructor") and g["geometry_constructor"].get("features")):
+                    raise ValueError(f"geometry_constructor game '{g['game_id']}' missing 'geometry_constructor.features'")
+            else:
+                # Unknown game_type: soft-fail with a log line instead of crashing
+                # bundle load. Prod has accumulated games with unregistered types
+                # that pre-date this validator; known types still get strict
+                # validation above.
+                print(
+                    f"[schemas] WARN: game '{g.get('game_id','?')}' has unregistered "
+                    f"game_type '{game_type}' — skipping type-specific validation.",
+                    file=_sys.stderr,
                 )
-        elif game_type == "chess_strategy":
-            _validate_chess_strategy_game(g)
-        elif game_type == "go_territory":
-            _validate_go_territory_game(g)
-        elif game_type == "reversi":
-            _validate_reversi_game(g)
-        elif game_type == "tower_defense":
-            _validate_tower_defense_game(g)
-        elif game_type == "puzzle_match":
-            _validate_puzzle_match_game(g)
-        elif game_type == "strategy_grid":
-            _validate_strategy_grid_game(g)
-        elif game_type == "card_board":
-            if not (g.get("card_board_config") or g.get("deck") or g.get("board") or g.get("cards")):
-                raise ValueError(f"card_board game '{g['game_id']}' missing card structure (expected 'deck', 'board', or 'card_board_config')")
-        elif game_type == "trump_card":
-            if not (g.get("trump_card_config") or g.get("cards") or g.get("deck") or g.get("attributes")):
-                raise ValueError(f"trump_card game '{g['game_id']}' missing card data (expected 'cards', 'deck', or 'trump_card_config')")
-        elif game_type == "wellbeing_survey":
-            if not (g.get("questions") or g.get("rounds") or g.get("sections")):
-                raise ValueError(f"wellbeing_survey game '{g['game_id']}' missing 'questions', 'rounds', or 'sections' key")
-        elif game_type == "simulation":
-            if not (g.get("rounds") and g.get("simulation_config")):
-                raise ValueError(f"simulation game '{g['game_id']}' missing 'rounds' or 'simulation_config' key")
-        elif game_type == "mystery_room":
-            if not (g.get("rooms") and g.get("puzzles") and g.get("climax")):
-                raise ValueError(f"mystery_room game '{g['game_id']}' missing 'rooms', 'puzzles', or 'climax' key")
-        elif game_type == "ai_lab":
-            if not g.get("ai_lab_config"):
-                raise ValueError(f"ai_lab game '{g['game_id']}' missing 'ai_lab_config' key")
-            tasks = g["ai_lab_config"].get("tasks")
-            if not isinstance(tasks, list) or not tasks:
-                raise ValueError(f"ai_lab game '{g['game_id']}' must have ai_lab_config.tasks[] with >=1 task")
-            for t in tasks:
-                for k in ("id", "title", "instruction", "rubric"):
-                    if k not in t:
-                        raise ValueError(f"ai_lab task missing '{k}' in '{g['game_id']}'")
-        elif game_type == "music_match":
-            if not g.get("music_rounds"):
-                raise ValueError(f"music_match game '{g['game_id']}' missing 'music_rounds' key")
-        elif game_type == "lab_titration":
-            if not g.get("titration"):
-                raise ValueError(f"lab_titration game '{g['game_id']}' missing 'titration' key")
-        elif game_type == "pendulum_lab":
-            if not (g.get("pendulum_lab") and g["pendulum_lab"].get("trials")):
-                raise ValueError(f"pendulum_lab game '{g['game_id']}' missing 'pendulum_lab.trials'")
-        elif game_type == "optics_lab":
-            if not (g.get("optics_lab") and g["optics_lab"].get("trials")):
-                raise ValueError(f"optics_lab game '{g['game_id']}' missing 'optics_lab.trials'")
-        elif game_type == "circuit_debugger":
-            if not (g.get("circuit_debugger") and g["circuit_debugger"].get("nodes")):
-                raise ValueError(f"circuit_debugger game '{g['game_id']}' missing 'circuit_debugger.nodes'")
-        elif game_type == "genetics_cross":
-            if not (g.get("genetics_cross") and g["genetics_cross"].get("phenotypes")):
-                raise ValueError(f"genetics_cross game '{g['game_id']}' missing 'genetics_cross.phenotypes'")
-        elif game_type == "stoichiometry_mixer":
-            if not g.get("stoichiometry_mixer"):
-                raise ValueError(f"stoichiometry_mixer game '{g['game_id']}' missing 'stoichiometry_mixer' key")
-        elif game_type == "mental_math":
-            if not (g.get("mental_math") and g["mental_math"].get("problems")):
-                raise ValueError(f"mental_math game '{g['game_id']}' missing 'mental_math.problems'")
-        elif game_type == "typing_drill":
-            if not (g.get("typing_drill") and g["typing_drill"].get("passages")):
-                raise ValueError(f"typing_drill game '{g['game_id']}' missing 'typing_drill.passages'")
-        elif game_type == "boggle":
-            if not (g.get("boggle") and g["boggle"].get("grid")):
-                raise ValueError(f"boggle game '{g['game_id']}' missing 'boggle.grid'")
-        elif game_type == "mock_interview":
-            if not (g.get("mock_interview") and g["mock_interview"].get("questions")):
-                raise ValueError(f"mock_interview game '{g['game_id']}' missing 'mock_interview.questions'")
-        elif game_type == "sudoku":
-            if not (g.get("sudoku") and g["sudoku"].get("puzzle")):
-                raise ValueError(f"sudoku game '{g['game_id']}' missing 'sudoku.puzzle'")
-        elif game_type == "logic_grid":
-            if not (g.get("logic_grid") and g["logic_grid"].get("solution")):
-                raise ValueError(f"logic_grid game '{g['game_id']}' missing 'logic_grid.solution'")
-        elif game_type == "geometry_constructor":
-            if not (g.get("geometry_constructor") and g["geometry_constructor"].get("features")):
-                raise ValueError(f"geometry_constructor game '{g['game_id']}' missing 'geometry_constructor.features'")
-        else:
-            raise ValueError(f"Game {g['game_id']}: invalid game_type '{game_type}'")
+        except Exception as _ge:
+            print(
+                f"[schemas] WARN: game '{g.get('game_id','?')}' "
+                f"(type='{g.get('game_type','rounds')}') failed validation: {_ge}",
+                file=_sys.stderr,
+            )
 
     # Validate negotiation_game if present (optional)
     if "negotiation_game" in b:

@@ -99,6 +99,11 @@ from engines.realtime_multiplayer_engine import create_session as rt_create, get
 from engines.sim_ux_enrichment import build_ux_payload, snapshot_state, annotate_choices_with_dynamic_cost
 from engines.executive_ux import build_executive_payload as _build_executive_payload
 from engines.escape_room_engine import EscapeRoomEngine
+from engines.dimension_utils import (
+    aggregate_behavioral_signals,
+    blend_authored_behavioral,
+    compute_dimension_ci,
+)
 _ESCAPE_ROOM_ENGINE = EscapeRoomEngine()
 from security.leaderboard_privacy import apply_k_anonymity
 
@@ -4270,6 +4275,69 @@ def upload_drawing(run_id):
     })
 
 
+# ───────── Reflection scoring channel (Task 12 — P0 plan) ─────────
+@app.route("/api/run/<run_id>/reflection", methods=["POST"])
+def api_submit_reflection(run_id):
+    """Grade a player's reflection rationale and attach the signal to the run.
+
+    Body: { round_id?: str, choice_id?: str, rationale: str, dimension_focus?: list[str] }
+    Returns: { ok: True, score: int, dim_signals: dict[dim, int -10..+10],
+               strengths: list[str], improvements: list[str] }
+    """
+    payload = request.get_json(silent=True) or {}
+    rationale = (payload.get("rationale") or "").strip()
+    if not rationale:
+        return jsonify({"error": "rationale_required"}), 400
+
+    try:
+        run = get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "run_not_found"}), 404
+    if not run:
+        return jsonify({"error": "run_not_found"}), 404
+
+    # Determine focus dimensions: payload > game-level focus_dimensions > default pair
+    focus = payload.get("dimension_focus")
+    if not focus:
+        focus = ((run.get("game") or {}).get("focus_dimensions")
+                 or ["empathy", "strategic_thinking"])
+
+    import llm  # late import to allow monkeypatch on llm.grade_reflection_text in tests
+    graded = llm.grade_reflection_text(rationale, dimension_focus=focus)
+
+    reflections = run.setdefault("reflections", [])
+    reflections.append({
+        "round_id": payload.get("round_id"),
+        "choice_id": payload.get("choice_id"),
+        "rationale": rationale[:2000],   # cap stored size
+        "graded": graded,
+        "ts": int(time.time()),
+    })
+
+    # Mirror dim_signals onto state so aggregate_behavioral_signals can pick them up
+    state = run.get("state")
+    if isinstance(state, dict):
+        rs = state.setdefault("reflection_signals", {})
+        for dim, delta in (graded.get("dim_signals") or {}).items():
+            try:
+                rs[dim] = max(-10, min(10, int(rs.get(dim, 0)) + int(delta)))
+            except (TypeError, ValueError):
+                continue
+
+    try:
+        update_run(run_id, run)
+    except Exception as e:
+        logger.warning("update_run failed in reflection endpoint: %s", e)
+
+    return jsonify({
+        "ok": True,
+        "score": graded.get("score", 0),
+        "dim_signals": graded.get("dim_signals", {}),
+        "strengths": graded.get("strengths", []),
+        "improvements": graded.get("improvements", []),
+    })
+
+
 # ───────── Inbox interrupt endpoint (timed event responses) ─────────
 @app.post("/api/run/<run_id>/inbox")
 @limiter.limit("60 per minute")
@@ -5900,6 +5968,21 @@ def run_report(run_id):
     st_obj = r["state"]
     final_state = state_to_dict(st_obj)
 
+    # P0 Task 22 — resolve the canonical score_version for this run's owner
+    # so the auto-finalize blocks below can pick the right scoring lens.
+    # `_score_envelope` keeps the full {score_v1, score_v2, ci} dict so the
+    # response can always include both v1 and v2 (methodology preview).
+    _score_envelope = None
+    try:
+        _rr_token = get_token_from_request()
+        _rr_user = verify_token(_rr_token) if _rr_token else None
+        _rr_org_id = (_rr_user or {}).get("org_id", "default") if _rr_user else "default"
+        from organizations import get_org_score_version as _get_org_sv
+        _score_version_used = _get_org_sv(_rr_org_id)
+    except Exception as _sv_err:
+        logger.debug("score_version resolution failed: %s", _sv_err)
+        _score_version_used = 1
+
     # Psychological focus summary (deterministic)
     psychological_focus_summary = _compute_psychological_summary(game, final_state)
 
@@ -6145,7 +6228,11 @@ def run_report(run_id):
             if not _rounds_state.get("rounds_completed"):
                 _rounds_state["rounds_completed"] = [x.get("round_id") for x in r["log"] if x.get("round_id")]
             _rounds_state["total_rounds"] = max(len(game.get("rounds", [])), len(r["log"]))
-            dimension_scores = _compute_rounds_dimension_scores(_rounds_state, game=game)
+            _score_envelope = _compute_rounds_dimension_scores(_rounds_state, game=game)
+            dimension_scores = _canonical_scores(
+                _score_envelope,
+                score_version=_score_version_used,
+            )
             for sid, sv in dimension_scores.items():
                 setattr(st_obj, sid, sv)
             st_obj.dimension_scores = dimension_scores
@@ -6157,7 +6244,11 @@ def run_report(run_id):
     if game.get("game_type") == "story_branching" and r["log"]:
         try:
             ending_type = r.get("ending_type") or final_state.get("ending_type", "standard")
-            dimension_scores = _compute_story_dimension_scores(final_state, ending_type)
+            _score_envelope = _compute_story_dimension_scores(final_state, ending_type)
+            dimension_scores = _canonical_scores(
+                _score_envelope,
+                score_version=_score_version_used,
+            )
             for sid, sv in dimension_scores.items():
                 setattr(st_obj, sid, sv)
             st_obj.dimension_scores = dimension_scores
@@ -6257,7 +6348,11 @@ def run_report(run_id):
             if not _sim_state.get("rounds_completed"):
                 _sim_state["rounds_completed"] = [x.get("round_id") for x in r["log"] if x.get("round_id")]
             _sim_state["total_rounds"] = max(len(game.get("rounds", [])), len(r["log"]))
-            dimension_scores = _compute_rounds_dimension_scores(_sim_state, game=game)
+            _score_envelope = _compute_rounds_dimension_scores(_sim_state, game=game)
+            dimension_scores = _canonical_scores(
+                _score_envelope,
+                score_version=_score_version_used,
+            )
             for sid, sv in dimension_scores.items():
                 setattr(st_obj, sid, sv)
             st_obj.dimension_scores = dimension_scores
@@ -7166,6 +7261,19 @@ def run_report(run_id):
         report_core["avg_choice_time_ms"] = _avg_choice_time_ms
 
     result = {"report_core": report_core, "narrative": narrative, "mentoPercentile": result_percentile}
+
+    # P0 Task 22 — always expose both score_v1 and score_v2 (and the per-dim
+    # CI envelope) when we have one, regardless of which one is canonical.
+    # The frontend can use this to render a "methodology preview" toggle for
+    # orgs still on v1, or anchor confidence-interval bars to the live score.
+    if isinstance(_score_envelope, dict) and "score_v1" in _score_envelope:
+        result["score_version_used"] = _score_version_used
+        result["score_v1"] = _score_envelope.get("score_v1") or {}
+        result["score_v2"] = _score_envelope.get("score_v2") or {}
+        result["confidence_intervals"] = _score_envelope.get("ci") or {}
+        # Surface CI on report_core too so existing front-end consumers
+        # (PostGameInsights, ModuleReport) that read off report_core get them.
+        report_core["confidence_intervals"] = _score_envelope.get("ci") or {}
     # Surface final executive snapshot for exec-tier post-game section (dormant for non-exec games).
     try:
         from engines.executive_ux import build_executive_payload as _bep_for_report
@@ -11238,6 +11346,12 @@ def api_skill_leaderboard():
             except Exception:
                 continue
 
+        # Task 9 — this aggregator averages a single dimension across multiple runs
+        # so per-entry ci_low isn't meaningful here (CI is per-run from the score
+        # envelope). Continue ranking by the aggregated `best` score; CI-aware
+        # ranking applies to the per-game leaderboards (api_get_leaderboard).
+        # TODO: thread per-run ci_low into the aggregation (e.g., min-of-runs) so
+        # this skill leaderboard can also rank by CI lower bound.
         ranked = sorted(player_scores.items(), key=lambda x: x[1]["best"], reverse=True)
         entries = [
             {"rank": i + 1, "user_id": uid, "display_name": info["name"],
@@ -11466,7 +11580,8 @@ def api_get_leaderboard_all():
                     all_entries.append(entry)
             except Exception as _e:
                 logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
-        all_entries.sort(key=lambda x: x.get("score", 0), reverse=True)
+        # Task 9 — rank by CI-lower-bound when present; legacy entries fall back to score.
+        all_entries.sort(key=_leaderboard_sort_key, reverse=True)
         sliced = all_entries[:limit]
         _priv = apply_k_anonymity(sliced, k=5, viewer_user_id=viewer_id)
         return jsonify({
@@ -11510,7 +11625,20 @@ def api_get_leaderboard(game_id):
     try:
         limit = int(request.args.get("limit", 10))
         limit = min(limit, 100)  # Max 100 entries
-        leaderboard_data = get_leaderboard(game_id, limit)
+        # Task 9 — pull a wider slice so we can re-rank with the CI-aware sort
+        # before truncating to `limit`. Storage already pre-sorts at write time
+        # but legacy files may pre-date _leaderboard_sort_key.
+        leaderboard_data = get_leaderboard(game_id, limit=max(limit, 100))
+        try:
+            entries = leaderboard_data.get("entries") or []
+            entries = sorted(entries, key=_leaderboard_sort_key, reverse=True)
+            leaderboard_data["entries"] = entries[:limit]
+        except Exception as _e:
+            logger.debug("Suppressed %s in leaderboard re-sort: %s", type(_e).__name__, _e)
+            leaderboard_data["entries"] = (leaderboard_data.get("entries") or [])[:limit]
+
+        # k-anonymity privacy filter applied AFTER the CI re-sort so suppressed
+        # rows are dropped from the final response, not the intermediate slice.
         rows = leaderboard_data.get("entries", [])
         viewer_id = None
         try:
@@ -13682,6 +13810,141 @@ def _compute_strategy_tier(score):
     if score >= 200: return "Intermediate"
     return "Novice"
 
+# ─── Leaderboard population stats cache (Task 8 — P0 plan) ───────────────────
+# Per-game-type Z-score normalization uses pop_stats[game_type][dim] = {mean,std}.
+# Recomputed daily by _recompute_leaderboard_pop_stats() in _run_scheduler().
+_LB_POP_STATS_CACHE = {"loaded_at": 0.0, "mtime": 0.0, "stats": {}}
+_LB_POP_STATS_TTL = 300  # 5 min
+
+
+def _leaderboard_pop_stats_path():
+    return os.path.join(os.path.dirname(__file__), "data", "leaderboard_pop_stats.json")
+
+
+def _load_leaderboard_pop_stats():
+    """Load pop stats with mtime+TTL caching. Returns {} on any failure."""
+    import time as _time_lb
+    try:
+        path = _leaderboard_pop_stats_path()
+        try:
+            mtime = os.path.getmtime(path)
+        except OSError:
+            mtime = 0.0
+        now = _time_lb.time()
+        cache = _LB_POP_STATS_CACHE
+        # Invalidate when file changes OR after TTL — whichever comes first.
+        if (
+            cache["stats"]
+            and cache["mtime"] == mtime
+            and (now - cache["loaded_at"]) < _LB_POP_STATS_TTL
+        ):
+            return cache["stats"]
+        try:
+            with open(path, "r") as _f:
+                data = json.load(_f)
+                if not isinstance(data, dict):
+                    data = {}
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {}
+        cache["stats"] = data
+        cache["mtime"] = mtime
+        cache["loaded_at"] = now
+        return data
+    except Exception as _e:
+        logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
+        return {}
+
+
+def _normalize_entry_for_leaderboard(entry, game_type):
+    """Add `score_normalized` (dict) to entry without replacing `score`.
+
+    Source dims come from entry['final_metrics']['dimension_scores'] when
+    present, else from entry['dimension_scores']. Falls back silently on
+    any error — leaderboard write must never fail because of normalization.
+    """
+    try:
+        from engines.dimension_utils import zscore_normalize_for_leaderboard
+        dims = None
+        fm = entry.get("final_metrics") or {}
+        if isinstance(fm, dict) and isinstance(fm.get("dimension_scores"), dict):
+            dims = fm["dimension_scores"]
+        elif isinstance(entry.get("dimension_scores"), dict):
+            dims = entry["dimension_scores"]
+        if not dims:
+            return entry
+        pop_all = _load_leaderboard_pop_stats() or {}
+        pop_for_gt = pop_all.get(game_type) or {}
+        entry["score_normalized"] = zscore_normalize_for_leaderboard(dims, pop_for_gt)
+    except Exception as _e:
+        logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
+    return entry
+
+
+def _leaderboard_sort_key(entry):
+    """Sort key for leaderboard ranking (Task 9 — P0 plan).
+
+    Primary:   ci_low (90% CI lower bound from dimension scoring envelope).
+    Secondary: score (legacy back-compat).
+
+    Returns a tuple so that, when used with sorted(..., reverse=True):
+      - entries WITH ci_low rank above entries WITHOUT ci_low (when scores equal),
+      - within entries with ci_low: sorted by ci_low DESC then score DESC,
+      - within legacy entries: sorted by score DESC.
+    """
+    if not isinstance(entry, dict):
+        return (0, 0, 0)
+    score = entry.get("score") or entry.get("achievement_score") or 0
+    try:
+        score = float(score)
+    except (TypeError, ValueError):
+        score = 0
+    ci_low = entry.get("ci_low")
+    has_ci = ci_low is not None
+    try:
+        ci_low_val = float(ci_low) if has_ci else 0
+    except (TypeError, ValueError):
+        ci_low_val = 0
+        has_ci = False
+    return (1 if has_ci else 0, ci_low_val, score)
+
+
+def _attach_ci_to_entry(entry, score_envelope):
+    """Attach ci_low/ci_high/ranked_by to a leaderboard entry from the score envelope.
+
+    Envelope shape (from `_compute_*_dimension_scores` helpers):
+      {"score_v1": {...}, "score_v2": {...}, "ci": {dim: {"low": int, "high": int}}}
+
+    Aggregate strategy: average `low`/`high` across all dims that report CI.
+    Defensive: missing/malformed envelope leaves the entry untouched (sets only
+    `ranked_by` = "score" for clarity). Never raises.
+    """
+    try:
+        if not isinstance(entry, dict):
+            return entry
+        ci = (score_envelope or {}).get("ci") if isinstance(score_envelope, dict) else None
+        if not isinstance(ci, dict):
+            entry.setdefault("ranked_by", "score")
+            return entry
+        ci_lows = [
+            v.get("low") for v in ci.values()
+            if isinstance(v, dict) and isinstance(v.get("low"), (int, float))
+        ]
+        ci_highs = [
+            v.get("high") for v in ci.values()
+            if isinstance(v, dict) and isinstance(v.get("high"), (int, float))
+        ]
+        if ci_lows:
+            entry["ci_low"] = int(round(sum(ci_lows) / len(ci_lows)))
+            if ci_highs:
+                entry["ci_high"] = int(round(sum(ci_highs) / len(ci_highs)))
+            entry["ranked_by"] = "ci_low"
+        else:
+            entry["ranked_by"] = "score"
+    except Exception as _e:
+        logger.debug("Suppressed %s in _attach_ci_to_entry: %s", type(_e).__name__, _e)
+    return entry
+
+
 def _save_strategy_leaderboard(game_id, game_title, entry):
     """Save score to game-specific leaderboard file."""
     lb_file = os.path.join('game_sessions', f'leaderboard_{game_id}.json')
@@ -13691,15 +13954,24 @@ def _save_strategy_leaderboard(game_id, game_title, entry):
     except (FileNotFoundError, json.JSONDecodeError):
         lb = {"game_id": game_id, "game_title": game_title, "entries": [], "last_updated": ""}
     lb["entries"].append(entry)
-    lb["entries"].sort(key=lambda x: (x.get("achievement_score", 0), x.get("total_points", 0)), reverse=True)
+    # Task 9 — sort by ci_low primary, score secondary; legacy entries fall back
+    # cleanly because _leaderboard_sort_key returns (0, 0, score) when ci_low absent.
+    lb["entries"].sort(key=_leaderboard_sort_key, reverse=True)
     lb["entries"] = lb["entries"][:100]
     lb["last_updated"] = entry.get("timestamp", "")
     os.makedirs('game_sessions', exist_ok=True)
     with open(lb_file, 'w') as f:
         json.dump(lb, f, indent=2)
 
-def _submit_strategy_leaderboard(run_id, game_id, game_title, summary, game_type):
-    """Extract user, compute score, submit to leaderboard. Safe to call from any /complete endpoint."""
+def _submit_strategy_leaderboard(run_id, game_id, game_title, summary, game_type, score_envelope=None):
+    """Extract user, compute score, submit to leaderboard. Safe to call from any /complete endpoint.
+
+    Task 9 — `score_envelope` is the optional output of `_compute_*_dimension_scores`
+    (shape: {score_v1, score_v2, ci}). When provided, ci_low/ci_high are attached to
+    the entry and used for ranking (CI-lower-bound first, score as tiebreaker).
+    Legacy callers that pass only `summary` continue to work — entry will rank by
+    `score` alone.
+    """
     try:
         user_id = None
         auth_header = request.headers.get('Authorization', '')
@@ -13722,9 +13994,24 @@ def _submit_strategy_leaderboard(run_id, game_id, game_title, summary, game_type
             "final_metrics": {k: v for k, v in summary.items() if isinstance(v, (int, float)) and k != "dimension_scores"},
             "achievement_score": ach_score,
             "total_points": ach_score,
+            "score": ach_score,  # explicit alias for back-compat readers (Task 8)
             "tier": _compute_strategy_tier(ach_score),
             "achievements": [],
+            "game_type": game_type,
         }
+        # Preserve raw dimension_scores on the entry for analytics + Z-score
+        # normalization. Back-compat: legacy readers still use `score`.
+        if isinstance(summary.get("dimension_scores"), dict):
+            entry["dimension_scores"] = summary["dimension_scores"]
+        # Add `score_normalized` (Task 8 — per-game-type Z-score normalization).
+        # Defensive: failure here MUST NOT block the write.
+        _normalize_entry_for_leaderboard(entry, game_type)
+        # Task 9 — attach ci_low/ci_high/ranked_by from score envelope when available.
+        # If callers don't yet pass the envelope, this is a no-op (ranked_by="score").
+        # TODO: thread `_compute_strategy_dimension_scores(state)` envelope through the
+        # six strategy /complete handlers (chess, go, reversi, tower_defense,
+        # puzzle_match, strategy_grid) so CI-lower-bound ranking activates for them.
+        _attach_ci_to_entry(entry, score_envelope)
         _save_strategy_leaderboard(game_id, game_title, entry)
         logger.info(f"Leaderboard entry saved for {user_id} on {game_id} ({game_type}): score={ach_score}")
     except Exception as e:
@@ -15653,9 +15940,12 @@ def story_branching_choice(run_id):
 
                     # Compute interim dimension scores from current log
                     log_for_scoring = r.get("log", [])
-                    interim_scores = _compute_story_dimension_scores(
-                        {"log": log_for_scoring, "dimension_scores": state_to_dict(r["state"]).get("dimension_scores", {})},
-                        ending_type=ending_type if is_ending else "standard"
+                    interim_scores = _canonical_scores(
+                        _compute_story_dimension_scores(
+                            {"log": log_for_scoring, "dimension_scores": state_to_dict(r["state"]).get("dimension_scores", {})},
+                            ending_type=ending_type if is_ending else "standard"
+                        ),
+                        score_version=1,
                     )
 
                     # XP: 20 per chapter, 40 for final ending
@@ -21008,8 +21298,8 @@ def admin_validate_branching(game_id):
 # ADMIN: Dimension scoring helpers for rounds and story
 # ============================================================
 
-def _compute_rounds_dimension_scores(state, game=None):
-    """Compute dimension scores from rounds game state.
+def _compute_rounds_dimension_scores_authored_only(state, game=None):
+    """Authored-formula dimension scores for rounds games (legacy v1).
 
     Supports per-game customisation via game JSON:
         "dimension_scoring_weights": {
@@ -21021,6 +21311,9 @@ def _compute_rounds_dimension_scores(state, game=None):
             "empathy":             {"base": 30, "tag_bonus": 9}
         }
     Any missing keys fall back to the built-in defaults.
+
+    This function is the FROZEN v1 scorer. It must remain byte-for-byte identical
+    to the pre-Task-5 implementation so the snapshot regression suite stays green.
     """
     w = (game or {}).get("dimension_scoring_weights", {})
 
@@ -21095,8 +21388,66 @@ def _compute_rounds_dimension_scores(state, game=None):
     return scores
 
 
-def _compute_strategy_dimension_scores(state):
-    """Compute dimension scores from strategy/chess_strategy game state."""
+def _build_per_round_dimension_samples(state, final_authored, game=None):
+    """Build per-dimension samples by replaying the choice_history prefix-by-prefix.
+
+    For each k in 1..N, recompute authored scores using only the first k choices.
+    Yields, per dimension, a list of N values that bootstrap_dimension_ci can use
+    to estimate uncertainty around the final authored score.
+    """
+    history = state.get("choice_history", []) or []
+    samples = {dim: [] for dim in final_authored}
+    if not history:
+        return samples
+    for k in range(1, len(history) + 1):
+        partial_state = {**state, "choice_history": history[:k]}
+        partial = _compute_rounds_dimension_scores_authored_only(partial_state, game)
+        for dim in final_authored:
+            samples[dim].append(partial.get(dim, final_authored[dim]))
+    return samples
+
+
+def _compute_rounds_dimension_scores(state, game=None):
+    """Compute v1 (authored) and v2 (50/50 authored+behavioral) dimension scores.
+
+    Returns a dict with three keys:
+      - score_v1: legacy authored-only flat dict (back-compat).
+      - score_v2: 50/50 blend of authored with behavioral signals.
+      - ci:       per-dimension {low, high} bootstrap 90% CI from per-round samples.
+
+    All existing callers should wrap the return with `_canonical_scores(...)` to
+    extract the flat dict shape they expect (defaults to v1).
+    """
+    authored = _compute_rounds_dimension_scores_authored_only(state, game)
+    behavioral = aggregate_behavioral_signals(state)
+    blended = blend_authored_behavioral(
+        authored, behavioral, w_authored=0.5, w_behavioral=0.5
+    )
+    per_round_samples = _build_per_round_dimension_samples(state, authored, game)
+    ci = {}
+    for dim in blended:
+        samples = per_round_samples.get(dim) or [blended[dim]]
+        low, high = compute_dimension_ci(samples)
+        ci[dim] = {"low": low, "high": high}
+    return {"score_v1": authored, "score_v2": blended, "ci": ci}
+
+
+def _canonical_scores(result, score_version=1):
+    """Extract a flat dimension dict from the v1/v2 envelope returned by
+    _compute_rounds_dimension_scores. Legacy callers stay on score_version=1
+    so end-user surfaces are unchanged.
+    """
+    if not isinstance(result, dict) or "score_v1" not in result:
+        return result
+    return result["score_v1"] if score_version == 1 else result["score_v2"]
+
+
+def _compute_strategy_dimension_scores_authored_only(state):
+    """Authored-formula dimension scores for strategy/chess_strategy gameplay (legacy v1).
+
+    This function is the FROZEN v1 scorer. It must remain byte-for-byte identical
+    to the pre-Task-7 implementation so the snapshot regression suite stays green.
+    """
     moves = state.get("moves_made", state.get("total_moves", 0))
     score = state.get("score", state.get("final_score", 50))
     resources = state.get("resources", {})
@@ -21113,9 +21464,77 @@ def _compute_strategy_dimension_scores(state):
     }
 
 
-def _compute_story_dimension_scores(state_or_log, ending_type="standard"):
-    """Compute dimension scores from story_branching gameplay.
+def _build_per_choice_strategy_dimension_samples(state, final_authored):
+    """Build per-prefix authored-score samples for bootstrap CI.
+
+    NOTE: The strategy authored scorer reads aggregate counters (moves_made,
+    score, resources) — it does NOT consume per-move log data. So today the
+    prefix replay only varies `moves_made` (=k), making strategic_thinking
+    the only dimension with meaningful CI variance. The other dims will
+    report low==high CIs until the authored formula is upgraded to consume
+    choice_history per-move signals (deltas, decision_time_ms, risk_level).
+    This is a known limitation, not a bug in this helper.
+    """
+    history = state.get("choice_history") or []
+    samples = {dim: [] for dim in final_authored}
+    if not history:
+        return samples
+    for k in range(1, len(history) + 1):
+        partial_state = {
+            **state,
+            "choice_history": history[:k],
+            # Authored scorer uses moves_made/total_moves; reflect prefix length
+            "moves_made": k,
+        }
+        partial = _compute_strategy_dimension_scores_authored_only(partial_state)
+        for dim in final_authored:
+            samples[dim].append(partial.get(dim, final_authored[dim]))
+    return samples
+
+
+def _compute_strategy_dimension_scores(state):
+    """Compute v1 (authored) and v2 (50/50 authored+behavioral) dimension scores
+    for strategy/chess_strategy gameplay.
+
+    Returns a dict with three keys:
+      - score_v1: legacy authored-only flat dict (back-compat).
+      - score_v2: 50/50 blend of authored with behavioral signals.
+      - ci:       per-dimension {low, high} bootstrap 90% CI from per-choice samples.
+
+    All existing callers should wrap the return with `_canonical_scores(...)` to
+    extract the flat dict shape they expect (defaults to v1).
+    """
+    authored = _compute_strategy_dimension_scores_authored_only(state)
+    try:
+        behavioral = aggregate_behavioral_signals(state)
+        blended = blend_authored_behavioral(
+            authored, behavioral, w_authored=0.5, w_behavioral=0.5
+        )
+        per_choice_samples = _build_per_choice_strategy_dimension_samples(state, authored)
+        ci = {}
+        for dim in blended:
+            samples = per_choice_samples.get(dim) or [blended[dim]]
+            low, high = compute_dimension_ci(samples)
+            ci[dim] = {"low": low, "high": high}
+    except Exception as e:
+        logger.warning(f"Strategy dimension blend/CI failed, falling back: {e}")
+        # Match the consistent fallback semantics from the story scorer (cb85e4e):
+        # neutral 0.5*authored + 0.5*50 blend, CI collapsed to the blended value.
+        neutral_behavioral = {dim: 50 for dim in authored}
+        blended = blend_authored_behavioral(
+            authored, neutral_behavioral, w_authored=0.5, w_behavioral=0.5
+        )
+        ci = {dim: {"low": v, "high": v} for dim, v in blended.items()}
+    return {"score_v1": authored, "score_v2": blended, "ci": ci}
+
+
+def _compute_story_dimension_scores_authored_only(state_or_log, ending_type="standard"):
+    """Authored-formula dimension scores for story_branching gameplay (legacy v1).
+
     Uses actual choice deltas and skill_tags — not just choice count.
+
+    This function is the FROZEN v1 scorer. It must remain byte-for-byte identical
+    to the pre-Task-6 implementation so the snapshot regression suite stays green.
     """
     state = state_or_log if isinstance(state_or_log, dict) else {}
     log = state.get("log", []) if isinstance(state, dict) else (state_or_log if isinstance(state_or_log, list) else [])
@@ -21174,6 +21593,122 @@ def _compute_story_dimension_scores(state_or_log, ending_type="standard"):
             scores[exec_dim] = min(100, 30 + tag_counts[exec_dim] * 8 + quality_bonus)
 
     return scores
+
+
+def _build_per_choice_story_dimension_samples(state, ending_type, final_authored):
+    """Build per-dimension samples by replaying the story choice_history prefix-by-prefix.
+
+    For each k in 1..N, recompute authored story scores using only the first k
+    entries of the log/choice_history. Yields per-dim sample lists for bootstrap CI.
+    """
+    history = state.get("choice_history", []) or state.get("log", []) or []
+    samples = {dim: [] for dim in final_authored}
+    if not history:
+        return samples
+    for k in range(1, len(history) + 1):
+        partial_state = {
+            **state,
+            "log": history[:k],
+            "choice_history": history[:k],
+        }
+        partial = _compute_story_dimension_scores_authored_only(partial_state, ending_type)
+        for dim in final_authored:
+            samples[dim].append(partial.get(dim, final_authored[dim]))
+    return samples
+
+
+def _compute_story_dimension_scores(state_or_log, ending_type="standard"):
+    """Compute v1 (authored) and v2 (50/50 authored+behavioral) dimension scores
+    for story_branching gameplay.
+
+    Returns a dict with three keys:
+      - score_v1: legacy authored-only flat dict (back-compat).
+      - score_v2: 50/50 blend of authored with behavioral signals.
+      - ci:       per-dimension {low, high} bootstrap 90% CI from per-choice samples.
+
+    Accepts EITHER a state dict OR a bare list (legacy choice_log) for back-compat.
+    All existing callers should wrap the return with `_canonical_scores(...)` to
+    extract the flat dict shape they expect (defaults to v1).
+    """
+    # Normalize bare list to a state dict so behavioral signals receive a usable
+    # shape (and so the authored-only helper still sees a "log" entry).
+    if isinstance(state_or_log, list):
+        state = {
+            "log": state_or_log,
+            "choice_history": state_or_log,
+            "resource_trajectory": [],
+        }
+    elif isinstance(state_or_log, dict):
+        state = dict(state_or_log)
+        # Ensure both legacy ("log") and behavioral ("choice_history") keys exist
+        if "choice_history" not in state and "log" in state:
+            state["choice_history"] = state.get("log") or []
+        if "log" not in state and "choice_history" in state:
+            state["log"] = state.get("choice_history") or []
+        if "resource_trajectory" not in state:
+            state["resource_trajectory"] = []
+    else:
+        state = {"log": [], "choice_history": [], "resource_trajectory": []}
+
+    # Defensive: the frozen authored-only body iterates `entry["delta"].values()`,
+    # so any non-dict delta would raise. Normalize each entry's delta to a dict
+    # WITHOUT mutating the caller's objects. This affects neither v1 byte-equality
+    # for production-shaped inputs (which already use dict deltas) nor v2/CI.
+    def _normalized_entries(entries):
+        out = []
+        for e in entries or []:
+            if not isinstance(e, dict):
+                out.append(e)
+                continue
+            d = e.get("delta")
+            if d is None or isinstance(d, dict):
+                out.append(e)
+            else:
+                out.append({**e, "delta": {}})
+        return out
+    state["log"] = _normalized_entries(state.get("log") or [])
+    state["choice_history"] = _normalized_entries(state.get("choice_history") or [])
+
+    authored = _compute_story_dimension_scores_authored_only(state, ending_type)
+    try:
+        # If there are no behavioral signals (timing/risk) on any entry, treat
+        # behavioral as neutral (50 across the standard six dims). Story games
+        # historically don't capture per-choice timing, so this avoids spurious
+        # bias from compute_timing_stats' 5000ms default.
+        history = state.get("choice_history") or []
+        has_signal = any(
+            ("decision_time_ms" in e) or ("time_to_decide_ms" in e) or ("risk_level" in e)
+            for e in history if isinstance(e, dict)
+        )
+        if has_signal:
+            behavioral = aggregate_behavioral_signals(state)
+        else:
+            behavioral = {d: 50 for d in (
+                "strategic_thinking", "risk_tolerance", "delayed_gratification",
+                "adaptability", "resilience", "empathy",
+            )}
+        blended = blend_authored_behavioral(
+            authored, behavioral, w_authored=0.5, w_behavioral=0.5
+        )
+        per_choice_samples = _build_per_choice_story_dimension_samples(
+            state, ending_type, authored
+        )
+        ci = {}
+        for dim in blended:
+            samples = per_choice_samples.get(dim) or [blended[dim]]
+            low, high = compute_dimension_ci(samples)
+            ci[dim] = {"low": low, "high": high}
+    except Exception as e:
+        logger.warning(f"Story dimension blend/CI failed, falling back: {e}")
+        # Match the no-signal path semantics: neutral 0.5*authored + 0.5*50 blend.
+        # This avoids a silent score_v2 == score_v1 leak that would otherwise
+        # mislead future v2 consumers.
+        neutral_behavioral = {dim: 50 for dim in authored}
+        blended = blend_authored_behavioral(
+            authored, neutral_behavioral, w_authored=0.5, w_behavioral=0.5
+        )
+        ci = {dim: {"low": v, "high": v} for dim, v in blended.items()}
+    return {"score_v1": authored, "score_v2": blended, "ci": ci}
 
 
 # ============================================================
@@ -22179,11 +22714,68 @@ def _run_scheduler():
             except Exception as _e:
                 logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
 
+        def _recompute_leaderboard_pop_stats():
+            """Daily 3am: recompute per-game-type dimension mean/std across all
+            leaderboard entries. Skips game_types with n<5 (insufficient pop).
+            Writes to data/leaderboard_pop_stats.json. Defensive: never crashes
+            the scheduler.
+            """
+            try:
+                import math as _math_lb
+                import glob as _glob_lb
+                lb_dir = os.path.join(os.path.dirname(__file__), "game_sessions")
+                pattern = os.path.join(lb_dir, "leaderboard_*.json")
+                # accumulator: per_gt[game_type][dim] -> list of values
+                per_gt = {}
+                for fp in _glob_lb.glob(pattern):
+                    try:
+                        with open(fp, "r") as _flb:
+                            lb = json.load(_flb)
+                    except Exception:
+                        continue
+                    for ent in (lb or {}).get("entries", []) or []:
+                        if not isinstance(ent, dict):
+                            continue
+                        gt = ent.get("game_type") or "unknown"
+                        dims = None
+                        fm = ent.get("final_metrics") or {}
+                        if isinstance(fm, dict) and isinstance(fm.get("dimension_scores"), dict):
+                            dims = fm["dimension_scores"]
+                        elif isinstance(ent.get("dimension_scores"), dict):
+                            dims = ent["dimension_scores"]
+                        if not dims:
+                            continue
+                        gt_bucket = per_gt.setdefault(gt, {})
+                        for d, v in dims.items():
+                            if isinstance(v, (int, float)):
+                                gt_bucket.setdefault(d, []).append(float(v))
+                out = {}
+                for gt, dims_map in per_gt.items():
+                    gt_out = {}
+                    for d, vals in dims_map.items():
+                        n = len(vals)
+                        if n < 5:
+                            continue  # insufficient sample → fall back to raw
+                        mean = sum(vals) / n
+                        var = sum((x - mean) ** 2 for x in vals) / n
+                        std = _math_lb.sqrt(var)
+                        gt_out[d] = {"mean": mean, "std": std, "n": n}
+                    if gt_out:
+                        out[gt] = gt_out
+                pop_path = os.path.join(os.path.dirname(__file__), "data", "leaderboard_pop_stats.json")
+                os.makedirs(os.path.dirname(pop_path), exist_ok=True)
+                with open(pop_path, "w") as _fout:
+                    json.dump(out, _fout, indent=2)
+                logger.info(f"Recomputed leaderboard pop stats for {len(out)} game_types")
+            except Exception as _e:
+                logger.warning(f"Leaderboard pop stats recompute failed: {_e}")
+
         _scheduler = BackgroundScheduler()
         _scheduler.add_job(_daily_streak_check, 'cron', hour=9, minute=0, id='streak_check')
         _scheduler.add_job(_daily_cleanup, 'cron', hour=2, minute=0, id='cleanup')
         _scheduler.add_job(_check_cohort_sessions, 'interval', minutes=10, id='cohort_sessions')
         _scheduler.add_job(_MULTIPLAYER_ENGINE.cleanup_stale_sessions, 'interval', minutes=5, id='multiplayer_cleanup', replace_existing=True)
+        _scheduler.add_job(_recompute_leaderboard_pop_stats, 'cron', hour=3, minute=0, id='leaderboard_pop_stats', replace_existing=True)
         _scheduler.start()
     except ImportError:
         pass  # APScheduler not installed, skip
@@ -25609,6 +26201,62 @@ def api_module_progress(module_id):
     })
 
 
+@app.get("/api/modules/<module_id>/lessons/<lesson_id>/quiz-questions")
+@require_auth
+def api_module_lesson_quiz_questions(module_id, lesson_id):
+    """Return IRT-selected quiz questions for the current user.
+
+    Picks ``n_questions_per_attempt`` (default 5) questions from the lesson's
+    ``quiz.bank``, prioritising items whose difficulty is closest to the user's
+    current Rasch theta estimate.  Falls back to the legacy ``quiz.questions``
+    list when no bank is present so that existing modules work unchanged.
+
+    Response shape::
+
+        {
+            "questions": [...],   // list of question dicts
+            "n": int,             // len(questions)
+            "theta": float        // current ability estimate for this lesson
+        }
+    """
+    uid = _module_user_id()
+    if not uid:
+        return jsonify({"error": "Authentication required"}), 401
+    try:
+        module = _modules_engine.get_module(module_id)
+        if not module:
+            return jsonify({"error": "Module not found"}), 404
+
+        # Locate the lesson within the module.
+        lesson = None
+        for w in module.get("weeks", []) or []:
+            for l in (w.get("lessons") or []):
+                if l.get("lesson_id") == lesson_id:
+                    lesson = l
+                    break
+            if lesson:
+                break
+        if not lesson:
+            return jsonify({"error": "Lesson not found in module"}), 404
+
+        if lesson.get("type") not in ("quiz", "assessment"):
+            return jsonify({"error": "Lesson is not a quiz or assessment"}), 400
+
+        prog = _modules_engine.get_user_progress(uid, module_id) or {}
+        # Respect the same lock gating as completing a lesson — don't leak
+        # questions for weeks the learner hasn't unlocked yet.
+        if not _modules_engine._is_lesson_unlocked(prog, module, lesson_id):
+            return jsonify({"error": "Lesson is locked", "locked": True}), 403
+        quiz = lesson.get("quiz") or {}
+        n = int(quiz.get("n_questions_per_attempt") or 5)
+        questions = _modules_engine.select_quiz_questions_irt(lesson, prog, n=n)
+        theta = (prog.get("quiz_theta") or {}).get(lesson_id, 0.0)
+        return jsonify({"questions": questions, "n": len(questions), "theta": theta})
+    except Exception:
+        logger.exception("api_module_lesson_quiz_questions failed")
+        return jsonify({"error": "Internal server error"}), 500
+
+
 @app.post("/api/modules/<module_id>/lessons/<lesson_id>/save")
 @require_auth
 def api_module_lesson_save(module_id, lesson_id):
@@ -25737,6 +26385,61 @@ def api_module_lesson_complete(module_id, lesson_id):
             except Exception as _e:
                 logger.debug("evaluate_module_submission suppressed: %s", _e)
 
+        # ── Worksheet rubric grading for textarea-heavy schema types ────────
+        # Runs on first completion only for worksheet/reflection lessons whose
+        # schema.type is one of the textarea-heavy discriminators.  Result is
+        # persisted in prog["rubrics"][lesson_id] and returned as "rubric".
+        _TEXTAREA_SCHEMA_TYPES = frozenset(
+            ("reflection", "pitch_builder", "customer_profile", "idea_scorecard")
+        )
+        rubric_result = None
+        if (
+            active_lesson
+            and active_lesson.get("type") in ("worksheet", "reflection")
+            and not was_already_complete
+            and isinstance(payload.get("answers"), dict)
+            and payload.get("answers")
+        ):
+            schema = (active_lesson.get("schema") or {})
+            schema_type = schema.get("type") or ""
+            if schema_type in _TEXTAREA_SCHEMA_TYPES:
+                try:
+                    from llm import grade_worksheet_freetext  # noqa: WPS433
+                    # Flatten all string answer values into a single text block.
+                    text_parts = [
+                        str(v) for v in payload["answers"].values()
+                        if isinstance(v, str) and v.strip()
+                    ]
+                    combined_text = "\n\n".join(text_parts)
+                    lesson_meta = {
+                        "id": lesson_id,
+                        "type": schema_type,
+                    }
+                    rubric_def = schema.get("rubric") or {}
+                    rubric_result = grade_worksheet_freetext(
+                        combined_text, lesson_meta, rubric_def
+                    )
+                    # Persist into progress file and refresh the in-memory dict
+                    # from disk so the response reflects any concurrent writes
+                    # made between complete_lesson and persist_rubric.
+                    if rubric_result:
+                        try:
+                            _modules_engine.persist_rubric(
+                                uid, module_id, lesson_id, rubric_result
+                            )
+                            refreshed = _modules_engine.get_user_progress(
+                                uid, module_id
+                            )
+                            if refreshed:
+                                progress = refreshed
+                        except Exception as _pe:
+                            logger.warning("persist_rubric failed: %s", _pe)
+                            # Persistence failed — still surface the rubric
+                            # in the response from the in-memory snapshot.
+                            progress.setdefault("rubrics", {})[lesson_id] = rubric_result
+                except Exception as _e:
+                    logger.warning("grade_worksheet_freetext failed: %s", _e)
+
         # ── Module-completion XP + badge (one-shot) ─────────────────────────
         new_badges = []
         if summary.get("completed"):
@@ -25757,6 +26460,7 @@ def api_module_lesson_complete(module_id, lesson_id):
             "coaching_message": coaching_message,
             "skill_gains": skill_gains,
             "ai_feedback": ai_feedback,
+            "rubric": rubric_result,
             "already_completed": was_already_complete,
         })
     except ValueError as e:
@@ -25846,6 +26550,17 @@ def api_module_field_mission_add_entry(module_id, lesson_id):
 
     try:
         rec = _modules_engine.add_field_mission_entry(uid, module_id, lesson_id, entry)
+        # Engine returns {"status": "blocked", ...} when content moderation
+        # rejects the text. Surface as 422 so the client can show feedback
+        # without retrying.
+        if isinstance(rec, dict) and rec.get("status") == "blocked":
+            return jsonify({
+                "ok": False,
+                "blocked": True,
+                "moderation_score": rec.get("moderation_score"),
+                "categories": rec.get("categories", []),
+                "error": "Content was flagged by moderation",
+            }), 422
         return jsonify({"ok": True, "record": rec, "ai_feedback": photo_feedback})
     except Exception as e:
         logger.exception("api_module_field_mission_add_entry failed")
@@ -26217,6 +26932,32 @@ def api_module_report(module_id):
         "mento_summary": mento_summary,
         "started_at": prog.get("started_at"),
         "completed_at": prog.get("completed_at"),
+    })
+
+
+@app.get("/api/modules/<module_id>/report-v2")
+@require_auth
+def api_module_report_v2(module_id):
+    """Module composite v2 — 5-channel scoring + per-dimension delta.
+
+    See modules_engine.compute_module_composite_v2 for channel definitions.
+    Lighter response than /report; intended for the new ModuleReportPage v2 UI
+    and for clients that want just the headline composite + channel breakdown.
+    """
+    uid = _module_user_id()
+    if not uid:
+        return jsonify({"error": "Authentication required"}), 401
+    module = _modules_engine.get_module(module_id)
+    if not module:
+        return jsonify({"error": "Module not found"}), 404
+    prog = _modules_engine.get_user_progress(uid, module_id) or {}
+    composite = _modules_engine.compute_module_composite_v2(prog, module)
+    return jsonify({
+        "module_id": module_id,
+        "composite": composite,
+        "started_at": prog.get("started_at"),
+        "completed_at": prog.get("completed_at"),
+        "last_active_at": prog.get("last_active_at"),
     })
 
 

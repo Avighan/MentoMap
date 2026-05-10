@@ -197,6 +197,11 @@ const LeaderboardPage = () => {
           primary: (e.score || e.mento_score || 0).toLocaleString(),
           primaryLabel: 'Mento Score',
           secondary: e.game_title || e.game_id || '',
+          // P0 Task 20: surface 90% CI on the score so learners see how
+          // tight or wide their performance estimate is. Keys come straight
+          // from /api/leaderboard/<game_id> entries (Task 9 backend).
+          ciLow:  typeof e.ci_low  === 'number' ? Math.round(e.ci_low)  : null,
+          ciHigh: typeof e.ci_high === 'number' ? Math.round(e.ci_high) : null,
         }));
       default:
         return [];
@@ -533,8 +538,21 @@ const LeaderboardPage = () => {
                       <p className="text-xs text-gray-400">{entry.secondary}</p>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className="text-sm font-bold" style={{ color: colors.text }}>
+                      <p
+                        className="text-sm font-bold"
+                        style={{ color: colors.text }}
+                        title={
+                          entry.ciLow != null && entry.ciHigh != null
+                            ? `90% confidence interval: ${entry.ciLow}–${entry.ciHigh}`
+                            : undefined
+                        }
+                      >
                         {entry.primary}
+                        {entry.ciLow != null && entry.ciHigh != null && (
+                          <span className="ml-1 text-[10px] font-normal text-gray-400">
+                            ±{Math.round((entry.ciHigh - entry.ciLow) / 2)}
+                          </span>
+                        )}
                       </p>
                       <p className="text-xs text-gray-400">{entry.primaryLabel}</p>
                     </div>
