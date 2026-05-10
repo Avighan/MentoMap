@@ -42,16 +42,24 @@ def test_advance_within_same_day_does_not_apply_drift():
     advance_to_tick(state, 3, CFG)
     assert state.get("drift", {}) == {}  # still in mon
 
-def test_advance_across_one_boundary_applies_drift_once():
+def test_advance_across_one_boundary_applies_drift_once(monkeypatch):
+    # Stub _normal so the assertion isolates the earnings formula and is
+    # not sensitive to PYTHONHASHSEED (hash(sym) is per-process random).
+    import engines.stocksim.calendar as calmod
+    monkeypatch.setattr(calmod, "_normal", lambda mu, sigma, seed: 0.0)
     state = _empty_state()
     advance_to_tick(state, 4, CFG)  # mon → tue
     assert "drift" in state
-    # earnings on mon for TECHN: 0.10 * 0.6 = 0.06 plus seeded noise
-    assert state["drift"].get("TECHN", 0.0) > 0.05
+    # earnings on mon for TECHN: 0.10 * 0.6 = 0.06 (noise stubbed to 0).
+    assert state["drift"]["TECHN"] == pytest.approx(0.06)
 
-def test_advance_across_multiple_boundaries_compounds():
+def test_advance_across_multiple_boundaries_compounds(monkeypatch):
+    # Stub _normal to 0 so we can pin the expected drift exactly to the
+    # earnings contribution from the single mon→tue crossing.
+    import engines.stocksim.calendar as calmod
+    monkeypatch.setattr(calmod, "_normal", lambda mu, sigma, seed: 0.0)
     state = _empty_state()
     advance_to_tick(state, 12, CFG)  # mon → tue → wed → thu (3 boundaries)
-    # drift should reflect noise from 3 overnight applications + 1 earnings
-    assert "drift" in state
-    assert "TECHN" in state["drift"]
+    # 3 overnights (noise each, stubbed to 0); earnings bonus fires only
+    # on the mon→tue crossing → final drift equals 0.06 exactly.
+    assert state["drift"]["TECHN"] == pytest.approx(0.06)

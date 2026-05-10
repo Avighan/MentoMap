@@ -298,7 +298,7 @@ def _day_boundary_ticks(days: list, from_tick: int, to_tick: int) -> list:
         return []
     boundaries = []
     cumulative = 0
-    for d in days[:-1]:
+    for d in days[:-1]:  # last day has no following day to drift into
         cumulative += int(d.get("ticks", 0))
         if from_tick < cumulative <= to_tick:
             boundaries.append(cumulative)
