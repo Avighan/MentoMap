@@ -9,6 +9,7 @@ import uuid
 
 from engines.stocksim.pricing import price_from_seed
 from engines.stocksim.charges import compute_charges, ChargesError
+from engines.stocksim.calendar import tick_to_day, apply_overnight_drift
 
 
 def _fill_or_reject_market(state: dict, order: dict, quote: dict, charges_cfg: dict) -> dict:
@@ -264,12 +265,41 @@ def advance_to_tick(state: dict, tick: int, config: dict) -> dict:
     triggered at earlier (un-halted) ticks during the sweep. Filling pending
     orders first preserves their tick-of-trigger semantics; the halt then takes
     effect for any subsequent direct place_order calls in this session.
+
+    For week-format games, overnight drift is also applied across each day
+    boundary crossed since the prior current_tick, before the sweep/settle/
+    breaker calls so that price signals reflect the new-day drift correctly.
     """
     if tick <= state.get("current_tick", 0):
         return {"current_tick": state["current_tick"]}
+
+    prev_tick = int(state.get("current_tick", 0))
+
+    # Apply overnight drift for each day boundary crossed.
+    if (config or {}).get("calendar_mode") == "week":
+        days = config.get("days") or []
+        for boundary_tick in _day_boundary_ticks(days, prev_tick, int(tick)):
+            from_day = tick_to_day(boundary_tick - 1, days)
+            to_day   = tick_to_day(boundary_tick, days)
+            if from_day and to_day:
+                apply_overnight_drift(state, config, from_day.get("id"), to_day.get("id"))
+
     _sweep_pending_orders(state, config, tick)
     _settle_t1(state, tick)
     _check_circuit_breakers(state, config, tick)
     state["current_tick"] = tick
     return {"current_tick": tick,
             "halted_symbols": list(state.get("halted_symbols", {}).keys())}
+
+
+def _day_boundary_ticks(days: list, from_tick: int, to_tick: int) -> list:
+    """Return tick indices in (from_tick, to_tick] that are first-of-day."""
+    if not days or to_tick <= from_tick:
+        return []
+    boundaries = []
+    cumulative = 0
+    for d in days[:-1]:
+        cumulative += int(d.get("ticks", 0))
+        if from_tick < cumulative <= to_tick:
+            boundaries.append(cumulative)
+    return boundaries
