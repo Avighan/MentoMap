@@ -49,6 +49,7 @@ class StockMarketEngine:
     # ---- pricing ----
     def price_at(self, state: dict, symbol: str, tick: int) -> dict:
         """Public price lookup. Reads seed from state; delegates to pricing.price_at."""
+        # Alias avoids shadowing this method's name in local scope.
         from engines.stocksim.pricing import price_at as _price_at
         return _price_at(state, symbol, tick, self.config)
 

@@ -109,6 +109,18 @@ def price_at(state: dict, symbol: str, tick: int, config: dict) -> dict:
 
     Returns:
         Dict shaped like price_from_seed: {"mid", "bid", "ask", "volume"}.
+
+    Contract notes (intentionally NOT clamped here):
+        * `drift_pct <= -0.99` produces near-zero or zero prices; `drift_pct < -1`
+          produces negative prices. `price_from_seed`'s `mid >= 0.01` floor does
+          NOT survive multiplication. Callers writing drift values must keep
+          them within sane bounds (earnings/noise compounding at the simulator
+          scale stays well inside ±0.20 over a full week).
+        * `price_from_seed` enforces `bid < mid < ask` post-rounding via a
+          0.01-unit minimum spread. After multiplication and re-rounding, that
+          ordering can collapse to `bid == mid` when `mid * factor < 0.10`
+          (i.e., post-drift sub-INR prices). Treat bid/ask as informational in
+          that regime; mid remains canonical for P&L.
     """
     stock_cfg = next((s for s in (config.get("stocks") or []) if s.get("symbol") == symbol), None)
     if stock_cfg is None:
