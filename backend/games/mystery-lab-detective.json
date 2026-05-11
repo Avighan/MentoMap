@@ -1,0 +1,911 @@
+{
+  "game_id": "mystery-lab-detective",
+  "title": "🔬 Mystery Lab Detective",
+  "theme": "Science — Scientific Method & Inquiry",
+  "icon": "🔬",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "A real lab. A real mystery. You are the scientist. Five plants are dying in the school greenhouse and nobody knows why. Use the scientific method — observe, hypothesize, experiment, analyze, conclude — to crack the case.",
+  "target_audience": "Ages 11-15",
+  "target_age": "11-15",
+  "grade": "6-9",
+  "subject": "science",
+  "topics": [
+    "scientific_method",
+    "experimental_design",
+    "hypothesis_testing",
+    "data_analysis",
+    "controls_variables"
+  ],
+  "difficulty": "beginner",
+  "duration_minutes": 30,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": false
+  },
+  "visual_config": {
+    "theme_preset": "lab",
+    "palette": {
+      "primary": "#0891b2",
+      "accent": "#10b981"
+    },
+    "labels": {
+      "kpi_main": "Investigation Progress",
+      "currency": "Lab Points"
+    },
+    "icons": {
+      "main": "🔬"
+    }
+  },
+  "animation_config": {
+    "enabled": true,
+    "intensity": "medium",
+    "scene_transitions": true,
+    "data_viz_animations": true,
+    "achievement_animations": true
+  },
+  "how_to_play": [
+    "Read each lab situation carefully — observation is everything.",
+    "Form a hypothesis BEFORE you experiment.",
+    "Pick the choice that tests ONE variable at a time.",
+    "Use evidence to update or reject your hypothesis.",
+    "Reach a conclusion supported by your data — not by gut feel.",
+    "Bonus: spot when your control group matters."
+  ],
+  "learning_objectives": [
+    "Apply the 5 steps of the scientific method to a real problem.",
+    "Design experiments that isolate ONE variable (control vs experiment).",
+    "Distinguish observation from interpretation.",
+    "Reject hypotheses when evidence contradicts them — without ego.",
+    "Recognize when more data is needed before concluding."
+  ],
+  "tags": [
+    "science",
+    "experiment",
+    "scientific_method",
+    "lab",
+    "inquiry",
+    "biology"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "scientific_temper",
+    "critical_thinking",
+    "evidence_based_reasoning",
+    "problem_solving"
+  ],
+  "cultural_context": "School science lab investigation, scientific temper, evidence-based reasoning — core NEP 2020 competencies for middle school.",
+  "psychological_framework": {
+    "core_skills": [
+      "critical_thinking",
+      "evidence_evaluation",
+      "hypothesis_revision",
+      "intellectual_humility"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.25,
+    "critical_thinking": 0.3,
+    "adaptability": 0.2,
+    "scientific_reasoning": 0.25
+  },
+  "initial_state": {
+    "investigation_progress": 0,
+    "evidence_collected": 0,
+    "hypotheses_formed": 0,
+    "wrong_turns": 0,
+    "lab_reputation": 50
+  },
+  "simulation_config": {
+    "time_config": {
+      "ticks_per_round": 1,
+      "tick_label": "Day"
+    },
+    "subsystems": [
+      "observation",
+      "hypothesis",
+      "experiment",
+      "analysis"
+    ],
+    "kpi_definitions": {
+      "investigation_progress": {
+        "label": "Investigation %",
+        "format": "percent",
+        "target": 100
+      },
+      "evidence_collected": {
+        "label": "Evidence pieces",
+        "format": "count"
+      },
+      "lab_reputation": {
+        "label": "Lab reputation",
+        "format": "score",
+        "max": 100
+      }
+    },
+    "tick_rules": [
+      "Each round = 1 day in the lab"
+    ],
+    "interactions": []
+  },
+  "rounds": [
+    {
+      "round_id": "r1_observation",
+      "round_title": "Day 1 — The Mystery",
+      "situation": "Ms. Aiyer hands you a clipboard. 'Five tomato plants in the greenhouse are dying. Same variety, same age. The other ten are fine. Find out why.' Five sad plants on Bench 3. The others on Bench 4 and 5 look great. The greenhouse hums with cooling fans. What's your FIRST move?",
+      "goal": "Begin with the right scientific habit.",
+      "coaching_moment": "The first step of science is OBSERVATION — not guessing. Look before you leap.",
+      "reflection_prompt": "Why do scientists observe before they hypothesize?",
+      "image_prompt": "Bright school greenhouse, two benches with healthy green tomato plants, one bench with five wilting yellowed tomato plants, student with clipboard observing, semi-realistic warm light",
+      "choices": [
+        {
+          "id": "r1_a",
+          "label": "A. Guess immediately: 'It's the water — over-watered probably.' Move on.",
+          "is_correct": false,
+          "learning_concept": "Skipping observation = guessing",
+          "delta": {
+            "investigation_progress": 5,
+            "wrong_turns": 1,
+            "lab_reputation": -5
+          },
+          "skill_tags": [
+            "impulse_control"
+          ],
+          "outcome_text": "Ms. Aiyer raises an eyebrow. 'How do you know?' You don't. Step back."
+        },
+        {
+          "id": "r1_b",
+          "label": "B. Carefully observe BOTH benches: leaves, soil, light, position, smell, anything unusual.",
+          "is_correct": true,
+          "learning_concept": "Observation is step 1 of the scientific method.",
+          "delta": {
+            "investigation_progress": 20,
+            "evidence_collected": 3,
+            "lab_reputation": 10
+          },
+          "skill_tags": [
+            "observation",
+            "scientific_reasoning"
+          ],
+          "outcome_text": "Notes: sick plants are closer to the air-conditioning vent. Their soil is dry on top but waterlogged below. Healthy plants are 2 metres away. INTERESTING."
+        },
+        {
+          "id": "r1_c",
+          "label": "C. Pull up the leaves of the sick plants to inspect roots immediately.",
+          "is_correct": false,
+          "learning_concept": "Don't destroy evidence before observing.",
+          "delta": {
+            "investigation_progress": 5,
+            "wrong_turns": 1,
+            "lab_reputation": -3
+          },
+          "skill_tags": [
+            "impulse_control"
+          ],
+          "outcome_text": "You damage roots before you've fully observed. Now you can't compare roots cleanly. Lesson: observe BEFORE intervening."
+        },
+        {
+          "id": "r1_d",
+          "label": "D. Ask the gardener what they think.",
+          "is_correct": false,
+          "learning_concept": "Authority vs evidence.",
+          "delta": {
+            "investigation_progress": 8,
+            "lab_reputation": 0
+          },
+          "skill_tags": [
+            "humility"
+          ],
+          "outcome_text": "The gardener says 'too much water'. Maybe true, maybe not — but you haven't checked yourself yet. Authority isn't evidence."
+        }
+      ],
+      "scene_widget": {
+        "type": "plant_growth",
+        "props": {
+          "mode": "growth_conditions",
+          "label": "Observe the greenhouse plants",
+          "show_legend": true,
+          "interactive": true
+        },
+        "interaction_mode": "optional",
+        "caption": "Tap plants and adjust the conditions to spot what's different."
+      }
+    },
+    {
+      "round_id": "r2_hypothesis",
+      "round_title": "Day 2 — Forming Hypotheses",
+      "situation": "Your observation notes: sick plants near AC vent, soil waterlogged underneath, leaves yellowing from edges. Time to form a HYPOTHESIS — a specific, testable claim. Which is the BEST hypothesis to start with?",
+      "goal": "Form a hypothesis that's specific and testable.",
+      "coaching_moment": "A good hypothesis is SPECIFIC, TESTABLE, and FALSIFIABLE. 'Plants are sad' isn't a hypothesis. 'Cold air from AC vent is damaging plant cells' is.",
+      "reflection_prompt": "Why must a hypothesis be 'falsifiable' (provably wrong)?",
+      "image_prompt": "Student writing hypothesis in lab notebook, magnifying glass and tomato plant on desk, scientific notes visible, semi-realistic lighting",
+      "choices": [
+        {
+          "id": "r2_a",
+          "label": "A. 'The plants are sick because they are unhappy.'",
+          "is_correct": false,
+          "learning_concept": "Vague + unfalsifiable hypotheses are useless.",
+          "delta": {
+            "investigation_progress": 2,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "critical_thinking"
+          ],
+          "outcome_text": "Not testable. How would you measure 'happiness'? Move on."
+        },
+        {
+          "id": "r2_b",
+          "label": "B. 'Cold air from the AC vent is causing root damage in plants closer to the vent.'",
+          "is_correct": true,
+          "learning_concept": "Specific, testable, falsifiable hypothesis.",
+          "delta": {
+            "investigation_progress": 25,
+            "hypotheses_formed": 1,
+            "lab_reputation": 10
+          },
+          "skill_tags": [
+            "scientific_reasoning",
+            "specificity"
+          ],
+          "outcome_text": "Excellent. Specific cause (cold air), specific effect (root damage), specific population (vent-side plants). Now you can test it."
+        },
+        {
+          "id": "r2_c",
+          "label": "C. 'Something is wrong with the greenhouse.'",
+          "is_correct": false,
+          "learning_concept": "Too vague.",
+          "delta": {
+            "investigation_progress": 5
+          },
+          "skill_tags": [
+            "specificity"
+          ],
+          "outcome_text": "True but useless. Narrow it down."
+        },
+        {
+          "id": "r2_d",
+          "label": "D. 'The plants are dying because of bad luck.'",
+          "is_correct": false,
+          "learning_concept": "Bad luck is not a scientific cause.",
+          "delta": {
+            "investigation_progress": 1,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "scientific_reasoning"
+          ],
+          "outcome_text": "Science doesn't accept 'bad luck'. There's always a cause — find it."
+        }
+      ],
+      "scene_widget": {
+        "type": "plant_growth",
+        "props": {
+          "mode": "growth_conditions",
+          "label": "Test your hypothesis (cold air = wilt?)",
+          "interactive": true
+        },
+        "interaction_mode": "optional",
+        "caption": "Drag the temperature slider down on one plant. What changes?"
+      }
+    },
+    {
+      "round_id": "r3_experimental_design",
+      "round_title": "Day 3 — Experimental Design",
+      "situation": "Hypothesis: cold air from the AC vent is hurting the plants. Now design an experiment. Your teacher has 20 healthy seedlings ready. How do you test this?",
+      "goal": "Design an experiment with a control group and ONE variable.",
+      "coaching_moment": "A great experiment changes ONE variable and keeps everything else the same. That's the only way you can blame the variable for the result.",
+      "reflection_prompt": "Why do you need a control group?",
+      "image_prompt": "Two groups of tomato seedlings in lab trays, one labeled control, one labeled experiment, neat labels, scientific lab setting",
+      "choices": [
+        {
+          "id": "r3_a",
+          "label": "A. Put 10 plants near AC vent. Leave 10 away from vent. Same soil, water, light. Compare after 7 days.",
+          "is_correct": true,
+          "learning_concept": "Single-variable experiment with control group.",
+          "delta": {
+            "investigation_progress": 25,
+            "evidence_collected": 5,
+            "lab_reputation": 12
+          },
+          "skill_tags": [
+            "experimental_design",
+            "scientific_reasoning"
+          ],
+          "outcome_text": "Textbook design: ONE variable changed (vent exposure), everything else identical. You'll know the cause if results differ."
+        },
+        {
+          "id": "r3_b",
+          "label": "B. Put 10 near vent with cold water, 10 away from vent with warm water. Compare.",
+          "is_correct": false,
+          "learning_concept": "Two variables = can't pinpoint cause.",
+          "delta": {
+            "investigation_progress": 5,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "experimental_design"
+          ],
+          "outcome_text": "You changed TWO things at once (vent + water temp). If results differ, you won't know which caused it."
+        },
+        {
+          "id": "r3_c",
+          "label": "C. Put all 20 plants near the vent. See how many die.",
+          "is_correct": false,
+          "learning_concept": "No control group = no comparison.",
+          "delta": {
+            "investigation_progress": 8,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "experimental_design"
+          ],
+          "outcome_text": "No control = no way to know if the vent is the cause or if plants would die anyway."
+        },
+        {
+          "id": "r3_d",
+          "label": "D. Put 1 plant near vent and 1 plant away from vent. Compare.",
+          "is_correct": false,
+          "learning_concept": "Sample size too small.",
+          "delta": {
+            "investigation_progress": 10,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "experimental_design"
+          ],
+          "outcome_text": "Sample of 1 vs 1 is way too small. One sick seedling could be coincidence. Need a bigger N."
+        }
+      ],
+      "scene_widget": {
+        "type": "mixtures_lab",
+        "props": {
+          "mode": "control_vs_experiment",
+          "label": "Set up your control + experimental groups",
+          "interactive": true
+        },
+        "interaction_mode": "optional",
+        "caption": "Build two trays — change ONE variable between them."
+      }
+    },
+    {
+      "round_id": "r4_running_experiment",
+      "round_title": "Day 4-7 — Running the Experiment",
+      "situation": "Your experiment is running. Day 4: 3 vent-side plants are starting to yellow. Day 5: classmate Pavan offers to 'help' — he wants to move the vent-side plants closer to a heat source 'to balance things out'. What do you do?",
+      "goal": "Maintain experimental integrity.",
+      "coaching_moment": "You don't change conditions mid-experiment. If you do, you ruin your data — and have to start over.",
+      "reflection_prompt": "Why is experimental integrity sacred?",
+      "image_prompt": "Lab setting with classmate trying to move a plant to a heat lamp, main scientist holding up hand to stop, scientific lab integrity scene, semi-realistic",
+      "choices": [
+        {
+          "id": "r4_a",
+          "label": "A. 'No — if we change conditions, our data is contaminated. Wait until Day 7.'",
+          "is_correct": true,
+          "learning_concept": "Experimental integrity > short-term comfort.",
+          "delta": {
+            "investigation_progress": 25,
+            "lab_reputation": 15
+          },
+          "skill_tags": [
+            "scientific_integrity",
+            "discipline"
+          ],
+          "outcome_text": "Pavan grumbles, but the experiment continues clean. By Day 7 you have real, defensible data."
+        },
+        {
+          "id": "r4_b",
+          "label": "B. 'Sure, save them — they're suffering.'",
+          "is_correct": false,
+          "learning_concept": "Compassion ≠ science. (You'd save them in a real garden, but not in a controlled experiment.)",
+          "delta": {
+            "investigation_progress": 5,
+            "wrong_turns": 1,
+            "lab_reputation": -10
+          },
+          "skill_tags": [
+            "scientific_integrity"
+          ],
+          "outcome_text": "The experiment is now contaminated. You can't blame the vent — Pavan added heat. Start over."
+        },
+        {
+          "id": "r4_c",
+          "label": "C. 'Move HALF the vent-side plants to heat — that gives a third group.'",
+          "is_correct": false,
+          "learning_concept": "Adding variables mid-experiment = chaos.",
+          "delta": {
+            "investigation_progress": 5,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "experimental_design"
+          ],
+          "outcome_text": "Now you have 3 groups but you redesigned the experiment in the middle. Whatever happens, you can't cleanly attribute it."
+        },
+        {
+          "id": "r4_d",
+          "label": "D. 'Run two parallel experiments at once — keep this one and start a heat-lamp one.'",
+          "is_correct": false,
+          "learning_concept": "Doable but premature — finish the first one cleanly first.",
+          "delta": {
+            "investigation_progress": 12,
+            "lab_reputation": 0
+          },
+          "skill_tags": [
+            "experimental_design"
+          ],
+          "outcome_text": "Decent instinct, but you don't have enough plants/time. Finish what you started."
+        }
+      ],
+      "scene_widget": {
+        "type": "plant_growth",
+        "props": {
+          "mode": "growth_conditions",
+          "label": "Run the trial — Day-by-day",
+          "interactive": true,
+          "show_timeline": true
+        },
+        "interaction_mode": "optional",
+        "caption": "Step through days. Record what happens at each tick."
+      }
+    },
+    {
+      "round_id": "r5_data_analysis",
+      "round_title": "Day 7 — Data In",
+      "situation": "Day 7 results are in. Vent-side group: 7/10 plants yellowing or dying. Away-from-vent group: 1/10 yellowing. Your hypothesis (cold air from vent damages plants) seems supported. But — what does GOOD analysis demand?",
+      "goal": "Analyze data without overclaiming.",
+      "coaching_moment": "Strong data ≠ proof. It's *evidence supporting* a hypothesis. The honest scientist also asks 'what could I be missing?'",
+      "reflection_prompt": "What's the difference between 'strong evidence' and 'proof'?",
+      "image_prompt": "Lab notebook with data table comparing two plant groups, charts showing wilted vs healthy plants, magnifying glass, scientific analysis scene, semi-realistic",
+      "choices": [
+        {
+          "id": "r5_a",
+          "label": "A. 'Hypothesis is PROVEN. AC vent kills plants. Done.'",
+          "is_correct": false,
+          "learning_concept": "Science doesn't 'prove' — it gathers evidence.",
+          "delta": {
+            "investigation_progress": 8,
+            "wrong_turns": 1,
+            "lab_reputation": -5
+          },
+          "skill_tags": [
+            "epistemic_humility"
+          ],
+          "outcome_text": "Overclaiming. 'Proven' is a word science avoids. Replace with 'evidence supports the hypothesis'."
+        },
+        {
+          "id": "r5_b",
+          "label": "B. 'Strong evidence supports the hypothesis. But: could anything else explain this — like vibration, light differences, or coincidence?'",
+          "is_correct": true,
+          "learning_concept": "Always check alternative explanations.",
+          "delta": {
+            "investigation_progress": 25,
+            "evidence_collected": 4,
+            "lab_reputation": 15
+          },
+          "skill_tags": [
+            "scientific_reasoning",
+            "epistemic_humility"
+          ],
+          "outcome_text": "Excellent thinking. You note the vent area also gets less sunlight and more vibration. Worth flagging in the report."
+        },
+        {
+          "id": "r5_c",
+          "label": "C. 'The hypothesis is wrong because 3 vent-side plants survived.'",
+          "is_correct": false,
+          "learning_concept": "Strong tendencies are still real even with exceptions.",
+          "delta": {
+            "investigation_progress": 8,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "scientific_reasoning"
+          ],
+          "outcome_text": "Survivors don't disprove a hypothesis. 7/10 vs 1/10 is a strong signal. Look at proportions, not exceptions."
+        },
+        {
+          "id": "r5_d",
+          "label": "D. 'Inconclusive. Run for another month.'",
+          "is_correct": false,
+          "learning_concept": "Excessive caution = paralysis.",
+          "delta": {
+            "investigation_progress": 12,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "decision_making"
+          ],
+          "outcome_text": "Some caution is good. Endless caution is procrastination. Strong evidence already exists."
+        }
+      ],
+      "scene_widget": {
+        "type": "data_visualizer",
+        "props": {
+          "mode": "scatter",
+          "label": "Plot wilting vs distance-from-vent",
+          "interactive": true
+        },
+        "interaction_mode": "optional",
+        "caption": "Drop your data points. Look for a pattern (or lack of one)."
+      }
+    },
+    {
+      "round_id": "r6_replication",
+      "round_title": "Day 8 — The Replication Question",
+      "situation": "Your conclusion: cold air from AC vent likely damages tomato seedlings. Pavan asks: 'Should we tell the school to move the vent now?' Ms. Aiyer reminds you: 'A single experiment isn't enough for science.' What's the best next step?",
+      "goal": "Understand the importance of replication.",
+      "coaching_moment": "One experiment is a hint. Two consistent experiments are evidence. Many consistent experiments approach truth.",
+      "reflection_prompt": "Why is replication the heart of science?",
+      "image_prompt": "Multiple lab teams running similar plant experiments, scientists comparing results, semi-realistic",
+      "choices": [
+        {
+          "id": "r6_a",
+          "label": "A. Run the experiment AGAIN with a fresh batch of plants. If results match, confidence grows.",
+          "is_correct": true,
+          "learning_concept": "Replication is the gold standard.",
+          "delta": {
+            "investigation_progress": 25,
+            "evidence_collected": 3,
+            "lab_reputation": 15
+          },
+          "skill_tags": [
+            "scientific_rigor",
+            "discipline"
+          ],
+          "outcome_text": "Right answer. Replication catches lucky flukes. Real science is repeated, not just done once."
+        },
+        {
+          "id": "r6_b",
+          "label": "B. Tell the school immediately — move the vent.",
+          "is_correct": false,
+          "learning_concept": "Acting on one study can mislead policy.",
+          "delta": {
+            "investigation_progress": 8,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "scientific_rigor"
+          ],
+          "outcome_text": "You COULD recommend a temporary fix, but replication first builds confidence."
+        },
+        {
+          "id": "r6_c",
+          "label": "C. Test a totally different hypothesis next.",
+          "is_correct": false,
+          "learning_concept": "Don't abandon a finding before confirming it.",
+          "delta": {
+            "investigation_progress": 5
+          },
+          "skill_tags": [
+            "scientific_rigor"
+          ],
+          "outcome_text": "Curious, but premature. Confirm before you move on."
+        },
+        {
+          "id": "r6_d",
+          "label": "D. Publish the findings online and let people debate.",
+          "is_correct": false,
+          "learning_concept": "Don't publish without replication.",
+          "delta": {
+            "investigation_progress": 5,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "scientific_rigor"
+          ],
+          "outcome_text": "One unreplicated study isn't ready to publish. (This is exactly how bad science spreads.)"
+        }
+      ],
+      "scene_widget": {
+        "type": "plant_growth",
+        "props": {
+          "mode": "growth_conditions",
+          "label": "Replicate the experiment",
+          "interactive": true
+        },
+        "interaction_mode": "optional",
+        "caption": "Run the trial again with the same setup. Same result?"
+      }
+    },
+    {
+      "round_id": "r7_communication",
+      "round_title": "Day 12 — Communicating Findings",
+      "situation": "Two replications later, the pattern holds: vent-side plants suffer. Ms. Aiyer asks for a one-page report for the principal. How do you write it?",
+      "goal": "Communicate science honestly and clearly.",
+      "coaching_moment": "Honest scientific communication includes the FINDINGS, the LIMITATIONS, and what's STILL UNKNOWN.",
+      "reflection_prompt": "Why do good scientists state their limitations openly?",
+      "image_prompt": "Student finalizing scientific report on laptop, lab data charts on screen, neat handwritten title 'Findings & Limitations', semi-realistic",
+      "choices": [
+        {
+          "id": "r7_a",
+          "label": "A. 'AC vent is killing the plants. Move it immediately. Case closed.'",
+          "is_correct": false,
+          "learning_concept": "Overclaiming damages credibility.",
+          "delta": {
+            "investigation_progress": 8,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "communication"
+          ],
+          "outcome_text": "Strong-sounding, but unscientific. 'Killing' is dramatic; 'case closed' is overclaim."
+        },
+        {
+          "id": "r7_b",
+          "label": "B. 'Across 3 trials, vent-side plants showed 70%+ damage vs 10% in the control. Likely cause: cold airflow. Limitation: light differences not fully controlled. Recommend: relocate vent OR run a controlled-light follow-up.'",
+          "is_correct": true,
+          "learning_concept": "Honest, complete, action-oriented science writing.",
+          "delta": {
+            "investigation_progress": 25,
+            "evidence_collected": 2,
+            "lab_reputation": 20
+          },
+          "skill_tags": [
+            "scientific_communication",
+            "epistemic_humility"
+          ],
+          "outcome_text": "Beautifully written. Clear finding, honest limitations, concrete next step. The principal acts."
+        },
+        {
+          "id": "r7_c",
+          "label": "C. 'Inconclusive — too many factors to be sure.'",
+          "is_correct": false,
+          "learning_concept": "Don't bury a strong signal in fake humility.",
+          "delta": {
+            "investigation_progress": 10,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "communication"
+          ],
+          "outcome_text": "Excessive caution is its own dishonesty. Three replications with strong effects ≠ inconclusive."
+        },
+        {
+          "id": "r7_d",
+          "label": "D. Long, jargon-heavy report nobody will read.",
+          "is_correct": false,
+          "learning_concept": "Clarity > vocabulary.",
+          "delta": {
+            "investigation_progress": 12
+          },
+          "skill_tags": [
+            "communication"
+          ],
+          "outcome_text": "Real scientists write so the audience UNDERSTANDS. Jargon is laziness."
+        }
+      ],
+      "scene_widget": {
+        "type": "drawing_canvas",
+        "props": {
+          "label": "Sketch your final lab report figure",
+          "tools": [
+            "pen",
+            "marker",
+            "eraser"
+          ],
+          "show_caption_field": true
+        },
+        "interaction_mode": "optional",
+        "caption": "Draw the setup so another scientist could replicate it."
+      }
+    },
+    {
+      "round_id": "r8_finale",
+      "round_title": "Day 14 — The Verdict",
+      "situation": "The principal reads your report. The vent gets relocated. Two weeks later, every plant on Bench 3 is healthy. Ms. Aiyer hands you a small card: 'Junior Scientist of the Term.' But — there's a final question. Looking back, what was the SINGLE most important thing you did?",
+      "goal": "Reflect on the deepest scientific habit.",
+      "coaching_moment": "The greatest scientific skill isn't intelligence — it's the willingness to be wrong AND change your mind based on evidence.",
+      "reflection_prompt": "What scientific habit will you carry into non-science life?",
+      "image_prompt": "Healthy thriving tomato plants on bench, smiling student receiving certificate, sunny greenhouse scene, semi-realistic warm light",
+      "choices": [
+        {
+          "id": "r8_a",
+          "label": "A. I had a great hypothesis from the start.",
+          "is_correct": false,
+          "learning_concept": "The hypothesis was a STEP, not the win.",
+          "delta": {
+            "investigation_progress": 5
+          },
+          "skill_tags": [
+            "humility"
+          ],
+          "outcome_text": "Hypotheses are dime a dozen. The work to TEST them is what matters."
+        },
+        {
+          "id": "r8_b",
+          "label": "B. I observed carefully before guessing, designed a clean experiment, and stayed open to being wrong.",
+          "is_correct": true,
+          "learning_concept": "The combo of careful observation + clean design + open mind = scientific thinking.",
+          "delta": {
+            "investigation_progress": 30,
+            "lab_reputation": 25
+          },
+          "skill_tags": [
+            "scientific_reasoning",
+            "intellectual_humility"
+          ],
+          "outcome_text": "EXACTLY. That's the scientific method in one sentence. You'll use it your whole life — even when you're not in a lab."
+        },
+        {
+          "id": "r8_c",
+          "label": "C. I trusted my gut.",
+          "is_correct": false,
+          "learning_concept": "Gut isn't science.",
+          "delta": {
+            "investigation_progress": 5,
+            "wrong_turns": 1
+          },
+          "skill_tags": [
+            "scientific_reasoning"
+          ],
+          "outcome_text": "Your gut said 'water'. The data said 'vent'. Gut is starting point, not endpoint."
+        },
+        {
+          "id": "r8_d",
+          "label": "D. I worked hard.",
+          "is_correct": false,
+          "learning_concept": "Hard work alone ≠ good science.",
+          "delta": {
+            "investigation_progress": 8
+          },
+          "skill_tags": [
+            "self_awareness"
+          ],
+          "outcome_text": "True but generic. Hard work *with* method beats hard work alone."
+        }
+      ],
+      "scene_widget": {
+        "type": "ecosystem_sim",
+        "props": {
+          "mode": "greenhouse",
+          "label": "Greenhouse ecosystem — full system view",
+          "interactive": true
+        },
+        "interaction_mode": "optional",
+        "caption": "Now zoom out — see how AC, plants, soil, and light interact."
+      }
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": false,
+    "show_subsystem_panel": true
+  },
+  "achievements": [
+    {
+      "id": "ach_observer",
+      "title": "Sharp-Eye Observer",
+      "icon": "👁️",
+      "criteria": "Pick observation choice in Round 1."
+    },
+    {
+      "id": "ach_hypothesizer",
+      "title": "Hypothesis Crafter",
+      "icon": "💡",
+      "criteria": "Form a specific testable hypothesis in Round 2."
+    },
+    {
+      "id": "ach_designer",
+      "title": "Clean Experiment",
+      "icon": "🧪",
+      "criteria": "Design single-variable experiment with control in Round 3."
+    },
+    {
+      "id": "ach_integrity",
+      "title": "Lab Integrity",
+      "icon": "🛡️",
+      "criteria": "Refuse to contaminate experiment in Round 4."
+    },
+    {
+      "id": "ach_replicator",
+      "title": "True Scientist",
+      "icon": "🔁",
+      "criteria": "Choose replication in Round 6."
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Hypothesis",
+      "definition": "A specific, testable claim about cause and effect."
+    },
+    {
+      "term": "Control group",
+      "definition": "The unchanged comparison group in an experiment."
+    },
+    {
+      "term": "Variable",
+      "definition": "Anything that can change in an experiment. Good experiments change ONE."
+    },
+    {
+      "term": "Replication",
+      "definition": "Repeating an experiment to confirm results aren't a fluke."
+    },
+    {
+      "term": "Falsifiable",
+      "definition": "A claim that can be PROVEN WRONG by evidence — required for science."
+    },
+    {
+      "term": "Observation",
+      "definition": "Recording what's actually there before guessing why."
+    },
+    {
+      "term": "Sample size",
+      "definition": "How many subjects in your study — bigger is more reliable."
+    },
+    {
+      "term": "Confounding variable",
+      "definition": "An extra variable you didn't notice that's secretly affecting your results."
+    }
+  ],
+  "endings": [
+    {
+      "id": "ending_master",
+      "title": "Junior Scientist of the Term",
+      "criteria": "investigation_progress >= 80 AND wrong_turns <= 2",
+      "message": "You used the scientific method like a pro. Carry this habit into every part of your life."
+    },
+    {
+      "id": "ending_solid",
+      "title": "Promising Investigator",
+      "criteria": "investigation_progress >= 60",
+      "message": "Solid work. A few wrong turns, but you got there. That's how real science feels."
+    },
+    {
+      "id": "ending_growing",
+      "title": "Apprentice Scientist",
+      "criteria": "investigation_progress < 60",
+      "message": "You're learning. Re-run the lab and pay close attention to OBSERVATION → HYPOTHESIS → SINGLE-VARIABLE EXPERIMENT."
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "phase": "intro",
+        "rounds": [
+          1,
+          2
+        ],
+        "description": "Observation and hypothesis."
+      },
+      {
+        "phase": "design",
+        "rounds": [
+          3,
+          4
+        ],
+        "description": "Designing and protecting an experiment."
+      },
+      {
+        "phase": "analysis",
+        "rounds": [
+          5,
+          6,
+          7
+        ],
+        "description": "Analyzing, replicating, communicating."
+      },
+      {
+        "phase": "reflection",
+        "rounds": [
+          8
+        ],
+        "description": "Meta-reflection on the scientific habit."
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": "r4_running_experiment",
+      "type": "reflection",
+      "prompt": "What would have happened if you'd let Pavan move the plants?"
+    },
+    {
+      "after_round": "r7_communication",
+      "type": "reflection",
+      "prompt": "Why do scientists state their limitations openly?"
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

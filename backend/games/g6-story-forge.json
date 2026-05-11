@@ -1,0 +1,2424 @@
+{
+  "game_id": "g6-story-forge",
+  "title": "Story Forge: Build Your Tale",
+  "theme": "Storytelling & Communication",
+  "icon": "📖",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are a Grade 6 student entering your school's annual Story Writing Competition. Over 10 sessions with your mentors, you will learn story structure, character development, dialogue, and presentation. Each round builds a piece of your story while teaching you the art of storytelling. Can you craft a tale that wins the hearts of readers?",
+  "target_audience": "Ages 11-12",
+  "target_age": "11-12",
+  "grade": "6",
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You are preparing for the school story-writing competition across 10 sessions.",
+    "Each round teaches a storytelling skill — hooks, characters, conflict, dialogue, and more.",
+    "Your decisions shape your story's quality, your characters, and your audience's reaction.",
+    "Watch your dashboard — Story Quality, Character Depth, Audience Engagement, and Creativity are all connected.",
+    "NPCs like Mrs. Words, Leo the rival, and Grandma will react to your choices.",
+    "Random events like surprise deadlines and famous author visits will test your adaptability!",
+    "Aim for a well-rounded story — neglecting any element will weaken your final reading."
+  ],
+  "learning_objectives": [
+    "Understand story structure: hook, conflict, climax, and resolution",
+    "Develop characters with depth, motivation, and growth arcs",
+    "Practice writing vivid dialogue and using 'show don't tell'",
+    "Build confidence in presenting and reading stories aloud",
+    "Learn to give and receive constructive feedback on creative work",
+    "Develop vocabulary and creative expression skills"
+  ],
+  "tags": [
+    "storytelling",
+    "communication",
+    "grade-6",
+    "creativity",
+    "writing"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Communication",
+    "Creativity",
+    "Critical Thinking",
+    "Cultural Awareness"
+  ],
+  "cultural_context": "School story-writing competition, globally relatable with diverse storytelling traditions",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "creativity"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.1,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.15,
+    "resilience": 0.15,
+    "empathy": 0.2,
+    "creativity": 0.2
+  },
+  "initial_state": {
+    "story_quality": {
+      "value": 20,
+      "label": "Story Quality",
+      "icon": "📝",
+      "min": 0,
+      "max": 100
+    },
+    "character_depth": {
+      "value": 15,
+      "label": "Character Depth",
+      "icon": "🎭",
+      "min": 0,
+      "max": 100
+    },
+    "plot_structure": {
+      "value": 10,
+      "label": "Plot Structure",
+      "icon": "🏗️",
+      "min": 0,
+      "max": 100
+    },
+    "audience_engagement": {
+      "value": 30,
+      "label": "Audience Engagement",
+      "icon": "👏",
+      "min": 0,
+      "max": 100
+    },
+    "vocabulary_power": {
+      "value": 40,
+      "label": "Vocabulary Power",
+      "icon": "📚",
+      "min": 0,
+      "max": 100
+    },
+    "creativity": {
+      "value": 50,
+      "label": "Creativity",
+      "icon": "🎨",
+      "min": 0,
+      "max": 100
+    },
+    "confidence": {
+      "value": 45,
+      "label": "Confidence",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "reader_feedback": {
+      "value": 0,
+      "label": "Reader Feedback",
+      "icon": "💬",
+      "min": -20,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "creativity": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Session",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "narrative_craft",
+        "label": "Narrative Craft",
+        "icon": "📜",
+        "color": "#8B5CF6",
+        "initial_health": 15,
+        "health_formula": "min(100, max(0, story_quality * 0.4 + plot_structure * 0.35 + vocabulary_power * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "character_workshop",
+        "label": "Character Workshop",
+        "icon": "🎭",
+        "color": "#EC4899",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, character_depth * 0.5 + empathy * 0.3 + creativity * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "audience_connection",
+        "label": "Audience Connection",
+        "icon": "👥",
+        "color": "#F59E0B",
+        "initial_health": 25,
+        "health_formula": "min(100, max(0, audience_engagement * 0.4 + confidence * 0.3 + reader_feedback * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "creative_voice",
+        "label": "Creative Voice",
+        "icon": "✨",
+        "color": "#10B981",
+        "initial_health": 45,
+        "health_formula": "min(100, max(0, creativity * 0.4 + vocabulary_power * 0.3 + story_quality * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "story_score",
+        "label": "Story Score",
+        "icon": "⭐",
+        "formula": "(story_quality * 0.3 + plot_structure * 0.3 + character_depth * 0.2 + vocabulary_power * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "reader_engagement",
+        "label": "Reader Engagement",
+        "icon": "📖",
+        "formula": "(audience_engagement * 0.4 + confidence * 0.3 + reader_feedback * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 60
+        }
+      },
+      {
+        "id": "creative_growth",
+        "label": "Creative Growth",
+        "icon": "🌱",
+        "formula": "(creativity * 0.4 + vocabulary_power * 0.3 + character_depth * 0.3)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "practice_effect",
+        "label": "Practice Makes Progress",
+        "effects": [
+          {
+            "resource": "story_quality",
+            "formula": "min(100, story_quality + 1)"
+          }
+        ],
+        "description": "Each session naturally improves your story quality through practice."
+      },
+      {
+        "id": "vocabulary_growth",
+        "label": "Vocabulary Growth",
+        "condition": {
+          "resource": "story_quality",
+          "op": ">=",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "vocabulary_power",
+            "formula": "min(100, vocabulary_power + 2)"
+          }
+        ],
+        "description": "Writing regularly expands your vocabulary."
+      },
+      {
+        "id": "confidence_from_feedback",
+        "label": "Feedback Builds Confidence",
+        "condition": {
+          "resource": "reader_feedback",
+          "op": ">=",
+          "value": 20
+        },
+        "effects": [
+          {
+            "resource": "confidence",
+            "formula": "min(100, confidence + int(reader_feedback * 0.05))"
+          }
+        ],
+        "description": "Positive reader feedback gradually boosts your confidence."
+      },
+      {
+        "id": "confidence_drop",
+        "label": "Self-Doubt Creeps In",
+        "condition": {
+          "resource": "reader_feedback",
+          "op": "<",
+          "value": 5
+        },
+        "effects": [
+          {
+            "resource": "confidence",
+            "formula": "max(0, confidence - 2)"
+          }
+        ],
+        "description": "Lack of feedback makes you doubt your story."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "creativity_boosts_story",
+        "from_subsystem": "creative_voice",
+        "to_subsystem": "narrative_craft",
+        "label": "Creative Spark",
+        "condition": {
+          "resource": "creativity",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "story_quality",
+            "formula": "min(100, story_quality + (creativity - 60) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "High creativity makes your story more original and compelling."
+      },
+      {
+        "id": "characters_engage_audience",
+        "from_subsystem": "character_workshop",
+        "to_subsystem": "audience_connection",
+        "label": "Relatable Characters",
+        "condition": {
+          "resource": "character_depth",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "audience_engagement",
+            "formula": "min(100, audience_engagement + (character_depth - 50) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Deep, relatable characters captivate readers."
+      },
+      {
+        "id": "plot_drives_engagement",
+        "from_subsystem": "narrative_craft",
+        "to_subsystem": "audience_connection",
+        "label": "Page-Turner Effect",
+        "condition": {
+          "resource": "plot_structure",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "audience_engagement",
+            "formula": "min(100, audience_engagement + (plot_structure - 50) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "A well-structured plot keeps readers hooked."
+      },
+      {
+        "id": "low_confidence_hurts_voice",
+        "from_subsystem": "audience_connection",
+        "to_subsystem": "creative_voice",
+        "label": "Stage Fright",
+        "condition": {
+          "resource": "confidence",
+          "op": "<",
+          "value": 25
+        },
+        "effects": [
+          {
+            "resource": "creativity",
+            "formula": "max(0, creativity - (25 - confidence) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Low confidence can stifle your creative voice."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "audience_engagement",
+        "equilibrium": 25,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "confidence",
+        "equilibrium": 40,
+        "rate": 0.04,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "deadline_moved_up",
+        "label": "Competition Deadline Moved Up!",
+        "icon": "⏰",
+        "description": "The school announces the story competition has been moved up by two weeks! You need to speed up your preparation.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "story_quality",
+              "op": "<",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "confidence",
+            "delta": -8
+          },
+          {
+            "resource": "audience_engagement",
+            "delta": 5
+          },
+          {
+            "resource": "creativity",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "BREAKING: Story competition moved up by two weeks! Students scramble to finish their tales.",
+        "ai_image_prompt": "Cartoon school bulletin board with urgent notice, student looking worried at calendar, colorful classroom, deadline poster"
+      },
+      {
+        "id": "famous_author_visit",
+        "label": "Famous Author Visits School",
+        "icon": "🌟",
+        "description": "A bestselling children's author visits your school and gives a workshop on storytelling secrets!",
+        "probability": 0.2,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 2
+        },
+        "effects": [
+          {
+            "resource": "creativity",
+            "delta": 8
+          },
+          {
+            "resource": "vocabulary_power",
+            "delta": 5
+          },
+          {
+            "resource": "confidence",
+            "delta": 6
+          },
+          {
+            "resource": "story_quality",
+            "delta": 3
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Bestselling author visits school! Students inspired by storytelling masterclass.",
+        "ai_image_prompt": "Cartoon famous author reading to excited school children, colorful library, books everywhere, children with wide eyes, warm lighting"
+      },
+      {
+        "id": "plagiarism_scandal",
+        "label": "Classmate Plagiarism Scandal",
+        "icon": "😱",
+        "description": "A classmate is caught copying a story from the internet! The teacher gives everyone a stern talk about originality.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "creativity",
+              "op": ">=",
+              "value": 30
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "creativity",
+            "delta": 5
+          },
+          {
+            "resource": "confidence",
+            "delta": 3
+          },
+          {
+            "resource": "audience_engagement",
+            "delta": -3
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Plagiarism scandal! Teacher reminds everyone: original stories are the only stories worth telling.",
+        "ai_image_prompt": "Cartoon classroom scene, teacher looking stern, student hiding face, other students looking surprised, school setting"
+      },
+      {
+        "id": "movie_inspiration",
+        "label": "Inspired by a Movie",
+        "icon": "🎬",
+        "description": "You watch an amazing movie over the weekend and it sparks a wave of creative ideas for your story!",
+        "probability": 0.2,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 2
+        },
+        "effects": [
+          {
+            "resource": "creativity",
+            "delta": 7
+          },
+          {
+            "resource": "plot_structure",
+            "delta": 4
+          },
+          {
+            "resource": "character_depth",
+            "delta": 3
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "Weekend movie marathon pays off! New ideas are flowing for your story.",
+        "ai_image_prompt": "Cartoon child watching a movie on TV with a notebook, lightbulb moment, ideas floating in thought bubbles, cozy living room"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "mrs_words",
+        "name": "Mrs. Words",
+        "role": "English Teacher",
+        "icon": "👩‍🏫",
+        "initial_mood": "encouraging",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "story_quality",
+              "op": "<",
+              "value": 25
+            },
+            "action": "guide",
+            "message": "Your story needs more work. Remember — every great writer rewrites. Let's focus on your opening hook!",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "story_quality",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "I'm so proud of your progress! Your story is really coming together. The judges will love it!",
+            "mood_change": "delighted",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "resource": "plot_structure",
+              "op": ">=",
+              "value": 55
+            },
+            "action": "praise",
+            "message": "Excellent plot structure! You've nailed the three-act format. Your climax is genuinely surprising.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "vocabulary_power",
+                  "op": "<",
+                  "value": 30
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 3
+                }
+              ]
+            },
+            "action": "warn",
+            "message": "Your vocabulary is holding you back. Try reading more and using a thesaurus. Words are your tools — sharpen them!",
+            "mood_change": "worried",
+            "satisfaction_delta": -3
+          }
+        ]
+      },
+      {
+        "id": "leo_rival",
+        "name": "Leo",
+        "role": "Rival Storyteller",
+        "icon": "😏",
+        "initial_mood": "competitive",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "story_quality",
+              "op": ">=",
+              "value": 50
+            },
+            "action": "competitive",
+            "message": "Not bad... but my story has a plot twist that'll blow everyone away. May the best writer win!",
+            "mood_change": "impressed",
+            "satisfaction_delta": 3
+          },
+          {
+            "condition": {
+              "resource": "story_quality",
+              "op": "<",
+              "value": 30
+            },
+            "action": "taunt",
+            "message": "Is that the best you've got? My story is already on chapter three. Better hurry up!",
+            "mood_change": "smug",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "creativity",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "block",
+            "message": "Leo boasts loudly about his story in class, making you doubt your own ideas. Writer's block hits hard!",
+            "mood_change": "smug",
+            "satisfaction_delta": -10,
+            "effects": [
+              {
+                "resource": "confidence",
+                "delta": -8
+              },
+              {
+                "resource": "creativity",
+                "delta": -5
+              }
+            ],
+            "trigger_round": "crisis_writers_block"
+          }
+        ]
+      },
+      {
+        "id": "grandma_storyteller",
+        "name": "Grandma",
+        "role": "Family Storyteller",
+        "icon": "👵",
+        "initial_mood": "warm",
+        "initial_satisfaction": 65,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "character_depth",
+              "op": ">=",
+              "value": 45
+            },
+            "action": "story",
+            "message": "Your characters remind me of the tales I heard as a child. Real characters have flaws, dreams, and secrets. Keep going!",
+            "mood_change": "nostalgic",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "creativity",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "gift",
+            "message": "Here, take my old storybook collection. Every story in there has a lesson. Let these tales inspire your imagination!",
+            "mood_change": "proud",
+            "satisfaction_delta": 8,
+            "effects": [
+              {
+                "resource": "creativity",
+                "delta": 5
+              },
+              {
+                "resource": "vocabulary_power",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "confidence",
+              "op": "<",
+              "value": 30
+            },
+            "action": "encourage",
+            "message": "Every great storyteller was once afraid to share their first story. Your voice matters. Tell YOUR story, not someone else's.",
+            "mood_change": "gentle",
+            "satisfaction_delta": 3,
+            "effects": [
+              {
+                "resource": "confidence",
+                "delta": 5
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "story_quality",
+          "op": ">=",
+          "value": 60
+        },
+        "icon": "⭐",
+        "text": "Your story is shaping up brilliantly! Story Quality at {story_quality}%.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "confidence",
+          "op": "<",
+          "value": 25
+        },
+        "icon": "😰",
+        "text": "Self-doubt is creeping in... Confidence dropped to {confidence}%. Time for encouragement!",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "creativity",
+              "op": ">=",
+              "value": 70
+            },
+            {
+              "resource": "character_depth",
+              "op": ">=",
+              "value": 60
+            }
+          ]
+        },
+        "icon": "🏆",
+        "text": "Buzz around school: your story might be a top contender for the competition!",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A cartoon illustration of a young student (age 11-12) working on a story for a school competition. Story quality {story_quality}%, creativity {creativity}%, confidence {confidence}%. Setting: {'cozy creative writing corner with colorful posters' if story_quality > 50 else 'messy desk with crumpled paper balls'}. Mood: {'inspired and excited' if creativity > 60 else 'thoughtful and focused' if creativity > 40 else 'struggling but determined'}. Cartoon style, vivid colors, warm school atmosphere."
+  },
+  "rounds": [
+    {
+      "round_id": "session_1_genre",
+      "round_title": "Session 1: Choosing Your Genre",
+      "situation": "The story competition has been announced! Mrs. Words explains that every great story starts with choosing a genre you love. She hands out a list of genres and asks you to pick one. Leo has already chosen — he's writing a mystery. What genre will your story be?",
+      "goal": "Choose a genre that excites you and sets the direction for your story.",
+      "coaching_moment": "Self-awareness: Choosing what you love gives you the energy to keep writing. Great storytellers play to their strengths.",
+      "reflection_prompt": "Why does picking a genre you care about make your story better?",
+      "ai_image_prompt": "Cartoon classroom with excited students, teacher holding up colorful genre cards (mystery, adventure, fantasy, realistic), bulletin board with competition poster, warm school setting",
+      "choices": [
+        {
+          "id": "s1_fantasy",
+          "label": "A. Fantasy Adventure",
+          "description": "Dragons, magic, and imaginary worlds. High creativity, but hard to keep believable.",
+          "delta": {
+            "creativity": 10,
+            "story_quality": 5,
+            "character_depth": 3,
+            "audience_engagement": 8,
+            "confidence": 5
+          },
+          "skill_tags": [
+            "creativity",
+            "risk_tolerance"
+          ],
+          "feedback": "Bold choice! Fantasy lets your imagination run wild. The challenge is making your magical world feel real.",
+          "skill_explanation": {
+            "creativity": "Exploring an unconventional approach shows creative thinking.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "s1_realistic",
+          "label": "B. Realistic Fiction",
+          "description": "A story about real life — school, family, friendships. Easier to relate to, but needs emotional depth.",
+          "delta": {
+            "character_depth": 10,
+            "story_quality": 5,
+            "audience_engagement": 5,
+            "empathy": 5,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "A mature choice! Realistic fiction connects readers to their own lives. Your characters need to feel genuine.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "s1_mystery",
+          "label": "C. Mystery / Detective",
+          "description": "Clues, suspects, and a big reveal. Needs strong plot structure but is thrilling.",
+          "delta": {
+            "plot_structure": 10,
+            "story_quality": 5,
+            "audience_engagement": 8,
+            "vocabulary_power": 3,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Same genre as Leo — a direct challenge! Mysteries demand careful planning. Every clue must fit like a puzzle piece.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "s1_folktale",
+          "label": "D. Folktale / Cultural Story",
+          "description": "Retell a traditional story with a modern twist. Grandma would love this!",
+          "delta": {
+            "creativity": 8,
+            "character_depth": 5,
+            "story_quality": 5,
+            "vocabulary_power": 5,
+            "audience_engagement": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Beautiful! Folktales carry ancient wisdom. Adding your own twist makes it both familiar and fresh.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_2_hook",
+      "round_title": "Session 2: Crafting the Hook",
+      "situation": "Mrs. Words explains that the first line of your story decides whether a reader keeps going or puts it down. She calls it 'the hook.' She reads examples from famous books and challenges you to write an opening that grabs attention instantly.",
+      "goal": "Write an opening hook that pulls readers into your story from the very first line.",
+      "coaching_moment": "First impressions matter — in stories and in life. A strong opening shows confidence and purpose.",
+      "reflection_prompt": "Why do you think readers decide within seconds whether to keep reading?",
+      "ai_image_prompt": "Cartoon student staring at blank paper with a pencil, thought bubbles showing different story openings, classroom with motivational writing posters, colorful and inviting",
+      "choices": [
+        {
+          "id": "s2_action",
+          "label": "A. Start with Action",
+          "description": "Drop the reader into the middle of something happening. 'The glass shattered before I could scream.'",
+          "delta": {
+            "story_quality": 8,
+            "audience_engagement": 10,
+            "plot_structure": 5,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "creativity"
+          ],
+          "feedback": "In medias res — starting in the middle of the action! This is a pro technique. Readers are instantly hooked.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "creativity": "Looking at the problem from a new angle demonstrates creativity."
+          }
+        },
+        {
+          "id": "s2_question",
+          "label": "B. Start with a Question",
+          "description": "Make readers curious. 'Have you ever found a letter that was never meant for you?'",
+          "delta": {
+            "audience_engagement": 10,
+            "story_quality": 6,
+            "character_depth": 3,
+            "confidence": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Curiosity is the most powerful hook! A question makes the reader a partner in your story.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "s2_setting",
+          "label": "C. Start with a Vivid Setting",
+          "description": "Paint a picture with words. 'The village sat between two mountains, where fog never fully lifted.'",
+          "delta": {
+            "vocabulary_power": 8,
+            "story_quality": 8,
+            "creativity": 5,
+            "audience_engagement": 3
+          },
+          "skill_tags": [
+            "creativity",
+            "delayed_gratification"
+          ],
+          "feedback": "Atmospheric! A vivid setting transports readers. It takes skill to paint a scene with just words.",
+          "skill_explanation": {
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "s2_dialogue",
+          "label": "D. Start with Dialogue",
+          "description": "Let a character speak first. '\"Run,\" she whispered. \"And whatever you do, don't look back.\"'",
+          "delta": {
+            "character_depth": 8,
+            "audience_engagement": 8,
+            "story_quality": 5,
+            "plot_structure": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Dialogue pulls readers in immediately! They feel like they're overhearing something important.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_3_characters",
+      "round_title": "Session 3: Building Characters",
+      "situation": "Mrs. Words says: 'Readers don't remember plots — they remember characters.' She asks everyone to create a main character with a clear motivation, a flaw, and a secret. Grandma visits class as a guest speaker and shares how characters in old folktales always had a journey of growth.",
+      "goal": "Create a main character that readers will care about and remember.",
+      "coaching_moment": "Empathy: To create a believable character, you must understand how other people think and feel.",
+      "reflection_prompt": "What makes you care about a character in a story? Is it their strengths or their flaws?",
+      "ai_image_prompt": "Cartoon student drawing a character on paper, thought bubbles with different character traits (brave, shy, curious), grandma in classroom telling stories, colorful and warm",
+      "choices": [
+        {
+          "id": "s3_flawed_hero",
+          "label": "A. The Flawed Hero",
+          "description": "A brave character who is also impatient and sometimes hurts friends. Realistic and relatable.",
+          "delta": {
+            "character_depth": 12,
+            "story_quality": 5,
+            "audience_engagement": 5,
+            "reader_feedback": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Brilliant! Flawed heroes are the most relatable. Readers see themselves in imperfect characters.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "s3_underdog",
+          "label": "B. The Quiet Underdog",
+          "description": "A shy, overlooked character who discovers hidden talent. Classic coming-of-age arc.",
+          "delta": {
+            "character_depth": 10,
+            "audience_engagement": 8,
+            "story_quality": 5,
+            "empathy": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Everyone loves a good underdog story! The quiet hero's journey inspires readers to believe in themselves.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "s3_dual_character",
+          "label": "C. Two Contrasting Characters",
+          "description": "Create two main characters — opposites who must work together. Complex but powerful.",
+          "delta": {
+            "character_depth": 8,
+            "plot_structure": 8,
+            "story_quality": 5,
+            "creativity": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "Ambitious! Dual protagonists create natural conflict and show multiple perspectives. Tricky but rewarding.",
+          "requires": {
+            "resource": "character_depth",
+            "op": ">=",
+            "value": 20,
+            "label": "Requires Character Depth >= 20"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "creativity": "Not settling for the obvious solution builds creative problem-solving."
+          }
+        },
+        {
+          "id": "s3_cultural_character",
+          "label": "D. A Character from Another Culture",
+          "description": "Base your character on someone from a culture different from yours. Research required!",
+          "delta": {
+            "character_depth": 8,
+            "vocabulary_power": 5,
+            "creativity": 8,
+            "audience_engagement": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Writing across cultures builds empathy and broadens your perspective. Research is the key to authenticity.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_4_conflict",
+      "round_title": "Session 4: The Heart of Conflict",
+      "situation": "Mrs. Words draws a story mountain on the board: 'No conflict, no story.' She explains that conflict is the engine that drives every plot. Your character needs a problem that feels impossible to solve. Leo smirks — he says his mystery has THREE plot twists already.",
+      "goal": "Design a central conflict that will keep readers turning pages.",
+      "coaching_moment": "Resilience: Great stories mirror real life — things go wrong, and characters must find the strength to push through.",
+      "reflection_prompt": "Why do stories need conflict? What would a story without any problems be like?",
+      "ai_image_prompt": "Cartoon teacher drawing a story mountain on whiteboard (beginning, rising action, climax, resolution), engaged students, colorful classroom with story structure posters",
+      "choices": [
+        {
+          "id": "s4_inner_conflict",
+          "label": "A. Inner Conflict (Character vs. Self)",
+          "description": "Your character battles self-doubt, fear, or a difficult choice. Emotional and deep.",
+          "delta": {
+            "character_depth": 10,
+            "story_quality": 8,
+            "plot_structure": 5,
+            "audience_engagement": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "The most powerful conflicts are inside us. Inner conflict gives your story emotional weight.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "s4_external_conflict",
+          "label": "B. External Conflict (Character vs. Villain)",
+          "description": "A clear antagonist — a bully, a rival, or a natural disaster. Exciting and clear.",
+          "delta": {
+            "plot_structure": 10,
+            "audience_engagement": 8,
+            "story_quality": 5,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Classic hero vs. villain! Clear conflicts are easy for readers to follow. Make your villain complex, not just evil.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "s4_social_conflict",
+          "label": "C. Social Conflict (Character vs. Society)",
+          "description": "Your character challenges an unfair rule, tradition, or system. Thought-provoking.",
+          "delta": {
+            "story_quality": 8,
+            "character_depth": 5,
+            "creativity": 5,
+            "vocabulary_power": 5,
+            "audience_engagement": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "creativity"
+          ],
+          "feedback": "Stories that challenge society make readers think. This kind of conflict stays with people long after they finish reading.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "creativity": "Thinking outside the box leads to more original solutions."
+          }
+        },
+        {
+          "id": "s4_mystery_conflict",
+          "label": "D. Mystery Conflict (Character vs. Unknown)",
+          "description": "Something strange is happening and your character must figure out what. Suspenseful!",
+          "delta": {
+            "plot_structure": 8,
+            "audience_engagement": 10,
+            "story_quality": 5,
+            "creativity": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Mystery keeps readers guessing! The unknown is the most suspenseful kind of conflict.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_5_dialogue",
+      "round_title": "Session 5: Making Characters Talk",
+      "situation": "Today's lesson: dialogue. Mrs. Words reads a scene with only dialogue and no action tags — the class can tell exactly who is speaking just by their voice. 'Each character should sound different,' she says. 'Dialogue reveals character.' She gives you a dialogue exercise.",
+      "goal": "Write dialogue that reveals character personality and moves the plot forward.",
+      "coaching_moment": "Communication: Good dialogue is like real conversation — it reveals who people are, not just what they say.",
+      "reflection_prompt": "How does the way someone speaks tell you about who they are?",
+      "ai_image_prompt": "Cartoon students in pairs practicing dialogue writing, speech bubbles above them with different character voices, teacher observing, creative classroom with dialogue examples on board",
+      "choices": [
+        {
+          "id": "s5_subtext",
+          "label": "A. Dialogue with Subtext",
+          "description": "Characters say one thing but mean another. Layers of meaning under the surface.",
+          "delta": {
+            "story_quality": 10,
+            "character_depth": 8,
+            "vocabulary_power": 5,
+            "audience_engagement": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Subtext is advanced writing! When characters say one thing and mean another, readers feel like detectives.",
+          "requires": {
+            "resource": "vocabulary_power",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Vocabulary Power >= 40"
+          },
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "s5_distinct_voices",
+          "label": "B. Distinct Character Voices",
+          "description": "Give each character a unique speaking style — slang, formality, catchphrases.",
+          "delta": {
+            "character_depth": 10,
+            "story_quality": 5,
+            "audience_engagement": 5,
+            "vocabulary_power": 5
+          },
+          "skill_tags": [
+            "creativity",
+            "empathy"
+          ],
+          "feedback": "When readers can hear each character's voice in their head, your dialogue is working perfectly!",
+          "skill_explanation": {
+            "creativity": "Exploring an unconventional approach shows creative thinking.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "s5_conflict_dialogue",
+          "label": "C. Argument Scene",
+          "description": "Write an intense argument between two characters. Conflict through words, not action.",
+          "delta": {
+            "plot_structure": 8,
+            "audience_engagement": 8,
+            "story_quality": 5,
+            "character_depth": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Arguments reveal true character! In heated moments, characters drop their masks and show who they really are.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "s5_humor",
+          "label": "D. Funny Dialogue",
+          "description": "Use humor — witty banter, misunderstandings, and comic timing between characters.",
+          "delta": {
+            "audience_engagement": 10,
+            "confidence": 5,
+            "creativity": 5,
+            "story_quality": 3
+          },
+          "skill_tags": [
+            "creativity",
+            "adaptability"
+          ],
+          "feedback": "Humor is the hardest skill in writing! If you can make a reader laugh, you've won their heart.",
+          "skill_explanation": {
+            "creativity": "Looking at the problem from a new angle demonstrates creativity.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_6_show_dont_tell",
+      "round_title": "Session 6: Show, Don't Tell",
+      "situation": "Mrs. Words writes two sentences on the board: 'She was sad.' vs. 'She pressed her forehead against the cold window, watching the rain blur the streetlights into soft, watery stars.' The class gasps at the difference. Today's challenge: rewrite a scene using only showing, no telling.",
+      "goal": "Master the technique of showing emotions and actions through vivid details instead of stating them directly.",
+      "coaching_moment": "Communication craft: 'Show, don't tell' is a life skill too — actions speak louder than words.",
+      "reflection_prompt": "In real life, how do you know someone is feeling something without them saying it?",
+      "ai_image_prompt": "Cartoon whiteboard with 'SHOW vs TELL' written in colorful letters, students writing with determination, vivid imagery floating from their papers like watercolor splashes, creative classroom",
+      "choices": [
+        {
+          "id": "s6_sensory",
+          "label": "A. Use All Five Senses",
+          "description": "Describe what characters see, hear, smell, taste, and touch. Immersive writing.",
+          "delta": {
+            "story_quality": 10,
+            "vocabulary_power": 8,
+            "audience_engagement": 5,
+            "creativity": 3
+          },
+          "skill_tags": [
+            "creativity",
+            "empathy"
+          ],
+          "feedback": "Sensory details transport readers INTO the scene. They don't just read your story — they experience it.",
+          "skill_explanation": {
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "s6_body_language",
+          "label": "B. Body Language & Micro-Actions",
+          "description": "Show emotions through gestures, posture, and small actions instead of naming the emotion.",
+          "delta": {
+            "character_depth": 8,
+            "story_quality": 8,
+            "audience_engagement": 5,
+            "empathy": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Body language is a silent language. When your character 'clenches their jaw' instead of 'getting angry,' readers feel it.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "s6_metaphor",
+          "label": "C. Metaphors & Similes",
+          "description": "Use figurative language to paint emotions. 'Her heart was a locked room.'",
+          "delta": {
+            "vocabulary_power": 10,
+            "creativity": 8,
+            "story_quality": 5,
+            "audience_engagement": 3
+          },
+          "skill_tags": [
+            "creativity",
+            "risk_tolerance"
+          ],
+          "feedback": "Metaphors make the invisible visible! They give readers a new way to understand feelings.",
+          "skill_explanation": {
+            "creativity": "Not settling for the obvious solution builds creative problem-solving.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "s6_environment",
+          "label": "D. Environment Reflects Emotion",
+          "description": "Use weather, setting, and surroundings to mirror how characters feel. Pathetic fallacy.",
+          "delta": {
+            "story_quality": 8,
+            "creativity": 5,
+            "vocabulary_power": 5,
+            "plot_structure": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "creativity"
+          ],
+          "feedback": "When the storm outside mirrors the storm inside — that's powerful storytelling. Setting becomes a character!",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "creativity": "Thinking outside the box leads to more original solutions."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_writers_block",
+      "id": "crisis_writers_block",
+      "round_title": "CRISIS: Writer's Block!",
+      "situation": "You sit down to write and... nothing. The words won't come. Leo's boasting about his story has gotten inside your head. You stare at the blank page for an hour. Mrs. Words notices you struggling. Grandma calls and says: 'When the river is blocked, find another path.' What do you do?",
+      "goal": "Overcome writer's block and get your creative flow back.",
+      "coaching_moment": "Resilience: Creative blocks happen to every writer. The key is not to panic — there are proven strategies to break through.",
+      "reflection_prompt": "When you feel stuck on something, what strategies help you start again?",
+      "ai_image_prompt": "Cartoon student with head on desk surrounded by crumpled paper balls, blank notebook, frustrated expression, clock ticking, contrasting thought bubble showing creative breakthrough, warm but tense scene",
+      "condition": {
+        "resource": "creativity",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "wb_freewrite",
+          "label": "A. Freewriting Sprint",
+          "description": "Set a timer for 10 minutes and write ANYTHING — no editing, no stopping, no judging.",
+          "delta": {
+            "creativity": 12,
+            "confidence": 8,
+            "story_quality": 3,
+            "vocabulary_power": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Freewriting bypasses your inner critic! When you stop judging, the words start flowing again.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "wb_walk",
+          "label": "B. Take a Walk & Observe",
+          "description": "Step away from the desk. Walk around, observe people, and collect real-life inspiration.",
+          "delta": {
+            "creativity": 10,
+            "character_depth": 5,
+            "confidence": 5,
+            "audience_engagement": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Sometimes the best writing happens away from the desk. Real life is the best source of stories!",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "wb_read",
+          "label": "C. Read a Favorite Book",
+          "description": "Read a chapter from a book you love. Let someone else's words remind you why you write.",
+          "delta": {
+            "vocabulary_power": 8,
+            "creativity": 8,
+            "story_quality": 5,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "adaptability"
+          ],
+          "feedback": "Great writers are great readers! Reading refills your creative well and reminds you what good writing feels like.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "wb_talk",
+          "label": "D. Talk Your Story Out Loud",
+          "description": "Tell your story to Grandma on the phone. Sometimes speaking unlocks what writing can't.",
+          "delta": {
+            "confidence": 10,
+            "creativity": 8,
+            "character_depth": 3,
+            "audience_engagement": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Oral storytelling came before writing! When you tell a story out loud, you find its natural rhythm.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_7_plot_twist",
+      "round_title": "Session 7: The Plot Twist",
+      "situation": "Mrs. Words unveils today's secret ingredient: the plot twist. 'A twist changes everything the reader thought they knew,' she says, showing clips of famous story surprises. The class buzzes with excitement. Even Leo is listening carefully. How will you surprise your readers?",
+      "goal": "Add a surprising plot twist that reframes your entire story.",
+      "coaching_moment": "Strategic thinking: A good twist isn't random — it's set up from the beginning with subtle clues the reader missed.",
+      "reflection_prompt": "What makes a plot twist feel satisfying rather than unfair?",
+      "ai_image_prompt": "Cartoon classroom with a big reveal moment, students gasping, teacher dramatically flipping a story page, surprise elements like lightning bolts and exclamation marks, vibrant cartoon style",
+      "choices": [
+        {
+          "id": "s7_betrayal",
+          "label": "A. The Trusted Ally is the Villain",
+          "description": "A character the reader trusts turns out to be working against the hero. Classic twist.",
+          "delta": {
+            "plot_structure": 10,
+            "audience_engagement": 10,
+            "story_quality": 5,
+            "reader_feedback": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "The betrayal twist is devastating when done right! Plant small clues early that readers only notice on re-reading.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "s7_perspective",
+          "label": "B. Perspective Shift",
+          "description": "Reveal the story from a completely different character's viewpoint. Everything changes.",
+          "delta": {
+            "character_depth": 8,
+            "story_quality": 8,
+            "creativity": 5,
+            "audience_engagement": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "creativity"
+          ],
+          "feedback": "Perspective shifts teach us that every story has multiple sides. This twist builds empathy!",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "creativity": "Exploring an unconventional approach shows creative thinking."
+          }
+        },
+        {
+          "id": "s7_hidden_truth",
+          "label": "C. The Hidden Truth",
+          "description": "A piece of information the reader assumed was true turns out to be false. The unreliable narrator.",
+          "delta": {
+            "plot_structure": 8,
+            "vocabulary_power": 5,
+            "story_quality": 8,
+            "audience_engagement": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "Unreliable narrators are brilliant! You're teaching readers to question what they're told. Very sophisticated.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "creativity": "Looking at the problem from a new angle demonstrates creativity."
+          }
+        },
+        {
+          "id": "s7_no_twist",
+          "label": "D. Emotional Twist Instead",
+          "description": "No plot trick — instead, a deeply emotional moment that changes the character forever.",
+          "delta": {
+            "character_depth": 10,
+            "story_quality": 5,
+            "audience_engagement": 5,
+            "reader_feedback": 5,
+            "empathy": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Not every twist needs to be a plot surprise. Emotional revelations can be just as powerful.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_8_peer_review",
+      "round_title": "Session 8: Peer Review Day",
+      "situation": "Mrs. Words pairs everyone up to exchange stories and give feedback. Your partner reads your story and has opinions. Leo also 'accidentally' reads a page of yours and smirks. Meanwhile, you read someone else's story and realize giving good feedback is just as hard as receiving it.",
+      "goal": "Handle peer feedback maturely and use it to improve your story.",
+      "coaching_moment": "Resilience and growth mindset: Feedback isn't personal — it's a gift that makes your work better.",
+      "reflection_prompt": "Why is it hard to hear criticism of something you created? How can feedback make you stronger?",
+      "ai_image_prompt": "Cartoon students exchanging papers, one student reading another's work with a pencil, mixed expressions of nervousness and curiosity, colorful sticky notes with feedback, warm classroom",
+      "choices": [
+        {
+          "id": "s8_embrace_all",
+          "label": "A. Embrace All Feedback Openly",
+          "description": "Listen to every comment, take notes, and thank your reviewers. Even the harsh ones.",
+          "delta": {
+            "reader_feedback": 12,
+            "story_quality": 5,
+            "confidence": -3,
+            "resilience": 5,
+            "character_depth": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "True courage! Accepting all feedback shows maturity. Even painful criticism holds useful truth.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "s8_selective",
+          "label": "B. Filter Feedback Strategically",
+          "description": "Listen carefully, but only apply feedback that aligns with your story's vision.",
+          "delta": {
+            "reader_feedback": 8,
+            "story_quality": 8,
+            "confidence": 3,
+            "plot_structure": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Smart filtering! Not all feedback is equal. A good writer knows which advice serves the story.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "s8_give_feedback",
+          "label": "C. Focus on Giving Great Feedback",
+          "description": "Spend extra time writing thoughtful, constructive feedback for your partner's story.",
+          "delta": {
+            "reader_feedback": 5,
+            "audience_engagement": 8,
+            "empathy": 5,
+            "vocabulary_power": 3,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Teaching others improves your own skills! Giving feedback makes you a better reader and writer.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "s8_defend",
+          "label": "D. Defend Your Story Passionately",
+          "description": "Explain your creative choices. Stand by your vision and argue for what you wrote.",
+          "delta": {
+            "confidence": 10,
+            "reader_feedback": 3,
+            "audience_engagement": 5,
+            "creativity": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Believing in your work matters! But careful — defending too hard can mean missing good advice.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_harsh_feedback",
+      "id": "crisis_harsh_feedback",
+      "round_title": "CRISIS: Harsh Feedback Hits Hard",
+      "situation": "A few classmates are brutal about your story. 'It's boring,' one says. 'The ending makes no sense,' says another. Even your partner's notes are full of red marks. Leo whispers: 'Maybe writing isn't your thing.' Your confidence is shattered. Mrs. Words sees you looking defeated and pulls you aside.",
+      "goal": "Process harsh criticism without giving up on your story.",
+      "coaching_moment": "Resilience: Every great writer has faced rejection and harsh criticism. What separates successful writers from everyone else is that they kept going.",
+      "reflection_prompt": "Has someone's harsh words ever made you want to quit something? What kept you going?",
+      "ai_image_prompt": "Cartoon student looking sad with red-marked paper, supportive teacher kneeling beside them, other students in background, crumpled papers, then a glimmer of determination in the student's eyes, emotional cartoon scene",
+      "condition": {
+        "and": [
+          {
+            "resource": "reader_feedback",
+            "operator": "<",
+            "value": 15
+          },
+          {
+            "resource": "confidence",
+            "operator": "<",
+            "value": 30
+          }
+        ]
+      },
+      "choices": [
+        {
+          "id": "hf_rewrite",
+          "label": "A. Major Rewrite",
+          "description": "Take the criticism seriously and rewrite your weakest sections from scratch.",
+          "delta": {
+            "story_quality": 10,
+            "plot_structure": 8,
+            "confidence": 5,
+            "reader_feedback": 8,
+            "creativity": -3
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Rewriting takes guts! Many bestselling authors rewrote their books 5+ times. Your story will be stronger for it.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "hf_mentor",
+          "label": "B. Seek Mrs. Words' Guidance",
+          "description": "Ask your teacher for one-on-one help. Let her experience guide your revision.",
+          "delta": {
+            "confidence": 10,
+            "story_quality": 5,
+            "reader_feedback": 5,
+            "vocabulary_power": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Asking for help is strength, not weakness! A mentor can see things you're too close to notice.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "hf_channel_anger",
+          "label": "C. Channel the Frustration into Writing",
+          "description": "Use your anger and hurt as fuel. Write the most emotionally raw scene in your story yet.",
+          "delta": {
+            "creativity": 10,
+            "character_depth": 8,
+            "confidence": 5,
+            "story_quality": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "creativity"
+          ],
+          "feedback": "Pain can be powerful fuel for art! Some of the greatest writing comes from the hardest moments.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking."
+          }
+        },
+        {
+          "id": "hf_perspective",
+          "label": "D. Get Distance and Return Fresh",
+          "description": "Put the story away for a day. Come back with fresh eyes and a clear head.",
+          "delta": {
+            "confidence": 8,
+            "creativity": 5,
+            "reader_feedback": 5,
+            "audience_engagement": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "Space gives perspective. When you return to your story with fresh eyes, problems become solvable.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_9_revision",
+      "round_title": "Session 9: The Art of Revision",
+      "situation": "Mrs. Words reveals a secret: 'Writing is rewriting.' She shows the class a famous author's first draft — covered in crossings-out and notes. 'Your first draft is you telling yourself the story. The revision is you telling the reader.' It's time to polish your tale.",
+      "goal": "Revise and polish your story into its best possible version.",
+      "coaching_moment": "Delayed gratification: Revision requires patience. The easy path is to submit the first draft. The wise path is to refine.",
+      "reflection_prompt": "Why is it important to review and improve your work before sharing it?",
+      "ai_image_prompt": "Cartoon student with colored pens editing a manuscript, before/after comparison on paper, crossing out words and adding better ones, focused expression, neat desk, warm lighting",
+      "choices": [
+        {
+          "id": "s9_structure_edit",
+          "label": "A. Restructure the Plot",
+          "description": "Move scenes around, cut weak parts, and strengthen the story arc. Big changes.",
+          "delta": {
+            "plot_structure": 12,
+            "story_quality": 8,
+            "audience_engagement": 3,
+            "confidence": -2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Restructuring is the bravest revision! Cutting your favorite scene because it doesn't serve the story? That's discipline.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "s9_language_polish",
+          "label": "B. Polish the Language",
+          "description": "Replace weak verbs, add sensory details, cut filler words. Make every sentence count.",
+          "delta": {
+            "vocabulary_power": 10,
+            "story_quality": 8,
+            "audience_engagement": 5,
+            "creativity": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "creativity"
+          ],
+          "feedback": "Line-by-line editing transforms good writing into great writing. Every word earns its place.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "creativity": "Not settling for the obvious solution builds creative problem-solving."
+          }
+        },
+        {
+          "id": "s9_character_deepen",
+          "label": "C. Deepen Character Arcs",
+          "description": "Add more layers to your characters. Show how they've changed from beginning to end.",
+          "delta": {
+            "character_depth": 12,
+            "story_quality": 5,
+            "reader_feedback": 5,
+            "empathy": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Character arcs are the soul of a story. When characters grow, readers grow with them.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "s9_ending",
+          "label": "D. Rewrite the Ending",
+          "description": "The ending is what readers remember most. Make yours unforgettable.",
+          "delta": {
+            "audience_engagement": 10,
+            "story_quality": 5,
+            "plot_structure": 5,
+            "reader_feedback": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "A powerful ending echoes in the reader's mind. The last page is the most important page.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "creativity": "Thinking outside the box leads to more original solutions."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_10_illustration",
+      "round_title": "Session 10: Cover & Illustration",
+      "situation": "The competition requires a cover page and one illustration. Mrs. Words says: 'Don't judge a book by its cover — but everyone does!' You have limited time to create visual elements that represent your story. A classmate who draws well offers to help, but do you want someone else's vision on YOUR story?",
+      "goal": "Create visual elements that enhance and represent your story beautifully.",
+      "coaching_moment": "Communication extends beyond words — visual storytelling is just as powerful. Presentation matters.",
+      "reflection_prompt": "How does the way something is presented change how people receive it?",
+      "ai_image_prompt": "Cartoon student designing a book cover with colored pencils and markers, drawing an illustration for their story, creative desk with art supplies, cover designs pinned to wall, cartoon art style",
+      "choices": [
+        {
+          "id": "s10_draw_self",
+          "label": "A. Draw Everything Yourself",
+          "description": "Create your own cover and illustration. It matches your vision perfectly, even if it's not polished.",
+          "delta": {
+            "creativity": 8,
+            "confidence": 5,
+            "story_quality": 3,
+            "audience_engagement": 3
+          },
+          "skill_tags": [
+            "creativity",
+            "resilience"
+          ],
+          "feedback": "Authenticity shines through! Hand-drawn art that matches the author's vision has its own charm.",
+          "skill_explanation": {
+            "creativity": "Exploring an unconventional approach shows creative thinking.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "s10_collaborate",
+          "label": "B. Collaborate with the Artist Classmate",
+          "description": "Share your vision and let a talented artist bring it to life. Better art, shared credit.",
+          "delta": {
+            "audience_engagement": 10,
+            "story_quality": 5,
+            "reader_feedback": 5,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Collaboration creates magic! Great books often have teams — writer and illustrator working as one.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "s10_minimalist",
+          "label": "C. Minimalist Design",
+          "description": "Simple, bold cover — one powerful image and a striking title. Clean and intriguing.",
+          "delta": {
+            "story_quality": 5,
+            "audience_engagement": 5,
+            "vocabulary_power": 3,
+            "creativity": 5,
+            "confidence": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Less is more! A minimalist cover says 'the story speaks for itself.' Sophisticated choice.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "s10_collage",
+          "label": "D. Photo Collage & Mixed Media",
+          "description": "Cut images from magazines, print photos, add textures. Unique and eye-catching.",
+          "delta": {
+            "creativity": 10,
+            "audience_engagement": 8,
+            "story_quality": 3,
+            "reader_feedback": 3
+          },
+          "skill_tags": [
+            "creativity",
+            "risk_tolerance"
+          ],
+          "feedback": "Mixed media is bold and original! Your cover will stand out from the crowd. Innovation in presentation!",
+          "skill_explanation": {
+            "creativity": "Looking at the problem from a new angle demonstrates creativity.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_11_rehearsal",
+      "round_title": "Session 11: Rehearsal — Finding Your Voice",
+      "situation": "The competition includes a live reading of an excerpt from your story. Mrs. Words explains that HOW you read matters as much as WHAT you wrote. She has everyone practice reading aloud. Some students are confident, others are terrified. Leo reads his story dramatically — the class is impressed. Now it's your turn to practice.",
+      "goal": "Prepare to read your story aloud with confidence and expression.",
+      "coaching_moment": "Confidence: Public speaking is a fear most people share. Preparation and practice are the antidotes.",
+      "reflection_prompt": "Why is speaking in front of others scary? What can you do to manage that fear?",
+      "ai_image_prompt": "Cartoon student standing at a podium practicing reading from a notebook, some students listening, nervous but determined expression, classroom with encouraging posters, microphone on desk",
+      "choices": [
+        {
+          "id": "s11_dramatic",
+          "label": "A. Dramatic Performance Reading",
+          "description": "Use different voices for characters, add pauses, and perform your story like a one-person show.",
+          "delta": {
+            "audience_engagement": 12,
+            "confidence": 8,
+            "reader_feedback": 5,
+            "creativity": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "creativity"
+          ],
+          "feedback": "Theatre and storytelling are cousins! A dramatic reading brings your words to life.",
+          "requires": {
+            "resource": "confidence",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Confidence >= 40"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking."
+          }
+        },
+        {
+          "id": "s11_calm",
+          "label": "B. Calm, Clear Reading",
+          "description": "Focus on clarity, pace, and letting the words do the work. No theatrics, just strong delivery.",
+          "delta": {
+            "confidence": 10,
+            "audience_engagement": 5,
+            "story_quality": 3,
+            "reader_feedback": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking"
+          ],
+          "feedback": "Sometimes simplicity is the most powerful performance. Clear reading shows trust in your own writing.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "s11_practice_friend",
+          "label": "C. Practice with a Friend First",
+          "description": "Read to a trusted friend before the big day. Get comfortable in a safe space.",
+          "delta": {
+            "confidence": 12,
+            "audience_engagement": 5,
+            "reader_feedback": 3,
+            "character_depth": 2
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Smart! Practicing in a safe space builds confidence. Your friend's reactions tell you what works.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "s11_multimedia",
+          "label": "D. Add Background Music / Sounds",
+          "description": "Play soft music or sound effects during your reading. Atmospheric and memorable.",
+          "delta": {
+            "audience_engagement": 10,
+            "creativity": 8,
+            "reader_feedback": 5,
+            "confidence": 2
+          },
+          "skill_tags": [
+            "creativity",
+            "adaptability"
+          ],
+          "feedback": "Multimedia storytelling! Music amplifies emotion. Your reading becomes an experience, not just a recitation.",
+          "skill_explanation": {
+            "creativity": "Not settling for the obvious solution builds creative problem-solving.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_12_big_reading",
+      "round_title": "Session 12: The Big Reading",
+      "situation": "Competition day is here! The school assembly hall is full — students, teachers, parents, and even a local author as the judge. Leo reads before you and gets loud applause. Now it's your turn. You walk to the podium, your story in hand. The microphone is on. The room falls silent. This is your moment.",
+      "goal": "Deliver your story to the audience and leave a lasting impression.",
+      "coaching_moment": "All your preparation comes together in this moment. Trust your story, trust your voice, and share what you've created.",
+      "reflection_prompt": "What does it feel like to share something you created with the world? What did you learn about yourself through this journey?",
+      "ai_image_prompt": "Cartoon student confidently reading at a podium in a school assembly hall, audience of students and parents listening intently, spotlight on the reader, colorful banners saying 'Story Competition', warm and triumphant atmosphere",
+      "choices": [
+        {
+          "id": "s12_full_emotion",
+          "label": "A. Read with Full Emotion",
+          "description": "Pour your heart into the reading. Let your voice crack, laugh, whisper — feel every word.",
+          "delta": {
+            "audience_engagement": 12,
+            "reader_feedback": 12,
+            "confidence": 8,
+            "story_quality": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Vulnerability is courage! When you read with genuine emotion, the audience feels it in their bones.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "s12_polished",
+          "label": "B. Polished Professional Reading",
+          "description": "Rehearsed and precise. Hit every beat perfectly. No mistakes, no surprises.",
+          "delta": {
+            "reader_feedback": 10,
+            "confidence": 10,
+            "audience_engagement": 5,
+            "story_quality": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Preparation meets performance! A polished reading shows professionalism and dedication to your craft.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "s12_improvise",
+          "label": "C. Improvise and Connect with the Audience",
+          "description": "Look up from the page, make eye contact, add spontaneous comments, and make it a conversation.",
+          "delta": {
+            "audience_engagement": 15,
+            "creativity": 5,
+            "confidence": 5,
+            "reader_feedback": 8
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Breaking the fourth wall! When a storyteller connects directly with the audience, magic happens.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "s12_surprise_ending",
+          "label": "D. Save the Best Line for Last",
+          "description": "Read your excerpt but save your most powerful line for a dramatic final moment. Mic drop.",
+          "delta": {
+            "reader_feedback": 12,
+            "audience_engagement": 10,
+            "story_quality": 5,
+            "confidence": 5,
+            "plot_structure": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "The last thing you say is what they remember! A stunning final line leaves the audience breathless.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "creativity": "Thinking outside the box leads to more original solutions."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "master_storyteller",
+      "label": "Master Storyteller",
+      "condition": "story_quality >= 75 and plot_structure >= 65",
+      "icon": "📖"
+    },
+    {
+      "id": "character_architect",
+      "label": "Character Architect",
+      "condition": "character_depth >= 70 and empathy >= 65",
+      "icon": "🎭"
+    },
+    {
+      "id": "audience_favorite",
+      "label": "Audience Favorite",
+      "condition": "audience_engagement >= 75 and reader_feedback >= 50",
+      "icon": "👏"
+    },
+    {
+      "id": "wordsmith",
+      "label": "Wordsmith",
+      "condition": "vocabulary_power >= 75 and creativity >= 65",
+      "icon": "✍️"
+    },
+    {
+      "id": "fearless_writer",
+      "label": "Fearless Writer",
+      "condition": "confidence >= 70 and resilience >= 60",
+      "icon": "💪"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Hook",
+      "definition": "The opening line or paragraph of a story that grabs the reader's attention and makes them want to keep reading."
+    },
+    {
+      "term": "Conflict",
+      "definition": "The central problem or struggle in a story that drives the plot forward and creates tension."
+    },
+    {
+      "term": "Climax",
+      "definition": "The most intense, exciting, or important point of a story — the moment when the conflict reaches its peak."
+    },
+    {
+      "term": "Resolution",
+      "definition": "The part of the story where the conflict is solved and loose ends are tied up."
+    },
+    {
+      "term": "Show Don't Tell",
+      "definition": "A writing technique where the author uses vivid descriptions, actions, and dialogue to convey emotions instead of simply stating them."
+    },
+    {
+      "term": "Character Arc",
+      "definition": "The transformation or inner journey of a character over the course of a story, usually involving personal growth."
+    },
+    {
+      "term": "Plot Twist",
+      "definition": "An unexpected turn of events in a story that changes the reader's understanding of what happened or what will happen next."
+    },
+    {
+      "term": "Subtext",
+      "definition": "The underlying meaning beneath dialogue or actions — what characters really mean but don't say directly."
+    }
+  ],
+  "endings": [
+    {
+      "id": "master_storyteller_ending",
+      "title": "Master Storyteller",
+      "icon": "📖",
+      "message": "Your story wins first place! The judge calls it 'a masterfully crafted tale with a compelling plot and beautiful language.' Mrs. Words tears up with pride. Even Leo shakes your hand and says, 'That was really good.' You've discovered the power of storytelling — and this is only the beginning of your writing journey.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "story_quality",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "plot_structure",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "character_architect_ending",
+      "title": "Character Architect",
+      "icon": "🎭",
+      "message": "The judge says: 'I've never read characters this real from a student writer. I felt like I KNEW these people.' Your character development blows everyone away. Grandma smiles from the audience — she knows those characters carry the wisdom of real people. You've learned that the heart of every story is its characters.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "character_depth",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "story_quality",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "audience_favorite_ending",
+      "title": "Audience Favorite",
+      "icon": "🌟",
+      "message": "You don't win first place — but something better happens. The audience votes you 'Most Engaging Storyteller.' During your reading, you could hear a pin drop. People laughed, gasped, and one parent actually wiped away a tear. Your story connected with people's hearts, and that's the real prize.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "audience_engagement",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "reader_feedback",
+            "operator": ">=",
+            "value": 40
+          }
+        ]
+      }
+    },
+    {
+      "id": "creative_voice_ending",
+      "title": "Creative Voice",
+      "icon": "✨",
+      "message": "The judge gives a special mention: 'The most original and creative story in the competition.' Your unique voice, bold choices, and imaginative world-building make your story unforgettable. You didn't follow the rules — you made new ones. Grandma whispers: 'You've found YOUR voice. Never lose it.'",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "creativity",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "vocabulary_power",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "aspiring_writer_ending",
+      "title": "Aspiring Writer",
+      "icon": "🌱",
+      "message": "You don't win a prize this time, but something has changed inside you. You completed a story — from blank page to final reading. Mrs. Words says: 'Every published author started exactly where you are now.' You leave the competition with a notebook full of ideas for your next story. The journey has just begun.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          14
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Story Forge: Build Your Tale Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Story Forge: Build Your Tale. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Story Forge: Build Your Tale Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Story Forge: Build Your Tale. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

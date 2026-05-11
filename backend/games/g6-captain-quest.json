@@ -1,0 +1,2493 @@
+{
+  "game_id": "g6-captain-quest",
+  "title": "Captain's Quest: Lead Your Crew",
+  "theme": "Leadership Fundamentals",
+  "icon": "🎖️",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You have just been elected class captain! Over 12 challenging weeks, you must lead your class through exciting events, tricky conflicts, and tough decisions. Every choice you make shapes your leadership style — will you inspire, unite, or command? The whole class is watching!",
+  "target_audience": "Ages 11-12",
+  "target_age": "11-12",
+  "grade": "6",
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You are the newly elected class captain for 12 weeks of leadership challenges.",
+    "Each round presents a real situation — organizing events, resolving conflicts, motivating teammates.",
+    "Watch your dashboard — Team Trust, Morale, Energy, and Class Reputation are all connected.",
+    "NPCs like Ms. Patel (teacher), Jordan (reluctant teammate), and Ava (eager helper) react to your choices.",
+    "Random events like surprise inspections and competitions will test your adaptability.",
+    "Balance your energy — great leaders know when to push and when to rest!"
+  ],
+  "learning_objectives": [
+    "Understand the basics of leading a team — trust, communication, and motivation",
+    "Practice making tough decisions that affect others",
+    "Learn to delegate tasks and manage time and energy",
+    "Develop empathy by seeing situations from different perspectives",
+    "Build resilience by handling setbacks and criticism",
+    "Explore different leadership styles and their outcomes"
+  ],
+  "tags": [
+    "leadership",
+    "teamwork",
+    "grade-6",
+    "communication",
+    "social-skills"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Leadership",
+    "Collaboration",
+    "Communication",
+    "Social-Emotional Learning"
+  ],
+  "cultural_context": "Middle school leadership, classroom dynamics, team management, globally playable",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.15,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.15,
+    "resilience": 0.15,
+    "empathy": 0.2,
+    "ethical_reasoning": 0.15
+  },
+  "initial_state": {
+    "leadership_skill": {
+      "value": 30,
+      "label": "Leadership Skill",
+      "icon": "🎖️",
+      "min": 0,
+      "max": 100
+    },
+    "team_trust": {
+      "value": 50,
+      "label": "Team Trust",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "morale": {
+      "value": 60,
+      "label": "Morale",
+      "icon": "🔥",
+      "min": 0,
+      "max": 100
+    },
+    "decision_quality": {
+      "value": 40,
+      "label": "Decision Quality",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "communication": {
+      "value": 35,
+      "label": "Communication",
+      "icon": "💬",
+      "min": 0,
+      "max": 100
+    },
+    "empathy_score": {
+      "value": 50,
+      "label": "Empathy",
+      "icon": "💛",
+      "min": 0,
+      "max": 100
+    },
+    "class_reputation": {
+      "value": 40,
+      "label": "Class Reputation",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "energy": {
+      "value": 80,
+      "label": "Energy",
+      "icon": "⚡",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "team_dynamics",
+        "label": "Team Dynamics",
+        "icon": "👥",
+        "color": "#6366F1",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, team_trust * 0.4 + morale * 0.3 + empathy_score * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "decision_making",
+        "label": "Decision Making",
+        "icon": "🧠",
+        "color": "#F59E0B",
+        "initial_health": 40,
+        "health_formula": "min(100, max(0, decision_quality * 0.5 + leadership_skill * 0.3 + communication * 0.2))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "communication_hub",
+        "label": "Communication Hub",
+        "icon": "💬",
+        "color": "#10B981",
+        "initial_health": 35,
+        "health_formula": "min(100, max(0, communication * 0.4 + empathy_score * 0.3 + team_trust * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "class_spirit",
+        "label": "Class Spirit",
+        "icon": "🎉",
+        "color": "#EF4444",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, morale * 0.4 + class_reputation * 0.3 + energy * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "leadership_index",
+        "label": "Leadership Index",
+        "icon": "🎖️",
+        "formula": "(leadership_skill * 0.3 + decision_quality * 0.25 + communication * 0.2 + empathy_score * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "team_harmony",
+        "label": "Team Harmony",
+        "icon": "🤝",
+        "formula": "(team_trust * 0.35 + morale * 0.35 + empathy_score * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 30,
+          "warning": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "impact_score",
+        "label": "Impact Score",
+        "icon": "🌟",
+        "formula": "(class_reputation * 0.3 + leadership_skill * 0.25 + team_trust * 0.25 + decision_quality * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "energy_recovery",
+        "label": "Weekly Energy Recovery",
+        "effects": [
+          {
+            "resource": "energy",
+            "formula": "min(100, energy + 5)"
+          }
+        ],
+        "description": "You recover a little energy each week from rest."
+      },
+      {
+        "id": "morale_drift",
+        "label": "Morale Drift",
+        "condition": {
+          "resource": "team_trust",
+          "op": "<",
+          "value": 35
+        },
+        "effects": [
+          {
+            "resource": "morale",
+            "formula": "max(0, morale - 3)"
+          }
+        ],
+        "description": "When trust is low, morale gradually drops."
+      },
+      {
+        "id": "reputation_growth",
+        "label": "Reputation Growth",
+        "condition": {
+          "resource": "morale",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "class_reputation",
+            "formula": "min(100, class_reputation + 2)"
+          }
+        ],
+        "description": "High morale boosts the class reputation over time."
+      },
+      {
+        "id": "leadership_growth",
+        "label": "Leadership Growth",
+        "condition": {
+          "resource": "decision_quality",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "leadership_skill",
+            "formula": "min(100, leadership_skill + 2)"
+          }
+        ],
+        "description": "Good decisions steadily build your leadership skill."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "trust_boosts_communication",
+        "from_subsystem": "team_dynamics",
+        "to_subsystem": "communication_hub",
+        "label": "Trust Opens Communication",
+        "condition": {
+          "resource": "team_trust",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "communication",
+            "formula": "min(100, communication + (team_trust - 60) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When the team trusts you, they communicate more openly."
+      },
+      {
+        "id": "low_morale_hurts_decisions",
+        "from_subsystem": "class_spirit",
+        "to_subsystem": "decision_making",
+        "label": "Low Morale Clouds Judgment",
+        "condition": {
+          "resource": "morale",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "decision_quality",
+            "formula": "max(0, decision_quality - (30 - morale) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "A demoralized team makes it harder to think clearly and decide well."
+      },
+      {
+        "id": "empathy_builds_spirit",
+        "from_subsystem": "communication_hub",
+        "to_subsystem": "class_spirit",
+        "label": "Empathy Fuels Spirit",
+        "condition": {
+          "resource": "empathy_score",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "morale",
+            "formula": "min(100, morale + (empathy_score - 60) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "A captain who shows empathy lifts the whole team's spirit."
+      },
+      {
+        "id": "exhaustion_tanks_trust",
+        "from_subsystem": "team_dynamics",
+        "to_subsystem": "team_dynamics",
+        "label": "Exhaustion Erodes Trust",
+        "condition": {
+          "resource": "energy",
+          "op": "<",
+          "value": 25
+        },
+        "effects": [
+          {
+            "resource": "team_trust",
+            "formula": "max(0, team_trust - (25 - energy) * 0.2)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When you are exhausted, you make mistakes and the team loses faith."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "class_reputation",
+        "equilibrium": 35,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "energy",
+        "equilibrium": 50,
+        "rate": 0.05,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "surprise_inspection",
+        "label": "Surprise School Inspection",
+        "icon": "🔍",
+        "description": "The school principal has announced a surprise classroom inspection! Your class needs to be organized and presentable.",
+        "probability": 0.2,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 3
+        },
+        "effects": [
+          {
+            "resource": "energy",
+            "delta": -10
+          },
+          {
+            "resource": "morale",
+            "delta": -5
+          },
+          {
+            "resource": "class_reputation",
+            "delta": 8
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "Surprise inspection! Your class pulled together and impressed the principal.",
+        "ai_image_prompt": "Cartoon school classroom, students quickly tidying up, principal walking in with clipboard, excited and nervous kids"
+      },
+      {
+        "id": "inter_class_competition",
+        "label": "Inter-Class Competition Announced",
+        "icon": "🏆",
+        "description": "The school announces an inter-class quiz and talent competition! This is your chance to unite the team.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "morale",
+              "op": ">=",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "morale",
+            "delta": 8
+          },
+          {
+            "resource": "team_trust",
+            "delta": 5
+          },
+          {
+            "resource": "energy",
+            "delta": -8
+          },
+          {
+            "resource": "class_reputation",
+            "delta": 6
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "Your class enters the inter-class competition! Everyone is pumped and working together.",
+        "ai_image_prompt": "Cartoon school auditorium, students on stage performing, cheering classmates, trophy on display, colorful banners"
+      },
+      {
+        "id": "team_member_crisis",
+        "label": "A Teammate's Personal Crisis",
+        "icon": "😢",
+        "description": "One of your team members is going through a tough time at home and has become withdrawn. The class notices.",
+        "probability": 0.15,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 2
+        },
+        "effects": [
+          {
+            "resource": "morale",
+            "delta": -6
+          },
+          {
+            "resource": "empathy_score",
+            "delta": 5
+          },
+          {
+            "resource": "team_trust",
+            "delta": -3
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "A classmate is struggling. The way you handle this will show what kind of leader you are.",
+        "ai_image_prompt": "Cartoon classroom, one student sitting alone looking sad, other students concerned, captain approaching kindly"
+      },
+      {
+        "id": "principal_challenge",
+        "label": "Principal's Leadership Award",
+        "icon": "🏅",
+        "description": "The principal announces a special award for the best-led class this term! Extra recognition is on the line.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 6
+            },
+            {
+              "resource": "class_reputation",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "morale",
+            "delta": 10
+          },
+          {
+            "resource": "class_reputation",
+            "delta": 8
+          },
+          {
+            "resource": "leadership_skill",
+            "delta": 5
+          }
+        ],
+        "cooldown": 6,
+        "max_occurrences": 1,
+        "news_text": "Your class is nominated for the Principal's Leadership Award! Everyone is thrilled!",
+        "ai_image_prompt": "Cartoon school assembly, principal handing a shiny award to excited students, colorful stage, applause"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "ms_patel",
+        "name": "Ms. Patel",
+        "role": "Class Teacher",
+        "icon": "👩‍🏫",
+        "initial_mood": "supportive",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "decision_quality",
+              "op": "<",
+              "value": 30
+            },
+            "action": "warn",
+            "message": "Captain, I've noticed your recent decisions haven't worked out well. Take a step back and think before you act.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "leadership_skill",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "I'm really proud of how you've grown as a leader! The class looks up to you.",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "class_reputation",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "praise",
+            "message": "Other teachers are talking about how well-managed our class is. Great job, captain!",
+            "mood_change": "proud",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "energy",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "urgent",
+            "message": "You look exhausted! A good leader knows when to rest and delegate. You can't do everything alone.",
+            "mood_change": "worried",
+            "satisfaction_delta": -3,
+            "effects": [
+              {
+                "resource": "energy",
+                "delta": 5
+              }
+            ],
+            "trigger_round": "crisis_burnout"
+          }
+        ]
+      },
+      {
+        "id": "jordan",
+        "name": "Jordan",
+        "role": "Reluctant Team Member",
+        "icon": "😤",
+        "initial_mood": "skeptical",
+        "initial_satisfaction": 40,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "team_trust",
+              "op": "<",
+              "value": 30
+            },
+            "action": "rebel",
+            "message": "Why should we listen to you? You haven't earned our trust. I'm not doing any more tasks!",
+            "mood_change": "angry",
+            "satisfaction_delta": -10,
+            "effects": [
+              {
+                "resource": "morale",
+                "delta": -5
+              },
+              {
+                "resource": "class_reputation",
+                "delta": -3
+              }
+            ],
+            "trigger_round": "crisis_rebellion"
+          },
+          {
+            "condition": {
+              "resource": "team_trust",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "support",
+            "message": "Okay, I admit it — you're actually a pretty good captain. Count me in.",
+            "mood_change": "friendly",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "empathy_score",
+                  "op": ">=",
+                  "value": 60
+                },
+                {
+                  "resource": "communication",
+                  "op": ">=",
+                  "value": 55
+                }
+              ]
+            },
+            "action": "ally",
+            "message": "You actually listen to people. That's rare. I've got your back, captain.",
+            "mood_change": "loyal",
+            "satisfaction_delta": 10
+          }
+        ]
+      },
+      {
+        "id": "ava",
+        "name": "Ava",
+        "role": "Enthusiastic Helper",
+        "icon": "🌟",
+        "initial_mood": "eager",
+        "initial_satisfaction": 70,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "morale",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "boost",
+            "message": "I've already started organizing the next activity! Just tell me what else I can do!",
+            "mood_change": "excited",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "morale",
+                  "op": "<",
+                  "value": 35
+                },
+                {
+                  "resource": "team_trust",
+                  "op": "<",
+                  "value": 40
+                }
+              ]
+            },
+            "action": "frustrated",
+            "message": "I keep trying to help but nobody cares anymore. Maybe being captain isn't about just one person doing everything...",
+            "mood_change": "dejected",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "resource": "leadership_skill",
+              "op": "<",
+              "value": 25
+            },
+            "action": "over_depend",
+            "message": "Don't worry, I'll handle everything! You just sit back, captain!",
+            "mood_change": "overworked",
+            "satisfaction_delta": -3,
+            "effects": [
+              {
+                "resource": "team_trust",
+                "delta": -4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "leadership_skill",
+          "op": ">=",
+          "value": 60
+        },
+        "icon": "📈",
+        "text": "Captain's leadership skill reaches {leadership_skill}! The class is thriving!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "team_trust",
+              "op": ">=",
+              "value": 70
+            },
+            {
+              "resource": "morale",
+              "op": ">=",
+              "value": 70
+            }
+          ]
+        },
+        "icon": "🌟",
+        "text": "Class 6 is being called the best team in school!",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A cartoon-style school classroom scene. The class captain (age 11-12) is leading a team of diverse students. Team trust is {team_trust}%, morale is {morale}%, energy at {energy}%. The mood is {'lively and excited' if morale > 60 else 'tense and uncertain' if morale < 40 else 'calm and normal'}. Cartoon style, vibrant colors, school setting."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_first_day",
+      "round_title": "Week 1: Your First Day as Captain",
+      "situation": "Congratulations — you've just been elected class captain! The whole class is looking at you. Some kids are excited, some are skeptical (especially Jordan), and Ms. Patel says your first move will set the tone. What do you do?",
+      "goal": "Make a strong first impression and set the tone for your leadership.",
+      "coaching_moment": "First impressions matter! A leader's opening move signals their priorities — will you focus on rules, relationships, or results?",
+      "reflection_prompt": "What do you think makes a good first impression as a leader?",
+      "ai_image_prompt": "Cartoon classroom, a student standing at front of class being introduced as captain, diverse classmates, teacher smiling, school decorations",
+      "choices": [
+        {
+          "id": "w1_rules",
+          "label": "A. Set Clear Rules & Expectations",
+          "description": "Announce your vision: punctuality, fairness, and teamwork. Make it clear what you expect from everyone.",
+          "delta": {
+            "leadership_skill": 8,
+            "decision_quality": 10,
+            "team_trust": -3,
+            "morale": -2,
+            "class_reputation": 5,
+            "energy": -5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Strong structure! But some classmates feel you're being bossy on day one. Rules without relationships can feel cold.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w1_listen",
+          "label": "B. Ask Everyone What They Want",
+          "description": "Go around the room and ask each person what they hope for this term. Take notes. Listen carefully.",
+          "delta": {
+            "communication": 10,
+            "empathy_score": 12,
+            "team_trust": 8,
+            "morale": 5,
+            "energy": -8,
+            "decision_quality": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Amazing listening skills! The class feels heard and valued. Jordan is surprised — maybe this captain is different.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "w1_fun",
+          "label": "C. Organize an Icebreaker Game",
+          "description": "Start with a fun team-building activity to bring everyone together and break the ice.",
+          "delta": {
+            "morale": 12,
+            "team_trust": 6,
+            "communication": 5,
+            "class_reputation": 3,
+            "energy": -10,
+            "leadership_skill": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Great energy! The class is laughing and bonding. But Ms. Patel wonders — when will the actual planning begin?",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "w1_delegate",
+          "label": "D. Form a Leadership Team",
+          "description": "Ask for volunteers to help lead different areas — events, sports, academics. Share the power.",
+          "delta": {
+            "leadership_skill": 10,
+            "team_trust": 10,
+            "communication": 6,
+            "decision_quality": 5,
+            "energy": -5,
+            "empathy_score": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Smart delegation! Sharing leadership makes the team stronger. Ava immediately volunteers for everything.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_class_event",
+      "round_title": "Week 2: Organizing the Class Event",
+      "situation": "The school has asked each class to organize a stall for the upcoming school fair. Your class has one week to plan. Everyone has different ideas — a food stall, a game zone, a science exhibit, or an art gallery. Opinions are strong!",
+      "goal": "Choose and plan your class's stall for the school fair.",
+      "coaching_moment": "Decision-making under pressure: When everyone has an opinion, a leader must listen, then decide — and get everyone behind the decision.",
+      "reflection_prompt": "How do you make a fair decision when everyone wants something different?",
+      "ai_image_prompt": "Cartoon classroom with students brainstorming, colorful sticky notes on board, school fair planning, diverse group arguing cheerfully",
+      "choices": [
+        {
+          "id": "w2_vote",
+          "label": "A. Hold a Class Vote",
+          "description": "Let the class vote democratically. The majority wins. Fair and simple.",
+          "delta": {
+            "team_trust": 8,
+            "decision_quality": 6,
+            "communication": 5,
+            "morale": 3,
+            "energy": -5,
+            "class_reputation": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Democratic leadership! Everyone respects the process, even those who didn't get their way.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "w2_combine",
+          "label": "B. Combine the Best Ideas",
+          "description": "Create a hybrid stall — a science-themed food stall with interactive games! Ambitious but creative.",
+          "delta": {
+            "leadership_skill": 8,
+            "morale": 8,
+            "class_reputation": 8,
+            "energy": -15,
+            "decision_quality": 5,
+            "communication": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Creative compromise! Everyone sees their idea represented. But it's a LOT of work — watch your energy!",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w2_assign",
+          "label": "C. Decide Based on Strengths",
+          "description": "Pick the idea that matches your class's strengths. If you have great artists, go art. If great cooks, go food.",
+          "delta": {
+            "decision_quality": 10,
+            "leadership_skill": 6,
+            "class_reputation": 6,
+            "morale": 2,
+            "team_trust": -2,
+            "energy": -5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Strategic thinking! Playing to your strengths is smart. But some students feel their ideas were ignored.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "w2_teacher",
+          "label": "D. Ask Ms. Patel to Decide",
+          "description": "Let the teacher make the final call. Avoids conflict, but are you really leading?",
+          "delta": {
+            "team_trust": -5,
+            "leadership_skill": -3,
+            "morale": -3,
+            "decision_quality": -5,
+            "energy": 5,
+            "class_reputation": -2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The easy way out. Ms. Patel decides, but the class wonders — who's really the captain here?",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_bully",
+      "round_title": "Week 3: Handling the Bully Situation",
+      "situation": "You hear that a bigger kid from another class has been teasing one of your quiet classmates during lunch. The victim hasn't told any teacher. Your classmates expect you to do something — you're the captain, after all.",
+      "goal": "Handle the bullying situation with courage and care.",
+      "coaching_moment": "Ethical courage: Standing up for others — even when it's scary — is one of the most important leadership qualities.",
+      "reflection_prompt": "What's the difference between being brave and being reckless when standing up for someone?",
+      "ai_image_prompt": "Cartoon school hallway, a nervous student being approached by a bigger kid, concerned classmates watching, captain stepping forward bravely",
+      "choices": [
+        {
+          "id": "w3_confront",
+          "label": "A. Talk to the Bully Directly",
+          "description": "Approach the bully calmly and firmly. Tell them to stop. Stand your ground.",
+          "delta": {
+            "leadership_skill": 10,
+            "team_trust": 10,
+            "class_reputation": 5,
+            "energy": -10,
+            "morale": 5,
+            "empathy_score": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Brave move! The bully backs down and your class sees you as someone who stands up for them. But it took a lot of courage.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w3_teacher",
+          "label": "B. Report to a Teacher",
+          "description": "Tell Ms. Patel about the situation and let the adults handle it. Safe and responsible.",
+          "delta": {
+            "decision_quality": 8,
+            "empathy_score": 6,
+            "team_trust": 3,
+            "class_reputation": 3,
+            "energy": -3,
+            "communication": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "Smart and responsible! Knowing when to involve adults is wisdom, not weakness. The teacher handles it effectively.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "w3_support",
+          "label": "C. Support the Victim Privately",
+          "description": "Talk to your classmate first. Help them build confidence and decide together what to do.",
+          "delta": {
+            "empathy_score": 12,
+            "team_trust": 8,
+            "communication": 8,
+            "morale": 3,
+            "energy": -5,
+            "leadership_skill": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Compassionate leadership! You helped your classmate feel supported and empowered to speak up. That takes real empathy.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "w3_group",
+          "label": "D. Rally the Class Together",
+          "description": "Get the whole class to stand together. There's safety in numbers. Show the bully your class is united.",
+          "delta": {
+            "morale": 10,
+            "team_trust": 8,
+            "class_reputation": 6,
+            "energy": -12,
+            "leadership_skill": 6,
+            "empathy_score": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Powerful team move! The whole class standing together sends a strong message. But make sure it doesn't turn into a mob.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_underperformers",
+      "round_title": "Week 4: Motivating the Underperformers",
+      "situation": "Ms. Patel tells you that several students are falling behind in studies and losing interest. She asks you, as captain, to help motivate them. Jordan is one of them. This is tricky — how do you help without being annoying?",
+      "goal": "Find a way to motivate struggling classmates without being pushy.",
+      "coaching_moment": "Empathic motivation: The best leaders don't just push people — they understand WHY someone is struggling and help them find their own motivation.",
+      "reflection_prompt": "Why do people sometimes resist help, and how can you offer it without being pushy?",
+      "ai_image_prompt": "Cartoon classroom study group, captain helping a disinterested student with books, patient expression, warm colors, encouraging vibes",
+      "choices": [
+        {
+          "id": "w4_buddy",
+          "label": "A. Create a Buddy System",
+          "description": "Pair stronger students with struggling ones. Everyone helps each other. No one is singled out.",
+          "delta": {
+            "team_trust": 8,
+            "empathy_score": 8,
+            "morale": 5,
+            "communication": 5,
+            "class_reputation": 5,
+            "energy": -8
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Brilliant idea! The buddy system helps without embarrassing anyone. Jordan gets paired with Ava — an interesting match!",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w4_rewards",
+          "label": "B. Create Fun Rewards & Challenges",
+          "description": "Turn studying into a game — points, badges, a mini leaderboard. Make improvement exciting!",
+          "delta": {
+            "morale": 10,
+            "leadership_skill": 5,
+            "class_reputation": 5,
+            "energy": -10,
+            "decision_quality": 5,
+            "team_trust": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Gamification works! Students love the competition. But make sure it doesn't just reward those already doing well.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "w4_talk",
+          "label": "C. Have Private Conversations",
+          "description": "Talk to each struggling student one-on-one. Understand their problems. Maybe it's not just about studies.",
+          "delta": {
+            "empathy_score": 12,
+            "communication": 10,
+            "team_trust": 6,
+            "energy": -12,
+            "leadership_skill": 5,
+            "decision_quality": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Deep empathy! You discover Jordan is dealing with problems at home. Now you understand — and can really help.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "w4_ignore",
+          "label": "D. Focus on Willing Students First",
+          "description": "Spend energy on students who want to improve. The others will catch up when they're ready.",
+          "delta": {
+            "energy": 5,
+            "decision_quality": 5,
+            "class_reputation": 3,
+            "team_trust": -8,
+            "empathy_score": -5,
+            "morale": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Efficient, but a leader who leaves people behind loses their trust. Jordan feels abandoned and grows more resentful.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_delegation",
+      "round_title": "Week 5: The Delegation Challenge",
+      "situation": "Three big things are happening at once: a science project deadline, sports day practice, and the class newspaper. You can't do everything yourself. Ava says she'll handle all three, but that's not fair to her either.",
+      "goal": "Learn to delegate tasks effectively without burning out yourself or others.",
+      "coaching_moment": "Delegation is not dumping work — it's matching the right task to the right person and trusting them to deliver.",
+      "reflection_prompt": "Why is it hard for leaders to let go and trust others with important tasks?",
+      "ai_image_prompt": "Cartoon captain at desk with three piles of work, looking overwhelmed, teammates raising hands to help, colorful task cards",
+      "choices": [
+        {
+          "id": "w5_smart_delegate",
+          "label": "A. Match Tasks to Strengths",
+          "description": "Give the science project to the science whiz, sports to the athlete, and newspaper to the writer. Trust each one.",
+          "delta": {
+            "leadership_skill": 10,
+            "decision_quality": 10,
+            "team_trust": 8,
+            "energy": 5,
+            "morale": 5,
+            "communication": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Perfect delegation! Everyone feels valued and trusted. This is what great leadership looks like.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "w5_do_all",
+          "label": "B. Try to Do Everything Yourself",
+          "description": "You're the captain — it's your responsibility. Pull all-nighters if you have to!",
+          "delta": {
+            "energy": -25,
+            "leadership_skill": 3,
+            "class_reputation": 5,
+            "team_trust": -5,
+            "morale": -3,
+            "decision_quality": -5
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Brave but unsustainable! You're exhausted and the quality of everything suffers. A leader who does everything alone isn't leading.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "w5_ava",
+          "label": "C. Let Ava Handle Most of It",
+          "description": "Ava offered, and she's great at everything. Give her two of three tasks.",
+          "delta": {
+            "energy": 8,
+            "team_trust": -6,
+            "morale": -5,
+            "empathy_score": -5,
+            "leadership_skill": -3,
+            "decision_quality": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Ava is overwhelmed and resentful. Other classmates feel ignored. Relying too much on one person isn't delegation — it's unfairness.",
+          "requires": {
+            "resource": "energy",
+            "op": ">=",
+            "value": 20,
+            "label": "Requires Energy ≥ 20"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w5_teams",
+          "label": "D. Create Small Teams for Each Task",
+          "description": "Form three teams of 4-5 students each, with a team lead for each. You coordinate across teams.",
+          "delta": {
+            "leadership_skill": 8,
+            "team_trust": 10,
+            "communication": 8,
+            "morale": 8,
+            "energy": -8,
+            "class_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Excellent team structure! More people feel included and responsible. Jordan even agrees to join the sports team.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_unpopular_decision",
+      "round_title": "Week 6: The Unpopular Decision",
+      "situation": "The class wants to skip study period to practice for the inter-class dance competition. It would be really fun, and everyone is excited. But the mid-term exams are next week, and Ms. Patel has left the decision to you.",
+      "goal": "Make a responsible decision even when it's unpopular.",
+      "coaching_moment": "Ethical leadership means sometimes saying 'no' to what feels good now for what matters more later. That takes real courage.",
+      "reflection_prompt": "Is it harder to make an unpopular decision or to go along with what everyone wants? Why?",
+      "ai_image_prompt": "Cartoon classroom split in two — half the students excited about dancing, half worried about exams, captain in the middle deciding",
+      "choices": [
+        {
+          "id": "w6_study",
+          "label": "A. Study First, Dance Later",
+          "description": "Say no to skipping study. Promise to find extra practice time after exams.",
+          "delta": {
+            "decision_quality": 12,
+            "class_reputation": 8,
+            "morale": -8,
+            "team_trust": -3,
+            "leadership_skill": 8,
+            "energy": -5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "Tough call, captain! Some kids grumble, but deep down they know you're right. Ms. Patel gives you an approving nod.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "w6_compromise",
+          "label": "B. Split the Time 50/50",
+          "description": "Half the period for studying, half for dance practice. Balance!",
+          "delta": {
+            "decision_quality": 6,
+            "morale": 5,
+            "communication": 5,
+            "team_trust": 5,
+            "energy": -8,
+            "class_reputation": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "A fair compromise! Not everyone is fully happy, but everyone can accept it. That's the art of negotiation.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "w6_dance",
+          "label": "C. Skip Study for Dance",
+          "description": "Go with what the class wants. Happy team, happy captain!",
+          "delta": {
+            "morale": 12,
+            "team_trust": 5,
+            "decision_quality": -8,
+            "class_reputation": -5,
+            "energy": -10,
+            "leadership_skill": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The class cheers! But next week's exam results are going to hurt. Was popularity worth the cost?",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w6_creative",
+          "label": "D. Turn Dance Into a Study Tool",
+          "description": "Create a study-dance mashup — choreograph moves that help remember exam topics!",
+          "delta": {
+            "leadership_skill": 8,
+            "morale": 8,
+            "decision_quality": 8,
+            "communication": 5,
+            "energy": -12,
+            "class_reputation": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Genius! The class loves it, and they're actually learning. Creative problem-solving at its best!",
+          "requires": {
+            "resource": "leadership_skill",
+            "op": ">=",
+            "value": 35,
+            "label": "Requires Leadership Skill ≥ 35"
+          },
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_rebellion",
+      "id": "crisis_rebellion",
+      "round_title": "CRISIS: Team Rebellion!",
+      "situation": "Jordan has had enough. They've convinced several classmates that you're a bad captain. A group of students refuses to participate in any class activities. They're sitting with arms crossed, whispering, and ignoring your instructions. The class is splitting into factions. Ms. Patel is watching to see how you handle this.",
+      "goal": "Resolve the team rebellion without making things worse.",
+      "coaching_moment": "Resilience and humility: When your team rebels, the worst thing you can do is get defensive. The best leaders listen to criticism, acknowledge their mistakes, and rebuild trust through action.",
+      "reflection_prompt": "When someone criticizes your leadership, is it always an attack — or could it be feedback in disguise?",
+      "ai_image_prompt": "Cartoon classroom, a group of students with arms crossed looking defiant, captain looking worried but determined, split classroom, tense atmosphere",
+      "condition": {
+        "resource": "team_trust",
+        "operator": "<",
+        "value": 30
+      },
+      "choices": [
+        {
+          "id": "cr_listen",
+          "label": "A. Hold a Class Meeting — Listen First",
+          "description": "Call an open meeting. Let Jordan and others speak their mind. Listen without defending yourself.",
+          "delta": {
+            "team_trust": 12,
+            "empathy_score": 10,
+            "communication": 8,
+            "morale": 5,
+            "energy": -10,
+            "leadership_skill": 8
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Incredible maturity! By listening without getting defensive, you show real leadership. Jordan is surprised — and starts to soften.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "cr_apologize",
+          "label": "B. Apologize and Reset",
+          "description": "Admit your mistakes publicly. Promise to do better. Ask for a fresh start.",
+          "delta": {
+            "team_trust": 10,
+            "morale": 8,
+            "leadership_skill": 5,
+            "empathy_score": 5,
+            "decision_quality": 3,
+            "energy": -5
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "Saying sorry takes real courage. The class respects your honesty. Even Jordan nods — respect earned.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "cr_authority",
+          "label": "C. Assert Your Authority",
+          "description": "Remind everyone that you were elected captain. If they don't cooperate, you'll report to Ms. Patel.",
+          "delta": {
+            "leadership_skill": -5,
+            "team_trust": -10,
+            "morale": -8,
+            "class_reputation": -5,
+            "decision_quality": -5,
+            "energy": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Pulling rank only makes things worse. Leadership is earned, not demanded. The rebellion grows stronger.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "cr_jordan",
+          "label": "D. Talk to Jordan One-on-One",
+          "description": "Find Jordan privately. Ask what's really bothering them. Try to understand their perspective.",
+          "delta": {
+            "empathy_score": 12,
+            "team_trust": 8,
+            "communication": 10,
+            "morale": 5,
+            "energy": -8,
+            "leadership_skill": 6
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Jordan opens up about feeling overlooked. By addressing the root cause, you start healing the team from the inside.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_pressure",
+      "round_title": "Week 7: Leading Under Pressure",
+      "situation": "Disaster! The science project your class has been working on for weeks is due tomorrow — and the main poster got accidentally damaged. The team is panicking. Some want to give up. You have one evening to fix this.",
+      "goal": "Lead your team through a crisis with calm and determination.",
+      "coaching_moment": "Crisis leadership: Panic is contagious, but so is calm. A leader's composure under pressure gives the whole team strength.",
+      "reflection_prompt": "Why does staying calm in a crisis help others around you calm down too?",
+      "ai_image_prompt": "Cartoon students around a damaged science poster, paint spilled, some panicking, captain taking charge calmly, evening classroom with warm light",
+      "choices": [
+        {
+          "id": "w7_calm_plan",
+          "label": "A. Stay Calm and Make a Plan",
+          "description": "Take a deep breath. Break the problem into small tasks. Assign each part to someone and set a deadline.",
+          "delta": {
+            "leadership_skill": 10,
+            "decision_quality": 10,
+            "team_trust": 8,
+            "morale": 5,
+            "energy": -12,
+            "class_reputation": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking"
+          ],
+          "feedback": "Your calmness is infectious! The team stops panicking and starts working. By morning, the project is even better than before.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w7_pivot",
+          "label": "B. Pivot to a Digital Presentation",
+          "description": "Forget the poster — make a slideshow instead! Use everyone's phones and laptops to create something new.",
+          "delta": {
+            "leadership_skill": 8,
+            "decision_quality": 8,
+            "morale": 8,
+            "energy": -15,
+            "communication": 5,
+            "class_reputation": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Quick thinking! The digital version turns out to be more impressive than the original poster. Adaptability wins!",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w7_honest",
+          "label": "C. Tell the Teacher Honestly",
+          "description": "Go to Ms. Patel, explain what happened, and ask for a one-day extension. Honesty is the best policy.",
+          "delta": {
+            "decision_quality": 6,
+            "team_trust": 5,
+            "class_reputation": -3,
+            "energy": -3,
+            "communication": 5,
+            "empathy_score": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Ms. Patel appreciates your honesty and grants the extension. Sometimes the bravest thing is telling the truth.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "w7_rally",
+          "label": "D. All-Hands Emergency Session",
+          "description": "Call everyone together. Order pizza (from your pocket money). Make it a team bonding moment while fixing the project.",
+          "delta": {
+            "morale": 12,
+            "team_trust": 10,
+            "leadership_skill": 6,
+            "energy": -18,
+            "class_reputation": 5,
+            "empathy_score": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "The pizza-and-project party becomes a legendary class memory! But wow, you're exhausted. Take care of yourself too, captain.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_conflict",
+      "round_title": "Week 8: The Big Conflict",
+      "situation": "Two of your classmates — best friends Riya and Sam — have had a massive fight over who gets to represent the class in the elocution competition. Both are talented, both want it badly, and both are asking you to pick them. The class is taking sides.",
+      "goal": "Resolve the conflict fairly without destroying a friendship.",
+      "coaching_moment": "Conflict resolution: A great leader doesn't pick sides — they find solutions that honor everyone's feelings and abilities.",
+      "reflection_prompt": "When two people you care about are fighting, what's more important — being fair or being liked?",
+      "ai_image_prompt": "Cartoon classroom, two students arguing while others watch, captain in the middle trying to mediate, speech bubbles with opposing views",
+      "choices": [
+        {
+          "id": "w8_audition",
+          "label": "A. Hold a Fair Audition",
+          "description": "Organize a mini audition in front of the class. Let talent decide. Transparent and fair.",
+          "delta": {
+            "decision_quality": 10,
+            "leadership_skill": 8,
+            "class_reputation": 5,
+            "team_trust": 5,
+            "morale": -3,
+            "energy": -8
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "Fair process! The loser is disappointed but can't argue with the result. Transparency builds trust.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "w8_both",
+          "label": "B. Find a Way for Both to Participate",
+          "description": "Suggest a joint presentation or a dialogue format where both can shine together.",
+          "delta": {
+            "empathy_score": 10,
+            "communication": 8,
+            "morale": 8,
+            "team_trust": 6,
+            "leadership_skill": 5,
+            "energy": -10
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Creative problem-solving! Both friends get to participate, and the class loves the unique format. Win-win!",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "w8_private",
+          "label": "C. Talk to Each Person Privately",
+          "description": "Meet Riya and Sam separately. Understand their feelings. Help them see each other's perspective.",
+          "delta": {
+            "empathy_score": 12,
+            "communication": 10,
+            "team_trust": 5,
+            "energy": -10,
+            "leadership_skill": 5,
+            "decision_quality": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Deep empathy work! By helping each person feel heard, you create space for them to work things out. The friendship survives.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "w8_avoid",
+          "label": "D. Stay Out of It — Let Them Sort It Out",
+          "description": "It's their fight, not yours. Tell them to figure it out themselves.",
+          "delta": {
+            "energy": 5,
+            "team_trust": -6,
+            "morale": -5,
+            "leadership_skill": -5,
+            "class_reputation": -3,
+            "communication": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Avoiding conflict might seem easy, but as captain, people look to you to help. The fight escalates and splits the class.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_burnout",
+      "id": "crisis_burnout",
+      "round_title": "CRISIS: Captain Burnout!",
+      "situation": "You've been doing too much for too long. You fell asleep in class today. You snapped at Ava when she asked you a simple question. Ms. Patel has noticed you look exhausted and unhappy. Your leadership is suffering because YOU are suffering. Something has to change.",
+      "goal": "Recognize your burnout and find a way to recover without abandoning your team.",
+      "coaching_moment": "Self-care is not selfish: The best leaders know that you can't pour from an empty cup. Taking care of yourself IS taking care of your team.",
+      "reflection_prompt": "Why is it important for leaders to take care of their own well-being?",
+      "ai_image_prompt": "Cartoon student at desk looking exhausted, dark circles under eyes, books piled up, concerned friends around, warm caring atmosphere",
+      "condition": {
+        "resource": "energy",
+        "operator": "<",
+        "value": 20
+      },
+      "choices": [
+        {
+          "id": "cb_delegate",
+          "label": "A. Delegate and Take a Break",
+          "description": "Hand your responsibilities to your leadership team for a week. Rest, recharge, come back stronger.",
+          "delta": {
+            "energy": 25,
+            "leadership_skill": 8,
+            "team_trust": 5,
+            "morale": 3,
+            "decision_quality": 5,
+            "empathy_score": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Smart and brave! Taking a step back shows wisdom. Your team steps up, proving you built them well.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "cb_talk",
+          "label": "B. Talk to Ms. Patel and Ask for Help",
+          "description": "Be honest with your teacher. Tell her you're struggling. Ask for advice and support.",
+          "delta": {
+            "energy": 15,
+            "communication": 8,
+            "empathy_score": 5,
+            "decision_quality": 5,
+            "leadership_skill": 5,
+            "team_trust": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Asking for help is strength, not weakness! Ms. Patel helps you create a sustainable schedule. You're not alone.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "cb_push",
+          "label": "C. Push Through — The Team Needs You",
+          "description": "Ignore the exhaustion. Drink extra juice. Sleep less. The captain never quits!",
+          "delta": {
+            "energy": -10,
+            "leadership_skill": -5,
+            "decision_quality": -8,
+            "morale": -5,
+            "team_trust": -5,
+            "class_reputation": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Pushing through when broken doesn't make you tough — it makes things worse. You make more mistakes and the team suffers.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "cb_share",
+          "label": "D. Be Honest with the Class",
+          "description": "Tell your classmates you're burnt out. Ask them to share the load. Show vulnerability.",
+          "delta": {
+            "energy": 15,
+            "team_trust": 10,
+            "empathy_score": 8,
+            "morale": 5,
+            "communication": 8,
+            "leadership_skill": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Your honesty touches the class. Even Jordan says, 'We've got you, captain.' Vulnerability creates the deepest trust.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_9_recognition",
+      "round_title": "Week 9: Giving Credit Where It's Due",
+      "situation": "Your class won the inter-class competition! Everyone is celebrating. The principal asks you to give an acceptance speech at assembly. This is your moment — but who really made this happen?",
+      "goal": "Handle success with grace and recognize your team's contributions.",
+      "coaching_moment": "Humble leadership: Great leaders share credit generously and take blame willingly. How you handle success reveals your character.",
+      "reflection_prompt": "Why is sharing credit important for a leader, even when you worked the hardest?",
+      "ai_image_prompt": "Cartoon school assembly, captain on stage with microphone, classmates in audience cheering, trophy on display, colorful confetti",
+      "choices": [
+        {
+          "id": "w9_team_credit",
+          "label": "A. Give All Credit to the Team",
+          "description": "Name every person who contributed. Make it about the class, not about you.",
+          "delta": {
+            "team_trust": 12,
+            "morale": 10,
+            "empathy_score": 8,
+            "class_reputation": 8,
+            "leadership_skill": 8,
+            "energy": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "The class erupts in cheers! By giving away the spotlight, you earned even more respect. That's true leadership.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "w9_share",
+          "label": "B. Share Credit Equally",
+          "description": "Thank the team but also acknowledge your role in organizing everything. Balanced and honest.",
+          "delta": {
+            "leadership_skill": 6,
+            "team_trust": 6,
+            "morale": 6,
+            "class_reputation": 6,
+            "communication": 5,
+            "energy": -5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Honest and balanced. Everyone feels recognized, including you. There's nothing wrong with owning your contribution.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "w9_spotlight",
+          "label": "C. Take the Spotlight",
+          "description": "It was YOUR vision, YOUR planning, YOUR leadership. You earned this moment!",
+          "delta": {
+            "leadership_skill": 3,
+            "class_reputation": 3,
+            "team_trust": -10,
+            "morale": -8,
+            "empathy_score": -5,
+            "energy": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The audience claps politely, but your classmates look hurt. Jordan mutters, 'Typical.' You won the trophy but lost some trust.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w9_jordan",
+          "label": "D. Specifically Thank Jordan and Skeptics",
+          "description": "Call out the people who were hardest to work with — and thank them publicly for coming around.",
+          "delta": {
+            "team_trust": 10,
+            "empathy_score": 10,
+            "morale": 8,
+            "leadership_skill": 6,
+            "communication": 5,
+            "energy": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Jordan is stunned. Being publicly appreciated by the person they opposed? That takes real class. A powerful moment of healing.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_10_tough_choice",
+      "round_title": "Week 10: The Ethical Dilemma",
+      "situation": "You discover that Ava — your most helpful teammate — has been copying homework from another student to keep her grades up while volunteering for so many class duties. If you report it, she'll be in serious trouble. If you stay quiet, you're being dishonest too.",
+      "goal": "Navigate an ethical dilemma involving a friend and teammate.",
+      "coaching_moment": "Integrity: The hardest test of leadership is doing the right thing when it costs you something personal. Your character is defined by what you do when no one is watching.",
+      "reflection_prompt": "Is loyalty to a friend more important than honesty? Where do you draw the line?",
+      "ai_image_prompt": "Cartoon classroom, captain looking at two papers that are identical, worried expression, the helpful friend looking nervous, moral dilemma scene",
+      "choices": [
+        {
+          "id": "w10_private",
+          "label": "A. Talk to Ava Privately First",
+          "description": "Confront Ava gently. Tell her you know, and help her fix it before anyone else finds out.",
+          "delta": {
+            "empathy_score": 10,
+            "decision_quality": 8,
+            "leadership_skill": 8,
+            "communication": 5,
+            "team_trust": 5,
+            "energy": -8
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Compassionate integrity! You help Ava do the right thing without destroying her. She's grateful and stops copying. Trust deepens.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w10_report",
+          "label": "B. Report to Ms. Patel",
+          "description": "The rules are the rules. Tell the teacher and let her handle it. It's not your job to cover for anyone.",
+          "delta": {
+            "decision_quality": 10,
+            "class_reputation": 5,
+            "team_trust": -5,
+            "morale": -5,
+            "empathy_score": -3,
+            "energy": -5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "risk_tolerance"
+          ],
+          "feedback": "By the book! But Ava feels betrayed, and the class is divided. Was there a way to do the right thing AND protect your friend?",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w10_ignore",
+          "label": "C. Look the Other Way",
+          "description": "Ava has done so much for the class. She doesn't deserve to get in trouble. Just pretend you didn't see it.",
+          "delta": {
+            "team_trust": 3,
+            "morale": 3,
+            "decision_quality": -10,
+            "leadership_skill": -5,
+            "class_reputation": -3,
+            "energy": 3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Loyalty without honesty is a trap. If others find out you knew and said nothing, your integrity as captain is gone.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w10_help",
+          "label": "D. Help Ava Reduce Her Workload",
+          "description": "The real problem is she's overworked. Redistribute her duties so she has time to study properly.",
+          "delta": {
+            "empathy_score": 8,
+            "leadership_skill": 8,
+            "decision_quality": 6,
+            "team_trust": 5,
+            "morale": 5,
+            "energy": -8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Addressing the root cause! By fixing the workload problem, you prevent the cheating without punishment. Wise leadership.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_11_legacy",
+      "round_title": "Week 11: Building Your Legacy",
+      "situation": "Your term as captain is almost over. The school asks you to create something lasting — a tradition, system, or project that will help future classes and captains. What legacy do you want to leave?",
+      "goal": "Create a lasting positive impact that outlives your time as captain.",
+      "coaching_moment": "Legacy thinking: The greatest leaders build systems, not just solve problems. What you leave behind matters more than what you do in the moment.",
+      "reflection_prompt": "What would you want the next class captain to thank you for?",
+      "ai_image_prompt": "Cartoon captain and classmates building something together — a wall of ideas, a suggestion box, a class tradition, hopeful sunset through windows",
+      "choices": [
+        {
+          "id": "w11_mentorship",
+          "label": "A. Create a Captain Mentorship Program",
+          "description": "Write a handbook for future captains and set up a mentoring system where outgoing captains coach incoming ones.",
+          "delta": {
+            "leadership_skill": 10,
+            "class_reputation": 10,
+            "decision_quality": 8,
+            "communication": 5,
+            "energy": -10,
+            "team_trust": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Thinking beyond yourself! A mentorship program ensures every future captain starts stronger. That's generational leadership.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "w11_kindness",
+          "label": "B. Start a Kindness & Inclusion Initiative",
+          "description": "Launch a weekly kindness challenge and a buddy system for new students. Make your class the friendliest in school.",
+          "delta": {
+            "empathy_score": 12,
+            "morale": 10,
+            "team_trust": 8,
+            "class_reputation": 8,
+            "energy": -8,
+            "communication": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Beautiful legacy! Your kindness initiative becomes a school tradition. Years later, students still talk about the class that started it.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "w11_voice",
+          "label": "C. Build a Student Voice System",
+          "description": "Create an anonymous suggestion box, monthly class meetings, and a feedback system so every student is heard.",
+          "delta": {
+            "communication": 12,
+            "team_trust": 10,
+            "decision_quality": 8,
+            "class_reputation": 6,
+            "energy": -8,
+            "leadership_skill": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "adaptability"
+          ],
+          "feedback": "Empowering others to speak up is the deepest form of leadership. Your system gives every student a voice, forever.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "w11_trophy",
+          "label": "D. Push for One Last Big Win",
+          "description": "Enter the end-of-year talent show and go all-out. Leave with a bang!",
+          "delta": {
+            "class_reputation": 10,
+            "morale": 8,
+            "energy": -15,
+            "team_trust": 3,
+            "leadership_skill": 3,
+            "decision_quality": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "A flashy exit! The class has fun, but when you're gone, what system remains? Trophies collect dust, but systems endure.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_12_farewell",
+      "round_title": "Week 12: The Final Challenge — Passing the Torch",
+      "situation": "It's your last week as captain. The class is electing a new leader next Monday. Three candidates have come to you for advice — including, surprisingly, Jordan. How you handle this final moment defines everything you've learned.",
+      "goal": "Pass on your leadership lessons and end your journey with grace.",
+      "coaching_moment": "The ultimate leadership test: Can you help others become leaders? The best captains are measured not by what they achieved, but by the leaders they created.",
+      "reflection_prompt": "What was the single most important thing you learned about leadership this term?",
+      "ai_image_prompt": "Cartoon classroom farewell scene, captain passing a captain's badge to the next leader, classmates applauding, warm golden light, hopeful mood",
+      "choices": [
+        {
+          "id": "w12_mentor_all",
+          "label": "A. Mentor All Three Candidates",
+          "description": "Spend time with each candidate. Share your mistakes and lessons. Help them prepare fairly.",
+          "delta": {
+            "leadership_skill": 10,
+            "empathy_score": 10,
+            "team_trust": 8,
+            "communication": 8,
+            "class_reputation": 8,
+            "energy": -12
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "The ultimate leadership act — growing other leaders! By mentoring all three, you ensure the next captain will be great, whoever wins.",
+          "requires": {
+            "resource": "leadership_skill",
+            "op": ">=",
+            "value": 50,
+            "label": "Requires Leadership Skill ≥ 50"
+          },
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "w12_jordan",
+          "label": "B. Encourage Jordan to Run",
+          "description": "Jordan was your biggest critic, but that fire could make them a great leader. Give Jordan special encouragement.",
+          "delta": {
+            "empathy_score": 12,
+            "team_trust": 10,
+            "morale": 8,
+            "leadership_skill": 8,
+            "communication": 5,
+            "energy": -8
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Full circle! The person who challenged you the most becomes your greatest legacy. Jordan's eyes fill with surprise and gratitude.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "w12_speech",
+          "label": "C. Give a Farewell Speech Sharing Your Lessons",
+          "description": "Stand before the class one last time. Share everything you learned — the mistakes, the victories, the growth.",
+          "delta": {
+            "communication": 10,
+            "class_reputation": 10,
+            "leadership_skill": 6,
+            "morale": 8,
+            "team_trust": 5,
+            "energy": -5
+          },
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking"
+          ],
+          "feedback": "A speech they'll remember forever. Your honesty about failure and growth inspires every student in the room.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w12_quiet",
+          "label": "D. Step Back Quietly — Let the Class Thrive on Its Own",
+          "description": "Don't make a big deal of leaving. If you've done your job well, the class doesn't need you anymore.",
+          "delta": {
+            "leadership_skill": 8,
+            "team_trust": 6,
+            "decision_quality": 8,
+            "empathy_score": 5,
+            "energy": 5,
+            "class_reputation": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "The quiet exit of a confident leader. You know the class is strong because of what you built together. No spotlight needed.",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "trust_builder",
+      "label": "Trust Builder",
+      "condition": "team_trust >= 80",
+      "icon": "🤝"
+    },
+    {
+      "id": "empathy_champion",
+      "label": "Empathy Champion",
+      "condition": "empathy_score >= 80 and communication >= 70",
+      "icon": "💛"
+    },
+    {
+      "id": "crisis_navigator",
+      "label": "Crisis Navigator",
+      "condition": "resilience >= 70 and decision_quality >= 65",
+      "icon": "🛡️"
+    },
+    {
+      "id": "team_unifier",
+      "label": "Team Unifier",
+      "condition": "morale >= 75 and team_trust >= 70 and class_reputation >= 65",
+      "icon": "⭐"
+    },
+    {
+      "id": "wise_captain",
+      "label": "Wise Captain",
+      "condition": "leadership_skill >= 70 and decision_quality >= 70",
+      "icon": "🎖️"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Leadership",
+      "definition": "The ability to guide, inspire, and support a group of people toward a shared goal."
+    },
+    {
+      "term": "Delegation",
+      "definition": "Assigning tasks to others based on their strengths, while remaining responsible for the outcome."
+    },
+    {
+      "term": "Empathy",
+      "definition": "The ability to understand and share the feelings of another person — seeing things from their point of view."
+    },
+    {
+      "term": "Conflict Resolution",
+      "definition": "Finding a peaceful and fair solution when people disagree or have competing needs."
+    },
+    {
+      "term": "Resilience",
+      "definition": "The ability to bounce back from setbacks, failures, or difficult situations and keep going."
+    },
+    {
+      "term": "Integrity",
+      "definition": "Doing the right thing even when it is difficult or when no one is watching."
+    },
+    {
+      "term": "Burnout",
+      "definition": "A state of physical and emotional exhaustion caused by taking on too much for too long without rest."
+    },
+    {
+      "term": "Legacy",
+      "definition": "The lasting impact you create that continues to help others even after you have moved on."
+    }
+  ],
+  "endings": [
+    {
+      "id": "inspirational_leader",
+      "title": "Inspirational Leader",
+      "icon": "🌟",
+      "message": "You have become a truly inspirational leader! Your combination of high skills, strong communication, and genuine empathy has transformed your class. Students from other classes wish they had a captain like you. Ms. Patel calls you the best captain she has seen in years. Your legacy: a leader who inspired others to become leaders themselves.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "leadership_skill",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "empathy_score",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "team_builder",
+      "title": "Team Builder",
+      "icon": "🤝",
+      "message": "Your greatest achievement is not any trophy or award — it is the team you built. From a group of individuals, you created a true team. Jordan went from your biggest critic to your biggest supporter. Ava learned to share the load. Everyone found their voice. Your legacy: a class that works together like a family.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "team_trust",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "morale",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "fair_captain",
+      "title": "Fair Captain",
+      "icon": "⚖️",
+      "message": "You were known as the fairest captain anyone could remember. Every decision was transparent, every voice was heard, and every conflict was resolved with justice and care. The student voice system you created became a model for the whole school. Your legacy: a captain who proved that fairness is the foundation of great leadership.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "decision_quality",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "communication",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "resilient_leader",
+      "title": "Resilient Leader",
+      "icon": "💪",
+      "message": "You faced every crisis head-on. When the team rebelled, you listened. When you burned out, you asked for help. When projects failed, you pivoted. Through every setback, you came back stronger. The class learned that it is not about never falling — it is about always getting back up. Your legacy: a captain who taught everyone that failure is just another word for learning.",
+      "type": "triumph",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "class_reputation",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "leadership_skill",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "growing_leader",
+      "title": "Growing Leader",
+      "icon": "🌱",
+      "message": "Being captain was not easy, and you did not get everything right. But you showed up, you tried, and you learned something new every week. Some weeks were tough — the rebellion, the burnout, the hard choices. But you never gave up. And that is what leadership really is: not being perfect, but always growing. Your journey as a leader is just beginning.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          14
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Captain's Quest: Lead Your Crew Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Captain's Quest: Lead Your Crew. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Captain's Quest: Lead Your Crew Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Captain's Quest: Lead Your Crew. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

@@ -1,0 +1,505 @@
+{
+  "game_id": "space-explorer-story",
+  "title": "Space Explorer",
+  "game_type": "story_branching",
+  "description": "You are the youngest crew member on humanity's first deep-space mission. When strange signals and system failures put everything at risk, your decisions will determine whether the crew makes it home — and whether humanity's greatest discovery survives.",
+  "theme": "Scientific discovery and space exploration missions",
+  "difficulty": "intermediate",
+  "duration_minutes": 25,
+  "target_audience": "Ages 10-15",
+  "icon": "🌌",
+  "learning_objectives": [
+    "Understand how scientific thinking requires patience and careful observation",
+    "Practice making decisions under uncertainty with incomplete information",
+    "Develop strategic thinking about resource management in high-stakes situations",
+    "Build resilience when facing unexpected challenges far from home",
+    "Recognise how teamwork and trust enable mission success"
+  ],
+  "learning_concept": "Science is not about having all the answers — it is about asking better questions, trusting the process, and being brave enough to follow the evidence wherever it leads.",
+  "psychological_framework": "Scientific Reasoning and Epistemic Humility — evaluating evidence before conclusions, tolerating uncertainty, and updating beliefs based on new information",
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "Launch Day",
+      "icon": "🚀",
+      "teaser": "Humanity's most ambitious journey begins — and so do the first problems...",
+      "always_unlocked": true,
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "The Anomaly",
+      "icon": "🌀",
+      "teaser": "Something is out there. And it's not in any manual.",
+      "unlocks_after": "ch1",
+      "color": "#8b5cf6"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "First Contact",
+      "icon": "👁️",
+      "teaser": "The discovery of a lifetime — but can you bring it home?",
+      "unlocks_after": "ch2",
+      "color": "#10b981"
+    }
+  ],
+  "initial_state": {
+    "mission_fuel": {
+      "value": 70,
+      "label": "Mission Fuel",
+      "icon": "⚡",
+      "min": 0,
+      "max": 100
+    },
+    "crew_trust": {
+      "value": 50,
+      "label": "Crew Trust",
+      "icon": "👥",
+      "min": 0,
+      "max": 100
+    },
+    "discovery_points": {
+      "value": 30,
+      "label": "Discovery Points",
+      "icon": "🔭",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "glossary_terms": [
+    {
+      "term": "Trajectory",
+      "definition": "The path that a spacecraft follows through space, calculated using physics and gravitational forces."
+    },
+    {
+      "term": "Telemetry",
+      "definition": "Data transmitted automatically from a spacecraft to Earth, showing things like temperature, speed, and system status."
+    },
+    {
+      "term": "Anomaly",
+      "definition": "A deviation from what is expected — in science, anomalies are often the most important clues to new discoveries."
+    },
+    {
+      "term": "Hypothesis",
+      "definition": "An educated guess about why something is happening, which can then be tested through observation and experiment."
+    },
+    {
+      "term": "Orbital Mechanics",
+      "definition": "The physics that governs how objects move in space under the influence of gravity."
+    }
+  ],
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "title": "T-Minus Zero",
+        "narrative": "ISRO's deep-space vessel, Antariksh-7, lifts off from the Sriharikota launch pad with a roar that shakes the entire coast. You are 14 years old — the youngest crew member in any space programme in history, selected as the Science Apprentice for your extraordinary problem-solving scores. Mission Commander Dr. Ananya Krishnamurthy gives you one instruction as the blue curve of Earth disappears below you: 'Observe everything. Trust what you see. And never panic.' You nod, looking out at the infinite black ahead.",
+        "image_prompt": "A young Indian teenager in a space suit at a spacecraft window, Earth curving below, stars ahead, wonder and excitement on their face, interior of a sleek Indian space mission vessel, cinematic digital art",
+        "coaching_moment": "The best scientists and explorers share one trait above all others: they pay attention to things others dismiss. Observation is a skill you can practise every day.",
+        "reflection_prompt": "What does it take to stay calm and focused when everything around you is new and uncertain?",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Open your science notebook and begin recording detailed observations of everything you see",
+            "description": "A scientist's first tool is documentation.",
+            "delta": {
+              "discovery_points": 15,
+              "crew_trust": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Help the crew with systems checks — show you are useful beyond your science role",
+            "description": "Team contribution builds trust that pays off later.",
+            "delta": {
+              "crew_trust": 15,
+              "mission_fuel": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_c",
+            "label": "Ask Commander Krishnamurthy for a briefing on the mission's primary scientific objectives",
+            "description": "Know the goals before acting. Curiosity-led preparation.",
+            "delta": {
+              "discovery_points": 10,
+              "crew_trust": 10
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "next_scene": "ch1_s2"
+          }
+        ],
+        "transitions_to_gameplay": true
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "The Navigation Glitch",
+        "narrative": "Day 12. Engineer Rajan Mehta discovers a minor error in the autopilot navigation algorithm — the kind that won't cause a crash today but, if left uncorrected, will mean arriving at the target asteroid 0.3 degrees off trajectory. Over hundreds of thousands of kilometres, that 0.3 degrees means missing the landing zone entirely. Fixing it now uses 8% of fuel reserves. Leaving it means a mid-mission correction that uses 15% — if you catch it in time.",
+        "image_prompt": "Spacecraft crew examining a navigation computer display showing a trajectory deviation, young science apprentice among them, tense collaborative problem-solving, spacecraft interior, cinematic digital art",
+        "coaching_moment": "Small errors caught early are cheap to fix. The same error caught late is expensive or impossible to correct. This is true in science, in engineering, and in most of life.",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Recommend fixing the error now — small cost, prevents large risk",
+            "description": "Proactive thinking. Pay 8% now to avoid 15% later.",
+            "delta": {
+              "mission_fuel": -8,
+              "discovery_points": 10,
+              "crew_trust": 12
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch1_s3"
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Suggest monitoring the deviation for 24 hours before deciding — confirm it is not self-correcting",
+            "description": "More information before committing resources.",
+            "delta": {
+              "discovery_points": 8,
+              "crew_trust": 8,
+              "mission_fuel": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "next_scene": "ch1_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "is_chapter_end": true,
+        "title": "Sleep Cycle Decision",
+        "narrative": "Commander Krishnamurthy creates the sleep rotation schedule. She can assign you to the science monitoring shift or the systems maintenance shift. The science shift means you will be awake when the first asteroid approach data comes in — a career-defining moment. The maintenance shift is less glamorous but the senior crew needs help, and taking it would mean you miss the data arrival. She leaves the choice to you, watching to see what you decide.",
+        "image_prompt": "Young space apprentice looking at two duty roster options, thoughtful and weighing both, spacecraft crew visible in the background at work, cinematic digital art",
+        "coaching_moment": "Choosing the glamorous task over the needed task is something many people do — and regret. True team members take what the mission needs, not just what they want.",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "Take the maintenance shift — the crew needs help and you can review the data later",
+            "description": "Team first. The data will still be there.",
+            "delta": {
+              "crew_trust": 15,
+              "mission_fuel": 8
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "empathy"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "Take the science shift — this data only arrives once and you trained for this",
+            "description": "Own your expertise. You are here as a scientist.",
+            "delta": {
+              "discovery_points": 15,
+              "crew_trust": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "next_chapter": "ch2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "The Signal",
+        "narrative": "You are on science monitoring duty when the instruments pick up something extraordinary: a repeating radio frequency signal emanating from Asteroid 2087-Kali — your target. It is patterned. Rhythmic. Unlike anything in the cosmic noise database. Your first thought is equipment malfunction. Your second thought — the one that makes your pulse spike — is something else entirely. You have 20 minutes before the rest of the crew wakes up. What do you do with this?",
+        "image_prompt": "Young scientist at a spacecraft instrument console with a patterned signal waveform on screen, alone in the spacecraft at night, look of stunned wonder and scientific discipline, cinematic digital art",
+        "coaching_moment": "When you find something extraordinary, the scientist's first duty is to verify — not to announce. Extraordinary claims require extraordinary evidence.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Run three independent instrument checks to rule out equipment malfunction before waking the crew",
+            "description": "Verify before you amplify. Scientific rigour first.",
+            "delta": {
+              "discovery_points": 18,
+              "crew_trust": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Wake the crew immediately — this is too big to carry alone",
+            "description": "Shared discovery and shared decision-making.",
+            "delta": {
+              "crew_trust": 15,
+              "discovery_points": 10
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_scene": "ch2_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "The Disagreement",
+        "narrative": "The crew is now awake and gathered around the signal data. Commander Krishnamurthy and Engineer Rajan believe it is a natural geological phenomenon — resonant vibration from the asteroid's rotation. Dr. Priya Nair, the mission astrobiologist, believes it could be something else and wants to deviate course by 12,000 km to get closer instruments on the signal source. The deviation would use 11% more fuel and delay return by 6 days. You are the only one whose opinion has not been asked yet — and Krishnamurthy turns to you.",
+        "image_prompt": "Spacecraft crew in a tense but respectful scientific debate, the youngest crew member being asked for their opinion, Commander looking directly at them, scientific instruments in the background, cinematic digital art",
+        "coaching_moment": "When experts disagree, the most valuable thing you can contribute is honest reasoning — not telling them what they want to hear. Be honest even when it is uncomfortable.",
+        "reflection_prompt": "How do you form and share an opinion when the people around you are more experienced than you?",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Share your honest scientific reasoning — the signal's pattern interval is too precise to be geological",
+            "description": "Back your analysis. Respectful but clear.",
+            "delta": {
+              "discovery_points": 15,
+              "crew_trust": 10
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "next_scene": "ch2_s3"
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Propose a compromise: a 5,000 km deviation to gather more data before the full deviation",
+            "description": "Meet the uncertainty with more information, not a forced choice.",
+            "delta": {
+              "discovery_points": 12,
+              "crew_trust": 15,
+              "mission_fuel": -5
+            },
+            "skill_tags": [
+              "adaptability",
+              "strategic_thinking"
+            ],
+            "next_scene": "ch2_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "is_chapter_end": true,
+        "title": "The Microburst",
+        "narrative": "Without warning, a solar wind microburst hits the spacecraft. Non-critical. But it drains 9% of the fuel reserve and briefly scrambles the signal receiver. When the instruments come back online, the signal from 2087-Kali has changed. The interval is shorter. Whatever is generating it appears to have... responded. The crew is silent for three full seconds. Then Krishnamurthy says: 'All right. We go closer. Minimum safe approach. Science apprentice, you lead the data analysis.'",
+        "image_prompt": "Spacecraft crew reacting to a solar microburst, alarms briefly going off, then calm, one screen showing a changed signal pattern, young crew member being given responsibility by the commander, cinematic digital art",
+        "coaching_moment": "The universe does not wait for you to be ready. When an unexpected event opens a door, the question is whether you have prepared well enough to step through it.",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "Accept the lead role and immediately begin designing a systematic data collection protocol",
+            "description": "Step up with a plan. Structured thinking under pressure.",
+            "delta": {
+              "discovery_points": 18,
+              "crew_trust": 12
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_chapter": "ch3"
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "Accept the role but ask Dr. Nair to co-lead the analysis — her expertise matters more than yours",
+            "description": "Humble leadership. Know when to share the wheel.",
+            "delta": {
+              "crew_trust": 15,
+              "discovery_points": 12,
+              "mission_fuel": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "next_chapter": "ch3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "The Surface",
+        "narrative": "Antariksh-7 holds station 800 kilometres above 2087-Kali. The asteroid's surface, through the high-resolution cameras, shows geometric formations that cannot be explained by natural forces — regular hexagonal patterns etched into the rock, exactly 4.2 metres across, each identical. The signal is now clearly emanating from a specific location: a dark ovoid structure approximately 18 metres long, half-buried in the regolith. Nobody on the crew speaks for a long moment. You break the silence.",
+        "image_prompt": "Spacecraft crew staring at a viewscreen showing geometric formations on an asteroid surface with an unexplained ovoid structure, breathless and stunned, cinematic dramatic digital art",
+        "coaching_moment": "In moments of extraordinary discovery, the temptation is to leap to conclusions. The discipline of staying with the observation before the interpretation is what separates science from speculation.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Propose a systematic surface scan before any further action — document everything first",
+            "description": "Scientific discipline at the moment of the greatest discovery in human history.",
+            "delta": {
+              "discovery_points": 20,
+              "crew_trust": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Suggest sending the probe to the ovoid structure immediately — every second counts",
+            "description": "Urgency and ambition. Science requires courage too.",
+            "delta": {
+              "discovery_points": 15,
+              "mission_fuel": -10,
+              "crew_trust": 10
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "adaptability"
+            ],
+            "next_scene": "ch3_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "The Fuel Decision",
+        "narrative": "The probe returns with extraordinary data — thousands of images, material composition readings, and a recording of the signal source up close. The data is encrypted in a mathematical structure that Dr. Nair believes can be decoded. But to stay in orbit long enough to complete the decoding before transmitting to Earth, you will need to use 22% more fuel, which reduces the return margin to a critical 4% safety buffer. If anything goes wrong on the journey home, there will be no backup fuel. The mission rules say: never go below 8% buffer.",
+        "image_prompt": "Crew reviewing extraordinary probe data in conflict with a fuel gauge showing dangerous margins, serious debate among crew members, young apprentice part of the decision loop, cinematic digital art",
+        "coaching_moment": "The desire to go further is a sign of great spirit. But knowing when to honour limits — especially safety limits — is the difference between a mission that returns and one that does not.",
+        "reflection_prompt": "How do you decide when the potential reward justifies a rule-breaking risk?",
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Argue for the 4% margin — this discovery is worth the risk and the rules were made for lesser moments",
+            "description": "Break the rule for the greatest reason imaginable.",
+            "delta": {
+              "discovery_points": 20,
+              "mission_fuel": -22,
+              "crew_trust": 5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "next_scene": "ch3_s3"
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Argue to honour the 8% buffer and transmit the raw data to Earth immediately for decoding there",
+            "description": "Safety first. The data goes home even if the decoding does not happen here.",
+            "delta": {
+              "mission_fuel": 5,
+              "crew_trust": 15,
+              "discovery_points": 12
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "next_scene": "ch3_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "is_chapter_end": true,
+        "title": "Coming Home",
+        "narrative": "Antariksh-7 breaks orbit and sets course for Earth. In your science notebook — now 217 pages thick — you have documented every detail of everything you observed. The raw data transmitted to Earth has already reached ISRO. In the 11 days of the journey home, you begin a systematic write-up of your analysis. Commander Krishnamurthy sits beside you one morning, reads a page over your shoulder, and says: 'You know what makes a great scientist? Not being the first to say you found something. Being the one who made sure of what it was.' You write that down too.",
+        "image_prompt": "Young space explorer writing in a science notebook on the journey home, Earth growing larger in the spacecraft window behind them, calm and accomplished expression, cinematic digital art",
+        "coaching_moment": "The greatest discoveries in history were made by people who did not just look — they looked carefully, documented rigorously, and trusted the process even when the answer took time to arrive.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "'I learned that patience is what turns a sighting into a discovery'",
+            "description": "The deepest scientific lesson from the mission.",
+            "delta": {
+              "discovery_points": 15,
+              "crew_trust": 10
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "is_ending": true,
+            "ending_type": "best",
+            "ending_message": "You returned from the stars with humanity's most extraordinary finding since the moon landing — and you brought it home because you were careful, honest, and brave enough to trust your own observations. The ovoid structure on 2087-Kali will be studied for generations. Your notebook is the first chapter of that story."
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "'I learned that teamwork is what makes impossible things possible'",
+            "description": "The human lesson behind the scientific achievement.",
+            "delta": {
+              "crew_trust": 18,
+              "discovery_points": 10
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "is_ending": true,
+            "ending_type": "good",
+            "ending_message": "No explorer travels alone — not really. Behind every extraordinary discovery is a team of people who trusted each other enough to take the next step together. You were part of one of those teams. That is something you will carry for the rest of your life, long after the science is published."
+          }
+        ]
+      }
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.35,
+    "adaptability": 0.35,
+    "resilience": 0.3
+  },
+  "coaching_moment": "Science is not about having all the answers — it is about asking better questions, trusting the process, and being brave enough to follow the evidence wherever it leads.",
+  "estimated_duration": 25,
+  "target_age": "Ages 10-15",
+  "tags": [
+    "branching-story",
+    "intermediate",
+    "narrative",
+    "stem",
+    "strategic-thinking"
+  ],
+  "cultural_context": "India's ISRO has inspired a generation of young scientists with missions like Chandrayaan and Mangalyaan. Space exploration narratives tap this inspiration while building the adaptability and resilience central to India's STEM mission.",
+  "nep_stage": "preparatory",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "social-emotional-learning"
+  ],
+  "visible": false,
+  "status": "replaced",
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}

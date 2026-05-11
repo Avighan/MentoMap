@@ -1,0 +1,2315 @@
+{
+  "game_id": "g6-minto-entrepreneur",
+  "title": "Minto's Map of Big Ideas: The Entrepreneur's Journey",
+  "theme": "Entrepreneurship & Innovation with Minto the Mascot",
+  "icon": "💡",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "Follow Minto the mascot through 7 chapters of an entrepreneurship handbook designed for Grade 6 students! From spotting everyday problems to pitching your first idea, you will learn to think like a young entrepreneur — curious, resilient, and bold. Guided by the 'Minto's Map of Big Ideas' handbook (NEP 2020 aligned), this journey teaches you how real-world innovation happens — one courageous step at a time.",
+  "target_audience": "Ages 11-14",
+  "target_age": "11-14",
+  "grade": "6",
+  "difficulty": "beginner",
+  "duration_minutes": 35,
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You journey with Minto, a curious cartoon mascot, through 7 chapters of entrepreneurial thinking.",
+    "Each chapter presents a real situation — like spotting a problem, brainstorming ideas, or dealing with failure.",
+    "Choose how to respond, fill in forms, rate your idea, or use creative tools at key moments.",
+    "Watch your resources — Observation Skill, Idea Power, Prototype Progress, Pitch Confidence, and more.",
+    "Be honest in the reflection questions and checklists — this is YOUR entrepreneurship journey!",
+    "At the end, discover which type of young entrepreneur you are based on how your journey unfolded."
+  ],
+  "learning_objectives": [
+    "Understand what an entrepreneur is and the mindset they carry",
+    "Learn to spot everyday problems and turn complaints into business ideas",
+    "Apply the Pain Test, Size Test, and Gap Test to evaluate problems",
+    "Practice the Five WHYs technique to uncover root causes of problems",
+    "Develop divergent thinking using four proven idea sources",
+    "Build resilience by learning from failure and the Build-Test-Learn loop",
+    "Craft a structured 60-second elevator pitch for their idea"
+  ],
+  "tags": [
+    "entrepreneurship",
+    "innovation",
+    "grade-6",
+    "problem-solving",
+    "creativity",
+    "minto-mascot",
+    "nep-2020",
+    "handbook",
+    "five-whys",
+    "prototyping",
+    "pitch"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Creativity and Innovation",
+    "Critical and Analytical Thinking",
+    "Communication and Collaboration",
+    "Problem Solving",
+    "Self-Awareness and Reflection",
+    "Entrepreneurial Thinking"
+  ],
+  "cultural_context": "Indian school and neighborhood setting, NEP 2020 aligned entrepreneurship education, relatable characters (Priya, Rohan, Zara, Diya, Aarav) in everyday Indian contexts like canteen queues, heavy school bags, and community markets",
+  "psychological_framework": {
+    "core_skills": [
+      "creativity",
+      "strategic_thinking",
+      "risk_tolerance",
+      "adaptability",
+      "resilience",
+      "empathy"
+    ],
+    "references": [
+      "Dweck — Growth Mindset (resilience, iteration)",
+      "Design Thinking — IDEO (empathy, prototype, test)",
+      "Kahneman — System 1 vs System 2 (intuition vs analysis in idea evaluation)",
+      "CASEL — SEL competencies (self-awareness, social awareness)"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "creativity": 0.25,
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.15,
+    "adaptability": 0.15,
+    "resilience": 0.15,
+    "empathy": 0.1
+  },
+  "initial_state": {
+    "observation_skill": {
+      "value": 20,
+      "label": "Observation Skill",
+      "icon": "🔍",
+      "min": 0,
+      "max": 100
+    },
+    "problem_depth": {
+      "value": 10,
+      "label": "Problem Depth",
+      "icon": "🧩",
+      "min": 0,
+      "max": 100
+    },
+    "idea_power": {
+      "value": 10,
+      "label": "Idea Power",
+      "icon": "💡",
+      "min": 0,
+      "max": 100
+    },
+    "prototype_progress": {
+      "value": 0,
+      "label": "Prototype Progress",
+      "icon": "🔧",
+      "min": 0,
+      "max": 100
+    },
+    "resilience": {
+      "value": 15,
+      "label": "Resilience",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "pitch_confidence": {
+      "value": 5,
+      "label": "Pitch Confidence",
+      "icon": "🎤",
+      "min": 0,
+      "max": 100
+    },
+    "customer_empathy": {
+      "value": 10,
+      "label": "Customer Empathy",
+      "icon": "❤️",
+      "min": 0,
+      "max": 100
+    },
+    "minto_trust": {
+      "value": 30,
+      "label": "Minto Trust",
+      "icon": "🦊",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "creativity": 0,
+      "strategic_thinking": 0,
+      "risk_tolerance": 0,
+      "adaptability": 0,
+      "resilience": 0,
+      "empathy": 0
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Chapter",
+      "start": 1,
+      "max": 10
+    },
+    "subsystems": [
+      {
+        "id": "problem_sensing",
+        "label": "Problem Sensing",
+        "icon": "🔍",
+        "color": "#8B5CF6",
+        "initial_health": 15,
+        "health_formula": "min(100, max(0, observation_skill * 0.5 + customer_empathy * 0.5))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "idea_engine",
+        "label": "Idea Engine",
+        "icon": "💡",
+        "color": "#F59E0B",
+        "initial_health": 10,
+        "health_formula": "min(100, max(0, idea_power * 0.6 + problem_depth * 0.4))",
+        "status_thresholds": {
+          "critical": 10,
+          "poor": 25,
+          "fair": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "builder_mode",
+        "label": "Builder Mode",
+        "icon": "🔧",
+        "color": "#10B981",
+        "initial_health": 5,
+        "health_formula": "min(100, max(0, prototype_progress * 0.6 + resilience * 0.4))",
+        "status_thresholds": {
+          "critical": 10,
+          "poor": 25,
+          "fair": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "pitch_ready",
+        "label": "Pitch Ready",
+        "icon": "🎤",
+        "color": "#3B82F6",
+        "initial_health": 18,
+        "health_formula": "min(100, max(0, pitch_confidence * 0.6 + minto_trust * 0.4))",
+        "status_thresholds": {
+          "critical": 12,
+          "poor": 28,
+          "fair": 48,
+          "good": 68
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "entrepreneur_readiness",
+        "label": "Entrepreneur Readiness",
+        "icon": "🚀",
+        "formula": "(observation_skill * 0.2 + idea_power * 0.25 + prototype_progress * 0.25 + pitch_confidence * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 15,
+          "warning": 35,
+          "good": 60
+        }
+      },
+      {
+        "id": "minto_score",
+        "label": "Minto Score",
+        "icon": "🦊",
+        "formula": "(minto_trust * 0.4 + resilience * 0.3 + customer_empathy * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 65
+        }
+      },
+      {
+        "id": "idea_strength",
+        "label": "Idea Strength",
+        "icon": "💎",
+        "formula": "(problem_depth * 0.35 + idea_power * 0.35 + customer_empathy * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 10,
+          "warning": 30,
+          "good": 55
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "curiosity_grows",
+        "label": "Minto's Curiosity Boost",
+        "effects": [
+          {
+            "resource": "observation_skill",
+            "formula": "min(100, observation_skill + 2)"
+          }
+        ],
+        "description": "Every chapter you complete, Minto's curiosity rubs off on you — your observation skill quietly grows!"
+      },
+      {
+        "id": "confidence_from_progress",
+        "label": "Progress Breeds Confidence",
+        "condition": {
+          "resource": "prototype_progress",
+          "op": ">=",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "pitch_confidence",
+            "formula": "min(100, pitch_confidence + 2)"
+          }
+        ],
+        "description": "When you can see something you built, your confidence naturally grows."
+      },
+      {
+        "id": "resilience_decay",
+        "label": "Resilience Check",
+        "condition": {
+          "resource": "resilience",
+          "op": "<",
+          "value": 25
+        },
+        "effects": [
+          {
+            "resource": "resilience",
+            "formula": "max(0, resilience - 2)"
+          }
+        ],
+        "description": "When your resilience is already low, setbacks hit harder. Build it up before failure strikes!"
+      },
+      {
+        "id": "deep_problem_compounds",
+        "label": "Problem Depth Compounds",
+        "condition": {
+          "resource": "problem_depth",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "idea_power",
+            "formula": "min(100, idea_power + 2)"
+          }
+        ],
+        "description": "The deeper you understand a problem, the better your ideas become — knowledge builds on itself!"
+      }
+    ],
+    "interactions": [
+      {
+        "id": "observation_to_empathy",
+        "from_subsystem": "problem_sensing",
+        "to_subsystem": "problem_sensing",
+        "label": "Observation Deepens Empathy",
+        "condition": {
+          "resource": "observation_skill",
+          "op": ">=",
+          "value": 55
+        },
+        "effects": [
+          {
+            "resource": "customer_empathy",
+            "formula": "min(100, customer_empathy + (observation_skill - 55) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "The more you watch the world, the more you understand people — observation and empathy feed each other."
+      },
+      {
+        "id": "problem_depth_to_ideas",
+        "from_subsystem": "problem_sensing",
+        "to_subsystem": "idea_engine",
+        "label": "Deep Problems Spark Big Ideas",
+        "condition": {
+          "resource": "problem_depth",
+          "op": ">=",
+          "value": 45
+        },
+        "effects": [
+          {
+            "resource": "idea_power",
+            "formula": "min(100, idea_power + (problem_depth - 45) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When you truly understand a problem, better ideas flow naturally."
+      },
+      {
+        "id": "resilience_fuels_building",
+        "from_subsystem": "builder_mode",
+        "to_subsystem": "builder_mode",
+        "label": "Resilience Accelerates Building",
+        "condition": {
+          "resource": "resilience",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "prototype_progress",
+            "formula": "min(100, prototype_progress + (resilience - 60) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "A resilient builder doesn't get stuck on mistakes — they keep moving forward."
+      },
+      {
+        "id": "minto_trust_boosts_confidence",
+        "from_subsystem": "pitch_ready",
+        "to_subsystem": "pitch_ready",
+        "label": "Minto's Belief in You",
+        "condition": {
+          "resource": "minto_trust",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "pitch_confidence",
+            "formula": "min(100, pitch_confidence + (minto_trust - 65) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When Minto believes in you, your confidence soars. Mentorship works!"
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "pitch_confidence",
+        "equilibrium": 30,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "minto_trust",
+        "equilibrium": 25,
+        "rate": 0.04,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "minto_surprise_visit",
+        "label": "Minto Appears with a Tip!",
+        "icon": "🦊",
+        "description": "Minto pops up with a golden sticky note: 'Hey! Real entrepreneurs carry a notebook everywhere. You never know when inspiration strikes!'",
+        "probability": 0.25,
+        "condition": {
+          "resource": "observation_skill",
+          "op": ">=",
+          "value": 25
+        },
+        "effects": [
+          {
+            "resource": "observation_skill",
+            "delta": 8
+          },
+          {
+            "resource": "minto_trust",
+            "delta": 6
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "Minto drops wisdom! 'Every great idea started with someone who paid attention.'",
+        "ai_image_prompt": "Cartoon style, Minto the fox mascot holding a golden sticky note, appearing in a burst of light, school student looking surprised and delighted, colorful classroom background"
+      },
+      {
+        "id": "classmate_copies_idea",
+        "label": "Someone Copies Your Idea!",
+        "icon": "😱",
+        "description": "Uh oh! You overhear another student pitching something very similar to your idea at the school noticeboard. Minto says: 'Being second doesn't mean losing — execution beats ideas every time!'",
+        "probability": 0.18,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 4
+        },
+        "effects": [
+          {
+            "resource": "resilience",
+            "delta": -5
+          },
+          {
+            "resource": "idea_power",
+            "delta": 8
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Copycat alert! But Minto reminds you — a copied idea means it's a GOOD idea. Now execute better.",
+        "ai_image_prompt": "Cartoon style, shocked school student looking at a noticeboard with a similar idea, Minto the fox mascot patting their shoulder with an encouraging smile, colorful school hallway"
+      },
+      {
+        "id": "teacher_praises_work",
+        "label": "Teacher Praises Your Effort!",
+        "icon": "⭐",
+        "description": "Your teacher notices your entrepreneurship notebook and calls it out in class: 'This student is doing real thinking — not just completing assignments. This is what NEP 2020 looks like in action!'",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "problem_depth",
+              "op": ">=",
+              "value": 25
+            },
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "pitch_confidence",
+            "delta": 10
+          },
+          {
+            "resource": "minto_trust",
+            "delta": 8
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "Teacher spotlight! Your entrepreneurial thinking gets recognized in class.",
+        "ai_image_prompt": "Cartoon style, smiling teacher holding up a student's notebook in a bright classroom, student beaming with pride, other students clapping, Minto mascot giving a thumbs up in corner"
+      },
+      {
+        "id": "prototype_breaks",
+        "label": "Your Prototype Falls Apart!",
+        "icon": "💥",
+        "description": "Your first paper prototype got crumpled in the bag! Minto grins: 'V1 always breaks. That's why it's called V1! Now you know what to make stronger in V2.'",
+        "probability": 0.22,
+        "condition": {
+          "and": [
+            {
+              "resource": "prototype_progress",
+              "op": ">=",
+              "value": 15
+            },
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "prototype_progress",
+            "delta": -8
+          },
+          {
+            "resource": "resilience",
+            "delta": 6
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "Prototype failure! But Minto reminds you — every version teaches you something.",
+        "ai_image_prompt": "Cartoon style, school student looking at a crumpled paper prototype with Minto standing nearby laughing warmly, speech bubble saying 'Now build V2!', colorful creative workspace"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "minto",
+        "name": "Minto",
+        "role": "Entrepreneurship Mascot & Guide",
+        "icon": "🦊",
+        "initial_mood": "excited",
+        "initial_satisfaction": 70,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "problem_depth",
+              "op": "<",
+              "value": 20
+            },
+            "action": "warn",
+            "message": "Hey! You're skipping the most important step — really understanding the problem. Great ideas don't come from guessing!",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "idea_power",
+              "op": ">=",
+              "value": 55
+            },
+            "action": "praise",
+            "message": "Now THAT is an idea machine working! I can see the sparks flying. Keep going — you're thinking like a real entrepreneur!",
+            "mood_change": "thrilled",
+            "satisfaction_delta": 10
+          },
+          {
+            "condition": {
+              "resource": "minto_trust",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "reward",
+            "message": "You've earned this! I'm unlocking the Secret Entrepreneur Tip: 'The best time to start was yesterday. The second best time is now. Go!'",
+            "mood_change": "proud",
+            "satisfaction_delta": 12,
+            "effects": [
+              {
+                "resource": "pitch_confidence",
+                "delta": 10
+              },
+              {
+                "resource": "resilience",
+                "delta": 8
+              }
+            ]
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "resilience",
+                  "op": "<",
+                  "value": 20
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 6
+                }
+              ]
+            },
+            "action": "urgent",
+            "message": "I see you're struggling. Every entrepreneur hits this wall. The ones who succeed are the ones who get back up ONE more time than they fall. You can do this!",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          }
+        ]
+      },
+      {
+        "id": "priya",
+        "name": "Priya",
+        "role": "The Problem-Spotter (Classmate)",
+        "icon": "👧",
+        "initial_mood": "observant",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "observation_skill",
+              "op": ">=",
+              "value": 50
+            },
+            "action": "boost",
+            "message": "I knew you were a Problem-Spotter like me! I found three new complaints near the canteen this week — want to brainstorm what's really behind them?",
+            "mood_change": "excited",
+            "satisfaction_delta": 8,
+            "effects": [
+              {
+                "resource": "problem_depth",
+                "delta": 5
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "customer_empathy",
+              "op": ">=",
+              "value": 45
+            },
+            "action": "support",
+            "message": "You really understand people! Not everyone can see problems from the user's point of view. That's a rare skill.",
+            "mood_change": "admiring",
+            "satisfaction_delta": 6
+          }
+        ]
+      },
+      {
+        "id": "rohan",
+        "name": "Rohan",
+        "role": "The Builder (Classmate)",
+        "icon": "👦",
+        "initial_mood": "tinkering",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "prototype_progress",
+              "op": ">=",
+              "value": 35
+            },
+            "action": "boost",
+            "message": "Finally someone else who actually BUILDS things instead of just talking! Want to use the maker corner after school to add some features?",
+            "mood_change": "enthusiastic",
+            "satisfaction_delta": 10,
+            "effects": [
+              {
+                "resource": "prototype_progress",
+                "delta": 6
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "prototype_progress",
+              "op": "<",
+              "value": 10
+            },
+            "action": "challenge",
+            "message": "You've been talking about your idea for weeks! When are you actually going to BUILD something? Ideas in your head don't help anyone.",
+            "mood_change": "impatient",
+            "satisfaction_delta": -5
+          }
+        ]
+      },
+      {
+        "id": "zara",
+        "name": "Zara",
+        "role": "The Seller (Classmate)",
+        "icon": "👩",
+        "initial_mood": "confident",
+        "initial_satisfaction": 58,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "pitch_confidence",
+              "op": ">=",
+              "value": 50
+            },
+            "action": "support",
+            "message": "Your pitch energy is amazing! I told five students about your idea and they all asked when it would be ready. You need to tell more people!",
+            "mood_change": "excited",
+            "satisfaction_delta": 9
+          },
+          {
+            "condition": {
+              "resource": "pitch_confidence",
+              "op": "<",
+              "value": 15
+            },
+            "action": "coach",
+            "message": "Look, the idea doesn't matter if nobody hears about it. Start practicing in front of the mirror — 60 seconds, say it out loud, right now!",
+            "mood_change": "concerned",
+            "satisfaction_delta": -4
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "observation_skill",
+          "op": ">=",
+          "value": 65
+        },
+        "icon": "🔍",
+        "text": "Super Observer! Your observation skill is at {observation_skill}% — you notice things nobody else does.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "idea_power",
+          "op": ">=",
+          "value": 60
+        },
+        "icon": "💡",
+        "text": "Idea Machine! You're generating ideas at {idea_power}% power. Minto is impressed!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "resilience",
+          "op": "<",
+          "value": 25
+        },
+        "icon": "💔",
+        "text": "Resilience at {resilience}% — you're feeling beaten down. Time to take a deep breath and remember: failure is data!",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "resource": "prototype_progress",
+          "op": ">=",
+          "value": 55
+        },
+        "icon": "🔧",
+        "text": "Builder Mode activated! Your prototype is {prototype_progress}% complete. Rohan is jealous.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "minto_trust",
+          "op": "<",
+          "value": 20
+        },
+        "icon": "🦊",
+        "text": "Minto seems quiet... Your trust score is at {minto_trust}%. Make choices that show real entrepreneurial thinking!",
+        "severity": "warning"
+      }
+    ],
+    "ai_scene_prompt_template": "Cartoon Pixar-style, Minto the fox mascot guiding a diverse Indian school student, entrepreneurship journey scene, observation skill {observation_skill}%, idea power {idea_power}%, prototype progress {prototype_progress}% built, warm colorful backgrounds. Mood: {'excited and energized' if resilience > 50 else 'determined but challenged' if resilience > 25 else 'nervous but trying'}."
+  },
+  "rounds": [
+    {
+      "round_id": "ch1_what_is_entrepreneur",
+      "round_title": "Chapter 1: What IS an Entrepreneur?",
+      "situation": "Minto bursts into the classroom with a big smile and a map covered in colourful stamps. 'Welcome to your entrepreneurship journey!' he announces. 'Today I want you to meet three friends — Priya, Rohan, and Zara. Each of them thinks about problems in a completely different way. Priya is the Problem-Spotter who notices what's broken. Rohan is the Builder who immediately wants to fix it with his hands. And Zara is the Seller who figures out how to share the solution with the world. Which one resonates with YOU?'",
+      "goal": "Identify your entrepreneur type and commit to a problem you've noticed this week.",
+      "coaching_moment": "Entrepreneurs come in all shapes and sizes. You don't need to be a genius or have money — you just need to notice what's broken and care enough to try to fix it. The best entrepreneurs are all three — Problem-Spotter, Builder, AND Seller — but everyone starts somewhere.",
+      "reflection_prompt": "Which of the three types (Problem-Spotter, Builder, Seller) feels most like you? Why do you think that?",
+      "ai_image_prompt": "Cartoon Pixar style, Minto the friendly fox mascot holding a colourful map, three diverse Indian school students (Priya with magnifying glass, Rohan with tools, Zara with a microphone) in a bright cheerful classroom, speech bubbles, warm sunlight",
+      "input_type": "structured_form",
+      "form_fields": [
+        {
+          "key": "entrepreneur_type",
+          "label": "Which type of entrepreneur are you most like — Priya (Problem-Spotter), Rohan (Builder), or Zara (Seller)? And why?",
+          "placeholder": "Example: I think I'm most like Priya because I always notice things that don't work well at school...",
+          "min_length": 20,
+          "max_length": 200
+        },
+        {
+          "key": "problem_you_see",
+          "label": "Name one problem you have actually noticed this week in your school or neighbourhood",
+          "placeholder": "Something that bugs you or people around you...",
+          "min_length": 10,
+          "max_length": 150
+        }
+      ],
+      "evaluation_rubric": {
+        "empathy": "Did the student connect their type to real self-awareness?",
+        "strategic_thinking": "Did they name a concrete, real problem rather than a vague one?"
+      },
+      "choices": [
+        {
+          "id": "ch1_problem_spotter",
+          "label": "A. I am a Problem-Spotter like Priya",
+          "description": "You are drawn to noticing what's broken, annoying, or missing. You carry a mental notebook of everything that needs fixing.",
+          "delta": {
+            "observation_skill": 15,
+            "customer_empathy": 10,
+            "problem_depth": 8,
+            "minto_trust": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto nods enthusiastically! 'Problem-Spotters are the heart of every startup. The world is FULL of problems — you just trained yourself to see them. That is your superpower.'",
+          "skill_explanation": {
+            "empathy": "Noticing problems that affect others is one of the deepest forms of empathy.",
+            "strategic_thinking": "Identifying real problems before building solutions is core strategic thinking."
+          }
+        },
+        {
+          "id": "ch1_builder",
+          "label": "B. I am a Builder like Rohan",
+          "description": "You love making things, tinkering, and figuring out HOW to fix problems with your hands and mind.",
+          "delta": {
+            "prototype_progress": 8,
+            "resilience": 10,
+            "idea_power": 8,
+            "minto_trust": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Minto high-fives you! 'Builders turn dreams into things you can touch. The world needs people who actually MAKE things, not just talk about them. Just remember — build the RIGHT thing!'",
+          "skill_explanation": {
+            "risk_tolerance": "Builders take the risk of making something before they know if it will work.",
+            "adaptability": "Building means iterating — changing and improving as you learn."
+          }
+        },
+        {
+          "id": "ch1_seller",
+          "label": "C. I am a Seller like Zara",
+          "description": "You love sharing ideas with people, convincing them of your vision, and getting others excited about solutions.",
+          "delta": {
+            "pitch_confidence": 12,
+            "minto_trust": 8,
+            "customer_empathy": 8,
+            "observation_skill": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "risk_tolerance"
+          ],
+          "feedback": "Minto grins! 'Sellers make the world go round. The greatest idea on the planet goes nowhere without someone brave enough to say: Listen to THIS. And that person is you.'",
+          "skill_explanation": {
+            "empathy": "Great sellers deeply understand what their audience cares about.",
+            "risk_tolerance": "Putting yourself out there to pitch ideas takes real courage."
+          }
+        },
+        {
+          "id": "ch1_all_three",
+          "label": "D. I am a bit of all three — and still figuring it out!",
+          "description": "Honestly, you see yourself in all three characters. Maybe you're a hybrid entrepreneur who does a bit of everything.",
+          "delta": {
+            "observation_skill": 8,
+            "idea_power": 8,
+            "pitch_confidence": 6,
+            "resilience": 8,
+            "minto_trust": 10
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto beams the biggest smile yet! 'THAT is the best answer! The greatest entrepreneurs know a little about everything. You'll figure out your superpower as you go — that is exactly how entrepreneurship works.'",
+          "skill_explanation": {
+            "adaptability": "Being open to multiple roles is the most adaptable entrepreneurial mindset.",
+            "strategic_thinking": "Knowing you're still learning is itself a wise, strategic self-assessment."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "ch2_every_complaint_is_a_clue",
+      "round_title": "Chapter 2: Every Complaint is a Clue",
+      "situation": "Minto sits on the school bench and listens. In just five minutes he hears five different complaints: 'The canteen queue is SO long!' / 'My bag is way too heavy today!' / 'I can never find my books when I need them!' / 'All our water bottles look the same — I keep drinking from the wrong one!' / 'There is nowhere to sit and study quietly during free period!' Minto turns to you with sparkling eyes: 'Did you hear that? Every single complaint is a hidden business idea waiting to be discovered!'",
+      "goal": "Practice turning complaints into business ideas and select your best one to investigate.",
+      "coaching_moment": "Entrepreneurs do not hear complaints — they hear opportunities. When someone says 'I hate when...' or 'Why can't there be...' that is your cue. The more complaints you collect, the more ideas you have to choose from.",
+      "reflection_prompt": "Think of a complaint you heard recently. What business idea could it hide?",
+      "ai_image_prompt": "Cartoon Pixar style, Minto the fox sitting on a school bench with ears perked up, five diverse students around him each with a speech bubble showing their complaint, golden lightbulbs appearing above each complaint, sunny school courtyard",
+      "scene_widget": {
+        "type": "brainstorm_board",
+        "props": {
+          "prompt": "Listen to the five complaints Minto heard. Write as many business ideas as you can think of — one per sticky note! Aim for quantity over quality right now.",
+          "timer_seconds": 180,
+          "min_ideas": 3,
+          "best_idea_select": true,
+          "scoring_tiers": [
+            {
+              "min_count": 8,
+              "delta": {
+                "idea_power": 15,
+                "observation_skill": 8,
+                "minto_trust": 5
+              }
+            },
+            {
+              "min_count": 5,
+              "delta": {
+                "idea_power": 10,
+                "observation_skill": 5,
+                "minto_trust": 3
+              }
+            },
+            {
+              "min_count": 3,
+              "delta": {
+                "idea_power": 5,
+                "observation_skill": 3,
+                "minto_trust": 2
+              }
+            }
+          ]
+        }
+      },
+      "choices": [
+        {
+          "id": "ch2_canteen",
+          "label": "A. Investigate the canteen queue problem",
+          "description": "Students wait 15 minutes every lunch break just to get food. There must be a smarter way to order or queue.",
+          "delta": {
+            "observation_skill": 12,
+            "problem_depth": 10,
+            "customer_empathy": 8,
+            "minto_trust": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Minto pulls out a notebook! 'Great choice. This is a DAILY pain point for hundreds of students. How many people have this problem? Lots. How much does it bother them? Very much. You have chosen well.'",
+          "skill_explanation": {
+            "strategic_thinking": "Choosing a high-frequency problem shows strategic prioritisation.",
+            "empathy": "Picking a problem that affects many people shows care for the community."
+          }
+        },
+        {
+          "id": "ch2_heavy_bags",
+          "label": "B. Investigate the heavy school bag problem",
+          "description": "Students carry 5+ kg of books every day. Doctors say this is bad for their backs. Can technology or a system help?",
+          "delta": {
+            "observation_skill": 10,
+            "problem_depth": 12,
+            "customer_empathy": 10,
+            "minto_trust": 6
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Minto grins! 'I LOVE this one. It affects every student, every single day, for their entire school life. And the solution could be a product, a system, OR an app. So many possibilities!'",
+          "skill_explanation": {
+            "empathy": "Focusing on student health shows deep care for user wellbeing.",
+            "adaptability": "A problem with multiple solution paths gives you flexibility."
+          }
+        },
+        {
+          "id": "ch2_lost_books",
+          "label": "C. Investigate the missing books problem",
+          "description": "Students constantly forget which books they need and where they are. A smart tracking system could fix this.",
+          "delta": {
+            "observation_skill": 8,
+            "idea_power": 10,
+            "problem_depth": 8,
+            "minto_trust": 4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "Minto nods! 'Technology + organisation = magic. If you can solve this, students and parents will thank you. And teachers too! Multiple audiences is a sign of a scalable idea.'",
+          "skill_explanation": {
+            "strategic_thinking": "Identifying a problem with multiple beneficiaries shows systems thinking.",
+            "creativity": "Imagining a tracking solution for an everyday object shows creative problem-solving."
+          }
+        },
+        {
+          "id": "ch2_water_bottles",
+          "label": "D. Investigate the mixed-up water bottle problem",
+          "description": "Everyone's bottles look the same! A simple personalisation or smart labelling solution could fix this instantly.",
+          "delta": {
+            "idea_power": 15,
+            "observation_skill": 8,
+            "pitch_confidence": 6,
+            "minto_trust": 5
+          },
+          "skill_tags": [
+            "creativity",
+            "risk_tolerance"
+          ],
+          "feedback": "Minto claps! 'Small problem, BIG opportunity. Simple problems are often the best starting point because the solution can be SIMPLE too. And simple solutions are fast to build and easy to pitch!'",
+          "skill_explanation": {
+            "creativity": "Seeing a product opportunity in a tiny everyday annoyance is creative thinking.",
+            "risk_tolerance": "Starting with a small problem to practice entrepreneurship is a smart calculated risk."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "ch2_mintos_3_tests",
+      "round_title": "Chapter 2: Minto's 3 Tests",
+      "situation": "Minto pulls out a red card from his pocket. 'Before you fall in love with your chosen problem, it must pass THREE tests!' he announces. 'The Pain Test: How much does this problem bother people? The Size Test: How many people have this problem? The Gap Test: Is the current solution missing or broken? If it scores low on all three — pick a different problem. If it scores high — you are onto something REAL!'",
+      "goal": "Apply Minto's three tests to your chosen problem and decide if it is worth pursuing.",
+      "coaching_moment": "Not every problem is worth solving as a business. Real entrepreneurs are picky — they choose problems that hurt a lot, affect many people, and don't have a good solution yet. These three tests save you from wasting time on the wrong problem.",
+      "reflection_prompt": "Why is it important to TEST a problem before you start building a solution?",
+      "ai_image_prompt": "Cartoon Pixar style, Minto the fox holding three test cards (Pain, Size, Gap) like a judge on a game show, school student thinking hard with three thought bubbles, colourful scoreboard in background",
+      "input_type": "slider_rating",
+      "sliders": [
+        {
+          "key": "pain",
+          "label": "Pain Test — How much does this problem bother people? (1 = mild annoyance, 5 = really painful)",
+          "min": 1,
+          "max": 5
+        },
+        {
+          "key": "size",
+          "label": "Size Test — How many people have this problem? (1 = very few, 5 = almost everyone)",
+          "min": 1,
+          "max": 5
+        },
+        {
+          "key": "gap",
+          "label": "Gap Test — Is the current solution missing or broken? (1 = good solutions exist, 5 = no good solution at all)",
+          "min": 1,
+          "max": 5
+        }
+      ],
+      "justification_prompt": "Which test did you rate highest, and why did you give it that score?",
+      "honesty_check": {
+        "enabled": true,
+        "quality_threshold": 3,
+        "avg_rating_threshold": 4.5,
+        "penalty_multiplier": 0.6
+      },
+      "choices": [
+        {
+          "id": "ch2_high_scores",
+          "label": "A. All three tests scored 4 or 5 — this is a REAL problem!",
+          "description": "Your problem is painful, affects many people, and has no good solution. Minto says: GO!",
+          "delta": {
+            "problem_depth": 18,
+            "minto_trust": 12,
+            "idea_power": 8,
+            "pitch_confidence": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Minto jumps up! 'PERFECT score! This problem is worth your energy. A high-pain, high-size, high-gap problem is the holy grail of entrepreneurship. Let's dive in!'",
+          "skill_explanation": {
+            "strategic_thinking": "Validating a problem before building shows smart prioritisation.",
+            "risk_tolerance": "Committing to a hard problem takes entrepreneurial courage."
+          }
+        },
+        {
+          "id": "ch2_mixed_scores",
+          "label": "B. Mixed scores — high on pain, lower on size",
+          "description": "The problem hurts a lot for the people who have it, but not that many people have it. It is a niche problem.",
+          "delta": {
+            "problem_depth": 10,
+            "minto_trust": 6,
+            "idea_power": 5,
+            "customer_empathy": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Minto strokes his chin thoughtfully. 'Niche problems can still make great businesses — sometimes you build for 100 people who LOVE it rather than 1000 who are lukewarm. Just know your audience.'",
+          "skill_explanation": {
+            "strategic_thinking": "Understanding the size and depth of a problem before building shows wisdom.",
+            "adaptability": "Being open to serving a smaller but dedicated audience shows flexible thinking."
+          }
+        },
+        {
+          "id": "ch2_low_gap",
+          "label": "C. Low Gap score — there are already solutions",
+          "description": "The problem is real, but other apps or systems already solve it. Is your solution genuinely different?",
+          "delta": {
+            "problem_depth": 8,
+            "observation_skill": 8,
+            "idea_power": 10,
+            "minto_trust": 5
+          },
+          "skill_tags": [
+            "creativity",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto raises an eyebrow! 'If solutions exist — what would make YOURS better? Cheaper? Simpler? More fun? More local? You are now thinking about competitive advantage. That is an advanced concept!'",
+          "skill_explanation": {
+            "creativity": "Imagining what makes your solution different requires creative thinking.",
+            "strategic_thinking": "Understanding competitors before building is a key strategic move."
+          }
+        },
+        {
+          "id": "ch2_go_back",
+          "label": "D. The scores are too low — I want to pick a different problem",
+          "description": "Honestly, this problem didn't score well on Minto's tests. Better to switch now than waste time building the wrong thing.",
+          "delta": {
+            "minto_trust": 15,
+            "observation_skill": 10,
+            "problem_depth": 5,
+            "resilience": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto beams with respect! 'THAT is entrepreneurial wisdom. Changing direction based on evidence is NOT giving up — it is getting smarter. That is what a pivot is. And you just did one!'",
+          "skill_explanation": {
+            "adaptability": "Being willing to abandon a weak idea to find a stronger one is adaptive thinking.",
+            "strategic_thinking": "Using data (the test scores) to make a decision is strategic reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "ch3_fall_in_love_problem",
+      "round_title": "Chapter 3: Fall in Love with the Problem — The Five WHYs",
+      "situation": "Diya loses her pencil for the third time this week. She is frustrated. Minto kneels down next to her and says: 'Why did you lose your pencil?' She says: 'Because I forgot where I put it.' Minto asks again: 'But WHY did you forget?' One question leads to another... five WHYs later, they discover the REAL problem is something completely different from a missing pencil! This is the Five WHYs technique — and today you will use it on YOUR problem.",
+      "goal": "Dig five levels deep into your problem using the Five WHYs to find its real root cause.",
+      "coaching_moment": "Surface problems are symptoms. Real entrepreneurs go deeper — five levels deep — to find the ROOT CAUSE. When you fix the root cause, you fix everything above it. This is called 'falling in love with the problem, not your solution.'",
+      "reflection_prompt": "After going five levels deep with WHYs, did you discover something surprising? Was your original problem the REAL problem?",
+      "ai_image_prompt": "Cartoon Pixar style, Minto the fox and a girl named Diya with a lost pencil, five WHY arrows going downward like roots of a tree getting deeper, colourful root diagram, 'Real Problem' label at the bottom with a lightbulb",
+      "input_type": "structured_form",
+      "form_fields": [
+        {
+          "key": "why1",
+          "label": "WHY #1 — Why does this problem happen?",
+          "placeholder": "Start with the obvious surface reason...",
+          "min_length": 10,
+          "max_length": 150
+        },
+        {
+          "key": "why2",
+          "label": "WHY #2 — Why does that happen?",
+          "placeholder": "Dig one level deeper...",
+          "min_length": 10,
+          "max_length": 150
+        },
+        {
+          "key": "why3",
+          "label": "WHY #3 — Why does THAT happen?",
+          "placeholder": "Keep going...",
+          "min_length": 10,
+          "max_length": 150
+        },
+        {
+          "key": "why4",
+          "label": "WHY #4 — And why does that happen?",
+          "placeholder": "Almost there...",
+          "min_length": 10,
+          "max_length": 150
+        },
+        {
+          "key": "why5",
+          "label": "WHY #5 — This is the REAL problem. What is it really?",
+          "placeholder": "The root cause — this is what your solution should actually fix!",
+          "min_length": 15,
+          "max_length": 200
+        }
+      ],
+      "evaluation_rubric": {
+        "strategic_thinking": "Did each WHY dig deeper than the previous one, moving from symptom to root cause?",
+        "creativity": "Did they uncover a non-obvious root cause that goes beyond the surface complaint?"
+      },
+      "choices": [
+        {
+          "id": "ch3_deep_discovery",
+          "label": "A. My WHYs revealed a completely unexpected root cause!",
+          "description": "The five WHYs took you somewhere surprising. Your original problem was just a symptom of something much bigger.",
+          "delta": {
+            "problem_depth": 22,
+            "idea_power": 12,
+            "minto_trust": 15,
+            "customer_empathy": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "Minto does a happy dance! 'THAT is the Five WHYs working perfectly! The first time you do this and discover something unexpected — that feeling? That is the entrepreneurial breakthrough moment. Remember it!'",
+          "skill_explanation": {
+            "strategic_thinking": "Finding a root cause by layering questions shows deep strategic analysis.",
+            "creativity": "Seeing a non-obvious connection between surface and root is creative thinking."
+          }
+        },
+        {
+          "id": "ch3_confirmed_problem",
+          "label": "B. My WHYs confirmed my original problem was indeed the root cause",
+          "description": "Going five levels deep, you ended up right back at the original problem — it really is the root issue.",
+          "delta": {
+            "problem_depth": 15,
+            "minto_trust": 10,
+            "idea_power": 8,
+            "resilience": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Minto smiles! 'That is perfectly fine — sometimes the obvious problem IS the real problem. Now you can pursue it with full confidence, knowing you tested it properly.'",
+          "skill_explanation": {
+            "strategic_thinking": "Using evidence to confirm a direction is as valuable as discovering a new one.",
+            "resilience": "Committing to a well-tested path even under uncertainty shows inner strength."
+          }
+        },
+        {
+          "id": "ch3_got_stuck",
+          "label": "C. I got stuck on WHY #3 or #4 — I need more information",
+          "description": "The WHYs showed you that you don't know enough yet. You need to talk to real people or do more research.",
+          "delta": {
+            "problem_depth": 10,
+            "minto_trust": 8,
+            "observation_skill": 10,
+            "customer_empathy": 8
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Minto nods! 'Getting stuck is a GOOD sign — it means you hit the edge of your knowledge. Now you know EXACTLY what research you need to do next. That is called a learning gap, and it is very useful.'",
+          "skill_explanation": {
+            "adaptability": "Recognising the limits of your knowledge and knowing to seek more shows adaptability.",
+            "empathy": "Realising you need to talk to real people to understand them is the foundation of user empathy."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "ch4_idea_machine",
+      "round_title": "Chapter 4: The Idea Machine",
+      "situation": "Minto spreads out a colourful sheet titled 'The Four Doors of Idea Land.' He explains: 'Door 1 — Frustration: What FRUSTRATES you? Door 2 — Complaints: What do people COMPLAIN about? Door 3 — Combination: What two existing things can you COMBINE? Door 4 — Ignored People: Who is being LEFT OUT that nobody serves?' He sets a timer. 'Now — open ALL four doors and write every idea that comes out. Good ones, bad ones, crazy ones. Do NOT judge. Just generate!'",
+      "goal": "Use all four idea sources to generate as many ideas as possible, then pick your strongest one.",
+      "coaching_moment": "Quantity beats quality in brainstorming. The tenth idea is usually much better than the first. Ideas need space to breathe — you cannot judge while you generate. Turn off your inner critic for this session!",
+      "reflection_prompt": "Which of the four idea sources produced your most unexpected or exciting idea?",
+      "ai_image_prompt": "Cartoon Pixar style, Minto opening four colourful doors labelled Frustration, Complaints, Combination, Ignored People, each door has sticky notes flying out, school student at a table surrounded by ideas, joyful and chaotic energy",
+      "scene_widget": {
+        "type": "brainstorm_board",
+        "props": {
+          "prompt": "Use ALL FOUR idea sources! Write every idea — good, bad, crazy, obvious. Aim for at least 8 ideas. You can only select your BEST idea after the timer ends.",
+          "timer_seconds": 300,
+          "min_ideas": 5,
+          "best_idea_select": true,
+          "scoring_tiers": [
+            {
+              "min_count": 12,
+              "delta": {
+                "idea_power": 20,
+                "minto_trust": 10,
+                "resilience": 5
+              }
+            },
+            {
+              "min_count": 8,
+              "delta": {
+                "idea_power": 15,
+                "minto_trust": 7,
+                "resilience": 3
+              }
+            },
+            {
+              "min_count": 5,
+              "delta": {
+                "idea_power": 10,
+                "minto_trust": 5,
+                "resilience": 2
+              }
+            },
+            {
+              "min_count": 3,
+              "delta": {
+                "idea_power": 5,
+                "minto_trust": 2
+              }
+            }
+          ]
+        }
+      },
+      "choices": [
+        {
+          "id": "ch4_frustration_focus",
+          "label": "A. I focused on FRUSTRATION — personal problems I feel deeply",
+          "description": "Your best ideas came from your own frustrations — things YOU have lived through and understand deeply.",
+          "delta": {
+            "idea_power": 15,
+            "problem_depth": 10,
+            "resilience": 5,
+            "minto_trust": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "creativity"
+          ],
+          "feedback": "Minto nods! 'The best entrepreneurs often solve problems they have personally experienced. You are not just solving a problem — you are your own first customer. That is called being a user-entrepreneur!'",
+          "skill_explanation": {
+            "empathy": "Solving your own frustrations means you deeply understand the user experience.",
+            "creativity": "Drawing ideas from personal pain points is a classic form of creative entrepreneurship."
+          }
+        },
+        {
+          "id": "ch4_combination_focus",
+          "label": "B. I focused on COMBINATION — mashing two things together",
+          "description": "Your most exciting idea came from combining two existing things in a new way. Innovation doesn't always mean inventing from scratch!",
+          "delta": {
+            "idea_power": 18,
+            "observation_skill": 8,
+            "minto_trust": 8,
+            "pitch_confidence": 5
+          },
+          "skill_tags": [
+            "creativity",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto cheers! 'Combination is one of the most powerful innovation techniques. Almost every great product is a combination: Uber = taxi + smartphone. Swiggy = restaurant + delivery. What did you combine?'",
+          "skill_explanation": {
+            "creativity": "Combining existing ideas in new ways is one of the most powerful forms of creative thinking.",
+            "strategic_thinking": "Seeing patterns and connections between separate domains shows strategic creativity."
+          }
+        },
+        {
+          "id": "ch4_ignored_people",
+          "label": "C. I focused on IGNORED PEOPLE — groups nobody serves well",
+          "description": "You noticed people who are left out — perhaps elderly people, children with disabilities, or rural communities — and built an idea around them.",
+          "delta": {
+            "customer_empathy": 18,
+            "idea_power": 12,
+            "minto_trust": 10,
+            "problem_depth": 8
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Minto gets emotional. 'This is the most beautiful door to walk through. Building for people who are usually ignored — that is not just entrepreneurship. That is social impact. That is changing the world.'",
+          "skill_explanation": {
+            "empathy": "Actively designing for overlooked groups shows the highest form of empathetic thinking.",
+            "adaptability": "Serving underserved groups often requires creatively adapting existing solutions."
+          }
+        },
+        {
+          "id": "ch4_complaints_focus",
+          "label": "D. I focused on COMPLAINTS — turning everyday grumbles into ideas",
+          "description": "You listened carefully to complaints from people around you and turned each one into a possible idea.",
+          "delta": {
+            "observation_skill": 12,
+            "idea_power": 12,
+            "customer_empathy": 8,
+            "minto_trust": 6
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto claps! 'Complaint collectors are gold mines. Every complaint is a product brief written by a real customer! You just did market research without spending a single rupee.'",
+          "skill_explanation": {
+            "empathy": "Listening to complaints with a curious mind rather than annoyance is empathy in action.",
+            "strategic_thinking": "Converting unstructured feedback into structured ideas is a strategic skill."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "ch4_idea_scorecard",
+      "round_title": "Chapter 4: The Idea Scorecard",
+      "situation": "Minto places a green scorecard on the table. 'You have generated loads of ideas — wonderful! Now we must be honest scientists and evaluate your BEST idea against five questions. Rate yourself fairly — this is not a test with right or wrong answers. It is a mirror that shows you exactly how strong your idea is right now.' He taps the first question and winks. 'And remember — even low scores are useful. They tell you what to work on next!'",
+      "goal": "Honestly rate your best idea on five dimensions to understand its current strength and weaknesses.",
+      "coaching_moment": "An Idea Scorecard is a tool for honesty, not a report card for marks. Real entrepreneurs use it to decide whether to keep going, pivot, or start fresh. There is no shame in a low score — it just tells you where to focus next.",
+      "reflection_prompt": "Which of the five dimensions got your lowest score? What would it take to improve that score?",
+      "ai_image_prompt": "Cartoon Pixar style, Minto the fox showing a green scorecard with five rows, school student holding a pencil thinking carefully, each row has a 1-5 star rating, warm focused classroom setting",
+      "input_type": "slider_rating",
+      "sliders": [
+        {
+          "key": "real_painful",
+          "label": "The problem is REAL and painful for people I have spoken to (1 = I guessed, 5 = I confirmed with real people)",
+          "min": 1,
+          "max": 5
+        },
+        {
+          "key": "fixes_it",
+          "label": "My solution actually FIXES the problem, not just masks it (1 = not sure, 5 = yes, it solves the root cause)",
+          "min": 1,
+          "max": 5
+        },
+        {
+          "key": "enough_people",
+          "label": "Enough people HAVE this problem to make it worth solving (1 = very few, 5 = a lot of people)",
+          "min": 1,
+          "max": 5
+        },
+        {
+          "key": "different",
+          "label": "My solution is DIFFERENT from what already exists (1 = similar to current solutions, 5 = genuinely new)",
+          "min": 1,
+          "max": 5
+        },
+        {
+          "key": "excited",
+          "label": "I am EXCITED and motivated to work on this idea (1 = not really, 5 = I can't stop thinking about it!)",
+          "min": 1,
+          "max": 5
+        }
+      ],
+      "total_label": "Idea Score",
+      "choices": [
+        {
+          "id": "ch4_strong_idea",
+          "label": "A. My idea scored 18-25 — this is a strong, validated idea!",
+          "description": "Your idea passes all five dimensions strongly. Minto says it is ready for the prototype phase.",
+          "delta": {
+            "idea_power": 20,
+            "problem_depth": 12,
+            "minto_trust": 12,
+            "pitch_confidence": 8,
+            "prototype_progress": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Minto stands on his chair! '18 or above is outstanding! Most entrepreneurs at your age get 10-14. You have done your research, thought it through, and chosen boldly. Time to BUILD!'",
+          "skill_explanation": {
+            "strategic_thinking": "Thoroughly evaluating an idea before building shows excellent strategic planning.",
+            "risk_tolerance": "Committing to a well-scored idea with full conviction shows entrepreneurial boldness."
+          }
+        },
+        {
+          "id": "ch4_decent_idea",
+          "label": "B. My idea scored 12-17 — decent but needs improvement in some areas",
+          "description": "Some dimensions are strong, others weaker. Minto identifies which one to work on next.",
+          "delta": {
+            "idea_power": 12,
+            "problem_depth": 8,
+            "minto_trust": 8,
+            "customer_empathy": 6
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto shows you your scorecard. 'This is healthy! Now look at your two lowest scores — those are your next missions. Fix the gaps before you start building. An honest 14 beats a dishonest 22 every time.'",
+          "skill_explanation": {
+            "adaptability": "Knowing where your idea is weak and acting on it shows adaptive thinking.",
+            "strategic_thinking": "Using the scorecard to plan your next steps is strategic decision-making."
+          }
+        },
+        {
+          "id": "ch4_weak_idea",
+          "label": "C. My idea scored below 12 — I think I should find a better problem",
+          "description": "The scores reveal this idea needs major rethinking — maybe even a fresh start with a different problem.",
+          "delta": {
+            "minto_trust": 15,
+            "observation_skill": 10,
+            "resilience": 8,
+            "problem_depth": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Minto actually cheers! 'Do you know how rare it is for someone your age to say that? Most people waste months building the wrong thing. You just saved yourself months of work. NOW go find your real problem!'",
+          "skill_explanation": {
+            "adaptability": "Being willing to scrap a weak idea and start fresh is the most adaptive entrepreneurial decision.",
+            "resilience": "Having the strength to admit an idea is not good enough — and still pressing forward — is resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "ch5_paper_prototype",
+      "round_title": "Chapter 5: Minto Builds an App — Paper Prototype",
+      "situation": "Minto pulls out three blank rectangles that look like phone screens. 'Before I code anything, I always draw it on paper first!' he explains. 'This is a paper prototype — it costs nothing, takes 20 minutes, and shows you immediately whether your idea WORKS. You design three screens: Screen 1 is the Home (what users see first). Screen 2 is the Main Feature (the thing that solves the problem). Screen 3 is the Confirmation (what happens when they are done).' He hands you the paper. 'Now you try!'",
+      "goal": "Create a paper prototype with three screens showing your solution's core user flow.",
+      "coaching_moment": "Every great app started as a drawing on paper. Paper prototypes are cheap, fast, and easy to throw away if they are wrong. Build it rough, share it early, and let real people tell you what to fix. That is 100 times better than spending months on something perfect.",
+      "reflection_prompt": "When you drew your three screens, what did you discover about your idea that surprised you?",
+      "ai_image_prompt": "Cartoon Pixar style, Minto and a school student sitting at a table drawing three phone screen rectangles on paper, Home Screen with arrow to Main Feature to Confirmation, colourful markers and creative energy, close-up detail of paper drawings",
+      "scene_widget": {
+        "type": "drawing_canvas",
+        "props": {
+          "prompt": "Draw your app! Design three screens on paper: Screen 1 Home (what users see first), Screen 2 Main Feature (solves the problem), Screen 3 Confirmation (done screen). Keep it simple — boxes, arrows, and labels are perfect!",
+          "canvas_width": 700,
+          "canvas_height": 450,
+          "template": "three_screens",
+          "tools": [
+            "pen",
+            "eraser",
+            "shapes",
+            "text",
+            "undo",
+            "clear"
+          ],
+          "evaluation_rubric": {
+            "creativity": "Does the design show original thinking beyond the obvious?",
+            "strategic_thinking": "Is the user flow logical — does Screen 1 naturally lead to Screen 2?",
+            "empathy": "Does the design clearly show how it solves the user's real problem?"
+          },
+          "scoring_dimensions": [
+            "creativity",
+            "strategic_thinking",
+            "empathy"
+          ],
+          "max_delta": 12
+        }
+      },
+      "choices": [
+        {
+          "id": "ch5_simplicity_first",
+          "label": "A. I prioritised SIMPLICITY — one core feature, clean design",
+          "description": "Your V1 focuses on one thing done brilliantly rather than many things done poorly.",
+          "delta": {
+            "prototype_progress": 20,
+            "minto_trust": 10,
+            "pitch_confidence": 8,
+            "idea_power": 6
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Minto gives a standing ovation! 'The number one mistake first-time builders make is putting too much in V1. One thing done beautifully beats ten things done badly. This is what the best designers in the world do!'",
+          "skill_explanation": {
+            "strategic_thinking": "Prioritising one core feature and doing it well is masterful product strategy.",
+            "adaptability": "Resisting the urge to add everything shows disciplined adaptive thinking."
+          }
+        },
+        {
+          "id": "ch5_features_first",
+          "label": "B. I added LOTS of features — this app does everything!",
+          "description": "Your prototype is packed with ideas. Every screen has multiple features and options.",
+          "delta": {
+            "idea_power": 15,
+            "prototype_progress": 10,
+            "minto_trust": 5,
+            "resilience": 3
+          },
+          "skill_tags": [
+            "creativity",
+            "risk_tolerance"
+          ],
+          "feedback": "Minto smiles but raises an eyebrow. 'Amazing imagination! But a word of wisdom from the handbook: features are easy to ADD later — and very hard to REMOVE. Start with one. Add more when users ask for them.'",
+          "skill_explanation": {
+            "creativity": "Generating many feature ideas shows creative thinking.",
+            "risk_tolerance": "Launching a feature-rich V1 is a higher risk but reflects entrepreneurial boldness."
+          }
+        },
+        {
+          "id": "ch5_design_first",
+          "label": "C. I focused on DESIGN — it looks beautiful and polished",
+          "description": "Your three screens look amazing. You spent a lot of time on colours, layout, and details.",
+          "delta": {
+            "prototype_progress": 15,
+            "pitch_confidence": 10,
+            "idea_power": 6,
+            "minto_trust": 7
+          },
+          "skill_tags": [
+            "creativity",
+            "empathy"
+          ],
+          "feedback": "Minto nods! 'Design matters — users judge apps in 3 seconds. But at the paper prototype stage, ugly and functional beats beautiful and confusing. Save the polish for V2 when you know it WORKS.'",
+          "skill_explanation": {
+            "creativity": "A design-first approach shows aesthetic sensibility and creative focus.",
+            "empathy": "Thinking about how it looks to the user shows care for their experience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "ch5_version_testing",
+      "round_title": "Chapter 5: Version Testing — Build, Test, Learn, Improve",
+      "situation": "Minto points to a cycle painted on the wall: BUILD → TEST → LEARN → IMPROVE → (repeat). 'Your V1 paper prototype just came back from three users — and the feedback is... not what you hoped for,' he says gently. 'User 1 says: I don't understand what button to press first. User 2 says: This looks like it already exists. User 3 says: I'd use it, but it needs one more thing.' Minto looks at you calmly. 'Welcome to the real world of building. What do you do next?'",
+      "goal": "Decide how to respond to mixed user feedback and produce a stronger V2 using the Build-Test-Learn loop.",
+      "coaching_moment": "EVERY first version gets rejected, confused users, or criticism. This is not failure — this is the beginning of the real work. The entrepreneurs who succeed are not the ones who build perfect V1s. They are the ones who listen, learn, and improve faster than everyone else.",
+      "reflection_prompt": "When someone criticises something you made, how does it feel? And what is the most useful thing you can do with that feeling?",
+      "ai_image_prompt": "Cartoon Pixar style, school student holding a V1 paper prototype that three users have left feedback notes on, Minto pointing to BUILD-TEST-LEARN-IMPROVE cycle wheel on chalkboard, determined look on student's face",
+      "choices": [
+        {
+          "id": "ch5_listen_and_iterate",
+          "label": "A. Listen to all three users and build a better V2 immediately",
+          "description": "You take notes on every piece of feedback, identify the patterns, and redesign the screens based on what you heard.",
+          "delta": {
+            "prototype_progress": 18,
+            "resilience": 10,
+            "customer_empathy": 10,
+            "minto_trust": 12,
+            "problem_depth": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "adaptability"
+          ],
+          "feedback": "Minto is moved. 'That is the Build-Test-Learn loop in action! V2 will be 40% better than V1 just because you listened instead of defended. That is the fastest way to build something people love.'",
+          "skill_explanation": {
+            "resilience": "Using negative feedback as fuel rather than letting it stop you is resilience in action.",
+            "adaptability": "Rapidly incorporating feedback and changing your design shows excellent adaptability."
+          }
+        },
+        {
+          "id": "ch5_fix_one_thing",
+          "label": "B. Fix the most important problem that all three mentioned",
+          "description": "You look for the one overlap in all three pieces of feedback and fix JUST that first.",
+          "delta": {
+            "prototype_progress": 12,
+            "resilience": 8,
+            "minto_trust": 8,
+            "idea_power": 6
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Minto nods! 'Smart. When three different users say the same thing, that is not an opinion — that is a fact. Fixing the most agreed-upon problem first is prioritisation. Advanced entrepreneur thinking!'",
+          "skill_explanation": {
+            "strategic_thinking": "Prioritising the most common feedback over all feedback is smart strategic thinking.",
+            "resilience": "Responding to criticism with focused improvement rather than overwhelm shows strength."
+          }
+        },
+        {
+          "id": "ch5_defend_v1",
+          "label": "C. Defend your V1 — the users just didn't understand it",
+          "description": "You believe in your design. Maybe these three users were not the right audience. Let's find better testers.",
+          "delta": {
+            "prototype_progress": 5,
+            "pitch_confidence": 5,
+            "minto_trust": -5,
+            "resilience": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Minto tilts his head sadly. 'I understand. It is painful when users don't get your vision. But here is the rule: if THREE separate users are confused, it is almost never their fault. It is the design's fault. This is one of the hardest lessons to learn.'",
+          "skill_explanation": {
+            "risk_tolerance": "Maintaining conviction in your vision under criticism shows boldness.",
+            "resilience": "Sticking with a decision under pressure — even if not the optimal one — shows determination."
+          }
+        },
+        {
+          "id": "ch5_give_up_v1",
+          "label": "D. The feedback was so bad I am thinking of starting over entirely",
+          "description": "Maybe this whole idea is wrong. You are considering going back to Chapter 2 and finding a completely new problem.",
+          "delta": {
+            "observation_skill": 10,
+            "problem_depth": 8,
+            "resilience": -5,
+            "minto_trust": 6
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto puts a paw on your shoulder. 'Sometimes that IS the right answer. But here is a question first: was the IDEA wrong, or was just the EXECUTION of V1 wrong? Often the idea is fine — only the design needs work. Think carefully before you restart.'",
+          "skill_explanation": {
+            "adaptability": "Being open to a complete pivot when evidence warrants it shows adaptability.",
+            "strategic_thinking": "Distinguishing between a bad idea and bad execution is a critical strategic skill."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "ch6_resilience_checklist",
+      "round_title": "Chapter 6: Failing is Part of the Map",
+      "situation": "Minto opens the handbook to Chapter 6 and reads aloud: 'Aarav's first app crashed at the school demo. Diya's handmade bags fell apart at the craft fair. Rohan's pitch got laughed at by older students. But here is what is interesting: Aarav launched a better app six months later. Diya's bags are now sold in three shops. Rohan won a district youth competition.' Minto closes the book. 'Every map has a section marked HARD TERRAIN. That does not mean you are lost — it means you are on the real path. Let's see how resilient YOU are today.'",
+      "goal": "Honestly self-assess your current resilience and reflection practices using Minto's Resilience Checklist.",
+      "coaching_moment": "Resilience is not about never feeling hurt or never failing. It is about what you DO after the hard moments. The students who succeed are not the ones who never fail — they are the ones who fail, learn, and keep going one more time.",
+      "reflection_prompt": "Pick one item from the checklist that you did NOT tick today. What is ONE small thing you could do this week to build that skill?",
+      "ai_image_prompt": "Cartoon Pixar style, Minto the fox holding a resilience checklist, three diverse students (Aarav, Diya, Rohan) shown in small panels bouncing back from setbacks with growing smiles, warm encouraging colours, stars and growth arrows",
+      "input_type": "checklist",
+      "checklist_title": "The Resilience Checklist",
+      "checklist_instruction": "Tick what is TRUE for you RIGHT NOW. Be completely honest — this checklist is only for you!",
+      "checklist_items": [
+        {
+          "key": "dont_give_up",
+          "label": "I don't give up when things get hard the first time",
+          "dimension": "resilience",
+          "delta": 3
+        },
+        {
+          "key": "ask_help",
+          "label": "I ask for help when I am stuck instead of suffering alone",
+          "dimension": "adaptability",
+          "delta": 2
+        },
+        {
+          "key": "feedback_useful",
+          "label": "I see feedback and criticism as useful information, not personal attacks",
+          "dimension": "empathy",
+          "delta": 2
+        },
+        {
+          "key": "new_approaches",
+          "label": "I try new approaches when my first one doesn't work",
+          "dimension": "adaptability",
+          "delta": 3
+        },
+        {
+          "key": "celebrate_small",
+          "label": "I celebrate small progress — not just big wins",
+          "dimension": "resilience",
+          "delta": 2
+        },
+        {
+          "key": "growth_mindset",
+          "label": "I believe my abilities can grow with effort and practice",
+          "dimension": "strategic_thinking",
+          "delta": 2
+        },
+        {
+          "key": "keep_going",
+          "label": "I keep going even when others don't believe in me",
+          "dimension": "risk_tolerance",
+          "delta": 3
+        },
+        {
+          "key": "learn_others",
+          "label": "I learn from other people's failures and mistakes, not just my own",
+          "dimension": "strategic_thinking",
+          "delta": 2
+        }
+      ],
+      "min_checked": 3,
+      "reflection_min_length": 30,
+      "choices": [
+        {
+          "id": "ch6_most_ticks",
+          "label": "A. I ticked 6 or more — I am already quite resilient!",
+          "description": "Most of the resilience habits are already part of how you think and act.",
+          "delta": {
+            "resilience": 20,
+            "minto_trust": 10,
+            "pitch_confidence": 8,
+            "prototype_progress": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto beams! 'A resilient mind is the single greatest tool an entrepreneur can have. More powerful than money, more powerful than connections. Take care of this — it is your biggest competitive advantage.'",
+          "skill_explanation": {
+            "resilience": "High resilience self-assessment backed by honest reflection is a powerful personal insight.",
+            "strategic_thinking": "Understanding your own mental strengths lets you deploy them strategically."
+          }
+        },
+        {
+          "id": "ch6_middle_ticks",
+          "label": "B. I ticked 4-5 — I am resilient in some areas but not all",
+          "description": "Some resilience habits are strong, others still need work. You know exactly which ones.",
+          "delta": {
+            "resilience": 13,
+            "minto_trust": 8,
+            "customer_empathy": 5,
+            "adaptability": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Minto puts a paw on your shoulder. 'Knowing your gaps is the first step to closing them. The ones you did NOT tick — write them down. Those are your growth targets for the next three weeks.'",
+          "skill_explanation": {
+            "adaptability": "Using self-knowledge to identify growth areas is adaptive self-improvement.",
+            "resilience": "Honestly identifying weaknesses without shame is itself a form of resilience."
+          }
+        },
+        {
+          "id": "ch6_few_ticks",
+          "label": "C. I ticked 3 or fewer — resilience is something I need to build",
+          "description": "Honestly, you found it hard to tick many items. That is completely okay — resilience can be learned.",
+          "delta": {
+            "resilience": 8,
+            "minto_trust": 15,
+            "observation_skill": 5,
+            "problem_depth": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Minto smiles warmly. 'Thank you for being honest. That alone is a form of bravery. Resilience is not a personality trait you are born with — it is a habit you build one small decision at a time. Today's first step: you ticked this box.'",
+          "skill_explanation": {
+            "resilience": "Acknowledging low resilience honestly and still moving forward IS resilience.",
+            "empathy": "Self-compassion — being kind to yourself about your current state — is a form of empathy directed inward."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "ch7_your_60_second_pitch",
+      "round_title": "Chapter 7: Your Turn — The 60-Second Pitch",
+      "situation": "Minto stands on a box pretending to be a stage. 'You have mapped your problem. You have tested your idea. You have built your prototype. You have bounced back from failure. Now — the world needs to HEAR about it!' He holds out a microphone (a hairbrush). 'You have 60 seconds. Four parts: The Problem (10 seconds). Your Solution (15 seconds). Who It Helps (10 seconds). Why It Is Different (15 seconds). The remaining 10 seconds? Eye contact and confidence.' He grins. 'Ready? Fill in your pitch card first — THEN deliver it!'",
+      "goal": "Build your complete 60-second pitch using a structured framework and deliver it with confidence.",
+      "coaching_moment": "A pitch is not about selling — it is about helping people understand why your idea matters. When you believe in your problem deeply, the words come naturally. The framework is a scaffold — your passion is the building.",
+      "reflection_prompt": "After filling in your pitch card, which section felt strongest? Which felt weakest? What would you research more before pitching to a real audience?",
+      "ai_image_prompt": "Cartoon Pixar style, school student standing confidently on a small box holding a hairbrush microphone, Minto cheering from the side, four pitch sections floating as colourful cards (Problem, Solution, Audience, Difference), classroom audience of diverse students",
+      "input_type": "structured_form",
+      "form_fields": [
+        {
+          "key": "app_name",
+          "label": "Your idea's name",
+          "placeholder": "What would you call it? Keep it short and memorable!",
+          "min_length": 2,
+          "max_length": 50
+        },
+        {
+          "key": "problem",
+          "label": "The Problem — 10 seconds",
+          "placeholder": "Every day, ___ struggle with ___. This costs them ___ or makes them feel ___.",
+          "min_length": 15,
+          "max_length": 200
+        },
+        {
+          "key": "solution",
+          "label": "My Solution — 15 seconds",
+          "placeholder": "I created ___, which helps people ___ by ___. It works by ___.",
+          "min_length": 15,
+          "max_length": 200
+        },
+        {
+          "key": "who_helps",
+          "label": "Who It Helps — 10 seconds",
+          "placeholder": "This helps ___ — and there are approximately ___ people who have this problem in my school/area.",
+          "min_length": 10,
+          "max_length": 150
+        },
+        {
+          "key": "why_different",
+          "label": "Why It Is Different — 15 seconds",
+          "placeholder": "Unlike ___, my solution is different because ___. No one else does ___ the way I do.",
+          "min_length": 10,
+          "max_length": 150
+        }
+      ],
+      "evaluation_rubric": {
+        "strategic_thinking": "Is the pitch logical and structured — does each section connect to the next?",
+        "creativity": "Is the idea original — does it show fresh thinking beyond obvious solutions?",
+        "empathy": "Does the pitch show a deep understanding of the customer and their real pain?",
+        "risk_tolerance": "Does the student take a bold stance — do they commit fully to their idea?"
+      },
+      "choices": [
+        {
+          "id": "ch7_confident_pitch",
+          "label": "A. I filled in all five sections and I am proud of this pitch!",
+          "description": "Your pitch card is complete. The problem is real, the solution is clear, the audience is defined, and the difference is stated boldly.",
+          "delta": {
+            "pitch_confidence": 25,
+            "minto_trust": 15,
+            "idea_power": 10,
+            "resilience": 8,
+            "prototype_progress": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Minto raises the hairbrush microphone in the air! 'A complete, honest, confident pitch card means you have done the hard work of THINKING before SPEAKING. That is the mark of a prepared entrepreneur. Minto is proud of you!'",
+          "skill_explanation": {
+            "risk_tolerance": "Putting your idea and name on a pitch card takes entrepreneurial courage.",
+            "strategic_thinking": "Structuring a pitch logically from problem to difference shows strategic communication."
+          }
+        },
+        {
+          "id": "ch7_mostly_done",
+          "label": "B. I filled in most sections but struggled with one or two",
+          "description": "Your pitch is mostly ready but one section — maybe 'Why It's Different' or 'Who It Helps' — feels thin.",
+          "delta": {
+            "pitch_confidence": 15,
+            "minto_trust": 10,
+            "idea_power": 6,
+            "observation_skill": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Minto nods. 'The section you struggled with is your next research mission. Thin answers in a pitch mean thin understanding. And thin understanding means thin ideas. Go deeper — talk to more users, read more, think more. Then come back!'",
+          "skill_explanation": {
+            "strategic_thinking": "Identifying the weakest part of your pitch is a strategic diagnosis.",
+            "adaptability": "Being willing to do more research before pitching shows a learning mindset."
+          }
+        },
+        {
+          "id": "ch7_rough_draft",
+          "label": "C. I have a rough draft — I need more research and practice before this is ready",
+          "description": "The pitch card is filled in but you know it needs more work. The ideas are there, but not yet sharp.",
+          "delta": {
+            "pitch_confidence": 8,
+            "minto_trust": 12,
+            "customer_empathy": 8,
+            "resilience": 6
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Minto raises a thumbs up. 'A rough draft that you are honest about is worth ten times more than a polished pitch built on guesses. Keep going. Pitch V2 will be sharper. That is how the map works.'",
+          "skill_explanation": {
+            "resilience": "Acknowledging that your work is not yet ready and committing to keep improving is resilience.",
+            "empathy": "Knowing you need to talk to more users before pitching shows user-centred thinking."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "problem_detective",
+      "label": "Problem Detective",
+      "condition": "observation_skill >= 65 and customer_empathy >= 45",
+      "icon": "🔍"
+    },
+    {
+      "id": "idea_machine",
+      "label": "Idea Machine",
+      "condition": "idea_power >= 60",
+      "icon": "💡"
+    },
+    {
+      "id": "bounce_back_champion",
+      "label": "Bounce Back Champion",
+      "condition": "resilience >= 60",
+      "icon": "💪"
+    },
+    {
+      "id": "minto_approved",
+      "label": "Minto Approved",
+      "condition": "minto_trust >= 70",
+      "icon": "🦊"
+    },
+    {
+      "id": "pitch_ready",
+      "label": "Pitch Ready",
+      "condition": "pitch_confidence >= 55 and prototype_progress >= 35",
+      "icon": "🎤"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Entrepreneur",
+      "definition": "A person who spots a problem and takes action to solve it — often by building a product, service, or system. Entrepreneurs do not wait for someone else to fix what is broken."
+    },
+    {
+      "term": "Five WHYs",
+      "definition": "A technique invented by Sakichi Toyoda (Toyota founder) where you ask 'Why?' five times to move from the surface symptom of a problem to its real root cause. Each WHY digs one level deeper."
+    },
+    {
+      "term": "Pain Test",
+      "definition": "One of Minto's three problem tests — it asks: How much does this problem bother the people who have it? A high pain score (4-5 out of 5) means people will pay to have it solved."
+    },
+    {
+      "term": "Size Test",
+      "definition": "One of Minto's three problem tests — it asks: How many people have this problem? A high size score means a large potential audience for your solution."
+    },
+    {
+      "term": "Gap Test",
+      "definition": "One of Minto's three problem tests — it asks: Is the current solution missing or broken? A high gap score means there is space in the market for your new solution."
+    },
+    {
+      "term": "Prototype",
+      "definition": "A simple, early version of your idea that you can show to real people and test. Prototypes are meant to be rough — they help you learn quickly without spending lots of time or money."
+    },
+    {
+      "term": "Pivot",
+      "definition": "When you change the direction of your idea based on feedback or evidence. Pivoting is not giving up — it is getting smarter. Famous pivots: YouTube started as a dating site, Instagram started as a check-in app."
+    },
+    {
+      "term": "Build-Test-Learn Loop",
+      "definition": "The core cycle of entrepreneurship: Build a rough version → Test it with real users → Learn from their feedback → Improve it → Repeat. Each loop makes your product stronger."
+    },
+    {
+      "term": "Idea Scorecard",
+      "definition": "A tool entrepreneurs use to honestly evaluate how strong their idea is before building it. Scored on five dimensions: Real Pain, Fixes the Root, Enough People, Something Different, Personal Excitement."
+    },
+    {
+      "term": "Paper Prototype",
+      "definition": "A hand-drawn sketch of your product or app on paper — often showing key screens or steps. Paper prototypes cost nothing, take minutes to make, and are easy to throw away if they don't work."
+    },
+    {
+      "term": "Root Cause",
+      "definition": "The deepest, underlying reason a problem exists. Surface problems (symptoms) point to root causes. Solving the root cause fixes everything above it — solving only the symptom means the problem comes back."
+    },
+    {
+      "term": "Resilience",
+      "definition": "The ability to bounce back after failure, criticism, or setbacks. Resilient entrepreneurs treat failures as experiments — each one teaches them something useful about what to do differently next time."
+    },
+    {
+      "term": "Elevator Pitch",
+      "definition": "A short, powerful summary of your idea that you could explain to someone in the time it takes to ride an elevator — about 60 seconds. It covers: the problem, your solution, who it helps, and why it is different."
+    }
+  ],
+  "endings": [
+    {
+      "id": "young_changemaker",
+      "title": "The Young Changemaker",
+      "icon": "🌟",
+      "message": "You have completed Minto's full map — every chapter, every test, every WHY! Your observation skill is sharp, your ideas are powered by deep problem understanding, your prototype shows real thinking, and your pitch is confident and clear. Minto stamps your map with a golden star: 'This student did not just read about entrepreneurship — they LIVED it.' Whether you build an app, a service, or a movement, your map is in your hands. The world is waiting for your big idea!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "idea_power",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "pitch_confidence",
+            "operator": ">=",
+            "value": 45
+          },
+          {
+            "resource": "prototype_progress",
+            "operator": ">=",
+            "value": 40
+          }
+        ]
+      }
+    },
+    {
+      "id": "the_problem_expert",
+      "title": "The Problem Expert",
+      "icon": "🔍",
+      "message": "You have an extraordinary gift — you notice what is broken before anyone else does. Your observation skill is exceptional and your empathy for users runs deep. You know more about the problem than almost anyone. Now comes your next step: take that understanding and BUILD something. Minto says: 'The world is full of people who see problems. We need more people who ACT on them. You have the radar — now build the solution.'",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "observation_skill",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "customer_empathy",
+            "operator": ">=",
+            "value": 40
+          },
+          {
+            "resource": "prototype_progress",
+            "operator": "<",
+            "value": 30
+          }
+        ]
+      }
+    },
+    {
+      "id": "the_idea_factory",
+      "title": "The Idea Factory",
+      "icon": "💡",
+      "message": "Your mind never stops! You generated more ideas than anyone else in the room, explored all four idea doors, and always had a creative angle. Minto is astounded by your imagination. Now here is your growth mission: pick ONE idea and go deep. More ideas without execution leads to what entrepreneurs call 'shiny object syndrome.' Minto hands you a sign: 'Go build ONE of these. Then come back.'",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "idea_power",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "prototype_progress",
+            "operator": "<",
+            "value": 25
+          }
+        ]
+      }
+    },
+    {
+      "id": "the_resilient_builder",
+      "title": "The Resilient Builder",
+      "icon": "🔧",
+      "message": "You faced failures, heard harsh feedback, dealt with setbacks — and you kept building anyway. Your prototype exists because of pure determination. Minto salutes you: 'Some of the world's greatest inventions were built by people who were told it would not work. Your resilience is your engine — keep it fuelled.' The next step is to get your prototype in front of more users and listen deeply to what they say.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "resilience",
+            "operator": ">=",
+            "value": 45
+          },
+          {
+            "resource": "prototype_progress",
+            "operator": ">=",
+            "value": 40
+          }
+        ]
+      }
+    },
+    {
+      "id": "the_first_step",
+      "title": "The First Step",
+      "icon": "🌱",
+      "message": "You started. That is the most important thing. Not everyone takes the first step — but you did. The map is in your hands, even if you are still finding your footing. Minto closes the handbook and smiles: 'The first step of any journey is always the hardest. You took it. Priya, Rohan, and Zara all started exactly where you are standing right now. Go back to Chapter 1 and try again — the map gets clearer every time you walk it.'",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          3
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 4
+      },
+      {
+        "name": "core",
+        "rounds": [
+          4,
+          7
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          8,
+          10
+        ],
+        "hints_visible": false,
+        "timer_seconds": null,
+        "max_choices": 4
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 4,
+      "title": "Checkpoint 1: Problem to Idea",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is the Five WHYs technique used for?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Asking five different people for their opinions",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Digging five levels deep to find the real root cause of a problem",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Testing a prototype five times before launching",
+              "correct": false
+            }
+          ],
+          "explanation": "The Five WHYs technique asks WHY five times in a row, each time going one level deeper, until you find the real root cause rather than just the surface symptom of a problem."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "Minto's Pain Test measures:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "How much money people will spend on a solution",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "How much the problem bothers people who have it",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "How hard it is to build the solution",
+              "correct": false
+            }
+          ],
+          "explanation": "The Pain Test measures how intensely people feel the problem. High pain means people are highly motivated to find a solution — which makes it a great business opportunity."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "Which of these is NOT one of the Four Doors of Idea Land?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Frustration",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Competition",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Ignored People",
+              "correct": false
+            }
+          ],
+          "explanation": "The Four Doors of Idea Land are: Frustration, Complaints, Combination, and Ignored People. Competition is not one of the four doors — though understanding competitors is important at a different stage."
+        }
+      ],
+      "review_summary": "Chapters 1-4 cover the foundation of entrepreneurial thinking: identifying your type, spotting problems through complaints, validating them with the three tests, finding root causes with Five WHYs, generating ideas through four sources, and evaluating ideas with the scorecard."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Build, Bounce Back, Pitch",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What is the correct order of the Build-Test-Learn Loop?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Learn → Build → Test → Improve",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Build → Test → Learn → Improve → (repeat)",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Test → Build → Learn → Launch",
+              "correct": false
+            }
+          ],
+          "explanation": "The Build-Test-Learn Loop starts with building a rough version, testing it with real users, learning from their feedback, improving based on what you learned, and repeating the cycle. Each loop makes the product stronger."
+        },
+        {
+          "id": "cp2_q2",
+          "question": "In a 60-second pitch, which section comes SECOND?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Why It Is Different",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "My Solution",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Who It Helps",
+              "correct": false
+            }
+          ],
+          "explanation": "The four sections of a 60-second pitch in order are: (1) The Problem, (2) My Solution, (3) Who It Helps, (4) Why It Is Different. The problem must come first so the audience understands WHY your solution matters."
+        },
+        {
+          "id": "cp2_q3",
+          "question": "What does resilience mean for an entrepreneur?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Never failing or making mistakes",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Not caring what others think",
+              "correct": false
+            },
+            {
+              "id": "c",
+              "text": "Bouncing back from failure and learning from it instead of giving up",
+              "correct": true
+            }
+          ],
+          "explanation": "Resilience is not about avoiding failure — it is about what you DO after failure. Entrepreneurs who succeed are not the ones who never fail. They are the ones who fail, learn, and keep going one more time than anyone else."
+        }
+      ],
+      "review_summary": "Chapters 5-7 cover the execution and communication phases of entrepreneurship: building paper prototypes, using the Build-Test-Learn Loop to improve through versions, developing resilience through understanding real failure stories, and crafting a structured 60-second pitch."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

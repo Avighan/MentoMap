@@ -1,0 +1,2423 @@
+{
+  "game_id": "g7-bias-spotter",
+  "title": "Bias Spotter: The Information Detective",
+  "theme": "Critical Thinking — Questioning Information",
+  "icon": "🔍",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are the newly appointed editor of The Beacon, your school newspaper. Over 12 weeks, you must verify sources, spot fake news, detect cognitive biases, evaluate statistics, and publish accurate stories. Every editorial decision affects your reputation, reader trust, and the truth itself. Can you be the voice of truth in a world of misinformation?",
+  "target_audience": "Ages 12-13",
+  "target_age": "12-13",
+  "grade": "7",
+  "difficulty": "intermediate",
+  "duration_minutes": 25,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You run The Beacon school newspaper across 12 weeks of publication.",
+    "Each round presents a news story that needs critical analysis before publishing.",
+    "Watch your dashboard — source quality, bias detection, and editorial ethics are all connected.",
+    "Random events like viral hoaxes, breaking scandals, and social media storms will test your judgment.",
+    "NPCs (Editor-in-Chief, Clickbait Carl, Whistleblower) react to your choices and may trigger crises.",
+    "Aim for truth and balance — rushing to publish or ignoring ethics will damage your credibility!"
+  ],
+  "learning_objectives": [
+    "Identify common cognitive biases in everyday information",
+    "Evaluate the reliability and credibility of sources",
+    "Detect misleading statistics and logical fallacies",
+    "Practice ethical decision-making in journalism and media",
+    "Develop critical thinking skills for navigating information",
+    "Understand the difference between fact, opinion, and misinformation"
+  ],
+  "tags": [
+    "critical-thinking",
+    "media-literacy",
+    "grade-7",
+    "bias",
+    "fake-news"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Critical Thinking",
+    "Digital Literacy",
+    "Communication",
+    "Ethical Reasoning"
+  ],
+  "cultural_context": "School newspaper, media literacy, global information landscape, age-appropriate journalism ethics",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.15,
+    "adaptability": 0.1,
+    "resilience": 0.1,
+    "empathy": 0.15,
+    "ethical_reasoning": 0.2
+  },
+  "initial_state": {
+    "accuracy_score": {
+      "value": 40,
+      "label": "Accuracy Score",
+      "icon": "🎯",
+      "min": 0,
+      "max": 100
+    },
+    "source_evaluation": {
+      "value": 25,
+      "label": "Source Evaluation",
+      "icon": "📋",
+      "min": 0,
+      "max": 100
+    },
+    "bias_detection": {
+      "value": 20,
+      "label": "Bias Detection",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "statistical_literacy": {
+      "value": 15,
+      "label": "Statistical Literacy",
+      "icon": "📊",
+      "min": 0,
+      "max": 100
+    },
+    "editorial_reputation": {
+      "value": 50,
+      "label": "Editorial Reputation",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "reader_trust": {
+      "value": 45,
+      "label": "Reader Trust",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "investigation_depth": {
+      "value": 20,
+      "label": "Investigation Depth",
+      "icon": "🔎",
+      "min": 0,
+      "max": 100
+    },
+    "publishing_speed": {
+      "value": 30,
+      "label": "Publishing Speed",
+      "icon": "⚡",
+      "min": 0,
+      "max": 100
+    },
+    "ethical_judgment": {
+      "value": 50,
+      "label": "Ethical Judgment",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "source_verification",
+        "label": "Source Verification",
+        "icon": "📋",
+        "color": "#6366F1",
+        "initial_health": 30,
+        "health_formula": "min(100, max(0, source_evaluation * 0.5 + investigation_depth * 0.3 + accuracy_score * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "bias_analysis",
+        "label": "Bias Analysis",
+        "icon": "🧠",
+        "color": "#EF476F",
+        "initial_health": 25,
+        "health_formula": "min(100, max(0, bias_detection * 0.5 + accuracy_score * 0.3 + ethical_judgment * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "statistical_reasoning",
+        "label": "Statistical Reasoning",
+        "icon": "📊",
+        "color": "#FFD166",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, statistical_literacy * 0.5 + accuracy_score * 0.25 + source_evaluation * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "editorial_ethics",
+        "label": "Editorial Ethics",
+        "icon": "⚖️",
+        "color": "#06D6A0",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, ethical_judgment * 0.4 + reader_trust * 0.3 + editorial_reputation * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "truth_index",
+        "label": "Truth Index",
+        "icon": "🎯",
+        "formula": "(accuracy_score * 0.35 + source_evaluation * 0.25 + bias_detection * 0.2 + statistical_literacy * 0.2)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "reader_trust_score",
+        "label": "Reader Trust Score",
+        "icon": "🤝",
+        "formula": "(reader_trust * 0.4 + editorial_reputation * 0.3 + ethical_judgment * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 30,
+          "warning": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "editorial_quality",
+        "label": "Editorial Quality",
+        "icon": "📰",
+        "formula": "(accuracy_score * 0.25 + investigation_depth * 0.25 + ethical_judgment * 0.25 + editorial_reputation * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "reader_engagement",
+        "label": "Weekly Reader Engagement",
+        "effects": [
+          {
+            "resource": "reader_trust",
+            "formula": "min(100, max(0, reader_trust + (accuracy_score - 50) * 0.05))"
+          }
+        ],
+        "description": "Reader trust adjusts based on your accuracy track record."
+      },
+      {
+        "id": "reputation_momentum",
+        "label": "Reputation Momentum",
+        "condition": {
+          "resource": "accuracy_score",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "editorial_reputation",
+            "formula": "min(100, editorial_reputation + 2)"
+          }
+        ],
+        "description": "Consistent accuracy builds your newspaper's reputation over time."
+      },
+      {
+        "id": "reputation_erosion",
+        "label": "Reputation Erosion",
+        "condition": {
+          "resource": "accuracy_score",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "editorial_reputation",
+            "formula": "max(0, editorial_reputation - 3)"
+          }
+        ],
+        "description": "Repeated inaccuracies erode your newspaper's credibility."
+      },
+      {
+        "id": "skill_growth",
+        "label": "Skill Growth",
+        "effects": [
+          {
+            "resource": "bias_detection",
+            "formula": "min(100, max(0, bias_detection + (investigation_depth - 30) * 0.03))"
+          }
+        ],
+        "description": "Deeper investigations sharpen your ability to detect bias."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "speed_vs_accuracy",
+        "from_subsystem": "source_verification",
+        "to_subsystem": "editorial_ethics",
+        "label": "Speed vs. Accuracy Trade-off",
+        "condition": {
+          "resource": "publishing_speed",
+          "op": ">",
+          "value": 70
+        },
+        "effects": [
+          {
+            "resource": "accuracy_score",
+            "formula": "max(0, accuracy_score - (publishing_speed - 70) * 0.2)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Rushing to publish means less time to verify facts."
+      },
+      {
+        "id": "investigation_builds_sources",
+        "from_subsystem": "source_verification",
+        "to_subsystem": "bias_analysis",
+        "label": "Deep Investigation",
+        "condition": {
+          "resource": "investigation_depth",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "source_evaluation",
+            "formula": "min(100, source_evaluation + (investigation_depth - 50) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Thorough investigations uncover better and more reliable sources."
+      },
+      {
+        "id": "bias_improves_accuracy",
+        "from_subsystem": "bias_analysis",
+        "to_subsystem": "statistical_reasoning",
+        "label": "Bias Awareness Sharpens Analysis",
+        "condition": {
+          "resource": "bias_detection",
+          "op": ">=",
+          "value": 45
+        },
+        "effects": [
+          {
+            "resource": "statistical_literacy",
+            "formula": "min(100, statistical_literacy + (bias_detection - 45) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Understanding bias helps you interpret statistics more critically."
+      },
+      {
+        "id": "ethics_builds_trust",
+        "from_subsystem": "editorial_ethics",
+        "to_subsystem": "source_verification",
+        "label": "Ethical Reporting Builds Trust",
+        "condition": {
+          "resource": "ethical_judgment",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "reader_trust",
+            "formula": "min(100, reader_trust + (ethical_judgment - 60) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Strong ethics earn reader loyalty and attract better sources."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "publishing_speed",
+        "equilibrium": 35,
+        "rate": 0.04,
+        "direction": "toward"
+      },
+      {
+        "resource": "reader_trust",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "viral_hoax",
+        "label": "Viral Hoax Spreads",
+        "icon": "📱",
+        "description": "A fake news story about a celebrity visiting your school is spreading on social media. Students are sharing it everywhere!",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "bias_detection",
+              "op": "<",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "editorial_reputation",
+            "delta": -8
+          },
+          {
+            "resource": "reader_trust",
+            "delta": -5
+          },
+          {
+            "resource": "publishing_speed",
+            "delta": 10
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "VIRAL: Fake celebrity story floods social media. Students demand your newspaper cover it immediately!",
+        "ai_image_prompt": "School students looking at phones with shocked expressions, social media notifications flying, school newspaper office in background, semi-realistic"
+      },
+      {
+        "id": "data_leak_scoop",
+        "label": "Anonymous Data Leak",
+        "icon": "💾",
+        "description": "An anonymous source sends you leaked documents about the school budget. The data is explosive — but is it real?",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "investigation_depth",
+              "op": ">=",
+              "value": 35
+            },
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "investigation_depth",
+            "delta": 8
+          },
+          {
+            "resource": "source_evaluation",
+            "delta": 5
+          },
+          {
+            "resource": "ethical_judgment",
+            "delta": -3
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "SCOOP: Anonymous documents arrive at The Beacon office. Verification team scrambles to check authenticity.",
+        "ai_image_prompt": "Mysterious envelope on a school desk, documents with highlighted text, magnifying glass, detective-like mood, school setting"
+      },
+      {
+        "id": "social_media_storm",
+        "label": "Social Media Backlash",
+        "icon": "🌪️",
+        "description": "A recent article you published is being taken out of context on social media. People are angry without reading the full story.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "reader_trust",
+              "op": "<",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "reader_trust",
+            "delta": -10
+          },
+          {
+            "resource": "editorial_reputation",
+            "delta": -6
+          },
+          {
+            "resource": "ethical_judgment",
+            "delta": -4
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "CONTROVERSY: Your article goes viral for the wrong reasons. Comments section explodes with outrage.",
+        "ai_image_prompt": "Phone screens showing angry comments, school newspaper headline being shared, worried student editors, dramatic lighting"
+      },
+      {
+        "id": "journalism_award",
+        "label": "Young Journalists Award",
+        "icon": "🏆",
+        "description": "The National Young Journalists Association nominates The Beacon for excellence in student reporting!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "accuracy_score",
+              "op": ">=",
+              "value": 60
+            },
+            {
+              "resource": "ethical_judgment",
+              "op": ">=",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "editorial_reputation",
+            "delta": 12
+          },
+          {
+            "resource": "reader_trust",
+            "delta": 8
+          },
+          {
+            "resource": "investigation_depth",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "AWARD: The Beacon nominated for Young Journalists Award! School celebrates the recognition.",
+        "ai_image_prompt": "School newspaper team celebrating with trophy, award certificate, proud students in newsroom, confetti, semi-realistic"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "editor_in_chief",
+        "name": "Ms. Verma (Editor-in-Chief)",
+        "role": "Mentor & Journalism Ethics Guide",
+        "icon": "👩‍🏫",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "accuracy_score",
+              "op": "<",
+              "value": 30
+            },
+            "action": "warn",
+            "message": "Our accuracy is slipping! Remember, a newspaper's most valuable asset is its credibility. Double-check everything before we publish.",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "ethical_judgment",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "praise",
+            "message": "I'm proud of your ethical standards. This is exactly the kind of journalism The Beacon needs. Keep questioning, keep verifying!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "investigation_depth",
+                  "op": ">=",
+                  "value": 60
+                },
+                {
+                  "resource": "accuracy_score",
+                  "op": ">=",
+                  "value": 65
+                }
+              ]
+            },
+            "action": "praise",
+            "message": "Outstanding investigative work! You're uncovering the truth behind the headlines. This is journalism at its best.",
+            "mood_change": "impressed",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "publishing_speed",
+                  "op": ">",
+                  "value": 70
+                },
+                {
+                  "resource": "accuracy_score",
+                  "op": "<",
+                  "value": 40
+                }
+              ]
+            },
+            "action": "urgent",
+            "message": "We're publishing too fast and making mistakes! Speed without accuracy is just noise. Slow down and get it right.",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -8
+          }
+        ]
+      },
+      {
+        "id": "clickbait_carl",
+        "name": "Clickbait Carl (Rival Blogger)",
+        "role": "Rival & Sensationalism Pressure",
+        "icon": "😈",
+        "initial_mood": "smug",
+        "initial_satisfaction": 40,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "publishing_speed",
+              "op": "<",
+              "value": 25
+            },
+            "action": "taunt",
+            "message": "LOL, The Beacon is SO slow! My blog already covered this story yesterday. Nobody reads yesterday's news, editor!",
+            "mood_change": "smug",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "resource": "editorial_reputation",
+              "op": ">=",
+              "value": 75
+            },
+            "action": "grudging_respect",
+            "message": "Fine, I'll admit it — your sources are solid. But my blog still gets more clicks! ...even if half of them are bots.",
+            "mood_change": "annoyed",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "editorial_reputation",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "publishing_speed",
+                  "op": ">",
+                  "value": 50
+                }
+              ]
+            },
+            "action": "credibility_attack",
+            "message": "Carl publishes an article calling The Beacon 'fake news.' Students are sharing it and questioning your credibility!",
+            "mood_change": "aggressive",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "reader_trust",
+                "delta": -10
+              },
+              {
+                "resource": "editorial_reputation",
+                "delta": -5
+              }
+            ],
+            "trigger_round": "crisis_credibility"
+          }
+        ]
+      },
+      {
+        "id": "whistleblower_sam",
+        "name": "Sam (The Whistleblower)",
+        "role": "Anonymous Source & Ethics Test",
+        "icon": "🕵️",
+        "initial_mood": "cautious",
+        "initial_satisfaction": 45,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "investigation_depth",
+              "op": ">=",
+              "value": 45
+            },
+            "action": "offer_tip",
+            "message": "I have something big. The school's science fair judges were biased — I have proof. But you need to protect my identity.",
+            "mood_change": "trusting",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "ethical_judgment",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "trust",
+            "message": "You handled that last story with integrity. I trust you. Here's another lead — but this one goes deeper.",
+            "mood_change": "loyal",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "ethical_judgment",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "investigation_depth",
+                  "op": "<",
+                  "value": 20
+                }
+              ]
+            },
+            "action": "ethics_dilemma",
+            "message": "Sam discovers you've been cutting ethical corners and threatens to expose The Beacon's editorial practices to the school board!",
+            "mood_change": "angry",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "ethical_judgment",
+                "delta": -8
+              },
+              {
+                "resource": "reader_trust",
+                "delta": -10
+              }
+            ],
+            "trigger_round": "crisis_ethics"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "accuracy_score",
+          "op": ">=",
+          "value": 70
+        },
+        "icon": "🎯",
+        "text": "The Beacon's accuracy rating hits {accuracy_score}%! Teachers recommend it as a reliable source.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "bias_detection",
+              "op": ">=",
+              "value": 60
+            },
+            {
+              "resource": "statistical_literacy",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        },
+        "icon": "🧠",
+        "text": "The Beacon praised for 'exceptionally balanced reporting' by the school board!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "reader_trust",
+          "op": "<",
+          "value": 25
+        },
+        "icon": "⚠️",
+        "text": "Warning: Student readership drops sharply. Some call The Beacon 'unreliable.'",
+        "severity": "warning"
+      }
+    ],
+    "ai_scene_prompt_template": "A school newspaper office called The Beacon, editorial team of diverse students aged 12-13 working on stories, accuracy score {accuracy_score}%, reader trust {reader_trust}%. Newsroom with pinboards, laptops, printed articles. Mood: {'focused and energetic' if editorial_reputation > 60 else 'tense and stressed' if editorial_reputation < 35 else 'determined'}."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_first_story",
+      "round_title": "Week 1: The First Big Story",
+      "situation": "Your first week as editor! A classmate tells you that the school cafeteria is serving 'expired food.' Several students are sharing this claim on group chats. You need to decide how The Beacon handles its very first story.",
+      "goal": "Establish your editorial approach with The Beacon's first investigation.",
+      "coaching_moment": "Source verification: The first step in critical thinking is asking 'How do we know this is true?' A claim is not a fact until verified.",
+      "reflection_prompt": "What makes a source reliable? How many sources should you check before believing something?",
+      "ai_image_prompt": "School newspaper office, student editor at desk looking at phone messages, cafeteria visible through window, investigative mood, semi-realistic",
+      "choices": [
+        {
+          "id": "w1_full_investigation",
+          "label": "A. Launch a Full Investigation",
+          "description": "Interview the cafeteria staff, check food safety records, photograph expiry dates, and talk to the school nurse about any reported illnesses.",
+          "delta": {
+            "accuracy_score": 15,
+            "source_evaluation": 12,
+            "investigation_depth": 15,
+            "publishing_speed": -10,
+            "editorial_reputation": 8,
+            "reader_trust": 5,
+            "ethical_judgment": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Excellent journalism! A thorough investigation takes time but builds a rock-solid foundation. You discovered the food was actually fine — the rumor started from one expired yogurt cup.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "w1_quick_publish",
+          "label": "B. Publish the Story Quickly",
+          "description": "Run with the headline 'Students Report Expired Food in Cafeteria' based on student testimonies. Get it out before anyone else does.",
+          "delta": {
+            "publishing_speed": 18,
+            "accuracy_score": -5,
+            "reader_trust": 5,
+            "editorial_reputation": -5,
+            "source_evaluation": -3,
+            "ethical_judgment": -8
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Fast, but risky! The cafeteria staff is upset — they say the food was fine. Without checking records, you published a one-sided story. Speed isn't everything.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w1_both_sides",
+          "label": "C. Get Both Sides First",
+          "description": "Interview the students AND the cafeteria manager. Present both perspectives and let readers decide.",
+          "delta": {
+            "accuracy_score": 10,
+            "source_evaluation": 8,
+            "ethical_judgment": 10,
+            "reader_trust": 8,
+            "investigation_depth": 5,
+            "bias_detection": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Balanced approach! Presenting multiple perspectives is a hallmark of fair journalism. Readers appreciate that you didn't take sides.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w1_ignore",
+          "label": "D. Wait and See If It Blows Over",
+          "description": "It's just a rumor. Don't report on unverified claims. Focus on safer stories instead.",
+          "delta": {
+            "ethical_judgment": 5,
+            "accuracy_score": 3,
+            "publishing_speed": -8,
+            "reader_trust": -5,
+            "editorial_reputation": -3
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "Playing it safe has its place, but ignoring stories can make your newspaper seem irrelevant. Sometimes silence isn't neutral — it's a choice.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_statistics",
+      "round_title": "Week 2: The Misleading Graph",
+      "situation": "The student council shares a graph showing 'Student Satisfaction Up 200%!' to justify their new rules. But you notice the graph's y-axis starts at 90% instead of 0%, making a small increase look huge. Do you call it out?",
+      "goal": "Evaluate the misleading statistic and decide how to report it.",
+      "coaching_moment": "Statistical literacy: Always check the axes, sample size, and context of any graph. A misleading visual can distort reality.",
+      "reflection_prompt": "Why do people sometimes use misleading graphs? Is it always intentional?",
+      "ai_image_prompt": "Student looking at a bar graph on a poster with a magnifying glass, the graph has a truncated y-axis, school hallway background, analytical mood",
+      "choices": [
+        {
+          "id": "w2_expose_graph",
+          "label": "A. Publish an Exposé on the Misleading Graph",
+          "description": "Write an article showing the original graph alongside a corrected version. Teach readers how graphs can mislead.",
+          "delta": {
+            "statistical_literacy": 15,
+            "accuracy_score": 10,
+            "bias_detection": 8,
+            "reader_trust": 8,
+            "editorial_reputation": 5,
+            "publishing_speed": -5,
+            "ethical_judgment": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Brilliant! You turned a misleading statistic into a teaching moment. Readers are learning to question data visualizations.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "w2_private_correction",
+          "label": "B. Tell the Student Council Privately",
+          "description": "Point out the error to the student council president and ask them to correct it. Don't embarrass them publicly.",
+          "delta": {
+            "statistical_literacy": 8,
+            "ethical_judgment": 10,
+            "reader_trust": 3,
+            "accuracy_score": 5,
+            "editorial_reputation": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Diplomatic and kind! Sometimes a private conversation achieves more than a public callout. But will they fix it?",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "w2_reprint_as_is",
+          "label": "C. Reprint the Graph As-Is",
+          "description": "The student council is an official body. Their data must be correct. Just reprint their press release.",
+          "delta": {
+            "publishing_speed": 12,
+            "accuracy_score": -8,
+            "statistical_literacy": -5,
+            "reader_trust": -3,
+            "editorial_reputation": -5,
+            "bias_detection": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Danger! Blindly trusting authority is a common bias called the 'authority bias.' Just because someone official says it doesn't make it true.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w2_data_column",
+          "label": "D. Start a 'Data Detective' Column",
+          "description": "Use this as the first entry in a regular column that teaches readers to spot misleading data.",
+          "delta": {
+            "statistical_literacy": 12,
+            "bias_detection": 10,
+            "accuracy_score": 8,
+            "reader_trust": 10,
+            "investigation_depth": 5,
+            "publishing_speed": -8
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Visionary! A regular column on data literacy builds your readers' critical thinking skills over time. The Beacon becomes an educational tool.",
+          "requires": {
+            "resource": "statistical_literacy",
+            "op": ">=",
+            "value": 15,
+            "label": "Requires Statistical Literacy ≥ 15"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_confirmation_bias",
+      "round_title": "Week 3: The Confirmation Bias Trap",
+      "situation": "Your reporter writes a story claiming 'Homework Hurts Students' and only interviews students who dislike homework. They ignored 3 teachers and 5 students who think homework helps. The reporter says, 'I found plenty of evidence!'",
+      "goal": "Handle confirmation bias in your own team's reporting.",
+      "coaching_moment": "Confirmation bias: We tend to seek information that supports what we already believe and ignore evidence that contradicts us. Good journalists fight this instinct.",
+      "reflection_prompt": "Have you ever searched for information only to prove yourself right? How can we avoid this trap?",
+      "ai_image_prompt": "Two students debating at a school newspaper desk, one with papers showing only one side, the other pointing at missing perspectives, newsroom setting",
+      "choices": [
+        {
+          "id": "w3_reject_rewrite",
+          "label": "A. Reject and Rewrite",
+          "description": "Send the story back. Require the reporter to interview people on both sides and include counter-evidence before publishing.",
+          "delta": {
+            "bias_detection": 15,
+            "accuracy_score": 10,
+            "ethical_judgment": 8,
+            "publishing_speed": -12,
+            "source_evaluation": 8,
+            "reader_trust": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "delayed_gratification"
+          ],
+          "feedback": "Strong editorial leadership! Requiring balanced evidence is how editors fight confirmation bias. It's harder but produces better journalism.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "w3_add_disclaimer",
+          "label": "B. Add a Disclaimer",
+          "description": "Publish it with a note: 'This article reflects student opinions and may not represent all viewpoints.'",
+          "delta": {
+            "publishing_speed": 8,
+            "ethical_judgment": 5,
+            "bias_detection": 5,
+            "accuracy_score": 3,
+            "reader_trust": -3
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "Disclaimers help, but they don't fix the core problem — the story is still one-sided. Would you trust a restaurant that says 'Disclaimer: Our food might be bad'?",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "w3_publish_as_opinion",
+          "label": "C. Publish as an Opinion Piece",
+          "description": "Relabel it from 'news' to 'opinion.' It's the reporter's perspective, not The Beacon's official stance.",
+          "delta": {
+            "publishing_speed": 10,
+            "bias_detection": 8,
+            "ethical_judgment": 8,
+            "accuracy_score": 5,
+            "reader_trust": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Smart distinction! Separating news from opinion is a key media literacy concept. Labeling content correctly builds trust.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "w3_publish_anyway",
+          "label": "D. Publish As-Is",
+          "description": "The students interviewed are real sources. The story is technically accurate — they DID say homework hurts them.",
+          "delta": {
+            "publishing_speed": 15,
+            "accuracy_score": -10,
+            "bias_detection": -8,
+            "ethical_judgment": -10,
+            "reader_trust": -5,
+            "editorial_reputation": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Technically accurate but fundamentally misleading. 'Cherry-picking' sources is a form of misinformation, even when each individual quote is real.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_emotional_appeal",
+      "round_title": "Week 4: The Emotional Manipulation",
+      "situation": "A student submits a heart-wrenching story about stray dogs near school being 'tortured.' It includes dramatic photos and emotional language. But when you check, the 'torture' was actually the municipal corporation's licensed vaccination drive. The dogs were scared but being helped.",
+      "goal": "Handle a story where emotional framing distorts the truth.",
+      "coaching_moment": "Appeal to emotion fallacy: Strong emotions can cloud judgment. Critical thinkers separate how they feel from what is factually true.",
+      "reflection_prompt": "When has an emotional story made you believe something before checking the facts?",
+      "ai_image_prompt": "Student editor examining two versions of the same photo — one dramatic and one neutral, fact-checking on laptop, concerned expression, newsroom",
+      "choices": [
+        {
+          "id": "w4_factcheck_reframe",
+          "label": "A. Fact-Check and Reframe the Story",
+          "description": "Investigate the municipal records, interview the veterinarian, and publish the true story: 'Stray Dog Vaccination Drive Causes Concern — Here's What's Really Happening.'",
+          "delta": {
+            "accuracy_score": 12,
+            "source_evaluation": 10,
+            "bias_detection": 10,
+            "ethical_judgment": 8,
+            "investigation_depth": 8,
+            "reader_trust": 5,
+            "publishing_speed": -8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Excellent critical thinking! You looked past the emotional framing to find the truth. The reframed story informs without misleading.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w4_run_emotional",
+          "label": "B. Run the Emotional Version",
+          "description": "The photos are powerful and the story will get huge readership. 'Students Outraged Over Stray Dog Treatment' — it's what readers want.",
+          "delta": {
+            "publishing_speed": 15,
+            "reader_trust": 8,
+            "editorial_reputation": -8,
+            "accuracy_score": -12,
+            "ethical_judgment": -12,
+            "bias_detection": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "High engagement, low truth. Publishing an emotionally manipulative story is how misinformation spreads. Clicks don't equal credibility.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w4_both_angles",
+          "label": "C. Run Both Angles Side by Side",
+          "description": "Publish the student's emotional account alongside the municipal corporation's facts. Let readers compare and decide.",
+          "delta": {
+            "accuracy_score": 8,
+            "bias_detection": 8,
+            "ethical_judgment": 5,
+            "reader_trust": 8,
+            "source_evaluation": 5,
+            "investigation_depth": 5,
+            "publishing_speed": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Balanced and transparent! Showing readers both the emotional narrative and the facts teaches them to think critically.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w4_kill_story",
+          "label": "D. Kill the Story Entirely",
+          "description": "The original claim is false. Don't give misinformation any platform, even to debunk it.",
+          "delta": {
+            "accuracy_score": 5,
+            "ethical_judgment": 5,
+            "publishing_speed": -5,
+            "reader_trust": -5,
+            "editorial_reputation": -3,
+            "investigation_depth": -3
+          },
+          "skill_tags": [
+            "resilience"
+          ],
+          "feedback": "Cautious, but silence can leave a vacuum that misinformation fills. Sometimes debunking false claims is more powerful than ignoring them.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_anonymous_source",
+      "round_title": "Week 5: The Anonymous Tip",
+      "situation": "An anonymous note appears in The Beacon's suggestion box: 'A teacher is giving higher grades to students who attend their private tuition classes.' It's a serious allegation — but you have zero evidence and don't know who wrote it.",
+      "goal": "Decide how to handle an unverified but serious anonymous allegation.",
+      "coaching_moment": "Source credibility: Anonymous tips can be valuable leads or malicious gossip. The strength of a claim depends on the evidence behind it, not how dramatic it sounds.",
+      "reflection_prompt": "Should journalists ever act on anonymous tips? What safeguards should be in place?",
+      "ai_image_prompt": "Anonymous note on a school desk, student editor looking puzzled, magnifying glass over the note, school corridor in background, mystery atmosphere",
+      "choices": [
+        {
+          "id": "w5_investigate_quietly",
+          "label": "A. Investigate Quietly",
+          "description": "Treat it as a lead, not a story. Quietly check grade patterns, interview students anonymously, and look for evidence before making any claims.",
+          "delta": {
+            "investigation_depth": 15,
+            "source_evaluation": 12,
+            "accuracy_score": 8,
+            "ethical_judgment": 10,
+            "publishing_speed": -15,
+            "bias_detection": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Professional-grade journalism! Investigating a lead before publishing is exactly how responsible reporters work. Evidence first, story second.",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w5_publish_allegation",
+          "label": "B. Publish the Allegation",
+          "description": "Run the story: 'Anonymous Source Alleges Grade Manipulation.' Readers deserve to know about potential corruption.",
+          "delta": {
+            "publishing_speed": 15,
+            "accuracy_score": -15,
+            "ethical_judgment": -15,
+            "editorial_reputation": -10,
+            "reader_trust": -8,
+            "source_evaluation": -8
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Dangerous! Publishing unverified allegations can ruin an innocent person's reputation. This is how rumor becomes 'news.' A fundamental journalistic error.",
+          "requires": {
+            "resource": "publishing_speed",
+            "op": ">=",
+            "value": 20,
+            "label": "Requires Publishing Speed ≥ 20"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "w5_teacher_interview",
+          "label": "C. Confront the Teacher Directly",
+          "description": "Ask the accused teacher for their response. Transparency means going directly to the source.",
+          "delta": {
+            "source_evaluation": 8,
+            "ethical_judgment": 5,
+            "investigation_depth": 5,
+            "accuracy_score": 5,
+            "reader_trust": 3,
+            "publishing_speed": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Brave, but risky. Confronting someone before gathering evidence can tip them off. Good journalism balances transparency with strategic investigation.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "w5_discard",
+          "label": "D. Discard the Tip",
+          "description": "Anonymous tips without evidence are unreliable. File it away and move on to verifiable stories.",
+          "delta": {
+            "accuracy_score": 3,
+            "ethical_judgment": 3,
+            "investigation_depth": -5,
+            "reader_trust": -3,
+            "publishing_speed": 5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "Safe choice, but some of history's biggest stories started as anonymous tips. Discarding leads entirely means you might miss important truths.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_bandwagon",
+      "round_title": "Week 6: The Bandwagon Effect",
+      "situation": "A trending hashtag #BanSchoolUniforms has gone viral among students. 'Everyone' seems to agree. But when you actually survey 200 students, only 35% support banning uniforms. The loud minority is creating the illusion of a majority.",
+      "goal": "Report on a topic where the bandwagon effect distorts perceived public opinion.",
+      "coaching_moment": "Bandwagon bias: Just because something is popular on social media doesn't mean most people agree. Loud voices aren't the same as many voices.",
+      "reflection_prompt": "Why do we assume something is true just because 'everyone' seems to believe it?",
+      "ai_image_prompt": "School hallway with some students holding protest signs about uniforms while others look skeptical, social media hashtags floating, divided opinion atmosphere",
+      "choices": [
+        {
+          "id": "w6_survey_data",
+          "label": "A. Publish the Survey Data",
+          "description": "Lead with data: 'Only 35% Support Uniform Ban Despite Viral Hashtag — The Numbers Tell a Different Story.' Include methodology.",
+          "delta": {
+            "statistical_literacy": 15,
+            "accuracy_score": 12,
+            "bias_detection": 12,
+            "reader_trust": 10,
+            "editorial_reputation": 8,
+            "publishing_speed": -8,
+            "investigation_depth": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Data over noise! Your survey revealed the 'silent majority.' This is exactly how critical thinking defeats the bandwagon effect.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w6_follow_trend",
+          "label": "B. Cover the Movement Sympathetically",
+          "description": "Write about the passionate students leading the movement. Their voices matter even if they're a minority.",
+          "delta": {
+            "publishing_speed": 10,
+            "reader_trust": 5,
+            "accuracy_score": -5,
+            "bias_detection": -8,
+            "statistical_literacy": -3,
+            "ethical_judgment": -3
+          },
+          "skill_tags": [
+            "empathy"
+          ],
+          "feedback": "Empathetic but misleading. By only covering the vocal minority, you reinforce the false impression that 'everyone' agrees. The bandwagon rolls on.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "w6_debate_format",
+          "label": "C. Host a Structured Debate",
+          "description": "Organize a school-wide debate: 'Should Uniforms Stay?' Invite speakers from both sides and publish a balanced summary.",
+          "delta": {
+            "accuracy_score": 8,
+            "ethical_judgment": 10,
+            "reader_trust": 8,
+            "editorial_reputation": 5,
+            "bias_detection": 8,
+            "publishing_speed": -10,
+            "investigation_depth": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Creating space for structured debate is a powerful antidote to the bandwagon effect. Both sides feel heard, and readers can form informed opinions.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "w6_ignore_trend",
+          "label": "D. Ignore the Trend Entirely",
+          "description": "Social media trends are fleeting. The Beacon covers real news, not viral hashtags.",
+          "delta": {
+            "accuracy_score": 3,
+            "ethical_judgment": 3,
+            "reader_trust": -8,
+            "publishing_speed": 5,
+            "editorial_reputation": -5
+          },
+          "skill_tags": [
+            "resilience"
+          ],
+          "feedback": "Principled but disconnected. When your readers care about a topic, ignoring it makes The Beacon seem out of touch.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_credibility",
+      "id": "crisis_credibility",
+      "round_title": "CRISIS: The Credibility Meltdown",
+      "situation": "Clickbait Carl's blog post calling The Beacon 'fake news' has gone viral. Students are mocking your newspaper in the hallways. The principal is asking questions. Your editorial team is demoralized. Advertisers (the student council who funds your printing) are threatening to pull support. You must act decisively to save The Beacon's credibility.",
+      "goal": "Restore The Beacon's credibility before it's too late.",
+      "coaching_moment": "Resilience & transparency: When trust breaks, the only way to rebuild is through radical honesty and demonstrable improvement. Covering up mistakes makes everything worse.",
+      "reflection_prompt": "How do news organizations rebuild trust after making mistakes? What would convince YOU to trust them again?",
+      "ai_image_prompt": "Dejected student newspaper team in their office, newspapers crumpled on floor, 'FAKE NEWS' graffiti visible, one determined editor standing up, dramatic lighting",
+      "condition": {
+        "resource": "editorial_reputation",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "cc_transparency_report",
+          "label": "A. Publish a Transparency Report",
+          "description": "Admit every mistake The Beacon has made. Show your fact-checking process. Publish corrections for past errors. Total honesty.",
+          "delta": {
+            "editorial_reputation": 15,
+            "reader_trust": 12,
+            "ethical_judgment": 15,
+            "accuracy_score": 8,
+            "publishing_speed": -10
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "Courageous! Radical transparency is the gold standard for rebuilding trust. By owning your mistakes, you show readers you value truth over ego.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "cc_attack_carl",
+          "label": "B. Counter-Attack Carl's Blog",
+          "description": "Expose the errors and bias in Carl's own blog. Show that he manipulates clickbait and has zero fact-checking.",
+          "delta": {
+            "publishing_speed": 12,
+            "editorial_reputation": 5,
+            "reader_trust": -3,
+            "accuracy_score": 5,
+            "ethical_judgment": -8,
+            "bias_detection": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Fighting fire with fire? Attacking Carl may feel satisfying but makes you look petty. The best response to 'fake news' accusations is consistently good journalism.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "cc_invite_audit",
+          "label": "C. Invite an External Audit",
+          "description": "Ask Ms. Verma and the English department to review The Beacon's recent articles and grade your accuracy. Publish the results no matter what.",
+          "delta": {
+            "editorial_reputation": 12,
+            "accuracy_score": 10,
+            "reader_trust": 10,
+            "ethical_judgment": 10,
+            "source_evaluation": 5,
+            "publishing_speed": -12
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "feedback": "Bold and humble! Inviting scrutiny shows confidence in your commitment to improvement. External validation is more credible than self-promotion.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "cc_rebrand",
+          "label": "D. Rebrand and Start Fresh",
+          "description": "Rename the paper, redesign the logo, promise a 'new chapter.' Fresh start, same team.",
+          "delta": {
+            "publishing_speed": 10,
+            "editorial_reputation": 3,
+            "reader_trust": -5,
+            "accuracy_score": -3,
+            "ethical_judgment": -5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "Cosmetic changes don't fix fundamental problems. Rebranding without real change is like putting a new cover on a book with the same errors inside.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_correlation",
+      "round_title": "Week 7: Correlation vs. Causation",
+      "situation": "Your data team discovers that students who eat breakfast score 20% higher on tests. A reporter wants to write: 'Eating Breakfast Makes You Smarter!' But does breakfast CAUSE better grades, or is something else going on?",
+      "goal": "Navigate the classic correlation vs. causation trap in data reporting.",
+      "coaching_moment": "Correlation is not causation: Just because two things happen together doesn't mean one causes the other. There may be hidden variables (like family income, sleep quality, or study habits).",
+      "reflection_prompt": "Can you think of two things that happen together but one doesn't cause the other? (Example: ice cream sales and drowning both go up in summer.)",
+      "ai_image_prompt": "Student editor looking at two overlapping graphs on a whiteboard — breakfast data and test scores — with question marks drawn between them, analytical mood",
+      "choices": [
+        {
+          "id": "w7_nuanced_story",
+          "label": "A. Write a Nuanced Analysis",
+          "description": "Headline: 'Breakfast and Grades: A Link, Not Proof.' Explain correlation vs. causation and discuss other possible factors.",
+          "delta": {
+            "statistical_literacy": 15,
+            "accuracy_score": 12,
+            "bias_detection": 8,
+            "reader_trust": 8,
+            "editorial_reputation": 8,
+            "publishing_speed": -8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Perfect! You taught readers one of the most important concepts in data literacy. 'Link, not proof' — that's how scientists think too.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "w7_catchy_headline",
+          "label": "B. Run the Catchy Headline",
+          "description": "'Want Better Grades? Eat Breakfast!' — it's technically based on data and will get tons of reads.",
+          "delta": {
+            "publishing_speed": 15,
+            "reader_trust": 5,
+            "accuracy_score": -10,
+            "statistical_literacy": -8,
+            "editorial_reputation": -5,
+            "bias_detection": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Classic clickbait trap! The headline implies causation that the data doesn't support. Many popular health headlines make this exact mistake.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w7_deeper_study",
+          "label": "C. Design a Controlled Study",
+          "description": "Work with the science teacher to design a proper experiment — control for sleep, income, and study habits. Publish the results next month.",
+          "delta": {
+            "statistical_literacy": 12,
+            "investigation_depth": 12,
+            "accuracy_score": 10,
+            "source_evaluation": 8,
+            "publishing_speed": -15,
+            "ethical_judgment": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Scientific thinking in journalism! Designing a controlled study is the gold standard for testing causation. This takes time but produces real knowledge.",
+          "requires": {
+            "resource": "investigation_depth",
+            "op": ">=",
+            "value": 25,
+            "label": "Requires Investigation Depth ≥ 25"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w7_expert_quote",
+          "label": "D. Get an Expert Opinion",
+          "description": "Interview the school's nutrition counselor and science teacher. Let experts explain the data to readers.",
+          "delta": {
+            "source_evaluation": 10,
+            "accuracy_score": 8,
+            "statistical_literacy": 8,
+            "reader_trust": 5,
+            "editorial_reputation": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Smart delegation! When you don't have the expertise to interpret data, consulting experts is the responsible move.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_authority_bias",
+      "round_title": "Week 8: Questioning Authority",
+      "situation": "The school principal announces: 'Our school's pass rate is 98% — the highest in the district!' Students cheer. But your investigation reveals the school quietly moved 15 weak students to another branch before exams. The real pass rate is closer to 85%. Do you challenge the principal?",
+      "goal": "Decide whether to challenge an authority figure with uncomfortable facts.",
+      "coaching_moment": "Authority bias: We tend to trust people in positions of power without questioning their claims. Critical thinkers ask tough questions regardless of who makes the claim.",
+      "reflection_prompt": "Is it harder to question someone with authority? Why do we hesitate to challenge teachers, parents, or leaders?",
+      "ai_image_prompt": "Student editor standing before principal's office door, holding investigative documents, hesitant but determined, school award display visible, tense mood",
+      "choices": [
+        {
+          "id": "w8_publish_truth",
+          "label": "A. Publish the Full Investigation",
+          "description": "Run the story with all the evidence: 'Behind the 98% — How Transfer Policies Inflate Pass Rates.' Include data, interviews, and the principal's response.",
+          "delta": {
+            "accuracy_score": 15,
+            "bias_detection": 12,
+            "investigation_depth": 10,
+            "ethical_judgment": 12,
+            "reader_trust": 10,
+            "editorial_reputation": 10,
+            "publishing_speed": -10
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "This is journalism at its bravest. Speaking truth to power is the hardest and most important thing a journalist does. Your evidence was solid and your reporting fair.",
+          "requires": {
+            "resource": "accuracy_score",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Accuracy Score ≥ 40"
+          },
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w8_softer_angle",
+          "label": "B. Write a Softer Story",
+          "description": "'A Look at School Transfer Policies' — address the issue indirectly without naming the principal or using the word 'inflate.'",
+          "delta": {
+            "accuracy_score": 8,
+            "ethical_judgment": 5,
+            "bias_detection": 5,
+            "reader_trust": 3,
+            "editorial_reputation": 3,
+            "investigation_depth": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Diplomatic but diluted. Sometimes softening the truth too much makes it disappear. The story hints at the problem without truly exposing it.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "w8_accept_claim",
+          "label": "C. Accept the Principal's Claim",
+          "description": "The principal is the authority on school data. Who are you to question them? Celebrate the 98% achievement.",
+          "delta": {
+            "publishing_speed": 12,
+            "accuracy_score": -12,
+            "bias_detection": -10,
+            "ethical_judgment": -10,
+            "reader_trust": 5,
+            "editorial_reputation": -8,
+            "investigation_depth": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Authority bias in action! Accepting claims from authority without verification is exactly how misinformation spreads in institutions.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w8_anonymous_leak",
+          "label": "D. Leak the Data Anonymously",
+          "description": "Send the evidence to a parent WhatsApp group anonymously. Let someone else deal with the fallout.",
+          "delta": {
+            "publishing_speed": 8,
+            "ethical_judgment": -15,
+            "accuracy_score": -5,
+            "reader_trust": -8,
+            "editorial_reputation": -10,
+            "investigation_depth": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Cowardly and unethical! Anonymous leaks without accountability bypass journalism's core principles. You avoided personal risk but also avoided responsibility.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_ethics",
+      "id": "crisis_ethics",
+      "round_title": "CRISIS: The Ethics Dilemma",
+      "situation": "Sam, your whistleblower source, has been identified by the school administration. They're threatening to expel Sam for 'spreading rumors' unless you reveal ALL your sources. Meanwhile, Sam discovers that your recent articles cut some ethical corners — they're threatening to expose The Beacon's practices to the school board. The trust between you and your most important source is shattered.",
+      "goal": "Resolve the ethics crisis while protecting your source and your integrity.",
+      "coaching_moment": "Ethical reasoning: Journalism ethics aren't just rules — they're the foundation of trust. When you compromise ethics 'just once,' it creates a chain reaction that threatens everything you've built.",
+      "reflection_prompt": "Is it ever okay to reveal a confidential source? What responsibilities do journalists have to the people who trust them?",
+      "ai_image_prompt": "Tense meeting in school office, student editor facing principal and a worried anonymous source, documents on table, moral dilemma atmosphere, dramatic",
+      "condition": {
+        "resource": "ethical_judgment",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "ce_protect_source",
+          "label": "A. Protect Sam at All Costs",
+          "description": "Refuse to reveal Sam's identity. Accept any personal consequences. 'Source protection is sacred in journalism.'",
+          "delta": {
+            "ethical_judgment": 18,
+            "reader_trust": 12,
+            "editorial_reputation": 10,
+            "accuracy_score": 5,
+            "investigation_depth": 8,
+            "publishing_speed": -10
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "The highest ethical standard! Source protection is a cornerstone of journalism. By standing firm, you prove The Beacon can be trusted with sensitive information.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "ce_negotiate",
+          "label": "B. Negotiate a Compromise",
+          "description": "Work with the principal to prove Sam's claims are factual WITHOUT revealing Sam's identity. Share evidence, not the source.",
+          "delta": {
+            "ethical_judgment": 12,
+            "accuracy_score": 8,
+            "reader_trust": 8,
+            "investigation_depth": 5,
+            "editorial_reputation": 5,
+            "source_evaluation": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Clever negotiation! You protected the source while addressing the administration's concerns. Evidence speaks louder than names.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "ce_reveal_source",
+          "label": "C. Reveal Sam's Identity",
+          "description": "The administration is threatening serious consequences. Reveal Sam to protect yourself and The Beacon.",
+          "delta": {
+            "ethical_judgment": -18,
+            "reader_trust": -15,
+            "editorial_reputation": -12,
+            "investigation_depth": -10,
+            "publishing_speed": 5,
+            "source_evaluation": -10
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "A devastating betrayal. No future source will ever trust The Beacon again. Short-term survival, long-term destruction. This is why ethics can't be situational.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "ce_public_editorial",
+          "label": "D. Write a Public Editorial About Press Freedom",
+          "description": "Turn the crisis into a story about student press freedom and source protection. Rally student support.",
+          "delta": {
+            "ethical_judgment": 10,
+            "reader_trust": 10,
+            "editorial_reputation": 8,
+            "accuracy_score": 3,
+            "publishing_speed": -5,
+            "bias_detection": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Bold and principled! By making the issue public, you rally community support for press freedom while keeping Sam safe.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_9_deepfake",
+      "round_title": "Week 9: The Deepfake Challenge",
+      "situation": "A video appears online showing a teacher apparently saying something offensive. It's spreading fast. But something feels off — the audio quality is strange and the lip sync isn't perfect. Could this be AI-generated? Your team has 24 hours before the story goes completely viral.",
+      "goal": "Evaluate potential AI-generated misinformation under time pressure.",
+      "coaching_moment": "Digital literacy: In the age of AI, seeing is no longer believing. Critical thinkers must evaluate the authenticity of digital content, not just its content.",
+      "reflection_prompt": "How can you tell if a video or image has been digitally manipulated? What tools or checks can help?",
+      "ai_image_prompt": "Student examining a video frame on a computer screen with digital artifacts highlighted, comparison panels showing real vs manipulated footage, tech lab setting",
+      "choices": [
+        {
+          "id": "w9_forensic_analysis",
+          "label": "A. Run a Digital Forensics Check",
+          "description": "Use online deepfake detection tools, analyze the metadata, check the original upload source, and consult the computer science teacher.",
+          "delta": {
+            "accuracy_score": 15,
+            "bias_detection": 12,
+            "source_evaluation": 12,
+            "investigation_depth": 10,
+            "statistical_literacy": 5,
+            "publishing_speed": -15,
+            "editorial_reputation": 8,
+            "reader_trust": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Digital detective work! You discovered the video was indeed AI-manipulated. Your forensic analysis saved a teacher's reputation and taught readers about deepfakes.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "w9_publish_with_warning",
+          "label": "B. Publish with 'Unverified' Warning",
+          "description": "Share the video with a disclaimer: 'This video is circulating online. The Beacon has not verified its authenticity.' Let readers know it exists.",
+          "delta": {
+            "publishing_speed": 12,
+            "reader_trust": 3,
+            "accuracy_score": -5,
+            "editorial_reputation": -3,
+            "ethical_judgment": -5,
+            "bias_detection": 3
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "Disclaimers don't undo damage. By sharing the video, even with a warning, you amplify potential misinformation. The 'unverified' label gets lost in the outrage.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "w9_contact_teacher",
+          "label": "C. Contact the Teacher First",
+          "description": "Show the teacher the video privately and ask for their response before publishing anything.",
+          "delta": {
+            "ethical_judgment": 12,
+            "source_evaluation": 8,
+            "accuracy_score": 8,
+            "reader_trust": 5,
+            "investigation_depth": 5,
+            "publishing_speed": -8
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Compassionate and professional! The teacher confirms it's fake and provides proof. Checking with the subject of a story before publishing is basic ethical journalism.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "w9_rush_publish",
+          "label": "D. Break the Story First",
+          "description": "This is a huge scoop. Publish the video and the story before any other school media picks it up. Sort out verification later.",
+          "delta": {
+            "publishing_speed": 18,
+            "accuracy_score": -15,
+            "ethical_judgment": -15,
+            "editorial_reputation": -12,
+            "reader_trust": -10,
+            "source_evaluation": -8,
+            "bias_detection": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Catastrophic error! You amplified a deepfake and damaged a teacher's reputation. Being first means nothing if you're first to be wrong.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_11_final_edition",
+      "round_title": "Week 11: The Final Edition",
+      "situation": "Your last issue of the semester! The school wants a feel-good edition celebrating achievements. But your team has uncovered that the school's much-praised 'Going Green' initiative saved only 2% of energy while costing 10x more than projected. Do you end with hard truth or happy celebration?",
+      "goal": "Make a defining editorial decision for The Beacon's legacy this semester.",
+      "coaching_moment": "Editorial integrity: The choices you make in your last issue define what The Beacon stands for. Does it serve comfortable narratives, or does it serve the truth?",
+      "reflection_prompt": "Is it more important for a newspaper to make people feel good or to tell the truth? Can it do both?",
+      "ai_image_prompt": "Student editor at desk choosing between two newspaper layouts — one celebratory with balloons, one with investigative headlines, golden hour light through window",
+      "choices": [
+        {
+          "id": "w11_truth_edition",
+          "label": "A. Lead with the Green Initiative Investigation",
+          "description": "Front page: 'Good Intentions, Bad Math: The Real Cost of Going Green.' Include the data, interviews, and suggestions for improvement.",
+          "delta": {
+            "accuracy_score": 15,
+            "editorial_reputation": 12,
+            "investigation_depth": 10,
+            "ethical_judgment": 12,
+            "reader_trust": 10,
+            "bias_detection": 5,
+            "publishing_speed": -10
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "Fearless journalism! The truth may not be popular, but it serves the school community. Your investigation could actually help improve the initiative.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "w11_celebration",
+          "label": "B. Run the Feel-Good Edition",
+          "description": "Celebrate student achievements, teacher awards, and sports victories. Save the investigation for next semester.",
+          "delta": {
+            "publishing_speed": 12,
+            "reader_trust": 5,
+            "accuracy_score": -5,
+            "editorial_reputation": -5,
+            "ethical_judgment": -8,
+            "investigation_depth": -5
+          },
+          "skill_tags": [
+            "empathy"
+          ],
+          "feedback": "Popular but compromised. Burying a story to avoid discomfort is a form of self-censorship. The truth doesn't have a 'convenient' schedule.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "w11_balanced_edition",
+          "label": "C. Do Both: Celebrate AND Investigate",
+          "description": "Front page celebrates achievements. Inside pages carry the Green Initiative investigation. Honor the good while questioning the questionable.",
+          "delta": {
+            "accuracy_score": 10,
+            "editorial_reputation": 10,
+            "ethical_judgment": 8,
+            "reader_trust": 12,
+            "investigation_depth": 8,
+            "publishing_speed": -12,
+            "bias_detection": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "The best of both worlds! A newspaper that celebrates genuinely while also holding institutions accountable — that's what great journalism looks like.",
+          "requires": {
+            "resource": "editorial_reputation",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Editorial Reputation ≥ 40"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w11_student_voice",
+          "label": "D. Let Readers Decide",
+          "description": "Run a 'Student Choice' edition where readers vote on which stories to feature. Let democracy choose the front page.",
+          "delta": {
+            "reader_trust": 8,
+            "ethical_judgment": 3,
+            "accuracy_score": 3,
+            "editorial_reputation": 3,
+            "publishing_speed": -5,
+            "investigation_depth": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Inclusive and creative! But editorial judgment matters — sometimes the most important story isn't the most popular one.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_12_legacy",
+      "round_title": "Week 12: Your Editorial Legacy",
+      "situation": "The semester is ending. As outgoing editor, you write your final editorial and set the standards for next semester's team. What principles do you leave behind for The Beacon?",
+      "goal": "Define The Beacon's editorial legacy and values for the future.",
+      "coaching_moment": "Strategic thinking: The greatest leaders build systems that outlast them. Your editorial guidelines will shape The Beacon long after you leave.",
+      "reflection_prompt": "If you could teach the next generation one thing about critical thinking, what would it be?",
+      "ai_image_prompt": "Student editor writing at a desk with sunset light, newspaper issues pinned to the wall behind them, thoughtful expression, legacy mood, semi-realistic",
+      "choices": [
+        {
+          "id": "w12_truth_charter",
+          "label": "A. The Truth Charter",
+          "description": "Write a formal editorial charter: 'The Beacon's mission is truth. Every story must have at least 2 verified sources. Corrections are published prominently. No anonymous allegations without evidence.'",
+          "delta": {
+            "accuracy_score": 12,
+            "ethical_judgment": 15,
+            "editorial_reputation": 15,
+            "reader_trust": 10,
+            "source_evaluation": 10,
+            "investigation_depth": 5,
+            "publishing_speed": -8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "A lasting legacy! Written standards create accountability that survives beyond any single editor. The Beacon now has a constitution for truth.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "w12_media_literacy",
+          "label": "B. Launch a Media Literacy Program",
+          "description": "Create a 'Spot the Bias' workshop series for the whole school. Train every student to think critically about information.",
+          "delta": {
+            "bias_detection": 15,
+            "statistical_literacy": 10,
+            "reader_trust": 12,
+            "editorial_reputation": 10,
+            "accuracy_score": 5,
+            "ethical_judgment": 8,
+            "publishing_speed": -10
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Visionary! You're not just making one newspaper better — you're making every student a critical thinker. The Beacon's greatest impact extends beyond its pages.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "w12_tech_tools",
+          "label": "C. Build a Fact-Checking Toolkit",
+          "description": "Create a digital toolkit with fact-checking websites, source verification checklists, and statistical analysis guides for future editors.",
+          "delta": {
+            "source_evaluation": 12,
+            "statistical_literacy": 12,
+            "investigation_depth": 10,
+            "accuracy_score": 8,
+            "editorial_reputation": 8,
+            "bias_detection": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Practical and powerful! Tools outlast individuals. Future editors now have a systematic process for finding truth.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w12_growth_focus",
+          "label": "D. Focus on Reader Engagement",
+          "description": "Create interactive content — polls, quizzes, reader submissions, social media presence. Make The Beacon the most-read school paper ever.",
+          "delta": {
+            "reader_trust": 10,
+            "publishing_speed": 15,
+            "editorial_reputation": 5,
+            "accuracy_score": -3,
+            "ethical_judgment": -3,
+            "investigation_depth": -5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "Engagement matters, but reach without substance is empty. The most-read paper in the world is worthless if it's not trustworthy.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "truth_seeker_badge",
+      "label": "Truth Seeker",
+      "condition": "accuracy_score >= 80 and source_evaluation >= 70",
+      "icon": "🎯"
+    },
+    {
+      "id": "bias_buster_badge",
+      "label": "Bias Buster",
+      "condition": "bias_detection >= 75 and statistical_literacy >= 60",
+      "icon": "🧠"
+    },
+    {
+      "id": "ethical_editor_badge",
+      "label": "Ethical Editor",
+      "condition": "ethical_judgment >= 80 and reader_trust >= 75",
+      "icon": "⚖️"
+    },
+    {
+      "id": "investigative_ace",
+      "label": "Investigative Ace",
+      "condition": "investigation_depth >= 70 and accuracy_score >= 65",
+      "icon": "🔎"
+    },
+    {
+      "id": "trusted_voice",
+      "label": "Trusted Voice",
+      "condition": "reader_trust >= 80 and editorial_reputation >= 75",
+      "icon": "⭐"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Confirmation Bias",
+      "definition": "The tendency to search for, interpret, and remember information that confirms your existing beliefs while ignoring contradictory evidence."
+    },
+    {
+      "term": "Correlation vs. Causation",
+      "definition": "Just because two things happen together (correlation) does not mean one causes the other (causation). Hidden variables may explain both."
+    },
+    {
+      "term": "Deepfake",
+      "definition": "AI-generated or AI-manipulated media (video, audio, images) designed to look authentic but is artificially created or altered."
+    },
+    {
+      "term": "Bandwagon Effect",
+      "definition": "The tendency to believe or do something because many other people appear to believe or do it, regardless of evidence."
+    },
+    {
+      "term": "Authority Bias",
+      "definition": "The tendency to trust information from authority figures without questioning or verifying their claims."
+    },
+    {
+      "term": "Appeal to Emotion",
+      "definition": "A logical fallacy where emotional manipulation replaces factual evidence in an argument or story."
+    },
+    {
+      "term": "Source Verification",
+      "definition": "The process of confirming the reliability, accuracy, and credibility of information sources before publishing or sharing."
+    },
+    {
+      "term": "Misinformation",
+      "definition": "False or inaccurate information that is shared without the intent to deceive. Differs from disinformation, which is deliberately misleading."
+    }
+  ],
+  "endings": [
+    {
+      "id": "truth_seeker",
+      "title": "Truth Seeker",
+      "icon": "🎯",
+      "message": "The Beacon becomes the most trusted student newspaper in the district! Your relentless commitment to accuracy and source verification has set a gold standard. Teachers use your articles as examples of excellent journalism. Students across multiple schools now cite The Beacon as their most reliable source. Your legacy: a newspaper that proved the truth is always worth the effort.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "accuracy_score",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "source_evaluation",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "bias_buster",
+      "title": "Bias Buster",
+      "icon": "🧠",
+      "message": "You've trained an entire school to think critically! Your 'Data Detective' columns and bias-spotting workshops have become legendary. Students now instinctively question misleading statistics, check their own biases, and demand evidence before believing claims. The Beacon didn't just report news — it made everyone smarter. Your legacy: a school that thinks before it believes.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "bias_detection",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "statistical_literacy",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "statistical_sage",
+      "title": "Statistical Sage",
+      "icon": "📊",
+      "message": "Your data literacy campaigns have transformed how students read numbers! Misleading graphs are now spotted instantly. The 'Correlation is not Causation' poster you designed hangs in every classroom. The science department credits The Beacon for improving students' analytical skills. Your legacy: a school where numbers can't lie because students know how to read them.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "statistical_literacy",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "accuracy_score",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "ethical_editor",
+      "title": "Ethical Editor",
+      "icon": "⚖️",
+      "message": "The Beacon wins the National Young Journalists Ethics Award! Your unwavering commitment to source protection, transparency, and fairness has set an example for student newspapers across the country. Sam, your whistleblower, publicly thanks you for protecting their identity. Ms. Verma calls you 'the most principled editor in The Beacon's history.' Your legacy: a newspaper with a conscience.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "ethical_judgment",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "reader_trust",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "aspiring_journalist",
+      "title": "Aspiring Journalist",
+      "icon": "📰",
+      "message": "Your semester as editor had its ups and downs. Some stories hit the mark, others missed. But you kept The Beacon running, learned from mistakes, and grew as a thinker. The next editor will inherit your experience — both the triumphs and the lessons. Remember: every great journalist started as a beginner who asked 'Is this true?' Your journey in questioning information has just begun.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          13
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Bias Spotter: The Information Detective Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Bias Spotter: The Information Detective. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Bias Spotter: The Information Detective Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Bias Spotter: The Information Detective. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

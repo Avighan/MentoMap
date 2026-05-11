@@ -7,7 +7,7 @@ import os
 import re
 import json
 import hashlib
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from openai import OpenAI
 
 try:
@@ -5833,7 +5833,7 @@ def generate_board_narrative_batch(
     return all_generated
 
 
-def generate_image(prompt: str, style: str = "flat illustration") -> str | None:
+def generate_image(prompt: str, style: str = "flat illustration") -> Optional[str]:
     """Generate a DALL-E 3 image for a given scene prompt.
 
     Used by card_board (tile events) and trump_card (card reveal).

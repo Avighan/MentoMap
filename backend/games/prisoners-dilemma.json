@@ -1,0 +1,438 @@
+{
+  "game_id": "prisoners-dilemma",
+  "title": "The Prisoner's Dilemma",
+  "game_type": "rounds",
+  "description": "You're in a series of negotiations with an unknown partner. Each round: do you cooperate for mutual gain, or defect for personal advantage? Your partner adapts to your strategy.",
+  "theme": "strategy",
+  "difficulty": "advanced",
+  "estimated_duration": 15,
+  "target_audience": "15-18",
+  "player_mode": "multiplayer",
+  "dimension_scoring_weights": {
+    "ethical_reasoning": 0.45,
+    "strategic_thinking": 0.35,
+    "adaptability": 0.2
+  },
+  "coaching_moment": "The Prisoner's Dilemma teaches the most important lesson in game theory: mutual cooperation produces better outcomes than mutual defection — but only when both players trust each other. Building that trust is the real game.",
+  "npc_strategy": "tit_for_tat",
+  "glossary_terms": [
+    "game theory",
+    "Nash equilibrium",
+    "cooperation",
+    "defection",
+    "zero-sum",
+    "tit-for-tat"
+  ],
+  "resources": {
+    "your_score": 50,
+    "partner_score": 50,
+    "trust_level": 50,
+    "rounds_remaining": 7
+  },
+  "rounds": [
+    {
+      "round_number": 1,
+      "title": "Round 1: First Move",
+      "scenario": "Round 1 of 7. Your partner is unknown. If you both Cooperate: +3 each. If you Defect and they Cooperate: +5 for you, 0 for them. If both Defect: +1 each. If you Cooperate and they Defect: 0 for you, +5 for them.",
+      "choices": [
+        {
+          "id": "cooperate",
+          "label": "Cooperate — signal trust from the start",
+          "outcome": "Partner cooperates (Round 1: they always cooperate). Both gain +3. Trust established.",
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "npc_outcome": "cooperate",
+          "effects": {
+            "your_score": 3,
+            "partner_score": 3,
+            "trust_level": 10
+          }
+        },
+        {
+          "id": "defect",
+          "label": "Defect — maximize first-round gain",
+          "outcome": "Partner cooperates. You gain +5, they gain 0. Trust damaged from the start.",
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "npc_outcome": "cooperate",
+          "effects": {
+            "your_score": 5,
+            "partner_score": 0,
+            "trust_level": -15
+          }
+        }
+      ],
+      "coaching_moment": "The first move sets the tone. Cooperation signals willingness to build a relationship. Defection signals self-interest. Your partner is watching.",
+      "expert_pick": {
+        "choice_id": "cooperate",
+        "reason": "Ethical decision-making builds lasting trust — the foundation of all leadership."
+      }
+    },
+    {
+      "round_number": 2,
+      "title": "Round 2: Response",
+      "scenario": "Round 2. Your partner mirrors your last move (tit-for-tat strategy). What do you do?",
+      "choices": [
+        {
+          "id": "cooperate",
+          "label": "Cooperate — maintain the relationship",
+          "outcome": "Partner cooperates (if you cooperated last round) or defects (if you defected). Outcome depends on your Round 1 choice.",
+          "skill_tags": [
+            "ethical_reasoning",
+            "adaptability"
+          ],
+          "effects": {
+            "your_score": 3,
+            "trust_level": 5
+          }
+        },
+        {
+          "id": "defect",
+          "label": "Defect — take the advantage again",
+          "outcome": "Your partner mirrors your last move. If you were cooperative, this betrayal costs both heavily.",
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "effects": {
+            "your_score": 1,
+            "trust_level": -20
+          }
+        }
+      ],
+      "coaching_moment": "Tit-for-tat is a powerful strategy because it rewards cooperation and punishes defection — symmetrically. It's not revenge; it's feedback.",
+      "expert_pick": {
+        "choice_id": "defect",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "round_number": 3,
+      "title": "Round 3: The Test",
+      "scenario": "Round 3 of 7. You're halfway through the early game. Your score depends on the pattern so far.",
+      "choices": [
+        {
+          "id": "cooperate",
+          "label": "Cooperate — stay consistent",
+          "outcome": "Consistent cooperation builds the highest long-term scores when partner mirrors you.",
+          "skill_tags": [
+            "ethical_reasoning",
+            "delayed_gratification"
+          ],
+          "effects": {
+            "your_score": 3,
+            "partner_score": 3,
+            "trust_level": 10
+          }
+        },
+        {
+          "id": "defect",
+          "label": "Defect — try to gain an edge",
+          "outcome": "If partner mirrors you, defecting now triggers retaliatory defection for remaining rounds.",
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "effects": {
+            "your_score": 5,
+            "partner_score": 0,
+            "trust_level": -15
+          }
+        }
+      ],
+      "coaching_moment": "Consistency is a trust signal. Unpredictable partners are treated as threats. Predictably cooperative partners are treated as allies.",
+      "expert_pick": {
+        "choice_id": "defect",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "round_number": 4,
+      "title": "Round 4: Midpoint",
+      "scenario": "Midgame. If you've been cooperating, you're both doing well. If defection has occurred, both are likely stuck in mutual defection. Can you reset?",
+      "choices": [
+        {
+          "id": "cooperate",
+          "label": "Cooperate — signal intent to reset even after defection",
+          "outcome": "Generous tit-for-tat: one-time forgiveness. Partner may reset cooperation if trust wasn't fully destroyed.",
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience",
+            "adaptability"
+          ],
+          "effects": {
+            "your_score": 3,
+            "trust_level": 15
+          }
+        },
+        {
+          "id": "defect",
+          "label": "Defect — locked in mutual defection now",
+          "outcome": "Both players stuck in +1/+1 per round. Far from optimal.",
+          "skill_tags": [],
+          "effects": {
+            "your_score": 1,
+            "partner_score": 1,
+            "trust_level": -5
+          }
+        }
+      ],
+      "coaching_moment": "Recovery from betrayal is possible, but it requires one player to take the cooperative risk first. That takes courage and long-term thinking.",
+      "expert_pick": {
+        "choice_id": "cooperate",
+        "reason": "Ethical decision-making builds lasting trust — the foundation of all leadership."
+      }
+    },
+    {
+      "round_number": 5,
+      "title": "Round 5: Endgame Temptation",
+      "scenario": "3 rounds left. Game theory predicts rational defection increases near the end. Your partner knows this. Do you defect early?",
+      "choices": [
+        {
+          "id": "cooperate",
+          "label": "Cooperate — reject the endgame logic",
+          "outcome": "If both players reject endgame defection, both earn 3/round more than if they defected. Long-term thinking wins.",
+          "skill_tags": [
+            "ethical_reasoning",
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "effects": {
+            "your_score": 3,
+            "trust_level": 10
+          }
+        },
+        {
+          "id": "defect",
+          "label": "Defect — rational endgame strategy",
+          "outcome": "If partner anticipates this, they also defect. Both end up with +1/round for remaining rounds.",
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "effects": {
+            "your_score": 5,
+            "trust_level": -20
+          }
+        }
+      ],
+      "coaching_moment": "The endgame defection trap is a self-fulfilling prophecy. Leaders who build cultures of trust learn to override the rational defection impulse.",
+      "expert_pick": {
+        "choice_id": "cooperate",
+        "reason": "Ethical decision-making builds lasting trust — the foundation of all leadership."
+      }
+    },
+    {
+      "round_number": 6,
+      "title": "Round 6: Second-to-Last",
+      "scenario": "One round after this. Defection is now statistically 'optimal' for rational actors. But you've built something.",
+      "choices": [
+        {
+          "id": "cooperate",
+          "label": "Cooperate — honor the relationship to the end",
+          "outcome": "Final trust signal. If partner also cooperates, you both end with the highest possible scores.",
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "effects": {
+            "your_score": 3,
+            "trust_level": 15
+          }
+        },
+        {
+          "id": "defect",
+          "label": "Defect — secure final advantage",
+          "outcome": "Short-term gain, long-term regret. The relationship ends with betrayal.",
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "effects": {
+            "your_score": 5,
+            "trust_level": -25
+          }
+        }
+      ],
+      "coaching_moment": "Honoring a relationship when it's no longer 'economically rational' is the definition of integrity. Others remember how you acted when you didn't have to be good.",
+      "expert_pick": {
+        "choice_id": "defect",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "round_number": 7,
+      "title": "Final Round",
+      "scenario": "Last round. Your final move defines your legacy in this game. Cooperate for mutual gain, or defect for individual maximum?",
+      "choices": [
+        {
+          "id": "cooperate",
+          "label": "Cooperate — end with integrity",
+          "outcome": "If partner cooperates: both earn +3. Together you've maximized mutual gain across 7 rounds. This is the Nash cooperative equilibrium.",
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "effects": {
+            "your_score": 3,
+            "trust_level": 10,
+            "integrity_bonus": 10
+          }
+        },
+        {
+          "id": "defect",
+          "label": "Defect — take the final prize",
+          "outcome": "You gain +5, partner gains 0. But your total cooperation score is lower than if you'd cooperated all 7 rounds.",
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "effects": {
+            "your_score": 5,
+            "trust_level": -30
+          }
+        }
+      ],
+      "coaching_moment": "The prisoner's dilemma proves that ethical behavior and strategic behavior are not opposites — they converge in repeated games. Integrity is not just right; it's optimal.",
+      "expert_pick": {
+        "choice_id": "cooperate",
+        "reason": "Ethical decision-making builds lasting trust — the foundation of all leadership."
+      }
+    }
+  ],
+  "reflection_prompt": "In the Prisoner's Dilemma, did you cooperate or defect more? What does your pattern reveal about how you approach trust in real relationships?",
+  "tags": [
+    "game theory",
+    "strategy",
+    "ethics",
+    "decision-making",
+    "trust"
+  ],
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "strategic thinking",
+    "ethical reasoning",
+    "collaborative intelligence"
+  ],
+  "initial_state": {
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Dimension"
+    },
+    "risk_tolerance": {
+      "icon": "🎯",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Dimension"
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Dimension"
+    },
+    "adaptability": {
+      "icon": "🔄",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Dimension"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Dimension"
+    },
+    "empathy": {
+      "icon": "❤️",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Dimension"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Dimension"
+    },
+    "creativity": {
+      "icon": "✨",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Dimension"
+    },
+    "your_score": {
+      "icon": "💰",
+      "label": "Your Score",
+      "value": 50,
+      "min": 0,
+      "max": 100
+    },
+    "trust_level": {
+      "icon": "🤝",
+      "label": "Trust Level",
+      "value": 50,
+      "min": 0,
+      "max": 100
+    }
+  },
+  "learning_objectives": [
+    "Develop critical thinking through rounds gameplay",
+    "Practice decision-making in realistic scenarios",
+    "Build self-awareness about your strengths and areas for growth"
+  ],
+  "multiplayer": {
+    "enabled": true,
+    "mode": "async_turns",
+    "max_players": 2,
+    "turn_time_limit": 86400,
+    "match_timeout": 604800
+  },
+  "max_players": 2,
+  "icon": "🤝",
+  "duration_minutes": 14,
+  "visible": false,
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          3
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          4,
+          4
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          5,
+          7
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  }
+}

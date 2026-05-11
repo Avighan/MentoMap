@@ -1,0 +1,823 @@
+{
+  "game_id": "ancient-egypt-pharaoh",
+  "title": "Ancient Egypt: Pharaoh's Legacy",
+  "description": "Rule as Pharaoh in Ancient Egypt. Build pyramids, manage the Nile floods, train armies, and expand your dynasty across the desert sands.",
+  "icon": "🏺",
+  "game_type": "strategy_grid",
+  "theme_colors": {
+    "primary": "#C9943D",
+    "secondary": "#8B6914"
+  },
+  "estimated_time": "15-25 min",
+  "category": "Strategy",
+  "difficulty": "Advanced",
+  "tags": [
+    "egypt",
+    "civilization",
+    "pharaoh",
+    "strategy"
+  ],
+  "learning_objectives": [
+    "Strategic resource allocation and long-term planning",
+    "Technology progression and cause-effect reasoning",
+    "Balancing expansion with defense",
+    "Understanding economic and military trade-offs"
+  ],
+  "initial_state": {
+    "gold": {
+      "value": 25,
+      "label": "Kingdom Gold",
+      "icon": "🪙"
+    },
+    "food": {
+      "value": 15,
+      "label": "Grain Stores",
+      "icon": "🌾"
+    },
+    "battles_won": {
+      "value": 0,
+      "label": "Battles Won",
+      "icon": "⚔️"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "strategy_grid_config": {
+    "grid_width": 10,
+    "grid_height": 12,
+    "max_turns": 50,
+    "starting_currency": 25,
+    "starting_food": 15,
+    "starting_research": 0,
+    "civ_mode": true,
+    "ages": [
+      {
+        "id": "desert",
+        "name": "Desert Age",
+        "icon": "🏜️",
+        "requires_techs": [],
+        "cost": {}
+      },
+      {
+        "id": "kingdom",
+        "name": "Kingdom Age",
+        "icon": "👑",
+        "requires_techs": [
+          "agriculture",
+          "bronze_working"
+        ],
+        "cost": {
+          "currency": 15,
+          "food": 10
+        }
+      },
+      {
+        "id": "empire",
+        "name": "Empire Age",
+        "icon": "🏺",
+        "requires_techs": [
+          "iron_working",
+          "engineering"
+        ],
+        "cost": {
+          "currency": 30,
+          "food": 20
+        }
+      }
+    ],
+    "tech_tree": [
+      {
+        "id": "irrigation",
+        "name": "Irrigation",
+        "icon": "💧",
+        "description": "Harness the Nile to irrigate crops",
+        "prerequisites": [],
+        "cost": {
+          "research": 5
+        },
+        "effects": {
+          "bonus_food": 5
+        }
+      },
+      {
+        "id": "agriculture",
+        "name": "Agriculture",
+        "icon": "🌾",
+        "description": "Unlocks grain silos for sustainable food production",
+        "prerequisites": [
+          "irrigation"
+        ],
+        "cost": {
+          "research": 10
+        },
+        "effects": {
+          "unlock_buildings": [
+            "grain_silo"
+          ]
+        }
+      },
+      {
+        "id": "engineering",
+        "name": "Engineering",
+        "icon": "📐",
+        "description": "Unlocks pyramids and advanced construction",
+        "prerequisites": [
+          "agriculture"
+        ],
+        "cost": {
+          "research": 20
+        },
+        "effects": {
+          "unlock_buildings": [
+            "pyramid"
+          ]
+        }
+      },
+      {
+        "id": "mining",
+        "name": "Mining",
+        "icon": "⛏️",
+        "description": "Improves resource extraction from quarries",
+        "prerequisites": [],
+        "cost": {
+          "research": 5,
+          "currency": 5
+        },
+        "effects": {
+          "unlock_buildings": [
+            "quarry"
+          ]
+        }
+      },
+      {
+        "id": "bronze_working",
+        "name": "Bronze Working",
+        "icon": "⚒️",
+        "description": "Unlocks chariots and stronger weapons",
+        "prerequisites": [
+          "mining"
+        ],
+        "cost": {
+          "research": 10,
+          "currency": 5
+        },
+        "effects": {
+          "unlock_pieces": [
+            "chariot"
+          ]
+        }
+      },
+      {
+        "id": "iron_working",
+        "name": "Iron Working",
+        "icon": "🔥",
+        "description": "Unlocks advanced military units and buildings",
+        "prerequisites": [
+          "bronze_working"
+        ],
+        "cost": {
+          "research": 25,
+          "currency": 10
+        },
+        "effects": {
+          "unlock_buildings": [
+            "temple"
+          ]
+        }
+      },
+      {
+        "id": "hieroglyphics",
+        "name": "Hieroglyphics",
+        "icon": "𓀀",
+        "description": "Develops early written language through sacred carvings",
+        "prerequisites": [],
+        "cost": {
+          "research": 5
+        },
+        "effects": {
+          "unlock_buildings": [
+            "obelisk"
+          ]
+        }
+      },
+      {
+        "id": "writing",
+        "name": "Writing",
+        "icon": "📜",
+        "description": "Advances knowledge recording and administration",
+        "prerequisites": [
+          "hieroglyphics"
+        ],
+        "cost": {
+          "research": 15
+        },
+        "effects": {
+          "bonus_currency": 5
+        }
+      },
+      {
+        "id": "mathematics",
+        "name": "Mathematics",
+        "icon": "📏",
+        "description": "Mastery of geometry and calculation grants great advantages",
+        "prerequisites": [
+          "writing"
+        ],
+        "cost": {
+          "research": 30,
+          "currency": 15
+        },
+        "effects": {
+          "bonus_currency": 20
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "type_id": "grain_silo",
+        "label": "Grain Silo",
+        "icon": "🌾",
+        "description": "Stores and produces food each turn",
+        "requires_tech": "agriculture",
+        "requires_age": 0,
+        "cost": {
+          "currency": 8,
+          "food": 0
+        },
+        "construction_turns": 2,
+        "hp": 2,
+        "produces": {
+          "food": 3
+        }
+      },
+      {
+        "type_id": "quarry",
+        "label": "Quarry",
+        "icon": "⛏️",
+        "description": "Extracts stone and produces currency each turn",
+        "requires_tech": "mining",
+        "requires_age": 0,
+        "cost": {
+          "currency": 10,
+          "food": 3
+        },
+        "construction_turns": 2,
+        "hp": 3,
+        "produces": {
+          "currency": 3
+        }
+      },
+      {
+        "type_id": "obelisk",
+        "label": "Obelisk",
+        "icon": "🗿",
+        "description": "A monument inscribed with hieroglyphics that generates research",
+        "requires_tech": "hieroglyphics",
+        "requires_age": 0,
+        "cost": {
+          "currency": 12,
+          "food": 5
+        },
+        "construction_turns": 3,
+        "hp": 4,
+        "produces": {
+          "research": 3
+        }
+      },
+      {
+        "type_id": "pyramid",
+        "label": "Pyramid",
+        "icon": "🔺",
+        "description": "A grand monument that produces both currency and research",
+        "requires_tech": "engineering",
+        "requires_age": 1,
+        "cost": {
+          "currency": 25,
+          "food": 10
+        },
+        "construction_turns": 5,
+        "hp": 6,
+        "produces": {
+          "currency": 4,
+          "research": 3
+        }
+      },
+      {
+        "type_id": "temple",
+        "label": "Temple",
+        "icon": "🏛️",
+        "description": "A sacred temple dedicated to the gods, generating research",
+        "requires_tech": "iron_working",
+        "requires_age": 2,
+        "cost": {
+          "currency": 20,
+          "food": 8
+        },
+        "construction_turns": 4,
+        "hp": 3,
+        "produces": {
+          "research": 5
+        }
+      }
+    ],
+    "starting_buildings_player": [
+      {
+        "type_id": "quarry",
+        "pos": [
+          10,
+          4
+        ]
+      }
+    ],
+    "starting_buildings_ai": [
+      {
+        "type_id": "quarry",
+        "pos": [
+          1,
+          5
+        ]
+      }
+    ],
+    "terrain_types": {
+      "sand": {
+        "label": "Sand",
+        "icon": "",
+        "color": "#EDC9AF",
+        "passable": true
+      },
+      "oasis": {
+        "label": "Oasis",
+        "icon": "🌴",
+        "color": "#4A7C3B",
+        "passable": true,
+        "effect": {
+          "stat": "defense",
+          "value": 1
+        }
+      },
+      "dunes": {
+        "label": "Dunes",
+        "icon": "🏜️",
+        "color": "#C4A35A",
+        "passable": true,
+        "generates": {
+          "currency": 1
+        }
+      },
+      "nile": {
+        "label": "Nile River",
+        "icon": "🌊",
+        "color": "#5B9BD5",
+        "passable": true,
+        "effect": {
+          "stat": "currency",
+          "value": -1
+        }
+      },
+      "gold_mine": {
+        "label": "Gold Mine",
+        "icon": "✨",
+        "color": "#FFD54F",
+        "passable": true,
+        "generates": {
+          "currency": 3
+        }
+      },
+      "fertile_nile": {
+        "label": "Fertile Nile Bank",
+        "icon": "🌱",
+        "color": "#7CB342",
+        "passable": true,
+        "generates": {
+          "currency": 1
+        }
+      },
+      "ruins": {
+        "label": "Ancient Ruins",
+        "icon": "🏚️",
+        "color": "#BCAAA4",
+        "passable": true,
+        "effect": {
+          "stat": "currency",
+          "value": 5
+        }
+      },
+      "cliff": {
+        "label": "Cliff",
+        "icon": "🪨",
+        "color": "#78909C",
+        "passable": false
+      },
+      "temple_site": {
+        "label": "Temple Site",
+        "icon": "⛩️",
+        "color": "#CE93D8",
+        "passable": true,
+        "is_objective": true
+      }
+    },
+    "terrain_generation": {
+      "symmetry": "mirror",
+      "density": 0.3,
+      "clustering": 0.5,
+      "blocked_count": 4,
+      "distribution": {
+        "oasis": 2.0,
+        "dunes": 1.5,
+        "nile": 1.0,
+        "gold_mine": 0.5,
+        "fertile_nile": 1.5,
+        "ruins": 0.3
+      },
+      "guaranteed_features": [
+        {
+          "type": "gold_mine",
+          "min_count": 2
+        },
+        {
+          "type": "temple_site",
+          "min_count": 1
+        },
+        {
+          "type": "fertile_nile",
+          "min_count": 3
+        }
+      ]
+    },
+    "player_pieces": [
+      {
+        "type_id": "pharaoh",
+        "label": "Pharaoh",
+        "icon": "👑",
+        "count": 1,
+        "is_king": true,
+        "capture_reward": 0,
+        "description": "The divine ruler of Egypt. Protect at all costs.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move",
+        "ability": {
+          "label": "Divine Command",
+          "type": "buff_adjacent",
+          "stat": "range",
+          "value": 1,
+          "duration": 3,
+          "cost": 5,
+          "cooldown": 5
+        }
+      },
+      {
+        "type_id": "spearman",
+        "label": "Spearman",
+        "icon": "⚔️",
+        "count": 3,
+        "capture_reward": 2,
+        "description": "Egyptian infantry armed with spears. Reliable in combat.",
+        "movement": {
+          "range": 1,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "chariot",
+        "label": "Chariot",
+        "icon": "🐴",
+        "count": 2,
+        "capture_reward": 2,
+        "description": "Fast war chariot that sweeps across the desert.",
+        "movement": {
+          "range": 3,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "priest",
+        "label": "Priest",
+        "icon": "🔮",
+        "count": 1,
+        "capture_reward": 3,
+        "description": "A holy priest who channels the power of the gods from afar.",
+        "movement": {
+          "range": 1,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W"
+          ]
+        },
+        "capture_method": "ranged",
+        "capture_range": 2
+      }
+    ],
+    "ai_pieces": [
+      {
+        "type_id": "high_priest",
+        "label": "High Priest",
+        "icon": "💀",
+        "count": 1,
+        "is_king": true,
+        "capture_reward": 0,
+        "description": "The rival High Priest who seeks to overthrow your dynasty.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move",
+        "ability": {
+          "label": "Curse",
+          "type": "buff_adjacent",
+          "stat": "range",
+          "value": 1,
+          "duration": 3,
+          "cost": 5,
+          "cooldown": 5
+        }
+      },
+      {
+        "type_id": "nubian_warrior",
+        "label": "Nubian Warrior",
+        "icon": "🗡️",
+        "count": 3,
+        "capture_reward": 2,
+        "description": "Fierce Nubian warriors from the south.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "desert_raider",
+        "label": "Desert Raider",
+        "icon": "🪓",
+        "count": 2,
+        "capture_reward": 3,
+        "description": "Swift raiders who strike from the desert dunes.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "scorpion",
+        "label": "Scorpion",
+        "icon": "🦂",
+        "count": 1,
+        "capture_reward": 3,
+        "description": "A deadly scorpion that strikes from a distance with venom.",
+        "movement": {
+          "range": 1,
+          "directions": [
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "ranged",
+        "capture_range": 3,
+        "ability": {
+          "label": "Venom",
+          "type": "freeze_target",
+          "duration": 2,
+          "cost": 5,
+          "cooldown": 4
+        }
+      }
+    ],
+    "win_conditions": [
+      {
+        "type": "eliminate_king",
+        "enabled": true
+      },
+      {
+        "type": "exhaustion",
+        "enabled": true,
+        "threshold": 1
+      },
+      {
+        "type": "resource_target",
+        "enabled": true,
+        "target": 70
+      },
+      {
+        "type": "hold_objectives",
+        "enabled": true,
+        "hold_turns": 4
+      }
+    ],
+    "external_events": [
+      {
+        "id": "nile_flood",
+        "label": "Nile Flood",
+        "narrative": "The annual Nile flood has arrived! Fertile soil enriches the land and boosts all units.",
+        "trigger": {
+          "type": "turn",
+          "value": 12
+        },
+        "effect": {
+          "type": "buff_all",
+          "side": "both",
+          "stat": "range",
+          "value": 1,
+          "duration": 4
+        }
+      },
+      {
+        "id": "sandstorm",
+        "label": "Sandstorm",
+        "narrative": "A devastating sandstorm sweeps across the desert! Visibility and movement are reduced.",
+        "trigger": {
+          "type": "turn",
+          "value": 25
+        },
+        "effect": {
+          "type": "debuff_all",
+          "side": "both",
+          "stat": "range",
+          "value": -1,
+          "duration": 3
+        }
+      },
+      {
+        "id": "trade_caravan",
+        "label": "Trade Caravan",
+        "narrative": "A trade caravan from distant lands arrives bearing exotic goods and gold!",
+        "trigger": {
+          "type": "turn",
+          "value": 35
+        },
+        "effect": {
+          "type": "grant_currency",
+          "side": "player",
+          "amount": 10
+        }
+      }
+    ],
+    "theme_config": {
+      "player_label": "Dynasty of the Pharaoh",
+      "ai_label": "Rival Dynasty",
+      "currency_label": "Gold",
+      "currency_icon": "🪙",
+      "domain": "ancient Egyptian civilization, dynasty management, and strategic conquest"
+    }
+  },
+  "learning_concept": "Strategic Decision Making & Problem Solving",
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "first_completion",
+      "name": "First Completion",
+      "description": "Completed this game for the first time",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "⭐"
+    },
+    {
+      "id": "persistent_learner",
+      "name": "Persistent Learner",
+      "description": "Showed dedication by finishing the challenge",
+      "condition": "game_complete",
+      "xp_reward": 150,
+      "icon": "📚"
+    },
+    {
+      "id": "skill_builder",
+      "name": "Skill Builder",
+      "description": "Demonstrated improvement across all dimensions",
+      "condition": "all_dimensions_above_40",
+      "xp_reward": 200,
+      "icon": "🏆"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_strength": 0.5,
+      "resource_rate": 1.3,
+      "event_chance": 0.1
+    },
+    "medium": {
+      "ai_strength": 0.75,
+      "resource_rate": 1.0,
+      "event_chance": 0.25
+    },
+    "hard": {
+      "ai_strength": 1.0,
+      "resource_rate": 0.75,
+      "event_chance": 0.4
+    }
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.45,
+    "adaptability": 0.3,
+    "risk_tolerance": 0.25
+  },
+  "coaching_moment": "Strategic resource allocation and long-term planning. Technology progression and cause-effect reasoning.",
+  "estimated_duration": "15-25 min",
+  "cultural_context": "Understanding history builds the contextual thinking valued in India's competitive examinations (UPSC, CBSE, ICSE). Ancient Egypt: Pharaoh's Legacy develops the analytical reading of historical events that sharpens both academic performance and civic awareness.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "entrepreneurial-thinking"
+  ],
+  "target_age": "12-18",
+  "reflection_prompt": "Which move opened the board for you, and which closed your options? Why?"
+}

@@ -1,0 +1,464 @@
+{
+  "game_id": "startup_escape_room",
+  "title": "Escape the Failing Startup",
+  "game_type": "minigame",
+  "description": "Your tech startup is in freefall -- servers are crashing, finances are bleeding cash, and investors are about to pull out. Race through three high-pressure rooms: debug a critical memory leak in the Server Room, slash expenses strategically in the Finance Office, and deliver a data-driven pitch in the Boardroom. Solve real-world business puzzles under a 5-minute countdown to rescue your company from the brink of failure!",
+  "learning_objectives": [
+    "Diagnose and fix common software engineering problems such as memory leaks by reading error logs and understanding code behavior",
+    "Analyze financial statements including burn rate, revenue, and runway to make strategic cost-cutting decisions that preserve core operations",
+    "Evaluate vendor contracts and identify opportunities to reduce expenses without sacrificing business quality",
+    "Craft a compelling investor pitch using growth metrics, retention data, unit economics, and competitive positioning",
+    "Practice time-pressured decision-making that mirrors the urgency founders face when their startup is in crisis"
+  ],
+  "how_to_play": {
+    "title": "How to Play",
+    "steps": [
+      "Explore each room by tapping on clues -- error logs, spreadsheets, and sticky notes",
+      "Read each clue carefully to gather information needed to solve the room's puzzle",
+      "Answer the puzzle question correctly to unlock the next room",
+      "Progress through the Server Room, Finance Office, and CEO's Office to save the startup",
+      "Solve all puzzles before the 5-minute timer expires to escape!"
+    ],
+    "tips": [
+      "Some clues unlock other clues -- examine everything in order to reveal all the information",
+      "Sticky notes and whiteboard messages often contain passwords or key details for later rooms",
+      "Think like a real startup founder -- focus on fixing the root cause, not applying band-aids"
+    ]
+  },
+  "theme": "business",
+  "icon_svg_id": "key",
+  "difficulty": "Intermediate",
+  "duration_minutes": 8,
+  "target_audience": "Teens & Adults",
+  "initial_state": {
+    "score": 0,
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "Quick Challenge"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "minigame_config": {
+    "subtype": "escape_room",
+    "time_limit_seconds": 300,
+    "rooms": [
+      {
+        "id": "room_server",
+        "title": "The Server Room",
+        "description": "Alarms are blaring! The company servers are crashing and customer data is at risk. You need to find the source of the problem.",
+        "icon": "🖥️",
+        "clues": [
+          {
+            "id": "clue_error_log",
+            "type": "text",
+            "label": "Error Log",
+            "icon": "📋",
+            "content": "The error log reads: 'FATAL: Memory leak detected in auth.js at line 42. Cache array growing unbounded. System memory at 98%.'",
+            "hint": "The error mentions a specific file and line number. What happens when arrays grow forever?",
+            "unlocks_puzzle": "puzzle_server_fix"
+          },
+          {
+            "id": "clue_whiteboard",
+            "type": "text",
+            "label": "Whiteboard Code",
+            "icon": "📝",
+            "content": "Someone wrote on the whiteboard: 'var cache = []; function processRequest() { cache.push(data); /* TODO: clear old entries */ }'",
+            "requires_clue": "clue_error_log"
+          },
+          {
+            "id": "clue_sticky_note",
+            "type": "text",
+            "label": "Sticky Note",
+            "icon": "📌",
+            "content": "A sticky note on the monitor says: 'Remember! The backup password is the year we founded the company: 2019'",
+            "hint": "This might come in handy later..."
+          }
+        ],
+        "puzzles": [
+          {
+            "id": "puzzle_server_fix",
+            "type": "multiple_choice",
+            "question": "How do you fix the server memory leak?",
+            "options": [
+              "Add 'cache.length = 0' after processing each batch",
+              "Buy a server with more RAM",
+              "Delete the auth.js file entirely",
+              "Restart the server every hour with a cron job"
+            ],
+            "correct": 0,
+            "points": 100,
+            "explanation": "Clearing the cache array after each batch prevents unbounded memory growth. The other options are band-aids, not real fixes!",
+            "unlocks_room": "room_finance"
+          }
+        ]
+      },
+      {
+        "id": "room_finance",
+        "title": "The Finance Office",
+        "description": "The servers are stabilized! But now you discover the company finances are a mess. Investors are threatening to pull out tomorrow.",
+        "icon": "💰",
+        "clues": [
+          {
+            "id": "clue_spreadsheet",
+            "type": "text",
+            "label": "Financial Spreadsheet",
+            "icon": "📊",
+            "content": "The spreadsheet shows: Revenue ₹5L/month, Expenses ₹8L/month. Burn rate: ₹3L/month. Runway: 2 months left.",
+            "hint": "You need to either increase revenue or cut expenses.",
+            "unlocks_puzzle": "puzzle_budget"
+          },
+          {
+            "id": "clue_email",
+            "type": "text",
+            "label": "Investor Email",
+            "icon": "📧",
+            "content": "Email from investor: 'We need to see a path to profitability. If you can show 40% cost reduction while maintaining growth, we'll double down.'",
+            "requires_clue": "clue_spreadsheet"
+          },
+          {
+            "id": "clue_contracts",
+            "type": "text",
+            "label": "Vendor Contracts",
+            "icon": "📜",
+            "content": "Three vendor contracts found: Cloud hosting ₹2L/mo (can switch to cheaper provider for ₹80K), Premium tools ₹1.5L/mo (free alternatives exist for 80% of features), Office rent ₹1.5L/mo (can go remote).",
+            "requires_clue": "clue_spreadsheet"
+          }
+        ],
+        "puzzles": [
+          {
+            "id": "puzzle_budget",
+            "type": "multiple_choice",
+            "question": "Which combination cuts costs by at least 40% (₹3.2L) while maintaining operations?",
+            "options": [
+              "Switch cloud provider (save ₹1.2L) + Go remote (save ₹1.5L) + Free tools (save ₹1.5L) = ₹4.2L saved",
+              "Fire half the team to save ₹4L immediately",
+              "Take a personal loan to cover expenses for 6 months",
+              "Switch to cloud only (save ₹1.2L) — small steps first"
+            ],
+            "correct": 0,
+            "points": 150,
+            "explanation": "Strategic cost cutting across vendors, office, and tools saves ₹4.2L (52.5%) without losing team members or taking risky loans. This shows the investor a clear path to profitability!",
+            "unlocks_room": "room_pitch"
+          }
+        ]
+      },
+      {
+        "id": "room_pitch",
+        "title": "The Boardroom",
+        "description": "Final challenge! The investor is on a video call. You have one chance to deliver the perfect pitch to save the company.",
+        "icon": "🎤",
+        "clues": [
+          {
+            "id": "clue_metrics",
+            "type": "text",
+            "label": "Growth Metrics",
+            "icon": "📈",
+            "content": "Dashboard shows: 15,000 active users (up 200% in 3 months), 4.5-star app rating, 68% monthly retention rate. Customer acquisition cost: ₹150.",
+            "hint": "These numbers tell a story. Which metrics would impress an investor?",
+            "unlocks_puzzle": "puzzle_pitch"
+          },
+          {
+            "id": "clue_competitor",
+            "type": "text",
+            "label": "Competitor Analysis",
+            "icon": "🔍",
+            "content": "Closest competitor charges ₹500/user/month with only 3.2-star rating. Your free tier converts 12% to paid at ₹200/user/month.",
+            "requires_clue": "clue_metrics"
+          },
+          {
+            "id": "clue_testimonial",
+            "type": "text",
+            "label": "Customer Testimonial",
+            "icon": "💬",
+            "content": "'This app changed how our school teaches financial literacy. Students are actually excited to learn!' — Principal, Delhi Public School",
+            "requires_clue": "clue_metrics"
+          }
+        ],
+        "puzzles": [
+          {
+            "id": "puzzle_pitch",
+            "type": "multiple_choice",
+            "question": "Which pitch opening would be most effective for the investor?",
+            "options": [
+              "We have 15K users growing 200% quarterly with 68% retention — better metrics than our competitor at half the price. With our cost restructuring, we reach profitability in 4 months.",
+              "Our app is really cool and students love it. We just need more money to keep going.",
+              "If you don't invest, we'll go bankrupt in 2 months and 15,000 students will lose access.",
+              "We're the best edtech startup in India and we deserve ₹10 crore valuation."
+            ],
+            "correct": 0,
+            "points": 200,
+            "explanation": "Leading with data (growth, retention, unit economics) and showing a clear path to profitability is what investors want to hear. The other options rely on emotion, threats, or ego — none of which build investor confidence."
+          }
+        ]
+      }
+    ],
+    "scoring": {
+      "clue_found_points": 15,
+      "puzzle_solved_points": 0,
+      "hint_penalty": -25,
+      "time_bonus_per_second": 2
+    }
+  },
+  "result_deltas": {
+    "perfect": {
+      "score": 250,
+      "reputation": 30,
+      "strategic_thinking": 20
+    },
+    "good": {
+      "score": 150,
+      "reputation": 18,
+      "strategic_thinking": 12
+    },
+    "poor": {
+      "score": 50,
+      "reputation": 8,
+      "strategic_thinking": 5
+    }
+  },
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "ethical_reasoning",
+        "name": "Ethical Reasoning",
+        "icon": "⚖️",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "emotional_regulation",
+        "name": "Emotional Regulation",
+        "icon": "🧘",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "self_awareness",
+        "name": "Self Awareness",
+        "icon": "🪞",
+        "brain_region": "occipital_posterior"
+      },
+      {
+        "id": "growth_mindset",
+        "name": "Growth Mindset",
+        "icon": "🌱",
+        "brain_region": "occipital_posterior"
+      }
+    ]
+  },
+  "learning_concept": "Skill Application Under Pressure",
+  "transfer_exercises": [
+    {
+      "skill_tag": "adaptability",
+      "game_context": "Quick decisions under time pressure",
+      "real_world": "Making fast calls during a team project deadline crunch",
+      "challenge": "Practice making a decision in under 60 seconds on something you've been procrastinating. Reflect on the outcome."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from mistakes in rapid gameplay",
+      "real_world": "Bouncing back after a failed presentation or test",
+      "challenge": "Write down one recent failure and three specific things you learned from it."
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Cognitive Load",
+      "definition": "The mental effort required to process information and make decisions.",
+      "example": "Having too many options at once makes decisions harder and slower.",
+      "deep_dive": "Working memory has limits. Experts chunk information into patterns, reducing cognitive load and enabling faster decisions.",
+      "real_world_example": "Experienced doctors diagnose faster not because they think harder, but because they recognize patterns instantly."
+    },
+    {
+      "term": "Pattern Recognition",
+      "definition": "Identifying recurring structures or relationships in information.",
+      "example": "Noticing that certain question types always have two plausible answers helps you focus faster.",
+      "deep_dive": "Pattern recognition is a core skill in chess, medicine, engineering, and sport. It develops through deliberate practice.",
+      "real_world_example": "Air traffic controllers recognize dangerous flight patterns faster than computers because of years of pattern training."
+    },
+    {
+      "term": "Focus",
+      "definition": "The ability to direct mental attention toward what matters most and ignore distractions.",
+      "example": "Under time pressure, completing questions you're confident about before tackling harder ones.",
+      "deep_dive": "Focus is a trainable skill. The Pomodoro method, mindfulness, and deliberate practice all improve sustained attention.",
+      "real_world_example": "Olympic athletes train mental focus as rigorously as physical skills — pressure performance depends on it."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "quick_thinker",
+      "name": "Quick Thinker",
+      "description": "Answered 5+ questions in record time",
+      "condition": "avg_time < 10s",
+      "xp_reward": 150,
+      "icon": "⚡"
+    },
+    {
+      "id": "perfect_score",
+      "name": "Perfect Score",
+      "description": "Answered all questions correctly",
+      "condition": "accuracy == 100",
+      "xp_reward": 250,
+      "icon": "💯"
+    },
+    {
+      "id": "minigame_complete",
+      "name": "Challenge Complete",
+      "description": "Finished the minigame challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "🎮"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "time_multiplier": 1.5,
+      "hints_available": 2,
+      "passing_score": 60
+    },
+    "medium": {
+      "time_multiplier": 1.0,
+      "hints_available": 1,
+      "passing_score": 70
+    },
+    "hard": {
+      "time_multiplier": 0.75,
+      "hints_available": 0,
+      "passing_score": 85
+    }
+  },
+  "dimension_scoring_weights": {
+    "resilience": 0.33,
+    "risk_tolerance": 0.33,
+    "delayed_gratification": 0.33
+  },
+  "coaching_moment": "If you get something wrong, reset and continue. Resilience isn't about never failing — it's about how quickly you get back on track.",
+  "estimated_duration": 8,
+  "target_age": "Teens & Adults",
+  "tags": [
+    "business",
+    "creativity",
+    "entrepreneurship",
+    "finance",
+    "intermediate",
+    "minigame",
+    "quick-play",
+    "resilience",
+    "teamwork"
+  ],
+  "cultural_context": "India's startup ecosystem — the world's third largest — has produced over 100 unicorns. Escape the Failing Startup develops the entrepreneurial thinking that is reshaping India's economy and creating new career pathways for young Indians.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "social-emotional-learning",
+    "entrepreneurial-thinking",
+    "self-regulation"
+  ],
+  "icon": "💰",
+  "reflection_prompt": "What pattern did you start to recognize as you played? How will you use it next time?"
+}

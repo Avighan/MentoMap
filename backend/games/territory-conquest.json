@@ -1,0 +1,746 @@
+{
+  "game_id": "territory_conquest",
+  "title": "Rajya Vijay: Territory Conquest",
+  "game_type": "strategy",
+  "description": "Lead your forces across the battlefield! Capture territories, defeat enemy units, and claim victory through strategic positioning and smart resource management. Inspired by the great kingdoms of ancient India.",
+  "theme": "Strategy & Warfare",
+  "icon_svg_id": "map",
+  "difficulty": "Advanced",
+  "target_audience": "14-18",
+  "duration_minutes": 20,
+  "learning_objectives": [
+    "Develop strategic planning and tactical decision-making skills",
+    "Practice spatial reasoning and positional awareness on a grid-based battlefield",
+    "Learn resource management through unit health, positioning, and turn economy",
+    "Understand cost-benefit trade-offs in offensive vs defensive strategies",
+    "Explore Indian historical kingdoms, forts, and military strategy concepts"
+  ],
+  "how_to_play": {
+    "title": "How to Play",
+    "steps": [
+      "Command your army on an 8x10 grid battlefield -- your fort is at the bottom-left, the enemy fort is at the top-right",
+      "Each turn, select a unit, then choose to Move or Attack (each unit can do one action per turn)",
+      "Move units within their move_range to reposition -- cavalry moves fastest, siege engines move slowest",
+      "Attack enemy units within your attack_range -- melee units must be adjacent, ranged units can strike from afar",
+      "Capture cities by moving a unit onto an unoccupied city tile and holding it for one full turn",
+      "Defeat all enemy units OR capture all three cities to win before the 15-turn limit!"
+    ],
+    "tips": [
+      "Use your Archer and Cavalry to scout and control the map early -- they have superior range and speed",
+      "Protect your Siege Engine -- it deals massive damage but is slow and fragile",
+      "Forests provide a defense bonus, mountains block movement -- use terrain to your advantage",
+      "Capturing cities gives you score bonuses and denies the enemy strategic positions",
+      "Focus fire on one enemy unit at a time rather than spreading damage across many"
+    ]
+  },
+  "initial_state": {
+    "score": 0,
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "Build & Manage"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "strategy_config": {
+    "grid_size": {
+      "rows": 8,
+      "cols": 10
+    },
+    "max_turns": 15,
+    "terrain_effects": {
+      "plain": {
+        "defense_bonus": 0,
+        "move_cost": 1,
+        "description": "Open ground with no bonuses or penalties"
+      },
+      "forest": {
+        "defense_bonus": 3,
+        "move_cost": 1,
+        "description": "Dense trees provide cover -- units here gain +3 defense"
+      },
+      "mountain": {
+        "defense_bonus": 5,
+        "move_cost": 2,
+        "passable": true,
+        "description": "High ground gives +5 defense but costs 2 movement to enter"
+      },
+      "water": {
+        "passable": false,
+        "description": "Rivers and lakes block all ground movement"
+      },
+      "city": {
+        "defense_bonus": 4,
+        "move_cost": 1,
+        "capturable": true,
+        "description": "Fortified settlements grant +4 defense and can be captured for victory points"
+      },
+      "base": {
+        "defense_bonus": 6,
+        "move_cost": 1,
+        "description": "Your home fort -- heavily fortified starting position"
+      },
+      "enemy_base": {
+        "defense_bonus": 6,
+        "move_cost": 1,
+        "description": "The enemy's stronghold -- the ultimate target"
+      }
+    },
+    "terrain": [
+      {
+        "row": 7,
+        "col": 0,
+        "type": "base",
+        "label": "Chola Fort",
+        "icon": "🏰"
+      },
+      {
+        "row": 0,
+        "col": 9,
+        "type": "enemy_base",
+        "label": "Kalinga Citadel",
+        "icon": "🏯"
+      },
+      {
+        "row": 3,
+        "col": 5,
+        "type": "city",
+        "label": "Varanasi Trading Post",
+        "icon": "🕌",
+        "capturable": true,
+        "capture_score": 100
+      },
+      {
+        "row": 5,
+        "col": 8,
+        "type": "city",
+        "label": "Ujjain Market City",
+        "icon": "🏛️",
+        "capturable": true,
+        "capture_score": 100
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "type": "city",
+        "label": "Pataliputra Capital",
+        "icon": "👑",
+        "capturable": true,
+        "capture_score": 150
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "type": "forest",
+        "label": "Dandaka Forest",
+        "icon": "🌳"
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "type": "forest",
+        "label": "Dandaka Forest",
+        "icon": "🌲"
+      },
+      {
+        "row": 5,
+        "col": 3,
+        "type": "forest",
+        "label": "Dandaka Forest Edge",
+        "icon": "🌳"
+      },
+      {
+        "row": 2,
+        "col": 6,
+        "type": "forest",
+        "label": "Naimisha Woods",
+        "icon": "🌲"
+      },
+      {
+        "row": 2,
+        "col": 7,
+        "type": "forest",
+        "label": "Naimisha Woods",
+        "icon": "🌳"
+      },
+      {
+        "row": 6,
+        "col": 6,
+        "type": "forest",
+        "label": "Kishkindha Grove",
+        "icon": "🌲"
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "type": "mountain",
+        "label": "Vindhya Range",
+        "icon": "⛰️"
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "type": "mountain",
+        "label": "Vindhya Peak",
+        "icon": "🏔️"
+      },
+      {
+        "row": 1,
+        "col": 7,
+        "type": "mountain",
+        "label": "Himalaya Foothills",
+        "icon": "⛰️"
+      },
+      {
+        "row": 1,
+        "col": 8,
+        "type": "mountain",
+        "label": "Himalaya Pass",
+        "icon": "🏔️"
+      },
+      {
+        "row": 5,
+        "col": 5,
+        "type": "water",
+        "label": "Narmada River",
+        "icon": "🌊"
+      },
+      {
+        "row": 5,
+        "col": 6,
+        "type": "water",
+        "label": "Narmada River",
+        "icon": "🌊"
+      },
+      {
+        "row": 6,
+        "col": 4,
+        "type": "water",
+        "label": "Godavari Tributary",
+        "icon": "💧"
+      },
+      {
+        "row": 3,
+        "col": 8,
+        "type": "water",
+        "label": "Ganga Delta",
+        "icon": "🌊"
+      },
+      {
+        "row": 3,
+        "col": 9,
+        "type": "water",
+        "label": "Ganga Delta",
+        "icon": "💧"
+      }
+    ],
+    "units": [
+      {
+        "id": "u_yoddha",
+        "name": "Yoddha (Warrior)",
+        "icon": "⚔️",
+        "type": "melee",
+        "row": 7,
+        "col": 0,
+        "max_hp": 100,
+        "attack": 25,
+        "defense": 5,
+        "move_range": 2,
+        "attack_range": 1,
+        "description": "A battle-hardened foot soldier of the Chola army. Strong in close combat with solid defense. The backbone of your forces."
+      },
+      {
+        "id": "u_dhanurdhari",
+        "name": "Dhanurdhari (Archer)",
+        "icon": "🏹",
+        "type": "ranged",
+        "row": 7,
+        "col": 1,
+        "max_hp": 60,
+        "attack": 20,
+        "defense": 0,
+        "move_range": 2,
+        "attack_range": 3,
+        "description": "A skilled bowman trained in the art of Dhanurveda. Strikes from a distance but crumbles in melee. Keep behind your warriors."
+      },
+      {
+        "id": "u_ashvarohi",
+        "name": "Ashvarohi (Cavalry)",
+        "icon": "🐎",
+        "type": "cavalry",
+        "row": 7,
+        "col": 2,
+        "max_hp": 80,
+        "attack": 22,
+        "defense": 3,
+        "move_range": 4,
+        "attack_range": 1,
+        "description": "A swift horseman of the royal cavalry. Covers vast ground in a single turn -- perfect for flanking, scouting, and capturing cities."
+      },
+      {
+        "id": "u_yantra",
+        "name": "Yantra (Siege Engine)",
+        "icon": "🪨",
+        "type": "siege",
+        "row": 7,
+        "col": 0,
+        "max_hp": 50,
+        "attack": 40,
+        "defense": 2,
+        "move_range": 1,
+        "attack_range": 4,
+        "description": "A massive stone-throwing war machine. Devastating long-range firepower but extremely slow and fragile. Protect it at all costs."
+      }
+    ],
+    "enemy_units": [
+      {
+        "id": "e_sainik",
+        "name": "Kalinga Sainik",
+        "icon": "👹",
+        "type": "melee",
+        "row": 0,
+        "col": 8,
+        "max_hp": 80,
+        "attack": 18,
+        "defense": 4,
+        "move_range": 2,
+        "attack_range": 1,
+        "ai_behavior": "aggressive",
+        "description": "A disciplined Kalinga foot soldier who charges toward the nearest threat."
+      },
+      {
+        "id": "e_dhanush",
+        "name": "Kalinga Dhanush",
+        "icon": "🎯",
+        "type": "ranged",
+        "row": 0,
+        "col": 7,
+        "max_hp": 50,
+        "attack": 16,
+        "defense": 0,
+        "move_range": 2,
+        "attack_range": 3,
+        "ai_behavior": "defensive",
+        "description": "An enemy archer who maintains distance and picks off weakened units from safety."
+      },
+      {
+        "id": "e_ashva",
+        "name": "Kalinga Ashvarohi",
+        "icon": "🐴",
+        "type": "cavalry",
+        "row": 1,
+        "col": 9,
+        "max_hp": 70,
+        "attack": 20,
+        "defense": 2,
+        "move_range": 4,
+        "attack_range": 1,
+        "ai_behavior": "flanker",
+        "description": "A fast enemy horseman who tries to circle around and attack your ranged or siege units."
+      },
+      {
+        "id": "e_rakshak",
+        "name": "Kalinga Rakshak",
+        "icon": "🛡️",
+        "type": "melee",
+        "row": 0,
+        "col": 9,
+        "max_hp": 120,
+        "attack": 12,
+        "defense": 8,
+        "move_range": 1,
+        "attack_range": 1,
+        "ai_behavior": "guardian",
+        "description": "A heavily armoured guardian who protects the Kalinga Citadel. Hard to kill but slow."
+      },
+      {
+        "id": "e_senapati",
+        "name": "Senapati (Commander)",
+        "icon": "💀",
+        "type": "commander",
+        "row": 0,
+        "col": 5,
+        "max_hp": 100,
+        "attack": 22,
+        "defense": 5,
+        "move_range": 3,
+        "attack_range": 2,
+        "ai_behavior": "strategic",
+        "description": "The enemy general who commands with intelligence. Targets your most valuable units and retreats when outmatched."
+      }
+    ],
+    "objectives": [
+      {
+        "id": "obj_defeat_all",
+        "type": "defeat_all",
+        "description": "Defeat all 5 Kalinga enemy units",
+        "reward_score": 200,
+        "primary": true
+      },
+      {
+        "id": "obj_capture_varanasi",
+        "type": "capture",
+        "target": "varanasi_trading_post",
+        "description": "Capture the Varanasi Trading Post",
+        "reward_score": 100
+      },
+      {
+        "id": "obj_capture_ujjain",
+        "type": "capture",
+        "target": "ujjain_market_city",
+        "description": "Capture the Ujjain Market City",
+        "reward_score": 100
+      },
+      {
+        "id": "obj_capture_pataliputra",
+        "type": "capture",
+        "target": "pataliputra_capital",
+        "description": "Capture the ancient capital of Pataliputra",
+        "reward_score": 150
+      }
+    ],
+    "win_condition": {
+      "type": "any_of",
+      "conditions": [
+        {
+          "type": "defeat_all_enemies",
+          "description": "Defeat all 5 Kalinga units"
+        },
+        {
+          "type": "capture_all_cities",
+          "count": 3,
+          "description": "Capture all 3 cities"
+        }
+      ]
+    },
+    "lose_condition": {
+      "type": "any_of",
+      "conditions": [
+        {
+          "type": "all_units_defeated",
+          "description": "All your units are defeated"
+        },
+        {
+          "type": "turn_limit_exceeded",
+          "max_turns": 15,
+          "description": "Failed to achieve objectives within 15 turns"
+        }
+      ]
+    }
+  },
+  "glossary_terms": [
+    {
+      "term": "Yoddha",
+      "definition": "A Sanskrit word meaning warrior or fighter. In ancient India, Yoddhas were trained soldiers who formed the backbone of any army.",
+      "example": "The Chola Yoddha unit is your melee fighter with high HP and strong close-combat attack.",
+      "remember_tip": "Yoddha = Your frontline fighter who does the heavy hitting."
+    },
+    {
+      "term": "Dhanurdhari",
+      "definition": "One who wields a bow (dhanush). The science of archery in ancient India was called Dhanurveda and was considered a sacred martial art.",
+      "example": "Your Dhanurdhari can attack enemies 3 tiles away without being in danger of melee counterattack.",
+      "remember_tip": "Dhanurdhari = Dhanush (bow) + Dhari (holder) = the archer."
+    },
+    {
+      "term": "Ashvarohi",
+      "definition": "A horse-mounted soldier. Ashva means horse in Sanskrit. Cavalry units were prized for their speed and ability to flank enemy formations.",
+      "example": "The Ashvarohi can move 4 tiles per turn, making it ideal for capturing distant cities.",
+      "remember_tip": "Ashva = horse, so Ashvarohi = one who rides a horse."
+    },
+    {
+      "term": "Senapati",
+      "definition": "The commander-in-chief of an army in ancient Indian kingdoms. The Senapati held one of the highest military positions in the royal court.",
+      "example": "The enemy Senapati unit has balanced stats and smart AI behavior, making it the most dangerous foe.",
+      "remember_tip": "Sena = army, Pati = lord. Senapati = Lord of the Army."
+    },
+    {
+      "term": "Rajya Vijay",
+      "definition": "Means 'Kingdom Victory' or 'Conquest of the Realm' in Sanskrit. It refers to the strategic expansion of a kingdom through military and diplomatic means.",
+      "example": "The game title Rajya Vijay represents your quest to conquer territories and expand your kingdom.",
+      "remember_tip": "Rajya = Kingdom, Vijay = Victory. Like winning a kingdom!"
+    }
+  ],
+  "layout_config": {
+    "layout_type": "dashboard",
+    "theme": {
+      "primary_color": "#1B5E20",
+      "secondary_color": "#BF360C",
+      "accent_color": "#FF8F00",
+      "font_family": "Nunito, sans-serif"
+    }
+  },
+  "result_deltas": {
+    "perfect": {
+      "score": 500,
+      "strategic_thinking": 30,
+      "spatial_reasoning": 25,
+      "decision_making": 20,
+      "planning": 15
+    },
+    "good": {
+      "score": 300,
+      "strategic_thinking": 18,
+      "spatial_reasoning": 15,
+      "decision_making": 12,
+      "planning": 10
+    },
+    "poor": {
+      "score": 100,
+      "strategic_thinking": 8,
+      "spatial_reasoning": 6,
+      "decision_making": 5,
+      "planning": 4
+    }
+  },
+  "achievements": [
+    {
+      "id": "ach_blitzkrieg",
+      "title": "Chandragupta's Blitz",
+      "description": "Win the battle within 8 turns",
+      "condition": {
+        "type": "win_by_turn",
+        "turn": 8
+      },
+      "reward": {
+        "score": 150
+      },
+      "icon": "⚡",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_city_emperor",
+      "title": "Samrat (Emperor)",
+      "description": "Capture all 3 cities in a single game",
+      "condition": {
+        "type": "capture_all_cities",
+        "count": 3
+      },
+      "reward": {
+        "score": 200
+      },
+      "icon": "👑",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_no_losses",
+      "title": "Invincible Legion",
+      "description": "Win without losing any of your 4 units",
+      "condition": {
+        "type": "no_units_lost"
+      },
+      "reward": {
+        "score": 175
+      },
+      "icon": "🛡️",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_senapati_slayer",
+      "title": "Commander Vanquished",
+      "description": "Defeat the enemy Senapati (Commander) unit",
+      "condition": {
+        "type": "defeat_unit",
+        "unit_id": "e_senapati"
+      },
+      "reward": {
+        "score": 100
+      },
+      "icon": "💀",
+      "xp_reward": 100
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "ethical_reasoning",
+        "name": "Ethical Reasoning",
+        "icon": "⚖️",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "emotional_regulation",
+        "name": "Emotional Regulation",
+        "icon": "🧘",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "self_awareness",
+        "name": "Self Awareness",
+        "icon": "🪞",
+        "brain_region": "occipital_posterior"
+      },
+      {
+        "id": "growth_mindset",
+        "name": "Growth Mindset",
+        "icon": "🌱",
+        "brain_region": "occipital_posterior"
+      }
+    ]
+  },
+  "coach_mode_default": true,
+  "learning_concept": "Systems Thinking & Resource Optimization",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Optimizing resource allocation across complex systems",
+      "real_world": "Planning a community event with limited volunteers, time, and money",
+      "challenge": "Map out the system of your school or organization. Where are the biggest bottlenecks?"
+    },
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Investing resources now for greater returns later",
+      "real_world": "Spending time learning a new skill before it becomes immediately useful",
+      "challenge": "Choose one long-term investment in yourself. Create a specific 90-day plan to pursue it."
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "resource_multiplier": 1.3,
+      "event_frequency": 0.15,
+      "opponent_strength": 0.6
+    },
+    "medium": {
+      "resource_multiplier": 1.0,
+      "event_frequency": 0.3,
+      "opponent_strength": 0.8
+    },
+    "hard": {
+      "resource_multiplier": 0.75,
+      "event_frequency": 0.5,
+      "opponent_strength": 1.0
+    }
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.45,
+    "adaptability": 0.3,
+    "risk_tolerance": 0.25
+  },
+  "coaching_moment": "Develop strategic planning and tactical decision-making skills. Practice spatial reasoning and positional awareness on a grid-based battlefield.",
+  "estimated_duration": 20,
+  "target_age": "14-18",
+  "tags": [
+    "advanced",
+    "creativity",
+    "history",
+    "india",
+    "role-playing",
+    "simulation",
+    "strategic-thinking",
+    "strategy"
+  ],
+  "cultural_context": "Understanding history builds the contextual thinking valued in India's competitive examinations (UPSC, CBSE, ICSE). Rajya Vijay: Territory Conquest develops the analytical reading of historical events that sharpens both academic performance and civic awareness.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "entrepreneurial-thinking"
+  ],
+  "reflection_prompt": "What's one thing you'll take from this game into a real-world situation this week?"
+}

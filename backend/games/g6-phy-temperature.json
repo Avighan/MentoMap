@@ -1,0 +1,1951 @@
+{
+  "game_id": "g6-phy-temperature",
+  "title": "🌡️ Temperature Lab",
+  "theme": "Science — Temperature & Heat",
+  "icon": "🌡️",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "Welcome to the Temperature Lab! You are a Grade 6 student exploring the world of hot and cold. Over 10 experiments, learn to read thermometers, understand Celsius, measure body temperature, mix hot and cold water, and discover how heat travels. Can you master temperature science and design the ultimate weather station?",
+  "target_audience": "Ages 11-12",
+  "target_age": "11-12",
+  "grade": "6",
+  "target_grade": "6",
+  "subject": "physics",
+  "topics": [
+    "temperature",
+    "heat",
+    "thermometer",
+    "celsius",
+    "conduction",
+    "heat_transfer"
+  ],
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "estimated_duration_minutes": 20,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "visual_config": {
+    "theme_preset": "science_lab",
+    "palette": {
+      "primary": "#DC2626",
+      "secondary": "#2563EB",
+      "accent": "#F59E0B",
+      "background": "#1C1917",
+      "surface": "#292524"
+    },
+    "labels": {
+      "subsystems": "Lab Stations",
+      "resources": "Experiment Supplies",
+      "news": "Lab Journal",
+      "stakeholders": "Lab Team",
+      "decision": "Your Experiment"
+    },
+    "icons": {
+      "subsystems": "🔬",
+      "resources": "🌡️",
+      "news": "📓",
+      "stakeholders": "👩‍🔬",
+      "decision": "🌡️",
+      "round": "🔬"
+    }
+  },
+  "animation_config": {
+    "enabled": true,
+    "intensity": "dramatic",
+    "scene_transitions": {
+      "type": "slide",
+      "duration_ms": 500,
+      "easing": "easeInOut"
+    },
+    "data_viz_animations": {
+      "counter_roll": true,
+      "sparkline_draw": true,
+      "threshold_pulse": true
+    },
+    "achievement_animations": {
+      "confetti": true,
+      "screen_shake": true,
+      "celebration": true
+    }
+  },
+  "how_to_play": [
+    "You are a Grade 6 student exploring temperature and heat through 10 hands-on experiments.",
+    "Each experiment presents a challenge — choose wisely to boost your Discovery Score and Knowledge.",
+    "Watch your dashboard: Lab Safety, Measurement Skill, Knowledge Mastery, and Equipment Care are interconnected.",
+    "NPCs like Ms. Kelvin (teacher) and Thermo (lab assistant robot) react to your decisions.",
+    "Random events like broken thermometers and heatwaves will test your adaptability.",
+    "Keep your Safety Awareness high — hot liquids and glass thermometers require careful handling!"
+  ],
+  "learning_objectives": [
+    "Read a thermometer accurately in degrees Celsius",
+    "Understand the Celsius scale — key reference points (0°C, 37°C, 100°C)",
+    "Differentiate between clinical and laboratory thermometers",
+    "Explore heat transfer through conduction",
+    "Predict outcomes when mixing hot and cold liquids",
+    "Apply temperature knowledge to real-world situations"
+  ],
+  "tags": [
+    "science",
+    "physics",
+    "grade-6",
+    "temperature",
+    "heat",
+    "thermometer"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Scientific Temper",
+    "Problem Solving",
+    "Creativity",
+    "Critical Thinking"
+  ],
+  "cultural_context": "School science laboratory, hands-on STEM learning, measurement-based experimentation",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning",
+      "creativity"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.15,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.05,
+    "ethical_reasoning": 0.05,
+    "creativity": 0.2
+  },
+  "initial_state": {
+    "discovery_points": {
+      "value": 10,
+      "label": "Discovery Points",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "measurement_skill": {
+      "value": 30,
+      "label": "Measurement Skill",
+      "icon": "🎯",
+      "min": 0,
+      "max": 100
+    },
+    "knowledge_level": {
+      "value": 5,
+      "label": "Knowledge Level",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "equipment_health": {
+      "value": 100,
+      "label": "Equipment Health",
+      "icon": "🔬",
+      "min": 0,
+      "max": 100
+    },
+    "lab_reputation": {
+      "value": 50,
+      "label": "Lab Reputation",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "safety_awareness": {
+      "value": 60,
+      "label": "Safety Awareness",
+      "icon": "🛡️",
+      "min": 0,
+      "max": 100
+    },
+    "creativity_points": {
+      "value": 20,
+      "label": "Creativity Points",
+      "icon": "🎨",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50,
+      "creativity": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Experiment",
+      "start": 1,
+      "max": 10
+    },
+    "subsystems": [
+      {
+        "id": "lab_safety",
+        "label": "Lab Safety",
+        "icon": "🛡️",
+        "color": "#EF476F",
+        "initial_health": 60,
+        "health_formula": "min(100, max(0, safety_awareness * 0.5 + equipment_health * 0.3 + lab_reputation * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "measurement_station",
+        "label": "Measurement Station",
+        "icon": "🎯",
+        "color": "#FFD166",
+        "initial_health": 40,
+        "health_formula": "min(100, max(0, measurement_skill * 0.4 + knowledge_level * 0.3 + equipment_health * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "knowledge_mastery",
+        "label": "Knowledge Mastery",
+        "icon": "🧠",
+        "color": "#06D6A0",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, knowledge_level * 0.5 + discovery_points * 0.3 + measurement_skill * 0.2))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "equipment_care",
+        "label": "Equipment Care",
+        "icon": "🔬",
+        "color": "#118AB2",
+        "initial_health": 80,
+        "health_formula": "min(100, max(0, equipment_health * 0.5 + safety_awareness * 0.3 + lab_reputation * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "discovery_score",
+        "label": "Discoveries",
+        "icon": "⭐",
+        "formula": "(discovery_points * 0.4 + knowledge_level * 0.3 + measurement_skill * 0.2 + creativity_points * 0.1)",
+        "unit": "",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 60
+        }
+      },
+      {
+        "id": "measurement_kpi",
+        "label": "Measurement Accuracy",
+        "icon": "🎯",
+        "formula": "(measurement_skill * 0.5 + knowledge_level * 0.25 + equipment_health * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 70
+        }
+      },
+      {
+        "id": "knowledge_kpi",
+        "label": "Knowledge",
+        "icon": "🧠",
+        "formula": "(knowledge_level * 0.5 + discovery_points * 0.3 + measurement_skill * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 15,
+          "warning": 35,
+          "good": 60
+        }
+      },
+      {
+        "id": "equipment_kpi",
+        "label": "Lab Equipment",
+        "icon": "🔬",
+        "formula": "(equipment_health * 0.5 + safety_awareness * 0.3 + lab_reputation * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 70
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "knowledge_fades",
+        "label": "Knowledge Fades Without Practice",
+        "condition": {
+          "resource": "knowledge_level",
+          "op": "<",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "knowledge_level",
+            "formula": "max(0, knowledge_level - 1)"
+          }
+        ],
+        "description": "Without practice, some temperature concepts start slipping away."
+      },
+      {
+        "id": "equipment_wear",
+        "label": "Equipment Wears Down",
+        "effects": [
+          {
+            "resource": "equipment_health",
+            "formula": "max(0, equipment_health - 2)"
+          }
+        ],
+        "description": "Glass thermometers and lab equipment degrade a little each experiment from regular use."
+      },
+      {
+        "id": "safety_drift",
+        "label": "Safety Habits Drift",
+        "condition": {
+          "resource": "safety_awareness",
+          "op": ">",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "safety_awareness",
+            "formula": "max(0, safety_awareness - 1)"
+          }
+        ],
+        "description": "Without reminders, students get careless around hot water and glass instruments."
+      },
+      {
+        "id": "knowledge_boosts_discovery",
+        "label": "Knowledge Unlocks Discoveries",
+        "condition": {
+          "resource": "knowledge_level",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "discovery_points",
+            "formula": "min(100, discovery_points + 2)"
+          }
+        ],
+        "description": "Deeper understanding helps you notice patterns others miss."
+      },
+      {
+        "id": "skill_boosts_reputation",
+        "label": "Good Measurements Build Reputation",
+        "condition": {
+          "resource": "measurement_skill",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "lab_reputation",
+            "formula": "min(100, lab_reputation + 2)"
+          }
+        ],
+        "description": "Consistent accurate measurements earn you respect in the lab."
+      },
+      {
+        "id": "low_safety_hurts_reputation",
+        "label": "Unsafe Habits Hurt Reputation",
+        "condition": {
+          "resource": "safety_awareness",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "lab_reputation",
+            "formula": "max(0, lab_reputation - 5)"
+          }
+        ],
+        "description": "Ms. Kelvin notices when hot water and glass thermometers are handled carelessly."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "knowledge_improves_measurement",
+        "from_subsystem": "knowledge_mastery",
+        "to_subsystem": "measurement_station",
+        "label": "Knowledge Improves Measurement",
+        "condition": {
+          "resource": "knowledge_level",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "measurement_skill",
+            "formula": "min(100, measurement_skill + (knowledge_level - 40) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Understanding temperature theory helps you take more accurate readings."
+      },
+      {
+        "id": "safety_enables_experiments",
+        "from_subsystem": "lab_safety",
+        "to_subsystem": "measurement_station",
+        "label": "Safety Enables Better Experiments",
+        "condition": {
+          "resource": "safety_awareness",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "measurement_skill",
+            "formula": "min(100, measurement_skill + (safety_awareness - 50) * 0.04)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Following proper procedures with hot liquids and glass instruments leads to better data."
+      },
+      {
+        "id": "poor_equipment_hurts_measurement",
+        "from_subsystem": "equipment_care",
+        "to_subsystem": "measurement_station",
+        "label": "Worn Equipment Hurts Accuracy",
+        "condition": {
+          "resource": "equipment_health",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "measurement_skill",
+            "formula": "max(0, measurement_skill - 4)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Cracked or poorly calibrated thermometers give unreliable readings."
+      },
+      {
+        "id": "discovery_boosts_creativity",
+        "from_subsystem": "knowledge_mastery",
+        "to_subsystem": "lab_safety",
+        "label": "Discoveries Inspire Creativity",
+        "condition": {
+          "resource": "discovery_points",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "creativity_points",
+            "formula": "min(100, creativity_points + (discovery_points - 40) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Each temperature discovery sparks new experiment ideas."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "creativity_points",
+        "equilibrium": 15,
+        "rate": 0.02,
+        "direction": "toward"
+      },
+      {
+        "resource": "lab_reputation",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "thermometer_breaks",
+        "label": "Thermometer Breaks!",
+        "icon": "💥",
+        "description": "A glass thermometer slips off the bench and shatters! Mercury-free liquid spills. Time to clean up carefully and get a replacement.",
+        "probability": 0.2,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 2
+        },
+        "effects": [
+          {
+            "resource": "equipment_health",
+            "delta": -12
+          },
+          {
+            "resource": "safety_awareness",
+            "delta": 5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "ALERT: Thermometer broken! Glass cleanup protocol activated.",
+        "ai_image_prompt": "Broken glass thermometer on lab floor, red liquid spilled, student carefully using dustpan, safety gloves on, science lab background"
+      },
+      {
+        "id": "weather_scientist",
+        "label": "Weather Scientist Visit!",
+        "icon": "🌤️",
+        "description": "A meteorologist from the India Meteorological Department visits! She shows how temperature is measured across the country and explains heatwave warnings.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "knowledge_level",
+              "op": ">=",
+              "value": 20
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "knowledge_level",
+            "delta": 10
+          },
+          {
+            "resource": "creativity_points",
+            "delta": 8
+          },
+          {
+            "resource": "lab_reputation",
+            "delta": 5
+          }
+        ],
+        "cooldown": 6,
+        "max_occurrences": 1,
+        "news_text": "SPECIAL: IMD meteorologist visits! Real-world temperature science demonstrated!",
+        "ai_image_prompt": "Female meteorologist showing weather maps and digital thermometers to excited Grade 6 students in a school science lab, satellite images on screen"
+      },
+      {
+        "id": "hot_water_spill",
+        "label": "Hot Water Spill!",
+        "icon": "🫖",
+        "description": "Someone bumps the hot water beaker! Warm water spreads across the bench. No one is hurt, but lab materials need drying.",
+        "probability": 0.18,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 3
+        },
+        "effects": [
+          {
+            "resource": "equipment_health",
+            "delta": -8
+          },
+          {
+            "resource": "safety_awareness",
+            "delta": 8
+          },
+          {
+            "resource": "measurement_skill",
+            "delta": -3
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "NOTICE: Hot water spill on bench 3. Cleanup in progress. Safety review scheduled.",
+        "ai_image_prompt": "Water spilled across a lab bench with wet papers, student carefully mopping up, beaker tipped over, thermometer safe on rack"
+      },
+      {
+        "id": "science_fair",
+        "label": "Science Fair Announced!",
+        "icon": "🏆",
+        "description": "The principal announces a Science Fair! Your temperature experiment could be a star exhibit. Everyone is motivated!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "discovery_points",
+              "op": ">=",
+              "value": 30
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "creativity_points",
+            "delta": 10
+          },
+          {
+            "resource": "lab_reputation",
+            "delta": 8
+          },
+          {
+            "resource": "discovery_points",
+            "delta": 5
+          }
+        ],
+        "cooldown": 8,
+        "max_occurrences": 1,
+        "news_text": "EXCITING: Science Fair announced! Best temperature experiment wins the Innovation Award!",
+        "ai_image_prompt": "School hallway with colorful Science Fair banner, students discussing experiments excitedly, trophy in glass case, vibrant atmosphere"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "ms_kelvin",
+        "name": "Ms. Kelvin",
+        "role": "Science Teacher",
+        "icon": "👩‍🏫",
+        "initial_mood": "encouraging",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "safety_awareness",
+              "op": "<",
+              "value": 30
+            },
+            "action": "warn",
+            "message": "Hot water can cause serious burns and glass thermometers are fragile! Always use tongs for hot beakers and never shake a thermometer. Safety first!",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "resource": "knowledge_level",
+              "op": "<",
+              "value": 20
+            },
+            "action": "advise",
+            "message": "Temperature can be tricky — it is NOT the same as heat! Come see me after class and I will show you some fun demos with ice and hot water.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "knowledge_level",
+                  "op": ">=",
+                  "value": 65
+                },
+                {
+                  "resource": "safety_awareness",
+                  "op": ">=",
+                  "value": 60
+                }
+              ]
+            },
+            "action": "praise",
+            "message": "Outstanding work! Your understanding of temperature and heat is excellent, and your lab safety is impeccable. I am nominating you for the Young Scientist award!",
+            "mood_change": "proud",
+            "satisfaction_delta": 10
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "discovery_points",
+                  "op": ">=",
+                  "value": 70
+                },
+                {
+                  "resource": "creativity_points",
+                  "op": ">=",
+                  "value": 50
+                }
+              ]
+            },
+            "action": "celebrate",
+            "message": "Your temperature experiments are brilliant! The weather station design is professional-grade. I want to feature your work at the Science Fair!",
+            "mood_change": "excited",
+            "satisfaction_delta": 12
+          }
+        ]
+      },
+      {
+        "id": "thermo",
+        "name": "Thermo",
+        "role": "Lab Assistant Robot",
+        "icon": "🤖",
+        "initial_mood": "cheerful",
+        "initial_satisfaction": 70,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "equipment_health",
+              "op": "<",
+              "value": 40
+            },
+            "action": "alert",
+            "message": "Beep boop! Equipment alert! Some thermometers are cracked and need replacement. Damaged instruments give wrong readings!",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "safety_awareness",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "Bzzt! Safety warning! Hot liquids above 60°C can burn skin in seconds. Always use heat-resistant gloves and never leave boiling water unattended!",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -6
+          },
+          {
+            "condition": {
+              "resource": "equipment_health",
+              "op": ">=",
+              "value": 75
+            },
+            "action": "celebrate",
+            "message": "All thermometers calibrated and in perfect condition! Equipment health is excellent! You are a responsible lab scientist — Thermo approves!",
+            "mood_change": "delighted",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "safety_awareness",
+                  "op": ">=",
+                  "value": 50
+                },
+                {
+                  "resource": "equipment_health",
+                  "op": ">=",
+                  "value": 60
+                }
+              ]
+            },
+            "action": "approve",
+            "message": "All systems nominal! Hot water handled safely, thermometers stored properly, and experiments running smoothly. Great teamwork, partner!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "knowledge_level",
+          "op": ">=",
+          "value": 70
+        },
+        "icon": "🧠",
+        "text": "Knowledge Level reaches {knowledge_level}! You are becoming a temperature expert.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "safety_awareness",
+          "op": "<",
+          "value": 30
+        },
+        "icon": "⚠️",
+        "text": "Safety Rating critically low at {safety_awareness}. Ms. Kelvin is concerned about hot water handling.",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "discovery_points",
+              "op": ">=",
+              "value": 60
+            },
+            {
+              "resource": "creativity_points",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        },
+        "icon": "💡",
+        "text": "Innovation breakthrough! Your creative temperature experiments are turning heads in the lab.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "equipment_health",
+          "op": "<",
+          "value": 25
+        },
+        "icon": "🔧",
+        "text": "Equipment health critical at {equipment_health}! Thermometers need replacement — request new ones!",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "resource": "lab_reputation",
+          "op": ">=",
+          "value": 80
+        },
+        "icon": "⭐",
+        "text": "Ms. Kelvin recommends you for the Young Scientist program. Outstanding lab work!",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A Grade 6 school science lab focused on temperature experiments, knowledge level {knowledge_level}%, equipment health {equipment_health}%, discovery points {discovery_points}. Lab benches with thermometers, beakers of hot and cold water, ice cubes, Bunsen burner, and temperature charts on the wall. Mood: {'thriving discovery lab' if knowledge_level > 60 else 'busy experimenting' if knowledge_level > 30 else 'just getting started'}."
+  },
+  "rounds": [
+    {
+      "round_id": "exp_1_read_thermometer",
+      "round_title": "Experiment 1: Reading a Thermometer",
+      "situation": "Your first task: read this thermometer correctly! The red liquid is between two marks. 🌡️",
+      "goal": "Learn to read a thermometer accurately to the nearest degree.",
+      "coaching_moment": "Delayed gratification: Taking time to read carefully prevents errors that waste entire experiments.",
+      "reflection_prompt": "Why is it important to keep your eye level with the liquid when reading a thermometer?",
+      "image_prompt": "Close-up of a lab thermometer showing red liquid at 37°C, student holding it at eye level, lab bench with beakers in background",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "read_thermometer",
+          "thermometer_type": "lab",
+          "target_temp": 37,
+          "show_scale": true
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e1_eye_level",
+          "label": "A. Hold the thermometer at eye level, read where the TOP of the red liquid meets the scale — it reads 37°C",
+          "is_correct": true,
+          "learning_concept": "Correct thermometer reading technique",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 10,
+            "measurement_skill": 12,
+            "knowledge_level": 8,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "🎯 Perfect reading! Eye level + top of liquid = accurate. You got 37°C — that is normal human body temperature!",
+          "psychological_impact": "Builds precision habits from the start",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "e1_from_above",
+          "label": "B. Look down at the thermometer from above — it looks like it says about 38°C",
+          "is_correct": false,
+          "learning_concept": "Parallax error in measurement",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 4,
+            "measurement_skill": -5,
+            "knowledge_level": 5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ Parallax error! Looking from above makes the reading appear HIGHER than it really is. Always read at EYE LEVEL for accurate results. The real reading is 37°C.",
+          "psychological_impact": "Learns that angle of observation matters",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "e1_guess",
+          "label": "C. The liquid is somewhere between 35 and 40, so just write down 'about 37 or 38' — close enough!",
+          "is_correct": false,
+          "learning_concept": "Precision matters in science",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "measurement_skill": -8,
+            "knowledge_level": 3,
+            "lab_reputation": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "❌ 'Close enough' is not science! A 1°C difference matters — 37°C is normal body temp, 38°C means fever! Always read the exact value at eye level.",
+          "psychological_impact": "Understands that precision has real consequences",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_2_celsius_scale",
+      "round_title": "Experiment 2: The Celsius Scale",
+      "situation": "What do 0°C and 100°C actually mean? Time to find out with ice and boiling water! 🧊🔥",
+      "goal": "Understand the two fixed points of the Celsius scale.",
+      "coaching_moment": "Strategic thinking: Scientists chose reference points everyone can reproduce — that is smart design.",
+      "reflection_prompt": "Why did Anders Celsius choose ice melting and water boiling as his two reference points?",
+      "image_prompt": "Lab bench with two setups: beaker of ice water with thermometer at 0°C on left, beaker of boiling water with thermometer at 100°C on right, steam visible",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "compare_temps",
+          "temps": [
+            0,
+            100
+          ],
+          "labels": [
+            "Ice melting",
+            "Water boiling"
+          ]
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e2_fixed_points",
+          "label": "A. 0°C = temperature where ice melts (freezing point); 100°C = temperature where water boils (boiling point) at sea level",
+          "is_correct": true,
+          "learning_concept": "Celsius scale fixed points",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 12,
+            "measurement_skill": 8,
+            "knowledge_level": 12,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "feedback": "🎯 Exactly! 0°C = ice melts, 100°C = water boils. The scale is divided into 100 equal parts between these two points. 'Sea level' matters because altitude changes the boiling point!",
+          "psychological_impact": "Grasps the logic behind measurement systems",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "e2_confused",
+          "label": "B. 0°C is the coldest possible temperature and 100°C is the hottest temperature water can reach",
+          "is_correct": false,
+          "learning_concept": "Celsius is not absolute",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 4,
+            "measurement_skill": -3,
+            "knowledge_level": 5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ 0°C is NOT the coldest possible! Temperatures go far below zero (Antarctica reaches -89°C!). And water can be superheated above 100°C under pressure. 0°C and 100°C are just convenient REFERENCE points.",
+          "psychological_impact": "Learns that scales have chosen reference points, not absolute limits",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "e2_body",
+          "label": "C. 0°C means 'cold' and 100°C means 'hot' — the numbers just indicate how hot or cold something feels",
+          "is_correct": false,
+          "learning_concept": "Objective vs subjective measurement",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "measurement_skill": -5,
+            "knowledge_level": 3,
+            "creativity_points": 2
+          },
+          "skill_tags": [
+            "creativity"
+          ],
+          "feedback": "❌ Temperature is NOT about how something 'feels' — that is subjective! 25°C feels cold after a hot bath but warm after swimming. Celsius uses PRECISE physical events: ice melting (0°C) and water boiling (100°C).",
+          "psychological_impact": "Distinguishes between subjective feeling and objective measurement",
+          "skill_explanation": {
+            "creativity": "Exploring an unconventional approach shows creative thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_3_clinical_vs_lab",
+      "round_title": "Experiment 3: Clinical vs Lab Thermometer",
+      "situation": "Two thermometers side by side — one for doctors, one for scientists. Spot the differences! 🏥🔬",
+      "goal": "Compare clinical and laboratory thermometers and understand their design differences.",
+      "coaching_moment": "Adaptability: Different problems need different tools. A scientist picks the RIGHT instrument for the job.",
+      "reflection_prompt": "Why would it be dangerous to use a clinical thermometer to measure boiling water?",
+      "image_prompt": "Two thermometers side by side — clinical (35-42°C range, kink visible) and laboratory (−10 to 110°C range), labels pointing out differences",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "compare_temps",
+          "thermometer_types": [
+            "clinical",
+            "laboratory"
+          ],
+          "show_differences": true
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e3_differences",
+          "label": "A. Clinical: 35-42°C range, has a kink to hold the reading; Lab: −10 to 110°C range, no kink, must read immediately",
+          "is_correct": true,
+          "learning_concept": "Clinical vs laboratory thermometer",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 12,
+            "measurement_skill": 10,
+            "knowledge_level": 12,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "🎯 Perfect! The clinical thermometer's kink prevents mercury/liquid from dropping back, so you can read it after removing. Lab thermometers have wider range but must be read IN the substance!",
+          "psychological_impact": "Design differences serve specific purposes",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "e3_same",
+          "label": "B. They are basically the same — both measure temperature, just different sizes and colors",
+          "is_correct": false,
+          "learning_concept": "Form follows function in instruments",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "measurement_skill": -5,
+            "knowledge_level": 3,
+            "lab_reputation": -3
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ They look similar but are VERY different! A clinical thermometer only reads 35-42°C (body temps) and has a special kink. Put it in boiling water and it BREAKS! A lab thermometer goes to 110°C but has no kink.",
+          "psychological_impact": "Learns to look beyond surface similarity",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "e3_digital",
+          "label": "C. The main difference is accuracy — the digital clinical one is always more accurate than the glass lab one",
+          "is_correct": false,
+          "learning_concept": "Range vs accuracy distinction",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 5,
+            "measurement_skill": -2,
+            "knowledge_level": 5,
+            "creativity_points": 2
+          },
+          "skill_tags": [
+            "creativity"
+          ],
+          "feedback": "🤔 Digital can be more precise, but the MAIN difference is RANGE and DESIGN. Clinical: narrow range (35-42°C) + kink. Lab: wide range (−10 to 110°C) + no kink. That is what the exam asks!",
+          "psychological_impact": "Focuses on the key distinguishing features",
+          "skill_explanation": {
+            "creativity": "Looking at the problem from a new angle demonstrates creativity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_4_body_temp",
+      "round_title": "Experiment 4: Body Temperature Check",
+      "situation": "Measure your own body temperature! Is 37°C always 'normal'? 🤒",
+      "goal": "Learn about normal body temperature range and what fever means.",
+      "coaching_moment": "Empathy: Understanding body temperature helps you care for sick friends and family.",
+      "reflection_prompt": "Does your body temperature stay exactly the same all day? When might it be higher or lower?",
+      "image_prompt": "Student carefully placing a digital thermometer under tongue, display showing 36.8°C, chart on wall showing normal range 36.1-37.2°C",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "body_temp",
+          "show_range": true,
+          "normal_range": [
+            36.1,
+            37.2
+          ]
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e4_range",
+          "label": "A. Normal body temp is a RANGE: 36.1-37.2°C. It varies by time of day, activity, and person. Fever starts above 38°C",
+          "is_correct": true,
+          "learning_concept": "Normal body temperature range",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 12,
+            "measurement_skill": 8,
+            "knowledge_level": 12,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "🎯 Exactly! 37°C is just the AVERAGE. Body temp is lower in the morning and higher after exercise. Above 38°C = fever. Below 35°C = hypothermia. Know the range, not just one number!",
+          "psychological_impact": "Understands that 'normal' is a range, not a single value",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "e4_exact",
+          "label": "B. Normal body temperature is exactly 37.0°C for everyone. Any other reading means something is wrong",
+          "is_correct": false,
+          "learning_concept": "Temperature varies naturally",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 4,
+            "measurement_skill": -3,
+            "knowledge_level": 5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ Not exactly! 37°C is the AVERAGE, but healthy people range from 36.1 to 37.2°C. Your temp is lower in the morning and higher after running. A reading of 36.5°C is perfectly normal!",
+          "psychological_impact": "Learns that biological measurements have natural variation",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "e4_hand",
+          "label": "C. You can tell body temperature by touching someone's forehead — a thermometer is just for confirmation",
+          "is_correct": false,
+          "learning_concept": "Subjective touch vs objective measurement",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "measurement_skill": -8,
+            "knowledge_level": 3,
+            "creativity_points": 2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "❌ Your hand is NOT reliable! If your hands are cold, a normal person feels warm. If your hands are hot, a feverish person feels normal. ONLY a thermometer gives the true number!",
+          "psychological_impact": "Learns why instruments are more reliable than senses",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_5_mix_liquids",
+      "round_title": "Experiment 5: Hot + Cold = ?",
+      "situation": "Mix 200mL of water at 80°C with 200mL at 20°C. Predict the result! 🫖+🧊",
+      "goal": "Understand heat transfer when mixing liquids of different temperatures.",
+      "coaching_moment": "Strategic thinking: Predicting before measuring is the scientific method in action.",
+      "reflection_prompt": "If you mixed 100mL of hot water with 300mL of cold water, would the result be the same?",
+      "image_prompt": "Two beakers being poured into a larger beaker — one with red-tinted hot water (80°C label), one with blue-tinted cold water (20°C label), thermometer in the mixture",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "mix_liquids",
+          "hot_temp": 80,
+          "cold_temp": 20,
+          "hot_volume": 200,
+          "cold_volume": 200
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e5_average",
+          "label": "A. Equal volumes → the final temperature will be the average: (80+20)÷2 = 50°C",
+          "is_correct": true,
+          "learning_concept": "Heat transfer and thermal equilibrium",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 14,
+            "measurement_skill": 10,
+            "knowledge_level": 14,
+            "creativity_points": 5,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking"
+          ],
+          "feedback": "🎯 Perfect calculation! Equal volumes of the same liquid → average the temperatures. Heat flows from HOT to COLD until both reach the SAME temperature. This is called thermal equilibrium!",
+          "psychological_impact": "Connects math to physical phenomena",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "e5_cold_wins",
+          "label": "B. Cold water 'absorbs' the heat, so the mixture will be closer to 20°C — maybe around 30°C",
+          "is_correct": false,
+          "learning_concept": "Equal volumes share heat equally",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 5,
+            "measurement_skill": -3,
+            "knowledge_level": 5,
+            "equipment_health": -2
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ With EQUAL volumes of the same liquid, heat is shared EQUALLY. The hot water cools DOWN the same amount the cold water heats UP. Both meet at 50°C — right in the middle!",
+          "psychological_impact": "Understands symmetry in heat exchange",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "e5_hot_wins",
+          "label": "C. Hot water has more energy, so the result will be closer to 80°C — probably around 65°C",
+          "is_correct": false,
+          "learning_concept": "Heat exchange is symmetric with equal masses",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 4,
+            "measurement_skill": -5,
+            "knowledge_level": 4
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "❌ Hot water has more HEAT energy, yes, but it GIVES that energy to the cold water. With equal volumes, the exchange is perfectly balanced — both end up at 50°C!",
+          "psychological_impact": "Learns that energy transfer is balanced",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_6_conduction",
+      "round_title": "Experiment 6: How Heat Travels",
+      "situation": "Touch a metal spoon in hot water vs a wooden spoon. Why does metal feel hotter? 🥄",
+      "goal": "Discover conduction — heat traveling through materials at different speeds.",
+      "coaching_moment": "Creativity: Understanding conduction explains why we use wooden handles on metal pots!",
+      "reflection_prompt": "Why do we use metal to cook but wood or plastic for handles?",
+      "image_prompt": "Beaker of hot water with metal spoon and wooden spoon both standing in it, student touching both handles, surprised expression, wax dots on spoons melting at different rates",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "heat_transfer",
+          "materials": [
+            "metal_spoon",
+            "wooden_spoon",
+            "plastic_spoon"
+          ],
+          "show_conduction": true
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e6_conductor",
+          "label": "A. Metal conducts heat fast (good conductor); wood conducts heat slowly (poor conductor/insulator). That is why metal feels hotter",
+          "is_correct": true,
+          "learning_concept": "Thermal conductors and insulators",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 12,
+            "measurement_skill": 8,
+            "knowledge_level": 14,
+            "creativity_points": 5,
+            "lab_reputation": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "🎯 Exactly! Metal = good conductor (heat travels FAST through it to your hand). Wood = insulator (heat barely passes through). That is why pot handles are wooden or plastic!",
+          "psychological_impact": "Connects science to everyday kitchen design",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking."
+          }
+        },
+        {
+          "id": "e6_stored",
+          "label": "B. Metal stores more heat than wood, so it has more heat energy to release when you touch it",
+          "is_correct": false,
+          "learning_concept": "Conduction speed vs heat capacity",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 6,
+            "measurement_skill": -2,
+            "knowledge_level": 6,
+            "creativity_points": 2
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "🤔 Partially right about heat capacity, but the main reason is CONDUCTION SPEED! Metal transfers heat to your hand QUICKLY. Wood transfers heat SLOWLY. The speed of transfer is what you feel.",
+          "psychological_impact": "Distinguishes between two related but different concepts",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "e6_temperature",
+          "label": "C. The metal spoon actually becomes hotter than the wooden spoon — they end up at different temperatures",
+          "is_correct": false,
+          "learning_concept": "Both reach same temperature",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "measurement_skill": -5,
+            "knowledge_level": 4,
+            "equipment_health": -2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "❌ Both spoons reach the SAME temperature as the hot water! The difference is HOW FAST they transfer that heat to your hand. Metal = fast transfer = feels hotter. Wood = slow transfer = feels cool.",
+          "psychological_impact": "Feeling and temperature are not the same thing",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_7_calibrate",
+      "round_title": "Experiment 7: Calibrate Your Thermometer",
+      "situation": "Is your thermometer accurate? Use ice water and boiling water to check! ✅",
+      "goal": "Learn to calibrate a thermometer using two fixed points.",
+      "coaching_moment": "Ethical reasoning: Honest calibration ensures all your future readings are trustworthy.",
+      "reflection_prompt": "What would happen to all your experiment data if your thermometer was reading 3°C too high?",
+      "image_prompt": "Student checking thermometer in ice water (should read 0°C) then in boiling water (should read 100°C), recording results in a notebook, careful expression",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "calibrate",
+          "check_points": [
+            0,
+            100
+          ],
+          "error_margin": 1
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e7_two_points",
+          "label": "A. Check at BOTH ice water (should be 0°C) AND boiling water (should be 100°C) — if either is off, note the error and adjust readings",
+          "is_correct": true,
+          "learning_concept": "Two-point calibration method",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 12,
+            "measurement_skill": 14,
+            "knowledge_level": 10,
+            "equipment_health": 5,
+            "lab_reputation": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "🎯 Perfect calibration! Two-point check catches errors at both ends of the scale. If your thermometer reads 2°C in ice water, ALL your readings are 2° too high. Now you can correct them!",
+          "psychological_impact": "Understands the importance of instrument validation",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "e7_one_point",
+          "label": "B. Just check with ice water — if it reads 0°C, the thermometer must be accurate at all temperatures",
+          "is_correct": false,
+          "learning_concept": "Single-point calibration is insufficient",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 6,
+            "measurement_skill": 3,
+            "knowledge_level": 5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "🤔 One check is better than none, but NOT enough! A thermometer could read correctly at 0°C but be off at higher temperatures. Two-point calibration catches errors across the whole range.",
+          "psychological_impact": "Learns that verification needs multiple data points",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "e7_trust",
+          "label": "C. It is a lab thermometer from the school — it must be accurate. No need to waste time calibrating",
+          "is_correct": false,
+          "learning_concept": "Never assume instrument accuracy",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 2,
+            "measurement_skill": -8,
+            "knowledge_level": 3,
+            "lab_reputation": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "❌ NEVER assume! Even new thermometers can be inaccurate. Scientists ALWAYS calibrate their instruments. Trusting without checking is how entire experiments produce wrong results!",
+          "psychological_impact": "Develops healthy skepticism about tools",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_8_weather_station",
+      "round_title": "Experiment 8: Weather Station Setup",
+      "situation": "Build a mini weather station for the school garden! Where should the thermometer go? ☀️🌧️",
+      "goal": "Learn proper temperature measurement for weather monitoring.",
+      "coaching_moment": "Creativity: A good weather station needs careful placement — science meets design!",
+      "reflection_prompt": "Why do weather stations put thermometers in white shelters with air vents?",
+      "image_prompt": "Student setting up an outdoor thermometer in a white Stevenson screen in the school garden, shade and ventilation visible, sunny day",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "weather_station",
+          "placement_options": [
+            "direct_sun",
+            "shade_enclosed",
+            "shade_ventilated",
+            "indoors"
+          ],
+          "show_effects": true
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e8_shade_ventilated",
+          "label": "A. Place in a ventilated white shelter in the shade, 1.2m above ground — this measures TRUE air temperature",
+          "is_correct": true,
+          "learning_concept": "Proper weather temperature measurement",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 14,
+            "measurement_skill": 10,
+            "knowledge_level": 12,
+            "creativity_points": 10,
+            "lab_reputation": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "🌤️ Professional setup! White reflects sunlight, ventilation allows air flow, shade prevents direct heating, and 1.2m is standard height. This is how REAL weather stations work!",
+          "psychological_impact": "Connects classroom learning to real-world systems",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "creativity": "Not settling for the obvious solution builds creative problem-solving."
+          }
+        },
+        {
+          "id": "e8_direct_sun",
+          "label": "B. Place in direct sunlight so it captures the full heat of the day — that gives the highest, most useful reading",
+          "is_correct": false,
+          "learning_concept": "Direct sun heats the thermometer, not the air",
+          "mastery_level": "understand",
+          "delta": {
+            "discovery_points": 4,
+            "measurement_skill": -5,
+            "knowledge_level": 5,
+            "equipment_health": -5
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "❌ Direct sun heats the THERMOMETER, not just the air! A thermometer in the sun can read 50°C when the actual air temperature is only 35°C. You want AIR temperature, not surface heating!",
+          "psychological_impact": "Understands what you are actually measuring",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "e8_indoors",
+          "label": "C. Put it inside the classroom near a window — it is safer there and you can check it easily between classes",
+          "is_correct": false,
+          "learning_concept": "Indoor vs outdoor temperature",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "measurement_skill": -5,
+            "knowledge_level": 3,
+            "safety_awareness": 3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "❌ Indoor temperature is NOT weather temperature! Buildings trap heat and have AC/fans. A weather station must be OUTDOORS in proper shade to measure the actual air temperature.",
+          "psychological_impact": "Distinguishes between controlled and natural environments",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_9_fever_crisis",
+      "round_title": "Experiment 9: Fever Emergency! ⚠️",
+      "situation": "⚠️ Your friend feels sick at a school camp. No doctor nearby — you have a thermometer! 🤒",
+      "goal": "Apply temperature knowledge to assess and respond to a real fever situation.",
+      "coaching_moment": "Resilience: Staying calm and using knowledge in emergencies saves lives.",
+      "reflection_prompt": "How did your earlier experiments help you handle this situation confidently?",
+      "image_prompt": "School camp setting, student taking friend's temperature with a clinical thermometer, concerned but calm expression, first aid kit open nearby, tent background",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "crisis_fever",
+          "patient_temp": 39.2,
+          "show_danger_zones": true
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e9_protocol",
+          "label": "A. Take temperature properly (under tongue, 3 min, clinical thermometer). It reads 39.2°C — that is high fever! Give water, cool cloth, and call for medical help immediately",
+          "is_correct": true,
+          "learning_concept": "Applying temperature knowledge in emergencies",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 16,
+            "measurement_skill": 10,
+            "knowledge_level": 10,
+            "creativity_points": 8,
+            "lab_reputation": 12,
+            "safety_awareness": 8
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "🏆 PERFECT response! Accurate measurement (39.2°C = high fever above 38°C) + immediate first aid (cooling + hydration) + calling for help. You used every skill you learned! 🌟",
+          "psychological_impact": "Deep confidence from applying knowledge to help someone",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "e9_touch",
+          "label": "B. Feel their forehead with your hand — they feel warm, so give them some water and let them rest",
+          "is_correct": false,
+          "learning_concept": "Hand-feel is unreliable",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 5,
+            "measurement_skill": -3,
+            "knowledge_level": 3,
+            "safety_awareness": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "🤔 Caring but imprecise! You learned that hand-feel is unreliable. Their temp could be 38°C (mild) or 40°C (dangerous). USE THE THERMOMETER — that is why you learned to read one!",
+          "psychological_impact": "Remembers to use instruments, not just intuition",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "e9_panic",
+          "label": "C. They look really sick — rush them to the nearest hospital immediately without checking temperature",
+          "is_correct": false,
+          "learning_concept": "Measure first, then act appropriately",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 3,
+            "measurement_skill": -5,
+            "knowledge_level": 2,
+            "safety_awareness": 5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "😰 Panicking wastes precious time! First MEASURE the temperature to know how serious it is. A 38°C fever needs rest; a 40°C+ fever is an emergency. Data helps you make the RIGHT decision!",
+          "psychological_impact": "Learns that calm measurement leads to better decisions",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "exp_10_design_experiment",
+      "round_title": "Experiment 10: Design Your Own Experiment",
+      "situation": "Ms. Kelvin says: 'Design an experiment to answer: Does color affect how fast an object heats up?' 🎨☀️",
+      "goal": "Design a complete, controlled experiment about heat absorption and color.",
+      "coaching_moment": "Creativity: The best scientists don't just follow instructions — they CREATE new experiments.",
+      "reflection_prompt": "How does your experiment design ensure that the results are fair and reliable?",
+      "image_prompt": "Student presenting experiment plan on a poster: 5 cans painted different colors (black, white, red, silver, green) under a heat lamp, thermometers in each, data table ready",
+      "scene_widget": {
+        "type": "thermometer_lab",
+        "props": {
+          "mode": "design_experiment",
+          "variables": [
+            "color",
+            "volume",
+            "light_source",
+            "time"
+          ],
+          "controls_needed": true
+        },
+        "interaction_mode": "optional"
+      },
+      "choices": [
+        {
+          "id": "e10_controlled",
+          "label": "A. Same cans, same water volume, same distance from lamp — ONLY change the color. Measure temp every minute for 10 minutes. Record all data in a table",
+          "is_correct": true,
+          "learning_concept": "Controlled experiment design",
+          "mastery_level": "create",
+          "delta": {
+            "discovery_points": 16,
+            "measurement_skill": 10,
+            "knowledge_level": 14,
+            "creativity_points": 15,
+            "lab_reputation": 10
+          },
+          "skill_tags": [
+            "creativity",
+            "strategic_thinking"
+          ],
+          "feedback": "🏆 BRILLIANT experiment design! You controlled ALL variables except color. Regular time intervals + data table = reproducible science. Result: dark colors absorb MORE heat than light colors! ☀️🔬",
+          "psychological_impact": "Peak scientific creativity — designing a complete investigation",
+          "skill_explanation": {
+            "creativity": "Thinking outside the box leads to more original solutions.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "e10_partial",
+          "label": "B. Put a black can and a white can in the Sun and check which one is hotter after an hour",
+          "is_correct": false,
+          "learning_concept": "Need for controls and multiple data points",
+          "mastery_level": "apply",
+          "delta": {
+            "discovery_points": 7,
+            "measurement_skill": 3,
+            "knowledge_level": 5,
+            "creativity_points": 3
+          },
+          "skill_tags": [
+            "adaptability"
+          ],
+          "feedback": "👍 Right idea but incomplete! Only 2 colors is not enough, clouds could change sunlight, and one check is not enough data. Use 5 colors, a CONSISTENT heat source, and measure MULTIPLE times!",
+          "psychological_impact": "Understands the need for thorough experimental design",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "e10_research",
+          "label": "C. Look up the answer online — dark colors absorb more heat. No need to actually do the experiment",
+          "is_correct": false,
+          "learning_concept": "Doing experiments vs reading answers",
+          "mastery_level": "remember",
+          "delta": {
+            "discovery_points": 2,
+            "measurement_skill": -8,
+            "knowledge_level": 5,
+            "lab_reputation": -5,
+            "creativity_points": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "❌ Science is about DOING, not just reading! You need to verify claims with YOUR OWN data. What if the online source was wrong? The whole point of science class is learning to find answers YOURSELF!",
+          "psychological_impact": "Understands the value of firsthand experimentation",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "master_thermographer",
+      "title": "Master Thermographer",
+      "icon": "🌡️",
+      "message": "You have achieved mastery in the Temperature Lab! Your measurement skills are extraordinary, your experiment designs are professional-grade, and your weather station is the pride of the school. Ms. Kelvin nominates you for the District Science Award! You have proven that careful observation and creative thinking can unlock the secrets of heat and temperature!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "knowledge_level",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "discovery_points",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "creativity_points",
+            "operator": ">=",
+            "value": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "skilled_measurer",
+      "title": "Skilled Measurement Expert",
+      "icon": "🎯",
+      "message": "You have become a skilled measurement expert with solid knowledge of temperature and heat! Your calibration technique is excellent and your fever response was spot-on. Ms. Kelvin is proud and says you are ready for the advanced physics elective. Your precision and care will serve you well!",
+      "type": "good",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "knowledge_level",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "measurement_skill",
+            "operator": ">=",
+            "value": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "lab_explorer",
+      "title": "Lab Explorer",
+      "icon": "🔍",
+      "message": "You completed the Temperature Lab with mixed results. Some experiments went great, others were tricky, but you stuck with it and learned the basics of temperature and heat. Ms. Kelvin says there is always next semester to improve. Keep exploring — every scientist starts somewhere!",
+      "type": "neutral",
+      "rarity": "common",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "knowledge_level",
+            "operator": ">=",
+            "value": 35
+          },
+          {
+            "resource": "safety_awareness",
+            "operator": ">=",
+            "value": 30
+          }
+        ]
+      }
+    },
+    {
+      "id": "struggling_scientist",
+      "title": "Struggling Scientist",
+      "icon": "📚",
+      "message": "The Temperature Lab was tough for you. Reading thermometers and understanding heat transfer were confusing. But you did not give up! Ms. Kelvin arranges extra tutoring and says: 'The students who struggle most often understand deepest, because they had to fight for every insight.' Your journey continues!",
+      "type": "poor",
+      "rarity": "common",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "knowledge_level",
+            "operator": "<",
+            "value": 35
+          },
+          {
+            "resource": "safety_awareness",
+            "operator": ">=",
+            "value": 25
+          }
+        ]
+      }
+    },
+    {
+      "id": "safety_crisis",
+      "title": "Safety Crisis",
+      "icon": "⚠️",
+      "message": "Too many safety incidents — broken thermometers, hot water spills, and careless handling of glass instruments. Ms. Kelvin has restricted your lab access until you pass the Lab Safety certification. Thermo the robot will tutor you personally. This setback is temporary — learn from it and come back stronger!",
+      "type": "decline",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "safety_awareness",
+            "operator": "<",
+            "value": 20
+          }
+        ]
+      }
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          3
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          4,
+          7
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          8,
+          10
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: 🌡️ Temperature Lab Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is the SI unit of force?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Newton (N)",
+              "correct": true
+            },
+            {
+              "id": "b",
+              "text": "Joule (J)",
+              "correct": false
+            },
+            {
+              "id": "c",
+              "text": "Watt (W)",
+              "correct": false
+            }
+          ],
+          "explanation": "Force is measured in Newtons (N), named after Sir Isaac Newton."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "What happens when balanced forces act on a stationary object?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "It accelerates",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "It stays still",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "It spins",
+              "correct": false
+            }
+          ],
+          "explanation": "Balanced forces cancel out, so the object remains stationary."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "Friction always acts in which direction?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Same as motion",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Opposite to motion",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Perpendicular to motion",
+              "correct": false
+            }
+          ],
+          "explanation": "Friction opposes the direction of motion or attempted motion."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of 🌡️ Temperature Lab. Focus on the core principles and how they connect to real-world applications."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

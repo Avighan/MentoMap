@@ -1,0 +1,1653 @@
+{
+  "game_id": "the-whistleblower",
+  "title": "The Whistleblower: Truth at Any Cost",
+  "game_type": "story_branching",
+  "visible": true,
+  "description": "You witness a teacher doing something wrong. Gathering evidence, finding allies, and standing up for truth will test your courage — because doing the right thing often comes with a price.",
+  "theme": "Moral courage and standing up for truth",
+  "difficulty": "intermediate",
+  "duration_minutes": 45,
+  "target_audience": "students",
+  "icon": "🔔",
+  "cover_image_prompt": "A 14-year-old Indian girl looking through a partially open classroom door with a shocked expression, school corridor setting, dramatic lighting, vibrant watercolor illustration, age 10-18 friendly",
+  "learning_objectives": [
+    "Understand the difference between tattling and whistleblowing — intent matters",
+    "Learn to gather evidence responsibly before making accusations",
+    "Practice finding allies and building support for doing the right thing",
+    "Develop resilience when facing backlash for telling the truth",
+    "Explore the ethics of loyalty versus justice"
+  ],
+  "learning_concept": "Courage is not the absence of fear — it is deciding that truth and fairness matter more than personal comfort or popularity.",
+  "psychological_framework": "Moral Development (Kohlberg) — progressing from rule-following to principled moral reasoning; combined with Moral Courage (Kidder) — the willingness to act on moral convictions despite personal risk",
+  "ai_image_config": {
+    "style": "vibrant watercolor illustration, Indian school setting, dramatic lighting, age 10-18 friendly, moral courage story aesthetic",
+    "provider": "dalle",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/story_branching"
+  },
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "The Discovery",
+      "icon": "👁️",
+      "teaser": "Meera sees something she was not supposed to see — and cannot unsee.",
+      "always_unlocked": true,
+      "color": "#ef4444"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "Gathering Evidence",
+      "icon": "🔍",
+      "teaser": "Suspicion is not proof. {player_name} needs facts before speaking up.",
+      "unlocks_after": "ch1",
+      "color": "#f97316"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "Confiding in a Friend",
+      "icon": "🤫",
+      "teaser": "Nisha knows something too. But trust is fragile when secrets are dangerous.",
+      "unlocks_after": "ch2",
+      "color": "#10b981"
+    },
+    {
+      "chapter_id": "ch4",
+      "number": 4,
+      "title": "The Anonymous Tip",
+      "icon": "✉️",
+      "teaser": "An unsigned letter to the principal — safe, but is it enough?",
+      "unlocks_after": "ch3",
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch5",
+      "number": 5,
+      "title": "Backlash Begins",
+      "icon": "⚡",
+      "teaser": "Prof. Iyer suspects someone is watching. The pressure increases.",
+      "unlocks_after": "ch4",
+      "color": "#ec4899"
+    },
+    {
+      "chapter_id": "ch6",
+      "number": 6,
+      "title": "An Unlikely Ally",
+      "icon": "🤝",
+      "teaser": "Mrs. Reddy has her own suspicions — and she is willing to help.",
+      "unlocks_after": "ch5",
+      "color": "#8b5cf6"
+    },
+    {
+      "chapter_id": "ch7",
+      "number": 7,
+      "title": "The Confrontation",
+      "icon": "🔥",
+      "teaser": "Face to face with Prof. Iyer. The truth demands to be spoken.",
+      "unlocks_after": "ch6",
+      "color": "#0ea5e9"
+    },
+    {
+      "chapter_id": "ch8",
+      "number": 8,
+      "title": "The Hearing",
+      "icon": "⚖️",
+      "teaser": "The school committee assembles. Every word matters now.",
+      "unlocks_after": "ch7",
+      "color": "#f59e0b"
+    },
+    {
+      "chapter_id": "ch9",
+      "number": 9,
+      "title": "Resolution",
+      "icon": "✅",
+      "teaser": "Justice is served — but the cost becomes clear.",
+      "unlocks_after": "ch8",
+      "color": "#14b8a6"
+    },
+    {
+      "chapter_id": "ch10",
+      "number": 10,
+      "title": "New Beginnings",
+      "icon": "🌅",
+      "teaser": "The school is different now. So is {player_name}.",
+      "unlocks_after": "ch9",
+      "color": "#f59e0b"
+    }
+  ],
+  "initial_state": {
+    "courage": {
+      "value": 40,
+      "label": "Courage",
+      "icon": "🦁",
+      "min": 0,
+      "max": 100
+    },
+    "evidence": {
+      "value": 20,
+      "label": "Evidence",
+      "icon": "📋",
+      "min": 0,
+      "max": 100
+    },
+    "reputation": {
+      "value": 55,
+      "label": "Reputation",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "safety": {
+      "value": 60,
+      "label": "Safety",
+      "icon": "🛡️",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "transitions_to_gameplay": true,
+        "title": "After School Hours",
+        "narrative": "It was supposed to be a quick trip to collect her notebook. Meera had left it in the chemistry lab after the last period and needed it for homework. The school was mostly empty — just the watchman at the gate and a few teachers in the staff room.\n\nThe chemistry lab door was slightly open. {player_name} pushed it gently and froze. Prof. Iyer was at his desk, and Arjun — the topper of the class — was standing next to him. They were looking at a paper. Not just any paper. Meera recognized the blue border: it was next week's unit test paper.\n\nProf. Iyer was pointing at specific questions, saying: 'Focus on these three. The last one is worth twenty marks.' Arjun was nodding, taking photos with his phone.\n\nMeera stepped back silently, heart hammering. She had just watched a teacher give a student the test paper in advance. The teacher everyone trusted. The student everyone thought was brilliant on his own merit.",
+        "image_prompt": "A 14-year-old Indian girl peeking through a partially open school lab door in shock, seeing a teacher showing exam papers to a student inside, dramatic hallway lighting, empty school corridors, watercolor illustration, suspense and moral weight",
+        "coaching_moment": "Discovering wrongdoing is uncomfortable — but what you do next defines your character more than the discovery itself.",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Quietly back away — you need time to process what you just saw",
+            "description": "Meera retreats silently, giving herself space to think before acting. Rushing could make things worse.",
+            "delta": {
+              "safety": 8,
+              "courage": -3,
+              "evidence": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Taking time to think is wise — but every day you wait is another day the unfairness continues.",
+            "memory_tags": [
+              "retreated_silently"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Take a photo with your phone — evidence first",
+            "description": "Meera quickly snaps a silent photo of the scene through the door crack before backing away.",
+            "delta": {
+              "evidence": 15,
+              "courage": 8,
+              "safety": -5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Photographic evidence is powerful — but getting caught taking it could put you in immediate danger.",
+            "memory_tags": [
+              "took_photo"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_c",
+            "label": "Walk in and pretend you saw nothing — just grab your notebook",
+            "description": "Meera enters the lab casually, grabs her notebook, and leaves — letting Prof. Iyer wonder if she saw anything.",
+            "delta": {
+              "courage": 5,
+              "safety": 5,
+              "reputation": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "resilience"
+            ],
+            "consequence_hint": "Playing innocent keeps you safe for now — but Prof. Iyer will be watching you closely.",
+            "memory_tags": [
+              "played_innocent"
+            ],
+            "next_scene": "ch1_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "The Sleepless Night",
+        "narrative": "Meera could not eat dinner. Her mother asked twice if she was feeling okay. She said she had a headache and went to her room.\n\nLying in bed, she replayed the scene. Prof. Iyer — the same teacher who lectured them about integrity in the first week of school. Arjun — who won the Science Olympiad last year, who everyone assumed was a genius. How many tests had he cheated on? How many prizes had he won unfairly?\n\nAnd then the harder question: what was Meera going to do about it?\n\n{player_name} pulled out a notebook and wrote down the options. Tell someone. Stay quiet. Gather more proof. Each option had risks. Telling could get her labeled a snitch. Staying quiet meant watching Arjun win prizes he did not earn. Gathering proof meant more time spent in a dangerous position.\n\nThe clock read 1:47 AM. Meera was still writing.",
+        "image_prompt": "A 14-year-old Indian girl lying in bed at night with a notebook, unable to sleep, moonlight through the window, a list of options written on the page, troubled expression, watercolor illustration, moral weight keeping her awake",
+        "coaching_moment": "When you know something is wrong, silence has a cost too — it does not keep you safe, it keeps the problem hidden.",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Write down everything you saw — exact time, exact words, exact positions",
+            "description": "Meera creates a detailed written record while the memory is fresh. Documentation is the foundation of any case.",
+            "delta": {
+              "evidence": 12,
+              "courage": 5,
+              "safety": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Written records hold up when memories fade — every investigator starts with notes.",
+            "next_scene": "ch1_s3"
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Search online: 'What to do when you witness cheating at school'",
+            "description": "Meera researches whistleblower stories and school reporting policies, learning from others who faced similar situations.",
+            "delta": {
+              "evidence": 8,
+              "courage": 8,
+              "reputation": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Research empowers you with knowledge — understanding the process reduces the fear.",
+            "next_scene": "ch1_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "title": "Morning Dilemma",
+        "narrative": "School morning. Meera walks through the gate and sees Arjun at his usual spot — surrounded by friends, laughing, everyone wanting to sit next to the 'genius.' She watches him and thinks: does he feel any guilt? Or has this been going on so long that it feels normal to him?\n\nIn chemistry class, Prof. Iyer is his usual self — engaging, funny, asking students thought-provoking questions. He is genuinely a good teacher. That makes it harder. He is not some cartoon villain. He is a person Meera once admired, doing something deeply wrong.\n\nAfter class, Meera passes Nisha in the corridor. Nisha — her closest friend — gives her a look and whispers: 'Can we talk? I need to tell you something about Prof. Iyer.'\n\n{player_name}'s pulse quickens. Someone else knows.",
+        "image_prompt": "A school morning scene — a popular boy surrounded by admiring classmates, a girl watching from a distance knowing his secret, another girl approaching with urgent news, Indian school corridor, watercolor illustration, dramatic irony",
+        "coaching_moment": "Finding out you are not alone in knowing the truth can be the most powerful thing that happens in a whistleblower's journey.",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "Meet Nisha immediately — share what you saw and hear what she knows",
+            "description": "Meera finds a quiet corner during lunch break and exchanges information with Nisha. Two witnesses are stronger than one.",
+            "delta": {
+              "evidence": 10,
+              "courage": 10,
+              "safety": -5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "empathy"
+            ],
+            "consequence_hint": "Sharing secrets builds alliances — but every person who knows increases the risk of exposure.",
+            "memory_tags": [
+              "shared_with_nisha"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "Wait — hear what Nisha knows first before revealing anything",
+            "description": "Meera listens to Nisha's information without sharing her own, keeping her cards close until she understands more.",
+            "delta": {
+              "evidence": 8,
+              "safety": 8,
+              "courage": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Listening before revealing is smart — but if Nisha senses distrust, your alliance may weaken.",
+            "memory_tags": [
+              "cautious_with_nisha"
+            ],
+            "next_chapter": "ch2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "Nisha's Story",
+        "narrative": "Nisha's information is different from Meera's — and just as troubling. She saw Prof. Iyer changing grades in the marks register last month. A student named Priya (not the school journalist — a different Priya) scored 72 in the internal assessment, but the register shows 85. Nisha saw it because she was helping organize the staff room shelves.\n\n'He is not just giving Arjun the paper,' Nisha says, her voice shaking. 'He is changing marks. Who knows how many students have been affected?'\n\nTwo separate incidents. Two witnesses. But still — it is their word against a senior teacher's. {player_name} knows they need more before going to anyone with authority.\n\nThe unit test is in five days. If Arjun scores suspiciously well on questions that were leaked to him, that would be another piece of evidence.",
+        "image_prompt": "Two Indian schoolgirls having a secret conversation behind a library shelf, one showing a notebook with grade discrepancies, both looking worried but determined, school library setting, watercolor illustration, whispered truth",
+        "coaching_moment": "Evidence is the foundation of any truth claim — without it, courage alone is just an accusation.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Wait for the unit test — compare Arjun's answers to the leaked questions",
+            "description": "Meera plans to track whether Arjun's test performance matches the specific questions she saw Prof. Iyer show him.",
+            "delta": {
+              "evidence": 12,
+              "courage": 5,
+              "safety": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Waiting for the test provides strong circumstantial evidence — but five more days of silence is hard.",
+            "memory_tags": [
+              "waited_for_test"
+            ],
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Check old test results — is there a pattern of Arjun's marks jumping?",
+            "description": "Meera and Nisha look at the class notice board archives, searching for anomalies in Arjun's performance history.",
+            "delta": {
+              "evidence": 15,
+              "courage": 3,
+              "reputation": -3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Patterns are compelling evidence — but digging into records might draw attention.",
+            "next_scene": "ch2_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "The Pattern",
+        "narrative": "The research reveals something striking. In every subject taught by other teachers, Arjun scores between 70 and 80 — good but not extraordinary. In Prof. Iyer's chemistry, he consistently scores 90+. The gap is suspicious.\n\nNisha notices something else: two other students who take Prof. Iyer's private tuition also show unusually high chemistry marks compared to their other subjects.\n\n'It is not just Arjun,' Nisha says. 'It is a system. Iyer's tuition students get advantages. Everyone else competes fairly while they get the answers in advance.'\n\n{player_name} feels the weight of what she has discovered growing heavier. This is not one mistake. It is systematic corruption by a teacher — the very person supposed to teach fairness.",
+        "image_prompt": "Two girls looking at a chart of student marks on a school notice board, highlighting suspicious patterns with a marker, a 'private tuition' connection becoming visible, school corridor, watercolor illustration, detective work",
+        "coaching_moment": "When individual wrongdoing turns out to be a system, the stakes get higher — and so does the importance of getting it right.",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Document everything in a folder — create a complete evidence file",
+            "description": "Meera creates a systematic file: the lab incident, the grade changes, the performance pattern, dates and details.",
+            "delta": {
+              "evidence": 15,
+              "courage": 8,
+              "safety": -3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "A well-organized evidence file is the most powerful tool a whistleblower can have.",
+            "memory_tags": [
+              "created_evidence_file"
+            ],
+            "next_scene": "ch2_s3"
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Talk to one of the other affected students — see if they know what is happening",
+            "description": "Meera carefully approaches Priya, whose marks were changed, to see if she is aware of the manipulation.",
+            "delta": {
+              "evidence": 10,
+              "courage": 10,
+              "reputation": -5
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "More witnesses strengthen the case — but each conversation increases the chance of word spreading.",
+            "next_scene": "ch2_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "title": "The Ethical Line",
+        "narrative": "Nisha raises a difficult question that night on the phone. 'Meera — what if we are wrong? What if there is an explanation? Prof. Iyer has been teaching for twenty years. What if we destroy a man's career over a misunderstanding?'\n\nMeera pauses. It is a fair question. What she saw in the lab COULD have an innocent explanation — perhaps Arjun was getting extra help on a different assignment. The grade changes COULD be corrections. The performance pattern COULD be coincidence.\n\nBut Meera knows what she saw. She knows Arjun was photographing the test paper. She knows the evidence, taken together, tells a clear story.\n\n{player_name} faces the central ethical question of whistleblowing: how certain do you need to be before you act?",
+        "image_prompt": "A teenage Indian girl sitting alone with a phone, looking at an evidence folder spread on her bed, a photo of the teacher's smiling face in the school yearbook nearby, the weight of a decision visible on her face, watercolor illustration, ethical crossroads",
+        "coaching_moment": "Certainty is a luxury in moral decisions — sometimes you have to act on strong evidence even when doubt remains.",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "The evidence is strong enough — it is time to tell someone with authority",
+            "description": "Meera decides that waiting for perfect certainty means never acting. The pattern is clear. It is time.",
+            "delta": {
+              "courage": 15,
+              "evidence": 5,
+              "safety": -8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Acting on strong-but-imperfect evidence takes courage — the alternative is complicity.",
+            "memory_tags": [
+              "decided_to_act"
+            ],
+            "next_chapter": "ch3"
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "Wait for one more piece of evidence — the unit test will confirm or deny everything",
+            "description": "Meera decides to wait for the test. If Arjun aces the exact questions she saw, that is conclusive.",
+            "delta": {
+              "evidence": 10,
+              "safety": 8,
+              "courage": -3
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "One more data point might seal the case — but it also means five more days of a rigged system.",
+            "memory_tags": [
+              "waited_for_confirmation"
+            ],
+            "next_chapter": "ch3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "Trust Test",
+        "narrative": "Meera and Nisha sit on the school playground swings during a free period. The question is: who do they tell?\n\nOption one: Principal Sharma. The official route. But Principal Sharma and Prof. Iyer are known to be friends — they share a car to school every morning. Will the principal protect his colleague?\n\nOption two: Mrs. Reddy, the new biology teacher. She is young, progressive, and has been critical of the school's old-guard culture. But she is also the newest teacher — with the least power.\n\nOption three: Anonymous tip. Write an unsigned letter with the evidence. Safe, but impersonal.\n\n{player_name} knows that the WHO matters as much as the WHAT. Choosing the wrong person to tell could bury the truth instead of revealing it.",
+        "image_prompt": "Two Indian schoolgirls on playground swings having a serious conversation, the school building in the background with the principal's office window visible, debating who to trust, watercolor illustration, difficult choices",
+        "coaching_moment": "Choosing who to trust with the truth is itself a strategic decision — the right ally can amplify your voice, the wrong one can silence it.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Approach Mrs. Reddy — she seems like someone who would care",
+            "description": "Meera chooses the teacher most likely to listen and act, even though Mrs. Reddy has less institutional power.",
+            "delta": {
+              "courage": 10,
+              "safety": 5,
+              "reputation": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Allies with integrity matter more than allies with power — but they may face consequences too.",
+            "memory_tags": [
+              "chose_mrs_reddy"
+            ],
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Go straight to Principal Sharma — use the official channel",
+            "description": "Meera decides that official channels exist for a reason. If the principal fails, that becomes evidence too.",
+            "delta": {
+              "courage": 15,
+              "evidence": 5,
+              "safety": -10
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "The official route is proper — but if the principal is compromised, you have shown your hand.",
+            "memory_tags": [
+              "went_to_principal"
+            ],
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_c",
+            "label": "Send an anonymous letter first — test the waters",
+            "description": "Meera writes a carefully worded anonymous letter to the principal, presenting the evidence without revealing her identity.",
+            "delta": {
+              "safety": 12,
+              "evidence": 3,
+              "courage": -5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Anonymous tips are safe but easy to dismiss — authority figures often need a face behind the claim.",
+            "memory_tags": [
+              "sent_anonymous"
+            ],
+            "next_scene": "ch3_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "The Response",
+        "narrative": "Whatever path Meera chose, the first response is discouraging. If she went to Mrs. Reddy, the young teacher listened carefully but said: 'I believe you, but I need to be careful. If I accuse a senior teacher without process, I could lose my job.' If she went to the principal, he frowned and said: 'These are serious allegations. I hope you have proof.' If she sent an anonymous letter, the response was silence.\n\nMeera feels the isolation that every whistleblower knows — the moment between speaking up and being heard, when the world seems to carry on as if nothing happened.\n\nNisha texts: 'What happened?' Meera stares at the phone, unsure how to explain that doing the right thing does not feel like she expected. There is no dramatic music. No heroic moment. Just a girl sitting in her room, wondering if anyone will listen.\n\n{player_name} realizes that courage is not a single act — it is a sustained effort in the face of indifference.",
+        "image_prompt": "A girl sitting alone in her room after an underwhelming response to her whistleblowing attempt, phone in hand with an unanswered text, the weight of courage without immediate reward, watercolor illustration, isolation and determination",
+        "coaching_moment": "The hardest phase of standing up for what is right is the silence that follows — when nothing seems to change and you wonder if it mattered.",
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Do not give up — follow up and push for a formal investigation",
+            "description": "Meera writes a formal request for investigation, citing specific evidence and asking for a timeline.",
+            "delta": {
+              "courage": 15,
+              "evidence": 8,
+              "safety": -5
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Persistence breaks through indifference — but it also makes you harder to ignore... for everyone.",
+            "next_scene": "ch3_s3"
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Broaden your allies — talk to more students who might have been affected",
+            "description": "Meera begins carefully approaching students whose marks may have been unfairly impacted by the system.",
+            "delta": {
+              "evidence": 12,
+              "courage": 8,
+              "reputation": -3
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "More voices are harder to dismiss — but more people talking means more chances of Prof. Iyer finding out.",
+            "memory_tags": [
+              "broadened_allies"
+            ],
+            "next_scene": "ch3_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "title": "Nisha Wavers",
+        "narrative": "Something Meera did not expect: Nisha starts pulling back. 'My mother said I should not get involved,' Nisha says. 'She said these things sort themselves out and we should focus on our studies.'\n\nMeera feels a flash of anger — and then empathy. Nisha's family cannot afford trouble. Her father works at a company where the school chairman's brother is a director. The connections in a small city are tangled and dangerous.\n\n'I understand,' Meera says. But inside, she feels more alone than before.\n\n{player_name} must decide how to handle a friend's withdrawal — without judgment, without guilt-tripping, but also without giving up.",
+        "image_prompt": "Two friends having a difficult conversation at a school water cooler, one looking apologetic and scared, the other trying to hide her disappointment, the weight of family pressure visible, watercolor illustration, friendship tested by moral choices",
+        "coaching_moment": "Not everyone can take the same risks you can — respecting a friend's limits is different from accepting them as your own.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "Respect Nisha's choice — continue alone if necessary",
+            "description": "Meera thanks Nisha for what she shared and promises not to use her name. Some battles are fought solo.",
+            "delta": {
+              "courage": 12,
+              "reputation": 5,
+              "safety": -5
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Going it alone is harder — but it also means nobody can pressure your allies to recant.",
+            "memory_tags": [
+              "went_solo"
+            ],
+            "next_chapter": "ch4"
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "Ask Nisha to at least provide a written statement — anonymous, just the facts",
+            "description": "Meera asks for one last thing: Nisha's account in writing, unsigned if needed, to strengthen the evidence file.",
+            "delta": {
+              "evidence": 12,
+              "courage": 5,
+              "safety": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "A written record preserves testimony even if the witness retreats — documentation outlasts courage.",
+            "next_chapter": "ch4"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s1",
+        "chapter": "ch4",
+        "title": "The Anonymous Letter",
+        "narrative": "Meera decides to escalate carefully. She types a detailed letter — no handwriting to trace — and slides it under the principal's office door early in the morning. The letter includes:\n\n1. The incident she witnessed (date, time, details)\n2. The grade discrepancy pattern\n3. The tuition connection\n4. A request for a formal review of Prof. Iyer's class marks\n\nShe does not sign it. She prints it at a cyber cafe outside school. She wears gloves.\n\n{player_name} waits. By noon, she can see through the staff room window that Principal Sharma is reading something with a troubled expression. He calls Prof. Iyer to his office. The door closes.\n\nAn hour later, Prof. Iyer walks out looking furious. His eyes scan the corridor — and for a terrifying moment, they land on Meera.",
+        "image_prompt": "A tense school corridor — a furious-looking male teacher scanning the hallway with suspicious eyes, a girl trying to look casual while her heart races, other students unaware of the drama, watercolor illustration, suspense and danger",
+        "coaching_moment": "Anonymous reports protect your identity — but they also mean you cannot control how the information is used or investigated.",
+        "choices": [
+          {
+            "id": "ch4_s1_a",
+            "label": "Stay calm and act normal — do not give any reaction",
+            "description": "Meera controls her body language perfectly, looking at her phone casually as Prof. Iyer's gaze passes over her.",
+            "delta": {
+              "safety": 10,
+              "courage": 8,
+              "reputation": 5
+            },
+            "skill_tags": [
+              "adaptability",
+              "resilience"
+            ],
+            "consequence_hint": "Self-control under pressure is a survival skill — but the anxiety of being watched takes a toll.",
+            "next_scene": "ch4_s2"
+          },
+          {
+            "id": "ch4_s1_b",
+            "label": "Avoid Prof. Iyer completely for the next few days",
+            "description": "Meera changes her route, skips chemistry lab breaks, and minimizes any contact with the teacher.",
+            "delta": {
+              "safety": 12,
+              "courage": -5,
+              "evidence": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Avoidance keeps you safe — but sudden behavioral changes can themselves be suspicious.",
+            "next_scene": "ch4_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s2",
+        "chapter": "ch4",
+        "title": "The Investigation Begins",
+        "narrative": "Principal Sharma cannot ignore a written complaint with specific allegations. He forms a three-person review committee: himself, the vice-principal Mrs. Deshpande, and the PTA secretary. They announce that chemistry marks from the last two terms will be 'cross-verified' — a neutral phrasing that does not name Prof. Iyer.\n\nBut the school knows. Rumors spread like fire. Students whisper. Prof. Iyer is visibly tense. And Arjun — for the first time Meera can remember — looks nervous.\n\n{player_name} watches all of this unfold with a mixture of relief and fear. The system is responding. But Prof. Iyer is also now actively looking for the source of the complaint. He cancelled his tuition classes. He has been seen going through lab visitor logs.",
+        "image_prompt": "A school staff meeting — a principal and committee members reviewing exam papers with serious expressions, while in the corridor a tense teacher looks through visitor logs, split scene showing investigation underway, watercolor illustration",
+        "coaching_moment": "When the investigation starts, the whistleblower enters the most dangerous phase — the system is moving, but so is the accused.",
+        "choices": [
+          {
+            "id": "ch4_s2_a",
+            "label": "Stay completely silent — let the investigation do its work",
+            "description": "Meera decides that she has done enough. The evidence is in the system now. She stays invisible.",
+            "delta": {
+              "safety": 12,
+              "courage": 3,
+              "reputation": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Patience during investigation is wise — but if the inquiry is superficial, silence becomes complicity.",
+            "next_scene": "ch4_s3"
+          },
+          {
+            "id": "ch4_s2_b",
+            "label": "Prepare more evidence — the committee may need what you have",
+            "description": "Meera updates her evidence file with the latest developments, ready to provide it if the investigation stalls.",
+            "delta": {
+              "evidence": 12,
+              "courage": 8,
+              "safety": -5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Being prepared shows commitment — but active evidence-gathering during an investigation draws attention.",
+            "next_scene": "ch4_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s3",
+        "chapter": "ch4",
+        "title": "Arjun's Visit",
+        "narrative": "The most unexpected thing happens. Arjun — the favourite, the beneficiary of Prof. Iyer's favoritism — approaches Meera after school.\n\n'I know it was you,' he says quietly. There is no anger in his voice. Just... tiredness. 'The way you looked at me in the corridor that day. I have been thinking about this for weeks.'\n\nMeera's heart stops. But Arjun does not threaten her. Instead, he says: 'I did not ask for this. He offered. The first time, I said no. The second time, my parents were pressuring me about marks and I... I said yes. And after that, I could not stop because it would mean admitting I cheated before.'\n\n{player_name} stares at the boy everyone envies and sees someone trapped — not a villain, but a kid who made a bad choice and did not know how to undo it.",
+        "image_prompt": "A popular Indian schoolboy approaching a girl after school hours with a confession, his confident facade cracked, both standing near the school gate in fading afternoon light, vulnerability and truth, watercolor illustration",
+        "coaching_moment": "People who benefit from corruption are sometimes trapped by it too — understanding this does not excuse their actions, but it changes how you respond.",
+        "narrative_variants": {
+          "took_photo": "Meera remembers the photo she took — Arjun's face visible, photographing the test paper. She could use it. But looking at him now, she wonders if she should.",
+          "decided_to_act": "The weight of Meera's decision to act feels different now — she is not just exposing a system, she is also exposing a frightened boy."
+        },
+        "choices": [
+          {
+            "id": "ch4_s3_a",
+            "label": "Tell Arjun: 'You need to go to the committee yourself. It will be better if you confess.'",
+            "description": "Meera offers Arjun a path to redemption — voluntary confession, which would reduce the consequences.",
+            "delta": {
+              "courage": 10,
+              "reputation": 8,
+              "evidence": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Encouraging confession is both kind and strategic — it strengthens the case AND gives Arjun a chance to do right.",
+            "memory_tags": [
+              "offered_redemption"
+            ],
+            "next_chapter": "ch5"
+          },
+          {
+            "id": "ch4_s3_b",
+            "label": "Listen to his story but make no promises — the truth must come out regardless",
+            "description": "Meera is compassionate but firm. She does not trade justice for sympathy.",
+            "delta": {
+              "courage": 15,
+              "safety": 5,
+              "reputation": -3
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Holding the line on justice while showing empathy is the hardest balance — but it is the right one.",
+            "next_chapter": "ch5"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s1",
+        "chapter": "ch5",
+        "title": "The Retaliation",
+        "narrative": "Prof. Iyer strikes back. During chemistry class, he singles Meera out for a surprise oral test. The questions are unreasonably difficult — postgraduate level, not Class 9. When Meera cannot answer, he says in front of the whole class: 'Perhaps some students should focus on their own studies instead of making trouble for others.'\n\nThe class goes silent. Everyone understands the subtext. Some students look away uncomfortably. Others look at Meera with a mix of pity and curiosity.\n\n{player_name}'s cheeks burn. She wants to cry, or shout, or walk out. Instead, she sits very still, gripping the edge of her desk, reminding herself: this is what retaliation looks like. It is designed to make you regret speaking up.",
+        "image_prompt": "A classroom scene — a teacher publicly humiliating a student with impossible questions, the girl sitting with burning cheeks but straight spine, other students uncomfortable, oppressive classroom atmosphere, watercolor illustration",
+        "coaching_moment": "Retaliation is the price many whistleblowers pay — but it is also proof that the truth has reached the right people.",
+        "choices": [
+          {
+            "id": "ch5_s1_a",
+            "label": "Document the incident — this is evidence of retaliation",
+            "description": "Meera writes down exactly what happened, including the date, the questions asked, and the comment. Retaliation IS evidence.",
+            "delta": {
+              "evidence": 15,
+              "courage": 10,
+              "safety": -5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Documenting retaliation strengthens your case — every attack proves the accused has something to hide.",
+            "memory_tags": [
+              "documented_retaliation"
+            ],
+            "next_scene": "ch5_s2"
+          },
+          {
+            "id": "ch5_s1_b",
+            "label": "Report the incident to the committee immediately — this crosses a line",
+            "description": "Meera goes directly to the vice-principal and describes the targeted humiliation as evidence of witness intimidation.",
+            "delta": {
+              "courage": 15,
+              "evidence": 10,
+              "safety": -8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Reporting retaliation escalates the situation — but it also puts the school on notice to protect you.",
+            "next_scene": "ch5_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s2",
+        "chapter": "ch5",
+        "title": "The Social Cost",
+        "narrative": "The social fallout begins. Some of Arjun's friends start calling Meera 'the snitch' in whispers. Two girls who used to sit with her at lunch moved tables. Even students who are not involved seem wary — as if being Meera's friend might draw Prof. Iyer's attention to them.\n\nNisha texts: 'I am so sorry this is happening. I wish I could help more.' But she does not sit with Meera at lunch either.\n\nThe loneliest part is this: Meera is doing the right thing, and it feels like punishment. The cheater gets sympathy. The truth-teller gets isolation.\n\n{player_name} eats lunch alone for the first time in years and thinks: is this what integrity costs?",
+        "image_prompt": "A girl eating lunch alone at a school cafeteria table, other students at distant tables glancing at her, empty chairs around her, the social isolation of a whistleblower, watercolor illustration, lonely but unbowed",
+        "coaching_moment": "The social cost of truth-telling is real and painful — but integrity is not about being liked. It is about being right.",
+        "choices": [
+          {
+            "id": "ch5_s2_a",
+            "label": "Keep your head high — focus on the goal, not the gossip",
+            "description": "Meera refuses to shrink. She eats alone with a book, projecting calm she does not entirely feel.",
+            "delta": {
+              "courage": 12,
+              "reputation": 8,
+              "safety": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Visible strength under pressure attracts respect from the people who matter most.",
+            "next_scene": "ch5_s3"
+          },
+          {
+            "id": "ch5_s2_b",
+            "label": "Talk to your parents — you need support outside school",
+            "description": "Meera tells her mother everything, seeking the adult support she desperately needs.",
+            "delta": {
+              "safety": 15,
+              "courage": 8,
+              "reputation": 3
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Seeking support is not weakness — it is the smartest thing a young person can do when facing institutional power.",
+            "memory_tags": [
+              "told_parents"
+            ],
+            "next_scene": "ch5_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s3",
+        "chapter": "ch5",
+        "title": "The Turning Point",
+        "narrative": "Just when Meera feels most alone, something shifts. A girl from Section B approaches her in the corridor. 'I heard what is happening,' she says. 'My brother was in Prof. Iyer's class two years ago. He always wondered why his marks were lower than the tuition students. Thank you for speaking up.'\n\nThen the school sports captain, a boy named Dev, stops Meera at the water cooler. 'What they are doing to you is not fair,' he says simply. 'If you need someone to walk with you to class, just ask.'\n\nSmall gestures. Quiet support. Not loud enough to make headlines, but loud enough to remind {player_name} that she is not as alone as she thought. The truth has allies — they just take longer to find their voice.",
+        "image_prompt": "A girl in a school corridor receiving quiet words of support from two different students at different moments, warm gestures amid the isolation, school hallway with lockers, watercolor illustration, hope returning",
+        "coaching_moment": "Support for truth-tellers often comes quietly and late — but it comes. And one genuine ally is worth more than a hundred silent bystanders.",
+        "choices": [
+          {
+            "id": "ch5_s3_a",
+            "label": "Accept the support gratefully — and ask these allies to share their own experiences with the committee",
+            "description": "Meera channels the emerging support into the investigation, growing the evidence base beyond her own account.",
+            "delta": {
+              "evidence": 12,
+              "courage": 10,
+              "reputation": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Turning supporters into witnesses multiplies the impact — and makes it impossible to dismiss as one person's grudge.",
+            "memory_tags": [
+              "built_witness_network"
+            ],
+            "next_chapter": "ch6"
+          },
+          {
+            "id": "ch5_s3_b",
+            "label": "Thank them quietly but protect them — do not draw them into the conflict",
+            "description": "Meera appreciates the support but does not want others facing the same retaliation she has endured.",
+            "delta": {
+              "courage": 8,
+              "safety": 8,
+              "reputation": 10
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Protecting your supporters shows character — but the case is stronger with more voices.",
+            "next_chapter": "ch6"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s1",
+        "chapter": "ch6",
+        "title": "Mrs. Reddy Steps Forward",
+        "narrative": "Mrs. Reddy, the young biology teacher, has been watching everything unfold. She approaches Meera after school one day with a serious expression.\n\n'I have been gathering my own evidence,' she says. 'I compared the internal assessment marks with the board exam results for the last three years. Prof. Iyer's internal marks consistently inflate certain students by 15-20%. It is statistically impossible for it to be random.'\n\nShe has a spreadsheet. She has the data. And unlike Meera, she is an adult — a teacher whose testimony carries institutional weight.\n\n'I did not speak up before because I was afraid of the old guard,' Mrs. Reddy admits. 'Your courage pushed me to act. I am sorry I was slow.'\n\n{player_name} feels something shift. She is no longer a student making accusations against a teacher. She is part of a coalition with an adult ally who has hard data.",
+        "image_prompt": "A young female Indian teacher showing a laptop with statistical data to a teenage girl in an empty classroom after hours, both looking determined, the data clearly showing fraud, watercolor illustration, alliance forming",
+        "coaching_moment": "When adults see a young person being brave, it can awaken their own dormant courage — your bravery is contagious.",
+        "choices": [
+          {
+            "id": "ch6_s1_a",
+            "label": "Present a joint submission to the committee — student and teacher evidence together",
+            "description": "Meera and Mrs. Reddy combine their evidence into one comprehensive file and submit it formally to the committee.",
+            "delta": {
+              "evidence": 15,
+              "courage": 10,
+              "reputation": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "A joint submission from a student witness and a teacher analyst is almost impossible to dismiss.",
+            "memory_tags": [
+              "joint_submission"
+            ],
+            "next_scene": "ch6_s2"
+          },
+          {
+            "id": "ch6_s1_b",
+            "label": "Let Mrs. Reddy lead — her institutional standing gives the evidence more weight",
+            "description": "Meera steps back and lets the adult take the lead, knowing that the school system responds better to teacher voices.",
+            "delta": {
+              "safety": 12,
+              "reputation": 8,
+              "courage": 3
+            },
+            "skill_tags": [
+              "adaptability",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Strategic retreat is not weakness — knowing when to let others lead is a form of wisdom.",
+            "next_scene": "ch6_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s2",
+        "chapter": "ch6",
+        "title": "The Committee Reconvenes",
+        "narrative": "The review committee reconvenes with new evidence. Principal Sharma looks uncomfortable — the data is damning. Three years of inflated marks for tuition students. Statistical proof. A student eyewitness. A teacher's analysis.\n\nProf. Iyer is called to respond. He enters the meeting room looking smaller than Meera has ever seen him. The arrogance is gone. The charm is gone. He is a man who knows the walls are closing in.\n\nThrough the window, {player_name} watches the meeting happen. She is not inside — the committee said it would handle things from here. But she knows the outcome depends on whether the committee has the integrity to act on what they now cannot deny.",
+        "image_prompt": "A school committee meeting visible through a window — committee members looking at evidence documents, the accused teacher sitting smaller in his chair, a girl watching from outside the room through glass, watercolor illustration, justice approaching",
+        "coaching_moment": "At some point, the whistleblower's job is done — the truth is in the system. The question is whether the system honors it.",
+        "choices": [
+          {
+            "id": "ch6_s2_a",
+            "label": "Trust the committee — you have given them everything they need",
+            "description": "Meera steps back and trusts the institutional process to deliver justice with the overwhelming evidence provided.",
+            "delta": {
+              "safety": 10,
+              "courage": 5,
+              "reputation": 8
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "resilience"
+            ],
+            "consequence_hint": "Trusting systems after feeding them truth is an act of faith — but sometimes faith is all you have left.",
+            "next_scene": "ch6_s3"
+          },
+          {
+            "id": "ch6_s2_b",
+            "label": "Prepare a backup plan — if the committee buries it, go to the education board",
+            "description": "Meera keeps copies of everything and identifies the next escalation point, just in case.",
+            "delta": {
+              "evidence": 10,
+              "courage": 10,
+              "safety": -3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Having a backup plan is responsible — whistleblowers who exhaust all channels are the ones who create change.",
+            "memory_tags": [
+              "prepared_backup"
+            ],
+            "next_scene": "ch6_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s3",
+        "chapter": "ch6",
+        "title": "Arjun Confesses",
+        "narrative": "The breakthrough comes from an unexpected source. Arjun asks to speak to the committee. He walks in, sits down, and confesses everything — the leaked papers, the advance questions, the photographed test sheets. He names every test. Every advantage. Every lie.\n\nHe cries. Not theatrical tears — real, exhausted tears of a boy who has been carrying a secret that grew too heavy.\n\nWord filters through the school within hours. The reaction is complicated. Some students feel sorry for Arjun. Some are angry. Some feel vindicated. And some look at Meera with an expression she has not seen before: respect.\n\n{player_name} does not feel triumphant. She feels tired, and a little sad. Arjun's confession means the system worked. But it also means a boy's reputation is destroyed at fourteen. Was there a way to have both justice AND mercy?",
+        "image_prompt": "A teenage boy sitting in front of a school committee crying while confessing, committee members listening gravely, tissues on the table, the weight of truth finally released, watercolor illustration, complex emotions",
+        "coaching_moment": "Justice without mercy is cruelty. Mercy without justice is weakness. The goal is always to find the place where both coexist.",
+        "choices": [
+          {
+            "id": "ch6_s3_a",
+            "label": "Advocate for Arjun to receive counseling, not just punishment",
+            "description": "Meera writes to the committee suggesting that Arjun's confession deserves acknowledgment and that punishment should include support.",
+            "delta": {
+              "reputation": 15,
+              "courage": 8,
+              "evidence": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Advocating for your opponent's welfare after winning shows the highest form of moral courage.",
+            "memory_tags": [
+              "advocated_mercy"
+            ],
+            "next_chapter": "ch7"
+          },
+          {
+            "id": "ch6_s3_b",
+            "label": "Stay focused on the systemic issue — Prof. Iyer, not Arjun, is the root problem",
+            "description": "Meera reminds the committee that a student following a teacher's lead is different from a teacher abusing power.",
+            "delta": {
+              "courage": 12,
+              "evidence": 10,
+              "reputation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Keeping focus on the systemic issue prevents the narrative from shifting to blame the weakest person.",
+            "next_chapter": "ch7"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s1",
+        "chapter": "ch7",
+        "title": "Face to Face",
+        "narrative": "The committee asks Meera to come in and make a formal statement. For the first time, she will be in the same room as Prof. Iyer, identified as the primary complainant.\n\nAs she enters the room, Prof. Iyer looks at her. Not with anger anymore. With something worse: betrayal. As if a student reporting a teacher's corruption is somehow a violation of trust.\n\n'I trusted you, Meera,' he says before the committee can stop him. 'You were one of my best students.'\n\n{player_name} feels the words like a punch. She WAS one of his best students. She loved chemistry because he made it interesting. The betrayal cuts both ways — he betrayed his students' trust first.\n\nBut feelings and logic are different things. Meera has to speak her truth clearly, despite the emotional weight.",
+        "image_prompt": "A formal meeting room — a teenage girl facing a teacher across a table with committee members between them, the teacher's expression a mix of hurt and guilt, the girl's expression steady but emotional, formal school setting, watercolor illustration",
+        "coaching_moment": "When the person who wronged you tries to make you feel guilty for speaking up — that is the ultimate test of conviction.",
+        "choices": [
+          {
+            "id": "ch7_s1_a",
+            "label": "Speak calmly and factually — no accusations, just what you saw and documented",
+            "description": "Meera delivers her statement in a measured, factual tone, letting the evidence speak rather than her emotions.",
+            "delta": {
+              "courage": 15,
+              "evidence": 10,
+              "reputation": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Calm testimony is more powerful than angry accusations — facts delivered with composure are hardest to dismiss.",
+            "next_scene": "ch7_s2"
+          },
+          {
+            "id": "ch7_s1_b",
+            "label": "Address Prof. Iyer directly: 'You taught me to love chemistry. And to value truth. I am doing both.'",
+            "description": "Meera acknowledges the relationship while making clear that his own teachings led her to this moment.",
+            "delta": {
+              "courage": 12,
+              "reputation": 12,
+              "evidence": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Turning someone's own values back on them is devastatingly effective — and sometimes redemptive.",
+            "memory_tags": [
+              "used_his_teachings"
+            ],
+            "next_scene": "ch7_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s2",
+        "chapter": "ch7",
+        "title": "Prof. Iyer's Response",
+        "narrative": "The committee gives Prof. Iyer a chance to respond. He is quiet for a long time. Then he speaks — not to the committee, but to Meera.\n\n'When I started teaching, I promised myself I would never become the kind of teacher who just collects a salary. And for fifteen years, I kept that promise. Then fees got tight. Tuition became necessary. And once I started giving tuition students advantages... I told myself it was just a small thing. That it did not really hurt anyone.'\n\nHe pauses. 'But it did hurt people. I see that now. Every student who studied honestly and scored lower than a cheater — I hurt them. I am sorry.'\n\nThe room is heavy with silence. {player_name} watches a man unravel his own justifications in real time, and realizes that corruption is rarely about evil — it is about small compromises that compound until you cannot see what you have become.",
+        "image_prompt": "A teacher making a confession to a committee, his head slightly bowed, the girl watching with complex emotions — anger and pity mixed, committee members listening gravely, a moment of truth in a formal setting, watercolor illustration",
+        "coaching_moment": "Understanding why someone did wrong is not the same as excusing it — but it is the beginning of preventing it from happening again.",
+        "narrative_variants": {
+          "advocated_mercy": "Meera's earlier advocacy for mercy creates space for this confession — knowing someone asked for compassion made Prof. Iyer more willing to be honest.",
+          "used_his_teachings": "Prof. Iyer looks at Meera after his confession and says quietly: 'You were listening in my class after all.'"
+        },
+        "choices": [
+          {
+            "id": "ch7_s2_a",
+            "label": "Nod quietly — acknowledge the apology without dismissing the harm",
+            "description": "Meera responds with a simple nod, accepting the sincerity of the apology while not minimizing what happened.",
+            "delta": {
+              "reputation": 12,
+              "courage": 8,
+              "safety": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Grace in the face of an apology is rare and powerful — it changes how everyone in the room sees you.",
+            "next_scene": "ch7_s3"
+          },
+          {
+            "id": "ch7_s2_b",
+            "label": "Ask: 'What about the students who lost opportunities because of inflated marks above them?'",
+            "description": "Meera ensures the apology includes acknowledgment of the real victims — the honest students who were disadvantaged.",
+            "delta": {
+              "courage": 15,
+              "evidence": 5,
+              "reputation": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Redirecting an apology to include all victims ensures the resolution is comprehensive, not symbolic.",
+            "next_scene": "ch7_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s3",
+        "chapter": "ch7",
+        "title": "The Decision",
+        "narrative": "The committee deliberates. Principal Sharma looks conflicted — Prof. Iyer was his friend. But Mrs. Deshpande and the PTA secretary are clear: the evidence is overwhelming, the confession confirms it, and action is necessary.\n\nThe committee asks both Meera and Prof. Iyer to step outside while they decide. Meera sits on a bench in the corridor. Across from her, Prof. Iyer sits on another bench. Between them: ten feet of corridor and a chasm of broken trust.\n\nNeither speaks. But in the silence, {player_name} realizes something: this was never about destroying a teacher. It was about a system that let one man's small corruption grow until it affected dozens of students. The system failed before she ever got involved.",
+        "image_prompt": "A teenage girl and a teacher sitting on opposite benches in a school corridor waiting for a committee decision, the space between them heavy with unspoken words, institutional corridors stretching in both directions, watercolor illustration, waiting for justice",
+        "coaching_moment": "While waiting for justice, the most powerful thing you can do is reflect on what you want the outcome to achieve — not revenge, but repair.",
+        "choices": [
+          {
+            "id": "ch7_s3_a",
+            "label": "Think about what fair consequences should look like — prepare your recommendation if asked",
+            "description": "Meera reflects on proportional justice: what outcome would be fair to everyone — students, teacher, and the school's future?",
+            "delta": {
+              "courage": 10,
+              "reputation": 10,
+              "safety": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Having a clear sense of fair consequences means you will not be swayed by either extreme — harshness or leniency.",
+            "next_chapter": "ch8"
+          },
+          {
+            "id": "ch7_s3_b",
+            "label": "Let it go — the committee will decide. Your job is done.",
+            "description": "Meera closes her eyes and lets the weight of the last few weeks lift slightly. She has done everything she can.",
+            "delta": {
+              "safety": 12,
+              "courage": 5,
+              "reputation": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Releasing control after doing your best is one of the hardest and most liberating things a person can do.",
+            "next_chapter": "ch8"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s1",
+        "chapter": "ch8",
+        "title": "The Verdict",
+        "narrative": "The committee announces its decision in a closed session with both parties:\n\n1. Prof. Iyer is suspended for three months and will undergo a mandatory ethics review\n2. All chemistry marks for the last two years will be re-evaluated by an independent examiner\n3. Arjun's marks will be adjusted, but he will be offered counseling and a chance to re-take affected exams\n4. A new anonymous reporting system will be established for students\n5. Prof. Iyer may return to teaching after the review, but will not handle assessments alone\n\nIt is not perfect justice. Prof. Iyer is not fired. Arjun is not expelled. But the system has been changed. The school has acknowledged the problem and created safeguards.\n\n{player_name} listens to the decision and tries to decide how she feels about it.",
+        "image_prompt": "A committee member reading a formal decision document to a small group in a school office, the teenage girl and the teacher both listening, mixed emotions visible on every face, formal but human moment, watercolor illustration",
+        "coaching_moment": "Perfect justice exists only in stories — in real life, the best outcomes are the ones that balance accountability with the possibility of growth.",
+        "choices": [
+          {
+            "id": "ch8_s1_a",
+            "label": "Accept the decision — it is fair, even if not perfect",
+            "description": "Meera nods. The system responded. Changes were made. People were held accountable. That is more than most whistleblowers get.",
+            "delta": {
+              "reputation": 12,
+              "courage": 8,
+              "safety": 10
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "consequence_hint": "Accepting imperfect justice with grace shows maturity — and frees you to move forward.",
+            "next_scene": "ch8_s2"
+          },
+          {
+            "id": "ch8_s1_b",
+            "label": "Request one addition: a public acknowledgment that the reporting student was right to speak up",
+            "description": "Meera asks for institutional validation — not for ego, but to encourage future whistleblowers.",
+            "delta": {
+              "courage": 15,
+              "reputation": 10,
+              "safety": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Institutional acknowledgment protects future truth-tellers — it changes the culture, not just the case.",
+            "memory_tags": [
+              "requested_acknowledgment"
+            ],
+            "next_scene": "ch8_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s2",
+        "chapter": "ch8",
+        "title": "The Assembly",
+        "narrative": "Principal Sharma holds a school assembly. He does not name names, but he addresses the investigation publicly: 'An issue of academic integrity was brought to our attention by a student. After a thorough review, we have taken corrective action. I want to say this clearly: students who speak up about wrongdoing are doing exactly what we teach them to do. They should be supported, not punished.'\n\nThe hall is silent. Then, from somewhere in the middle rows, someone starts clapping. Then another. Then a wave of applause that Meera did not expect and does not know what to do with.\n\n{player_name} sits in the fourth row, face burning, trying not to cry. She did not do this for applause. But hearing the principal say 'they should be supported, not punished' — that feels like something being fixed. Not just in her school, but in the idea of what school should be.",
+        "image_prompt": "A school assembly — a principal speaking at a podium about integrity while a girl in the audience fights back tears as students around her applaud, school hall setting, powerful moment of vindication, watercolor illustration",
+        "coaching_moment": "Recognition from the institution you challenged is the rarest and most meaningful form of vindication a whistleblower can receive.",
+        "choices": [
+          {
+            "id": "ch8_s2_a",
+            "label": "Accept the moment — let yourself feel it. You earned this.",
+            "description": "Meera stops fighting the tears and lets the applause wash over her. Sometimes you need to let yourself be seen.",
+            "delta": {
+              "reputation": 15,
+              "courage": 10,
+              "safety": 10
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Allowing yourself to be vulnerable in a moment of triumph is its own kind of courage.",
+            "next_scene": "ch8_s3"
+          },
+          {
+            "id": "ch8_s2_b",
+            "label": "Redirect — stand up and say: 'I am not the only one. Thank Nisha, Dev, Mrs. Reddy, and Arjun.'",
+            "description": "Meera shares the credit, naming everyone who contributed — including Arjun, whose confession mattered.",
+            "delta": {
+              "reputation": 12,
+              "courage": 12,
+              "safety": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Sharing credit in the spotlight creates allies for life — and shows that truth-telling is a team sport.",
+            "memory_tags": [
+              "shared_credit"
+            ],
+            "next_scene": "ch8_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s3",
+        "chapter": "ch8",
+        "title": "After the Assembly",
+        "narrative": "The days after the assembly are strange. Students who avoided Meera start sitting with her again. The label 'snitch' is replaced by something different — she is not sure what to call it, but people look at her differently. Not with fear or pity. With something closer to respect.\n\nArjun approaches her one more time. 'I am re-taking the exams next month,' he says. 'On my own this time. If I fail, at least it will be real.'\n\nMeera looks at him. 'You will not fail. You are actually smart — you just forgot that for a while.'\n\n{player_name} walks away from the conversation feeling something she had lost in the last few weeks: lightness. The weight is not gone completely. It never will be. But it is shared now — carried by the institution, by allies, by a system that finally did its job.",
+        "image_prompt": "Two students having a brief honest exchange in a school corridor, one looking determined about re-taking exams, the other looking lighter and more hopeful, school life returning to normal around them, watercolor illustration, healing",
+        "coaching_moment": "Healing after a whistleblowing experience takes time — but the first sign of healing is when the weight starts to feel shared.",
+        "choices": [
+          {
+            "id": "ch8_s3_a",
+            "label": "Offer to help Arjun study for the re-exams — show that justice can coexist with kindness",
+            "description": "Meera extends an extraordinary gesture, helping the very person whose cheating she exposed to succeed honestly.",
+            "delta": {
+              "reputation": 15,
+              "courage": 10,
+              "safety": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Helping someone rebuild after holding them accountable is the most complete expression of justice.",
+            "memory_tags": [
+              "helped_arjun_study"
+            ],
+            "next_chapter": "ch9"
+          },
+          {
+            "id": "ch8_s3_b",
+            "label": "Let Arjun find his own way — some journeys have to be walked alone",
+            "description": "Meera respects Arjun's need to prove himself independently, without her help or involvement.",
+            "delta": {
+              "courage": 8,
+              "reputation": 8,
+              "safety": 10
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "adaptability"
+            ],
+            "consequence_hint": "Stepping back allows others to rebuild on their own terms — which is sometimes the most respectful thing to do.",
+            "next_chapter": "ch9"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s1",
+        "chapter": "ch9",
+        "title": "Three Months Later",
+        "narrative": "Prof. Iyer's suspension ends. He returns to school — quieter, smaller, different. He no longer runs private tuition. His chemistry classes are still interesting, but there is a humility now that was not there before.\n\nThe new anonymous reporting box hangs outside the principal's office. A poster next to it reads: 'See something. Say something. Your school is listening.'\n\nArjun passed his re-exams with a 74 — his real score. Not a topper, but honest. He seems lighter too.\n\n{player_name} looks at the school and sees something that has changed beyond grades and investigations. The culture shifted. Students talk about fairness now. Teachers are more careful. The anonymous box has been used twice — for issues that were resolved quickly.\n\nThe cost was high. But the change was real.",
+        "image_prompt": "A school three months later — a changed atmosphere, a new anonymous reporting box on the wall, a returning teacher looking humbler, students moving with more confidence, the girl who started it all watching from a corner, watercolor illustration, institutional change",
+        "coaching_moment": "The most lasting impact of whistleblowing is not the punishment of the wrongdoer — it is the culture change that prevents the next wrongdoing.",
+        "choices": [
+          {
+            "id": "ch9_s1_a",
+            "label": "Write an anonymous guide: 'How to report wrongdoing safely at school'",
+            "description": "Meera creates a practical guide for students, based on everything she learned, and distributes it through the school paper.",
+            "delta": {
+              "reputation": 15,
+              "courage": 10,
+              "evidence": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Turning experience into a resource for others is the highest form of service a whistleblower can provide.",
+            "memory_tags": [
+              "wrote_guide"
+            ],
+            "next_scene": "ch9_s2"
+          },
+          {
+            "id": "ch9_s1_b",
+            "label": "Move on — the chapter is closed, focus on being a student again",
+            "description": "Meera returns to being a regular student, knowing that the experience has changed her but should not define her.",
+            "delta": {
+              "safety": 12,
+              "reputation": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "adaptability"
+            ],
+            "consequence_hint": "Knowing when to close a chapter is as important as knowing when to open one.",
+            "next_scene": "ch9_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s2",
+        "chapter": "ch9",
+        "title": "Nisha Returns",
+        "narrative": "Nisha asks Meera to meet her at their old spot on the swings. She looks nervous.\n\n'I am sorry I pulled back,' she says. 'I was scared. My mother was scared. But watching you go through all that alone — it made me feel like a coward.'\n\nMeera shakes her head. 'You were not a coward. You had real reasons. Your family situation —'\n\n'I know,' Nisha interrupts. 'But I want you to know: next time, I will be there. I promise.'\n\n{player_name} looks at her friend and realizes that forgiveness is not about pretending the hurt did not happen. It is about choosing the friendship over the resentment.",
+        "image_prompt": "Two Indian schoolgirls on playground swings, one apologizing with tears, the other listening with a forgiving expression, afternoon light, the same swings from before but everything has changed between them, watercolor illustration, friendship healing",
+        "coaching_moment": "True friendship survives honest mistakes — and the apology that comes from genuine reflection is worth waiting for.",
+        "choices": [
+          {
+            "id": "ch9_s2_a",
+            "label": "Hug Nisha — 'I am just glad you are here now'",
+            "description": "Meera chooses the friendship, letting the hurt dissolve into a gesture of warmth and forgiveness.",
+            "delta": {
+              "reputation": 10,
+              "safety": 10,
+              "courage": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Forgiveness freely given heals both people — and creates a bond stronger than the one that was tested.",
+            "next_scene": "ch9_s3"
+          },
+          {
+            "id": "ch9_s2_b",
+            "label": "Accept the apology honestly — 'It hurt. But I understand. Let us move forward.'",
+            "description": "Meera does not pretend it was fine, but she also does not hold it against Nisha. Honesty repairs better than pretending.",
+            "delta": {
+              "courage": 10,
+              "reputation": 8,
+              "safety": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Honest forgiveness — naming the hurt while choosing to heal — builds the most durable relationships.",
+            "memory_tags": [
+              "honest_forgiveness"
+            ],
+            "next_scene": "ch9_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s3",
+        "chapter": "ch9",
+        "title": "The Unexpected Letter",
+        "narrative": "A letter arrives in Meera's school bag. No name on the envelope. Inside, a single page, handwritten:\n\n'Dear Meera, I have thought about what to write for weeks. I am sorry is not enough, but it is true. You showed more integrity at fourteen than I managed in twenty years of teaching. I do not blame you. I blame myself. The school is better because of what you did. I hope one day I can earn back the right to say I am proud of you. — V. Iyer'\n\nMeera reads it three times. She folds it carefully and puts it in her evidence folder — not as evidence anymore, but as a reminder that people are complicated, that wrongdoers can grow, and that truth can heal even the people it exposes.\n\n{player_name} walks home lighter than she has felt in months.",
+        "image_prompt": "A teenage girl reading a handwritten letter with tears in her eyes, sitting on a school bench, the letter showing careful handwriting, afternoon light making the paper glow, a moment of unexpected grace, watercolor illustration",
+        "coaching_moment": "The most powerful outcome of truth-telling is not punishment — it is transformation. When the person who wronged you changes because of your courage.",
+        "choices": [
+          {
+            "id": "ch9_s3_a",
+            "label": "Write back to Prof. Iyer — acknowledge his letter and wish him well",
+            "description": "Meera responds with a brief, honest note: acknowledging his apology and expressing hope for his growth.",
+            "delta": {
+              "reputation": 15,
+              "courage": 10,
+              "safety": 10
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Responding to genuine remorse with genuine grace closes the circle of justice.",
+            "memory_tags": [
+              "wrote_back"
+            ],
+            "next_chapter": "ch10"
+          },
+          {
+            "id": "ch9_s3_b",
+            "label": "Keep the letter but do not reply — some things are better left as they are",
+            "description": "Meera honors the gesture by keeping it, but decides that the relationship has found its natural resting point.",
+            "delta": {
+              "safety": 12,
+              "courage": 8,
+              "reputation": 8
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "resilience"
+            ],
+            "consequence_hint": "Not every gesture requires a response — sometimes the most respectful thing is to let a moment stand on its own.",
+            "next_chapter": "ch10"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s1",
+        "chapter": "ch10",
+        "title": "New School Year",
+        "narrative": "A new academic year begins. Meera is in Class 10 now — board exams, bigger stakes, more pressure. The school feels different. Not perfect — no school is. But something has shifted in the air.\n\nThe anonymous reporting box is still there. Two new teachers have joined. Prof. Iyer teaches chemistry with a new transparency — showing students exactly how he grades, sharing rubrics in advance.\n\nMeera notices something else: a quiet girl from the junior classes has started a 'Student Rights Club' inspired by the events of last year. She has twelve members already.\n\n{player_name} watches from a distance and thinks: I did not start a movement. I just told the truth. And the truth started its own movement.",
+        "image_prompt": "A new school year — fresh uniforms, a 'Student Rights Club' poster on a notice board, a teenage girl observing younger students organizing, the school feeling different and healthier, watercolor illustration, new beginnings built on past courage",
+        "coaching_moment": "The ripple effect of one person's courage can be felt for years — you may never know all the people your truth inspired.",
+        "choices": [
+          {
+            "id": "ch10_s1_a",
+            "label": "Mentor the Student Rights Club — share what you learned without taking it over",
+            "description": "Meera offers to guide the younger students based on her experience, giving them the tools she wishes she had.",
+            "delta": {
+              "reputation": 12,
+              "courage": 10,
+              "safety": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Mentoring the next generation of truth-tellers multiplies your impact exponentially.",
+            "memory_tags": [
+              "mentored_club"
+            ],
+            "next_scene": "ch10_s2"
+          },
+          {
+            "id": "ch10_s1_b",
+            "label": "Let them find their own way — every generation must learn courage on its own terms",
+            "description": "Meera trusts that the culture change will sustain itself without her direct involvement.",
+            "delta": {
+              "safety": 12,
+              "reputation": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "resilience"
+            ],
+            "consequence_hint": "Stepping back lets others develop their own agency — which is ultimately more sustainable.",
+            "next_scene": "ch10_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s2",
+        "chapter": "ch10",
+        "title": "The Question",
+        "narrative": "During a career guidance session, the counselor asks each student: 'What do you want to be when you grow up?'\n\nWhen it is Meera's turn, she surprises herself. 'I want to be a journalist,' she says. 'Not the kind that writes celebrity gossip. The kind that investigates things that are wrong and brings them into the light.'\n\nThe class murmurs. The counselor smiles. Nisha, sitting two rows behind, catches Meera's eye and nods.\n\n{player_name} realizes that the whole experience — the fear, the isolation, the evidence-gathering, the confrontation, the resolution — has not just changed her school. It has changed her. She knows what she is good at. She knows what matters to her. And she knows she can handle the cost.",
+        "image_prompt": "A teenage Indian girl speaking confidently in a classroom career guidance session, saying she wants to be an investigative journalist, classmates listening with respect, the school counselor smiling, watercolor illustration, a future shaped by past courage",
+        "coaching_moment": "Sometimes the most important thing a difficult experience teaches you is not about the situation — it is about yourself.",
+        "narrative_variants": {
+          "wrote_guide": "The reporting guide Meera wrote is referenced by the Student Rights Club — her words are already helping others.",
+          "helped_arjun_study": "Arjun is now a regular study partner — proof that justice and friendship can coexist."
+        },
+        "choices": [
+          {
+            "id": "ch10_s2_a",
+            "label": "Start a school newspaper investigation column — practice journalism now",
+            "description": "Meera convinces the school paper to add an investigation section, with proper ethics guidelines.",
+            "delta": {
+              "courage": 12,
+              "reputation": 10,
+              "evidence": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Starting early and practicing your calling builds skills that will serve you for decades.",
+            "next_scene": "ch10_s3"
+          },
+          {
+            "id": "ch10_s2_b",
+            "label": "Focus on board exams first — the journalism dream can wait until you have the foundation",
+            "description": "Meera prioritizes her studies, knowing that a strong academic foundation will make her a better journalist.",
+            "delta": {
+              "safety": 10,
+              "reputation": 8,
+              "courage": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Investing in fundamentals before pursuing dreams is wise — every great journalist needs knowledge and skill.",
+            "next_scene": "ch10_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s3",
+        "chapter": "ch10",
+        "title": "The Last Day",
+        "narrative": "Last day of the school year. Meera walks through the corridors one more time. She passes the chemistry lab — the door is open, students inside for a revision session with Prof. Iyer. He is teaching with visible enthusiasm, but now the marks register is shared openly with students.\n\nShe passes the anonymous reporting box. Someone has stuck a small note on it: 'Thank you, whoever started this.'\n\nShe passes Arjun, who gives her a genuine smile — not the topper's charming grin from before, but something quieter and more real.\n\nAnd she passes the principal's office, where Principal Sharma nods at her through the glass with an expression she could not have imagined a year ago: gratitude.\n\n{player_name} steps through the school gate into the summer sunshine and thinks: the truth cost me something. But the lie would have cost everyone more.",
+        "image_prompt": "A teenage Indian girl walking through a school gate into summer sunshine on the last day of school, looking back at the building with a mix of pride and relief, 'Thank You' note visible on a reporting box behind her, school building glowing in golden light, watercolor illustration, journey complete",
+        "coaching_moment": "The truth cost me something. But the lie would have cost everyone more. That is the whistleblower's creed.",
+        "choices": [
+          {
+            "id": "ch10_s3_a",
+            "label": "Walk into the sunshine — the truth set you free, and the school is better for it",
+            "description": "Meera steps forward into her future, carrying the experience as strength, not as a burden.",
+            "delta": {
+              "courage": 20,
+              "reputation": 18,
+              "safety": 15
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "is_ending": true,
+            "ending_type": "courageous_truth",
+            "ending_message": "Meera became one of the youngest investigative journalists in her state. Her first published story — about a municipal corporation skimming funds from school mid-day meals — won a national youth journalism award. When interviewers asked where she learned to be fearless, she would always say: 'I was not fearless. I was fourteen and terrified. But I had a friend named Nisha, a teacher named Mrs. Reddy, and a grandmother who told me that the truth is the one thing nobody can take from you.' The school's anonymous reporting system was adopted by thirty-seven other schools in the district. And the note on the box — 'Thank you, whoever started this' — remained there for three more years, fading but never removed."
+          },
+          {
+            "id": "ch10_s3_b",
+            "label": "Go back and add your name to the anonymous box note — it is time to own it fully",
+            "description": "Meera turns back and writes her name under 'Thank you, whoever started this' — because anonymity served its purpose, but now it is time to be visible.",
+            "delta": {
+              "courage": 25,
+              "reputation": 15,
+              "safety": 12
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "is_ending": true,
+            "ending_type": "visible_courage",
+            "ending_message": "The next morning, students arriving at school saw a name added to the anonymous box note: 'Meera Sharma, Class 9-B.' It was a small act, but it reverberated through the school. Because anonymous courage is important — but visible courage changes culture. Meera went on to study journalism and law, becoming a voice for people who had been silenced. She never forgot what it felt like to eat lunch alone. And she dedicated her career to making sure that people who speak truth never have to eat alone again."
+          }
+        ]
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "whistleblower",
+      "definition": "A person who reports wrongdoing within an organization, often at personal risk, to protect others or uphold ethical standards."
+    },
+    {
+      "term": "integrity",
+      "definition": "The quality of being honest and having strong moral principles — doing what is right even when it is difficult or costly."
+    },
+    {
+      "term": "evidence",
+      "definition": "Facts, documents, or observations that support a claim or accusation — the foundation of any credible report."
+    },
+    {
+      "term": "retaliation",
+      "definition": "Punishment or negative treatment directed at someone for reporting wrongdoing — a common and illegal response to whistleblowing."
+    },
+    {
+      "term": "anonymous",
+      "definition": "Without revealing identity — a way to report wrongdoing while protecting yourself from immediate retaliation."
+    },
+    {
+      "term": "corruption",
+      "definition": "Dishonest or fraudulent conduct by those in power — it often starts small and grows through justification and silence."
+    },
+    {
+      "term": "accountability",
+      "definition": "The obligation to take responsibility for one's actions and accept the consequences of wrongdoing."
+    },
+    {
+      "term": "due_process",
+      "definition": "The proper procedure for investigating allegations fairly, giving the accused a chance to respond before judgment."
+    },
+    {
+      "term": "moral_courage",
+      "definition": "The willingness to act on your moral convictions despite personal risk — different from physical courage."
+    },
+    {
+      "term": "complicity",
+      "definition": "Being involved in wrongdoing by choosing to stay silent or look the other way when you know something is wrong."
+    },
+    {
+      "term": "bystander_effect",
+      "definition": "The tendency for people to be less likely to help or act when others are present — assuming someone else will do something."
+    },
+    {
+      "term": "proportional_justice",
+      "definition": "The idea that punishment should match the severity of the offense — not too harsh and not too lenient."
+    },
+    {
+      "term": "institutional_trust",
+      "definition": "Confidence that the systems and organizations meant to protect us will actually do their job when tested."
+    },
+    {
+      "term": "testimony",
+      "definition": "A formal statement made by a witness, usually under oath or in an official proceeding, about what they observed."
+    },
+    {
+      "term": "vindication",
+      "definition": "Being proven right after being doubted or criticized — the confirmation that your actions were justified."
+    },
+    {
+      "term": "restorative_justice",
+      "definition": "A justice approach focused on repairing harm and rebuilding relationships rather than simply punishing offenders."
+    }
+  ],
+  "dimension_scoring_weights": {
+    "resilience": 0.25,
+    "strategic_thinking": 0.2,
+    "empathy": 0.2,
+    "delayed_gratification": 0.15,
+    "risk_tolerance": 0.15,
+    "adaptability": 0.05
+  },
+  "coaching_moment": "Courage is not the absence of fear — it is deciding that truth and fairness matter more than personal comfort or popularity.",
+  "estimated_duration": "40-50 minutes",
+  "target_age": "10-18",
+  "tags": [
+    "story",
+    "courage",
+    "ethics",
+    "whistleblowing",
+    "integrity",
+    "life-skills",
+    "india",
+    "school"
+  ],
+  "cultural_context": "indian",
+  "nep_stage": "middle_school",
+  "nep_competencies": [
+    "critical_thinking",
+    "ethical_reasoning",
+    "communication",
+    "social_emotional_learning"
+  ],
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}

@@ -1,0 +1,1479 @@
+{
+  "game_id": "hospital_er_director_v1",
+  "game_type": "ai_arena",
+  "title": "Hospital ER Director: Code Blue",
+  "domain": "healthcare",
+  "category": "AI Arena",
+  "description": "You're the new Emergency Room Director at Mumbai Central Hospital. Lives hang in the balance every second. Manage your team, allocate scarce resources, and make impossible medical decisions under extreme time pressure. Every choice saves or costs a life.",
+  "initial_state": {
+    "patient_survival_rate": {
+      "value": 85,
+      "label": "Survival Rate (%)",
+      "icon": "❤️"
+    },
+    "staff_morale": {
+      "value": 70,
+      "label": "Staff Morale",
+      "icon": "👨‍⚕️"
+    },
+    "hospital_budget": {
+      "value": 50000,
+      "label": "Budget (₹K)",
+      "icon": "💰"
+    },
+    "equipment_status": {
+      "value": 65,
+      "label": "Equipment Status",
+      "icon": "🏥"
+    },
+    "public_trust": {
+      "value": 60,
+      "label": "Public Trust",
+      "icon": "⭐"
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "ai_arena_config": {
+    "ai_enhanced": true,
+    "dynamic_rounds_enabled": true,
+    "max_dynamic_rounds": 2,
+    "competitor_chat_enabled": false,
+    "npc_chat_enabled": true,
+    "image_generation_enabled": true,
+    "domain": "healthcare"
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "scene_1",
+        "title": "First Day",
+        "narrative": "It's 6 AM and you walk into Mumbai Central Hospital for your first day as ER Director. The outgoing director left suddenly — rumors say burnout. The night shift nurse hands you a clipboard full of pending cases. Your phone buzzes: 'Mass casualty alert - bus accident on Western Express Highway.'",
+        "image_prompt": "Early morning at a large Indian public hospital entrance. A doctor in a white coat walks through the glass doors of Mumbai Central Hospital. Ambulance lights flash in the background. The reception area is busy with night shift staff. Warm golden sunrise light streams through the windows. Realistic, dramatic, cinematic lighting.",
+        "choices": [
+          {
+            "id": "rush_to_er",
+            "label": "Rush to the ER floor",
+            "description": "Head straight to the emergency room to take charge of the incoming casualties",
+            "next_scene": "scene_2a",
+            "delta": {
+              "patient_survival_rate": 5,
+              "staff_morale": 5
+            }
+          },
+          {
+            "id": "review_cases",
+            "label": "Review pending cases first",
+            "description": "Take a few minutes to understand the overnight backlog before diving in",
+            "next_scene": "scene_2b",
+            "delta": {
+              "equipment_status": 5,
+              "public_trust": 5
+            }
+          }
+        ]
+      },
+      {
+        "scene_id": "scene_2a",
+        "title": "The ER Floor",
+        "narrative": "Chaos. Three ambulances are pulling in simultaneously. Nurses are running. A junior doctor looks to you for guidance. The triage area is overwhelmed. Stretchers line the corridor. The smell of antiseptic mixes with blood. Monitors beep frantically. This is your domain now.",
+        "image_prompt": "Chaotic Indian hospital emergency room. Three ambulances visible through open bay doors. Nurses in blue scrubs running with stretchers. A young doctor looking anxious. Medical equipment and monitors everywhere. Fluorescent lighting, motion blur on running staff. Intense, documentary-style realism.",
+        "choices": [
+          {
+            "id": "take_charge_triage",
+            "label": "Take charge of triage personally",
+            "description": "Step into the triage area yourself and start directing patient flow",
+            "next_scene": "scene_3",
+            "delta": {
+              "patient_survival_rate": 10,
+              "staff_morale": -5
+            }
+          },
+          {
+            "id": "delegate_coordinate",
+            "label": "Delegate to senior staff and coordinate",
+            "description": "Trust your experienced team to handle triage while you coordinate the bigger picture",
+            "next_scene": "scene_3",
+            "delta": {
+              "staff_morale": 10,
+              "patient_survival_rate": 3
+            }
+          }
+        ]
+      },
+      {
+        "scene_id": "scene_2b",
+        "title": "The Backlog",
+        "narrative": "The clipboard reveals 15 pending cases from overnight. Equipment maintenance is overdue. Three nurses called in sick. Budget reports show overspending last quarter. The hospital is held together by duct tape and the sheer willpower of an exhausted staff. You need to pick your battles.",
+        "image_prompt": "A hospital director's office cluttered with paperwork and medical files. A clipboard with a long list of cases. Budget spreadsheets on a computer screen showing red numbers. Through the office window, a busy hospital corridor is visible. Warm desk lamp lighting contrasts with harsh corridor fluorescents. Realistic, detail-rich.",
+        "choices": [
+          {
+            "id": "prioritize_equipment",
+            "label": "Prioritize equipment maintenance",
+            "description": "Get the critical medical equipment serviced before something fails during an emergency",
+            "next_scene": "scene_3",
+            "delta": {
+              "equipment_status": 10,
+              "hospital_budget": -5000
+            }
+          },
+          {
+            "id": "focus_staffing",
+            "label": "Focus on staff scheduling",
+            "description": "Reorganize the shift roster to cover the gaps and reduce burnout",
+            "next_scene": "scene_3",
+            "delta": {
+              "staff_morale": 10,
+              "patient_survival_rate": 3
+            }
+          }
+        ]
+      },
+      {
+        "scene_id": "scene_3",
+        "title": "Code Blue",
+        "narrative": "The PA system crackles: 'Code Blue, Bay 4!' A patient is crashing. Your first real emergency as director. The entire ER watches to see how you handle it. A nurse is already performing CPR. The defibrillator is being wheeled in. This is your baptism by fire. Everything you do from this moment defines your leadership.",
+        "image_prompt": "Intense hospital emergency scene. Medical team performing CPR on a patient in a hospital bay. A defibrillator being charged. Doctors and nurses gathered around. A new director in a white coat stepping forward decisively. Heart monitor showing flatline. Dramatic overhead lighting, high stakes atmosphere. Photorealistic, cinematic.",
+        "transitions_to_gameplay": true
+      }
+    ]
+  },
+  "npcs": [
+    {
+      "id": "dr_arjun",
+      "name": "Dr. Arjun Mehta",
+      "avatar": "👨‍⚕️",
+      "role": "Senior Surgeon",
+      "personality": "Brilliant but arrogant. 20 years of experience in trauma surgery. Resents new management and believes seniority should dictate leadership. Respects competence above all else.",
+      "domain_expertise": "trauma surgery, emergency procedures, surgical protocols",
+      "conversation_topics": [
+        "surgery",
+        "protocols",
+        "trauma_care",
+        "staff_politics",
+        "hospital_politics"
+      ],
+      "initial_trust": 40
+    },
+    {
+      "id": "nurse_lakshmi",
+      "name": "Nurse Lakshmi Nair",
+      "avatar": "👩‍⚕️",
+      "role": "Head Nurse",
+      "personality": "Compassionate, overworked, respected by everyone on the floor. Knows every corner of the hospital and every patient's name. She holds the ER together through sheer dedication.",
+      "domain_expertise": "patient care, nursing operations, staff wellness, hospital logistics",
+      "conversation_topics": [
+        "patient_care",
+        "nursing_staff",
+        "morale",
+        "equipment",
+        "scheduling"
+      ],
+      "initial_trust": 65
+    },
+    {
+      "id": "admin_kapoor",
+      "name": "Mr. Kapoor",
+      "avatar": "👨‍💼",
+      "role": "Hospital Administrator",
+      "personality": "Budget-focused, politically connected, and always watching the bottom line. Pressures you to cut costs at every turn. Friendly on the surface but will go over your head if finances slip.",
+      "domain_expertise": "hospital finance, insurance, government relations, public relations",
+      "conversation_topics": [
+        "budget",
+        "insurance",
+        "hospital_politics",
+        "PR",
+        "cost_cutting"
+      ],
+      "initial_trust": 50
+    }
+  ],
+  "competitors": [],
+  "base_rounds": [
+    {
+      "id": "round_1",
+      "round_number": 1,
+      "title": "Mass Casualty Triage",
+      "story": "Bus accident victims flood the ER. 12 patients, 6 critical. You have 3 available trauma bays and limited blood supply. The ambulance crew is shouting vitals. Families are crowding the entrance. Your team looks to you. Who gets treated first?",
+      "goal": "Perform triage to maximize survival with limited resources",
+      "image_prompt": "Busy Indian hospital emergency room during a mass casualty event. Multiple stretchers with injured patients. Nurses checking vitals. Blood bags on IV stands. A triage board on the wall. Anxious family members behind a glass partition. Overhead fluorescent lights. High-intensity, photojournalistic style.",
+      "timed": true,
+      "time_limit_seconds": 45,
+      "timeout_delta": {
+        "patient_survival_rate": -15,
+        "public_trust": -10
+      },
+      "timeout_feedback": "Delayed triage! Two patients deteriorated critically while you hesitated. The ER descended into chaos without your direction.",
+      "choices": [
+        {
+          "id": "critical_first",
+          "label": "Prioritize most critical patients",
+          "description": "Focus all resources on the 6 critical patients first, stabilize them before moving to others",
+          "delta": {
+            "patient_survival_rate": 10,
+            "hospital_budget": -8000,
+            "equipment_status": -5,
+            "resilience": 3,
+            "ethical_reasoning": 4
+          },
+          "feedback": "You saved the most critical cases. Some less urgent patients had to wait, but the right call. Dr. Arjun nods approvingly — he respects decisive clinical judgment.",
+          "memory_tag": "critical_first",
+          "npc_deltas": {
+            "dr_arjun": 5
+          }
+        },
+        {
+          "id": "survival_triage",
+          "label": "Triage by chance of survival",
+          "description": "Use clinical assessment to treat patients with the highest survival probability first",
+          "delta": {
+            "patient_survival_rate": 8,
+            "staff_morale": 5,
+            "ethical_reasoning": 6,
+            "emotional_regulation": 6
+          },
+          "feedback": "Efficient triage. Maximum lives saved with available resources. Nurse Lakshmi appreciates the systematic approach — it keeps her team organized.",
+          "memory_tag": "survival_triage",
+          "npc_deltas": {
+            "nurse_lakshmi": 10
+          }
+        },
+        {
+          "id": "fair_triage",
+          "label": "Treat on first-come basis",
+          "description": "Process patients in order of arrival to maintain fairness and avoid bias",
+          "delta": {
+            "patient_survival_rate": 3,
+            "public_trust": 8,
+            "emotional_regulation": 9,
+            "impulse_control": 2
+          },
+          "feedback": "Fair but not optimal. Some critical patients waited too long. Families appreciate the transparency but your medical staff knows better outcomes were possible.",
+          "memory_tag": "fair_triage"
+        },
+        {
+          "id": "call_reinforcements",
+          "label": "Call in off-duty staff for extra capacity",
+          "description": "Phone off-duty doctors and nurses to come in immediately, expanding your treatment capacity",
+          "delta": {
+            "patient_survival_rate": 12,
+            "staff_morale": -8,
+            "hospital_budget": -5000,
+            "impulse_control": 3,
+            "strategic_thinking": 4
+          },
+          "feedback": "All patients treated but staff is exhausted and overtime costs mount. Mr. Kapoor's phone is already buzzing with budget alerts.",
+          "memory_tag": "called_reinforcements",
+          "npc_deltas": {
+            "admin_kapoor": -10
+          }
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "resilience",
+          "ethical_reasoning"
+        ]
+      }
+    },
+    {
+      "id": "round_2",
+      "round_number": 2,
+      "title": "The VIP Problem",
+      "story": "A local politician arrives with chest pain. His aide demands immediate attention, bypassing the queue. Three critical patients are still waiting. The media is outside with cameras rolling. The politician's aide drops the Health Minister's name. Your staff watches to see if you bend.",
+      "goal": "Handle VIP pressure while maintaining medical ethics",
+      "image_prompt": "Hospital waiting area. A well-dressed politician sitting impatiently with his aide arguing with hospital staff. Other patients on stretchers in the background looking worried. TV news cameras visible through the entrance. A doctor caught in the middle. Tension visible in body language. Realistic, dramatic lighting.",
+      "choices": [
+        {
+          "id": "ethics_first",
+          "label": "Treat based on medical priority only",
+          "description": "Inform the aide that all patients are treated based on clinical urgency, not status",
+          "delta": {
+            "public_trust": 10,
+            "patient_survival_rate": 5,
+            "resilience": 3,
+            "ethical_reasoning": 4
+          },
+          "feedback": "The politician's aide is furious, but your staff respects you. Nurse Lakshmi gives you a quiet nod of approval. The critical patients get treated first.",
+          "memory_tag": "ethics_first",
+          "npc_deltas": {
+            "nurse_lakshmi": 15,
+            "admin_kapoor": -10
+          }
+        },
+        {
+          "id": "vip_treatment",
+          "label": "Fast-track the politician",
+          "description": "Quietly move the politician ahead in the queue to avoid political complications",
+          "delta": {
+            "public_trust": -5,
+            "hospital_budget": 10000,
+            "ethical_reasoning": 6,
+            "emotional_regulation": 6
+          },
+          "hidden_delta": true,
+          "feedback": "The politician is grateful. His aide whispers about a 'generous donation.' But a nurse saw you skip the queue. Word spreads on the floor.",
+          "memory_tag": "vip_treatment",
+          "npc_deltas": {
+            "admin_kapoor": 15,
+            "nurse_lakshmi": -10
+          }
+        },
+        {
+          "id": "compromise_vip",
+          "label": "Assign a dedicated team while continuing normal ops",
+          "description": "Split your staff — one team for the VIP, another continues treating the queue",
+          "delta": {
+            "staff_morale": -5,
+            "public_trust": 3,
+            "hospital_budget": -3000,
+            "emotional_regulation": 9,
+            "impulse_control": 2
+          },
+          "feedback": "You managed both, but stretched your team thin. The nurses are running between two stations. It works, barely.",
+          "memory_tag": "compromise_vip"
+        },
+        {
+          "id": "delegated_vip",
+          "label": "Let Dr. Arjun handle the VIP personally",
+          "description": "Ask the senior surgeon to attend to the politician, satisfying both parties",
+          "delta": {
+            "patient_survival_rate": 3,
+            "staff_morale": 5,
+            "impulse_control": 3,
+            "strategic_thinking": 4
+          },
+          "feedback": "Dr. Arjun's ego is satisfied and the politician gets top care. A smart delegation that keeps everyone happy — for now.",
+          "memory_tag": "delegated_vip",
+          "npc_deltas": {
+            "dr_arjun": 15
+          }
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "ethical_reasoning",
+          "emotional_regulation"
+        ]
+      }
+    },
+    {
+      "id": "round_3",
+      "round_number": 3,
+      "title": "Equipment Failure",
+      "story": "The main ventilator in ICU crashes during a critical procedure. A patient is on life support. The backup is 10 years old and hasn't been tested in months. Your biomedical engineer says repair will take 2 hours minimum. The patient doesn't have 2 hours.",
+      "goal": "Handle equipment emergency without losing patients",
+      "image_prompt": "Hospital ICU scene. A ventilator machine with warning lights flashing red. A patient connected to life support. A biomedical engineer examining the machine with tools. Nurses looking worried. A backup ventilator — visibly old and dusty — being wheeled in. Tense, clinical atmosphere. Photorealistic, high detail.",
+      "timed": true,
+      "time_limit_seconds": 30,
+      "timeout_delta": {
+        "patient_survival_rate": -20,
+        "equipment_status": -15
+      },
+      "timeout_feedback": "Equipment failure unaddressed! The patient crashed on the ventilator while you deliberated. The ICU team is shaken.",
+      "choices": [
+        {
+          "id": "manual_vent",
+          "label": "Manual ventilation until repair",
+          "description": "Have nurses hand-ventilate the patient using a bag valve mask until the machine is fixed",
+          "delta": {
+            "patient_survival_rate": 5,
+            "staff_morale": -10,
+            "resilience": 3,
+            "ethical_reasoning": 4
+          },
+          "feedback": "Nurses take turns hand-ventilating for two grueling hours. Exhausting but effective. The patient stabilizes. Your nursing team is spent.",
+          "memory_tag": "manual_vent",
+          "npc_deltas": {
+            "nurse_lakshmi": -5
+          }
+        },
+        {
+          "id": "patient_transfer",
+          "label": "Transfer patient to nearby hospital",
+          "description": "Arrange emergency ambulance transfer to Lilavati Hospital across the city",
+          "delta": {
+            "patient_survival_rate": 3,
+            "public_trust": -5,
+            "hospital_budget": -3000,
+            "ethical_reasoning": 6,
+            "emotional_regulation": 6
+          },
+          "feedback": "Risky transfer, but successful. Media questions why Mumbai Central can't handle its own patients. The ambulance ride was touch-and-go.",
+          "memory_tag": "patient_transfer"
+        },
+        {
+          "id": "backup_equipment",
+          "label": "Deploy the backup ventilator",
+          "description": "Power up the old backup ventilator and hope it holds together",
+          "delta": {
+            "patient_survival_rate": 8,
+            "equipment_status": -10,
+            "emotional_regulation": 9,
+            "impulse_control": 2
+          },
+          "probability_outcomes": [
+            {
+              "probability": 0.7,
+              "delta": {
+                "patient_survival_rate": 5
+              }
+            },
+            {
+              "probability": 0.3,
+              "delta": {
+                "patient_survival_rate": -10,
+                "equipment_status": -10
+              }
+            }
+          ],
+          "feedback": "The old backup ventilator whirs to life. Will it hold? Everyone watches the monitors anxiously...",
+          "memory_tag": "backup_equipment"
+        },
+        {
+          "id": "emergency_purchase",
+          "label": "Emergency purchase authorization",
+          "description": "Authorize an immediate purchase of a new ventilator from a medical supplier across town",
+          "delta": {
+            "equipment_status": 15,
+            "hospital_budget": -15000,
+            "patient_survival_rate": 10,
+            "impulse_control": 3,
+            "strategic_thinking": 4
+          },
+          "feedback": "Expensive but you got a new ventilator delivered within the hour. The patient is saved. Mr. Kapoor will have a heart attack when he sees the bill.",
+          "memory_tag": "emergency_purchase",
+          "npc_deltas": {
+            "admin_kapoor": -15
+          }
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "emotional_regulation",
+          "impulse_control"
+        ]
+      }
+    },
+    {
+      "id": "round_4",
+      "round_number": 4,
+      "title": "The Night Shift Crisis",
+      "story": "Night shift. Half your staff called in sick — monsoon flu is sweeping through Mumbai. The ER is packed wall to wall. A trauma case, two cardiac emergencies, and a pediatric patient all arrive within 15 minutes. The skeleton crew looks at you with exhausted eyes. The hospital feels like a sinking ship.",
+      "goal": "Manage extreme understaffing during peak emergency hours",
+      "image_prompt": "Night scene inside a dimly lit Indian hospital ER. Rain visible through windows. Exhausted medical staff in scrubs with dark circles under their eyes. Multiple patients on stretchers in the corridor. A child on a gurney with a worried mother. Clock on the wall showing 2 AM. Moody, atmospheric lighting. Cinematic realism.",
+      "triggers_dynamic_round": true,
+      "choices": [
+        {
+          "id": "director_on_floor",
+          "label": "Personally work the floor",
+          "description": "Roll up your sleeves, put on gloves, and work alongside your team through the night",
+          "delta": {
+            "patient_survival_rate": 10,
+            "staff_morale": 10,
+            "resilience": 3,
+            "ethical_reasoning": 4
+          },
+          "feedback": "Your team sees you in the trenches — suturing wounds, checking vitals, comforting patients. Morale soars. You haven't slept in 20 hours but neither has anyone else.",
+          "memory_tag": "director_on_floor",
+          "npc_deltas": {
+            "nurse_lakshmi": 15,
+            "dr_arjun": 5
+          }
+        },
+        {
+          "id": "mutual_aid",
+          "label": "Activate mutual aid with nearby hospitals",
+          "description": "Call neighboring hospitals to send backup staff and accept patient transfers",
+          "delta": {
+            "patient_survival_rate": 8,
+            "hospital_budget": -5000,
+            "public_trust": 3,
+            "ethical_reasoning": 6,
+            "emotional_regulation": 6
+          },
+          "feedback": "Other hospitals send support. Collaborative approach works. Staff from Hinduja and KEM arrive within the hour. Mumbai's medical community sticks together.",
+          "memory_tag": "mutual_aid"
+        },
+        {
+          "id": "strict_triage",
+          "label": "Implement strict triage — turn away non-emergencies",
+          "description": "Redirect all non-life-threatening cases to clinics and other hospitals",
+          "delta": {
+            "patient_survival_rate": 5,
+            "public_trust": -10,
+            "staff_morale": 5,
+            "emotional_regulation": 9,
+            "impulse_control": 2
+          },
+          "feedback": "Tough call. Some patients were turned away in the rain. A local news channel captures footage. Social media erupts. But your critical patients all survived.",
+          "memory_tag": "strict_triage"
+        },
+        {
+          "id": "skeleton_crew",
+          "label": "Keep skeleton staff, focus on critical cases",
+          "description": "Work with minimal staff and pray that no more emergencies come in",
+          "delta": {
+            "patient_survival_rate": 3,
+            "hospital_budget": 3000,
+            "impulse_control": 3,
+            "strategic_thinking": 4
+          },
+          "probability_outcomes": [
+            {
+              "probability": 0.5,
+              "delta": {
+                "patient_survival_rate": 5
+              }
+            },
+            {
+              "probability": 0.5,
+              "delta": {
+                "patient_survival_rate": -10
+              }
+            }
+          ],
+          "feedback": "Risky gamble with minimal staff. You hold your breath every time the ambulance siren wails outside...",
+          "memory_tag": "skeleton_crew"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "impulse_control",
+          "strategic_thinking"
+        ]
+      }
+    },
+    {
+      "id": "round_5",
+      "round_number": 5,
+      "title": "Pandemic Preparedness",
+      "ai_generatable": true,
+      "ai_generation_context": {
+        "theme_options": [
+          "disease outbreak",
+          "infection control",
+          "quarantine protocols",
+          "pandemic planning"
+        ],
+        "resource_names": [
+          "patient_survival_rate",
+          "staff_morale",
+          "hospital_budget",
+          "equipment_status",
+          "public_trust"
+        ],
+        "difficulty": "medium",
+        "context": "Mid-game challenge during ER management at Mumbai Central Hospital. The player is the ER Director facing a potential disease outbreak or infection control scenario based on their earlier decisions."
+      },
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "resilience"
+        ]
+      },
+      "image_prompt": "a bustling city health center with staff in scrubs preparing vaccines, bright fluorescent lights illuminating the room, a sense of urgency and hope in the air"
+    },
+    {
+      "id": "round_6",
+      "round_number": 6,
+      "title": "The Budget Showdown",
+      "story": "Hospital board meeting. Mr. Kapoor presents the quarterly numbers — you're ₹20 Lakhs over budget. The board chairman taps his pen impatiently. Department heads are nervous. The board wants cuts. Where do you compromise? Your medical ethics and financial reality are about to collide.",
+      "goal": "Navigate budget politics while protecting patient care",
+      "image_prompt": "Corporate boardroom in an Indian hospital. Long polished table with board members in formal attire. A projector screen showing financial charts with red downward arrows. A hospital administrator presenting budget numbers. The ER director sitting across, looking determined. Tense corporate atmosphere. Realistic, professional lighting.",
+      "choices": [
+        {
+          "id": "cut_admin",
+          "label": "Cut administrative overhead",
+          "description": "Propose reducing administrative staff, paperwork duplication, and executive perks",
+          "delta": {
+            "hospital_budget": 15000,
+            "staff_morale": 5,
+            "resilience": 3,
+            "ethical_reasoning": 4
+          },
+          "feedback": "Smart cuts. Admin staff grumbles but medical staff cheers. Mr. Kapoor takes it personally — you just cut his department.",
+          "memory_tag": "cut_admin",
+          "npc_deltas": {
+            "admin_kapoor": -15,
+            "nurse_lakshmi": 5
+          }
+        },
+        {
+          "id": "cut_equipment",
+          "label": "Reduce non-essential equipment spending",
+          "description": "Delay planned equipment upgrades and extend maintenance cycles",
+          "delta": {
+            "hospital_budget": 10000,
+            "equipment_status": -10,
+            "ethical_reasoning": 6,
+            "emotional_regulation": 6
+          },
+          "feedback": "Budget saved, but some equipment gets older. The biomedical engineer warns that deferred maintenance always costs more in the long run.",
+          "memory_tag": "cut_equipment",
+          "npc_deltas": {
+            "admin_kapoor": 10
+          }
+        },
+        {
+          "id": "fundraising",
+          "label": "Propose a fundraising campaign",
+          "description": "Launch a community fundraising drive and approach corporate CSR funds",
+          "delta": {
+            "hospital_budget": 8000,
+            "public_trust": 10,
+            "emotional_regulation": 9,
+            "impulse_control": 2
+          },
+          "feedback": "Community responds warmly. Local businesses contribute. A Tata Trust CSR grant comes through. Donations start flowing in.",
+          "memory_tag": "fundraising"
+        },
+        {
+          "id": "investment_case",
+          "label": "Present data on how investment saves money long-term",
+          "description": "Show the board an ROI analysis proving that spending on care reduces costly complications",
+          "delta": {
+            "hospital_budget": -3000,
+            "patient_survival_rate": 5,
+            "public_trust": 5,
+            "impulse_control": 3,
+            "strategic_thinking": 4
+          },
+          "feedback": "Your ROI analysis convinces some board members. The data is compelling — preventing readmissions saves more than cutting budgets. A few members applaud.",
+          "memory_tag": "investment_case",
+          "npc_deltas": {
+            "admin_kapoor": 5,
+            "dr_arjun": 5
+          }
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "resilience",
+          "ethical_reasoning"
+        ]
+      }
+    },
+    {
+      "id": "round_7",
+      "round_number": 7,
+      "title": "The Ethical Dilemma",
+      "story": "A 12-year-old girl needs an emergency transplant. A matching organ just arrived. But there's a 45-year-old father of three on the list who's been waiting longer. Hospital policy says first-come-first-served. The transplant coordinator looks at you. Both families are praying in the hallway. Your call.",
+      "goal": "Make an impossible ethical decision under time pressure",
+      "image_prompt": "Hospital corridor with two families on opposite sides. On one side, parents holding a sick child's hand. On the other, a wife and three young children waiting anxiously. A doctor in the middle holding a medical file, looking torn. Organ transport cooler visible in the background. Emotional, soft lighting. Deeply human, photorealistic.",
+      "timed": true,
+      "time_limit_seconds": 25,
+      "timeout_delta": {
+        "patient_survival_rate": -10,
+        "public_trust": -15,
+        "staff_morale": -10
+      },
+      "timeout_feedback": "You couldn't decide! Both patients' conditions worsened while you deliberated. The transplant window is closing. Your team is shaken by the indecision.",
+      "choices": [
+        {
+          "id": "followed_protocol",
+          "label": "Follow the waitlist — give it to the father",
+          "description": "Honor the established protocol. The father has waited longer and the rules must apply equally",
+          "delta": {
+            "patient_survival_rate": 5,
+            "public_trust": 8,
+            "staff_morale": 3,
+            "resilience": 3,
+            "ethical_reasoning": 4
+          },
+          "feedback": "Following protocol. The child's family is devastated but the system was fair. Your staff respects the consistency. The transplant is successful.",
+          "memory_tag": "followed_protocol"
+        },
+        {
+          "id": "saved_child",
+          "label": "Prioritize the child — youth takes precedence",
+          "description": "The child has more years of life ahead. Make the difficult call to prioritize her",
+          "delta": {
+            "patient_survival_rate": 8,
+            "public_trust": -5,
+            "staff_morale": -3,
+            "ethical_reasoning": 6,
+            "emotional_regulation": 6
+          },
+          "feedback": "The child survives. The father's family threatens legal action. The ethics committee will want a review. Dr. Arjun quietly tells you he would have done the same.",
+          "memory_tag": "saved_child",
+          "npc_deltas": {
+            "dr_arjun": 5,
+            "admin_kapoor": -10
+          }
+        },
+        {
+          "id": "ethics_committee",
+          "label": "Consult the ethics committee",
+          "description": "Convene an emergency ethics review to make the decision collectively",
+          "delta": {
+            "patient_survival_rate": 3,
+            "staff_morale": 5,
+            "public_trust": 5,
+            "emotional_regulation": 9,
+            "impulse_control": 2
+          },
+          "feedback": "The committee deliberates and reaches a consensus. A measured approach, though time-consuming. Both families feel heard. The process, while slow, protects the institution.",
+          "memory_tag": "ethics_committee"
+        },
+        {
+          "id": "innovative_solution",
+          "label": "Check if organ can be split for both",
+          "description": "Consult with the transplant surgeon about the possibility of splitting the organ for both patients",
+          "delta": {
+            "equipment_status": -5,
+            "hospital_budget": -5000,
+            "impulse_control": 3,
+            "strategic_thinking": 4
+          },
+          "probability_outcomes": [
+            {
+              "probability": 0.4,
+              "delta": {
+                "patient_survival_rate": 15,
+                "public_trust": 15
+              }
+            },
+            {
+              "probability": 0.6,
+              "delta": {
+                "patient_survival_rate": -5
+              }
+            }
+          ],
+          "feedback": "An unconventional approach. The transplant surgeon raises an eyebrow. High risk, potentially high reward. The entire OR holds its breath...",
+          "memory_tag": "innovative_solution"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "ethical_reasoning",
+          "emotional_regulation"
+        ]
+      }
+    },
+    {
+      "id": "round_8",
+      "round_number": 8,
+      "title": "The Aftermath",
+      "story": "Three months into your tenure. The hospital's performance metrics are being reviewed. Your decisions have shaped the ER into what it is today. The board, staff, and community all have opinions. Now you must choose your legacy — what will define Mumbai Central Hospital going forward?",
+      "goal": "Reflect on your leadership and plan for the future",
+      "image_prompt": "A hospital director standing at a window overlooking Mumbai's skyline at sunset. Behind them, a wall covered with performance charts, patient thank-you letters, newspaper clippings, and team photos. A desk with a steaming cup of chai. Warm golden hour light. Reflective, hopeful mood. Cinematic, wide angle.",
+      "choices": [
+        {
+          "id": "training_investment",
+          "label": "Implement a comprehensive training program",
+          "description": "Invest in continuous medical education, simulation training, and skill development for all staff",
+          "delta": {
+            "staff_morale": 10,
+            "patient_survival_rate": 8,
+            "hospital_budget": -5000,
+            "resilience": 3,
+            "ethical_reasoning": 4
+          },
+          "feedback": "Long-term investment in your team's skills. Monthly simulation drills begin. Junior doctors gain confidence. The ER becomes a teaching hospital.",
+          "memory_tag": "training_investment"
+        },
+        {
+          "id": "community_health",
+          "label": "Launch a community health initiative",
+          "description": "Start outreach programs in nearby slums to prevent emergencies before they happen",
+          "delta": {
+            "public_trust": 15,
+            "patient_survival_rate": 5,
+            "ethical_reasoning": 6,
+            "emotional_regulation": 6
+          },
+          "feedback": "Preventing emergencies is better than treating them. Health camps in Dharavi and Kurla reduce ER admissions by 15%. The community embraces you.",
+          "memory_tag": "community_health"
+        },
+        {
+          "id": "tech_upgrade",
+          "label": "Push for technology upgrades",
+          "description": "Invest in modern monitoring systems, digital records, and AI-assisted diagnostics",
+          "delta": {
+            "equipment_status": 15,
+            "hospital_budget": -10000,
+            "patient_survival_rate": 5,
+            "emotional_regulation": 9,
+            "impulse_control": 2
+          },
+          "feedback": "State-of-the-art equipment transforms your ER. AI triage assistance, real-time monitoring dashboards, and electronic health records modernize the entire department.",
+          "memory_tag": "tech_upgrade"
+        },
+        {
+          "id": "staff_wellness",
+          "label": "Focus on staff wellness and retention",
+          "description": "Create a wellness program with counseling, reasonable shifts, and career growth paths",
+          "delta": {
+            "staff_morale": 15,
+            "patient_survival_rate": 5,
+            "public_trust": 3,
+            "impulse_control": 3,
+            "strategic_thinking": 4
+          },
+          "feedback": "Happy staff means better patient care. Staff turnover drops 40%. A wellness room is set up. Nurse Lakshmi says it's the first time she's felt valued in years.",
+          "memory_tag": "staff_wellness"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "emotional_regulation",
+          "impulse_control"
+        ]
+      }
+    }
+  ],
+  "crisis_events": [
+    {
+      "id": "mass_poisoning",
+      "trigger_after_round": 1,
+      "probability": 0.4,
+      "title": "Mass Food Poisoning",
+      "description": "50 students from a nearby municipal school arrive with severe food poisoning. Vomiting, dehydration, and panic. Parents are flooding the entrance. Your ER is already at capacity from the bus accident aftermath. The school principal is hysterical.",
+      "image_prompt": "Overwhelmed hospital entrance with dozens of school children in uniforms being brought in by teachers and parents. Some children on stretchers, others sitting on the floor looking sick. Ambulances and auto-rickshaws parked haphazardly. Chaotic, urgent atmosphere. Photojournalistic realism.",
+      "time_limit": 25,
+      "choices": [
+        {
+          "id": "triage_tents",
+          "label": "Set up triage tents outside",
+          "description": "Deploy emergency tents in the hospital parking area to expand capacity",
+          "delta": {
+            "patient_survival_rate": 8,
+            "hospital_budget": -5000
+          },
+          "feedback": "Triage tents go up in 20 minutes. Your team divides efficiently between indoor and outdoor stations. All 50 students are treated. Parents are relieved and grateful."
+        },
+        {
+          "id": "redirect_hospitals",
+          "label": "Redirect to other hospitals",
+          "description": "Send half the students to nearby hospitals to distribute the load",
+          "delta": {
+            "public_trust": -5,
+            "patient_survival_rate": 3
+          },
+          "feedback": "Some students are redirected but a few dehydrated children deteriorate during transport. Parents question why Mumbai Central turned away sick children."
+        }
+      ]
+    },
+    {
+      "id": "power_outage",
+      "trigger_after_round": 3,
+      "probability": 0.35,
+      "title": "Power Outage",
+      "description": "A massive thunderstorm knocks out hospital power. Generators kick in but only cover the ICU. The ER goes dark. Monitors shut off. Emergency lighting casts eerie shadows. Three patients are mid-procedure. The backup generator has enough fuel for 4 hours.",
+      "image_prompt": "Dark hospital emergency room lit only by emergency red lights and flashlights held by nurses. Medical equipment screens are black. Rain lashing against windows. A doctor performing a procedure by flashlight. Eerie, tense atmosphere. Dramatic chiaroscuro lighting. Cinematic.",
+      "choices": [
+        {
+          "id": "emergency_lighting",
+          "label": "Activate emergency lighting protocol",
+          "description": "Use portable lights, phone flashlights, and battery-powered equipment to continue ER operations",
+          "delta": {
+            "equipment_status": -5,
+            "patient_survival_rate": 5
+          },
+          "feedback": "The ER operates by flashlight and portable lamps. It's primitive but functional. Nurse Lakshmi produces emergency lanterns she'd stored for exactly this scenario."
+        },
+        {
+          "id": "move_to_icu",
+          "label": "Move critical patients to ICU",
+          "description": "Transfer all critical ER patients to the ICU where generators are running",
+          "delta": {
+            "patient_survival_rate": 8,
+            "staff_morale": -5
+          },
+          "feedback": "Critical patients are moved safely. The ICU is now overcrowded but powered. Staff are exhausted from carrying patients through dark corridors."
+        }
+      ]
+    },
+    {
+      "id": "staff_walkout",
+      "trigger_after_round": 5,
+      "probability": 0.3,
+      "title": "Staff Walkout Threat",
+      "description": "Junior doctors threaten a walkout over 36-hour shifts. The Maharashtra Association of Resident Doctors (MARD) union representative arrives at your office. They have a list of demands. The media has been tipped off. If they walk, the ER collapses.",
+      "image_prompt": "Hospital corridor with a group of young doctors in white coats holding a meeting. Some look angry, others exhausted. A union representative with papers in hand confronting the ER director. Other staff watching nervously from doorways. Tense standoff atmosphere. Documentary-style realism.",
+      "time_limit": 20,
+      "choices": [
+        {
+          "id": "negotiate_concessions",
+          "label": "Negotiate immediate concessions",
+          "description": "Offer reduced shift hours, better on-call rooms, and overtime pay effective immediately",
+          "delta": {
+            "staff_morale": 15,
+            "hospital_budget": -8000
+          },
+          "feedback": "The junior doctors stand down. New shift limits of 24 hours are implemented. The on-call room gets proper beds. It costs money but the ER stays open."
+        },
+        {
+          "id": "appeal_duty",
+          "label": "Appeal to their duty and promise future changes",
+          "description": "Remind them of the patients who depend on them and commit to a reform committee",
+          "delta": {
+            "staff_morale": 3,
+            "public_trust": 5
+          },
+          "feedback": "Your heartfelt appeal works — barely. The doctors agree to a 30-day grace period. But the clock is ticking on your promises. They won't wait forever."
+        }
+      ]
+    },
+    {
+      "id": "celebrity_patient",
+      "trigger_after_round": 6,
+      "probability": 0.35,
+      "title": "Celebrity Patient Media Frenzy",
+      "description": "A Bollywood celebrity is rushed in from a film set accident in Film City. Paparazzi swarm the entrance. Media vans block the ambulance bay. Fans gather outside. Your ER is turning into a circus. Real patients can't get through. The celebrity's manager demands a private wing.",
+      "image_prompt": "Hospital entrance swarmed by paparazzi with cameras and flash photography. Media vans with satellite dishes blocking the driveway. Security guards trying to maintain order. Fans holding signs. An ambulance stuck behind the media vehicles. Chaotic, circus-like atmosphere. Photojournalistic style.",
+      "choices": [
+        {
+          "id": "media_blackout",
+          "label": "Lock down the ER, media blackout",
+          "description": "Clear the ambulance bay, ban all non-medical visitors, and issue a no-comment order",
+          "delta": {
+            "public_trust": 5,
+            "patient_survival_rate": 5
+          },
+          "feedback": "The lockdown restores order. Ambulances can access the bay again. The celebrity gets proper treatment. Media grumbles but the public respects your priorities."
+        },
+        {
+          "id": "press_statement",
+          "label": "Give a brief press statement to manage the crowd",
+          "description": "Hold a quick press briefing to satisfy the media and disperse the crowd peacefully",
+          "delta": {
+            "public_trust": 10,
+            "staff_morale": -3
+          },
+          "feedback": "Your composed 2-minute statement goes viral. 'Patient privacy is sacred at Mumbai Central.' The media disperses. But the time you spent on PR was time away from patients."
+        }
+      ]
+    }
+  ],
+  "interdependencies": [
+    {
+      "source": "staff_morale",
+      "target": "patient_survival_rate",
+      "condition": "< 30",
+      "effect": "-8",
+      "message": "Burnt-out staff is making critical errors! Medication mistakes and delayed responses are increasing."
+    },
+    {
+      "source": "equipment_status",
+      "target": "patient_survival_rate",
+      "condition": "< 40",
+      "effect": "-5",
+      "message": "Failing equipment is putting patients at risk! Monitors are unreliable and machines are breaking down."
+    },
+    {
+      "source": "patient_survival_rate",
+      "target": "public_trust",
+      "condition": "> 90",
+      "effect": "+5",
+      "message": "Excellent survival rates are boosting hospital reputation! Word-of-mouth is bringing more patients who trust your ER."
+    },
+    {
+      "source": "hospital_budget",
+      "target": "equipment_status",
+      "condition": "< 20000",
+      "effect": "-5",
+      "message": "Budget shortfall means equipment can't be maintained! Service contracts are lapsing and spare parts aren't being ordered."
+    }
+  ],
+  "news_events": [
+    {
+      "round": 1,
+      "headline": "Mumbai's public hospitals face critical shortage of trauma care beds, say health officials.",
+      "source": "Times of India"
+    },
+    {
+      "round": 2,
+      "headline": "VIP culture in hospitals: Should politicians get priority treatment? Debate rages.",
+      "source": "NDTV"
+    },
+    {
+      "round": 3,
+      "headline": "Maharashtra government announces ₹500 crore fund for medical equipment upgrades across state hospitals.",
+      "source": "Indian Express"
+    },
+    {
+      "round": 4,
+      "headline": "Doctor burnout reaches crisis levels: 60% of Indian ER doctors report working 80+ hour weeks.",
+      "source": "The Hindu"
+    },
+    {
+      "round": 5,
+      "headline": "WHO warns of new viral strain spreading through South Asian cities. Hospitals advised to prepare.",
+      "source": "Hindustan Times"
+    },
+    {
+      "round": 6,
+      "headline": "Hospital budget cuts under scrutiny as patient outcomes decline nationally.",
+      "source": "Mint"
+    },
+    {
+      "round": 7,
+      "headline": "Organ transplant waitlist in Maharashtra crosses 15,000 patients. Ethical dilemmas mount.",
+      "source": "The Wire"
+    },
+    {
+      "round": 8,
+      "headline": "India needs 2 million more healthcare workers by 2030, says Lancet report.",
+      "source": "Indian Express"
+    }
+  ],
+  "dynamic_news_rules": [
+    {
+      "condition": "patient_survival_rate > 90",
+      "headline": "Mumbai Central Hospital achieves record survival rates under new ER Director!",
+      "source": "Times of India"
+    },
+    {
+      "condition": "staff_morale < 40",
+      "headline": "Hospital staff union raises concerns about deteriorating working conditions at Mumbai Central.",
+      "source": "NDTV"
+    },
+    {
+      "condition": "public_trust > 85",
+      "headline": "Community survey rates Mumbai Central as top emergency hospital in the city.",
+      "source": "Indian Express"
+    },
+    {
+      "condition": "hospital_budget < 15000",
+      "headline": "Health Ministry expresses concern over Mumbai Central Hospital's deepening budget crisis.",
+      "source": "Mint"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "zero_casualties",
+      "title": "Zero Casualties",
+      "description": "Achieve a patient survival rate of 95% or higher. A near-perfect record of saving lives.",
+      "icon": "🏥",
+      "rarity": "legendary",
+      "points": 100,
+      "condition": {
+        "patient_survival_rate": {
+          "min": 95
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "team_leader",
+      "title": "Team Leader",
+      "description": "Build staff morale to 85 or above. Your team would follow you anywhere.",
+      "icon": "👨‍⚕️",
+      "rarity": "epic",
+      "points": 75,
+      "condition": {
+        "staff_morale": {
+          "min": 85
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "budget_master",
+      "title": "Budget Master",
+      "description": "Maintain a hospital budget of ₹60,000K or above. Financially responsible leadership.",
+      "icon": "💰",
+      "rarity": "epic",
+      "points": 50,
+      "condition": {
+        "hospital_budget": {
+          "min": 60000
+        }
+      },
+      "xp_reward": 250
+    },
+    {
+      "id": "peoples_doctor",
+      "title": "People's Doctor",
+      "description": "Earn public trust of 80 or above. The community believes in your hospital.",
+      "icon": "⭐",
+      "rarity": "rare",
+      "points": 40,
+      "condition": {
+        "public_trust": {
+          "min": 80
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "equipment_excellence",
+      "title": "Equipment Excellence",
+      "description": "Maintain equipment status at 80 or above. A well-oiled medical machine.",
+      "icon": "🔧",
+      "rarity": "rare",
+      "points": 30,
+      "condition": {
+        "equipment_status": {
+          "min": 80
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "er_veteran",
+      "title": "ER Veteran",
+      "description": "Complete the game with a survival rate of 50% or above. You survived the trenches.",
+      "icon": "🏆",
+      "rarity": "common",
+      "points": 10,
+      "condition": {
+        "patient_survival_rate": {
+          "min": 50
+        }
+      },
+      "xp_reward": 100
+    }
+  ],
+  "endings": [
+    {
+      "id": "medical_legend",
+      "title": "Medical Legend 🏥",
+      "rarity": "legendary",
+      "message": "Under your leadership, Mumbai Central became the gold standard for emergency medicine in India. Medical journals feature your protocols. Lives saved: countless. The National Medical Commission invites you to help draft new ER guidelines for the entire country.",
+      "conditions": {
+        "operator": "AND",
+        "criteria": [
+          {
+            "resource": "patient_survival_rate",
+            "operator": ">=",
+            "value": 90
+          },
+          {
+            "resource": "staff_morale",
+            "operator": ">=",
+            "value": 75
+          }
+        ]
+      }
+    },
+    {
+      "id": "respected_director",
+      "title": "Respected Director 👨‍⚕️",
+      "rarity": "epic",
+      "message": "You earned the respect of your team and community. The ER runs smoothly and efficiently. Not perfect, but damn good. Patients request Mumbai Central by name. Your resignation offers pile up — everyone wants you — but you stay.",
+      "conditions": {
+        "operator": "AND",
+        "criteria": [
+          {
+            "resource": "patient_survival_rate",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "public_trust",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "budget_hero",
+      "title": "Budget Hero 💰",
+      "rarity": "rare",
+      "message": "You kept the lights on and the budget balanced. The board loves you. Some say you cared more about numbers than patients, but the hospital survived when others didn't. Mr. Kapoor nominates you for the Healthcare Finance Leadership Award.",
+      "conditions": {
+        "operator": "AND",
+        "criteria": [
+          {
+            "resource": "hospital_budget",
+            "operator": ">=",
+            "value": 55000
+          },
+          {
+            "resource": "patient_survival_rate",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "overwhelmed",
+      "title": "Overwhelmed 😰",
+      "rarity": "common",
+      "message": "The ER was too much. Staff turnover, budget issues, and declining outcomes. You did your best, but sometimes the system wins. You leave with hard-earned lessons and a deep respect for everyone who stays in the trenches.",
+      "conditions": {
+        "operator": "AND",
+        "criteria": [
+          {
+            "resource": "patient_survival_rate",
+            "operator": "<",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "burnout",
+      "title": "Burnout 🔥",
+      "rarity": "common",
+      "message": "You gave everything to the hospital — including your own health. Your resignation letter cites 'personal reasons' but everyone knows the real cost. Nurse Lakshmi hugs you on your last day. 'Take care of yourself, Doctor. You forgot to do that.'",
+      "conditions": {
+        "operator": "AND",
+        "criteria": [
+          {
+            "resource": "staff_morale",
+            "operator": "<",
+            "value": 40
+          },
+          {
+            "resource": "patient_survival_rate",
+            "operator": "<",
+            "value": 70
+          }
+        ]
+      }
+    }
+  ],
+  "random_events": [
+    {
+      "id": "blood_shortage",
+      "trigger_round": 2,
+      "probability": 0.3,
+      "title": "Blood Shortage",
+      "description": "The blood bank reports critically low stocks of O-negative and B-positive blood types. Elective surgeries may need to be postponed. The shortage affects emergency transfusions.",
+      "delta": {
+        "patient_survival_rate": -3,
+        "hospital_budget": -2000
+      }
+    },
+    {
+      "id": "volunteer_surge",
+      "trigger_round": 6,
+      "probability": 0.25,
+      "title": "Volunteer Surge",
+      "description": "A group of medical college students and NGO volunteers arrives at the hospital offering to help. Their enthusiasm is infectious and they take on administrative tasks, freeing up your medical staff.",
+      "delta": {
+        "staff_morale": 5,
+        "public_trust": 3
+      }
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "ethical_reasoning",
+        "name": "Ethical Reasoning",
+        "icon": "⚖️",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "emotional_regulation",
+        "name": "Emotional Regulation",
+        "icon": "🧘",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "self_awareness",
+        "name": "Self Awareness",
+        "icon": "🪞",
+        "brain_region": "occipital_posterior"
+      },
+      {
+        "id": "growth_mindset",
+        "name": "Growth Mindset",
+        "icon": "🌱",
+        "brain_region": "occipital_posterior"
+      }
+    ]
+  },
+  "coach_mode_default": true,
+  "learning_concept": "Competitive Reasoning & Negotiation",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Outmaneuvering AI competitors with limited resources",
+      "real_world": "Competing for market share in a business with a tight budget",
+      "challenge": "Identify a competitive situation in your life. What is your unique advantage?"
+    },
+    {
+      "skill_tag": "risk_tolerance",
+      "game_context": "Choosing between safe and bold strategies against AI",
+      "real_world": "Deciding when to challenge the status quo versus play it safe",
+      "challenge": "Research one company that made a bold risk that paid off. What conditions made it possible?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "BATNA",
+      "definition": "Best Alternative To a Negotiated Agreement — your fallback if no deal is reached.",
+      "example": "If you can't agree on a price, you could sell to a different buyer — that's your BATNA.",
+      "deep_dive": "A strong BATNA gives negotiating power. Knowing both parties' BATNAs reveals who needs the deal more.",
+      "real_world_example": "A job applicant with another offer has a stronger BATNA and can negotiate more confidently."
+    },
+    {
+      "term": "Win-Win Negotiation",
+      "definition": "Finding solutions where both parties gain value rather than one side winning at the other's expense.",
+      "example": "Agreeing on a payment plan that works for both buyer and seller, rather than a discount that hurts profit.",
+      "deep_dive": "Integrative negotiation expands the 'pie' by identifying trade-offs where each party values things differently.",
+      "real_world_example": "Labor-management negotiations that increase productivity in exchange for better wages can benefit both sides."
+    },
+    {
+      "term": "Anchoring",
+      "definition": "Setting an initial reference point in a negotiation that influences the final outcome.",
+      "example": "The first price mentioned in a negotiation becomes the anchor around which all counteroffers are compared.",
+      "deep_dive": "Research shows people are heavily influenced by the first number they hear, even when irrelevant.",
+      "real_world_example": "Salary negotiations: starting with a high number tends to result in higher final offers."
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_intelligence": 0.5,
+      "crisis_frequency": 0.1,
+      "resource_boost": 1.3
+    },
+    "medium": {
+      "ai_intelligence": 0.75,
+      "crisis_frequency": 0.2,
+      "resource_boost": 1.0
+    },
+    "hard": {
+      "ai_intelligence": 1.0,
+      "crisis_frequency": 0.4,
+      "resource_boost": 0.75
+    }
+  },
+  "dimension_scoring_weights": {
+    "adaptability": 0.35,
+    "strategic_thinking": 0.3,
+    "resilience": 0.2,
+    "empathy": 0.15
+  },
+  "coaching_moment": "You're the new Emergency Room Director at Mumbai Central Hospital. Lives hang in the balance every second.",
+  "tags": [
+    "adaptability",
+    "ai-arena",
+    "ai-opponent",
+    "environment",
+    "health",
+    "simulation",
+    "teamwork",
+    "technology"
+  ],
+  "cultural_context": "India's doctor-to-patient ratio is among the lowest in the world at 0.7 per 1,000, creating immense pressure on hospital administrators. This game builds the triage thinking and resource-allocation skills needed by India's future healthcare leaders.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "adaptability",
+    "critical-thinking",
+    "social-emotional-learning"
+  ],
+  "estimated_duration": 25,
+  "target_age": "14-18",
+  "reflection_prompt": "How did you adapt as the AI shifted strategies? Which adaptation worked best?"
+}

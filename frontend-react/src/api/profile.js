@@ -20,6 +20,11 @@ export const getBadges = async () => {
   return response.data;
 };
 
+export const getStreak = async () => {
+  const response = await apiClient.get('/api/profile/streak');
+  return response.data;
+};
+
 export const getXPLeaderboard = async (limit = 20) => {
   const response = await apiClient.get(`/api/profile/leaderboard?limit=${limit}`);
   return response.data;
@@ -61,6 +66,18 @@ export const getHistoricalReport = async (runId) => {
 // --- Skill Portfolio (Item 31) ---
 export const getSkillPortfolio = async () => {
   const response = await apiClient.get('/api/profile/skill-portfolio');
+  return response.data;
+};
+
+// --- Career Match v1 ---
+export const getCareerMatch = async (topK = 5) => {
+  const response = await apiClient.get(`/api/career-match?top_k=${topK}`);
+  return response.data;
+};
+
+// --- Decision DNA (behavioral fingerprint) ---
+export const getDecisionDNA = async () => {
+  const response = await apiClient.get('/api/decision-dna');
   return response.data;
 };
 

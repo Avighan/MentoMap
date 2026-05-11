@@ -1,0 +1,1214 @@
+{
+  "game_id": "finance_quest_v1",
+  "game_type": "ai_arena",
+  "title": "Finance Quest",
+  "theme": "Personal finance, investing, and wealth building for teens",
+  "icon": "💹",
+  "description": "Your uncle has gifted you ₹50,000 as a head start! Can you grow it wisely through budgeting, saving, and smart investing? Navigate the world of personal finance, avoid traps, and build your financial future!",
+  "target_audience": "Ages 12-16",
+  "age_category": "teens",
+  "duration_minutes": 35,
+  "difficulty": "intermediate",
+  "learning_objectives": [
+    "Understand budgeting and expense management",
+    "Learn the basics of saving vs investing",
+    "Explore risk-reward trade-offs in financial decisions",
+    "Build credit score awareness and financial responsibility",
+    "Understand compound interest and long-term wealth building"
+  ],
+  "nep_tags": [
+    "financial_literacy",
+    "decision_making",
+    "risk_assessment",
+    "mathematical_thinking",
+    "planning"
+  ],
+  "ai_arena_config": {
+    "ai_enhanced": true,
+    "dynamic_rounds_enabled": true,
+    "max_dynamic_rounds": 2,
+    "competitor_chat_enabled": true,
+    "npc_chat_enabled": true,
+    "image_generation_enabled": true,
+    "domain": "finance"
+  },
+  "ai_image_config": {
+    "style": "vivid",
+    "size": "1024x1024",
+    "generate_round_images": true,
+    "art_direction": "Modern colorful illustration style, Indian teens learning about finance, warm colors, educational and empowering mood, contemporary Indian urban setting"
+  },
+  "story_intro": {
+    "video_url": "",
+    "scenes": [
+      {
+        "scene_id": "intro_gift",
+        "title": "The Gift",
+        "narrative": "It's your birthday! Your uncle, a retired banker, hands you an envelope with a card that says: 'Here's ₹50,000 to start your financial journey. Remember — it's not about how much you earn, it's about how wisely you manage it.' He winks and adds, 'I'll be watching!'",
+        "image_prompt": "Indian teenager receiving a gift envelope from a wise elderly uncle at a birthday celebration, modern Indian home setting, warm family atmosphere, colorful educational illustration style",
+        "image_url": null,
+        "choices": [
+          {
+            "id": "goal_wealth",
+            "label": "I want to invest and grow this money as much as possible — let's aim big",
+            "description": "Focus on investing and growing the money as much as possible.",
+            "next_scene": "intro_advisor",
+            "memory_tag": "goal_growth",
+            "initial_delta": {
+              "financial_literacy": 5,
+              "investments": 5000
+            }
+          },
+          {
+            "id": "goal_security",
+            "label": "I should focus on savings and an emergency fund first — financial security matters most to me",
+            "description": "Focus on savings, emergency fund, and responsible spending.",
+            "next_scene": "intro_advisor",
+            "memory_tag": "goal_security",
+            "initial_delta": {
+              "credit_score": 5,
+              "savings": 5000
+            }
+          },
+          {
+            "id": "goal_balanced",
+            "label": "I'll try to balance it — save some, invest some, and enjoy life a little too",
+            "description": "A mix of saving, investing, and enjoying life responsibly.",
+            "next_scene": "intro_advisor",
+            "memory_tag": "goal_balanced",
+            "initial_delta": {
+              "financial_literacy": 3,
+              "savings": 2500,
+              "cash": 2500
+            }
+          }
+        ]
+      },
+      {
+        "scene_id": "intro_advisor",
+        "title": "Meet Your Financial Advisor",
+        "narrative": "Your uncle introduces you to Sharma Uncle, a family friend who's a SEBI-registered financial advisor. 'I'll help you navigate the financial world,' he says. 'But the decisions are always yours. Let me show you how money works.'",
+        "image_prompt": "Friendly middle-aged Indian financial advisor in a modern office showing charts and graphs to a curious teenager, educational posters about saving and investing on walls, warm professional setting, colorful illustration",
+        "image_url": null,
+        "choices": [
+          {
+            "id": "learn_basics",
+            "label": "I'd like to learn the basics of budgeting and saving before jumping into anything",
+            "description": "Start with fundamentals — budgeting, saving, and how banks work.",
+            "next_scene": "intro_start",
+            "memory_tag": "chose_basics_first",
+            "initial_delta": {
+              "financial_literacy": 10
+            }
+          },
+          {
+            "id": "jump_in",
+            "label": "I already know the basics — let me dive straight into stocks and mutual funds right away",
+            "description": "Dive straight into the world of stocks, mutual funds, and SIPs.",
+            "next_scene": "intro_start",
+            "memory_tag": "chose_jump_in",
+            "initial_delta": {
+              "financial_literacy": 3,
+              "investments": 2000
+            }
+          }
+        ]
+      },
+      {
+        "scene_id": "intro_start",
+        "title": "Your Financial Journey Begins",
+        "narrative": "Armed with ₹50,000 and Sharma Uncle's guidance, you're ready to make your money work for you. But you're not alone — your classmates Riya (the cautious saver) and Vikram (the risk-taker) are on the same journey. Let's see who builds the best financial future!",
+        "image_prompt": "Three Indian teenagers standing at a crossroads with signboards pointing to Bank, Stock Market, and Startup, modern Indian city skyline in background, confident and excited expressions, educational illustration",
+        "image_url": null,
+        "choices": [],
+        "transitions_to_gameplay": true
+      }
+    ]
+  },
+  "initial_state": {
+    "cash": {
+      "icon": "💵",
+      "label": "Cash (₹)",
+      "value": 50000,
+      "min": -10000,
+      "max": 1000000
+    },
+    "savings": {
+      "icon": "🏦",
+      "label": "Savings (₹)",
+      "value": 0,
+      "min": 0,
+      "max": 1000000
+    },
+    "investments": {
+      "icon": "📈",
+      "label": "Investments (₹)",
+      "value": 0,
+      "min": 0,
+      "max": 1000000
+    },
+    "credit_score": {
+      "icon": "⭐",
+      "label": "Credit Score",
+      "value": 50,
+      "min": 0,
+      "max": 100
+    },
+    "financial_literacy": {
+      "icon": "📚",
+      "label": "Financial Literacy",
+      "value": 30,
+      "min": 0,
+      "max": 100
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "npcs": [
+    {
+      "id": "sharma_uncle",
+      "name": "Sharma Uncle",
+      "role": "Financial Advisor",
+      "avatar": "👨‍💼",
+      "personality": "Patient, knowledgeable, uses simple analogies to explain complex financial concepts. Occasionally shares wisdom from Indian financial traditions.",
+      "backstory": "A SEBI-registered financial advisor with 25 years of experience. He's seen multiple market crashes and booms. He believes financial literacy should start in school and loves teaching teens about money.",
+      "conversation_topics": [
+        "budgeting",
+        "saving vs investing",
+        "mutual funds",
+        "SIP",
+        "compound interest",
+        "risk management",
+        "credit score",
+        "insurance"
+      ],
+      "system_prompt_addon": "You are a wise Indian financial advisor. Explain concepts using Indian examples (SBI, Nifty 50, PPF, SIP, UPI). Use simple analogies. Reference Indian financial instruments. Encourage saving habits. Use some Hindi terms (like 'bachhat', 'nivesh')."
+    },
+    {
+      "id": "bank_manager",
+      "name": "Ms. Kapoor",
+      "role": "Bank Manager",
+      "avatar": "👩‍💼",
+      "personality": "Professional, detail-oriented, explains banking products clearly. Slightly formal but friendly.",
+      "backstory": "Branch manager at a leading nationalized bank. She oversees savings accounts, fixed deposits, and loans. She's passionate about making banking accessible to young people.",
+      "conversation_topics": [
+        "savings accounts",
+        "fixed deposits",
+        "recurring deposits",
+        "loans",
+        "credit cards",
+        "UPI",
+        "digital banking"
+      ],
+      "system_prompt_addon": "You are an Indian bank manager. Explain banking products using Indian examples (FD rates, RD, PPF, Sukanya Samriddhi). Be precise about interest rates and terms. Encourage responsible banking."
+    },
+    {
+      "id": "trader_raj",
+      "name": "Trader Raj",
+      "role": "Stock Market Expert",
+      "avatar": "📊",
+      "personality": "Energetic, slightly dramatic about market movements, but gives sound fundamental advice. Uses market jargon but always explains it.",
+      "backstory": "A 28-year-old self-taught trader who started investing at 18 with his scholarship money. Now manages a small portfolio and runs a YouTube channel teaching teens about the stock market.",
+      "conversation_topics": [
+        "stocks",
+        "mutual funds",
+        "Nifty 50",
+        "Sensex",
+        "SIP",
+        "market analysis",
+        "risk vs reward",
+        "portfolio diversification"
+      ],
+      "system_prompt_addon": "You are a young Indian stock market enthusiast. Reference Indian stocks (Reliance, TCS, Infosys, HDFC), market indices (Nifty, Sensex), and investment apps (Zerodha, Groww). Be exciting but always warn about risks. Never recommend specific stocks — teach concepts."
+    }
+  ],
+  "competitors": [
+    {
+      "id": "cautious_riya",
+      "name": "Riya Patel",
+      "icon": "🧕",
+      "personality_type": "balanced",
+      "description": "The cautious saver. Riya puts most of her money in FDs and savings accounts. Safe but slow growth. She believes in 'slow and steady wins the race.'",
+      "chat_enabled": true,
+      "chat_personality": "Cautious, analytical, sometimes worries about the player taking too many risks. Gives thoughtful observations.",
+      "initial_resources": {
+        "cash": 50000,
+        "savings": 10000,
+        "investments": 0,
+        "credit_score": 60,
+        "financial_literacy": 40
+      }
+    },
+    {
+      "id": "risk_taker_vikram",
+      "name": "Vikram Singh",
+      "icon": "🧑‍💻",
+      "personality_type": "aggressive",
+      "description": "The risk-taker. Vikram puts everything into stocks and crypto. High risk, high reward — or high loss. He's always chasing the next big thing.",
+      "chat_enabled": true,
+      "chat_personality": "Bold, sometimes overconfident, gets excited about market gains and dramatic about losses. Competitive but friendly.",
+      "initial_resources": {
+        "cash": 50000,
+        "savings": 0,
+        "investments": 15000,
+        "credit_score": 45,
+        "financial_literacy": 35
+      }
+    }
+  ],
+  "base_rounds": [
+    {
+      "id": "round_1_budget",
+      "title": "Round 1: Your First Budget",
+      "story": "Before you invest a single rupee, Sharma Uncle says you need a budget. 'Track where your money goes,' he advises. Your monthly expenses include school supplies (₹2,000), transport (₹1,500), and entertainment (₹1,000). How do you allocate the rest?",
+      "image_prompt": "Indian teenager sitting at a study desk carefully organizing rupee notes and coins into labeled jars for savings, expenses, and investments, a colorful pie chart notebook open beside them, cozy Indian home setting, warm educational illustration",
+      "goal": "Create your first monthly budget and decide how to allocate savings",
+      "ai_generatable": false,
+      "nep_tags": [
+        "budgeting",
+        "financial_planning",
+        "self_discipline"
+      ],
+      "choices": [
+        {
+          "id": "r1_50_30_20",
+          "label": "50-30-20 Rule",
+          "description": "50% needs, 30% wants, 20% savings. The classic budgeting formula.",
+          "delta": {
+            "cash": -4500,
+            "savings": 4500,
+            "financial_literacy": 12,
+            "credit_score": 5,
+            "delayed_gratification": 3,
+            "risk_tolerance": 4
+          },
+          "feedback": "The 50-30-20 rule is a gold standard in personal finance! By allocating 20% to savings, you're building a habit that will serve you for life. This rule was popularized by US Senator Elizabeth Warren, and Indian financial planners love it too!",
+          "memory_tag": "chose_balanced_budget"
+        },
+        {
+          "id": "r1_aggressive_save",
+          "label": "Aggressive Saver",
+          "description": "Minimize all expenses, save 50% of everything. Live frugally.",
+          "delta": {
+            "cash": -8000,
+            "savings": 8000,
+            "financial_literacy": 8,
+            "credit_score": 8,
+            "risk_tolerance": 6,
+            "impulse_control": 6
+          },
+          "feedback": "Impressive discipline! Saving 50% is what financial experts call 'paying yourself first'. In India, families have traditionally been great savers — our household savings rate is among the highest globally. But remember, quality of life matters too!",
+          "memory_tag": "chose_aggressive_saving"
+        },
+        {
+          "id": "r1_yolo_spend",
+          "label": "Enjoy Life First",
+          "description": "Spend on experiences and things you want now. Save what's left.",
+          "delta": {
+            "cash": -2000,
+            "savings": 1000,
+            "financial_literacy": 5,
+            "credit_score": -3,
+            "impulse_control": 9,
+            "strategic_thinking": 2
+          },
+          "feedback": "Living in the moment has its appeal, but Sharma Uncle looks concerned. With only 10% saved, you're leaving yourself vulnerable to unexpected expenses. In finance, this is called 'living paycheck to paycheck' — risky for long-term goals!",
+          "memory_tag": "chose_yolo_spending"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "delayed_gratification",
+          "risk_tolerance"
+        ]
+      },
+      "timed": true,
+      "time_limit_seconds": 45,
+      "timeout_delta": {
+        "cash": -10,
+        "savings": -15
+      },
+      "timeout_feedback": "Time ran out! Indecision has consequences — you lost ground on key metrics."
+    },
+    {
+      "id": "round_2_first_investment",
+      "title": "Round 2: Your First Investment",
+      "story": "You've saved some money. Now Sharma Uncle says it's time to make your money work for you. 'Money in a savings account barely beats inflation,' he explains. 'You need to invest.' Trader Raj is excited — he's been waiting for this moment!",
+      "image_prompt": "Indian teenager looking at a glowing stock market dashboard on a tablet, rising green growth charts reflected in their excited eyes, a mentor figure pointing at investment options, modern Indian bank office setting, vibrant and empowering illustration",
+      "goal": "Make your first investment decision",
+      "ai_generatable": false,
+      "nep_tags": [
+        "investing",
+        "risk_assessment",
+        "compound_interest"
+      ],
+      "choices": [
+        {
+          "id": "r2_sip_mutual",
+          "label": "Start a SIP (₹5,000/month)",
+          "description": "Systematic Investment Plan in a diversified equity mutual fund. Steady and disciplined.",
+          "delta": {
+            "cash": -5000,
+            "investments": 5500,
+            "financial_literacy": 15,
+            "credit_score": 5,
+            "delayed_gratification": 3,
+            "risk_tolerance": 4
+          },
+          "feedback": "Excellent choice! SIPs are India's favorite investment tool. By investing regularly, you benefit from rupee cost averaging — buying more units when prices are low and fewer when high. Mutual fund SIP accounts in India crossed 7 crore in 2024!",
+          "memory_tag": "chose_sip"
+        },
+        {
+          "id": "r2_fd_safe",
+          "label": "Fixed Deposit (₹10,000)",
+          "description": "Lock money in an FD at 7% annual interest. Safe and guaranteed returns.",
+          "delta": {
+            "cash": -10000,
+            "savings": 10700,
+            "financial_literacy": 10,
+            "credit_score": 8,
+            "risk_tolerance": 6,
+            "impulse_control": 6
+          },
+          "feedback": "The safest choice! FDs are backed by banks and insured up to ₹5 lakh by DICGC. You'll earn guaranteed returns. But remember — at 7% interest with 6% inflation, your real return is only 1%. Still, it's great for building a safety net!",
+          "memory_tag": "chose_fd"
+        },
+        {
+          "id": "r2_stocks_direct",
+          "label": "Buy Stocks Directly (₹8,000)",
+          "description": "Invest in 2-3 blue-chip Indian companies through a Demat account.",
+          "delta": {
+            "cash": -8000,
+            "investments": 9000,
+            "financial_literacy": 12,
+            "credit_score": 3,
+            "impulse_control": 9,
+            "strategic_thinking": 2
+          },
+          "feedback": "Direct equity investing — you're going where the action is! Blue-chip stocks of companies like Reliance, TCS, and HDFC have given 12-15% average annual returns over decades. But stock prices can drop 20-30% in a single month. Are you ready for that volatility?",
+          "memory_tag": "chose_direct_stocks"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "risk_tolerance",
+          "impulse_control"
+        ]
+      }
+    },
+    {
+      "id": "round_3_emergency",
+      "title": "Round 3: The Emergency Fund Test",
+      "story": "Your phone screen cracks! Repair cost: ₹5,000. Your laptop also needs a new charger: ₹1,500. These weren't in your budget. This is exactly why financial planners say you need an emergency fund. How do you handle this?",
+      "image_prompt": "Indian teenager staring at a cracked phone screen with a shocked expression, broken gadgets on a table, rupee notes flying out of a piggy bank, stormy sky visible through the window symbolizing financial emergency, dramatic and colorful illustration",
+      "goal": "Handle unexpected expenses wisely",
+      "ai_generatable": false,
+      "nep_tags": [
+        "emergency_planning",
+        "financial_resilience",
+        "decision_making"
+      ],
+      "choices": [
+        {
+          "id": "r3_emergency_fund",
+          "label": "Use Emergency Savings",
+          "description": "If you have savings, use them — that's what they're for!",
+          "delta": {
+            "savings": -6500,
+            "financial_literacy": 10,
+            "credit_score": 5,
+            "delayed_gratification": 3,
+            "risk_tolerance": 4
+          },
+          "feedback": "This is exactly why emergency funds exist! Financial advisors recommend keeping 3-6 months of expenses as an emergency fund. You handled the crisis without going into debt or selling investments at a loss. Well done!",
+          "memory_tag": "used_emergency_fund"
+        },
+        {
+          "id": "r3_borrow_friend",
+          "label": "Borrow from a Friend",
+          "description": "Ask a friend for a short-term loan. Promise to repay within a month.",
+          "delta": {
+            "cash": -6500,
+            "credit_score": -5,
+            "financial_literacy": 5,
+            "risk_tolerance": 6,
+            "impulse_control": 6
+          },
+          "feedback": "Borrowing from friends is common but tricky. It can strain relationships. Financial experts call this 'informal credit' — there's no interest but the social cost can be high. In formal finance, every loan affects your credit score!",
+          "memory_tag": "chose_borrow"
+        },
+        {
+          "id": "r3_sell_investment",
+          "label": "Sell Some Investments",
+          "description": "Liquidate part of your portfolio to cover the emergency.",
+          "delta": {
+            "investments": -7000,
+            "cash": 500,
+            "financial_literacy": 8,
+            "impulse_control": 9,
+            "strategic_thinking": 2
+          },
+          "feedback": "Selling investments to cover emergencies is costly! You might sell at a loss (this is called 'panic selling'), and you lose future growth. This is why Sharma Uncle always says: 'Emergency fund first, investments second!'",
+          "memory_tag": "sold_investments_emergency"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "impulse_control",
+          "strategic_thinking"
+        ]
+      },
+      "timed": true,
+      "time_limit_seconds": 35,
+      "timeout_delta": {
+        "cash": -10,
+        "savings": -15
+      },
+      "timeout_feedback": "Time ran out! Indecision has consequences — you lost ground on key metrics."
+    },
+    {
+      "id": "round_4_market_event",
+      "title": "Round 4: Market Crash!",
+      "story": "Breaking news! The stock market drops 15% in one week due to global tensions. Vikram is panicking. Riya is saying 'I told you so.' Your investments have lost value on paper. Trader Raj calls you: 'This is the moment that separates amateurs from pros.'",
+      "image_prompt": "Dramatic Indian stock exchange scene with red plunging graphs on giant screens, panicked traders and a calm Indian teenager studying the data thoughtfully amid the chaos, ticker boards showing falling numbers, intense red and orange lighting, cinematic illustration",
+      "goal": "Navigate a market downturn wisely",
+      "ai_generatable": false,
+      "nep_tags": [
+        "market_behavior",
+        "emotional_discipline",
+        "long_term_thinking"
+      ],
+      "choices": [
+        {
+          "id": "r4_buy_dip",
+          "label": "Buy the Dip!",
+          "description": "Invest more while prices are low. 'Be greedy when others are fearful.'",
+          "delta": {
+            "cash": -5000,
+            "investments": 6500,
+            "financial_literacy": 15,
+            "delayed_gratification": 3,
+            "risk_tolerance": 4
+          },
+          "feedback": "Warren Buffett's famous advice! Buying during market dips has historically been one of the best wealth-building strategies. The 2020 COVID crash was followed by a 100% recovery in 18 months. Those who invested during the dip doubled their money!",
+          "memory_tag": "bought_the_dip"
+        },
+        {
+          "id": "r4_hold_steady",
+          "label": "Hold and Wait",
+          "description": "Don't sell, don't buy. Stay calm and let the market recover.",
+          "delta": {
+            "financial_literacy": 10,
+            "credit_score": 3,
+            "risk_tolerance": 6,
+            "impulse_control": 6
+          },
+          "feedback": "Patience is a virtue in investing! Historical data shows that the Sensex has always recovered from crashes. The key is not to panic sell. This strategy is called 'buy and hold' — Peter Lynch's favorite approach.",
+          "memory_tag": "held_steady"
+        },
+        {
+          "id": "r4_panic_sell",
+          "label": "Sell Everything!",
+          "description": "Cut your losses before it gets worse. Move everything to cash.",
+          "delta": {
+            "investments": -8000,
+            "cash": 5000,
+            "financial_literacy": 5,
+            "credit_score": -3,
+            "impulse_control": 9,
+            "strategic_thinking": 2
+          },
+          "feedback": "Panic selling locks in your losses! When the market recovers (and it always does), you'll miss the rebound. Studies show that investors who panic sell during crashes earn 4-5% less annually than those who hold. Emotional decisions are expensive in finance!",
+          "memory_tag": "panic_sold"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "self_awareness"
+        ]
+      }
+    },
+    {
+      "id": "round_5_future_planning",
+      "title": "Round 5: Planning Your Financial Future",
+      "story": "Six months have passed. Your portfolio has grown (or not!), your financial skills have improved, and Sharma Uncle is proud. Now he asks the big question: 'What's your 5-year financial plan?' Time to think long-term!",
+      "image_prompt": "Indian teenager standing confidently before a vision board showing their five-year financial roadmap, golden path leading toward a bright future cityscape, symbols of savings, education, and investments along the path, hopeful sunrise lighting, inspiring illustration",
+      "goal": "Create a long-term financial plan",
+      "ai_generatable": false,
+      "nep_tags": [
+        "long_term_planning",
+        "goal_setting",
+        "compound_interest"
+      ],
+      "choices": [
+        {
+          "id": "r5_diversified",
+          "label": "Diversified Portfolio",
+          "description": "Split across stocks (40%), mutual funds (30%), FDs (20%), and gold (10%).",
+          "delta": {
+            "investments": 5000,
+            "savings": 3000,
+            "financial_literacy": 15,
+            "credit_score": 8,
+            "delayed_gratification": 3,
+            "risk_tolerance": 4
+          },
+          "feedback": "Diversification is the only free lunch in investing! By spreading across asset classes, you reduce risk while maintaining growth potential. This is Modern Portfolio Theory — Harry Markowitz won a Nobel Prize for this concept!",
+          "memory_tag": "chose_diversified"
+        },
+        {
+          "id": "r5_business",
+          "label": "Start a Side Business",
+          "description": "Use savings to launch a small online business. Higher risk, higher potential.",
+          "delta": {
+            "cash": -10000,
+            "investments": 3000,
+            "financial_literacy": 12,
+            "credit_score": 5,
+            "risk_tolerance": 6,
+            "impulse_control": 6
+          },
+          "feedback": "Entrepreneurship is the ultimate investment! India's startup ecosystem is booming. By starting young, you're building skills that no market crash can take away. Many of India's top entrepreneurs — from Dhirubhai Ambani to Ritesh Agarwal — started young!",
+          "memory_tag": "chose_business_plan"
+        },
+        {
+          "id": "r5_education",
+          "label": "Invest in Education Fund",
+          "description": "Set aside money for higher education — the best investment in yourself.",
+          "delta": {
+            "savings": 8000,
+            "financial_literacy": 10,
+            "credit_score": 10,
+            "impulse_control": 9,
+            "strategic_thinking": 2
+          },
+          "feedback": "The highest ROI investment is in yourself! An education fund ensures you can pursue your dreams without financial stress. In India, education loans can cost 8-12% interest — having your own fund saves you lakhs in the long run!",
+          "memory_tag": "chose_education_fund"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "self_awareness",
+          "delayed_gratification"
+        ]
+      },
+      "timed": true,
+      "time_limit_seconds": 25,
+      "timeout_delta": {
+        "cash": -10,
+        "savings": -15
+      },
+      "timeout_feedback": "Time ran out! Indecision has consequences — you lost ground on key metrics."
+    },
+    {
+      "id": "round_template_dynamic_1",
+      "title": "Dynamic Round: {{round_theme}}",
+      "story": "{{dynamic_story}}",
+      "image_prompt": "Indian teenager facing an unexpected financial dilemma, weighing options on a symbolic balance scale with rupee symbols, modern Indian urban setting with bank and market elements, thoughtful expression, vibrant colors, cinematic lighting",
+      "goal": "{{dynamic_goal}}",
+      "ai_generatable": true,
+      "ai_generation_context": {
+        "theme_options": [
+          "inflation_impact",
+          "tax_planning",
+          "insurance_decision",
+          "peer_pressure_spending",
+          "investment_scam"
+        ],
+        "difficulty_range": [
+          0.8,
+          1.3
+        ],
+        "min_choices": 3,
+        "max_choices": 4
+      },
+      "choices": [],
+      "psychological_focus": {
+        "primary_skills": [
+          "delayed_gratification",
+          "risk_tolerance"
+        ]
+      }
+    },
+    {
+      "id": "round_template_dynamic_2",
+      "title": "Dynamic Round: {{round_theme}}",
+      "story": "{{dynamic_story}}",
+      "image_prompt": "Indian teenager at a financial crossroads with diverging paths representing different money decisions, rupee coins and growth charts floating in the air, modern Indian cityscape backdrop, golden hour lighting, inspiring and educational illustration",
+      "goal": "{{dynamic_goal}}",
+      "ai_generatable": true,
+      "ai_generation_context": {
+        "theme_options": [
+          "credit_card_offer",
+          "real_estate_opportunity",
+          "family_financial_advice",
+          "digital_payment_innovation"
+        ],
+        "difficulty_range": [
+          0.9,
+          1.4
+        ],
+        "min_choices": 3,
+        "max_choices": 4
+      },
+      "choices": [],
+      "psychological_focus": {
+        "primary_skills": [
+          "risk_tolerance",
+          "impulse_control"
+        ]
+      }
+    }
+  ],
+  "rounds": [],
+  "adaptive_difficulty": {
+    "enabled": true,
+    "min_multiplier": 0.7,
+    "max_multiplier": 1.5
+  },
+  "how_to_play": [
+    "Start with the story intro — your financial goals shape your journey",
+    "Each round presents a real-world financial scenario to navigate",
+    "Chat with Sharma Uncle for investment advice, Ms. Kapoor for banking tips, or Trader Raj for market insights",
+    "Watch Riya and Vikram — they'll react to your decisions and share their strategies",
+    "Balance cash, savings, investments, and your credit score",
+    "AI creates unique financial challenges based on your choices",
+    "Build the strongest financial portfolio by game end"
+  ],
+  "scoring_criteria": [
+    {
+      "id": "financial_literacy",
+      "label": "Financial Knowledge",
+      "weight": 0.25
+    },
+    {
+      "id": "risk_management",
+      "label": "Risk Management",
+      "weight": 0.25
+    },
+    {
+      "id": "wealth_building",
+      "label": "Wealth Building",
+      "weight": 0.2
+    },
+    {
+      "id": "discipline",
+      "label": "Financial Discipline",
+      "weight": 0.15
+    },
+    {
+      "id": "adaptability",
+      "label": "Market Adaptability",
+      "weight": 0.15
+    }
+  ],
+  "achievements": [
+    {
+      "id": "saver_supreme",
+      "name": "Saver Supreme",
+      "icon": "🏦",
+      "condition": "savings >= 20000",
+      "points": 100,
+      "xp_reward": 100
+    },
+    {
+      "id": "investor_pro",
+      "name": "Investor Pro",
+      "icon": "📈",
+      "condition": "investments >= 25000",
+      "points": 100,
+      "xp_reward": 100
+    },
+    {
+      "id": "credit_king",
+      "name": "Credit King",
+      "icon": "⭐",
+      "condition": "credit_score >= 80",
+      "points": 100,
+      "xp_reward": 200
+    },
+    {
+      "id": "finance_guru",
+      "name": "Finance Guru",
+      "icon": "📚",
+      "condition": "financial_literacy >= 80",
+      "points": 150,
+      "xp_reward": 200
+    },
+    {
+      "id": "wealth_builder",
+      "name": "Wealth Builder",
+      "icon": "💰",
+      "condition": "cash + savings + investments >= 80000",
+      "points": 200,
+      "xp_reward": 100
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "ethical_reasoning",
+        "name": "Ethical Reasoning",
+        "icon": "⚖️",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "emotional_regulation",
+        "name": "Emotional Regulation",
+        "icon": "🧘",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "self_awareness",
+        "name": "Self Awareness",
+        "icon": "🪞",
+        "brain_region": "occipital_posterior"
+      },
+      {
+        "id": "growth_mindset",
+        "name": "Growth Mindset",
+        "icon": "🌱",
+        "brain_region": "occipital_posterior"
+      }
+    ]
+  },
+  "crisis_events": [
+    {
+      "id": "crisis_medical_emergency",
+      "trigger_after_round": 1,
+      "probability": 0.5,
+      "cooldown_rounds": 3,
+      "title": "Medical Emergency Strikes!",
+      "description": "Your family faces an unexpected medical emergency that requires immediate funds. The pressure is on as you must decide how to manage your finances in this stressful situation.",
+      "choices": [
+        {
+          "id": "choice_borrow_from_uncle",
+          "label": "Borrow from Sharma Uncle",
+          "description": "Take a loan from your uncle to cover the expenses.",
+          "delta": {
+            "cash": -15,
+            "credit_score": -5
+          },
+          "feedback": "You managed to cover the medical costs, but your credit score takes a hit as a result of borrowing.",
+          "memory_tag": "medical_emergency_borrow"
+        },
+        {
+          "id": "choice_use_savings",
+          "label": "Use your savings",
+          "description": "Dip into your savings to pay for the medical bills.",
+          "delta": {
+            "savings": -20,
+            "financial_literacy": 5
+          },
+          "feedback": "While you handled the situation, depleting your savings impacts your future financial planning, but you learned a valuable lesson.",
+          "memory_tag": "medical_emergency_savings"
+        },
+        {
+          "id": "choice_do_nothing",
+          "label": "Delay and do nothing",
+          "description": "Put off the expenses, hoping to find a way later.",
+          "delta": {
+            "cash": 0,
+            "health_score": -10
+          },
+          "feedback": "Ignoring the situation worsens the health issue, and the costs may rise if you wait too long.",
+          "memory_tag": "medical_emergency_delay"
+        }
+      ]
+    },
+    {
+      "id": "crisis_market_crash",
+      "trigger_after_round": 2,
+      "probability": 0.4,
+      "cooldown_rounds": 3,
+      "title": "Market Crash Alert!",
+      "description": "The stock market has crashed unexpectedly, and your investments are in jeopardy. You must act quickly to minimize your losses.",
+      "choices": [
+        {
+          "id": "choice_sell_investments",
+          "label": "Sell all investments",
+          "description": "Liquidate your investments to avoid further losses.",
+          "delta": {
+            "investments": -15,
+            "cash": 5
+          },
+          "feedback": "Selling your investments prevents deeper losses, but you miss out on potential future gains.",
+          "memory_tag": "market_crash_sell"
+        },
+        {
+          "id": "choice_hold_investments",
+          "label": "Hold your investments",
+          "description": "Decide to hold your investments despite the crash, betting on recovery.",
+          "delta": {
+            "investments": 0,
+            "financial_literacy": 10
+          },
+          "feedback": "Holding could pay off in the long run, but it requires strong faith in the market's recovery.",
+          "memory_tag": "market_crash_hold"
+        },
+        {
+          "id": "choice_invest_more",
+          "label": "Invest more during the dip",
+          "description": "Take advantage of lower prices by investing more cash.",
+          "delta": {
+            "cash": -10,
+            "investments": 15
+          },
+          "feedback": "While you seized a potential opportunity, your cash reserves are lower, putting pressure on your budget.",
+          "memory_tag": "market_crash_invest"
+        }
+      ]
+    },
+    {
+      "id": "crisis_family_financial_troubles",
+      "trigger_after_round": 3,
+      "probability": 0.6,
+      "cooldown_rounds": 2,
+      "title": "Family Financial Troubles!",
+      "description": "Your parents inform you that they have faced unexpected job losses, impacting your household income. You need to make financial decisions quickly.",
+      "choices": [
+        {
+          "id": "choice_cut_personal_budget",
+          "label": "Cut your personal budget",
+          "description": "Reduce your spending to help your family.",
+          "delta": {
+            "cash": -5,
+            "savings": 5
+          },
+          "feedback": "By tightening your budget, you manage to save some cash for emergencies but at the cost of personal enjoyment.",
+          "memory_tag": "family_troubles_cut_budget"
+        },
+        {
+          "id": "choice_ask_for_loan",
+          "label": "Ask for a loan from friends",
+          "description": "Reach out to friends for a financial loan to ease the situation.",
+          "delta": {
+            "cash": -10,
+            "credit_score": -10
+          },
+          "feedback": "Borrowing from friends provides immediate relief but strains your relationships and credit score.",
+          "memory_tag": "family_troubles_ask_loan"
+        },
+        {
+          "id": "choice_ignore_the_issue",
+          "label": "Ignore the financial issues",
+          "description": "Pretend everything is fine and do nothing.",
+          "delta": {
+            "savings": 0,
+            "financial_literacy": -5
+          },
+          "feedback": "Avoiding the problem means potential future difficulties, and you miss a chance to learn about financial responsibility.",
+          "memory_tag": "family_troubles_ignore"
+        }
+      ]
+    }
+  ],
+  "interdependencies": [
+    {
+      "source": "financial_literacy",
+      "target": "credit_score",
+      "condition": "< 30",
+      "effect": "-5",
+      "message": "Low financial literacy means you may not understand how to manage debts and payments effectively, leading to a decrease in your credit score."
+    },
+    {
+      "source": "savings",
+      "target": "cash",
+      "condition": "> 80",
+      "effect": "+3",
+      "message": "Having a high savings rate increases your cash flow, as you can use your savings to cover expenses without depleting your cash reserves."
+    },
+    {
+      "source": "cash",
+      "target": "investments",
+      "condition": "< 30",
+      "effect": "-3",
+      "message": "When cash reserves are low, it limits your ability to invest, as you need liquid cash to make new investment opportunities."
+    }
+  ],
+  "news_events": [
+    {
+      "round": 0,
+      "headline": "Indian youth urged to cultivate financial literacy as savings rates decline across the nation.",
+      "source": "Economic Times"
+    },
+    {
+      "round": 1,
+      "headline": "Budgeting becomes a crucial life skill for young Indians amidst rising living costs in urban areas.",
+      "source": "NDTV"
+    },
+    {
+      "round": 3,
+      "headline": "Government emphasizes the importance of emergency savings as natural disasters disrupt lives in various states.",
+      "source": "Hindustan Times"
+    },
+    {
+      "round": 5,
+      "headline": "Experts advise young investors to plan for retirement early in light of fluctuating market conditions.",
+      "source": "The Hindu"
+    }
+  ],
+  "dynamic_news_rules": [
+    {
+      "condition": "cash > 80",
+      "headline": "Your cash reserves exceed ₹80,000! Analysts suggest investing in diversified portfolios.",
+      "source": "Business Standard"
+    },
+    {
+      "condition": "savings < 20",
+      "headline": "Savings under ₹20,000 raise alarms; financial experts warn of impending cashflow issues.",
+      "source": "Financial Express"
+    },
+    {
+      "condition": "financial_literacy > 70",
+      "headline": "With financial literacy above 70, you are among the top young investors in the country, capable of making informed financial decisions.",
+      "source": "Moneycontrol"
+    }
+  ],
+  "endings": [
+    {
+      "id": "ending_id_legendary",
+      "title": "Financial Wizard",
+      "description": "Congratulations! You've become a financial wizard, transforming your initial gift into a fortune. Your exceptional budgeting, saving, and investment skills will inspire others in your community to take charge of their finances just like you did.",
+      "rarity": "legendary",
+      "conditions": {
+        "cash": {
+          "min": 85
+        },
+        "savings": {
+          "min": 80
+        },
+        "investments": {
+          "min": 70
+        }
+      }
+    },
+    {
+      "id": "good_ending_id",
+      "title": "Smart Investor",
+      "description": "Well done! Your journey has made you a smart investor with a solid understanding of finance. By effectively managing your resources, you've set a great example for your peers, showing them the importance of financial literacy.",
+      "rarity": "rare",
+      "conditions": {
+        "cash": {
+          "min": 70
+        },
+        "financial_literacy": {
+          "min": 60
+        }
+      }
+    },
+    {
+      "id": "okay_ending_id",
+      "title": "Financial Learner",
+      "description": "You've gained valuable insights into personal finance, and while your journey is just beginning, you've made important strides in understanding budgeting and savings. Remember, every great financial journey starts with learning!",
+      "rarity": "common",
+      "conditions": {
+        "savings": {
+          "min": 50
+        }
+      }
+    },
+    {
+      "id": "default_ending_id",
+      "title": "Learning Journey",
+      "description": "Your experience has been a valuable learning journey, filled with lessons about budgeting and investments. While you may not have achieved all your goals, you now possess the knowledge to make smarter financial decisions in the future.",
+      "rarity": "common",
+      "is_default": true
+    }
+  ],
+  "coach_mode_default": true,
+  "learning_concept": "Competitive Reasoning & Negotiation",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Outmaneuvering AI competitors with limited resources",
+      "real_world": "Competing for market share in a business with a tight budget",
+      "challenge": "Identify a competitive situation in your life. What is your unique advantage?"
+    },
+    {
+      "skill_tag": "risk_tolerance",
+      "game_context": "Choosing between safe and bold strategies against AI",
+      "real_world": "Deciding when to challenge the status quo versus play it safe",
+      "challenge": "Research one company that made a bold risk that paid off. What conditions made it possible?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "BATNA",
+      "definition": "Best Alternative To a Negotiated Agreement — your fallback if no deal is reached.",
+      "example": "If you can't agree on a price, you could sell to a different buyer — that's your BATNA.",
+      "deep_dive": "A strong BATNA gives negotiating power. Knowing both parties' BATNAs reveals who needs the deal more.",
+      "real_world_example": "A job applicant with another offer has a stronger BATNA and can negotiate more confidently."
+    },
+    {
+      "term": "Win-Win Negotiation",
+      "definition": "Finding solutions where both parties gain value rather than one side winning at the other's expense.",
+      "example": "Agreeing on a payment plan that works for both buyer and seller, rather than a discount that hurts profit.",
+      "deep_dive": "Integrative negotiation expands the 'pie' by identifying trade-offs where each party values things differently.",
+      "real_world_example": "Labor-management negotiations that increase productivity in exchange for better wages can benefit both sides."
+    },
+    {
+      "term": "Anchoring",
+      "definition": "Setting an initial reference point in a negotiation that influences the final outcome.",
+      "example": "The first price mentioned in a negotiation becomes the anchor around which all counteroffers are compared.",
+      "deep_dive": "Research shows people are heavily influenced by the first number they hear, even when irrelevant.",
+      "real_world_example": "Salary negotiations: starting with a high number tends to result in higher final offers."
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_intelligence": 0.5,
+      "crisis_frequency": 0.1,
+      "resource_boost": 1.3
+    },
+    "medium": {
+      "ai_intelligence": 0.75,
+      "crisis_frequency": 0.2,
+      "resource_boost": 1.0
+    },
+    "hard": {
+      "ai_intelligence": 1.0,
+      "crisis_frequency": 0.4,
+      "resource_boost": 0.75
+    }
+  },
+  "market_feed": true,
+  "market_sector": "finance",
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.35,
+    "delayed_gratification": 0.35,
+    "risk_tolerance": 0.3
+  },
+  "coaching_moment": "Understand budgeting and expense management. Learn the basics of saving vs investing.",
+  "estimated_duration": 35,
+  "target_age": "Ages 12-16",
+  "tags": [
+    "ai-opponent",
+    "creativity",
+    "finance",
+    "intermediate",
+    "role-playing",
+    "simulation",
+    "strategic-thinking"
+  ],
+  "cultural_context": "Financial literacy is a critical gap in India, where formal personal finance education is largely absent from school curricula. India's growing middle class and expanding capital markets make financial decision-making skills increasingly essential.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "self-regulation",
+    "entrepreneurial-thinking"
+  ],
+  "reflection_prompt": "How did you adapt as the AI shifted strategies? Which adaptation worked best?"
+}

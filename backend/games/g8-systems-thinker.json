@@ -1,0 +1,2444 @@
+{
+  "game_id": "g8-systems-thinker",
+  "title": "Systems Thinker: See the Whole Picture",
+  "theme": "Critical Thinking & Systems Thinking",
+  "icon": "🔗",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are the newly appointed School Ecosystem Director of Greenfield Academy, a large secondary school where cafeteria, transport, academics, sports, and environment are deeply interconnected. Every decision creates ripple effects across the system. Think in loops, weigh evidence, anticipate consequences, and see the whole picture.",
+  "target_audience": "Ages 13-14",
+  "target_age": "13-14",
+  "grade": "8",
+  "difficulty": "advanced",
+  "duration_minutes": 30,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You manage Greenfield Academy across 12 weeks as the new School Ecosystem Director.",
+    "Each round presents a decision with trade-offs that ripple across interconnected subsystems.",
+    "Watch the dashboard — Academic, Environmental, Social, Resource, and Health & Sports systems are all linked.",
+    "Random events like inspections, weather crises, and community protests will test your resilience.",
+    "NPCs (Prof. Systems, Quick-Fix Quinn, the Data Analyst) will advise, challenge, or push you.",
+    "Avoid unintended consequences — a quick fix in one area can cascade into failures elsewhere!",
+    "Aim for balanced mastery — systems thinkers see the whole picture, not just individual parts."
+  ],
+  "learning_objectives": [
+    "Understand feedback loops and how subsystems interconnect",
+    "Practice evidence-based decision making under complexity",
+    "Identify and avoid unintended consequences of decisions",
+    "Develop critical thinking about trade-offs and second-order effects",
+    "Build systems thinking skills: seeing patterns, not just events",
+    "Learn to balance competing stakeholder needs holistically"
+  ],
+  "tags": [
+    "critical-thinking",
+    "systems-thinking",
+    "grade-8",
+    "complexity",
+    "decision-making"
+  ],
+  "nep_stage": "Secondary",
+  "nep_competencies": [
+    "Critical Thinking",
+    "Systems Thinking",
+    "Problem Solving",
+    "Environmental Awareness"
+  ],
+  "cultural_context": "School ecosystem management, globally playable, evidence-based reasoning",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.15,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.15,
+    "ethical_reasoning": 0.15
+  },
+  "initial_state": {
+    "systems_understanding": {
+      "value": 25,
+      "label": "Systems Understanding",
+      "icon": "🔗",
+      "min": 0,
+      "max": 100
+    },
+    "evidence_quality": {
+      "value": 30,
+      "label": "Evidence Quality",
+      "icon": "🔬",
+      "min": 0,
+      "max": 100
+    },
+    "decision_accuracy": {
+      "value": 35,
+      "label": "Decision Accuracy",
+      "icon": "🎯",
+      "min": 0,
+      "max": 100
+    },
+    "unintended_consequences": {
+      "value": 0,
+      "label": "Unintended Consequences",
+      "icon": "⚠️",
+      "min": 0,
+      "max": 100
+    },
+    "feedback_loop_mastery": {
+      "value": 15,
+      "label": "Feedback Loop Mastery",
+      "icon": "🔄",
+      "min": 0,
+      "max": 100
+    },
+    "stakeholder_satisfaction": {
+      "value": 50,
+      "label": "Stakeholder Satisfaction",
+      "icon": "👥",
+      "min": 0,
+      "max": 100
+    },
+    "school_performance": {
+      "value": 55,
+      "label": "School Performance",
+      "icon": "📊",
+      "min": 0,
+      "max": 100
+    },
+    "environmental_health": {
+      "value": 50,
+      "label": "Environmental Health",
+      "icon": "🌿",
+      "min": 0,
+      "max": 100
+    },
+    "budget": {
+      "value": 10000,
+      "label": "Budget",
+      "icon": "💰",
+      "min": -5000,
+      "max": 50000
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "academic_system",
+        "label": "Academic System",
+        "icon": "📚",
+        "color": "#6366F1",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, school_performance * 0.4 + evidence_quality * 0.3 + decision_accuracy * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "environmental_system",
+        "label": "Environmental System",
+        "icon": "🌿",
+        "color": "#06D6A0",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, environmental_health * 0.5 + stakeholder_satisfaction * 0.2 + systems_understanding * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "social_system",
+        "label": "Social System",
+        "icon": "🤝",
+        "color": "#EF476F",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, stakeholder_satisfaction * 0.5 + feedback_loop_mastery * 0.2 + (100 - unintended_consequences) * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "resource_system",
+        "label": "Resource System",
+        "icon": "📦",
+        "color": "#FFD166",
+        "initial_health": 45,
+        "health_formula": "min(100, max(0, budget / 500 * 0.4 + decision_accuracy * 0.3 + school_performance * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "health_sports",
+        "label": "Health & Sports",
+        "icon": "⚽",
+        "color": "#118AB2",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, environmental_health * 0.3 + stakeholder_satisfaction * 0.3 + school_performance * 0.2 + (100 - unintended_consequences) * 0.2))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "systems_mastery_index",
+        "label": "Systems Mastery Index",
+        "icon": "🔗",
+        "formula": "(systems_understanding * 0.3 + feedback_loop_mastery * 0.3 + decision_accuracy * 0.2 + (100 - unintended_consequences) * 0.2)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "decision_quality_score",
+        "label": "Decision Quality Score",
+        "icon": "🎯",
+        "formula": "(decision_accuracy * 0.4 + evidence_quality * 0.35 + (100 - unintended_consequences) * 0.25)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 30,
+          "warning": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "school_wellness",
+        "label": "School Wellness",
+        "icon": "🏫",
+        "formula": "(stakeholder_satisfaction * 0.25 + school_performance * 0.25 + environmental_health * 0.25 + (100 - unintended_consequences) * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "weekly_funding",
+        "label": "Weekly Funding Allocation",
+        "effects": [
+          {
+            "resource": "budget",
+            "formula": "budget + int(school_performance * 15 + stakeholder_satisfaction * 10)"
+          }
+        ],
+        "description": "The school board allocates weekly funds based on performance and satisfaction."
+      },
+      {
+        "id": "consequence_buildup",
+        "label": "Consequence Accumulation",
+        "condition": {
+          "resource": "systems_understanding",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "unintended_consequences",
+            "formula": "min(100, unintended_consequences + 3)"
+          }
+        ],
+        "description": "Low systems understanding causes unintended consequences to slowly accumulate."
+      },
+      {
+        "id": "mastery_growth",
+        "label": "Feedback Loop Learning",
+        "condition": {
+          "resource": "evidence_quality",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "feedback_loop_mastery",
+            "formula": "min(100, feedback_loop_mastery + int(evidence_quality * 0.05))"
+          }
+        ],
+        "description": "When evidence quality is good, feedback loop mastery naturally improves."
+      },
+      {
+        "id": "performance_adjustment",
+        "label": "Performance Self-Correction",
+        "effects": [
+          {
+            "resource": "school_performance",
+            "formula": "min(100, max(0, school_performance + int((decision_accuracy - 50) * 0.08)))"
+          }
+        ],
+        "description": "School performance gradually adjusts based on decision accuracy."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "academic_pressure_social",
+        "from_subsystem": "academic_system",
+        "to_subsystem": "social_system",
+        "label": "Academic Pressure on Students",
+        "condition": {
+          "resource": "school_performance",
+          "op": ">",
+          "value": 75
+        },
+        "effects": [
+          {
+            "resource": "stakeholder_satisfaction",
+            "formula": "max(0, stakeholder_satisfaction - (school_performance - 75) * 0.12)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Pushing academics too hard can stress students and reduce satisfaction."
+      },
+      {
+        "id": "environment_health_link",
+        "from_subsystem": "environmental_system",
+        "to_subsystem": "health_sports",
+        "label": "Green Spaces Boost Sports",
+        "condition": {
+          "resource": "environmental_health",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "school_performance",
+            "formula": "min(100, school_performance + (environmental_health - 60) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Healthy environments improve student energy, boosting overall performance."
+      },
+      {
+        "id": "resource_drain_environment",
+        "from_subsystem": "resource_system",
+        "to_subsystem": "environmental_system",
+        "label": "Budget Cuts Hurt Environment",
+        "condition": {
+          "resource": "budget",
+          "op": "<",
+          "value": 5000
+        },
+        "effects": [
+          {
+            "resource": "environmental_health",
+            "formula": "max(0, environmental_health - 3)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When budget is tight, environmental programs are the first to be cut."
+      },
+      {
+        "id": "social_academic_feedback",
+        "from_subsystem": "social_system",
+        "to_subsystem": "academic_system",
+        "label": "Happy Students Learn Better",
+        "condition": {
+          "resource": "stakeholder_satisfaction",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "decision_accuracy",
+            "formula": "min(100, decision_accuracy + (stakeholder_satisfaction - 65) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Satisfied stakeholders provide better feedback, improving decision quality."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "evidence_quality",
+        "equilibrium": 35,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "stakeholder_satisfaction",
+        "equilibrium": 45,
+        "rate": 0.04,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "surprise_inspection",
+        "label": "Surprise Board Inspection",
+        "icon": "🔍",
+        "description": "The school board has sent inspectors for an unannounced evaluation. Every subsystem is under scrutiny.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "school_performance",
+              "op": "<",
+              "value": 60
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "stakeholder_satisfaction",
+            "delta": -8
+          },
+          {
+            "resource": "school_performance",
+            "delta": -5
+          },
+          {
+            "resource": "unintended_consequences",
+            "delta": 5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "ALERT: Surprise inspection reveals gaps in school systems. Board demands immediate improvement plan.",
+        "ai_image_prompt": "School inspection scene, formal inspectors with clipboards walking through school corridors, teachers looking concerned, semi-realistic"
+      },
+      {
+        "id": "student_innovation_fair",
+        "label": "Student Innovation Fair",
+        "icon": "💡",
+        "description": "Students have organized a cross-disciplinary innovation fair that showcases systems thinking in action!",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "systems_understanding",
+              "op": ">=",
+              "value": 40
+            },
+            {
+              "resource": "school_performance",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "systems_understanding",
+            "delta": 8
+          },
+          {
+            "resource": "stakeholder_satisfaction",
+            "delta": 6
+          },
+          {
+            "resource": "feedback_loop_mastery",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Student Innovation Fair wows visitors! Projects demonstrate real-world systems thinking.",
+        "ai_image_prompt": "School innovation fair, students presenting science projects and system diagrams, impressed visitors, bright exhibition hall, semi-realistic"
+      },
+      {
+        "id": "extreme_weather",
+        "label": "Extreme Weather Disruption",
+        "icon": "🌪️",
+        "description": "Severe storms damage outdoor facilities and disrupt the school transport network. Multiple subsystems are affected simultaneously.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "environmental_health",
+              "op": "<",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "environmental_health",
+            "delta": -10
+          },
+          {
+            "resource": "budget",
+            "delta": -2000
+          },
+          {
+            "resource": "school_performance",
+            "delta": -6
+          },
+          {
+            "resource": "stakeholder_satisfaction",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "Severe weather damages school grounds. Emergency repairs needed across multiple facilities.",
+        "ai_image_prompt": "School campus after a storm, fallen trees on sports field, flooded walkways, maintenance crew working, dramatic cloudy sky, semi-realistic"
+      },
+      {
+        "id": "parent_advocacy_group",
+        "label": "Parent Advocacy Campaign",
+        "icon": "📢",
+        "description": "A vocal parent group is demanding transparency about how decisions are made and what evidence supports them.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "evidence_quality",
+              "op": "<",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "stakeholder_satisfaction",
+            "delta": -7
+          },
+          {
+            "resource": "evidence_quality",
+            "delta": 5
+          },
+          {
+            "resource": "unintended_consequences",
+            "delta": 4
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "Parents demand evidence-based decisions! Petition signed by 200 families calls for transparency.",
+        "ai_image_prompt": "Group of concerned parents at a school meeting, holding petitions, school auditorium, tense atmosphere, semi-realistic"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "prof_systems",
+        "name": "Prof. Systems",
+        "role": "Systems Thinking Guide",
+        "icon": "🧠",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "systems_understanding",
+              "op": "<",
+              "value": 30
+            },
+            "action": "teach",
+            "message": "Remember: every part of this school is connected. When you change one thing, ask yourself — what else will this affect? Think in loops, not lines.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "resource": "feedback_loop_mastery",
+              "op": ">=",
+              "value": 50
+            },
+            "action": "praise",
+            "message": "Excellent! You are beginning to see the feedback loops. Notice how improving the environment also boosted student health? That is systems thinking in action!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "systems_understanding",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "celebrate",
+            "message": "You have achieved true systems mastery! You see the interconnections, anticipate ripple effects, and balance the whole ecosystem. I am proud of you.",
+            "mood_change": "happy",
+            "satisfaction_delta": 8
+          }
+        ]
+      },
+      {
+        "id": "quickfix_quinn",
+        "name": "Quick-Fix Quinn",
+        "role": "Student Council President",
+        "icon": "⚡",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "school_performance",
+              "op": "<",
+              "value": 45
+            },
+            "action": "push",
+            "message": "We need results NOW! Just boost academics directly — who cares about the other stuff? Students want better grades, not systems diagrams!",
+            "mood_change": "impatient",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "unintended_consequences",
+              "op": ">=",
+              "value": 40
+            },
+            "action": "blame",
+            "message": "See? All this careful planning and things are still falling apart! Maybe we should have just gone with quick fixes from the start!",
+            "mood_change": "frustrated",
+            "satisfaction_delta": -7
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "unintended_consequences",
+                  "op": ">",
+                  "value": 60
+                },
+                {
+                  "resource": "systems_understanding",
+                  "op": "<",
+                  "value": 25
+                }
+              ]
+            },
+            "action": "cascade_trigger",
+            "message": "Quinn has convinced the student council to implement emergency quick fixes without consulting you! The cafeteria, transport, and sports schedules are all being changed at once!",
+            "mood_change": "angry",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "unintended_consequences",
+                "delta": 15
+              },
+              {
+                "resource": "stakeholder_satisfaction",
+                "delta": -10
+              }
+            ],
+            "trigger_round": "crisis_cascade_failure"
+          }
+        ]
+      },
+      {
+        "id": "data_analyst",
+        "name": "Dr. Data (School Analyst)",
+        "role": "Data & Evidence Specialist",
+        "icon": "📊",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "evidence_quality",
+              "op": "<",
+              "value": 25
+            },
+            "action": "warn",
+            "message": "We are making decisions without data! I strongly recommend collecting more evidence before our next big move.",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "evidence_quality",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "praise",
+            "message": "Our data collection is excellent. We have strong evidence to support our decisions. Keep it up!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "evidence_quality",
+                  "op": ">",
+                  "value": 60
+                },
+                {
+                  "resource": "decision_accuracy",
+                  "op": "<",
+                  "value": 20
+                }
+              ]
+            },
+            "action": "analysis_paralysis",
+            "message": "We have mountains of data but we are not using it to make actual decisions! The school is drowning in reports while problems go unsolved. Data without action is useless!",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -10,
+            "effects": [
+              {
+                "resource": "school_performance",
+                "delta": -8
+              },
+              {
+                "resource": "stakeholder_satisfaction",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_analysis_paralysis"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "systems_understanding",
+          "op": ">=",
+          "value": 60
+        },
+        "icon": "🏆",
+        "text": "Greenfield Academy's interconnected approach praised by education board. Systems thinking score: {systems_understanding}%",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "unintended_consequences",
+          "op": ">",
+          "value": 50
+        },
+        "icon": "⚠️",
+        "text": "Warning: Unintended consequences mounting at Greenfield Academy. Cascading failures possible.",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "evidence_quality",
+              "op": ">=",
+              "value": 60
+            },
+            {
+              "resource": "decision_accuracy",
+              "op": ">=",
+              "value": 60
+            }
+          ]
+        },
+        "icon": "🎯",
+        "text": "Greenfield Academy recognized for evidence-based decision making. A model for other schools!",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A modern school campus called Greenfield Academy, with interconnected buildings for academics, sports, cafeteria, and green spaces. Systems understanding level {systems_understanding}%, stakeholder satisfaction {stakeholder_satisfaction}%, environmental health {environmental_health}%. Semi-realistic style. Mood: {'thriving' if stakeholder_satisfaction > 65 else 'tense' if stakeholder_satisfaction < 35 else 'everyday'}."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_orientation",
+      "round_title": "Week 1: The Interconnected School",
+      "situation": "Welcome to Greenfield Academy! On your first day, you discover that the cafeteria waste is polluting the school garden, the garden supplies oxygen to the indoor sports hall ventilation, and the sports schedule conflicts with science lab timings. Everything is connected. Where do you begin?",
+      "goal": "Make your first decision as Ecosystem Director — and begin to see the connections.",
+      "coaching_moment": "Systems thinking begins with mapping connections. Before solving a problem, ask: what is this connected to?",
+      "reflection_prompt": "Why is it important to understand connections before making changes?",
+      "ai_image_prompt": "Modern school campus aerial view, interconnected buildings with visible pathways between cafeteria, garden, sports hall, and classrooms, semi-realistic",
+      "choices": [
+        {
+          "id": "w1_map_systems",
+          "label": "A. Map the Entire System First",
+          "description": "Spend the week interviewing teachers, students, and staff to understand every connection before making any changes.",
+          "delta": {
+            "systems_understanding": 15,
+            "evidence_quality": 12,
+            "feedback_loop_mastery": 8,
+            "decision_accuracy": 5,
+            "budget": -500,
+            "school_performance": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Brilliant systems thinking! Mapping before acting reveals hidden connections. You discover that the cafeteria schedule actually affects 4 other subsystems.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "w1_fix_cafeteria",
+          "label": "B. Fix the Cafeteria Waste Problem",
+          "description": "The most visible issue. Install composting bins and redirect waste away from the garden immediately.",
+          "delta": {
+            "environmental_health": 10,
+            "stakeholder_satisfaction": 5,
+            "systems_understanding": 5,
+            "budget": -1500,
+            "unintended_consequences": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Quick visible win! But the composting increased humidity near the sports hall, making the ventilation problem worse. Every fix creates new ripples.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "w1_schedule_fix",
+          "label": "C. Reorganize the Master Schedule",
+          "description": "Resolve the sports-lab timing conflict by overhauling the entire timetable.",
+          "delta": {
+            "school_performance": 8,
+            "decision_accuracy": 8,
+            "stakeholder_satisfaction": -5,
+            "unintended_consequences": 10,
+            "budget": -800
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "The new schedule fixed lab timings but created a bus transport bottleneck — 200 students now arrive at the same time. Unintended consequences in action!",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w1_quick_wins",
+          "label": "D. Quick Fixes Everywhere",
+          "description": "Address all three problems with fast, independent solutions this week.",
+          "delta": {
+            "school_performance": 5,
+            "environmental_health": 5,
+            "stakeholder_satisfaction": 8,
+            "unintended_consequences": 15,
+            "systems_understanding": -5,
+            "budget": -2500
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "People love the energy! But fixing things independently without seeing connections has created new conflicts. Three quick fixes just created five new problems.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_cafeteria_transport",
+      "round_title": "Week 2: The Cafeteria-Transport Loop",
+      "situation": "Data reveals a hidden feedback loop: when the cafeteria serves lunch late, buses leave late, students arrive home late, parents complain, and the school board cuts the cafeteria budget — making lunches even later. A classic reinforcing loop. How do you break the cycle?",
+      "goal": "Identify and break a reinforcing feedback loop.",
+      "coaching_moment": "Reinforcing loops amplify problems over time. The key is finding the leverage point — the one change that breaks the cycle.",
+      "reflection_prompt": "Where in this loop would a small change have the biggest effect?",
+      "ai_image_prompt": "School cafeteria with students waiting in long queue, visible clock showing late time, school buses visible through window, semi-realistic",
+      "choices": [
+        {
+          "id": "w2_stagger_lunch",
+          "label": "A. Stagger Lunch Timings",
+          "description": "Spread lunch across 3 slots so the cafeteria is never overwhelmed. Breaks the bottleneck.",
+          "delta": {
+            "feedback_loop_mastery": 12,
+            "systems_understanding": 8,
+            "stakeholder_satisfaction": 6,
+            "school_performance": 5,
+            "unintended_consequences": -5,
+            "budget": -800
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Excellent leverage point! Staggering lunch breaks the entire reinforcing loop. Transport runs on time, parents are happy, budget is restored.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "w2_faster_cooking",
+          "label": "B. Upgrade Cafeteria Equipment",
+          "description": "Buy faster cooking equipment to serve meals quicker. Address the symptom directly.",
+          "delta": {
+            "stakeholder_satisfaction": 5,
+            "school_performance": 3,
+            "feedback_loop_mastery": 3,
+            "budget": -3000,
+            "environmental_health": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Faster meals help, but the underlying loop still exists. The equipment uses more energy and creates more waste. You treated the symptom, not the cause.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w2_data_study",
+          "label": "C. Commission a Full Data Study",
+          "description": "Hire a consultant to analyze timing data across all school operations before deciding.",
+          "delta": {
+            "evidence_quality": 15,
+            "systems_understanding": 10,
+            "budget": -2000,
+            "decision_accuracy": -3,
+            "school_performance": -2
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Rich data! You now understand 7 interconnected loops. But the delay means parents have filed more complaints and the loop has worsened.",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w2_extra_buses",
+          "label": "D. Add More Bus Routes",
+          "description": "If buses are the problem, add more buses. Direct and simple.",
+          "delta": {
+            "stakeholder_satisfaction": 4,
+            "budget": -2500,
+            "environmental_health": -5,
+            "unintended_consequences": 8,
+            "feedback_loop_mastery": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ],
+          "feedback": "More buses ease transport but worsen pollution, increase costs, and the root cause (late lunches) remains. The loop will reassert itself.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_evidence",
+      "round_title": "Week 3: The Evidence Dilemma",
+      "situation": "Sports performance is declining. The PE teacher blames reduced outdoor time. The science teacher says it is poor nutrition in the cafeteria. The counselor thinks it is academic stress. Everyone has an opinion — but where is the evidence? You need to decide how to investigate.",
+      "goal": "Practice evidence-based thinking to find the real cause.",
+      "coaching_moment": "Critical thinking means questioning assumptions. Opinions are not evidence — data reveals what is really happening.",
+      "reflection_prompt": "How do you distinguish between opinions and evidence when making decisions?",
+      "ai_image_prompt": "School staffroom debate, teachers pointing at different charts and data on a whiteboard, student performance graphs, semi-realistic",
+      "choices": [
+        {
+          "id": "w3_triangulate",
+          "label": "A. Triangulate with Multiple Data Sources",
+          "description": "Cross-reference attendance records, cafeteria nutrition data, and stress surveys to find the real cause.",
+          "delta": {
+            "evidence_quality": 15,
+            "decision_accuracy": 12,
+            "systems_understanding": 8,
+            "feedback_loop_mastery": 5,
+            "budget": -1500,
+            "school_performance": -2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Brilliant! Triangulation reveals the real cause: it is all three factors in a feedback loop. Poor nutrition reduces energy, which reduces outdoor time, which increases stress. Systems thinking at its best!",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "w3_trust_pe",
+          "label": "B. Trust the PE Teacher — Increase Outdoor Time",
+          "description": "The PE teacher has years of experience. Increase outdoor sports hours immediately.",
+          "delta": {
+            "environmental_health": 8,
+            "school_performance": 3,
+            "stakeholder_satisfaction": 3,
+            "evidence_quality": -5,
+            "unintended_consequences": 8,
+            "budget": -1000
+          },
+          "skill_tags": [
+            "empathy",
+            "risk_tolerance"
+          ],
+          "feedback": "More outdoor time helps some students but academic time is cut. Without evidence, you solved part of the problem but created new scheduling conflicts.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w3_survey_students",
+          "label": "C. Survey the Students Directly",
+          "description": "Ask the students what they think is causing poor sports performance.",
+          "delta": {
+            "evidence_quality": 10,
+            "stakeholder_satisfaction": 8,
+            "decision_accuracy": 5,
+            "systems_understanding": 3,
+            "budget": -500
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Students provide valuable insights! They point out connections the teachers missed. But self-reported data has biases — you need to cross-check.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "w3_expert_consultant",
+          "label": "D. Hire an External Expert",
+          "description": "Bring in a sports science consultant to do a professional assessment.",
+          "delta": {
+            "evidence_quality": 12,
+            "decision_accuracy": 8,
+            "budget": -3000,
+            "stakeholder_satisfaction": -3,
+            "school_performance": -2
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "The expert provides excellent analysis but the staff feels bypassed. External expertise is valuable, but ignoring internal knowledge creates resentment.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_environment",
+      "round_title": "Week 4: The Green Dilemma",
+      "situation": "The school garden has become the heart of an unexpected system: it produces food for the cafeteria, provides outdoor learning space, improves air quality for the sports hall, and compost from the cafeteria feeds it back. But expanding the garden means losing the only space planned for a new computer lab. Systems collide.",
+      "goal": "Navigate a trade-off where two important systems compete for the same resource.",
+      "coaching_moment": "Systems thinking reveals that trade-offs are rarely binary. Creative solutions can sometimes satisfy multiple systems.",
+      "reflection_prompt": "When two good things compete for the same space, how do you decide?",
+      "ai_image_prompt": "Split view of a school garden and a computer lab blueprint, students in garden and at computers, green vs digital, semi-realistic",
+      "choices": [
+        {
+          "id": "w4_vertical_garden",
+          "label": "A. Vertical Garden + Rooftop Lab",
+          "description": "Convert the garden to vertical farming and build the computer lab on the roof. Both systems survive, but costs double.",
+          "delta": {
+            "environmental_health": 10,
+            "school_performance": 8,
+            "systems_understanding": 10,
+            "budget": -4000,
+            "feedback_loop_mastery": 8,
+            "stakeholder_satisfaction": 6
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Creative systems solution! By thinking beyond either/or, you found a both/and answer. The vertical garden actually produces MORE food in less space.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 4000,
+            "label": "Requires Budget >= 4,000"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w4_keep_garden",
+          "label": "B. Protect the Garden Ecosystem",
+          "description": "The garden's interconnections are too valuable. Find another location for the computer lab later.",
+          "delta": {
+            "environmental_health": 12,
+            "systems_understanding": 5,
+            "stakeholder_satisfaction": -5,
+            "school_performance": -5,
+            "feedback_loop_mastery": 5,
+            "budget": -500
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "delayed_gratification"
+          ],
+          "feedback": "You preserved a critical feedback loop, but tech-focused students and parents are disappointed. The school board questions your priorities.",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "w4_build_lab",
+          "label": "C. Build the Computer Lab",
+          "description": "Digital literacy is the future. Replace the garden with a state-of-the-art lab.",
+          "delta": {
+            "school_performance": 12,
+            "environmental_health": -15,
+            "stakeholder_satisfaction": 3,
+            "unintended_consequences": 12,
+            "budget": -3000,
+            "systems_understanding": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "The lab is impressive, but removing the garden breaks 4 feedback loops at once. Cafeteria costs rise, air quality drops, outdoor learning disappears. A cascade of consequences.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "w4_shared_space",
+          "label": "D. Time-Share the Space",
+          "description": "Use the space as a garden in the morning and a portable computer lab in the afternoon.",
+          "delta": {
+            "school_performance": 5,
+            "environmental_health": 5,
+            "systems_understanding": 3,
+            "decision_accuracy": 5,
+            "stakeholder_satisfaction": 4,
+            "budget": -2000,
+            "unintended_consequences": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Clever compromise! But shared spaces create scheduling conflicts and neither system operates at full capacity. Sometimes compromise means mediocrity.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_stakeholders",
+      "round_title": "Week 5: Stakeholder Conflict",
+      "situation": "A major conflict erupts: parents want more academic hours, the sports coaches demand a new gymnasium, the environmental club is pushing for solar panels, and the cafeteria staff are threatening to strike over workload. Each group only sees their part of the system. You must find a path that addresses the interconnections.",
+      "goal": "Manage competing stakeholder demands by revealing systemic connections.",
+      "coaching_moment": "Stakeholders see their piece of the puzzle. A systems thinker shows them how their pieces connect.",
+      "reflection_prompt": "How can showing people the bigger picture help resolve conflicts?",
+      "ai_image_prompt": "School assembly hall, different groups of parents teachers and students arguing, speech bubbles with different demands, semi-realistic",
+      "choices": [
+        {
+          "id": "w5_town_hall",
+          "label": "A. Host a Systems Mapping Town Hall",
+          "description": "Invite all stakeholders to a workshop where you visually map how their demands interconnect. Let them see the system together.",
+          "delta": {
+            "systems_understanding": 12,
+            "stakeholder_satisfaction": 10,
+            "feedback_loop_mastery": 8,
+            "evidence_quality": 5,
+            "decision_accuracy": 5,
+            "budget": -1000
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Powerful! When parents see that cutting sports time actually hurts academic performance (through stress), and coaches see that solar panels fund the gym, conflicts dissolve. Shared understanding builds shared solutions.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w5_prioritize_academics",
+          "label": "B. Prioritize Academic Hours",
+          "description": "Parents are the primary stakeholders. Give them what they want — more study time.",
+          "delta": {
+            "school_performance": 10,
+            "stakeholder_satisfaction": -3,
+            "environmental_health": -5,
+            "unintended_consequences": 10,
+            "decision_accuracy": 5,
+            "budget": -800
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "delayed_gratification"
+          ],
+          "feedback": "Academic hours increase but student stress rises, sports participation drops, and the environmental club stages a walkout. Satisfying one group while ignoring interconnections backfires.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "w5_equal_split",
+          "label": "C. Split Resources Equally",
+          "description": "Give each group an equal share of the budget. Fair is fair.",
+          "delta": {
+            "stakeholder_satisfaction": 3,
+            "budget": -3000,
+            "systems_understanding": -3,
+            "decision_accuracy": -5,
+            "unintended_consequences": 8,
+            "school_performance": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Equal feels fair but is not efficient. The groups with synergies (sports + environment) could have amplified each other with combined funding. Equal distribution ignores system structure.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w5_delegate",
+          "label": "D. Let Each Group Self-Govern",
+          "description": "Give each stakeholder group autonomy over their domain. They know their area best.",
+          "delta": {
+            "stakeholder_satisfaction": 5,
+            "unintended_consequences": 15,
+            "systems_understanding": -8,
+            "feedback_loop_mastery": -5,
+            "budget": -1500
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Autonomy sounds democratic but without coordination, each group optimizes their part at the expense of the whole. The cafeteria, sports, and academics now have conflicting schedules.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_unintended",
+      "round_title": "Week 6: The Ripple Effect",
+      "situation": "Your earlier decisions are creating unexpected ripple effects. The new staggered lunch schedule improved transport but reduced peer social time. Students who used to eat together now barely interact. Loneliness reports are up 30%. A well-intentioned change created a hidden problem.",
+      "goal": "Recognize and address an unintended consequence of a previous decision.",
+      "coaching_moment": "Every intervention in a complex system has side effects. Great systems thinkers monitor for unintended consequences and adapt.",
+      "reflection_prompt": "Have you ever solved a problem only to accidentally create a new one?",
+      "ai_image_prompt": "School lunch area with scattered students eating alone at different times, empty seats, contrast with busy hallway, semi-realistic",
+      "choices": [
+        {
+          "id": "w6_social_clubs",
+          "label": "A. Create Cross-Slot Social Clubs",
+          "description": "Design clubs and activities that bring students from different lunch slots together. Add new connections to the system.",
+          "delta": {
+            "stakeholder_satisfaction": 10,
+            "systems_understanding": 8,
+            "feedback_loop_mastery": 6,
+            "unintended_consequences": -10,
+            "budget": -1200,
+            "school_performance": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Systems repair! Instead of reverting the schedule, you added new connections. The clubs become a positive feedback loop — social bonds improve academic collaboration too.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "w6_revert_schedule",
+          "label": "B. Revert to the Old Schedule",
+          "description": "The staggered lunch was a mistake. Go back to how things were.",
+          "delta": {
+            "stakeholder_satisfaction": 5,
+            "unintended_consequences": -5,
+            "school_performance": -5,
+            "systems_understanding": -5,
+            "feedback_loop_mastery": -3
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Going backward solves one problem but recreates the original one. Reverting is not systems thinking — it is giving up on the solution.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w6_monitor_data",
+          "label": "C. Set Up a Monitoring Dashboard",
+          "description": "Build a real-time dashboard tracking social, academic, and health indicators so you can catch ripple effects early.",
+          "delta": {
+            "evidence_quality": 12,
+            "systems_understanding": 10,
+            "decision_accuracy": 8,
+            "feedback_loop_mastery": 5,
+            "budget": -2000,
+            "stakeholder_satisfaction": -2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "A monitoring system is the eyes of a systems thinker. You can now see ripple effects in real time. But the lonely students need help now, not dashboards.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 2000,
+            "label": "Requires Budget >= 2,000"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "w6_ignore",
+          "label": "D. Accept It as a Necessary Trade-Off",
+          "description": "Some social time loss is the price of efficient transport. Focus on bigger problems.",
+          "delta": {
+            "unintended_consequences": 10,
+            "stakeholder_satisfaction": -8,
+            "systems_understanding": -3,
+            "school_performance": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "ethical_reasoning"
+          ],
+          "feedback": "Ignoring ripple effects is the opposite of systems thinking. Loneliness compounds — isolated students underperform, disengage, and eventually leave.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_cascade_failure",
+      "id": "crisis_cascade_failure",
+      "round_title": "CRISIS: Cascade Failure",
+      "situation": "Quick-Fix Quinn's unauthorized changes have triggered a cascade failure! The new cafeteria menu increased food costs, which cut the sports budget, which cancelled the inter-school tournament, which angered parents, which caused 50 students to transfer out, which reduced school funding. One bad decision has rippled through every subsystem. The school board is demanding an emergency meeting.",
+      "goal": "Stop the cascade and restore system stability before permanent damage is done.",
+      "coaching_moment": "Cascade failures happen when quick fixes in complex systems ignore interconnections. The fix must address the root cause, not just the symptoms.",
+      "reflection_prompt": "When everything is failing at once, how do you find the root cause?",
+      "ai_image_prompt": "School in crisis, domino pieces falling across different departments, emergency board meeting, worried faces, chain reaction diagram on whiteboard, semi-realistic",
+      "condition": {
+        "resource": "unintended_consequences",
+        "operator": ">",
+        "value": 60
+      },
+      "choices": [
+        {
+          "id": "cc_root_cause",
+          "label": "A. Root Cause Analysis — Trace the Chain",
+          "description": "Systematically trace the cascade back to its origin. Reverse Quinn's changes in the correct order to stop the chain reaction.",
+          "delta": {
+            "unintended_consequences": -20,
+            "systems_understanding": 15,
+            "feedback_loop_mastery": 10,
+            "decision_accuracy": 10,
+            "stakeholder_satisfaction": 5,
+            "budget": -1500
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Masterful crisis management! By tracing the chain, you reversed the cascade at its source. The school stabilizes and you demonstrate why systems thinking matters.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "cc_emergency_funding",
+          "label": "B. Emergency Budget Injection",
+          "description": "Pour money into every failing subsystem simultaneously. Brute force recovery.",
+          "delta": {
+            "unintended_consequences": -10,
+            "stakeholder_satisfaction": 5,
+            "school_performance": 5,
+            "budget": -5000,
+            "systems_understanding": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Money buys time but does not fix the underlying problem. The cascade pauses but the structural weaknesses remain. This is a temporary bandage.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "cc_quinn_partnership",
+          "label": "C. Partner with Quinn on a Better Plan",
+          "description": "Instead of fighting Quinn, teach the student council how systems work. Turn opponents into allies.",
+          "delta": {
+            "unintended_consequences": -12,
+            "stakeholder_satisfaction": 10,
+            "systems_understanding": 8,
+            "feedback_loop_mastery": 6,
+            "budget": -800,
+            "school_performance": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Brilliant! Quinn becomes your strongest advocate for systems thinking. The student council starts mapping their own feedback loops. Culture change beats crisis management.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "cc_isolate_systems",
+          "label": "D. Isolate and Stabilize Each System Separately",
+          "description": "Temporarily decouple the subsystems so the cascade cannot spread further.",
+          "delta": {
+            "unintended_consequences": -8,
+            "systems_understanding": -10,
+            "feedback_loop_mastery": -8,
+            "stakeholder_satisfaction": -5,
+            "school_performance": 3,
+            "budget": -1000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Isolation stops the cascade but destroys the positive connections too. You saved the school but at the cost of everything that made it a system.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_delayed",
+      "round_title": "Week 7: The Delayed Benefit",
+      "situation": "Some of your earlier investments are finally showing results. The systems mapping from Week 1 has revealed a powerful insight: if you invest in teacher wellbeing, it improves teaching quality, which improves student outcomes, which improves school reputation, which attracts better teachers. A virtuous cycle. But the payoff is 6 months away.",
+      "goal": "Decide whether to invest in a long-delayed benefit that will compound over time.",
+      "coaching_moment": "Delayed gratification in systems: the best interventions often have delayed but exponential returns.",
+      "reflection_prompt": "Why are people impatient with solutions that take time to work?",
+      "ai_image_prompt": "Graph showing exponential growth curve from small investment, teacher training session in background, hopeful educators, semi-realistic",
+      "choices": [
+        {
+          "id": "w7_teacher_wellbeing",
+          "label": "A. Invest in Teacher Wellbeing Program",
+          "description": "Launch a comprehensive program: reduced admin work, counseling support, and professional development. Returns are delayed but compounding.",
+          "delta": {
+            "budget": -3000,
+            "school_performance": 3,
+            "stakeholder_satisfaction": 5,
+            "feedback_loop_mastery": 10,
+            "systems_understanding": 8,
+            "decision_accuracy": 5,
+            "environmental_health": 2
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "empathy"
+          ],
+          "feedback": "The virtuous cycle begins! Happy teachers teach better, students learn more, and the school's reputation grows. Compounding returns are the most powerful force in systems.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "w7_quick_results",
+          "label": "B. Focus on Quick Academic Results",
+          "description": "Hire tutors for struggling students. Immediate test score improvement, no systemic change.",
+          "delta": {
+            "school_performance": 10,
+            "budget": -2500,
+            "stakeholder_satisfaction": 3,
+            "unintended_consequences": 5,
+            "feedback_loop_mastery": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Scores jump quickly but unsustainably. When the tutors leave, scores drop again. You rented results instead of building a system that produces them.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w7_both",
+          "label": "C. Invest in Both — Stretch the Budget",
+          "description": "Fund both teacher wellbeing AND tutoring, but at reduced levels for each.",
+          "delta": {
+            "school_performance": 6,
+            "stakeholder_satisfaction": 4,
+            "feedback_loop_mastery": 4,
+            "systems_understanding": 3,
+            "budget": -4500,
+            "decision_accuracy": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "A balanced approach, but neither investment reaches the threshold needed for real impact. In systems, sometimes you must commit fully to trigger the feedback loop.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 4500,
+            "label": "Requires Budget >= 4,500"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "w7_wait",
+          "label": "D. Wait and Save Budget for Emergencies",
+          "description": "The school is stable for now. Save the money for unexpected events.",
+          "delta": {
+            "budget": 1000,
+            "school_performance": -3,
+            "stakeholder_satisfaction": -5,
+            "systems_understanding": -2,
+            "unintended_consequences": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Doing nothing is also a choice with consequences. Without investment, the system slowly degrades. Inaction has its own ripple effects.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_analysis_paralysis",
+      "id": "crisis_analysis_paralysis",
+      "round_title": "CRISIS: Analysis Paralysis",
+      "situation": "Dr. Data's team has produced 15 reports, 200 data visualizations, and a 50-page analysis of school systems. But no decisions have been made in weeks! Teachers are frustrated, students are disengaged, and the school board is furious. You have all the evidence in the world but zero action. The data is useless without decisions.",
+      "goal": "Break free from analysis paralysis and restore decisiveness without abandoning evidence.",
+      "coaching_moment": "Critical thinking is not just about gathering evidence — it is about using evidence to act. Perfect data does not exist. Good enough data plus courage equals progress.",
+      "reflection_prompt": "When does gathering more information become an excuse for not deciding?",
+      "ai_image_prompt": "Overloaded desk with charts reports and data printouts, frozen clock, frustrated teacher in background, paralyzed decision maker, semi-realistic",
+      "condition": {
+        "resource": "decision_accuracy",
+        "operator": "<",
+        "value": 20
+      },
+      "choices": [
+        {
+          "id": "ap_decide_now",
+          "label": "A. Make Three Decisions Today",
+          "description": "Pick the three most urgent issues and decide based on the evidence you already have. Imperfect action beats perfect inaction.",
+          "delta": {
+            "decision_accuracy": 18,
+            "school_performance": 8,
+            "stakeholder_satisfaction": 8,
+            "evidence_quality": -5,
+            "systems_understanding": 5,
+            "feedback_loop_mastery": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Action restores momentum! Three imperfect decisions based on good evidence beat zero perfect decisions. The school starts moving again.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "ap_decision_framework",
+          "label": "B. Create a Decision Framework",
+          "description": "Build a simple matrix: evidence strength vs. urgency. Use it to prioritize and decide systematically.",
+          "delta": {
+            "decision_accuracy": 15,
+            "systems_understanding": 10,
+            "evidence_quality": 5,
+            "feedback_loop_mastery": 8,
+            "stakeholder_satisfaction": 3,
+            "budget": -800
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "A decision framework turns data into action systematically. Now every future decision has a clear process. Evidence informs but does not paralyze.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "ap_delegate_decisions",
+          "label": "C. Delegate Decisions to Department Heads",
+          "description": "Share the data and let each department head decide for their area. Decentralize.",
+          "delta": {
+            "decision_accuracy": 10,
+            "stakeholder_satisfaction": 5,
+            "unintended_consequences": 10,
+            "systems_understanding": -5,
+            "school_performance": 5,
+            "budget": -500
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Delegation gets things moving but each department optimizes locally. Without coordination, the decisions may conflict with each other.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "ap_more_data",
+          "label": "D. Collect Even More Data First",
+          "description": "The current data has gaps. Commission one final comprehensive study, then decide.",
+          "delta": {
+            "evidence_quality": 10,
+            "decision_accuracy": -10,
+            "stakeholder_satisfaction": -12,
+            "school_performance": -8,
+            "unintended_consequences": 10,
+            "budget": -2000
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "risk_tolerance"
+          ],
+          "feedback": "More data deepens the paralysis. Teachers lose faith, students disengage further. Sometimes the biggest risk is not deciding.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_ethics",
+      "round_title": "Week 8: The Ethical Trade-Off",
+      "situation": "A wealthy alumni donor offers to fund a world-class science wing — but only if the school drops its environmental program and allows their chemical company's logo on the building. The science wing would boost academics enormously. But at what cost to the school's environmental values and student health?",
+      "goal": "Navigate an ethical dilemma where systems benefits conflict with values.",
+      "coaching_moment": "Ethical reasoning in systems: not every connection that boosts one metric is worth building. Values are part of the system too.",
+      "reflection_prompt": "Should a school ever compromise its values for money? Where is the line?",
+      "ai_image_prompt": "Modern school science building with corporate logo, contrasted with a wilting school garden, ethical dilemma visualization, semi-realistic",
+      "choices": [
+        {
+          "id": "w8_reject_negotiate",
+          "label": "A. Reject and Counter-Propose",
+          "description": "Decline the current terms but propose the donor fund a green science wing instead — no logo, environmental integration.",
+          "delta": {
+            "school_performance": 5,
+            "environmental_health": 8,
+            "stakeholder_satisfaction": 8,
+            "systems_understanding": 5,
+            "evidence_quality": 3,
+            "decision_accuracy": 8,
+            "budget": -500
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "Principled negotiation! The donor respects your conviction and agrees to a modified green science wing. Values and performance can coexist.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w8_accept_deal",
+          "label": "B. Accept the Full Deal",
+          "description": "The science wing will benefit thousands of students. The environmental program can be rebuilt later.",
+          "delta": {
+            "school_performance": 15,
+            "budget": 8000,
+            "environmental_health": -15,
+            "stakeholder_satisfaction": -5,
+            "unintended_consequences": 12,
+            "systems_understanding": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "The science wing is impressive, but the chemical logo sends a conflicting message. Environmental club members feel betrayed. The school's identity is compromised.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "w8_community_fundraise",
+          "label": "C. Community Crowdfunding Campaign",
+          "description": "Reject the donor and launch a community fundraiser for a smaller science upgrade that preserves school values.",
+          "delta": {
+            "stakeholder_satisfaction": 10,
+            "environmental_health": 5,
+            "school_performance": 3,
+            "systems_understanding": 5,
+            "feedback_loop_mastery": 5,
+            "budget": -1500
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "The community rallies! The fundraiser raises less money but builds incredible school spirit. The science upgrade is modest but the values are intact.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "w8_partial_accept",
+          "label": "D. Accept Money, Keep Environmental Program",
+          "description": "Take the money for the science wing but refuse to drop the environmental program. Risk the donor pulling out.",
+          "delta": {
+            "school_performance": 8,
+            "budget": 3000,
+            "environmental_health": 2,
+            "stakeholder_satisfaction": 3,
+            "unintended_consequences": 8,
+            "decision_accuracy": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "The donor agrees reluctantly but provides only half the funding. You get a partial win, but the relationship is strained and future funding is uncertain.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_9_complexity",
+      "round_title": "Week 9: Emergence and Complexity",
+      "situation": "Something unexpected has emerged from your decisions: students have spontaneously created a 'Systems Thinking Club' that maps school problems on their own. They have identified a pattern you missed — the cleaning schedule, bell timings, and homework load form a hidden stress cycle. Student-led emergence is the highest form of systems success.",
+      "goal": "Decide how to support emergent student-led systems thinking.",
+      "coaching_moment": "In complex systems, emergence happens when the parts create something the designer never planned. Nurture it, do not control it.",
+      "reflection_prompt": "What happens when students start thinking in systems on their own?",
+      "ai_image_prompt": "Students gathered around a large systems map on a wall, colorful arrows and connections, excited collaborative atmosphere, semi-realistic",
+      "choices": [
+        {
+          "id": "w9_empower_club",
+          "label": "A. Empower the Club with Real Authority",
+          "description": "Give the Systems Thinking Club a seat at the decision table. Let them present findings to the school board.",
+          "delta": {
+            "systems_understanding": 12,
+            "feedback_loop_mastery": 10,
+            "stakeholder_satisfaction": 12,
+            "decision_accuracy": 8,
+            "evidence_quality": 5,
+            "school_performance": 5,
+            "budget": -500
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "The club identifies 3 hidden feedback loops the adults missed. Student-led systems thinking becomes the school's greatest strength. Emergence amplified!",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w9_curriculum",
+          "label": "B. Turn It into a Formal Curriculum",
+          "description": "Create an official Systems Thinking course based on the club's work.",
+          "delta": {
+            "school_performance": 8,
+            "systems_understanding": 8,
+            "evidence_quality": 5,
+            "stakeholder_satisfaction": 3,
+            "feedback_loop_mastery": 3,
+            "budget": -2000
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "A formal course is valuable, but formalizing the club kills some of its spontaneous energy. Structure and emergence are in tension.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "w9_scaling",
+          "label": "C. Scale It Across All Grades",
+          "description": "Expand the club model to every grade level with dedicated mentors.",
+          "delta": {
+            "systems_understanding": 10,
+            "stakeholder_satisfaction": 8,
+            "school_performance": 5,
+            "feedback_loop_mastery": 6,
+            "budget": -3000,
+            "unintended_consequences": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "Scaling is exciting but risks diluting the original magic. Not every grade has the same energy. Forced participation kills intrinsic motivation.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 3000,
+            "label": "Requires Budget >= 3,000"
+          },
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "w9_observe",
+          "label": "D. Observe but Do Not Interfere",
+          "description": "Let the club evolve naturally. Do not formalize, fund, or control it.",
+          "delta": {
+            "systems_understanding": 5,
+            "feedback_loop_mastery": 5,
+            "stakeholder_satisfaction": 3,
+            "school_performance": 2,
+            "decision_accuracy": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "adaptability"
+          ],
+          "feedback": "Hands-off preserves emergence but the club lacks resources and eventually fades. Sometimes emergence needs a gentle supporting hand.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_10_synthesis",
+      "round_title": "Week 10: The Big Picture Test",
+      "situation": "The school board presents a challenge: redesign the school's daily operations using everything you have learned about systems. You must submit a plan that addresses academics, environment, health, social life, and resources — all in one integrated proposal. This is the ultimate test of systems thinking.",
+      "goal": "Create a holistic plan that demonstrates mastery of interconnected systems.",
+      "coaching_moment": "Synthesis is the highest level of systems thinking — combining everything you know into one coherent vision.",
+      "reflection_prompt": "What does it mean to see the whole picture, not just the parts?",
+      "ai_image_prompt": "School director presenting a holistic systems diagram to a board, interconnected circles for academics sports environment social resources, semi-realistic",
+      "choices": [
+        {
+          "id": "w10_integrated_plan",
+          "label": "A. Full Integrated Systems Plan",
+          "description": "Present a plan where every subsystem supports every other. Academic time includes outdoor learning (environment), lunch is nutritional education (cafeteria + health), sports develop teamwork (social).",
+          "delta": {
+            "systems_understanding": 15,
+            "decision_accuracy": 12,
+            "feedback_loop_mastery": 12,
+            "school_performance": 8,
+            "stakeholder_satisfaction": 10,
+            "environmental_health": 8,
+            "unintended_consequences": -10,
+            "budget": -3000
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "The board is stunned. Every element reinforces every other. This is not just a plan — it is a living system. The board approves unanimously and increases your budget.",
+          "requires": {
+            "resource": "systems_understanding",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Systems Understanding >= 40"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "w10_strong_academics",
+          "label": "B. Academic Excellence Plan",
+          "description": "Focus the plan on making Greenfield the top-ranked school academically. Other subsystems support this goal.",
+          "delta": {
+            "school_performance": 15,
+            "decision_accuracy": 8,
+            "stakeholder_satisfaction": 3,
+            "environmental_health": -5,
+            "unintended_consequences": 8,
+            "systems_understanding": -3,
+            "budget": -2000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Strong academics, but the plan treats other subsystems as servants to academic performance. The board approves but environmental and social advocates are concerned.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w10_balanced",
+          "label": "C. Balanced Improvement Plan",
+          "description": "Improve each subsystem by a moderate amount. Safe, balanced, predictable.",
+          "delta": {
+            "school_performance": 5,
+            "environmental_health": 5,
+            "stakeholder_satisfaction": 5,
+            "decision_accuracy": 5,
+            "systems_understanding": 3,
+            "budget": -2000
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "feedback": "Safe and balanced, but uninspiring. The board approves it politely. Balance without synergy is just mediocrity with good intentions.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w10_evidence_plan",
+          "label": "D. Evidence-First Pilot Program",
+          "description": "Propose a small pilot testing the integrated approach in one grade before scaling to the whole school.",
+          "delta": {
+            "evidence_quality": 12,
+            "decision_accuracy": 10,
+            "systems_understanding": 8,
+            "feedback_loop_mastery": 5,
+            "school_performance": 3,
+            "budget": -1500
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Scientifically rigorous! The pilot provides evidence that the integrated approach works. But the board wanted boldness, not caution. They fund it at a reduced level.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_12_legacy",
+      "round_title": "Week 12: Your Systems Legacy",
+      "situation": "Your term as Ecosystem Director ends this week. The school has been transformed — or not — by your approach to systems thinking. You have one final decision: what legacy do you leave behind? What system will continue to operate after you are gone?",
+      "goal": "Choose a lasting legacy that embeds systems thinking into the school's culture.",
+      "coaching_moment": "The ultimate test of systems thinking: does the system you built sustain itself without you?",
+      "reflection_prompt": "What is worth more — a perfect system that needs you, or an imperfect one that runs on its own?",
+      "ai_image_prompt": "School graduation ceremony, students holding systems thinking certificates, interconnected web decoration behind stage, hopeful future, semi-realistic",
+      "choices": [
+        {
+          "id": "w12_thinking_culture",
+          "label": "A. Embed Systems Thinking in School Culture",
+          "description": "Train every teacher and student leader in systems thinking. Make it part of the school DNA so it outlives your tenure.",
+          "delta": {
+            "systems_understanding": 15,
+            "feedback_loop_mastery": 12,
+            "stakeholder_satisfaction": 10,
+            "decision_accuracy": 8,
+            "school_performance": 5,
+            "budget": -3000
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "The greatest legacy: a school that thinks in systems by default. Teachers train new teachers, students teach new students. The system sustains itself.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w12_dashboard_legacy",
+          "label": "B. Leave Behind the Monitoring Dashboard",
+          "description": "Your real-time monitoring system will help future directors see connections and catch problems early.",
+          "delta": {
+            "evidence_quality": 15,
+            "decision_accuracy": 10,
+            "systems_understanding": 8,
+            "school_performance": 5,
+            "budget": -2000,
+            "feedback_loop_mastery": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Tools are powerful legacies. The dashboard gives future directors the ability to see the system. But tools without a thinking culture gather dust.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "w12_student_council",
+          "label": "C. Empower the Student Systems Council",
+          "description": "Make the Systems Thinking Club a permanent part of school governance. Students keep the systems perspective alive.",
+          "delta": {
+            "stakeholder_satisfaction": 12,
+            "systems_understanding": 10,
+            "feedback_loop_mastery": 10,
+            "school_performance": 5,
+            "environmental_health": 5,
+            "budget": -1000
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Student-led governance is the most sustainable legacy. Young systems thinkers grow into systems leaders. The school evolves because its people evolve.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w12_document_everything",
+          "label": "D. Write a Comprehensive Operations Manual",
+          "description": "Document every feedback loop, decision framework, and lesson learned. A playbook for the next director.",
+          "delta": {
+            "evidence_quality": 10,
+            "decision_accuracy": 8,
+            "systems_understanding": 5,
+            "school_performance": 3,
+            "stakeholder_satisfaction": 2,
+            "budget": -500
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Documentation preserves knowledge but does not transfer understanding. The next director may follow the manual but not understand the why. Systems thinking is a mindset, not a manual.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "systems_master",
+      "label": "Systems Master",
+      "condition": "systems_understanding >= 75 and feedback_loop_mastery >= 65",
+      "icon": "🔗"
+    },
+    {
+      "id": "evidence_champion",
+      "label": "Evidence Champion",
+      "condition": "evidence_quality >= 75 and decision_accuracy >= 70",
+      "icon": "🔬"
+    },
+    {
+      "id": "zero_consequences",
+      "label": "Ripple-Free",
+      "condition": "unintended_consequences <= 15",
+      "icon": "🎯"
+    },
+    {
+      "id": "holistic_thinker",
+      "label": "Holistic Thinker",
+      "condition": "school_performance >= 65 and environmental_health >= 65 and stakeholder_satisfaction >= 65",
+      "icon": "🌐"
+    },
+    {
+      "id": "budget_wizard",
+      "label": "Budget Wizard",
+      "condition": "budget >= 15000",
+      "icon": "💰"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Systems Thinking",
+      "definition": "A way of understanding reality that emphasizes the relationships among a system's parts, rather than the parts themselves. It focuses on how things interconnect and influence each other over time."
+    },
+    {
+      "term": "Feedback Loop",
+      "definition": "A circular process where the output of a system feeds back into the system as input. Reinforcing loops amplify change; balancing loops stabilize the system."
+    },
+    {
+      "term": "Unintended Consequences",
+      "definition": "Outcomes of an action that were not predicted or planned. In complex systems, every intervention can produce side effects because parts are interconnected."
+    },
+    {
+      "term": "Cascade Failure",
+      "definition": "When a failure in one part of a system triggers failures in connected parts, creating a chain reaction that can bring down the entire system."
+    },
+    {
+      "term": "Emergence",
+      "definition": "When a system produces properties or behaviors that none of its individual parts possess. The whole becomes greater than the sum of its parts."
+    },
+    {
+      "term": "Leverage Point",
+      "definition": "A place in a complex system where a small change can produce a large effect. Finding leverage points is the key skill in systems thinking."
+    },
+    {
+      "term": "Analysis Paralysis",
+      "definition": "The state of overthinking a decision to the point where no action is taken. Having too much data without a decision framework can be as harmful as having no data at all."
+    },
+    {
+      "term": "Stakeholder",
+      "definition": "Any person or group who is affected by or can affect a decision. In systems thinking, understanding all stakeholder perspectives is essential for seeing the whole picture."
+    }
+  ],
+  "endings": [
+    {
+      "id": "systems_master_ending",
+      "title": "Systems Master",
+      "icon": "🔗",
+      "message": "You have achieved true systems mastery at Greenfield Academy! You mapped every feedback loop, anticipated every ripple effect, and built a school where every subsystem supports every other. Prof. Systems calls you 'a natural systems thinker.' The school board invites you to train directors across the district. Your legacy: a school that thinks in systems.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "systems_understanding",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "feedback_loop_mastery",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "evidence_champion_ending",
+      "title": "Evidence Champion",
+      "icon": "🔬",
+      "message": "Greenfield Academy becomes a model for evidence-based school management! Your insistence on data, triangulation, and rigorous analysis transforms how decisions are made. Dr. Data publishes a paper on your methods. Other schools adopt your decision frameworks. Your legacy: a school that decides with evidence, not opinion.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "evidence_quality",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "decision_accuracy",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "holistic_thinker_ending",
+      "title": "Holistic Thinker",
+      "icon": "🌐",
+      "message": "Greenfield Academy thrives in every dimension — academics, environment, social life, health, and resources all flourish together. You proved that a school does not have to choose between excellence and wellbeing. The education board calls it 'the most balanced school in the region.' Your legacy: proof that holistic thinking works.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "school_performance",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "environmental_health",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "stakeholder_satisfaction",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "balanced_decision_maker_ending",
+      "title": "Balanced Decision Maker",
+      "icon": "⚖️",
+      "message": "You navigated Greenfield Academy through complexity with steady, balanced decisions. No single metric skyrocketed, but nothing collapsed either. The school runs smoothly, stakeholders are content, and the system is stable. Your legacy: a school that works — quietly, reliably, and well.",
+      "type": "growth",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "decision_accuracy",
+            "operator": ">=",
+            "value": 50
+          },
+          {
+            "resource": "unintended_consequences",
+            "operator": "<=",
+            "value": 40
+          }
+        ]
+      }
+    },
+    {
+      "id": "systems_apprentice_ending",
+      "title": "Systems Apprentice",
+      "icon": "📖",
+      "message": "Your time at Greenfield Academy was a learning experience. You made mistakes, created some unintended consequences, and struggled with complexity — but you also began to see the connections. Systems thinking is a lifelong skill. You leave with more questions than answers, which is exactly where every great thinker begins. Your legacy: a humble start on a powerful journey.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          13
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Systems Thinker: See the Whole Picture Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Systems Thinker: See the Whole Picture. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Systems Thinker: See the Whole Picture Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Systems Thinker: See the Whole Picture. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

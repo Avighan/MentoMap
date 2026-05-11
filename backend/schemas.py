@@ -36,10 +36,19 @@ def validate_bundle(b: dict) -> None:
                 _validate_ai_arena_game(g)
             elif game_type == "negotiation":
                 _validate_negotiation_type_game(g)
+            elif game_type == "negotiation_series":
+                _validate_negotiation_series_game(g)
             elif game_type == "debate":
                 _validate_debate_game(g)
             elif game_type == "story_branching":
                 _validate_story_branching_game(g)
+                _sb_errors = []
+                _validate_story_branching_type_game(g, _sb_errors)
+                if _sb_errors:
+                    raise ValueError(
+                        f"Story branching game '{g.get('game_id','unknown')}' validation errors: "
+                        + "; ".join(_sb_errors)
+                    )
             elif game_type == "chess_strategy":
                 _validate_chess_strategy_game(g)
             elif game_type == "go_territory":
@@ -67,6 +76,16 @@ def validate_bundle(b: dict) -> None:
             elif game_type == "mystery_room":
                 if not (g.get("rooms") and g.get("puzzles") and g.get("climax")):
                     raise ValueError(f"mystery_room game '{g['game_id']}' missing 'rooms', 'puzzles', or 'climax' key")
+            elif game_type == "ai_lab":
+                if not g.get("ai_lab_config"):
+                    raise ValueError(f"ai_lab game '{g['game_id']}' missing 'ai_lab_config' key")
+                tasks = g["ai_lab_config"].get("tasks")
+                if not isinstance(tasks, list) or not tasks:
+                    raise ValueError(f"ai_lab game '{g['game_id']}' must have ai_lab_config.tasks[] with >=1 task")
+                for t in tasks:
+                    for k in ("id", "title", "instruction", "rubric"):
+                        if k not in t:
+                            raise ValueError(f"ai_lab task missing '{k}' in '{g['game_id']}'")
             elif game_type == "music_match":
                 if not g.get("music_rounds"):
                     raise ValueError(f"music_match game '{g['game_id']}' missing 'music_rounds' key")
@@ -112,8 +131,8 @@ def validate_bundle(b: dict) -> None:
             else:
                 # Unknown game_type: soft-fail with a log line instead of crashing
                 # bundle load. Prod has accumulated games with unregistered types
-                # (e.g. 'ai_lab', 'negotiation_series') that pre-date this validator;
-                # known types still get strict validation above.
+                # that pre-date this validator; known types still get strict
+                # validation above.
                 print(
                     f"[schemas] WARN: game '{g.get('game_id','?')}' has unregistered "
                     f"game_type '{game_type}' — skipping type-specific validation.",
@@ -254,6 +273,8 @@ def _validate_minigame(g):
     ]
     if mc.get("subtype") not in valid_subtypes:
         raise ValueError(f"Mini-game {g['game_id']}: invalid subtype '{mc.get('subtype')}'")
+    if mc.get("subtype") == "stock_market":
+        _validate_stock_market_minigame(g)
     print(f"✓ Mini-game validated: {g['game_id']}")
 
 
@@ -334,36 +355,96 @@ def _validate_ai_arena_game(g):
     print(f"✓ AI Arena game validated: {gid}")
 
 
+def _find_scenarios_wrapper(g, canonical_keys=("negotiation_config", "debate_config")):
+    """Locate a scenarios array across the canonical and historical wrapper shapes.
+    Returns (wrapper_key, scenarios_list, wrapper_obj) or (None, None, None) if not found.
+    Accepts: negotiation_config.scenarios, debate_config.scenarios, session_game.scenarios,
+    negotiation_game.scenarios, debate_game.scenarios, investor_pitch_game.scenarios,
+    mock_interview.scenarios, top-level scenarios.
+    """
+    for k in canonical_keys:
+        v = g.get(k)
+        if isinstance(v, dict) and isinstance(v.get("scenarios"), list) and len(v["scenarios"]) >= 1:
+            return k, v["scenarios"], v
+    for k in ("session_game", "negotiation_game", "debate_game", "investor_pitch_game", "mock_interview"):
+        v = g.get(k)
+        if isinstance(v, dict) and isinstance(v.get("scenarios"), list) and len(v["scenarios"]) >= 1:
+            return k, v["scenarios"], v
+    if isinstance(g.get("scenarios"), list) and len(g["scenarios"]) >= 1:
+        return "scenarios", g["scenarios"], g
+    return None, None, None
+
+
+def _has_persona_pool(g, wrapper_obj):
+    """A persona/role pool may live at game-level or inside the wrapper.
+    Supported keys: persona_pool, investor_pool, interviewer_pool, mentor_pool, opponent_pool.
+    """
+    pool_keys = ("persona_pool", "investor_pool", "interviewer_pool", "mentor_pool", "opponent_pool")
+    for src in (g, wrapper_obj):
+        if not isinstance(src, dict):
+            continue
+        for k in pool_keys:
+            v = src.get(k)
+            if isinstance(v, list) and len(v) >= 1:
+                return True
+    return False
+
+
 def _validate_negotiation_type_game(g):
-    """Validate a negotiation game_type game."""
+    """Validate a negotiation game_type game.
+    Accepts the canonical 'negotiation_config.scenarios' shape AND historical
+    wrappers used by Live AI Sessions: session_game.scenarios,
+    negotiation_game.scenarios, investor_pitch_game.scenarios, mock_interview.scenarios.
+    """
     gid = g.get('game_id', 'unknown')
-    if "negotiation_config" not in g:
-        raise ValueError(f"Negotiation game {gid} missing 'negotiation_config'")
-    nc = g["negotiation_config"]
-    if "scenarios" not in nc or not isinstance(nc["scenarios"], list) or len(nc["scenarios"]) < 1:
-        raise ValueError(f"Negotiation game {gid}: negotiation_config needs 'scenarios' array with at least 1 scenario")
-    for s in nc["scenarios"]:
+    wrapper, scenarios, wrapper_obj = _find_scenarios_wrapper(g, canonical_keys=("negotiation_config",))
+    if scenarios is None:
+        raise ValueError(f"Negotiation game {gid} missing 'negotiation_config' (or recognised scenario wrapper)")
+    has_pool = _has_persona_pool(g, wrapper_obj)
+    for s in scenarios:
         if "scenario_id" not in s or "title" not in s:
             raise ValueError(f"Negotiation game {gid}: each scenario needs 'scenario_id' and 'title'")
-        if "other_party" not in s or not isinstance(s["other_party"], dict):
-            raise ValueError(f"Negotiation game {gid}: scenario '{s.get('scenario_id')}' needs 'other_party' dict")
-    print(f"✓ Negotiation game validated: {gid} ({len(nc['scenarios'])} scenarios)")
+        if not has_pool:
+            other = s.get("other_party") or s.get("opponent") or s.get("ai_persona")
+            if not isinstance(other, dict):
+                raise ValueError(f"Negotiation game {gid}: scenario '{s.get('scenario_id')}' needs 'other_party'/'opponent'/'ai_persona' dict (or persona_pool)")
+    print(f"✓ Negotiation game validated: {gid} ({len(scenarios)} scenarios via {wrapper})")
+
+
+def _validate_negotiation_series_game(g):
+    """Validate a negotiation_series wrapper game (dispatches to negotiation_game scenarios)."""
+    gid = g.get('game_id', 'unknown')
+    series = g.get("scenario_series")
+    if not isinstance(series, dict):
+        raise ValueError(f"negotiation_series game {gid} missing 'scenario_series' dict")
+    ordered = series.get("ordered_scenarios")
+    if not isinstance(ordered, list) or len(ordered) < 1:
+        raise ValueError(f"negotiation_series game {gid}: scenario_series.ordered_scenarios must be non-empty list")
+    print(f"✓ Negotiation series wrapper validated: {gid} ({len(ordered)} scenarios)")
 
 
 def _validate_debate_game(g):
-    """Validate a debate game_type game."""
+    """Validate a debate game_type game.
+    A debate game can either embed scenarios via debate_config, or be a thin
+    wrapper that dispatches to a scenario in the bundle's debate_game via
+    engine_scenario_id. Both shapes are allowed.
+    """
     gid = g.get('game_id', 'unknown')
-    if "debate_config" not in g:
-        raise ValueError(f"Debate game {gid} missing 'debate_config'")
-    dc = g["debate_config"]
-    if "scenarios" not in dc or not isinstance(dc["scenarios"], list) or len(dc["scenarios"]) < 1:
-        raise ValueError(f"Debate game {gid}: debate_config needs 'scenarios' array with at least 1 scenario")
-    for s in dc["scenarios"]:
+    if g.get("engine_scenario_id"):
+        print(f"✓ Debate wrapper validated: {gid} -> {g['engine_scenario_id']}")
+        return
+    wrapper, scenarios, wrapper_obj = _find_scenarios_wrapper(g, canonical_keys=("debate_config",))
+    if scenarios is None:
+        raise ValueError(f"Debate game {gid} missing 'debate_config' or 'engine_scenario_id' (or recognised scenario wrapper)")
+    has_pool = _has_persona_pool(g, wrapper_obj)
+    for s in scenarios:
         if "scenario_id" not in s or "title" not in s:
             raise ValueError(f"Debate game {gid}: each scenario needs 'scenario_id' and 'title'")
-        if "opponent" not in s or not isinstance(s["opponent"], dict):
-            raise ValueError(f"Debate game {gid}: scenario '{s.get('scenario_id')}' needs 'opponent' dict")
-    print(f"✓ Debate game validated: {gid} ({len(dc['scenarios'])} scenarios)")
+        if not has_pool:
+            opp = s.get("opponent") or s.get("other_party") or s.get("ai_persona")
+            if not isinstance(opp, dict):
+                raise ValueError(f"Debate game {gid}: scenario '{s.get('scenario_id')}' needs 'opponent'/'other_party'/'ai_persona' dict (or persona_pool)")
+    print(f"✓ Debate game validated: {gid} ({len(scenarios)} scenarios via {wrapper})")
 
 
 def _validate_story_branching_game(g):
@@ -393,6 +474,81 @@ def _validate_story_branching_game(g):
             if next_scene and next_scene not in scene_ids:
                 raise ValueError(f"Story branching game {gid}: choice references unknown scene '{next_scene}'")
     print(f"✓ Story branching game validated: {gid} ({len(si['scenes'])} scenes)")
+
+
+def _validate_chat_breakout(scene, scene_id, errors):
+    """Validate optional chat_breakout block on a story_branching scene.
+
+    If absent, no-op. If present, enforces the schema described in the
+    Hybrid Narrative-Negotiation plan: ai_persona.name, opening_message,
+    max_turns 1..20, outcome_bands (non-empty), next_scene_by_outcome
+    whose keys equal outcome_bands keys.
+    """
+    cb = scene.get("chat_breakout")
+    if cb is None:
+        return
+    prefix = f"scene '{scene_id}' chat_breakout"
+    if not isinstance(cb, dict):
+        errors.append(f"{prefix} must be an object")
+        return
+    if not isinstance(cb.get("ai_persona"), dict) or not cb["ai_persona"].get("name"):
+        errors.append(f"{prefix} missing ai_persona.name")
+    if not isinstance(cb.get("opening_message"), str) or not cb["opening_message"].strip():
+        errors.append(f"{prefix} missing opening_message")
+    max_turns = cb.get("max_turns")
+    if not isinstance(max_turns, int) or isinstance(max_turns, bool) or max_turns < 1 or max_turns > 20:
+        errors.append(f"{prefix} max_turns must be int 1..20")
+    bands = cb.get("outcome_bands")
+    if not isinstance(bands, dict) or not bands:
+        errors.append(f"{prefix} outcome_bands must be a non-empty object")
+        return
+    for band_key, band in bands.items():
+        if not isinstance(band, dict):
+            errors.append(f"{prefix} outcome_bands.{band_key} must be an object")
+            continue
+        if not isinstance(band.get("min_score"), (int, float)) or isinstance(band.get("min_score"), bool):
+            errors.append(f"{prefix} outcome_bands.{band_key}.min_score must be a number")
+        if not isinstance(band.get("label"), str):
+            errors.append(f"{prefix} outcome_bands.{band_key}.label must be a string")
+    nsbo = cb.get("next_scene_by_outcome")
+    if not isinstance(nsbo, dict) or not nsbo:
+        errors.append(f"{prefix} next_scene_by_outcome must be a non-empty object")
+        return
+    band_keys = set(bands.keys())
+    nsbo_keys = set(nsbo.keys())
+    if band_keys != nsbo_keys:
+        missing = band_keys - nsbo_keys
+        extra = nsbo_keys - band_keys
+        errors.append(
+            f"{prefix} next_scene_by_outcome keys must match outcome_bands "
+            f"(missing={sorted(missing)}, extra={sorted(extra)})"
+        )
+    for outcome_key, target in nsbo.items():
+        if not isinstance(target, str) or not target.strip():
+            errors.append(
+                f"{prefix} next_scene_by_outcome.{outcome_key} must be a non-empty scene_id string"
+            )
+
+
+def _validate_story_branching_type_game(game, errors):
+    """Error-accumulating validator for story_branching games.
+
+    Unlike _validate_story_branching_game (which raises), this function
+    appends strings to `errors` so callers can collect all problems.
+    Validates chat_breakout blocks on each scene.
+    """
+    gid = game.get("game_id", "unknown")
+    si = game.get("story_intro")
+    if not isinstance(si, dict):
+        errors.append(f"Story branching game {gid} missing 'story_intro'")
+        return
+    scenes = si.get("scenes")
+    if not isinstance(scenes, list) or len(scenes) < 1:
+        errors.append(f"Story branching game {gid}: story_intro needs 'scenes' array with at least 1 scene")
+        return
+    for scene in scenes:
+        scene_id = scene.get("scene_id") or scene.get("id") or "?"
+        _validate_chat_breakout(scene, scene_id, errors)
 
 
 def validate_negotiation_game(ng: dict) -> None:
@@ -611,3 +767,128 @@ def _validate_strategy_grid_game(g: dict) -> None:
         if len(ap) == 0:
             print(f"[WARNING] Game {gid}: strategy_grid has no ai_pieces defined")
     print(f"✓ Strategy grid config validated for game {gid}")
+
+
+def _validate_stock_market_minigame(g):
+    """Validate stock_market subtype config (Tier 2 real-time simulator)."""
+    gid = g["game_id"]
+    cfg = g["minigame_config"].get("stock_market_config")
+    if not cfg:
+        # Legacy stock_market games used direct minigame_config keys; allow if no v2 config
+        if "stocks" in g["minigame_config"] or "num_ticks" in g["minigame_config"]:
+            return  # legacy-format pass-through
+        raise ValueError(
+            f"stock_market game {gid} missing 'stock_market_config' (v2 format required)"
+        )
+    # Tier-2 v2 schema checks
+    if ("tick_count" not in cfg
+            or not isinstance(cfg["tick_count"], int)
+            or isinstance(cfg["tick_count"], bool)
+            or cfg["tick_count"] < 1):
+        raise ValueError(f"stock_market game {gid}: 'tick_count' must be a positive integer")
+    if not isinstance(cfg.get("stocks"), list) or len(cfg["stocks"]) == 0:
+        raise ValueError(f"stock_market game {gid}: 'stocks' must be a non-empty list")
+    for i, s in enumerate(cfg["stocks"]):
+        for k in ("symbol", "name", "sector", "starting_price", "volatility"):
+            if k not in s:
+                raise ValueError(f"stock_market game {gid} stock[{i}] missing '{k}'")
+        if not isinstance(s["symbol"], str) or not s["symbol"]:
+            raise ValueError(f"stock_market game {gid} stock[{i}]: 'symbol' must be a non-empty string")
+        if not isinstance(s["starting_price"], (int, float)) or isinstance(s["starting_price"], bool) or s["starting_price"] <= 0:
+            raise ValueError(f"stock_market game {gid} stock[{i}]: 'starting_price' must be a positive number")
+        if not isinstance(s["volatility"], (int, float)) or isinstance(s["volatility"], bool) or not (0 <= s["volatility"] <= 1):
+            raise ValueError(f"stock_market game {gid} stock[{i}]: 'volatility' must be a number in [0, 1]")
+
+        # v2 optional: fundamentals
+        fund = s.get("fundamentals")
+        if fund is not None:
+            if not isinstance(fund, dict):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals' must be an object")
+            for num_field in (
+                "pe", "pb", "ev_ebitda", "peg", "eps_ttm",
+                "roe", "roce", "debt_equity",
+                "market_cap_cr", "free_float_pct", "promoter_pct",
+                "fii_pct", "dii_pct",
+                "fifty_two_week_high", "fifty_two_week_low",
+                "div_yield_pct", "beta", "volume_x_avg", "sector_pe",
+            ):
+                val = fund.get(num_field)
+                if val is not None and (not isinstance(val, (int, float)) or isinstance(val, bool)):
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals.{num_field}' must be numeric")
+            qrev = fund.get("quarterly_revenue_cr")
+            if qrev is not None:
+                if not isinstance(qrev, list) or len(qrev) != 4:
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals.quarterly_revenue_cr' must be a list of 4 numbers")
+                if not all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in qrev):
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'fundamentals.quarterly_revenue_cr' entries must be numeric")
+
+        # v2 optional: peers
+        peers = s.get("peers")
+        if peers is not None:
+            if not isinstance(peers, list):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers' must be a list")
+            if len(peers) > 3:
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers' max length is 3")
+            for pidx, peer in enumerate(peers):
+                if not isinstance(peer, dict):
+                    raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers[{pidx}]' must be an object")
+                for required in ("symbol", "name"):
+                    if not isinstance(peer.get(required), str) or not peer.get(required):
+                        raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers[{pidx}].{required}' must be a non-empty string")
+                for num_field in ("pe", "growth_yoy", "roe", "market_cap_cr"):
+                    val = peer.get(num_field)
+                    if val is not None and (not isinstance(val, (int, float)) or isinstance(val, bool)):
+                        raise ValueError(f"stock_market game {gid} stock[{i}]: 'peers[{pidx}].{num_field}' must be numeric")
+
+        # v2 optional: about
+        about = s.get("about")
+        if about is not None:
+            if not isinstance(about, dict):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'about' must be an object")
+            if about.get("description") is not None and not isinstance(about["description"], str):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'about.description' must be a string")
+            kp = about.get("key_people")
+            if kp is not None and not isinstance(kp, list):
+                raise ValueError(f"stock_market game {gid} stock[{i}]: 'about.key_people' must be a list")
+
+        # v2 optional: image_prompt
+        ip = s.get("image_prompt")
+        if ip is not None and not isinstance(ip, str):
+            raise ValueError(f"stock_market game {gid} stock[{i}]: 'image_prompt' must be a string")
+    sectors_in_stocks = {s["sector"] for s in cfg["stocks"]}
+    declared = set(cfg.get("sectors", []))
+    if declared and not sectors_in_stocks.issubset(declared):
+        raise ValueError(
+            f"stock_market game {gid}: stocks reference undeclared sectors "
+            f"{sectors_in_stocks - declared}"
+        )
+    for ev_idx, ev in enumerate(cfg.get("events", [])):
+        for sym in ev.get("symbols", []):
+            if not any(s["symbol"] == sym for s in cfg["stocks"]):
+                raise ValueError(
+                    f"stock_market game {gid}: event '{ev.get('id')}' references "
+                    f"unknown symbol '{sym}'"
+                )
+        # v2 optional: events[i].reason
+        reason = ev.get("reason")
+        if reason is not None and not isinstance(reason, str):
+            raise ValueError(f"stock_market game {gid}: events[{ev_idx}].reason must be a string")
+    briefing = cfg.get("briefing")
+    if briefing is not None:
+        if not isinstance(briefing, dict):
+            raise ValueError(f"stock_market game {gid}: 'briefing' must be an object")
+        for str_field in ("macro_tone", "headline", "sub"):
+            v = briefing.get(str_field)
+            if v is not None and not isinstance(v, str):
+                raise ValueError(f"stock_market game {gid}: 'briefing.{str_field}' must be a string")
+        sm = briefing.get("sector_mood")
+        if sm is not None and not isinstance(sm, dict):
+            raise ValueError(f"stock_market game {gid}: 'briefing.sector_mood' must be an object")
+    allowed_dims = {"risk_tolerance", "delayed_gratification", "strategic_thinking",
+                    "financial_literacy", "empathy", "adaptability", "resilience",
+                    "ethical_reasoning", "creativity"}
+    for dim in cfg.get("dimensions_config", {}).keys():
+        if dim not in allowed_dims:
+            raise ValueError(
+                f"stock_market game {gid}: unknown dimension '{dim}' in dimensions_config"
+            )

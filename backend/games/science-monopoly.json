@@ -1,0 +1,1830 @@
+{
+  "game_id": "science-monopoly",
+  "title": "Science Monopoly",
+  "theme": "Build your science empire by funding labs, discovering breakthroughs, and winning Nobel Prizes.",
+  "description": "Step into the world of scientific discovery in this Monopoly-inspired board game! Fund research labs, publish groundbreaking papers, navigate funding cuts, and outsmart rival scientists. Invest in physics, biology, chemistry, and cutting-edge technology as you race to build the ultimate science empire. Every decision teaches real scientific thinking — from hypothesis testing to knowing when to pivot your research.",
+  "game_type": "board",
+  "target_audience": "14-25",
+  "duration_minutes": 30,
+  "difficulty": "intermediate",
+  "learning_objectives": [
+    "Scientific Literacy",
+    "Critical Thinking",
+    "Strategic Resource Management",
+    "Risk Assessment in Research"
+  ],
+  "tags": [
+    "monopoly",
+    "board-game",
+    "science",
+    "inventions",
+    "strategy",
+    "education",
+    "STEM"
+  ],
+  "storybook_pages": [
+    {
+      "title": "Welcome to Science Monopoly",
+      "text": "You are a brilliant young scientist with a ₹80L research grant and a dream to change the world. The frontier of discovery awaits — fund labs, publish breakthroughs, and build your science empire!",
+      "image_prompt": "colorful monopoly board game with science labs, microscopes, atoms, test tubes, beakers, Nobel Prize medal, cartoon style, vibrant"
+    },
+    {
+      "title": "The Research Board",
+      "text": "Roll the dice and move around the board. Land on research fields to fund them. When rivals use your labs, they pay you licensing fees!",
+      "image_prompt": "game board with colorful science tiles, dice rolling, game pieces shaped like atoms and rockets, laboratory buildings, cartoon style"
+    },
+    {
+      "title": "Build Your Science Empire",
+      "text": "Upgrade your labs with better equipment to attract top researchers. Collect sets of related disciplines for synergy bonuses. Watch out for Funding Cuts and Ethics Review tiles!",
+      "image_prompt": "growing science empire, laboratories getting bigger, Nobel Prize ceremony, space rockets launching, DNA helix glowing, cartoon style"
+    }
+  ],
+  "how_to_play": [
+    "Roll the dice and move around the 28-tile board. Each lap earns you $20K in renewed grant funding.",
+    "Land on an unowned research field? Fund it to start collecting licensing fees when others use your lab.",
+    "Own all labs in a discipline group to double your licensing revenue from that set.",
+    "Use the Equipment Shop tile to upgrade your labs — upgrades increase the fees rivals pay you.",
+    "Watch out for Ethics Review tiles (you lose funding) and Equipment Failure events (random setbacks).",
+    "Discovery tiles give random bonuses or penalties — just like real research!",
+    "First player to reach $500K total valuation (grants + lab values) wins. Or outlast all rivals to claim the Nobel Prize!"
+  ],
+  "initial_state": {
+    "cash": {
+      "value": 100000,
+      "label": "Grant Funds (₹)",
+      "icon": "💰"
+    },
+    "properties_owned": {
+      "value": 0,
+      "label": "Labs Funded",
+      "icon": "🔬"
+    },
+    "total_revenue": {
+      "value": 0,
+      "label": "Licensing Revenue",
+      "icon": "📈"
+    },
+    "total_rent_paid": {
+      "value": 0,
+      "label": "Fees Paid",
+      "icon": "📉"
+    },
+    "upgrades_bought": {
+      "value": 0,
+      "label": "Equipment Upgrades",
+      "icon": "⬆️"
+    },
+    "laps_completed": {
+      "value": 0,
+      "label": "Research Cycles",
+      "icon": "🔄"
+    },
+    "net_worth": {
+      "value": 100000,
+      "label": "Net Worth ($)",
+      "icon": "💎"
+    },
+    "reputation": {
+      "value": 50,
+      "label": "Scientific Reputation",
+      "icon": "⭐"
+    },
+    "strategic_thinking": {
+      "value": 40,
+      "icon": "♟️",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "risk_tolerance": {
+      "value": 40,
+      "icon": "🎲",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "delayed_gratification": {
+      "value": 35,
+      "icon": "⏳",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "impulse_control": {
+      "value": 35,
+      "icon": "🛑",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "resilience": {
+      "value": 40,
+      "icon": "💪",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "curiosity": {
+      "value": 45,
+      "icon": "🔍",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "board_config": {
+    "renderer": "2d",
+    "grid_size": [
+      8,
+      4
+    ],
+    "movement": "dice",
+    "dice_range": [
+      1,
+      6
+    ],
+    "tile_types": {
+      "start": {
+        "label": "Grant Funding",
+        "bg": "#06D6A0",
+        "text": "#FFFFFF",
+        "icon": "🚀",
+        "border_color": "#059669"
+      },
+      "event": {
+        "label": "Discovery Card",
+        "bg": "#FFD166",
+        "text": "#2D3047",
+        "icon": "❓",
+        "border_color": "#EAB308"
+      },
+      "shop": {
+        "label": "Equipment Shop",
+        "bg": "#4CC9F0",
+        "text": "#FFFFFF",
+        "icon": "🔧",
+        "border_color": "#0EA5E9"
+      },
+      "boss": {
+        "label": "Nobel Committee",
+        "bg": "#EF476F",
+        "text": "#FFFFFF",
+        "icon": "🏆",
+        "border_color": "#DC2626"
+      },
+      "empty": {
+        "label": "Peer Review",
+        "bg": "#E5E7EB",
+        "text": "#6B7280",
+        "icon": "👀",
+        "border_color": "#D1D5DB"
+      },
+      "treasure": {
+        "label": "Eureka!",
+        "bg": "#FBBF24",
+        "text": "#2D3047",
+        "icon": "💎",
+        "border_color": "#D97706"
+      },
+      "rest": {
+        "label": "Research Sabbatical",
+        "bg": "#34D399",
+        "text": "#FFFFFF",
+        "icon": "☕",
+        "border_color": "#10B981"
+      },
+      "finish": {
+        "label": "Nobel Prize!",
+        "bg": "#9B5DE5",
+        "text": "#FFFFFF",
+        "icon": "🏅",
+        "border_color": "#7C3AED"
+      },
+      "property": {
+        "label": "Research Lab",
+        "bg": "#818CF8",
+        "text": "#FFFFFF",
+        "icon": "🔬",
+        "border_color": "#6366F1"
+      },
+      "tax": {
+        "label": "Ethics Review",
+        "bg": "#F87171",
+        "text": "#FFFFFF",
+        "icon": "🏛️",
+        "border_color": "#EF4444"
+      }
+    },
+    "tile_effects": {
+      "start": {
+        "delta": {
+          "cash": 20000
+        },
+        "message": "You pass Grant Funding and collect $20K in renewed research grants! 🚀"
+      },
+      "rest": {
+        "delta": {
+          "reputation": 5
+        },
+        "message": "Your team takes a research sabbatical. Fresh ideas are brewing! ☕"
+      },
+      "treasure": {
+        "delta": {
+          "cash": 25000,
+          "reputation": 5
+        },
+        "message": "Eureka! Your team makes an unexpected breakthrough and wins a $25K prize! 💎"
+      },
+      "tax": {
+        "delta": {
+          "cash": -15000
+        },
+        "message": "Ethics Review board requires additional compliance testing. You spend $15K on paperwork and audits. 🏛️"
+      },
+      "shop": {
+        "shop_items": [
+          {
+            "id": "upgrade_level_1",
+            "label": "Electron Microscope",
+            "cost_key": "cash",
+            "cost": 10000,
+            "delta": {
+              "reputation": 10,
+              "upgrades_bought": 1
+            },
+            "description": "Upgrade your lab with a powerful electron microscope for nanoscale imaging."
+          },
+          {
+            "id": "upgrade_level_2",
+            "label": "Particle Accelerator Access",
+            "cost_key": "cash",
+            "cost": 25000,
+            "delta": {
+              "reputation": 15,
+              "upgrades_bought": 1
+            },
+            "description": "Secure access time at a particle accelerator for high-energy experiments."
+          },
+          {
+            "id": "upgrade_level_3",
+            "label": "Supercomputer Cluster",
+            "cost_key": "cash",
+            "cost": 15000,
+            "delta": {
+              "reputation": 8,
+              "upgrades_bought": 1
+            },
+            "description": "Rent a supercomputer cluster for complex simulations and data analysis."
+          }
+        ]
+      },
+      "boss": {
+        "challenge": {
+          "question": "The Nobel Committee asks: 'What is the approximate speed of light in a vacuum?'",
+          "options": [
+            "300,000 km/s",
+            "150,000 km/s",
+            "1,000,000 km/s",
+            "30,000 km/s"
+          ],
+          "correct": 0,
+          "success_delta": {
+            "cash": 30000,
+            "reputation": 10
+          },
+          "fail_delta": {
+            "cash": -5000,
+            "reputation": -5
+          },
+          "success_message": "Brilliant! The Nobel Committee is impressed by your knowledge and awards you a $30K research prize! 🎉",
+          "fail_message": "Not quite right. The committee passes on your nomination, and it costs you $5K in conference fees. 😓"
+        }
+      }
+    },
+    "power_ups": [
+      {
+        "id": "double_roll",
+        "label": "Caffeine Boost",
+        "icon": "⚡",
+        "description": "Pull an all-nighter in the lab! Roll twice and move the total."
+      },
+      {
+        "id": "shield",
+        "label": "Peer Review Shield",
+        "icon": "🛡️",
+        "description": "Block the next fee payment or ethics review. Your published papers speak for themselves!"
+      },
+      {
+        "id": "market_insight",
+        "label": "Research Preview",
+        "icon": "🔭",
+        "description": "Preview the next 3 tiles ahead using your predictive models."
+      }
+    ],
+    "ai_competitors": [
+      {
+        "id": "ai_mad_scientist",
+        "name": "Dr. Reckless",
+        "avatar": "🧪",
+        "personality": "aggressive",
+        "color": "#EF4444",
+        "description": "Funds every lab in sight and takes huge risks. High ambition, high volatility."
+      },
+      {
+        "id": "ai_methodical_prof",
+        "name": "Professor Steady",
+        "avatar": "🎓",
+        "personality": "balanced",
+        "color": "#22C55E",
+        "description": "Publishes consistently, funds strategically, never overextends. Slow but reliable."
+      }
+    ],
+    "tiles": [
+      {
+        "position": [
+          0,
+          0
+        ],
+        "type": "start",
+        "label": "Grant Funding 🚀",
+        "icon": "🚀",
+        "event_id": null
+      },
+      {
+        "position": [
+          1,
+          0
+        ],
+        "type": "event",
+        "label": "Physics Lab",
+        "icon": "⚛️",
+        "event_id": "evt_physics_lab"
+      },
+      {
+        "position": [
+          2,
+          0
+        ],
+        "type": "event",
+        "label": "Discovery Card",
+        "icon": "❓",
+        "event_id": "evt_chance_1"
+      },
+      {
+        "position": [
+          3,
+          0
+        ],
+        "type": "event",
+        "label": "Chemistry Lab",
+        "icon": "🧪",
+        "event_id": "evt_chemistry_lab"
+      },
+      {
+        "position": [
+          4,
+          0
+        ],
+        "type": "tax",
+        "label": "Ethics Review 🏛️",
+        "icon": "🏛️",
+        "event_id": null
+      },
+      {
+        "position": [
+          5,
+          0
+        ],
+        "type": "event",
+        "label": "Biology Research",
+        "icon": "🧬",
+        "event_id": "evt_biology_research"
+      },
+      {
+        "position": [
+          6,
+          0
+        ],
+        "type": "event",
+        "label": "Discovery Card",
+        "icon": "❓",
+        "event_id": "evt_chance_2"
+      },
+      {
+        "position": [
+          7,
+          0
+        ],
+        "type": "rest",
+        "label": "Research Sabbatical ☕",
+        "icon": "☕",
+        "event_id": null
+      },
+      {
+        "position": [
+          7,
+          1
+        ],
+        "type": "event",
+        "label": "Space Program",
+        "icon": "🚀",
+        "event_id": "evt_space_program"
+      },
+      {
+        "position": [
+          7,
+          2
+        ],
+        "type": "event",
+        "label": "Robotics Lab",
+        "icon": "🤖",
+        "event_id": "evt_robotics_lab"
+      },
+      {
+        "position": [
+          7,
+          3
+        ],
+        "type": "shop",
+        "label": "Equipment Shop 🔧",
+        "icon": "🔧",
+        "event_id": null
+      },
+      {
+        "position": [
+          6,
+          3
+        ],
+        "type": "event",
+        "label": "AI Research Center",
+        "icon": "🧠",
+        "event_id": "evt_ai_research"
+      },
+      {
+        "position": [
+          5,
+          3
+        ],
+        "type": "event",
+        "label": "Discovery Card",
+        "icon": "❓",
+        "event_id": "evt_chance_3"
+      },
+      {
+        "position": [
+          4,
+          3
+        ],
+        "type": "event",
+        "label": "Genetics Lab",
+        "icon": "🧬",
+        "event_id": "evt_genetics_lab"
+      },
+      {
+        "position": [
+          3,
+          3
+        ],
+        "type": "boss",
+        "label": "Nobel Committee 🏆",
+        "icon": "🏆",
+        "event_id": null
+      },
+      {
+        "position": [
+          2,
+          3
+        ],
+        "type": "event",
+        "label": "Marine Biology",
+        "icon": "🐋",
+        "event_id": "evt_marine_biology"
+      },
+      {
+        "position": [
+          1,
+          3
+        ],
+        "type": "event",
+        "label": "Discovery Card",
+        "icon": "❓",
+        "event_id": "evt_chance_4"
+      },
+      {
+        "position": [
+          0,
+          3
+        ],
+        "type": "finish",
+        "label": "Finish 🏆",
+        "icon": "🏆",
+        "event_id": null
+      },
+      {
+        "position": [
+          0,
+          2
+        ],
+        "type": "event",
+        "label": "Nuclear Energy",
+        "icon": "☢️",
+        "event_id": "evt_nuclear_energy"
+      },
+      {
+        "position": [
+          0,
+          1
+        ],
+        "type": "event",
+        "label": "Quantum Computing",
+        "icon": "💻",
+        "event_id": "evt_quantum_computing"
+      },
+      {
+        "position": [
+          1,
+          1
+        ],
+        "type": "treasure",
+        "label": "Eureka! 💎",
+        "icon": "💎",
+        "event_id": null
+      },
+      {
+        "position": [
+          2,
+          1
+        ],
+        "type": "event",
+        "label": "Nanotechnology",
+        "icon": "🔬",
+        "event_id": "evt_nanotechnology"
+      },
+      {
+        "position": [
+          3,
+          1
+        ],
+        "type": "event",
+        "label": "Environmental Science",
+        "icon": "🌍",
+        "event_id": "evt_environmental_science"
+      },
+      {
+        "position": [
+          4,
+          1
+        ],
+        "type": "empty",
+        "label": "Peer Review 👀",
+        "icon": "👀",
+        "event_id": null
+      },
+      {
+        "position": [
+          5,
+          1
+        ],
+        "type": "event",
+        "label": "Neuroscience",
+        "icon": "🧠",
+        "event_id": "evt_neuroscience"
+      },
+      {
+        "position": [
+          6,
+          1
+        ],
+        "type": "event",
+        "label": "Renewable Energy",
+        "icon": "🌱",
+        "event_id": "evt_renewable_energy"
+      },
+      {
+        "position": [
+          5,
+          2
+        ],
+        "type": "event",
+        "label": "Pharmaceutical Co.",
+        "icon": "💊",
+        "event_id": "evt_pharmaceutical"
+      },
+      {
+        "position": [
+          3,
+          2
+        ],
+        "type": "event",
+        "label": "Nobel Prize! 🏅",
+        "icon": "❓",
+        "event_id": null
+      }
+    ],
+    "difficulty_modifiers": {
+      "easy": {
+        "resource_multiplier": 1.3,
+        "negative_event_chance": 0.2
+      },
+      "medium": {
+        "resource_multiplier": 1.0,
+        "negative_event_chance": 0.4
+      },
+      "hard": {
+        "resource_multiplier": 0.75,
+        "negative_event_chance": 0.65
+      }
+    }
+  },
+  "events": {
+    "evt_physics_lab": {
+      "title": "Physics Lab — Quantum Dynamics Institute",
+      "story": "A cutting-edge physics lab is seeking a primary funder. They are on the verge of confirming a new subatomic particle. Equipment is top-notch and the lead researcher studied under a Nobel laureate.",
+      "choices": [
+        {
+          "id": "buy_physics",
+          "label": "Fund fully for $25K — particle physics is fundamental!",
+          "delta": {
+            "cash": -25000,
+            "properties_owned": 1,
+            "total_revenue": 5000,
+            "reputation": 8,
+            "strategic_thinking": 5,
+            "curiosity": 8
+          },
+          "feedback": "The Quantum Dynamics Institute is now under your patronage! They generate $5K per cycle in licensing fees from their discoveries. ⚛️"
+        },
+        {
+          "id": "partial_physics",
+          "label": "Co-fund for $12K — share the risk with another patron",
+          "delta": {
+            "cash": -12000,
+            "properties_owned": 1,
+            "total_revenue": 2500,
+            "risk_tolerance": 5,
+            "delayed_gratification": 5
+          },
+          "feedback": "You split funding with another patron. $2.5K per cycle, but your exposure is limited. Smart hedging!"
+        },
+        {
+          "id": "skip_physics",
+          "label": "Pass — fundamental research takes too long to pay off",
+          "delta": {
+            "delayed_gratification": 10,
+            "impulse_control": 8
+          },
+          "feedback": "You pass on physics. Basic research can take decades to yield applications, but Einstein started there..."
+        }
+      ],
+      "glossary_terms": [
+        "scientific_method",
+        "hypothesis"
+      ]
+    },
+    "evt_chemistry_lab": {
+      "title": "Chemistry Lab — MolecuTech Solutions",
+      "story": "A chemistry lab has synthesized a new polymer with extraordinary heat resistance. Industrial applications are enormous — aerospace, electronics, and automotive companies are interested.",
+      "choices": [
+        {
+          "id": "invest_chemistry",
+          "label": "Invest $30K — patentable materials are goldmines!",
+          "delta": {
+            "cash": -30000,
+            "properties_owned": 1,
+            "total_revenue": 6000,
+            "reputation": 10,
+            "strategic_thinking": 5,
+            "curiosity": 5
+          },
+          "feedback": "MolecuTech's heat-resistant polymer gets patented! $6K per cycle from aerospace licensing deals. 🧪"
+        },
+        {
+          "id": "license_chemistry",
+          "label": "Offer $15K for exclusive licensing rights only",
+          "delta": {
+            "cash": -15000,
+            "properties_owned": 1,
+            "total_revenue": 3500,
+            "risk_tolerance": 5,
+            "resilience": 3
+          },
+          "feedback": "You secure licensing rights without full ownership. $3.5K per cycle — lower cost, decent returns."
+        },
+        {
+          "id": "skip_chemistry",
+          "label": "Pass — materials science is too niche for me",
+          "delta": {
+            "impulse_control": 10,
+            "cash": 2000
+          },
+          "feedback": "You pass on chemistry. Some of the biggest fortunes were built on patented materials, though."
+        }
+      ],
+      "glossary_terms": [
+        "hypothesis",
+        "peer_review"
+      ]
+    },
+    "evt_biology_research": {
+      "title": "Biology Research — BioVita Labs",
+      "story": "A biology team has identified a protein that could slow cellular aging. They need $28K for clinical trials. If it works, it could revolutionize medicine.",
+      "choices": [
+        {
+          "id": "fund_biology",
+          "label": "Fund $28K — anti-aging research is a trillion-dollar market!",
+          "delta": {
+            "cash": -28000,
+            "properties_owned": 1,
+            "total_revenue": 5500,
+            "reputation": 8,
+            "risk_tolerance": 10,
+            "curiosity": 8
+          },
+          "feedback": "BioVita's clinical trials show promise! You earn $5.5K per cycle from pharma licensing. 🧬"
+        },
+        {
+          "id": "partial_biology",
+          "label": "Invest $14K for a smaller stake in the trial",
+          "delta": {
+            "cash": -14000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "strategic_thinking": 8,
+            "curiosity": 5
+          },
+          "feedback": "Smaller investment in a high-potential field. $3K per cycle with less downside if trials fail."
+        },
+        {
+          "id": "skip_biology",
+          "label": "Too risky — clinical trials fail 90% of the time",
+          "delta": {
+            "impulse_control": 8,
+            "resilience": 3,
+            "cash": 1000
+          },
+          "feedback": "You pass. Clinical trial failure rates are brutal. But the 10% that succeed change the world."
+        }
+      ],
+      "glossary_terms": [
+        "peer_review",
+        "control_variable"
+      ]
+    },
+    "evt_space_program": {
+      "title": "Space Program — Orbital Dynamics Corp",
+      "story": "A private space company is developing reusable micro-satellites for Earth observation. They need $40K for their first orbital launch. Government contracts are already lined up.",
+      "choices": [
+        {
+          "id": "invest_space",
+          "label": "All in! $40K — space is the ultimate frontier!",
+          "delta": {
+            "cash": -40000,
+            "properties_owned": 1,
+            "total_revenue": 8000,
+            "reputation": 12,
+            "strategic_thinking": 10,
+            "risk_tolerance": 8,
+            "curiosity": 10
+          },
+          "feedback": "Orbital Dynamics launches successfully! Government contracts bring $8K per cycle. You are reaching for the stars! 🚀"
+        },
+        {
+          "id": "safe_space",
+          "label": "Invest $20K via milestone-based funding",
+          "delta": {
+            "cash": -20000,
+            "properties_owned": 1,
+            "total_revenue": 4000,
+            "delayed_gratification": 10,
+            "strategic_thinking": 5
+          },
+          "feedback": "Milestone funding means you pay as they prove themselves. $4K per cycle with built-in risk management."
+        },
+        {
+          "id": "pass_space",
+          "label": "Pass — rockets blow up too often for my taste",
+          "delta": {
+            "curiosity": -5,
+            "cash": 500
+          },
+          "feedback": "You skip space. Rockets do explode sometimes... but SpaceX proved the model works."
+        }
+      ],
+      "glossary_terms": [
+        "control_variable",
+        "empirical_evidence"
+      ]
+    },
+    "evt_robotics_lab": {
+      "title": "Robotics Lab — AutoMech Industries",
+      "story": "A robotics lab has built a surgical robot prototype with 10x better precision than human surgeons. Hospitals are lining up for demos. They need $22K for FDA testing.",
+      "choices": [
+        {
+          "id": "invest_robotics",
+          "label": "Invest $22K — surgical robots are the future!",
+          "delta": {
+            "cash": -22000,
+            "properties_owned": 1,
+            "total_revenue": 5000,
+            "reputation": 7,
+            "risk_tolerance": 8,
+            "strategic_thinking": 3,
+            "curiosity": 5
+          },
+          "feedback": "AutoMech's surgical robot passes FDA trials! $5K per cycle from hospital licensing fees. 🤖"
+        },
+        {
+          "id": "revenue_share_robotics",
+          "label": "Offer $12K for a revenue share on each unit sold",
+          "delta": {
+            "cash": -12000,
+            "properties_owned": 1,
+            "total_revenue": 3500,
+            "curiosity": 8
+          },
+          "feedback": "Revenue share means you earn per robot sold. $3.5K per cycle with scalable upside."
+        },
+        {
+          "id": "skip_robotics",
+          "label": "FDA approval is uncertain — too risky",
+          "delta": {
+            "impulse_control": 5,
+            "resilience": 3
+          },
+          "feedback": "You skip robotics. FDA approval is a gauntlet, but medical devices have enormous margins."
+        }
+      ],
+      "glossary_terms": [
+        "empirical_evidence",
+        "innovation"
+      ]
+    },
+    "evt_ai_research": {
+      "title": "AI Research Center — DeepMind Institute",
+      "story": "An AI research center is building neural networks that can predict protein structures. This could revolutionize drug discovery. They need $45K for GPU clusters and talent.",
+      "choices": [
+        {
+          "id": "invest_ai_research",
+          "label": "Go big! $45K — AI-driven science will change everything!",
+          "delta": {
+            "cash": -45000,
+            "properties_owned": 1,
+            "total_revenue": 10000,
+            "reputation": 15,
+            "risk_tolerance": 12,
+            "strategic_thinking": 8,
+            "curiosity": 10
+          },
+          "feedback": "The AI Research Center predicts 200 new protein structures! $10K per cycle from pharma partnerships. This is transformative! 🧠"
+        },
+        {
+          "id": "cautious_ai_research",
+          "label": "Invest $20K via convertible grant — be cautious",
+          "delta": {
+            "cash": -20000,
+            "properties_owned": 1,
+            "total_revenue": 4000,
+            "strategic_thinking": 5,
+            "impulse_control": 5,
+            "curiosity": 5
+          },
+          "feedback": "Convertible grant means lower risk. $4K per cycle now, with upside if they publish in Nature."
+        },
+        {
+          "id": "skip_ai_research",
+          "label": "AI hype is overblown — pass on this one",
+          "delta": {
+            "impulse_control": 5,
+            "curiosity": -3
+          },
+          "feedback": "You skip AI research. The field IS competitive, but the winners will reshape science entirely."
+        }
+      ],
+      "glossary_terms": [
+        "innovation",
+        "scientific_method"
+      ]
+    },
+    "evt_genetics_lab": {
+      "title": "Genetics Lab — GenomeX Therapeutics",
+      "story": "A CRISPR gene-editing lab has developed a technique to correct sickle cell disease. Human trials await. They need $35K for regulatory approval and patient recruitment.",
+      "choices": [
+        {
+          "id": "invest_genetics",
+          "label": "Invest $35K — gene therapy is the next medical revolution!",
+          "delta": {
+            "cash": -35000,
+            "properties_owned": 1,
+            "total_revenue": 7000,
+            "reputation": 10,
+            "strategic_thinking": 10,
+            "risk_tolerance": 5,
+            "curiosity": 8
+          },
+          "feedback": "GenomeX receives breakthrough therapy designation! $7K per cycle from treatment licensing. This could save millions of lives. 🧬"
+        },
+        {
+          "id": "small_genetics",
+          "label": "Invest $15K — hedge against regulatory risk",
+          "delta": {
+            "cash": -15000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "resilience": 8,
+            "impulse_control": 5
+          },
+          "feedback": "Conservative play on gene therapy. $3K per cycle. If regulations shift, you are less exposed."
+        },
+        {
+          "id": "skip_genetics",
+          "label": "Gene editing ethics concern me — I will wait",
+          "delta": {
+            "risk_tolerance": 5,
+            "cash": 1000,
+            "impulse_control": 5
+          },
+          "feedback": "You wait on the sidelines. CRISPR ethics are complex, but the technology marches forward."
+        }
+      ],
+      "glossary_terms": [
+        "scientific_method",
+        "hypothesis"
+      ]
+    },
+    "evt_marine_biology": {
+      "title": "Marine Biology — OceanDeep Research",
+      "story": "A marine biology team has discovered deep-sea organisms producing compounds that kill antibiotic-resistant bacteria. They need $20K for a research vessel expedition.",
+      "choices": [
+        {
+          "id": "invest_marine",
+          "label": "Fund the expedition for $20K — the ocean holds untold secrets!",
+          "delta": {
+            "cash": -20000,
+            "properties_owned": 1,
+            "total_revenue": 4000,
+            "reputation": 6,
+            "curiosity": 12,
+            "delayed_gratification": 5
+          },
+          "feedback": "OceanDeep discovers 3 new antibiotic compounds! $4K per cycle from pharmaceutical licensing. 🐋"
+        },
+        {
+          "id": "partner_marine",
+          "label": "Offer $10K plus your network contacts in pharma",
+          "delta": {
+            "cash": -10000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "reputation": 8,
+            "strategic_thinking": 5,
+            "curiosity": 8
+          },
+          "feedback": "Your pharma connections accelerate their research. $3K per cycle plus reputation boost."
+        },
+        {
+          "id": "skip_marine",
+          "label": "Expeditions are expensive and uncertain — pass",
+          "delta": {
+            "impulse_control": 5,
+            "curiosity": -3
+          },
+          "feedback": "You skip marine biology. Expeditions are pricey, but the ocean covers 71% of Earth and remains mostly unexplored."
+        }
+      ],
+      "glossary_terms": [
+        "hypothesis",
+        "peer_review"
+      ]
+    },
+    "evt_nuclear_energy": {
+      "title": "Nuclear Energy — FusionCore Labs",
+      "story": "A nuclear fusion startup claims they are 5 years from a working prototype. Their tokamak design is novel and backed by university physicists. They need $38K for superconducting magnets.",
+      "choices": [
+        {
+          "id": "invest_nuclear",
+          "label": "Invest $38K — fusion energy would change civilization!",
+          "delta": {
+            "cash": -38000,
+            "properties_owned": 1,
+            "total_revenue": 7500,
+            "reputation": 12,
+            "risk_tolerance": 12,
+            "curiosity": 10,
+            "delayed_gratification": 10
+          },
+          "feedback": "FusionCore achieves stable plasma containment! $7.5K per cycle from energy company partnerships. The holy grail of energy is closer! ☢️"
+        },
+        {
+          "id": "partial_nuclear",
+          "label": "Invest $18K — fusion is always 20 years away, right?",
+          "delta": {
+            "cash": -18000,
+            "properties_owned": 1,
+            "total_revenue": 3500,
+            "delayed_gratification": 8,
+            "resilience": 5
+          },
+          "feedback": "Modest fusion bet. $3.5K per cycle. If they crack it, you are early. If not, you survive."
+        },
+        {
+          "id": "skip_nuclear",
+          "label": "Fusion is a money pit — always 20 years away",
+          "delta": {
+            "impulse_control": 5,
+            "delayed_gratification": -5,
+            "cash": 1500
+          },
+          "feedback": "You pass on fusion. Skeptics have said this for decades — but recent breakthroughs suggest they may finally be wrong."
+        }
+      ],
+      "glossary_terms": [
+        "peer_review",
+        "control_variable"
+      ]
+    },
+    "evt_quantum_computing": {
+      "title": "Quantum Computing — QubitForge",
+      "story": "A quantum computing lab has achieved 1,000-qubit stability at near absolute zero. Pharmaceutical companies want to use it for drug simulation. They need $42K for cryogenic infrastructure.",
+      "choices": [
+        {
+          "id": "invest_quantum",
+          "label": "Invest $42K — quantum supremacy is within reach!",
+          "delta": {
+            "cash": -42000,
+            "properties_owned": 1,
+            "total_revenue": 9000,
+            "reputation": 14,
+            "risk_tolerance": 10,
+            "strategic_thinking": 10,
+            "curiosity": 10
+          },
+          "feedback": "QubitForge demonstrates quantum advantage in drug simulation! $9K per cycle from compute-time licensing. The quantum era begins! 💻"
+        },
+        {
+          "id": "small_quantum",
+          "label": "Invest $20K for limited compute-time access",
+          "delta": {
+            "cash": -20000,
+            "properties_owned": 1,
+            "total_revenue": 4500,
+            "strategic_thinking": 5,
+            "impulse_control": 5,
+            "curiosity": 5
+          },
+          "feedback": "Limited investment, but you secure priority access. $4.5K per cycle from sublicensing."
+        },
+        {
+          "id": "skip_quantum",
+          "label": "Quantum is too experimental — classical computers still win",
+          "delta": {
+            "impulse_control": 8,
+            "curiosity": -5
+          },
+          "feedback": "You pass on quantum. Classical computers are proven, but quantum could solve problems they never will."
+        }
+      ],
+      "glossary_terms": [
+        "control_variable",
+        "empirical_evidence"
+      ]
+    },
+    "evt_nanotechnology": {
+      "title": "Nanotechnology — NanoScale Dynamics",
+      "story": "A nanotech lab has created self-assembling nanoparticles that can deliver drugs directly to cancer cells, reducing side effects by 80%. They need $25K for animal trials.",
+      "choices": [
+        {
+          "id": "invest_nano",
+          "label": "Invest $25K — targeted drug delivery is revolutionary!",
+          "delta": {
+            "cash": -25000,
+            "properties_owned": 1,
+            "total_revenue": 5000,
+            "reputation": 10,
+            "delayed_gratification": 12,
+            "strategic_thinking": 5,
+            "curiosity": 8
+          },
+          "feedback": "NanoScale's nanoparticles show 90% tumor reduction in trials! $5K per cycle from oncology partnerships. 🔬"
+        },
+        {
+          "id": "small_nano",
+          "label": "Invest $12K — nanotech is promising but early-stage",
+          "delta": {
+            "cash": -12000,
+            "properties_owned": 1,
+            "total_revenue": 2500,
+            "delayed_gratification": 8,
+            "curiosity": 5
+          },
+          "feedback": "Modest nanotech investment. $2.5K per cycle. If the trials succeed, you can invest more later."
+        },
+        {
+          "id": "skip_nano",
+          "label": "Pass — too many nanotech promises, too few products",
+          "delta": {
+            "risk_tolerance": 5,
+            "delayed_gratification": -5
+          },
+          "feedback": "You skip nanotech. The field has overpromised before, but the science is finally catching up."
+        }
+      ],
+      "glossary_terms": [
+        "empirical_evidence",
+        "innovation"
+      ]
+    },
+    "evt_environmental_science": {
+      "title": "Environmental Science — TerraWatch Analytics",
+      "story": "An environmental science team has built AI-powered satellite monitoring that can predict deforestation 6 months in advance. Governments and NGOs are interested. They need $22K for more satellite data.",
+      "choices": [
+        {
+          "id": "invest_environmental",
+          "label": "Invest $22K — saving the planet AND making money!",
+          "delta": {
+            "cash": -22000,
+            "properties_owned": 1,
+            "total_revenue": 4500,
+            "reputation": 10,
+            "curiosity": 8,
+            "strategic_thinking": 5,
+            "delayed_gratification": 5
+          },
+          "feedback": "TerraWatch signs contracts with 5 governments! $4.5K per cycle from monitoring subscriptions. Science for good! 🌍"
+        },
+        {
+          "id": "partial_environmental",
+          "label": "Offer $10K plus access to your data analytics team",
+          "delta": {
+            "cash": -10000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "reputation": 8,
+            "curiosity": 5
+          },
+          "feedback": "Your analytics expertise makes their models better. $3K per cycle plus enhanced reputation."
+        },
+        {
+          "id": "skip_environmental",
+          "label": "Environmental monitoring does not monetize well — pass",
+          "delta": {
+            "impulse_control": 5,
+            "curiosity": -3
+          },
+          "feedback": "You pass on environmental science. Carbon credits and ESG mandates may prove you wrong soon."
+        }
+      ],
+      "glossary_terms": [
+        "innovation",
+        "scientific_method"
+      ]
+    },
+    "evt_neuroscience": {
+      "title": "Neuroscience — BrainMap Institute",
+      "story": "A neuroscience lab has developed a non-invasive brain-computer interface that lets paralyzed patients control prosthetic limbs with thought alone. They need $32K for expanded clinical trials.",
+      "choices": [
+        {
+          "id": "invest_neuro",
+          "label": "Invest $32K — brain-computer interfaces will transform healthcare!",
+          "delta": {
+            "cash": -32000,
+            "properties_owned": 1,
+            "total_revenue": 6500,
+            "reputation": 12,
+            "risk_tolerance": 8,
+            "curiosity": 10,
+            "delayed_gratification": 5
+          },
+          "feedback": "BrainMap's BCI restores mobility to 15 patients in trials! $6.5K per cycle from medical device licensing. Incredible science! 🧠"
+        },
+        {
+          "id": "small_neuro",
+          "label": "Invest $15K — incredible tech, but FDA is unpredictable",
+          "delta": {
+            "cash": -15000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "impulse_control": 5,
+            "curiosity": 5
+          },
+          "feedback": "Hedged bet on BCI technology. $3K per cycle with a seat on the advisory board."
+        },
+        {
+          "id": "skip_neuro",
+          "label": "BCI is decades from mainstream — pass for now",
+          "delta": {
+            "impulse_control": 10,
+            "delayed_gratification": -3
+          },
+          "feedback": "You pass on brain-computer interfaces. Neuralink and others disagree with your timeline."
+        }
+      ],
+      "glossary_terms": [
+        "scientific_method",
+        "hypothesis"
+      ]
+    },
+    "evt_renewable_energy": {
+      "title": "Renewable Energy — SolarCell Innovations",
+      "story": "A materials science team has created perovskite solar cells with 35% efficiency — nearly double current commercial panels. Manufacturing costs are low. They need $30K to build a pilot factory.",
+      "choices": [
+        {
+          "id": "invest_renewable",
+          "label": "Invest $30K — high-efficiency solar changes everything!",
+          "delta": {
+            "cash": -30000,
+            "properties_owned": 1,
+            "total_revenue": 6000,
+            "reputation": 10,
+            "delayed_gratification": 10,
+            "strategic_thinking": 8,
+            "curiosity": 5
+          },
+          "feedback": "SolarCell's pilot factory produces panels at half the cost of competitors! $6K per cycle from energy company orders. 🌱"
+        },
+        {
+          "id": "partial_renewable",
+          "label": "Invest $15K — dip your toes in clean energy",
+          "delta": {
+            "cash": -15000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "reputation": 6,
+            "delayed_gratification": 8
+          },
+          "feedback": "Modest solar investment. $3K per cycle. Good for the planet and your portfolio."
+        },
+        {
+          "id": "skip_renewable",
+          "label": "Solar panel margins are razor thin — hard pass",
+          "delta": {
+            "delayed_gratification": -8,
+            "risk_tolerance": 5,
+            "cash": 1000
+          },
+          "feedback": "You skip solar. Traditional margins are thin, but perovskite could be a game-changer."
+        }
+      ],
+      "glossary_terms": [
+        "hypothesis",
+        "peer_review"
+      ]
+    },
+    "evt_pharmaceutical": {
+      "title": "Pharmaceutical Company — CureGen Biopharma",
+      "story": "A pharmaceutical startup has a mRNA-based vaccine platform that can be adapted to any new virus in 48 hours. After the pandemic, governments want rapid-response vaccine capability. They need $35K.",
+      "choices": [
+        {
+          "id": "invest_pharma",
+          "label": "Invest $35K — pandemic preparedness is essential!",
+          "delta": {
+            "cash": -35000,
+            "properties_owned": 1,
+            "total_revenue": 7000,
+            "reputation": 10,
+            "strategic_thinking": 8,
+            "risk_tolerance": 5,
+            "curiosity": 5
+          },
+          "feedback": "CureGen signs government preparedness contracts! $7K per cycle from stockpile agreements. Science protecting humanity! 💊"
+        },
+        {
+          "id": "small_pharma",
+          "label": "Invest $18K — pharma is regulated but high-margin",
+          "delta": {
+            "cash": -18000,
+            "properties_owned": 1,
+            "total_revenue": 3500,
+            "resilience": 8,
+            "impulse_control": 5,
+            "curiosity": 3
+          },
+          "feedback": "Conservative pharma play. $3.5K per cycle. Regulated industries reward patience."
+        },
+        {
+          "id": "skip_pharma",
+          "label": "Pharma regulation is a nightmare — not for me",
+          "delta": {
+            "risk_tolerance": 5,
+            "cash": 1000,
+            "impulse_control": 3
+          },
+          "feedback": "You skip pharma. The regulatory maze is real, but the margins for those who navigate it are extraordinary."
+        }
+      ],
+      "glossary_terms": [
+        "peer_review",
+        "control_variable"
+      ]
+    },
+    "evt_chance_1": {
+      "title": "Discovery Card!",
+      "story": "Your research team publishes in Nature! The paper goes viral in the scientific community, attracting attention from funding agencies worldwide.",
+      "choices": [
+        {
+          "id": "chance1_accept",
+          "label": "Accept all the conference invitations and media interviews",
+          "delta": {
+            "cash": 10000,
+            "reputation": 10,
+            "curiosity": 5
+          },
+          "feedback": "The publicity brings $10K in new grant money and your reputation soars in the scientific community! 📰"
+        },
+        {
+          "id": "chance1_focus",
+          "label": "Stay in the lab — the next discovery will not find itself",
+          "delta": {
+            "reputation": 3,
+            "delayed_gratification": 8,
+            "strategic_thinking": 5,
+            "curiosity": 8
+          },
+          "feedback": "You skip the spotlight and focus on research. Your next paper is even more groundbreaking."
+        }
+      ],
+      "glossary_terms": [
+        "control_variable",
+        "empirical_evidence"
+      ]
+    },
+    "evt_chance_2": {
+      "title": "Discovery Card!",
+      "story": "A rival lab just lost their funding! Their top researchers are looking for new positions and their equipment is being auctioned.",
+      "choices": [
+        {
+          "id": "chance2_acquire",
+          "label": "Spend $15K to hire their researchers and buy equipment",
+          "delta": {
+            "cash": -15000,
+            "total_revenue": 5000,
+            "reputation": 8,
+            "strategic_thinking": 8,
+            "curiosity": 5
+          },
+          "feedback": "Brilliant! You acquire world-class talent and equipment at a discount. $5K boost to revenue. 🎯"
+        },
+        {
+          "id": "chance2_organic",
+          "label": "Let talent come to you naturally — save your grant money",
+          "delta": {
+            "cash": 3000,
+            "reputation": 3,
+            "impulse_control": 5
+          },
+          "feedback": "Some researchers apply on their own. Fewer than you hoped, but it cost nothing extra."
+        }
+      ],
+      "glossary_terms": [
+        "empirical_evidence",
+        "innovation"
+      ]
+    },
+    "evt_chance_3": {
+      "title": "Discovery Card!",
+      "story": "Your main experimental apparatus breaks down during a critical experiment! Months of data could be lost.",
+      "choices": [
+        {
+          "id": "chance3_premium",
+          "label": "Pay $20K for emergency repair and data recovery",
+          "delta": {
+            "cash": -20000,
+            "reputation": 10,
+            "resilience": 10,
+            "strategic_thinking": 5
+          },
+          "feedback": "Emergency repairs save the data! Your experiment continues and the results are published on schedule. 🛡️"
+        },
+        {
+          "id": "chance3_cheap",
+          "label": "Patch it yourself and hope the data survived",
+          "delta": {
+            "cash": -2000,
+            "reputation": -5,
+            "resilience": 8,
+            "curiosity": 5
+          },
+          "feedback": "You pull all-nighters fixing equipment. Some data was corrupted, but most survived. Close call!"
+        }
+      ],
+      "glossary_terms": [
+        "innovation",
+        "scientific_method"
+      ]
+    },
+    "evt_chance_4": {
+      "title": "Discovery Card!",
+      "story": "You receive an urgent call: a prestigious international science foundation wants to award your lab a $50K unrestricted research grant. But you must present your work in Geneva within 48 hours.",
+      "choices": [
+        {
+          "id": "chance4_hustle",
+          "label": "Book the flight and prepare the presentation overnight",
+          "delta": {
+            "cash": 50000,
+            "reputation": 10,
+            "resilience": 10,
+            "delayed_gratification": 5,
+            "curiosity": 5
+          },
+          "feedback": "You win the international grant! $50K in funding and your name is known worldwide! 🏆"
+        },
+        {
+          "id": "chance4_pass",
+          "label": "Too short notice — I cannot prepare a worthy presentation",
+          "delta": {
+            "impulse_control": 3,
+            "resilience": -3
+          },
+          "feedback": "You pass on the trip. Rest matters, but was a $50K grant and global recognition worth one sleepless night? Probably."
+        }
+      ],
+      "glossary_terms": [
+        "scientific_method",
+        "hypothesis"
+      ]
+    }
+  },
+  "world_events": [
+    {
+      "id": "we_funding_cut",
+      "title": "Government Funding Cuts! Budgets Slashed!",
+      "description": "The government announces sweeping cuts to science funding. Labs everywhere are tightening budgets and laying off researchers.",
+      "trigger_interval": 10,
+      "delta_all": {
+        "cash": -10000,
+        "reputation": -5
+      },
+      "icon": "📉"
+    },
+    {
+      "id": "we_breakthrough",
+      "title": "Scientific Renaissance! Funding Boom!",
+      "description": "A major scientific breakthrough captures public imagination. Governments and private donors are pouring money into research. Everyone benefits!",
+      "trigger_interval": 8,
+      "delta_all": {
+        "cash": 8000,
+        "reputation": 5
+      },
+      "icon": "📈"
+    },
+    {
+      "id": "we_equipment_failure",
+      "title": "Global Supply Chain Crisis! Equipment Delays!",
+      "description": "A worldwide shortage of precision scientific instruments drives up costs for every lab. Replacement parts are backordered for months.",
+      "trigger_interval": 12,
+      "delta_all": {
+        "cash": -5000
+      },
+      "icon": "🔧"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "ach_first_lab",
+      "title": "First Discovery",
+      "description": "Fund your first research lab",
+      "icon": "🔬",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "properties_owned",
+        "value": 1
+      },
+      "reward": {
+        "delta": {
+          "reputation": 5
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_research_portfolio",
+      "title": "Research Portfolio",
+      "description": "Fund 3 or more research labs",
+      "icon": "📊",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "properties_owned",
+        "value": 3
+      },
+      "reward": {
+        "delta": {
+          "cash": 10000,
+          "reputation": 10
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_grant_master",
+      "title": "Grant Master",
+      "description": "Accumulate $200K+ in grant funds",
+      "icon": "💰",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "cash",
+        "value": 200000
+      },
+      "reward": {
+        "delta": {
+          "reputation": 15
+        }
+      },
+      "xp_reward": 250
+    },
+    {
+      "id": "ach_licensing_mogul",
+      "title": "Licensing Mogul",
+      "description": "Earn $50K+ in total licensing revenue",
+      "icon": "👑",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "total_revenue",
+        "value": 50000
+      },
+      "reward": {
+        "delta": {
+          "cash": 15000,
+          "reputation": 10
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_polymath",
+      "title": "The Polymath",
+      "description": "Fund 5 or more labs across different scientific disciplines",
+      "icon": "🌐",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "properties_owned",
+        "value": 5
+      },
+      "reward": {
+        "delta": {
+          "cash": 20000,
+          "reputation": 15
+        }
+      },
+      "xp_reward": 100
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Research Grant",
+      "definition": "Funding awarded by governments, foundations, or corporations to support scientific research. Grants are typically non-repayable but require published results.",
+      "example": "The National Science Foundation awards a $500K grant to a university lab studying climate change.",
+      "remember_tip": "A grant is free money for science — but you must deliver results and publish your findings."
+    },
+    {
+      "term": "Peer Review",
+      "definition": "The process where other experts in your field evaluate your research before it gets published. It helps ensure scientific quality and catches errors.",
+      "example": "Before publishing in Nature, your paper is reviewed by 3 anonymous scientists who check your methods and conclusions.",
+      "remember_tip": "Peer review = other scientists checking your homework before the world sees it."
+    },
+    {
+      "term": "Patent",
+      "definition": "A legal right that gives an inventor exclusive control over their invention for typically 20 years. Others must pay to use your patented technology.",
+      "example": "CRISPR gene-editing technology generated billions in patent licensing fees for the universities that developed it.",
+      "remember_tip": "A patent is a 20-year monopoly on your invention. It turns discoveries into dollars."
+    },
+    {
+      "term": "Clinical Trial",
+      "definition": "A carefully controlled experiment testing new medical treatments on humans. Trials progress through phases (I, II, III) before a treatment can be approved.",
+      "example": "Phase III clinical trials for a new cancer drug involved 10,000 patients across 50 hospitals over 3 years.",
+      "remember_tip": "Clinical trials = the long, expensive road from lab bench to medicine cabinet."
+    },
+    {
+      "term": "Hypothesis",
+      "definition": "A testable prediction about how something works. The foundation of the scientific method — you propose an idea, then design experiments to prove or disprove it.",
+      "example": "Hypothesis: Plants grow faster under blue light. Experiment: Grow identical plants under blue, red, and white light for 30 days.",
+      "remember_tip": "A hypothesis is an educated guess that you can test. No test = no science."
+    },
+    {
+      "term": "CRISPR",
+      "definition": "A revolutionary gene-editing tool that lets scientists precisely cut and modify DNA. Like molecular scissors that can edit the code of life itself.",
+      "example": "Scientists used CRISPR to remove the gene causing sickle cell disease in patient blood cells, potentially curing the condition.",
+      "remember_tip": "CRISPR = genetic scissors. Cut, paste, and edit DNA like editing a document."
+    },
+    {
+      "term": "Quantum Supremacy",
+      "definition": "The point at which a quantum computer can solve a problem that no classical computer could solve in a reasonable time. A major milestone in computing.",
+      "example": "Google claimed quantum supremacy when their Sycamore processor solved in 200 seconds what would take a supercomputer 10,000 years.",
+      "remember_tip": "Quantum supremacy = the moment quantum computers outrun every regular computer on Earth."
+    },
+    {
+      "term": "Nobel Prize",
+      "definition": "The most prestigious award in science, given annually for outstanding contributions in Physics, Chemistry, Physiology/Medicine, and other fields. Established by Alfred Nobel in 1895.",
+      "example": "The 2020 Nobel Prize in Chemistry went to Jennifer Doudna and Emmanuelle Charpentier for developing CRISPR gene editing.",
+      "remember_tip": "The Nobel Prize is the ultimate science trophy — fewer than 1,000 people have ever won one."
+    }
+  ],
+  "layout_config": {
+    "layout_type": "dashboard",
+    "sidebar_stats": [
+      "cash",
+      "properties_owned",
+      "total_revenue",
+      "net_worth",
+      "reputation"
+    ],
+    "show_board_above_choices": true,
+    "show_leaderboard": true,
+    "stat_display_format": "cards"
+  },
+  "win_conditions": {
+    "style": "reach_finish",
+    "description": "Race around the board funding labs, collecting licensing revenue, and building your science empire. Reach the Nobel Prize tile or achieve the highest net worth to win!"
+  },
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "amygdala"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "hippocampus"
+      },
+      {
+        "id": "curiosity",
+        "name": "Curiosity",
+        "icon": "🔍",
+        "brain_region": "prefrontal_cortex"
+      }
+    ]
+  },
+  "glossary": {
+    "scientific_method": {
+      "term": "Scientific Method",
+      "definition": "A systematic approach to investigation: observe, hypothesize, experiment, analyze, conclude. The foundation of all scientific discovery.",
+      "example": "Noticing plants grow toward light, hypothesizing they need light, testing by growing plants in dark vs light.",
+      "real_world_example": "COVID-19 vaccines were developed using rigorous scientific method — from hypothesis to clinical trials in record time."
+    },
+    "hypothesis": {
+      "term": "Hypothesis",
+      "definition": "A testable prediction about the relationship between variables. A good hypothesis can be proven wrong.",
+      "example": "\"If I water plants with salt water, they will grow slower than plants watered with fresh water.\"",
+      "real_world_example": "Einstein hypothesized that gravity bends light — confirmed during a 1919 solar eclipse, revolutionizing physics."
+    },
+    "peer_review": {
+      "term": "Peer Review",
+      "definition": "The process where other scientists evaluate research before publication to ensure quality, accuracy, and validity.",
+      "example": "Before publishing a study on a new drug, other pharmacologists review the methodology and data.",
+      "real_world_example": "The journal Nature receives over 10,000 submissions per year — only 8% survive peer review."
+    },
+    "control_variable": {
+      "term": "Control Variable",
+      "definition": "A variable kept constant during an experiment to ensure that any observed effect is due to the variable being tested.",
+      "example": "When testing fertilizer effects on plant growth, keeping water, sunlight, and soil type the same.",
+      "real_world_example": "In clinical drug trials, the placebo group serves as the control — they receive a fake treatment."
+    },
+    "empirical_evidence": {
+      "term": "Empirical Evidence",
+      "definition": "Knowledge acquired through observation and experimentation, as opposed to theory or pure logic.",
+      "example": "Measuring the temperature at which water boils at sea level (100°C) rather than calculating it theoretically.",
+      "real_world_example": "Charles Darwin gathered empirical evidence across decades of observation before publishing On the Origin of Species."
+    },
+    "innovation": {
+      "term": "Scientific Innovation",
+      "definition": "Applying scientific knowledge to create new technologies, processes, or solutions that improve human life.",
+      "example": "Using knowledge of electromagnetism to invent wireless charging for phones.",
+      "real_world_example": "CRISPR gene editing technology emerged from studying how bacteria defend against viruses — now it can cure genetic diseases."
+    }
+  },
+  "win_criteria": [
+    {
+      "id": "highest_cash",
+      "label": "Highest Grant Funds (₹)",
+      "metric": "cash",
+      "type": "highest_resource",
+      "icon": "💰",
+      "weight": 1
+    },
+    {
+      "id": "highest_properties_owned",
+      "label": "Highest Labs Funded",
+      "metric": "properties_owned",
+      "type": "highest_resource",
+      "icon": "🔬",
+      "weight": 1
+    },
+    {
+      "id": "highest_total_revenue",
+      "label": "Highest Licensing Revenue",
+      "metric": "total_revenue",
+      "type": "highest_resource",
+      "icon": "📈",
+      "weight": 1
+    },
+    {
+      "id": "highest_total_rent_paid",
+      "label": "Highest Fees Paid",
+      "metric": "total_rent_paid",
+      "type": "highest_resource",
+      "icon": "📉",
+      "weight": 1
+    },
+    {
+      "id": "resource_balance",
+      "label": "Best Resource Balance",
+      "metric": "all_resources",
+      "type": "balanced_growth",
+      "icon": "⚖️",
+      "weight": 1.5,
+      "description": "Lowest variance across all resource growth percentages"
+    },
+    {
+      "id": "knowledge_mastery",
+      "label": "Knowledge Mastery",
+      "metric": "glossary_terms_learned",
+      "type": "highest_count",
+      "icon": "📚",
+      "weight": 1
+    },
+    {
+      "id": "challenge_champion",
+      "label": "Challenge Champion",
+      "metric": "boss_wins",
+      "type": "highest_count",
+      "icon": "🗡️",
+      "weight": 1
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "resource_multiplier": 1.4,
+      "negative_event_chance": 0.2
+    },
+    "medium": {
+      "resource_multiplier": 1.0,
+      "negative_event_chance": 0.4
+    },
+    "hard": {
+      "resource_multiplier": 0.65,
+      "negative_event_chance": 0.65
+    }
+  },
+  "coach_mode_default": true,
+  "learning_concept": "Strategic Decision Making",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Navigating resource trade-offs on the board",
+      "real_world": "Managing a project budget with competing priorities",
+      "challenge": "List 3 real decisions you made this week that involved trade-offs between short-term and long-term outcomes."
+    },
+    {
+      "skill_tag": "risk_tolerance",
+      "game_context": "Taking bold moves despite uncertain outcomes",
+      "real_world": "Starting a new initiative at school or work without guaranteed success",
+      "challenge": "Identify one situation where you played it too safe. What would you try differently?"
+    }
+  ],
+  "features": {
+    "voice_enabled": true
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.4,
+    "delayed_gratification": 0.35,
+    "adaptability": 0.25
+  },
+  "coaching_moment": "Step into the world of scientific discovery in this Monopoly-inspired board game! Fund research labs, publish groundbreaking papers, navigate funding cuts, and outsmart rival scientists.",
+  "estimated_duration": 30,
+  "target_age": "14-25",
+  "cultural_context": "Science literacy is a strategic national priority in India, with NEP 2020 emphasising inquiry-based learning over rote memorisation. Making science engaging through game-based formats accelerates this pedagogical shift.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "self-regulation",
+    "adaptability"
+  ],
+  "reflection_prompt": "Which turn was your turning point — and was it skill, luck, or planning?"
+}

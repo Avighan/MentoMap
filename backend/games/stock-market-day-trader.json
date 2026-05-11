@@ -1,0 +1,202 @@
+{
+  "game_id": "stock-market-day-trader",
+  "title": "Day Trader Sprint",
+  "title_translations": { "en": "Day Trader Sprint", "hi": "डे ट्रेडर स्प्रिंट" },
+  "description": "A 3-minute sandbox: 22 live ticks, 8 NSE stocks, real spreads, real charges, real circuit breakers. Learn what a Zerodha terminal feels like — without losing real rupees.",
+  "game_type": "minigame",
+  "subtype": "stock_market",
+  "visible": true,
+  "tags": ["finance", "stock_market", "real_time", "india"],
+  "skill_tags": ["risk_tolerance", "delayed_gratification", "strategic_thinking", "financial_literacy"],
+  "nep_stage": "secondary",
+  "grade": "9",
+  "estimated_minutes": 3,
+  "initial_state": {
+    "resources": {
+      "cash": 100000,
+      "portfolio_value": 100000,
+      "trades": 0
+    },
+    "dimension_scores": {
+      "risk_tolerance": 0,
+      "delayed_gratification": 0,
+      "strategic_thinking": 0,
+      "financial_literacy": 0
+    }
+  },
+  "minigame_config": {
+    "subtype": "stock_market",
+    "stock_market_config": {
+      "realism_tier": 2,
+      "tick_authority": "hybrid",
+      "tick_count": 22,
+      "starting_capital": 100000,
+      "circuit_breaker_pct": [10],
+      "charges": { "brokerage_pct": 0.0003, "stt_pct": 0.001, "exchange_pct": 0.0000345, "gst_pct": 0.18 },
+      "settlement": "T+1",
+      "sectors": ["IT", "Energy", "Banking", "Pharma", "FMCG", "Auto", "Infra", "Retail"],
+      "briefing": {
+        "macro_tone": "RBI policy day. IT and banks in focus.",
+        "sector_mood": {"IT": "positive", "Banking": "neutral", "Pharma": "neutral", "Auto": "negative", "Energy": "positive", "FMCG": "neutral", "Infra": "neutral", "Retail": "neutral"},
+        "headline": "8 stocks. 22 ticks. Trade smart.",
+        "sub": "Each tick = ~8 seconds. Watch news. Don't chase."
+      },
+      "stocks": [
+        {
+          "symbol": "TECHV", "name": "TechVista Solutions", "sector": "IT",
+          "starting_price": 850, "volatility": 0.02,
+          "fundamentals": {
+            "pe": 28.4, "sector_pe": 24.0, "roe": 22.1, "roce": 24.5,
+            "debt_equity": 0.12, "market_cap_cr": 420000,
+            "promoter_pct": 41.2, "fii_pct": 22.4, "dii_pct": 18.1, "free_float_pct": 58.8,
+            "fifty_two_week_high": 940, "fifty_two_week_low": 612,
+            "div_yield_pct": 1.4, "beta": 0.92, "volume_x_avg": 1.1,
+            "quarterly_revenue_cr": [9400, 9820, 10250, 11140]
+          },
+          "peers": [
+            {"symbol": "INFOS", "name": "InfoSwift", "pe": 24.0, "growth_yoy": 14, "roe": 25.0, "market_cap_cr": 720000},
+            {"symbol": "DIGINEXT", "name": "DigiNext Labs", "pe": 31.5, "growth_yoy": 11, "roe": 19.4, "market_cap_cr": 285000}
+          ],
+          "about": {"description": "Mid-cap IT services and digital transformation.", "key_people": [{"role": "CEO", "name": "R. Iyer"}], "founded": 1998, "hq": "Bengaluru"},
+          "image_prompt": "modern server racks glowing blue"
+        },
+        {
+          "symbol": "GREENX", "name": "GreenX Energy", "sector": "Energy",
+          "starting_price": 420, "volatility": 0.025,
+          "fundamentals": {
+            "pe": 17.8, "sector_pe": 16.0, "roe": 12.4, "roce": 11.2,
+            "debt_equity": 0.78, "market_cap_cr": 95000,
+            "promoter_pct": 52.1, "fii_pct": 14.2, "dii_pct": 11.8, "free_float_pct": 47.9,
+            "fifty_two_week_high": 478, "fifty_two_week_low": 285,
+            "div_yield_pct": 2.2, "beta": 1.18, "volume_x_avg": 1.4,
+            "quarterly_revenue_cr": [4800, 5050, 5320, 5810]
+          },
+          "peers": [
+            {"symbol": "SOLARP", "name": "SolarPath Power", "pe": 19.4, "growth_yoy": 18, "roe": 11.0, "market_cap_cr": 62000}
+          ],
+          "about": {"description": "Renewable power producer with solar and wind assets.", "key_people": [{"role": "CEO", "name": "M. Khanna"}], "founded": 2009, "hq": "Mumbai"},
+          "image_prompt": "wind turbines at sunrise green field"
+        },
+        {
+          "symbol": "BHARATBANK", "name": "Bharat Bank", "sector": "Banking",
+          "starting_price": 1180, "volatility": 0.015,
+          "fundamentals": {
+            "pe": 14.2, "sector_pe": 14.0, "roe": 16.8, "roce": 8.4,
+            "debt_equity": 0.62, "market_cap_cr": 615000,
+            "promoter_pct": 0.0, "fii_pct": 31.5, "dii_pct": 28.4, "free_float_pct": 100.0,
+            "fifty_two_week_high": 1284, "fifty_two_week_low": 921,
+            "div_yield_pct": 1.0, "beta": 1.05, "volume_x_avg": 0.95,
+            "quarterly_revenue_cr": [28400, 29150, 30220, 31480]
+          },
+          "peers": [
+            {"symbol": "AXISCO", "name": "AxisCo Bank", "pe": 12.8, "growth_yoy": 12, "roe": 15.4, "market_cap_cr": 412000}
+          ],
+          "about": {"description": "Top-5 private sector bank with pan-India retail presence.", "key_people": [{"role": "CEO", "name": "S. Pillai"}], "founded": 1994, "hq": "Mumbai"},
+          "image_prompt": "modern glass bank headquarters skyline"
+        },
+        {
+          "symbol": "PHARMAXR", "name": "PharmaX Research", "sector": "Pharma",
+          "starting_price": 540, "volatility": 0.022,
+          "fundamentals": {
+            "pe": 26.4, "sector_pe": 26.0, "roe": 18.7, "roce": 19.8,
+            "debt_equity": 0.18, "market_cap_cr": 142000,
+            "promoter_pct": 38.4, "fii_pct": 24.1, "dii_pct": 14.6, "free_float_pct": 61.6,
+            "fifty_two_week_high": 612, "fifty_two_week_low": 388,
+            "div_yield_pct": 0.9, "beta": 0.78, "volume_x_avg": 1.0,
+            "quarterly_revenue_cr": [3200, 3380, 3540, 3820]
+          },
+          "peers": [
+            {"symbol": "MEDLAB", "name": "MedLab Sciences", "pe": 24.8, "growth_yoy": 10, "roe": 20.2, "market_cap_cr": 98000}
+          ],
+          "about": {"description": "Specialty generics and contract research.", "key_people": [{"role": "CEO", "name": "V. Reddy"}], "founded": 1985, "hq": "Hyderabad"},
+          "image_prompt": "white pharma research lab vials"
+        },
+        {
+          "symbol": "AGRINOW", "name": "AgriNow Foods", "sector": "FMCG",
+          "starting_price": 215, "volatility": 0.018,
+          "fundamentals": {
+            "pe": 44.2, "sector_pe": 45.0, "roe": 32.1, "roce": 38.4,
+            "debt_equity": 0.08, "market_cap_cr": 78000,
+            "promoter_pct": 48.2, "fii_pct": 18.4, "dii_pct": 12.1, "free_float_pct": 51.8,
+            "fifty_two_week_high": 248, "fifty_two_week_low": 162,
+            "div_yield_pct": 1.8, "beta": 0.65, "volume_x_avg": 0.85,
+            "quarterly_revenue_cr": [1840, 1920, 2050, 2210]
+          },
+          "peers": [
+            {"symbol": "PUREEAT", "name": "PureEat Brands", "pe": 52.1, "growth_yoy": 9, "roe": 38.4, "market_cap_cr": 124000}
+          ],
+          "about": {"description": "Packaged-food and edible oils brand.", "key_people": [{"role": "CEO", "name": "P. Shah"}], "founded": 1972, "hq": "Ahmedabad"},
+          "image_prompt": "colorful supermarket aisle packaged food"
+        },
+        {
+          "symbol": "AUTOIND", "name": "AutoInd Motors", "sector": "Auto",
+          "starting_price": 720, "volatility": 0.02,
+          "fundamentals": {
+            "pe": 18.4, "sector_pe": 18.0, "roe": 14.2, "roce": 13.8,
+            "debt_equity": 0.42, "market_cap_cr": 188000,
+            "promoter_pct": 44.6, "fii_pct": 19.8, "dii_pct": 15.4, "free_float_pct": 55.4,
+            "fifty_two_week_high": 812, "fifty_two_week_low": 548,
+            "div_yield_pct": 1.6, "beta": 1.12, "volume_x_avg": 1.05,
+            "quarterly_revenue_cr": [12400, 12180, 12950, 13620]
+          },
+          "peers": [
+            {"symbol": "EVMOTORS", "name": "EV Motors", "pe": 21.5, "growth_yoy": 22, "roe": 11.8, "market_cap_cr": 92000}
+          ],
+          "about": {"description": "Two-wheeler and small-commercial vehicle maker.", "key_people": [{"role": "CEO", "name": "A. Mehta"}], "founded": 1981, "hq": "Pune"},
+          "image_prompt": "automobile assembly line robotic arms"
+        },
+        {
+          "symbol": "INFRACO", "name": "InfraCo Builders", "sector": "Infra",
+          "starting_price": 310, "volatility": 0.024,
+          "fundamentals": {
+            "pe": 19.2, "sector_pe": 18.0, "roe": 13.4, "roce": 12.1,
+            "debt_equity": 0.84, "market_cap_cr": 54000,
+            "promoter_pct": 49.8, "fii_pct": 12.4, "dii_pct": 14.8, "free_float_pct": 50.2,
+            "fifty_two_week_high": 358, "fifty_two_week_low": 218,
+            "div_yield_pct": 1.1, "beta": 1.22, "volume_x_avg": 1.15,
+            "quarterly_revenue_cr": [3650, 3820, 4040, 4380]
+          },
+          "peers": [
+            {"symbol": "ROADBUILD", "name": "RoadBuild Ltd", "pe": 16.4, "growth_yoy": 14, "roe": 12.8, "market_cap_cr": 38000}
+          ],
+          "about": {"description": "EPC contractor for highways, metros, and ports.", "key_people": [{"role": "CEO", "name": "K. Raman"}], "founded": 1995, "hq": "Chennai"},
+          "image_prompt": "highway construction site cranes dusk"
+        },
+        {
+          "symbol": "RETAILK", "name": "RetailKart", "sector": "Retail",
+          "starting_price": 980, "volatility": 0.021,
+          "fundamentals": {
+            "pe": 38.8, "sector_pe": 36.0, "roe": 18.2, "roce": 17.4,
+            "debt_equity": 0.22, "market_cap_cr": 162000,
+            "promoter_pct": 36.4, "fii_pct": 28.4, "dii_pct": 16.2, "free_float_pct": 63.6,
+            "fifty_two_week_high": 1124, "fifty_two_week_low": 718,
+            "div_yield_pct": 0.8, "beta": 0.98, "volume_x_avg": 1.0,
+            "quarterly_revenue_cr": [5400, 5680, 6020, 6520]
+          },
+          "peers": [
+            {"symbol": "SHOPMART", "name": "ShopMart", "pe": 42.1, "growth_yoy": 16, "roe": 16.8, "market_cap_cr": 198000}
+          ],
+          "about": {"description": "Omnichannel apparel and lifestyle retailer.", "key_people": [{"role": "CEO", "name": "N. Bose"}], "founded": 2004, "hq": "Bengaluru"},
+          "image_prompt": "bright modern retail store interior shoppers"
+        }
+      ],
+      "events": [
+        { "id": "evt_rbi_hold",      "tick": 6,  "type": "rbi_rate_decision", "headline": "RBI holds repo at 6.5%",                  "symbols": ["BHARATBANK"], "severity": "info",    "reason": "RBI hold neutral for banks; FII flows steady." },
+        { "id": "evt_fii_outflow",   "tick": 11, "type": "fii_outflow",       "headline": "FIIs sell ₹2,400 Cr — IT under pressure", "symbols": ["TECHV"],      "severity": "warning", "reason": "Foreign selling weighs on large-cap IT; rupee weak." },
+        { "id": "evt_greenx_beat",   "tick": 16, "type": "earnings_beat",     "headline": "GreenX beats Q4 estimates",               "symbols": ["GREENX"],     "severity": "info",    "reason": "Margins expand on solar PPAs and lower coal mix." }
+      ],
+      "news_strip": [
+        { "tick": 3,  "text": "Nifty opens flat as Asian markets mixed",   "severity": "info" },
+        { "tick": 9,  "text": "India VIX up 4% — caution ahead of RBI",    "severity": "warning" },
+        { "tick": 14, "text": "Crude oil at $82 — auto stocks watch",      "severity": "info" }
+      ],
+      "dimensions_config": {
+        "risk_tolerance":        { "weight": 0.30, "tag": "leverage_or_concentration" },
+        "delayed_gratification": { "weight": 0.25, "tag": "hold_through_dip" },
+        "strategic_thinking":    { "weight": 0.30, "tag": "diversification_and_timing" },
+        "financial_literacy":    { "weight": 0.15, "tag": "uses_limit_or_stop" }
+      }
+    }
+  },
+  "coaching_moment": "Day trading rewards patience, not panic. Watch the spread, respect the stop-loss, and remember — most traders lose money chasing tips."
+}

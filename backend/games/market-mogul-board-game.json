@@ -1,0 +1,1673 @@
+{
+  "game_id": "market_mogul_board",
+  "title": "Market Mogul",
+  "theme": "Business Strategy & Market Domination",
+  "description": "Start with a small shop and build your way to becoming the Market Leader! Roll the dice, navigate supplier deals, customer complaints, price wars, and festival sales while racing against AI competitors Meera and Vikram. Make smart business decisions about pricing, inventory, and branding to grow your empire in this strategic entrepreneurship board game.",
+  "game_type": "board",
+  "target_audience": "14-18",
+  "duration_minutes": 25,
+  "difficulty": "advanced",
+  "learning_objectives": [
+    "Understand supply chain and inventory management",
+    "Learn pricing strategies and market positioning",
+    "Practice competitor analysis and strategic thinking",
+    "Develop financial literacy and profit optimization"
+  ],
+  "how_to_play": {
+    "title": "How to Play",
+    "steps": [
+      "Roll the dice to move your token along the board",
+      "Land on Event tiles to face market decisions like supplier deals and customer complaints",
+      "Visit the Wholesale Market to spend cash on bulk stock, ad campaigns, or store upgrades",
+      "Face Business Challenge tiles where you must answer a question to earn rewards or suffer penalties",
+      "Race AI competitors Meera and Vikram to reach the Market Leader finish tile with the most cash and reputation"
+    ],
+    "tips": [
+      "Keep your inventory stocked -- running low means missed sales opportunities",
+      "Save cash for the Wholesale Market tiles where you can buy powerful upgrades",
+      "Use power-ups like Double Roll and Shield strategically to gain an edge over competitors"
+    ]
+  },
+  "initial_state": {
+    "cash_inr": 50000,
+    "reputation": 40,
+    "inventory": 50,
+    "customer_satisfaction": 60,
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "board_config": {
+    "grid_size": [
+      6,
+      4
+    ],
+    "movement": "dice",
+    "dice_range": [
+      1,
+      6
+    ],
+    "tile_types": {
+      "start": {
+        "label": "Your First Shop",
+        "bg": "#06D6A0",
+        "text": "#FFFFFF",
+        "icon": "🏪",
+        "border_color": "#059669"
+      },
+      "event": {
+        "label": "Market Event",
+        "bg": "#FFD166",
+        "text": "#2D3047",
+        "icon": "📋",
+        "border_color": "#EAB308"
+      },
+      "shop": {
+        "label": "Wholesale Market",
+        "bg": "#4CC9F0",
+        "text": "#FFFFFF",
+        "icon": "🛒",
+        "border_color": "#0EA5E9"
+      },
+      "boss": {
+        "label": "Business Challenge",
+        "bg": "#EF476F",
+        "text": "#FFFFFF",
+        "icon": "⚠️",
+        "border_color": "#DC2626"
+      },
+      "empty": {
+        "label": "Business as Usual",
+        "bg": "#E5E7EB",
+        "text": "#6B7280",
+        "icon": "📦",
+        "border_color": "#D1D5DB"
+      },
+      "treasure": {
+        "label": "Lucky Break",
+        "bg": "#FBBF24",
+        "text": "#2D3047",
+        "icon": "🎁",
+        "border_color": "#D97706"
+      },
+      "rest": {
+        "label": "Festival Season",
+        "bg": "#34D399",
+        "text": "#FFFFFF",
+        "icon": "🎉",
+        "border_color": "#10B981"
+      },
+      "finish": {
+        "label": "Market Leader!",
+        "bg": "#9B5DE5",
+        "text": "#FFFFFF",
+        "icon": "👑",
+        "border_color": "#7C3AED"
+      }
+    },
+    "tile_effects": {
+      "rest": {
+        "delta": {
+          "customer_satisfaction": 10
+        },
+        "message": "Festival season boosts customer happiness! Satisfaction improved."
+      },
+      "treasure": {
+        "delta": {
+          "cash_inr": 5000,
+          "inventory": 10
+        },
+        "message": "A lucky break! You received extra cash and inventory."
+      },
+      "shop": {
+        "shop_items": [
+          {
+            "id": "bulk_stock",
+            "label": "Bulk Stock Purchase",
+            "cost_key": "cash_inr",
+            "cost": 8000,
+            "delta": {
+              "inventory": 25
+            }
+          },
+          {
+            "id": "ad_campaign",
+            "label": "Ad Campaign",
+            "cost_key": "cash_inr",
+            "cost": 5000,
+            "delta": {
+              "reputation": 15
+            }
+          },
+          {
+            "id": "store_upgrade",
+            "label": "Store Renovation",
+            "cost_key": "cash_inr",
+            "cost": 6000,
+            "delta": {
+              "customer_satisfaction": 20
+            }
+          }
+        ]
+      },
+      "boss": {
+        "challenge": {
+          "question": "A tax inspector asks: What does GST stand for?",
+          "options": [
+            "Goods and Services Tax",
+            "General Sales Tariff",
+            "Government Standard Tax",
+            "Gross Service Total"
+          ],
+          "correct": 0,
+          "success_delta": {
+            "cash_inr": 8000,
+            "reputation": 10
+          },
+          "fail_delta": {
+            "cash_inr": -3000,
+            "reputation": -5
+          },
+          "success_message": "Perfect! The inspector is impressed. You even get a tax rebate!",
+          "fail_message": "Wrong answer! You face a small penalty. Study up on taxes!",
+          "explanation": "GST stands for Goods and Services Tax, a comprehensive indirect tax introduced in India on July 1, 2017. It replaced multiple cascading taxes like VAT, excise duty, and service tax with a single unified tax structure. The other options -- General Sales Tariff, Government Standard Tax, and Gross Service Total -- are fabricated terms that do not exist in Indian or international tax frameworks."
+        }
+      }
+    },
+    "power_ups": [
+      {
+        "id": "double_roll",
+        "label": "Double Roll",
+        "icon": "🎲🎲",
+        "description": "Roll dice twice and add both values"
+      },
+      {
+        "id": "shield",
+        "label": "Shield",
+        "icon": "🛡️",
+        "description": "Block the next boss penalty"
+      }
+    ],
+    "ai_competitors": [
+      {
+        "id": "ai_meera",
+        "name": "Meera",
+        "avatar": "👩‍🔬",
+        "personality": "quality_focused",
+        "color": "#06D6A0",
+        "description": "Obsessed with quality and customer satisfaction."
+      },
+      {
+        "id": "ai_vikram",
+        "name": "Vikram",
+        "avatar": "👨‍💻",
+        "personality": "aggressive",
+        "color": "#FF6B6B",
+        "description": "Aggressive competitor who undercuts on price."
+      }
+    ],
+    "tiles": [
+      {
+        "position": [
+          0,
+          0
+        ],
+        "type": "start",
+        "label": "Your First Shop",
+        "icon": "🏠",
+        "event_id": null
+      },
+      {
+        "position": [
+          1,
+          0
+        ],
+        "type": "event",
+        "label": "Supplier Meeting",
+        "icon": "🤝",
+        "event_id": "evt_supplier"
+      },
+      {
+        "position": [
+          2,
+          0
+        ],
+        "type": "shop",
+        "label": "Wholesale Market",
+        "icon": "🏬",
+        "event_id": "evt_wholesale"
+      },
+      {
+        "position": [
+          3,
+          0
+        ],
+        "type": "event",
+        "label": "Customer Complaint",
+        "icon": "😤",
+        "event_id": "evt_complaint"
+      },
+      {
+        "position": [
+          4,
+          0
+        ],
+        "type": "empty",
+        "label": "Normal Day",
+        "icon": "☀️",
+        "event_id": null
+      },
+      {
+        "position": [
+          5,
+          0
+        ],
+        "type": "boss",
+        "label": "Tax Audit",
+        "icon": "📝",
+        "event_id": "evt_tax"
+      },
+      {
+        "position": [
+          5,
+          1
+        ],
+        "type": "treasure",
+        "label": "Bulk Order!",
+        "icon": "📦",
+        "event_id": "evt_bulk_order"
+      },
+      {
+        "position": [
+          4,
+          1
+        ],
+        "type": "event",
+        "label": "Price War",
+        "icon": "⚔️",
+        "event_id": "evt_price_war"
+      },
+      {
+        "position": [
+          3,
+          1
+        ],
+        "type": "rest",
+        "label": "Diwali Sale",
+        "icon": "🪔",
+        "event_id": "evt_diwali_sale"
+      },
+      {
+        "position": [
+          2,
+          1
+        ],
+        "type": "event",
+        "label": "Online Expansion",
+        "icon": "🌐",
+        "event_id": "evt_online"
+      },
+      {
+        "position": [
+          1,
+          1
+        ],
+        "type": "shop",
+        "label": "Equipment Fair",
+        "icon": "🔧",
+        "event_id": "evt_equipment"
+      },
+      {
+        "position": [
+          0,
+          1
+        ],
+        "type": "boss",
+        "label": "Economic Downturn",
+        "icon": "📉",
+        "event_id": "evt_recession"
+      },
+      {
+        "position": [
+          0,
+          2
+        ],
+        "type": "event",
+        "label": "New Location",
+        "icon": "📍",
+        "event_id": "evt_location"
+      },
+      {
+        "position": [
+          1,
+          2
+        ],
+        "type": "treasure",
+        "label": "Franchise Offer!",
+        "icon": "🏢",
+        "event_id": "evt_franchise"
+      },
+      {
+        "position": [
+          2,
+          2
+        ],
+        "type": "event",
+        "label": "Staff Crisis",
+        "icon": "👥",
+        "event_id": "evt_staff"
+      },
+      {
+        "position": [
+          3,
+          2
+        ],
+        "type": "empty",
+        "label": "Steady Growth",
+        "icon": "📈",
+        "event_id": null
+      },
+      {
+        "position": [
+          4,
+          2
+        ],
+        "type": "event",
+        "label": "Brand Building",
+        "icon": "🎨",
+        "event_id": "evt_brand"
+      },
+      {
+        "position": [
+          5,
+          2
+        ],
+        "type": "boss",
+        "label": "Corporate Giant Entry",
+        "icon": "🏗️",
+        "event_id": "evt_giant"
+      },
+      {
+        "position": [
+          5,
+          3
+        ],
+        "type": "rest",
+        "label": "Awards Night",
+        "icon": "🏆",
+        "event_id": "evt_awards"
+      },
+      {
+        "position": [
+          4,
+          3
+        ],
+        "type": "event",
+        "label": "Export Opportunity",
+        "icon": "✈️",
+        "event_id": "evt_export"
+      },
+      {
+        "position": [
+          3,
+          3
+        ],
+        "type": "treasure",
+        "label": "Government Grant!",
+        "icon": "🏛️",
+        "event_id": "evt_grant"
+      },
+      {
+        "position": [
+          2,
+          3
+        ],
+        "type": "event",
+        "label": "Innovation Lab",
+        "icon": "🔬",
+        "event_id": "evt_innovation"
+      },
+      {
+        "position": [
+          1,
+          3
+        ],
+        "type": "empty",
+        "label": "Final Push",
+        "icon": "🏃",
+        "event_id": null
+      },
+      {
+        "position": [
+          0,
+          3
+        ],
+        "type": "finish",
+        "label": "Market Leader!",
+        "icon": "👑",
+        "event_id": null
+      }
+    ],
+    "difficulty_modifiers": {
+      "easy": {
+        "resource_multiplier": 1.3,
+        "negative_event_chance": 0.2
+      },
+      "medium": {
+        "resource_multiplier": 1.0,
+        "negative_event_chance": 0.4
+      },
+      "hard": {
+        "resource_multiplier": 0.75,
+        "negative_event_chance": 0.65
+      }
+    }
+  },
+  "events": {
+    "evt_supplier": {
+      "title": "Supplier Negotiation",
+      "story": "A major supplier offers you an exclusive deal, but it requires a big upfront payment. Better materials mean happier customers, but it's risky.",
+      "choices": [
+        {
+          "id": "sup_exclusive",
+          "label": "Sign the exclusive deal",
+          "delta": {
+            "cash_inr": -15000,
+            "inventory": 30,
+            "customer_satisfaction": 15
+          },
+          "feedback": "Premium inventory secured! Your customers notice the quality improvement immediately.",
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "sup_negotiate",
+          "label": "Negotiate for smaller batches",
+          "delta": {
+            "cash_inr": -5000,
+            "inventory": 15,
+            "customer_satisfaction": 5
+          },
+          "feedback": "Smart negotiation! You get decent stock without overcommitting.",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        },
+        {
+          "id": "sup_decline",
+          "label": "Stick with current suppliers",
+          "delta": {
+            "cash_inr": 0,
+            "inventory": -5,
+            "reputation": -5
+          },
+          "feedback": "Safe choice, but your competitors who took the deal now have better products.",
+          "skill_tags": [
+            "resilience"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "compound_interest",
+        "diversification"
+      ]
+    },
+    "evt_wholesale": {
+      "title": "Wholesale Market Day",
+      "story": "The wholesale market has some great deals today. Your warehouse has space, and festive season is approaching.",
+      "choices": [
+        {
+          "id": "ws_big",
+          "label": "Buy in bulk — stock up for festivals",
+          "delta": {
+            "cash_inr": -20000,
+            "inventory": 40
+          },
+          "feedback": "Warehouse is full! If the festive rush comes, you'll be ready."
+        },
+        {
+          "id": "ws_selective",
+          "label": "Buy only trending items",
+          "delta": {
+            "cash_inr": -8000,
+            "inventory": 20,
+            "reputation": 5
+          },
+          "feedback": "Strategic buying! The trending items sell out quickly at premium prices."
+        },
+        {
+          "id": "ws_skip",
+          "label": "Skip — save cash for emergencies",
+          "delta": {
+            "cash_inr": 2000,
+            "inventory": -10
+          },
+          "feedback": "Cash reserves grow, but shelves look empty. Customers are disappointed."
+        }
+      ],
+      "glossary_terms": [
+        "diversification",
+        "inflation"
+      ]
+    },
+    "evt_complaint": {
+      "title": "Customer Complaint Wave",
+      "story": "Several customers have complained about product quality on social media. The posts are getting traction. How do you handle this PR crisis?",
+      "choices": [
+        {
+          "id": "cc_refund",
+          "label": "Full refunds + personal apology",
+          "delta": {
+            "cash_inr": -8000,
+            "customer_satisfaction": 20,
+            "reputation": 10
+          },
+          "feedback": "Customers are impressed by your accountability! The negative posts turn into praise.",
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ]
+        },
+        {
+          "id": "cc_replace",
+          "label": "Replace products + small discount coupon",
+          "delta": {
+            "cash_inr": -5000,
+            "customer_satisfaction": 15,
+            "reputation": 5,
+            "inventory": -10
+          },
+          "feedback": "Fair resolution! Customers feel heard and most return for future purchases.",
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "cc_ignore",
+          "label": "Ignore it — it'll blow over",
+          "delta": {
+            "cash_inr": 0,
+            "customer_satisfaction": -20,
+            "reputation": -15
+          },
+          "feedback": "Bad move! The complaints go viral. Your Google rating drops to 2.5 stars.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "inflation",
+        "budgeting"
+      ],
+      "reflection_prompt": "When customers publicly complain, how you respond reveals your business values. Is protecting short-term profits worth risking long-term trust? What does accountability look like for a business owner?"
+    },
+    "evt_tax": {
+      "title": "GST Audit!",
+      "story": "The tax department is auditing your books. Your accountant says there are some discrepancies. This could get expensive.",
+      "choices": [
+        {
+          "id": "tax_professional",
+          "label": "Hire a CA to handle the audit properly",
+          "delta": {
+            "cash_inr": -10000,
+            "reputation": 10
+          },
+          "feedback": "The CA finds the discrepancies are minor. Clean books earn you a good standing with the tax department."
+        },
+        {
+          "id": "tax_settle",
+          "label": "Offer to pay the penalty and settle quickly",
+          "delta": {
+            "cash_inr": -15000,
+            "reputation": -5
+          },
+          "feedback": "Quick but expensive. At least it's over and you can focus on business again."
+        },
+        {
+          "id": "tax_fix",
+          "label": "Fix the books yourself over the weekend",
+          "delta": {
+            "cash_inr": -3000,
+            "reputation": 5,
+            "customer_satisfaction": -5
+          },
+          "feedback": "You pull an all-nighter but manage to sort most issues. Some stress, but money saved!"
+        }
+      ],
+      "glossary_terms": [
+        "budgeting",
+        "assets_liabilities"
+      ]
+    },
+    "evt_bulk_order": {
+      "title": "Massive Bulk Order!",
+      "story": "A corporate client wants to place a huge order for Diwali corporate gifts. It's 5x your normal weekly sales! But delivery timeline is tight.",
+      "choices": [
+        {
+          "id": "bo_accept",
+          "label": "Accept and go all-in on delivery",
+          "delta": {
+            "cash_inr": 25000,
+            "inventory": -30,
+            "customer_satisfaction": -10
+          },
+          "feedback": "Huge revenue! But your regular customers face stock shortages. Mixed feelings.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "bo_partial",
+          "label": "Accept half the order, manage both segments",
+          "delta": {
+            "cash_inr": 12000,
+            "inventory": -15,
+            "reputation": 10
+          },
+          "feedback": "Balanced approach! Corporate client is happy, regular customers aren't affected much.",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "assets_liabilities",
+        "emergency_fund"
+      ]
+    },
+    "evt_price_war": {
+      "title": "Price War Erupted!",
+      "story": "Your main competitor has slashed prices by 30%. Customers are switching. Your margins are already thin. What's your move?",
+      "choices": [
+        {
+          "id": "pw_match",
+          "label": "Match their prices — fight fire with fire",
+          "delta": {
+            "cash_inr": -10000,
+            "customer_satisfaction": 10,
+            "reputation": -5
+          },
+          "feedback": "You retain customers but margins shrink painfully. How long can this last?",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "pw_value",
+          "label": "Add value — better service, free delivery",
+          "delta": {
+            "cash_inr": -5000,
+            "customer_satisfaction": 20,
+            "reputation": 15
+          },
+          "feedback": "Brilliant! Customers choose you for the experience, not just the price.",
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ]
+        },
+        {
+          "id": "pw_niche",
+          "label": "Go premium — target the quality-conscious segment",
+          "delta": {
+            "cash_inr": 5000,
+            "reputation": 10,
+            "customer_satisfaction": -5
+          },
+          "feedback": "You lose price-sensitive customers but attract premium buyers who pay more.",
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "emergency_fund",
+        "roi"
+      ],
+      "reflection_prompt": "A price war can destroy margins for everyone in the market. When do you choose to compete on price versus competing on value? What are the long-term consequences of each approach for your brand?"
+    },
+    "evt_diwali_sale": {
+      "title": "Diwali Sale Season!",
+      "story": "It's the biggest shopping season! Your shop is decorated and ready. How big do you go with the sale?",
+      "choices": [
+        {
+          "id": "dw_mega",
+          "label": "Mega sale — 50% off everything",
+          "delta": {
+            "cash_inr": 15000,
+            "inventory": -35,
+            "reputation": 15,
+            "customer_satisfaction": 20
+          },
+          "feedback": "Lines out the door! Record sales day! Inventory nearly wiped out but cash registers are ringing."
+        },
+        {
+          "id": "dw_smart",
+          "label": "Strategic discounts on select items",
+          "delta": {
+            "cash_inr": 10000,
+            "inventory": -15,
+            "reputation": 10,
+            "customer_satisfaction": 10
+          },
+          "feedback": "Calculated move! Good sales without destroying margins. Sustainable approach."
+        }
+      ],
+      "glossary_terms": [
+        "roi",
+        "tax_planning"
+      ]
+    },
+    "evt_online": {
+      "title": "E-Commerce Decision",
+      "story": "Should you sell online? The digital market is booming, but setting up an online store requires investment and new skills.",
+      "choices": [
+        {
+          "id": "on_own",
+          "label": "Build your own website and app",
+          "delta": {
+            "cash_inr": -15000,
+            "reputation": 20,
+            "customer_satisfaction": 10
+          },
+          "feedback": "Your own platform! No commission fees, full control over customer experience.",
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "on_marketplace",
+          "label": "Join Amazon/Flipkart marketplace",
+          "delta": {
+            "cash_inr": -3000,
+            "reputation": 10,
+            "customer_satisfaction": 15
+          },
+          "feedback": "Instant access to millions of customers! Commission fees cut into margins, but volume makes up for it.",
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "on_later",
+          "label": "Stay offline — focus on walk-in experience",
+          "delta": {
+            "cash_inr": 2000,
+            "customer_satisfaction": 5,
+            "reputation": -10
+          },
+          "feedback": "Your loyal local customers love the personal touch, but you're missing the digital wave.",
+          "skill_tags": [
+            "resilience"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "tax_planning",
+        "compound_interest"
+      ]
+    },
+    "evt_equipment": {
+      "title": "Equipment Upgrade Fair",
+      "story": "The business equipment fair showcases the latest tools. Your current setup is aging. Upgrade options available.",
+      "choices": [
+        {
+          "id": "eq_premium",
+          "label": "Top-of-the-line POS system and automation",
+          "delta": {
+            "cash_inr": -12000,
+            "customer_satisfaction": 15,
+            "inventory": 10
+          },
+          "feedback": "Lightning-fast checkouts! Customers love the smooth experience. Inventory tracking is automated."
+        },
+        {
+          "id": "eq_basic",
+          "label": "Basic upgrades — new shelving and signage",
+          "delta": {
+            "cash_inr": -4000,
+            "customer_satisfaction": 10,
+            "reputation": 5
+          },
+          "feedback": "The shop looks fresh! Simple but effective improvements that customers notice."
+        }
+      ],
+      "glossary_terms": [
+        "compound_interest",
+        "diversification"
+      ]
+    },
+    "evt_recession": {
+      "title": "Economic Downturn Hits!",
+      "story": "The economy is slowing down. Consumer spending drops 25%. Your sales are declining. Survival mode activated.",
+      "choices": [
+        {
+          "id": "rc_cut",
+          "label": "Cut costs aggressively — reduce staff, cheaper stock",
+          "delta": {
+            "cash_inr": 8000,
+            "customer_satisfaction": -15,
+            "reputation": -10,
+            "inventory": -10
+          },
+          "feedback": "You survive the downturn but at a cost. Reduced service quality pushes some loyal customers away.",
+          "skill_tags": [
+            "resilience"
+          ]
+        },
+        {
+          "id": "rc_invest",
+          "label": "Counter-invest — double down on marketing",
+          "delta": {
+            "cash_inr": -15000,
+            "reputation": 20,
+            "customer_satisfaction": 10
+          },
+          "feedback": "Bold strategy! While competitors retreat, you gain market share. Recovery will be strong.",
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "rc_adapt",
+          "label": "Adapt — introduce budget product line",
+          "delta": {
+            "cash_inr": -5000,
+            "customer_satisfaction": 10,
+            "inventory": 15
+          },
+          "feedback": "Smart pivot! The budget line attracts cost-conscious consumers and keeps revenue flowing.",
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "diversification",
+        "inflation"
+      ]
+    },
+    "evt_location": {
+      "title": "Second Location Opportunity",
+      "story": "A prime retail space just opened up in a busy market area. The rent is high but foot traffic is incredible.",
+      "choices": [
+        {
+          "id": "loc_expand",
+          "label": "Open the second store!",
+          "delta": {
+            "cash_inr": -20000,
+            "reputation": 20,
+            "customer_satisfaction": 10
+          },
+          "feedback": "Two locations! Double the reach, double the revenue potential. Managing both is challenging but exciting.",
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "loc_popup",
+          "label": "Start with a pop-up store to test",
+          "delta": {
+            "cash_inr": -5000,
+            "reputation": 10
+          },
+          "feedback": "Smart test! The pop-up data helps you decide if a permanent store makes sense.",
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ]
+        },
+        {
+          "id": "loc_pass",
+          "label": "Pass — focus on making one store amazing",
+          "delta": {
+            "cash_inr": 3000,
+            "customer_satisfaction": 10,
+            "reputation": 5
+          },
+          "feedback": "Focused approach! Your single store becomes the best in the neighborhood.",
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "inflation",
+        "budgeting"
+      ]
+    },
+    "evt_franchise": {
+      "title": "Franchise Opportunity!",
+      "story": "Someone wants to franchise your brand! They'll pay a franchise fee and royalties. But can they maintain your quality standards?",
+      "choices": [
+        {
+          "id": "fr_accept",
+          "label": "Accept — scale through franchising",
+          "delta": {
+            "cash_inr": 20000,
+            "reputation": 15,
+            "customer_satisfaction": -5
+          },
+          "feedback": "Franchise fee is lucrative! But quality control becomes a challenge.",
+          "skill_tags": [
+            "risk_tolerance"
+          ]
+        },
+        {
+          "id": "fr_strict",
+          "label": "Accept with strict quality terms",
+          "delta": {
+            "cash_inr": 12000,
+            "reputation": 20,
+            "customer_satisfaction": 5
+          },
+          "feedback": "The detailed franchise agreement ensures brand consistency. Win-win!",
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "budgeting",
+        "assets_liabilities"
+      ]
+    },
+    "evt_staff": {
+      "title": "Staff Crisis!",
+      "story": "Three of your best employees have been poached by a competitor offering 50% higher salaries. Your team is shaken.",
+      "choices": [
+        {
+          "id": "st_match",
+          "label": "Counter-offer with salary match + benefits",
+          "delta": {
+            "cash_inr": -12000,
+            "customer_satisfaction": 10,
+            "reputation": 5
+          },
+          "feedback": "Two out of three stay! The benefits package shows you care about your team.",
+          "skill_tags": [
+            "empathy"
+          ]
+        },
+        {
+          "id": "st_culture",
+          "label": "Focus on work culture — flexibility, growth paths",
+          "delta": {
+            "cash_inr": -3000,
+            "customer_satisfaction": 5,
+            "reputation": 10
+          },
+          "feedback": "You lose those three, but your improved culture attracts even better talent!",
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ]
+        },
+        {
+          "id": "st_hire",
+          "label": "Let them go, hire fresh talent",
+          "delta": {
+            "cash_inr": -5000,
+            "customer_satisfaction": -10,
+            "reputation": -5,
+            "inventory": -10
+          },
+          "feedback": "Training takes time. Service quality dips temporarily. But new hires bring fresh ideas.",
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "assets_liabilities",
+        "emergency_fund"
+      ],
+      "reflection_prompt": "Your best employees are being poached. Is matching salaries the right move, or should you invest in culture? What makes people stay at a company beyond just money, and how do leaders build genuine loyalty?"
+    },
+    "evt_brand": {
+      "title": "Brand Identity Upgrade",
+      "story": "Your business is growing but your brand looks outdated. A branding agency pitches a complete rebrand.",
+      "choices": [
+        {
+          "id": "br_full",
+          "label": "Complete rebrand — logo, packaging, everything",
+          "delta": {
+            "cash_inr": -10000,
+            "reputation": 25,
+            "customer_satisfaction": 10
+          },
+          "feedback": "Stunning transformation! Customers feel like they're shopping at a premium brand."
+        },
+        {
+          "id": "br_partial",
+          "label": "Refresh logo and social media presence only",
+          "delta": {
+            "cash_inr": -3000,
+            "reputation": 15,
+            "customer_satisfaction": 5
+          },
+          "feedback": "Modern look without breaking the bank! Social media engagement triples."
+        }
+      ],
+      "glossary_terms": [
+        "emergency_fund",
+        "roi"
+      ]
+    },
+    "evt_giant": {
+      "title": "Corporate Giant Enters Your Market!",
+      "story": "A major corporation just opened a mega-store in your area. They have unlimited budgets and aggressive pricing. This is the ultimate test.",
+      "choices": [
+        {
+          "id": "gi_niche",
+          "label": "Go hyper-local — personal service, unique products",
+          "delta": {
+            "cash_inr": -5000,
+            "customer_satisfaction": 20,
+            "reputation": 15
+          },
+          "feedback": "Your local community rallies behind you! 'Support Local' becomes your strength.",
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ]
+        },
+        {
+          "id": "gi_partner",
+          "label": "Partner with them — become a supplier",
+          "delta": {
+            "cash_inr": 15000,
+            "reputation": 10,
+            "customer_satisfaction": -10
+          },
+          "feedback": "If you can't beat them, supply them! Revenue from the partnership is significant.",
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "gi_differentiate",
+          "label": "Innovate — offer what they can't",
+          "delta": {
+            "cash_inr": -8000,
+            "reputation": 20,
+            "customer_satisfaction": 15
+          },
+          "feedback": "Your customization service and curated collections attract customers the mega-store can't serve.",
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ]
+        }
+      ],
+      "glossary_terms": [
+        "roi",
+        "tax_planning"
+      ]
+    },
+    "evt_awards": {
+      "title": "Business Awards Night!",
+      "story": "You're nominated for 'Entrepreneur of the Year' at the local business awards. Win or not, the networking is valuable.",
+      "choices": [
+        {
+          "id": "aw_attend",
+          "label": "Attend and network aggressively",
+          "delta": {
+            "cash_inr": -2000,
+            "reputation": 20,
+            "customer_satisfaction": 5
+          },
+          "feedback": "You win the award! Plus, you meet three potential business partners."
+        },
+        {
+          "id": "aw_speech",
+          "label": "Prepare an inspiring acceptance speech",
+          "delta": {
+            "cash_inr": -1000,
+            "reputation": 25
+          },
+          "feedback": "Your speech about bootstrapping goes viral on LinkedIn! Brand credibility soars."
+        }
+      ],
+      "glossary_terms": [
+        "tax_planning",
+        "compound_interest"
+      ]
+    },
+    "evt_export": {
+      "title": "Export Opportunity",
+      "story": "A buyer from Dubai wants to import your products. The margins are great but logistics are complex.",
+      "choices": [
+        {
+          "id": "exp_go",
+          "label": "Go for it — international expansion!",
+          "delta": {
+            "cash_inr": 15000,
+            "inventory": -20,
+            "reputation": 20
+          },
+          "feedback": "Made in India, sold globally! The export order opens doors to Middle East markets."
+        },
+        {
+          "id": "exp_agent",
+          "label": "Use an export agent to handle logistics",
+          "delta": {
+            "cash_inr": 8000,
+            "inventory": -15,
+            "reputation": 15
+          },
+          "feedback": "The agent handles customs and shipping. Lower margin but zero hassle."
+        }
+      ],
+      "glossary_terms": [
+        "compound_interest",
+        "diversification"
+      ]
+    },
+    "evt_grant": {
+      "title": "Government Grant Approved!",
+      "story": "Your MSME application is approved! The government offers a grant for business modernization. How do you use it?",
+      "choices": [
+        {
+          "id": "gr_tech",
+          "label": "Invest in technology and automation",
+          "delta": {
+            "cash_inr": 15000,
+            "customer_satisfaction": 15,
+            "inventory": 10
+          },
+          "feedback": "Smart use of the grant! Automated inventory management saves hours every week."
+        },
+        {
+          "id": "gr_training",
+          "label": "Use for staff training and development",
+          "delta": {
+            "cash_inr": 10000,
+            "customer_satisfaction": 20,
+            "reputation": 10
+          },
+          "feedback": "Well-trained staff provide exceptional service! Customer ratings hit 4.8 stars."
+        }
+      ],
+      "glossary_terms": [
+        "diversification",
+        "inflation"
+      ]
+    },
+    "evt_innovation": {
+      "title": "Innovation Lab",
+      "story": "You're considering launching a new product line. R&D takes time and money, but could be a game-changer.",
+      "choices": [
+        {
+          "id": "inn_rd",
+          "label": "Invest heavily in R&D for a unique product",
+          "delta": {
+            "cash_inr": -12000,
+            "reputation": 15,
+            "customer_satisfaction": 10,
+            "inventory": 20
+          },
+          "feedback": "Your innovative product line becomes a bestseller! Competitors scramble to copy you."
+        },
+        {
+          "id": "inn_collab",
+          "label": "Collaborate with a local artisan for limited editions",
+          "delta": {
+            "cash_inr": -5000,
+            "reputation": 20,
+            "customer_satisfaction": 15
+          },
+          "feedback": "The artisan collab creates buzz! Limited editions sell out in hours."
+        }
+      ],
+      "glossary_terms": [
+        "inflation",
+        "budgeting"
+      ]
+    }
+  },
+  "glossary_terms": [
+    {
+      "term": "MSME",
+      "definition": "Micro, Small, and Medium Enterprises — a government classification for smaller businesses that qualifies them for special benefits.",
+      "example": "A local bakery with 10 employees is classified as a Micro enterprise.",
+      "remember_tip": "MSME = My Small-Medium Enterprise"
+    },
+    {
+      "term": "GST",
+      "definition": "Goods and Services Tax — India's unified indirect tax applied to the sale of goods and services.",
+      "example": "A 12% GST is added to the price of clothing items.",
+      "remember_tip": "GST = the tax that Goes on Sales Transactions"
+    },
+    {
+      "term": "Supply Chain",
+      "definition": "The entire process of making and selling products, from raw materials to the final customer.",
+      "example": "Cotton farm → textile mill → clothing factory → shop → customer is a supply chain.",
+      "remember_tip": "Like a chain of links, each step connects to the next!"
+    },
+    {
+      "term": "Franchise",
+      "definition": "A business model where someone pays to use your brand name and system to open their own branch.",
+      "example": "McDonald's is a franchise — each restaurant is owned by a different person using the McDonald's brand.",
+      "remember_tip": "Franchise = your brand's fan opens a clone shop!"
+    },
+    {
+      "term": "Margin",
+      "definition": "The difference between what you pay for something and what you sell it for — your profit per item.",
+      "example": "Buy for Rs 100, sell for Rs 150 = Rs 50 margin (33%).",
+      "remember_tip": "Margin = Money you Actually Receive after Getting the Item's cost back"
+    }
+  ],
+  "layout_config": {
+    "layout_type": "dashboard",
+    "theme": {
+      "primary_color": "#E91E63",
+      "secondary_color": "#9C27B0",
+      "accent_color": "#FF5722",
+      "font_family": "Nunito, sans-serif"
+    }
+  },
+  "win_conditions": {
+    "style": "reach_finish",
+    "description": "Reach the Market Leader tile! Your success is measured by cash reserves, reputation, inventory levels, and customer satisfaction."
+  },
+  "world_events": [
+    {
+      "id": "we_recession",
+      "title": "Economic Recession!",
+      "description": "Consumer spending drops. All businesses lose revenue.",
+      "trigger_interval": 5,
+      "delta_all": {
+        "cash_inr": -3000,
+        "customer_satisfaction": -5
+      },
+      "icon": "📉"
+    },
+    {
+      "id": "we_festive_rush",
+      "title": "Festival Rush!",
+      "description": "Diwali shopping spree boosts all businesses!",
+      "trigger_interval": 7,
+      "delta_all": {
+        "cash_inr": 4000,
+        "inventory": -10
+      },
+      "icon": "🪔"
+    },
+    {
+      "id": "we_supply_boom",
+      "title": "Supply Boom!",
+      "description": "New suppliers enter the market. Inventory costs drop.",
+      "trigger_interval": 10,
+      "delta_all": {
+        "inventory": 15,
+        "reputation": 5
+      },
+      "icon": "📦"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "ach_frontrunner",
+      "title": "Frontrunner",
+      "description": "Be the first to reach tile 8",
+      "condition": {
+        "type": "first_to_tile",
+        "tile_index": 8
+      },
+      "reward": {
+        "cash_inr": 3000
+      },
+      "icon": "🏃",
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_tax_master",
+      "title": "Tax Master",
+      "description": "Beat all 3 boss challenges",
+      "condition": {
+        "type": "boss_wins",
+        "count": 3
+      },
+      "reward": {
+        "reputation": 20
+      },
+      "icon": "📋",
+      "xp_reward": 250
+    },
+    {
+      "id": "ach_big_spender",
+      "title": "Big Spender",
+      "description": "Buy 3 items from wholesale markets",
+      "condition": {
+        "type": "shop_purchases",
+        "count": 3
+      },
+      "reward": {
+        "customer_satisfaction": 15
+      },
+      "icon": "💳",
+      "xp_reward": 100
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "ethical_reasoning",
+        "name": "Ethical Reasoning",
+        "icon": "⚖️",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "emotional_regulation",
+        "name": "Emotional Regulation",
+        "icon": "🧘",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "self_awareness",
+        "name": "Self Awareness",
+        "icon": "🪞",
+        "brain_region": "occipital_posterior"
+      },
+      {
+        "id": "growth_mindset",
+        "name": "Growth Mindset",
+        "icon": "🌱",
+        "brain_region": "occipital_posterior"
+      }
+    ]
+  },
+  "glossary": {
+    "compound_interest": {
+      "term": "Compound Interest",
+      "definition": "Interest earned on both the initial principal and the accumulated interest from previous periods. The \"eighth wonder of the world.\"",
+      "example": "$1,000 at 10% compounded annually becomes $1,100 after year 1, then $1,210 after year 2.",
+      "real_world_example": "Warren Buffett started investing at age 11. Compound interest turned his early investments into billions."
+    },
+    "diversification": {
+      "term": "Diversification",
+      "definition": "Spreading investments across different assets to reduce risk. \"Don't put all your eggs in one basket.\"",
+      "example": "Instead of buying only tech stocks, investing in stocks, bonds, and real estate.",
+      "real_world_example": "Index funds like the S&P 500 automatically diversify across 500 companies."
+    },
+    "inflation": {
+      "term": "Inflation",
+      "definition": "The rate at which the general level of prices for goods and services rises, reducing purchasing power over time.",
+      "example": "If inflation is 3%, something that costs ₹100 today will cost ₹103 next year.",
+      "real_world_example": "In 1950, a movie ticket cost about ₹1. Today it costs ₹200+ — that's inflation over decades."
+    },
+    "budgeting": {
+      "term": "Budgeting",
+      "definition": "Creating a plan for how to spend and save money. The 50/30/20 rule suggests 50% needs, 30% wants, 20% savings.",
+      "example": "Tracking monthly income of ₹50,000: ₹25,000 rent/food, ₹15,000 entertainment, ₹10,000 savings.",
+      "real_world_example": "YNAB (You Need A Budget) helped millions of users save an average of $600 in their first two months."
+    },
+    "assets_liabilities": {
+      "term": "Assets vs Liabilities",
+      "definition": "Assets put money in your pocket (investments, property). Liabilities take money out (loans, credit card debt).",
+      "example": "A rental property generating rent is an asset. A car loan with monthly payments is a liability.",
+      "real_world_example": "Robert Kiyosaki's Rich Dad Poor Dad popularized this distinction, changing how millions think about money."
+    },
+    "emergency_fund": {
+      "term": "Emergency Fund",
+      "definition": "Money set aside to cover unexpected expenses like medical bills or job loss. Experts recommend 3-6 months of living expenses.",
+      "example": "Saving ₹10,000 monthly until you have ₹1,80,000 set aside for emergencies.",
+      "real_world_example": "During COVID-19, people with emergency funds could weather job losses without going into debt."
+    },
+    "roi": {
+      "term": "Return on Investment (ROI)",
+      "definition": "A measure of the profitability of an investment, calculated as (Gain - Cost) / Cost × 100%.",
+      "example": "Investing ₹10,000 that grows to ₹12,000 = 20% ROI.",
+      "real_world_example": "Education has one of the highest ROIs — college graduates earn 80% more than those with only high school diplomas."
+    },
+    "tax_planning": {
+      "term": "Tax Planning",
+      "definition": "Legally minimizing tax liability through smart financial decisions like deductions, exemptions, and tax-advantaged accounts.",
+      "example": "Investing in ELSS mutual funds to save up to ₹46,800 in taxes under Section 80C.",
+      "real_world_example": "Companies like Apple use international tax planning to significantly reduce their effective tax rates."
+    }
+  },
+  "win_criteria": [
+    {
+      "id": "highest_cash_inr",
+      "label": "Highest Cash Inr",
+      "metric": "cash_inr",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "highest_reputation",
+      "label": "Highest Reputation",
+      "metric": "reputation",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "highest_inventory",
+      "label": "Highest Inventory",
+      "metric": "inventory",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "highest_customer_satisfaction",
+      "label": "Highest Customer Satisfaction",
+      "metric": "customer_satisfaction",
+      "type": "highest_resource",
+      "icon": "📊",
+      "weight": 1
+    },
+    {
+      "id": "resource_balance",
+      "label": "Best Resource Balance",
+      "metric": "all_resources",
+      "type": "balanced_growth",
+      "icon": "⚖️",
+      "weight": 1.5,
+      "description": "Lowest variance across all resource growth percentages"
+    },
+    {
+      "id": "knowledge_mastery",
+      "label": "Knowledge Mastery",
+      "metric": "glossary_terms_learned",
+      "type": "highest_count",
+      "icon": "📚",
+      "weight": 1
+    },
+    {
+      "id": "challenge_champion",
+      "label": "Challenge Champion",
+      "metric": "boss_wins",
+      "type": "highest_count",
+      "icon": "🗡️",
+      "weight": 1
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "resource_multiplier": 1.4,
+      "negative_event_chance": 0.2
+    },
+    "medium": {
+      "resource_multiplier": 1.0,
+      "negative_event_chance": 0.4
+    },
+    "hard": {
+      "resource_multiplier": 0.65,
+      "negative_event_chance": 0.65
+    }
+  },
+  "coach_mode_default": true,
+  "transfer_exercises": [
+    {
+      "skill_tag": "risk_tolerance",
+      "game_context": "You made market bets with incomplete information.",
+      "real_world": "List every financial or career decision you've avoided this month due to uncertainty. Pick the one with the highest upside and take one small step.",
+      "challenge": "Apply Kahneman's 'outside view': before your next decision, find 3 people who've made a similar choice and ask what they'd do differently."
+    },
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "You outmaneuvered competitors by thinking several moves ahead.",
+      "real_world": "Use a 'pre-mortem': before your next big decision, imagine 6 months from now it has failed. Write down the 3 most likely causes.",
+      "challenge": "This week, identify one 'second-order effect' of a decision you made last month—something you didn't anticipate. What does it tell you?"
+    }
+  ],
+  "learning_concept": "Strategic Decision Making",
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.4,
+    "risk_tolerance": 0.35,
+    "delayed_gratification": 0.25
+  },
+  "coaching_moment": "Understand supply chain and inventory management. Learn pricing strategies and market positioning.",
+  "estimated_duration": 25,
+  "target_age": "14-18",
+  "tags": [
+    "advanced",
+    "board-game",
+    "business",
+    "creativity",
+    "economics",
+    "entrepreneurship",
+    "environment",
+    "history",
+    "strategic-thinking"
+  ],
+  "cultural_context": "India's NSE and BSE have seen massive retail investor growth since 2020, with millions of young Indians entering the stock market for the first time. Market thinking and investment strategy are skills increasingly relevant for India's financially aspiring youth.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "entrepreneurial-thinking",
+    "self-regulation"
+  ],
+  "reflection_prompt": "Which turn was your turning point — and was it skill, luck, or planning?"
+}

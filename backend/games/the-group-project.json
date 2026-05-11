@@ -1,0 +1,502 @@
+{
+  "id": "the-group-project",
+  "game_id": "the-group-project",
+  "title": "The Group Project",
+  "type": "mystery_room",
+  "game_type": "mystery_room",
+  "feature_flag": "mystery_room_enabled",
+  "duration_minutes": 15,
+  "grade": "8",
+  "target_grade": "8",
+  "description": "Your group's history project is due tomorrow. When you log in tonight, half the slides are gone and your name is on the deletion log. Someone in the group is sabotaging the work. Slip into the empty computer lab and find out who — and why.",
+  "skill_tags": [
+    "critical_thinking",
+    "empathy",
+    "ethical_reasoning",
+    "courage",
+    "adaptability"
+  ],
+  "ai_image_config": {
+    "image_style": "semi-realistic"
+  },
+  "hint_policy": {
+    "auto_prompt_seconds": 120,
+    "max_auto_prompts_per_puzzle": 1
+  },
+  "initial_state": {},
+  "rooms": [
+    {
+      "id": "computer_lab",
+      "name": "Computer Lab",
+      "background": "/uploads/mystery/the-group-project/rooms/computer_lab.png",
+      "exits": [
+        {
+          "to": "library",
+          "label": "Walk to the library →"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "shared_doc_history",
+          "label": "Shared Doc — revision history (open on Workstation 4)",
+          "bbox": [
+            0.1,
+            0.3,
+            0.32,
+            0.5
+          ],
+          "puzzle_id": "p1_revision_log",
+          "skill_tags_on_examine": [
+            "critical_thinking"
+          ]
+        },
+        {
+          "id": "deleted_slides",
+          "label": "Trash folder on Workstation 4",
+          "bbox": [
+            0.36,
+            0.32,
+            0.5,
+            0.46
+          ],
+          "puzzle_id": "p2_deletion_pattern",
+          "skill_tags_on_examine": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "phone_on_desk",
+          "label": "Phone left face-down on the desk",
+          "bbox": [
+            0.54,
+            0.55,
+            0.66,
+            0.66
+          ],
+          "puzzle_id": "p3_group_chat",
+          "skill_tags_on_examine": [
+            "critical_thinking"
+          ]
+        },
+        {
+          "id": "lab_logbook",
+          "label": "Lab sign-in clipboard (last 24 hours)",
+          "bbox": [
+            0.7,
+            0.2,
+            0.86,
+            0.36
+          ],
+          "puzzle_id": "p4_login_times",
+          "skill_tags_on_examine": [
+            "strategic_thinking"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "library",
+      "name": "Library — Group Workspace",
+      "background": "/uploads/mystery/the-group-project/rooms/library.png",
+      "exits": [
+        {
+          "to": "computer_lab",
+          "label": "← Back to the lab"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "rohans_notebook",
+          "label": "Rohan's notebook left open on the table",
+          "bbox": [
+            0.18,
+            0.42,
+            0.34,
+            0.58
+          ],
+          "puzzle_id": "p5_notebook_anxiety",
+          "skill_tags_on_examine": [
+            "empathy"
+          ]
+        },
+        {
+          "id": "rubric_printout",
+          "label": "Marked-up rubric — teacher's expectations",
+          "bbox": [
+            0.42,
+            0.3,
+            0.6,
+            0.46
+          ],
+          "skill_tags_on_examine": [
+            "strategic_thinking"
+          ]
+        },
+        {
+          "id": "usb_drive",
+          "label": "USB drive in the corner of the desk",
+          "bbox": [
+            0.66,
+            0.5,
+            0.74,
+            0.58
+          ],
+          "yields_item": "usb_drive_item",
+          "skill_tags_on_examine": [
+            "curiosity"
+          ]
+        },
+        {
+          "id": "interpretive_choice_seat",
+          "label": "Empty chair where Rohan usually sits",
+          "bbox": [
+            0.78,
+            0.62,
+            0.92,
+            0.8
+          ],
+          "puzzle_id": "p6_what_to_do",
+          "skill_tags_on_examine": [
+            "empathy"
+          ]
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "usb_drive_item",
+      "name": "Rohan's USB Drive",
+      "icon": "/uploads/mystery/the-group-project/items/usb.png",
+      "is_evidence": true,
+      "skill_tags_on_pickup": [
+        "curiosity"
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "p1_revision_log",
+      "type": "factual",
+      "prompt": "The shared doc shows every edit and who made it. Look at the last six entries. Who deleted the introduction slide AND the conclusion slide?",
+      "options": [
+        "Priya — the group leader who set up the doc",
+        "Rohan — the quiet member who joined late",
+        "Anonymous — the deletions are signed by 'Guest'",
+        "You — your name appears on both deletions"
+      ],
+      "correct": 3,
+      "skill_tags_correct": [
+        "critical_thinking"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "Your name is on both deletions. But you didn't make them — someone used your account. That means someone in the group either knows your password or was logged in on a shared computer where you forgot to sign out. The sabotage is being framed to look like you did it.",
+      "explanation_wrong": "Read the log carefully — both deletion entries show your username, not anyone else's. Someone is making it look like you did this. The next question is: who would benefit from blaming you?"
+    },
+    {
+      "id": "p2_deletion_pattern",
+      "type": "factual",
+      "prompt": "You open the trash folder on Workstation 4. The deleted files all share something in common. Look at the file names and timestamps — what is the pattern?",
+      "options": [
+        "All deleted files are slides made by Priya",
+        "All deleted files contain references to a specific historical event",
+        "All deleted files were last edited by Rohan",
+        "The files were deleted in alphabetical order"
+      ],
+      "correct": 2,
+      "skill_tags_correct": [
+        "critical_thinking",
+        "strategic_thinking"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "Every deleted file was last edited by Rohan. That is significant. Either someone is targeting Rohan's contributions specifically, or Rohan deleted his own work. People sometimes destroy work they're afraid to submit — especially when they doubt the quality of their own contribution.",
+      "explanation_wrong": "Look at the 'Last edited by' column for each deleted file. The same name appears every time: Rohan. The pattern points to Rohan's contributions specifically — not Priya's, not yours."
+    },
+    {
+      "id": "p3_group_chat",
+      "type": "factual",
+      "ordering_items": [
+        {
+          "id": "msg_a",
+          "text": "Priya (Mon 9pm): 'Guys, this is due Wednesday. Can we PLEASE finalise sections by tomorrow?'",
+          "correct_position": 1
+        },
+        {
+          "id": "msg_b",
+          "text": "Rohan (Tue 11pm, in private DM to you): 'I don't think my section is good enough. Priya is going to laugh at it. I'm going to try and rewrite it tonight.'",
+          "correct_position": 2
+        },
+        {
+          "id": "msg_c",
+          "text": "Priya (Wed 7am, in main group chat): 'WHO DELETED MY SLIDES. This is sabotage. I'm telling Ms. Joshi.'",
+          "correct_position": 3
+        },
+        {
+          "id": "msg_d",
+          "text": "Rohan (Wed 7:15am): 'I haven't touched the doc since Monday. I swear.'",
+          "correct_position": 4
+        },
+        {
+          "id": "msg_e",
+          "text": "Priya (Wed 7:20am): 'Then who? The log shows [your name].'",
+          "correct_position": 5
+        }
+      ],
+      "options": [
+        "Message A — Priya's deadline reminder",
+        "Message B — Rohan's late-night DM about rewriting",
+        "Message C — Priya's morning panic about sabotage",
+        "Message D — Rohan's denial",
+        "Message E — Priya pointing the finger at you"
+      ],
+      "correct": 0,
+      "skill_tags_correct": [
+        "critical_thinking",
+        "strategic_thinking"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "Priya's reminder came first, followed by Rohan's private DM to you saying he wanted to 'rewrite' his section. Then in the morning Priya found the deletions and Rohan denied touching the doc. The order matters: Rohan privately told you he was going to work on it that night — and that is exactly when his own contributions were deleted. He is not telling the full story.",
+      "explanation_wrong": "Look at the timestamps in each message. The chain runs: Monday 9pm reminder → Tuesday 11pm DM about rewriting → Wednesday 7am panic. The sequence reveals that Rohan's private message contradicts his later denial."
+    },
+    {
+      "id": "p4_login_times",
+      "type": "factual",
+      "prompt": "The lab sign-in clipboard records who used which workstation last night. Cross-reference it with the deletion timestamps in the doc. Who was logged into Workstation 4 at 11:47pm — exactly when the slides were deleted?",
+      "options": [
+        "Priya — she had a late research session",
+        "Rohan — he signed in at 11:30pm and left at 12:15am",
+        "Nobody — the lab was supposed to be closed",
+        "A member of the lab maintenance team"
+      ],
+      "correct": 1,
+      "skill_tags_correct": [
+        "critical_thinking",
+        "strategic_thinking"
+      ],
+      "skill_tags_wrong": [
+        "critical_thinking"
+      ],
+      "explanation_correct": "Rohan was at Workstation 4 between 11:30 and 12:15. Your account stays logged in on that machine because you used it earlier in the day. He didn't have to hack anything — he just sat down at a workstation where you were already signed in, deleted his own slides, and walked out. The frame-up wasn't planned; it was a side-effect of his panic.",
+      "explanation_wrong": "Match the deletion time (11:47pm in the doc revision log) with the sign-in clipboard. Only one person was in the lab at that moment, and it was not you, Priya, or maintenance."
+    },
+    {
+      "id": "p5_notebook_anxiety",
+      "type": "factual",
+      "prompt": "Rohan's notebook is open to a page covered in scribbles. There are crossed-out sentences, doodles, and a phrase written and rewritten three times: 'I'm going to ruin this for everyone.' What does this most likely mean?",
+      "options": [
+        "Rohan is planning to deliberately sabotage the group out of malice",
+        "Rohan is anxious that his contributions are not good enough — he is afraid HE will be the one ruining it",
+        "Rohan is writing a creative-writing assignment for English class",
+        "It is a quote from a song he is listening to"
+      ],
+      "correct": 1,
+      "skill_tags_correct": [
+        "empathy",
+        "critical_thinking"
+      ],
+      "skill_tags_wrong": [
+        "empathy"
+      ],
+      "explanation_correct": "Rohan is not malicious — he is terrified. The sentence is a self-judgement, not a threat. He believes his work is bad enough that submitting it would let the group down. Deleting his own contributions and pretending someone else did it was a desperate attempt to avoid being the one who failed. This is what fear looks like when it has nowhere to go.",
+      "explanation_wrong": "Read the phrase as something Rohan is saying about himself, not about others. 'I'm going to ruin this' — the 'I' is the key word. He is afraid of being the cause of the group's failure, not of causing it on purpose."
+    },
+    {
+      "id": "p6_what_to_do",
+      "type": "interpretive",
+      "prompt": "It is 11pm. Priya has already messaged Ms. Joshi blaming you. Rohan is at home, probably awake, probably terrified. The deadline is in 12 hours. What do you do?",
+      "options": [
+        "Send the evidence to Priya and let her handle it however she wants — she leads the group",
+        "Message Rohan privately first and ask if he wants to talk before you do anything",
+        "Send a calm message to the group laying out what actually happened — and offer to help rewrite his section tonight",
+        "Stay quiet and let it sort itself out tomorrow when everyone is calmer"
+      ],
+      "skill_tags_per_option": [
+        [
+          "strategic_thinking"
+        ],
+        [
+          "empathy",
+          "ethical_reasoning"
+        ],
+        [
+          "courage",
+          "ethical_reasoning"
+        ],
+        [
+          "risk_tolerance"
+        ]
+      ]
+    }
+  ],
+  "hints": {
+    "p1_revision_log": [
+      "Look at the 'edited by' column for each entry, not the timestamps.",
+      "Two of the recent entries have the same username on them. Whose name is it?",
+      "It's your name. But you didn't do this — someone is using your account."
+    ],
+    "p2_deletion_pattern": [
+      "Open each deleted file and check who last edited it.",
+      "All four files have the same person's name in the 'last edited' field.",
+      "The person who last edited every deleted file is Rohan. That's the pattern."
+    ],
+    "p3_group_chat": [
+      "Order the messages by timestamp first.",
+      "Pay close attention to Rohan's private DM — what did he say he was going to do?",
+      "He said he was going to rewrite his section that night. The deletions happened the same night."
+    ],
+    "p4_login_times": [
+      "Match the deletion time in the doc (11:47pm) against the sign-in sheet.",
+      "Look for someone whose lab session covers that minute.",
+      "Rohan's session: 11:30pm to 12:15am — right across the deletion timestamp."
+    ],
+    "p5_notebook_anxiety": [
+      "Read the phrase out loud. Who is the 'I' in 'I'm going to ruin this'?",
+      "The 'I' is Rohan, talking about himself. He is not threatening anyone.",
+      "He is afraid HE will let the group down. This is anxiety, not malice."
+    ],
+    "p6_what_to_do": [
+      "Each choice involves a different balance of risk to yourself and care for Rohan.",
+      "Consider: what does Rohan need right now? What does Priya need to know?",
+      "There is no single right answer — but think about what you would want if you were the one panicking."
+    ],
+    "evidence_board": [
+      "Group items by what role they played: framing, motive, alibi-busting, or unrelated.",
+      "Some items point to who DID it. Others explain WHY. A few are red herrings.",
+      "The group chat shows motive. The lab clipboard busts the alibi. The notebook explains the fear behind it all."
+    ]
+  },
+  "evidence_board": {
+    "prompt": "Sort the evidence into three buckets: what FRAMES you, what reveals MOTIVE, and what is IRRELEVANT.",
+    "buckets": [
+      {
+        "id": "frames_you",
+        "label": "Frames You"
+      },
+      {
+        "id": "reveals_motive",
+        "label": "Reveals Motive"
+      },
+      {
+        "id": "irrelevant",
+        "label": "Irrelevant"
+      }
+    ],
+    "correct_groupings": {
+      "shared_doc_history": "frames_you",
+      "deleted_slides": "frames_you",
+      "lab_logbook": "frames_you",
+      "phone_on_desk": "reveals_motive",
+      "rohans_notebook": "reveals_motive",
+      "usb_drive_item": "reveals_motive",
+      "rubric_printout": "irrelevant"
+    },
+    "skill_tags_correct": [
+      "critical_thinking",
+      "strategic_thinking"
+    ],
+    "skill_tags_partial": [
+      "adaptability"
+    ]
+  },
+  "climax": {
+    "modal_text": "Your phone buzzes. Priya's message: 'I'm telling Ms. Joshi at 8am tomorrow. You either explain yourself in the group chat tonight or it's over.' Rohan has gone silent. You know what happened — and you have minutes to decide what to do with that knowledge.",
+    "trigger": {
+      "must_visit": [
+        "computer_lab",
+        "library"
+      ]
+    },
+    "options": [
+      {
+        "id": "stay_quiet",
+        "label": "Stay quiet — you don't owe anyone an explanation. Let the teacher figure it out.",
+        "gating": null,
+        "gating_message": "",
+        "skill_tags": []
+      },
+      {
+        "id": "blame_rohan",
+        "label": "Forward the evidence to Priya — let her handle Rohan publicly.",
+        "gating": null,
+        "gating_message": "",
+        "skill_tags": [
+          "strategic_thinking"
+        ]
+      },
+      {
+        "id": "talk_to_rohan",
+        "label": "Message Rohan privately first — ask if he's okay, then bring it to the group together.",
+        "gating": {
+          "evidence_min": 4
+        },
+        "gating_message": "Find more evidence first — you need to be sure of what happened before approaching him.",
+        "skill_tags": [
+          "empathy",
+          "courage"
+        ]
+      },
+      {
+        "id": "coalition",
+        "label": "Send the group a calm summary of what happened and offer to help Rohan rewrite his section tonight.",
+        "gating": {
+          "evidence_min": 6,
+          "synthesis_correct": true
+        },
+        "gating_message": "Find all the evidence and group it correctly — this path requires you to fully understand the situation.",
+        "skill_tags": [
+          "courage",
+          "ethical_reasoning",
+          "empathy"
+        ]
+      }
+    ]
+  },
+  "epilogues": {
+    "stay_quiet": {
+      "image": "/uploads/mystery/the-group-project/epilogues/stay_quiet.png",
+      "title": "You Stayed Quiet",
+      "paragraphs": [
+        "You close the laptop and walk home. The next morning Ms. Joshi calls you to her office. You say nothing. She marks the project incomplete for the whole group. Priya stops speaking to you. Rohan doesn't come to school for two days.",
+        "Sometimes silence is safety. But when you knew the truth and chose to keep it, the cost was paid by everyone else. There is a difference between protecting yourself and abandoning others."
+      ],
+      "soft_skill_named": "Self-protection — but at the cost of self-respect"
+    },
+    "blame_rohan": {
+      "image": "/uploads/mystery/the-group-project/epilogues/blame_rohan.png",
+      "title": "You Cleared Your Name",
+      "paragraphs": [
+        "You forward everything to Priya. By morning, the whole group chat knows. The teacher hears. Rohan is suspended for a day. Your name is cleared.",
+        "The truth was on your side, and the system worked the way it was supposed to. But you never asked Rohan why. You never gave him a chance to speak first. He stops eating lunch with the group. A few months later, you hear he transferred to another section.",
+        "Justice without empathy is just revenge wearing a uniform."
+      ],
+      "soft_skill_named": "Strategic Thinking — clean, effective, and a little cold"
+    },
+    "talk_to_rohan": {
+      "image": "/uploads/mystery/the-group-project/epilogues/talk_to_rohan.png",
+      "title": "You Asked First",
+      "paragraphs": [
+        "You message Rohan: 'I think I know what happened. Can we talk before I say anything in the group?' He calls you back, crying. He admits everything. He tells you he hadn't slept in three days because he was so afraid his work would let everyone down.",
+        "Together you draft a message to Priya — honest, no excuses, asking for one extra day. Ms. Joshi gives it. The project is submitted. It is not perfect, but it is theirs. Priya is angry but not cruel. Rohan starts seeing the school counsellor.",
+        "Empathy is not weakness. It is the willingness to hear the story behind the behaviour before you judge it."
+      ],
+      "soft_skill_named": "Empathy — and the courage to use it"
+    },
+    "coalition": {
+      "image": "/uploads/mystery/the-group-project/epilogues/coalition.png",
+      "title": "You Built a Bridge",
+      "paragraphs": [
+        "You send a single message to the group. You explain calmly: someone deleted Rohan's slides using your account, you don't think it was malicious, and the deadline is tight but doable. You offer to spend the next four hours rewriting Rohan's section with him.",
+        "Priya replies: 'I'm in.' She joins the call. The three of you work until 3am. The project gets submitted. It is the best work the group has done all year. Ms. Joshi gives them an A — not for the content, but for what she calls 'the quality of how you handled this.'",
+        "The hardest skill in any group is choosing the version of justice that includes everyone. You chose the harder version. It made the group stronger than it was before."
+      ],
+      "soft_skill_named": "Coalition-Building — leadership through honesty and care"
+    }
+  },
+  "reflection_prompt": "Which clue felt useless until it suddenly mattered? What does that tell you about how you investigate?"
+}

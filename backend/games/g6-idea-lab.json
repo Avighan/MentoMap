@@ -1,0 +1,2276 @@
+{
+  "game_id": "g6-idea-lab",
+  "title": "Idea Lab: From Problem to Product",
+  "theme": "Entrepreneurship & Innovation",
+  "icon": "💡",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are a student who spots problems around your school and neighborhood — and decides to fix them! Over 10 weeks, go from spotting a problem to building a real prototype and pitching it to your school. Can you become a young innovator?",
+  "target_audience": "Ages 11-12",
+  "target_age": "11-12",
+  "grade": "6",
+  "difficulty": "beginner",
+  "duration_minutes": 20,
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You play as a student who wants to solve a real problem in your school or neighborhood.",
+    "Each week you make a decision — how to research, build, test, or present your idea.",
+    "Watch your resources: creativity, budget, team morale, and more all matter!",
+    "NPCs like your teacher Ms. Chen and your friend Alex will help (or challenge) you along the way.",
+    "Random events — like a surprise science fair — can change your plans.",
+    "Aim for a balanced approach: great ideas need good research, a strong team, AND happy customers!"
+  ],
+  "learning_objectives": [
+    "Learn to spot everyday problems and think of creative solutions",
+    "Understand the basics of entrepreneurship: research, prototype, test, pitch",
+    "Practice teamwork, communication, and leadership skills",
+    "Develop resilience by handling setbacks and adapting plans",
+    "Build confidence in presenting ideas to others"
+  ],
+  "tags": [
+    "entrepreneurship",
+    "innovation",
+    "grade-6",
+    "problem-solving",
+    "creativity"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Creativity",
+    "Problem Solving",
+    "Communication",
+    "Critical Thinking"
+  ],
+  "cultural_context": "Global school/community problem-solving, young entrepreneurs",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "creativity"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.15,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.15,
+    "adaptability": 0.15,
+    "resilience": 0.15,
+    "empathy": 0.15,
+    "creativity": 0.15
+  },
+  "initial_state": {
+    "creativity_points": {
+      "value": 40,
+      "label": "Creativity",
+      "icon": "🎨",
+      "min": 0,
+      "max": 100
+    },
+    "research_quality": {
+      "value": 20,
+      "label": "Research Quality",
+      "icon": "🔍",
+      "min": 0,
+      "max": 100
+    },
+    "prototype_progress": {
+      "value": 0,
+      "label": "Prototype Progress",
+      "icon": "🔧",
+      "min": 0,
+      "max": 100
+    },
+    "team_morale": {
+      "value": 60,
+      "label": "Team Morale",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "budget": {
+      "value": 500,
+      "label": "Budget",
+      "icon": "💰",
+      "min": 0,
+      "max": 5000
+    },
+    "customer_feedback": {
+      "value": 0,
+      "label": "Customer Feedback",
+      "icon": "📋",
+      "min": 0,
+      "max": 100
+    },
+    "confidence": {
+      "value": 50,
+      "label": "Confidence",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "mentor_trust": {
+      "value": 40,
+      "label": "Mentor Trust",
+      "icon": "🎓",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "creativity": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "innovation",
+        "label": "Innovation",
+        "icon": "💡",
+        "color": "#8B5CF6",
+        "initial_health": 30,
+        "health_formula": "min(100, max(0, creativity_points * 0.5 + research_quality * 0.5))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "execution",
+        "label": "Execution",
+        "icon": "🔧",
+        "color": "#F59E0B",
+        "initial_health": 25,
+        "health_formula": "min(100, max(0, prototype_progress * 0.6 + min(100, budget / 50) * 0.4))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      },
+      {
+        "id": "teamwork",
+        "label": "Teamwork",
+        "icon": "🤝",
+        "color": "#10B981",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, team_morale * 0.6 + confidence * 0.4))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "market_fit",
+        "label": "Market Fit",
+        "icon": "📊",
+        "color": "#3B82F6",
+        "initial_health": 10,
+        "health_formula": "min(100, max(0, customer_feedback * 0.6 + research_quality * 0.4))",
+        "status_thresholds": {
+          "critical": 15,
+          "poor": 30,
+          "fair": 50,
+          "good": 70
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "invention_score",
+        "label": "Invention Score",
+        "icon": "🏆",
+        "formula": "(creativity_points * 0.35 + prototype_progress * 0.35 + research_quality * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 65
+        }
+      },
+      {
+        "id": "team_spirit",
+        "label": "Team Spirit",
+        "icon": "💪",
+        "formula": "(team_morale * 0.5 + confidence * 0.3 + mentor_trust * 0.2)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "problem_solution_fit",
+        "label": "Problem-Solution Fit",
+        "icon": "🎯",
+        "formula": "(customer_feedback * 0.4 + research_quality * 0.35 + creativity_points * 0.25)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 15,
+          "warning": 35,
+          "good": 60
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "weekly_creativity_boost",
+        "label": "Weekly Inspiration",
+        "effects": [
+          {
+            "resource": "creativity_points",
+            "formula": "min(100, creativity_points + 2)"
+          }
+        ],
+        "description": "Each week, your curiosity naturally sparks a little more creativity."
+      },
+      {
+        "id": "weekly_budget_drain",
+        "label": "Weekly Expenses",
+        "effects": [
+          {
+            "resource": "budget",
+            "formula": "max(0, budget - 25)"
+          }
+        ],
+        "description": "Small weekly costs for supplies, printing, and snacks for the team."
+      },
+      {
+        "id": "morale_decay",
+        "label": "Morale Check",
+        "condition": {
+          "resource": "team_morale",
+          "op": "<",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "team_morale",
+            "formula": "max(0, team_morale - 3)"
+          }
+        ],
+        "description": "When morale is already low, it keeps dropping unless you do something positive."
+      },
+      {
+        "id": "knowledge_compound",
+        "label": "Knowledge Builds",
+        "condition": {
+          "resource": "research_quality",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "research_quality",
+            "formula": "min(100, research_quality + 2)"
+          }
+        ],
+        "description": "Once you know enough, your research starts building on itself — knowledge compounds!"
+      }
+    ],
+    "interactions": [
+      {
+        "id": "creativity_to_prototype",
+        "from_subsystem": "innovation",
+        "to_subsystem": "execution",
+        "label": "Creative Design Boost",
+        "condition": {
+          "resource": "creativity_points",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "prototype_progress",
+            "formula": "min(100, prototype_progress + (creativity_points - 60) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "High creativity makes your prototyping faster and better."
+      },
+      {
+        "id": "research_to_feedback",
+        "from_subsystem": "innovation",
+        "to_subsystem": "market_fit",
+        "label": "Research Insight",
+        "condition": {
+          "resource": "research_quality",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "customer_feedback",
+            "formula": "min(100, customer_feedback + (research_quality - 50) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Good research helps you understand what customers really want."
+      },
+      {
+        "id": "morale_to_confidence",
+        "from_subsystem": "teamwork",
+        "to_subsystem": "teamwork",
+        "label": "Team Confidence Lift",
+        "condition": {
+          "resource": "team_morale",
+          "op": ">=",
+          "value": 70
+        },
+        "effects": [
+          {
+            "resource": "confidence",
+            "formula": "min(100, confidence + (team_morale - 70) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "A happy team boosts everyone's confidence."
+      },
+      {
+        "id": "low_morale_hurts_creativity",
+        "from_subsystem": "teamwork",
+        "to_subsystem": "innovation",
+        "label": "Morale Drags Creativity",
+        "condition": {
+          "resource": "team_morale",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "creativity_points",
+            "formula": "max(0, creativity_points - (30 - team_morale) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When the team is unhappy, it becomes harder to think creatively."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "confidence",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "mentor_trust",
+        "equilibrium": 35,
+        "rate": 0.04,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "surprise_mentorship",
+        "label": "Surprise Mentorship",
+        "icon": "🌟",
+        "description": "A local business owner visits your school and offers to mentor student projects for a week!",
+        "probability": 0.2,
+        "condition": {
+          "resource": "mentor_trust",
+          "op": ">=",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "mentor_trust",
+            "delta": 10
+          },
+          {
+            "resource": "confidence",
+            "delta": 8
+          },
+          {
+            "resource": "research_quality",
+            "delta": 5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "Guest mentor visits! Local entrepreneur shares tips with student innovators.",
+        "ai_image_prompt": "Cartoon style, friendly adult mentor talking to excited school students in a classroom, lightbulb ideas floating above, colorful and cheerful"
+      },
+      {
+        "id": "team_member_sick",
+        "label": "Team Member Sick",
+        "icon": "🤒",
+        "description": "Oh no! One of your teammates is sick and can't come to school this week. The team has to pick up the extra work.",
+        "probability": 0.18,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 3
+        },
+        "effects": [
+          {
+            "resource": "team_morale",
+            "delta": -8
+          },
+          {
+            "resource": "prototype_progress",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "Teammate out sick! The rest of the team rallies to cover.",
+        "ai_image_prompt": "Cartoon style, sad school student in bed with thermometer, worried friends at the door holding project materials, colorful bedroom"
+      },
+      {
+        "id": "science_fair_announced",
+        "label": "School Science Fair Announced!",
+        "icon": "🎪",
+        "description": "The principal announces a school-wide Science & Innovation Fair! Projects can win prizes and attention. This is your chance to shine!",
+        "probability": 0.25,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "prototype_progress",
+              "op": ">=",
+              "value": 20
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "confidence",
+            "delta": 10
+          },
+          {
+            "resource": "team_morale",
+            "delta": 8
+          },
+          {
+            "resource": "mentor_trust",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Science Fair coming soon! All student teams are buzzing with excitement.",
+        "ai_image_prompt": "Cartoon style, colorful school science fair banner, excited students pointing at it, trophy display, festive school hallway"
+      },
+      {
+        "id": "competitor_team",
+        "label": "Competitor Team Appears!",
+        "icon": "⚡",
+        "description": "Another group of students is working on a similar idea! They seem confident and have a flashy poster already. Time to step up your game!",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "prototype_progress",
+              "op": ">=",
+              "value": 15
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "team_morale",
+            "delta": -5
+          },
+          {
+            "resource": "confidence",
+            "delta": -6
+          },
+          {
+            "resource": "creativity_points",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Rival team spotted! Competition heats up among student innovators.",
+        "ai_image_prompt": "Cartoon style, two groups of diverse students at tables facing each other, one group has a flashy poster, other group looking determined, school hallway"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "ms_chen",
+        "name": "Ms. Chen",
+        "role": "Science Teacher & Mentor",
+        "icon": "👩‍🏫",
+        "initial_mood": "supportive",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "research_quality",
+              "op": "<",
+              "value": 25
+            },
+            "action": "warn",
+            "message": "I love your enthusiasm, but you need to do more research before building anything! Let's go to the library.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "research_quality",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "Wonderful research! You really understand the problem now. I'm proud of your team!",
+            "mood_change": "happy",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "resource": "mentor_trust",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "reward",
+            "message": "Your dedication has impressed me. I've arranged for you to use the school's maker lab after hours!",
+            "mood_change": "excited",
+            "satisfaction_delta": 10,
+            "effects": [
+              {
+                "resource": "prototype_progress",
+                "delta": 8
+              },
+              {
+                "resource": "budget",
+                "delta": 100
+              }
+            ]
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "prototype_progress",
+                  "op": "<",
+                  "value": 15
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 6
+                }
+              ]
+            },
+            "action": "urgent",
+            "message": "We're running out of time and you haven't built much yet! Let's have a serious talk about your plan.",
+            "mood_change": "worried",
+            "satisfaction_delta": -10
+          }
+        ]
+      },
+      {
+        "id": "alex",
+        "name": "Alex",
+        "role": "Best Friend & Co-founder",
+        "icon": "🧑‍🤝‍🧑",
+        "initial_mood": "excited",
+        "initial_satisfaction": 65,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "team_morale",
+              "op": "<",
+              "value": 30
+            },
+            "action": "threaten_quit",
+            "message": "This isn't fun anymore. I don't feel like my ideas matter. Maybe I should work on something else...",
+            "mood_change": "upset",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "confidence",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_team_conflict"
+          },
+          {
+            "condition": {
+              "resource": "team_morale",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "boost",
+            "message": "This team is awesome! I stayed up late brainstorming and have three new ideas!",
+            "mood_change": "energized",
+            "satisfaction_delta": 8,
+            "effects": [
+              {
+                "resource": "creativity_points",
+                "delta": 5
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "confidence",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "support",
+            "message": "You're a great leader! I told the other kids about our project and they want to help too!",
+            "mood_change": "proud",
+            "satisfaction_delta": 6
+          }
+        ]
+      },
+      {
+        "id": "principal_hayes",
+        "name": "Principal Hayes",
+        "role": "School Authority",
+        "icon": "🏫",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 45,
+        "behaviors": [
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "prototype_progress",
+                  "op": ">=",
+                  "value": 50
+                },
+                {
+                  "resource": "research_quality",
+                  "op": ">=",
+                  "value": 40
+                }
+              ]
+            },
+            "action": "impressed",
+            "message": "I've been hearing great things about your project! I'd like to offer school resources to support your work.",
+            "mood_change": "impressed",
+            "satisfaction_delta": 10,
+            "effects": [
+              {
+                "resource": "budget",
+                "delta": 200
+              },
+              {
+                "resource": "confidence",
+                "delta": 8
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "budget",
+              "op": "<",
+              "value": 50
+            },
+            "action": "concern",
+            "message": "I hear your team is running low on funds. You'll need to be more careful with your spending — or find a way to fundraise.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5,
+            "trigger_round": "crisis_budget"
+          },
+          {
+            "condition": {
+              "resource": "customer_feedback",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "support",
+            "message": "Other students love what you're building! I'm recommending your project for the district innovation showcase.",
+            "mood_change": "proud",
+            "satisfaction_delta": 12,
+            "effects": [
+              {
+                "resource": "mentor_trust",
+                "delta": 8
+              },
+              {
+                "resource": "confidence",
+                "delta": 5
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "creativity_points",
+          "op": ">=",
+          "value": 70
+        },
+        "icon": "🎨",
+        "text": "Creativity is flowing! Your team is bursting with {creativity_points}% creative energy!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "prototype_progress",
+          "op": ">=",
+          "value": 60
+        },
+        "icon": "🔧",
+        "text": "Prototype {prototype_progress}% complete! It's really starting to look like a real product!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "team_morale",
+          "op": "<",
+          "value": 30
+        },
+        "icon": "😟",
+        "text": "Team morale is low at {team_morale}%. Someone needs to bring the team together.",
+        "severity": "warning"
+      },
+      {
+        "condition": {
+          "resource": "budget",
+          "op": "<",
+          "value": 100
+        },
+        "icon": "💸",
+        "text": "Only ${budget} left in the budget! Time to get creative with spending.",
+        "severity": "warning"
+      }
+    ],
+    "ai_scene_prompt_template": "Cartoon style, a school innovation lab, young diverse students working on a creative project, creativity level {creativity_points}%, team morale {team_morale}%, prototype {prototype_progress}% built, colorful posters and materials on tables. Mood: {'excited' if team_morale > 60 else 'tense' if team_morale < 35 else 'focused'}."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_problem",
+      "round_title": "Week 1: What's the Problem?",
+      "situation": "It's the first week of the Innovation Challenge! Ms. Chen says: 'Great inventions start with great problems. Look around your school and neighborhood — what bugs you? What could be better?' You grab a notebook and start observing.",
+      "goal": "Choose a problem to investigate and build your first idea around.",
+      "coaching_moment": "Creativity starts with observation. The best entrepreneurs don't invent from thin air — they notice what's broken and imagine how to fix it.",
+      "reflection_prompt": "What problems do you notice in your daily life that nobody seems to be fixing?",
+      "ai_image_prompt": "Cartoon style, curious school student with notebook walking through a colorful school hallway, noticing things, lightbulb above head, arrows pointing to problems like overflowing bins and broken fountain",
+      "choices": [
+        {
+          "id": "w1_waste",
+          "label": "A. The Lunchroom Waste Problem",
+          "description": "You notice tons of food gets thrown away every day in the school cafeteria. Maybe you can find a way to reduce waste!",
+          "delta": {
+            "creativity_points": 10,
+            "research_quality": 8,
+            "confidence": 5,
+            "mentor_trust": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Great eye! Food waste is a huge global problem. Starting with your school cafeteria shows empathy and systems thinking.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "w1_lost_found",
+          "label": "B. The Lost-and-Found Mess",
+          "description": "The school's lost-and-found bin is overflowing. Jackets, water bottles, lunchboxes — nobody can find their stuff. There must be a better system!",
+          "delta": {
+            "creativity_points": 12,
+            "research_quality": 5,
+            "team_morale": 5,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "creativity",
+            "adaptability"
+          ],
+          "feedback": "A relatable problem! Everyone loses stuff. Creative solutions for everyday problems can have big impact.",
+          "skill_explanation": {
+            "creativity": "Looking at the problem from a new angle demonstrates creativity.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "w1_water",
+          "label": "C. The Water Fountain Issue",
+          "description": "The school water fountains are always broken or have long lines. Students bring plastic bottles, creating waste. Can you solve both problems at once?",
+          "delta": {
+            "creativity_points": 8,
+            "research_quality": 10,
+            "mentor_trust": 8,
+            "confidence": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Smart pick! You're tackling two problems at once — broken infrastructure AND plastic waste. Ms. Chen is impressed by your thinking.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "w1_bored",
+          "label": "D. The 'Nothing to Do' Problem",
+          "description": "Kids in your neighborhood complain there's nothing fun to do after school. Maybe you can create something — a game, an activity kit, or a club!",
+          "delta": {
+            "creativity_points": 15,
+            "team_morale": 8,
+            "research_quality": 3,
+            "confidence": 5
+          },
+          "skill_tags": [
+            "creativity",
+            "empathy"
+          ],
+          "feedback": "Bold and fun! Solving boredom takes serious creativity. Your friends are already excited about this one.",
+          "skill_explanation": {
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_research",
+      "round_title": "Week 2: Research Deep Dive",
+      "situation": "Ms. Chen says: 'Now that you've picked a problem, it's time to really understand it. Don't just guess — investigate! Talk to people, look up facts, and figure out WHY this problem exists.' How will you research?",
+      "goal": "Deepen your understanding of the problem through research.",
+      "coaching_moment": "Good research means listening to real people, not just guessing. Empathy and strategic thinking go hand-in-hand when you truly understand a problem.",
+      "reflection_prompt": "Why is it important to research a problem before jumping to solutions?",
+      "ai_image_prompt": "Cartoon style, diverse school students conducting research, one interviewing a cafeteria worker, another reading books in library, one using a tablet, colorful and energetic",
+      "choices": [
+        {
+          "id": "w2_interviews",
+          "label": "A. Interview Real People",
+          "description": "Talk to students, teachers, and staff who are affected by the problem. Write down their stories and frustrations.",
+          "delta": {
+            "research_quality": 15,
+            "empathy": 5,
+            "customer_feedback": 8,
+            "confidence": 5,
+            "mentor_trust": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Brilliant! Talking to real people gives you insights that books can't. You heard stories you never expected.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w2_data",
+          "label": "B. Collect Data & Numbers",
+          "description": "Count how often the problem happens. Measure it. Make charts. Ms. Chen loves data!",
+          "delta": {
+            "research_quality": 18,
+            "mentor_trust": 10,
+            "creativity_points": 3,
+            "confidence": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Numbers don't lie! Your data shows the problem is even bigger than you thought. Ms. Chen is very impressed.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "w2_online",
+          "label": "C. Online Research & Existing Solutions",
+          "description": "Look up how other schools and cities have solved similar problems. No need to reinvent the wheel!",
+          "delta": {
+            "research_quality": 12,
+            "creativity_points": 8,
+            "budget": -20,
+            "confidence": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Smart move! Learning from others saves time. You found three interesting approaches to adapt.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w2_quick",
+          "label": "D. Skip Ahead — Start Building!",
+          "description": "Research is boring! You already know the problem. Let's just start making something cool!",
+          "delta": {
+            "prototype_progress": 12,
+            "research_quality": -5,
+            "creativity_points": 8,
+            "mentor_trust": -10,
+            "team_morale": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "creativity"
+          ],
+          "feedback": "Exciting energy! But Ms. Chen warns: 'Building without research is like cooking without a recipe — you might get lucky, or you might waste ingredients.' Your prototype may need a big redo later.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "creativity": "Not settling for the obvious solution builds creative problem-solving."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_team",
+      "round_title": "Week 3: Building a Team",
+      "situation": "Your project is growing and you can't do it alone! Alex is already on board, but you need more help. How do you build your dream team?",
+      "goal": "Recruit teammates and establish how your team will work together.",
+      "coaching_moment": "The best teams aren't just groups of friends — they're groups of people with different strengths who respect each other.",
+      "reflection_prompt": "What makes a team work well together? Is it friendship, skills, or something else?",
+      "ai_image_prompt": "Cartoon style, diverse group of school students sitting in a circle brainstorming, sticky notes on wall, one student standing presenting, colorful classroom",
+      "choices": [
+        {
+          "id": "w3_skills",
+          "label": "A. Recruit for Skills",
+          "description": "Find students with different talents — an artist for design, a math whiz for planning, a social butterfly for talking to people.",
+          "delta": {
+            "team_morale": 8,
+            "creativity_points": 8,
+            "research_quality": 5,
+            "confidence": 5,
+            "budget": -30
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Great thinking! A diverse team brings diverse ideas. Your artist friend already designed an amazing logo!",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w3_friends",
+          "label": "B. Pick Your Best Friends",
+          "description": "Invite your closest friends. You already trust each other and it'll be more fun!",
+          "delta": {
+            "team_morale": 15,
+            "confidence": 8,
+            "creativity_points": 3,
+            "research_quality": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "risk_tolerance"
+          ],
+          "feedback": "Friendship is powerful! But be careful — sometimes friends agree too much and miss important problems. Watch out for 'groupthink'!",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w3_vote",
+          "label": "C. Hold Open Tryouts",
+          "description": "Announce the project to the whole class and let interested students pitch why they should join.",
+          "delta": {
+            "team_morale": 5,
+            "confidence": 10,
+            "creativity_points": 5,
+            "mentor_trust": 8,
+            "customer_feedback": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "empathy"
+          ],
+          "feedback": "Democratic and fair! Some unexpected students joined who bring fresh perspectives. Ms. Chen is proud of your inclusive leadership.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "w3_solo",
+          "label": "D. Keep It Small — Just You and Alex",
+          "description": "Too many cooks spoil the broth! You and Alex can move fast without having to manage a big group.",
+          "delta": {
+            "team_morale": -5,
+            "confidence": 12,
+            "creativity_points": 5,
+            "prototype_progress": 5,
+            "budget": 50
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Speed and simplicity! But you'll have to do everything yourselves. Alex worries you're taking on too much.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_team_conflict",
+      "id": "crisis_team_conflict",
+      "round_title": "CRISIS: Team Conflict!",
+      "situation": "Things have gotten tense. Alex says: 'You never listen to my ideas! You just do what you want.' Another teammate agrees. The team is on the edge of breaking apart. If you don't fix this now, your project could fall apart.",
+      "goal": "Resolve the team conflict before your project collapses.",
+      "coaching_moment": "Resilience and empathy: Every team faces conflict. Great leaders don't avoid disagreements — they listen, acknowledge feelings, and find a path forward together.",
+      "reflection_prompt": "When someone says 'you never listen to me,' what's the best first thing to do?",
+      "ai_image_prompt": "Cartoon style, two school students arguing while others look worried, project materials scattered on table, one student trying to mediate, dramatic but colorful",
+      "condition": {
+        "resource": "team_morale",
+        "operator": "<",
+        "value": 30
+      },
+      "choices": [
+        {
+          "id": "tc_listen",
+          "label": "A. Listen and Apologize",
+          "description": "Sit everyone down. Say 'I'm sorry. Tell me what's bothering you.' Really listen without interrupting.",
+          "delta": {
+            "team_morale": 20,
+            "confidence": -5,
+            "mentor_trust": 8,
+            "creativity_points": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "It took courage to say sorry. Alex hugs you and says: 'That's all I needed to hear.' The team feels closer than ever.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "tc_vote",
+          "label": "B. Hold a Team Vote on Every Decision",
+          "description": "Make it democratic! From now on, every big decision gets a vote. Everyone's voice counts equally.",
+          "delta": {
+            "team_morale": 15,
+            "confidence": 5,
+            "prototype_progress": -5,
+            "creativity_points": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Fair and inclusive! Decisions are slower now, but everyone feels valued. Democracy takes patience.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "tc_roles",
+          "label": "C. Give Everyone Clear Roles",
+          "description": "Create specific jobs: Lead Designer, Research Chief, Build Captain, Pitch Master. Less overlap, less conflict.",
+          "delta": {
+            "team_morale": 12,
+            "confidence": 8,
+            "prototype_progress": 5,
+            "creativity_points": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Structure helps! When everyone knows their job, there's less stepping on toes. Alex is happy as Research Chief.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "tc_ignore",
+          "label": "D. Push Through — We Don't Have Time for Drama",
+          "description": "Tell everyone to focus on the project. Personal feelings can wait. The deadline is coming!",
+          "delta": {
+            "team_morale": -10,
+            "prototype_progress": 8,
+            "confidence": -8,
+            "mentor_trust": -8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "The project moves forward, but the team feels ignored. Alex barely talks to you now. Ms. Chen pulls you aside: 'A project without a team is just a solo act.'",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_prototype",
+      "round_title": "Week 4: First Prototype",
+      "situation": "It's building time! Ms. Chen says: 'Your first version doesn't need to be perfect — it just needs to be real enough to show people. This is called a prototype.' How will you build your first version?",
+      "goal": "Create the first version of your solution.",
+      "coaching_moment": "Delayed gratification: A quick, rough prototype teaches you more than months of planning. Don't aim for perfect — aim for 'good enough to test.'",
+      "reflection_prompt": "Why is it better to build something rough quickly than to spend a long time making it perfect?",
+      "ai_image_prompt": "Cartoon style, excited students building a prototype at a table with cardboard, tape, markers, a laptop showing a design, messy but creative workspace",
+      "choices": [
+        {
+          "id": "w4_cardboard",
+          "label": "A. Cardboard & Paper Prototype",
+          "description": "Build a simple model using cardboard, paper, and markers. It's cheap, fast, and you can change it easily!",
+          "delta": {
+            "prototype_progress": 20,
+            "creativity_points": 8,
+            "budget": -30,
+            "team_morale": 8,
+            "confidence": 5
+          },
+          "skill_tags": [
+            "creativity",
+            "adaptability"
+          ],
+          "feedback": "Perfect first step! It's rough, but people can see and touch your idea. Alex adds some cool details with colored tape.",
+          "skill_explanation": {
+            "creativity": "Thinking outside the box leads to more original solutions.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "w4_digital",
+          "label": "B. Digital Prototype (App/Website Mockup)",
+          "description": "Use free online tools to create a digital version. It looks professional but takes more time to learn.",
+          "delta": {
+            "prototype_progress": 15,
+            "research_quality": 5,
+            "budget": -50,
+            "confidence": 8,
+            "mentor_trust": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Impressive! The digital mockup looks real. But it took a lot longer than expected — and you still need to test it with people.",
+          "requires": {
+            "resource": "research_quality",
+            "op": ">=",
+            "value": 25,
+            "label": "Requires Research Quality ≥ 25"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w4_fancy",
+          "label": "C. Go Big — Full Working Model",
+          "description": "Buy real materials and build a working version right away. It'll be impressive, but expensive!",
+          "delta": {
+            "prototype_progress": 25,
+            "budget": -200,
+            "creativity_points": 5,
+            "team_morale": 5,
+            "confidence": 10
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "creativity"
+          ],
+          "feedback": "Wow, it actually works! But you've spent almost half your budget. Ms. Chen says: 'What if you need to change the design later?'",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 200,
+            "label": "Requires Budget ≥ $200"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "creativity": "Exploring an unconventional approach shows creative thinking."
+          }
+        },
+        {
+          "id": "w4_pitch_only",
+          "label": "D. Just a Pitch Deck — No Physical Prototype",
+          "description": "Create a beautiful presentation that explains your idea with drawings and diagrams. No building yet!",
+          "delta": {
+            "prototype_progress": 8,
+            "confidence": 12,
+            "creativity_points": 10,
+            "research_quality": 5,
+            "budget": -15
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "creativity"
+          ],
+          "feedback": "Your presentation skills are growing! But without something physical, it's hard for people to really understand your idea.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "creativity": "Looking at the problem from a new angle demonstrates creativity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_testing",
+      "round_title": "Week 5: Testing with Customers",
+      "situation": "Your prototype is ready to show! Ms. Chen says: 'Now comes the scary part — showing your work to real people and asking what they think. Be ready: honest feedback can hurt, but it always helps.'",
+      "goal": "Get real feedback from the people who would use your solution.",
+      "coaching_moment": "Resilience means hearing 'this doesn't work' and using it to make something better instead of giving up.",
+      "reflection_prompt": "How do you feel when someone criticizes something you worked hard on? How can you turn that feeling into fuel?",
+      "ai_image_prompt": "Cartoon style, school students showing their project to other students and a teacher, some students giving thumbs up, one writing notes, colorful school setting",
+      "choices": [
+        {
+          "id": "w5_classmates",
+          "label": "A. Test with Classmates",
+          "description": "Show your prototype to your class during lunch. Ask them to use it and fill out a feedback form.",
+          "delta": {
+            "customer_feedback": 18,
+            "confidence": 5,
+            "team_morale": 5,
+            "creativity_points": 5,
+            "research_quality": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Honest feedback from peers! Some loved it, some had great suggestions. One kid said: 'I'd actually use this!' That felt amazing.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "w5_teachers",
+          "label": "B. Present to Teachers",
+          "description": "Ask Ms. Chen to arrange a mini-presentation to three teachers. Professional feedback from adults!",
+          "delta": {
+            "customer_feedback": 12,
+            "mentor_trust": 12,
+            "confidence": 8,
+            "research_quality": 5,
+            "budget": -20
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Teachers gave thoughtful, detailed feedback. They pointed out things you never noticed. Your mentor trust is growing!",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w5_community",
+          "label": "C. Test in the Community",
+          "description": "Take your prototype to the neighborhood park and show it to parents, shopkeepers, and neighbors.",
+          "delta": {
+            "customer_feedback": 22,
+            "confidence": -3,
+            "creativity_points": 8,
+            "team_morale": 3,
+            "research_quality": 8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ],
+          "feedback": "Wow — real-world feedback! A shopkeeper said your idea could save her time. One parent was confused by it though. Lots to learn!",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "w5_online",
+          "label": "D. Online Survey",
+          "description": "Create a simple online survey with pictures of your prototype. Share it on the school app for easy feedback.",
+          "delta": {
+            "customer_feedback": 15,
+            "research_quality": 10,
+            "confidence": 5,
+            "budget": -25,
+            "team_morale": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "You got 47 responses! The data is really helpful. But some people didn't understand the pictures — maybe they needed to see it in person.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_pivot",
+      "round_title": "Week 6: Pivot or Persist?",
+      "situation": "The feedback is in! Some people loved your idea, but many suggested changes. One person even said: 'This solves the wrong problem!' Ms. Chen says: 'Now you face every entrepreneur's hardest question — do you stick with your plan or change direction?'",
+      "goal": "Decide whether to adapt your idea based on feedback or stay the course.",
+      "coaching_moment": "Adaptability is not about giving up — it's about being smart enough to change direction when the evidence says you should.",
+      "reflection_prompt": "Is changing your plan a sign of weakness or strength? Why?",
+      "ai_image_prompt": "Cartoon style, student at a crossroads with two paths, one labeled 'keep going' and one labeled 'new direction', thought bubbles with feedback quotes, colorful",
+      "choices": [
+        {
+          "id": "w6_pivot",
+          "label": "A. Big Pivot — Change the Core Idea",
+          "description": "The feedback shows your original idea missed the mark. Redesign your solution based on what people actually want!",
+          "delta": {
+            "creativity_points": 12,
+            "customer_feedback": 10,
+            "prototype_progress": -15,
+            "confidence": -5,
+            "research_quality": 8
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Brave move! Throwing away work is painful, but your new direction is much stronger. Real entrepreneurs pivot all the time.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "w6_tweak",
+          "label": "B. Small Tweaks — Improve What You Have",
+          "description": "The core idea is good! Just fix the specific things people complained about.",
+          "delta": {
+            "prototype_progress": 10,
+            "customer_feedback": 8,
+            "creativity_points": 5,
+            "team_morale": 5,
+            "confidence": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Smart balance! You kept what works and fixed what doesn't. The updated version is noticeably better.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "w6_ignore",
+          "label": "C. Stay the Course — Trust Your Vision",
+          "description": "People just don't understand your idea yet. Once it's more polished, they'll see the value!",
+          "delta": {
+            "prototype_progress": 15,
+            "confidence": 10,
+            "customer_feedback": -8,
+            "team_morale": -5,
+            "mentor_trust": -8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Stubborn confidence can work sometimes — but ignoring feedback is risky. Ms. Chen says: 'The customer is not always right, but they're never irrelevant.'",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "w6_split",
+          "label": "D. Split into Two Versions",
+          "description": "Why choose? Build Version A (original) and Version B (based on feedback). Test both!",
+          "delta": {
+            "creativity_points": 10,
+            "customer_feedback": 5,
+            "budget": -100,
+            "prototype_progress": -5,
+            "team_morale": -3,
+            "research_quality": 8
+          },
+          "skill_tags": [
+            "adaptability",
+            "creativity"
+          ],
+          "feedback": "Ambitious! Running two versions is a real entrepreneur move called A/B testing. But it's stretching your budget and team thin.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_budget",
+      "id": "crisis_budget",
+      "round_title": "CRISIS: Budget Emergency!",
+      "situation": "Uh oh! You check the team's money box and it's nearly empty. You need supplies for the prototype, snacks for test sessions, and poster materials for the presentation. Principal Hayes says: 'You need to learn that money doesn't grow on trees!'",
+      "goal": "Find a way to keep your project going with almost no money.",
+      "coaching_moment": "Resilience and creativity shine brightest when resources are scarce. Some of the world's best inventions were made on tiny budgets!",
+      "reflection_prompt": "Have you ever had to be creative because you didn't have enough money or supplies? What did you do?",
+      "ai_image_prompt": "Cartoon style, worried school students looking at an empty piggy bank, project materials on table, one student has a lightbulb idea, colorful and dramatic",
+      "condition": {
+        "resource": "budget",
+        "operator": "<",
+        "value": 100
+      },
+      "choices": [
+        {
+          "id": "bc_fundraise",
+          "label": "A. Bake Sale Fundraiser",
+          "description": "Organize a bake sale at school! Get your families to help with cookies and brownies. Fun, social, and profitable!",
+          "delta": {
+            "budget": 250,
+            "team_morale": 10,
+            "confidence": 8,
+            "customer_feedback": 5,
+            "mentor_trust": 5
+          },
+          "skill_tags": [
+            "creativity",
+            "resilience"
+          ],
+          "feedback": "The bake sale was a hit! You raised money AND got people excited about your project. Two birds, one stone!",
+          "skill_explanation": {
+            "creativity": "Not settling for the obvious solution builds creative problem-solving.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "bc_recycle",
+          "label": "B. Use Recycled Materials",
+          "description": "Build everything from recycled and donated materials. Cardboard, old bottles, fabric scraps — creativity from constraints!",
+          "delta": {
+            "budget": 50,
+            "creativity_points": 15,
+            "prototype_progress": 5,
+            "team_morale": 5,
+            "mentor_trust": 8
+          },
+          "skill_tags": [
+            "adaptability",
+            "creativity"
+          ],
+          "feedback": "Constraints breed creativity! Your recycled prototype is unique and eco-friendly. Ms. Chen says: 'This is innovation!'",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "creativity": "Thinking outside the box leads to more original solutions."
+          }
+        },
+        {
+          "id": "bc_sponsor",
+          "label": "C. Ask the Principal for a Grant",
+          "description": "Write a formal proposal to Principal Hayes asking for school innovation funds. Professional approach!",
+          "delta": {
+            "budget": 300,
+            "mentor_trust": 10,
+            "confidence": 5,
+            "team_morale": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Your proposal impressed the principal! The school has a small innovation fund — and you just unlocked it. Writing skills pay off!",
+          "requires": {
+            "resource": "mentor_trust",
+            "op": ">=",
+            "value": 35,
+            "label": "Requires Mentor Trust ≥ 35"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "bc_cut",
+          "label": "D. Simplify Everything",
+          "description": "Cut the fancy features. Make the simplest possible version of your idea. Less money needed, less stress!",
+          "delta": {
+            "budget": 80,
+            "prototype_progress": -8,
+            "creativity_points": -5,
+            "confidence": 8,
+            "team_morale": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "adaptability"
+          ],
+          "feedback": "Sometimes less is more! Your simplified version is actually cleaner and easier to explain. Lean startup thinking!",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_improve",
+      "round_title": "Week 7: Improving the Design",
+      "situation": "You've learned so much from testing and feedback! Now it's time to make your prototype better. Ms. Chen says: 'This is called iteration — making something better each time you try. The best products go through many versions.'",
+      "goal": "Improve your prototype based on everything you've learned.",
+      "coaching_moment": "Delayed gratification: Iteration feels slow, but each improvement makes your final product much stronger. Trust the process!",
+      "reflection_prompt": "Can you think of a product you use every day that probably went through many versions before it was this good?",
+      "ai_image_prompt": "Cartoon style, students around a table with Version 1 and Version 2 of a prototype side by side, arrows showing improvements, excited faces, tools and materials",
+      "choices": [
+        {
+          "id": "w7_user_driven",
+          "label": "A. Let Customer Feedback Guide You",
+          "description": "Go through every piece of feedback and fix the top 3 complaints. The users know what they want!",
+          "delta": {
+            "customer_feedback": 15,
+            "prototype_progress": 12,
+            "research_quality": 5,
+            "creativity_points": 3,
+            "budget": -40
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "User-driven design! Each fix makes more people happy. Your product is becoming something people actually want.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "w7_creative_leap",
+          "label": "B. Add a Surprise Feature",
+          "description": "You had a midnight idea — a creative twist that nobody asked for but everyone will love!",
+          "delta": {
+            "creativity_points": 15,
+            "prototype_progress": 10,
+            "customer_feedback": 5,
+            "confidence": 8,
+            "budget": -60
+          },
+          "skill_tags": [
+            "creativity",
+            "risk_tolerance"
+          ],
+          "feedback": "Risk and reward! The surprise feature makes your project stand out from everything else. People say: 'Wow, I didn't know I needed this!'",
+          "skill_explanation": {
+            "creativity": "Exploring an unconventional approach shows creative thinking.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "w7_polish",
+          "label": "C. Polish and Perfect",
+          "description": "Don't add anything new — just make everything you have look and work beautifully. Details matter!",
+          "delta": {
+            "prototype_progress": 18,
+            "confidence": 10,
+            "mentor_trust": 5,
+            "budget": -35,
+            "team_morale": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Craftsmanship shows! Your polished prototype looks professional. The details make people take you seriously.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w7_partner",
+          "label": "D. Partner with Another Team",
+          "description": "Another student team has skills your team doesn't. What if you joined forces?",
+          "delta": {
+            "team_morale": 8,
+            "creativity_points": 8,
+            "prototype_progress": 8,
+            "confidence": 3,
+            "customer_feedback": 5,
+            "budget": -20
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Collaboration over competition! The combined team is stronger. Their artist made your prototype look amazing.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_pitch_prep",
+      "round_title": "Week 8: The Pitch Preparation",
+      "situation": "The big presentation is coming up! Ms. Chen says: 'A great idea that nobody understands is a lost idea. You need to tell your story — clearly, confidently, and with heart. Let's prepare your pitch!'",
+      "goal": "Prepare a compelling pitch for your project.",
+      "coaching_moment": "Communication is a superpower. The best entrepreneurs make complex ideas feel simple and exciting. Practice makes confident!",
+      "reflection_prompt": "What makes a presentation memorable? Think of the best one you've ever seen — what did they do right?",
+      "ai_image_prompt": "Cartoon style, student practicing presentation in front of mirror, poster board with colorful charts, flashcards in hand, confident expression, bedroom setting",
+      "choices": [
+        {
+          "id": "w8_story",
+          "label": "A. Tell a Story",
+          "description": "Start your pitch with a real story about someone affected by the problem. Make the audience feel it!",
+          "delta": {
+            "confidence": 12,
+            "customer_feedback": 8,
+            "creativity_points": 8,
+            "team_morale": 5,
+            "mentor_trust": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "creativity"
+          ],
+          "feedback": "Storytelling is magic! When you told the story of the cafeteria lady who hates seeing food wasted, everyone in the room got quiet. They get it now.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "creativity": "Looking at the problem from a new angle demonstrates creativity."
+          }
+        },
+        {
+          "id": "w8_data_pitch",
+          "label": "B. Lead with Data",
+          "description": "Show numbers and charts. '73% of students said...' Facts are hard to argue with!",
+          "delta": {
+            "confidence": 10,
+            "mentor_trust": 12,
+            "research_quality": 5,
+            "customer_feedback": 5,
+            "budget": -25
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Data-driven and professional! Ms. Chen is beaming. The numbers prove your project isn't just fun — it's needed.",
+          "requires": {
+            "resource": "research_quality",
+            "op": ">=",
+            "value": 35,
+            "label": "Requires Research Quality ≥ 35"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "w8_demo",
+          "label": "C. Live Demo",
+          "description": "Don't just talk — show it working! Let the audience touch, try, and experience your prototype.",
+          "delta": {
+            "confidence": 15,
+            "customer_feedback": 12,
+            "prototype_progress": 5,
+            "team_morale": 8,
+            "budget": -40
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "creativity"
+          ],
+          "feedback": "Risky but powerful! When the audience tried your prototype, their eyes lit up. A live demo beats a thousand slides.",
+          "requires": {
+            "resource": "prototype_progress",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Prototype Progress ≥ 40"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "creativity": "Combining ideas in unexpected ways shows innovative thinking."
+          }
+        },
+        {
+          "id": "w8_teamwork",
+          "label": "D. Team Presentation — Everyone Speaks",
+          "description": "Give each team member a part to present. Show that this is a team effort, not a one-person show.",
+          "delta": {
+            "team_morale": 15,
+            "confidence": 8,
+            "mentor_trust": 8,
+            "creativity_points": 3,
+            "customer_feedback": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Inclusive leadership! When Alex presented the research part, they glowed with pride. The judges loved seeing the whole team shine.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_9_big_pitch",
+      "round_title": "Week 9: The Big Pitch!",
+      "situation": "Today is the day! Students, teachers, parents, and even a local business owner are in the audience. Your heart is pounding. Ms. Chen gives you a thumbs up. Alex squeezes your hand. The principal says: 'Next up — your team!'",
+      "goal": "Deliver your pitch and win support for your project.",
+      "coaching_moment": "Confidence isn't the absence of fear — it's doing something important even when you're scared. You've prepared for this. Trust yourself!",
+      "reflection_prompt": "When was the last time you did something that scared you but you were glad you did it?",
+      "ai_image_prompt": "Cartoon style, nervous but brave student at podium in school auditorium, colorful project display behind, audience of students teachers and parents, spotlight, encouraging faces",
+      "choices": [
+        {
+          "id": "w9_confident",
+          "label": "A. Go All In — Bold and Energetic",
+          "description": "Speak loudly, make eye contact, use big gestures. Show them your passion and energy!",
+          "delta": {
+            "confidence": 15,
+            "customer_feedback": 12,
+            "team_morale": 8,
+            "creativity_points": 5,
+            "mentor_trust": 8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "The audience is on their feet! Your energy was contagious. The business owner said: 'That kid has something special.'",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "w9_thoughtful",
+          "label": "B. Calm and Thoughtful",
+          "description": "Speak slowly and clearly. Focus on the facts, the research, and why your solution matters.",
+          "delta": {
+            "confidence": 8,
+            "mentor_trust": 15,
+            "research_quality": 5,
+            "customer_feedback": 10,
+            "team_morale": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Quiet confidence is powerful. The teachers were deeply impressed. Ms. Chen said: 'That was the most mature presentation I've seen from a 6th grader.'",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "w9_interactive",
+          "label": "C. Make It Interactive",
+          "description": "Ask the audience questions! Get them involved. Turn the pitch into a conversation, not a lecture.",
+          "delta": {
+            "customer_feedback": 18,
+            "confidence": 10,
+            "creativity_points": 8,
+            "team_morale": 5,
+            "mentor_trust": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Brilliant! When you asked 'How many of you have this problem?' and hands went up everywhere, the room buzzed with energy. You proved the problem is real.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "w9_nervous",
+          "label": "D. Honest About Being Nervous",
+          "description": "Start by saying: 'I'm really nervous, but I believe in this project.' Being vulnerable can be powerful.",
+          "delta": {
+            "confidence": 5,
+            "team_morale": 12,
+            "customer_feedback": 8,
+            "mentor_trust": 10,
+            "empathy": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "The audience's hearts melted. A parent said: 'That took real bravery.' Being honest about fear made your confidence feel earned, not fake.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_10_future",
+      "round_title": "Week 10: What's Next?",
+      "situation": "The pitch is done! You got great reactions. Now Ms. Chen asks the most important question: 'So, what's next for your idea? This project doesn't have to end here. What kind of innovator do you want to be?'",
+      "goal": "Decide what to do with your project and reflect on your journey.",
+      "coaching_moment": "Strategic thinking about the future: The best entrepreneurs see every ending as a new beginning. Your innovation journey is just starting!",
+      "reflection_prompt": "If you could keep working on any problem in the world, what would it be and why?",
+      "ai_image_prompt": "Cartoon style, student looking out a window at a bright sunrise, vision board of future inventions behind them, world map, rocket ship doodle, hopeful and inspiring",
+      "choices": [
+        {
+          "id": "w10_scale",
+          "label": "A. Scale Up — Take It to Other Schools",
+          "description": "Your idea works here — now bring it to five more schools! Partner with the student council to spread it.",
+          "delta": {
+            "customer_feedback": 15,
+            "confidence": 15,
+            "mentor_trust": 10,
+            "budget": -100,
+            "team_morale": 10
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Think big! Scaling up is how small projects become real change. The principal is helping you connect with other schools.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w10_teach",
+          "label": "B. Teach Others to Innovate",
+          "description": "Start an 'Idea Lab Club' at school where younger students learn the process you just went through.",
+          "delta": {
+            "mentor_trust": 15,
+            "confidence": 12,
+            "team_morale": 10,
+            "creativity_points": 8,
+            "customer_feedback": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "The best way to learn is to teach! Third-graders are already signing up for your Idea Lab Club. You're creating a legacy.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "w10_compete",
+          "label": "C. Enter a National Competition",
+          "description": "There's a national Young Innovators Challenge. The winner gets funding and media attention!",
+          "delta": {
+            "confidence": 10,
+            "creativity_points": 10,
+            "prototype_progress": 10,
+            "customer_feedback": 8,
+            "budget": -80,
+            "team_morale": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Aiming high! Win or lose, competing against the best will make you stronger. Alex is already studying past winners.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "w10_reflect",
+          "label": "D. Pause and Reflect",
+          "description": "You've learned so much! Write a journal about your journey — what worked, what didn't, and what you'd do differently.",
+          "delta": {
+            "research_quality": 10,
+            "mentor_trust": 12,
+            "confidence": 8,
+            "creativity_points": 10,
+            "team_morale": 8
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Reflection is an entrepreneur's secret weapon. Your journal entries are thoughtful and honest. Ms. Chen asks to read it — and gets emotional.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "creative_genius",
+      "label": "Creative Genius",
+      "condition": "creativity_points >= 80",
+      "icon": "🎨"
+    },
+    {
+      "id": "research_star",
+      "label": "Research Star",
+      "condition": "research_quality >= 75 and customer_feedback >= 50",
+      "icon": "🔍"
+    },
+    {
+      "id": "team_builder",
+      "label": "Team Builder",
+      "condition": "team_morale >= 80 and confidence >= 70",
+      "icon": "🤝"
+    },
+    {
+      "id": "budget_wizard",
+      "label": "Budget Wizard",
+      "condition": "budget >= 300",
+      "icon": "💰"
+    },
+    {
+      "id": "pitch_perfect",
+      "label": "Pitch Perfect",
+      "condition": "confidence >= 80 and customer_feedback >= 60",
+      "icon": "🎤"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Entrepreneurship",
+      "definition": "The process of starting and running your own project or business to solve a problem or create value for others."
+    },
+    {
+      "term": "Prototype",
+      "definition": "A rough, early version of your product or idea that you can show to people and test before making the final version."
+    },
+    {
+      "term": "Pivot",
+      "definition": "When you change the direction of your project based on feedback or new information — not giving up, but getting smarter."
+    },
+    {
+      "term": "Customer Feedback",
+      "definition": "What real users tell you about your product — what they like, what confuses them, and what they wish it could do."
+    },
+    {
+      "term": "Iteration",
+      "definition": "Improving your product by making small changes and testing again, repeating the process until it works well."
+    },
+    {
+      "term": "Pitch",
+      "definition": "A short, exciting presentation where you explain your idea to others and try to get their support or interest."
+    },
+    {
+      "term": "Market Fit",
+      "definition": "When your product solves a problem that enough people actually have — the sweet spot between what you build and what people need."
+    },
+    {
+      "term": "Innovation",
+      "definition": "Creating something new or improving something existing in a way that adds value. It's not just inventing — it's making useful inventions."
+    }
+  ],
+  "endings": [
+    {
+      "id": "young_innovator",
+      "title": "Young Innovator",
+      "icon": "💡",
+      "message": "You did it! Your creativity and hard work produced something truly special. Your prototype works, your research is solid, and people love your idea. Ms. Chen nominates you for the district Young Innovator Award. You've proven that even a 6th grader can change the world — one problem at a time!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "creativity_points",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "prototype_progress",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "team_captain",
+      "title": "Team Captain",
+      "icon": "🤝",
+      "message": "Your greatest invention wasn't a product — it was a team! Through conflicts, challenges, and tough weeks, you kept everyone together and motivated. Alex says: 'I want to be on every team you lead.' The principal mentions your teamwork as a model for the whole school. Leadership is your superpower!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "team_morale",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "confidence",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "market_maven",
+      "title": "Market Maven",
+      "icon": "📊",
+      "message": "You cracked the code! By really listening to people and studying the problem, your solution fits perfectly with what people need. The local newspaper writes about your project: 'Student Solves Real Problem.' Your research skills and customer focus are what separate dreamers from doers!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "customer_feedback",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "research_quality",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "rising_star",
+      "title": "Rising Star",
+      "icon": "⭐",
+      "message": "Ms. Chen pulls you aside after the pitch: 'I've been teaching for 15 years, and you're one of the most dedicated students I've ever mentored.' Your confidence has grown from shy observer to bold presenter. The local business owner offers to mentor you for a whole year! Your journey is just beginning.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "mentor_trust",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "confidence",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "learning_explorer",
+      "title": "Learning Explorer",
+      "icon": "🌱",
+      "message": "You didn't win the biggest prize or build the fanciest prototype — but you learned something more valuable than any trophy. You learned how to spot problems, work with others, handle failure, and keep going. Ms. Chen says: 'Every expert was once a beginner. You took the first step.' Next time, you'll go even further!",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Idea Lab: From Problem to Product Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Idea Lab: From Problem to Product. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Idea Lab: From Problem to Product Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Idea Lab: From Problem to Product. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

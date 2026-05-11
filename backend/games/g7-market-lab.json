@@ -1,0 +1,2496 @@
+{
+  "game_id": "g7-market-lab",
+  "title": "Market Lab: Research, Test, Launch",
+  "theme": "Marketing & Consumer Research",
+  "icon": "📊",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You run an A/B testing lab for your school's new product line. Over 12 weeks, learn customer profiling, surveys, A/B testing, data analysis, campaign design, and ethical marketing. Build a winning campaign based on real research — not guesswork!",
+  "target_audience": "Ages 12-13",
+  "target_age": "12-13",
+  "grade": "7",
+  "difficulty": "intermediate",
+  "duration_minutes": 25,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You manage a student marketing lab across 12 weeks of research and campaigning.",
+    "Each round presents a marketing decision with trade-offs across data, creativity, ethics, and budget.",
+    "Watch the dashboard — your subsystems (Research & Data, Campaign Strategy, Brand Ethics, Customer Connection) are interconnected.",
+    "Random events like viral trends, competitor moves, and survey failures will test your adaptability.",
+    "NPCs (Prof. Analytics, Focus Group Fiona, Competitor Corp) react to your choices in real time.",
+    "Aim for balanced growth — strong data without creativity won't sell, and flashy campaigns without research will backfire!"
+  ],
+  "learning_objectives": [
+    "Understand the fundamentals of market research and customer profiling",
+    "Practice designing surveys and interpreting data responsibly",
+    "Learn A/B testing methodology and evidence-based decision making",
+    "Develop ethical reasoning about advertising, persuasion, and consumer rights",
+    "Build creative campaign strategies grounded in real audience insights"
+  ],
+  "tags": [
+    "marketing",
+    "research",
+    "grade-7",
+    "data-analysis",
+    "campaigns"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Critical Thinking",
+    "Communication",
+    "Creativity",
+    "Financial Literacy"
+  ],
+  "cultural_context": "School entrepreneurship, youth marketing, ethical advertising, data literacy for teens",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.15,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.15,
+    "ethical_reasoning": 0.15
+  },
+  "initial_state": {
+    "research_quality": {
+      "value": 20,
+      "label": "Research Quality",
+      "icon": "🔬",
+      "min": 0,
+      "max": 100
+    },
+    "customer_insight": {
+      "value": 15,
+      "label": "Customer Insight",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "campaign_effectiveness": {
+      "value": 0,
+      "label": "Campaign Effectiveness",
+      "icon": "📣",
+      "min": 0,
+      "max": 100
+    },
+    "data_literacy": {
+      "value": 25,
+      "label": "Data Literacy",
+      "icon": "📈",
+      "min": 0,
+      "max": 100
+    },
+    "creativity": {
+      "value": 45,
+      "label": "Creativity",
+      "icon": "🎨",
+      "min": 0,
+      "max": 100
+    },
+    "budget": {
+      "value": 2000,
+      "label": "Budget",
+      "icon": "💰",
+      "min": 0,
+      "max": 10000
+    },
+    "brand_trust": {
+      "value": 40,
+      "label": "Brand Trust",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "ethical_marketing": {
+      "value": 50,
+      "label": "Ethical Marketing",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "audience_reach": {
+      "value": 10,
+      "label": "Audience Reach",
+      "icon": "📡",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "research_data",
+        "label": "Research & Data",
+        "icon": "🔬",
+        "color": "#6366F1",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, research_quality * 0.4 + data_literacy * 0.35 + customer_insight * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "campaign_strategy",
+        "label": "Campaign Strategy",
+        "icon": "📣",
+        "color": "#F59E0B",
+        "initial_health": 15,
+        "health_formula": "min(100, max(0, campaign_effectiveness * 0.4 + creativity * 0.3 + audience_reach * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "brand_ethics",
+        "label": "Brand Ethics",
+        "icon": "⚖️",
+        "color": "#10B981",
+        "initial_health": 45,
+        "health_formula": "min(100, max(0, ethical_marketing * 0.5 + brand_trust * 0.35 + customer_insight * 0.15))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "customer_connection",
+        "label": "Customer Connection",
+        "icon": "👥",
+        "color": "#EC4899",
+        "initial_health": 20,
+        "health_formula": "min(100, max(0, customer_insight * 0.4 + brand_trust * 0.3 + audience_reach * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "campaign_roi",
+        "label": "Campaign ROI",
+        "icon": "💹",
+        "formula": "(campaign_effectiveness * 0.35 + audience_reach * 0.3 + budget / 100 * 0.15 + brand_trust * 0.2)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 65
+        }
+      },
+      {
+        "id": "research_depth",
+        "label": "Research Depth",
+        "icon": "🔍",
+        "formula": "(research_quality * 0.4 + data_literacy * 0.3 + customer_insight * 0.3)",
+        "unit": "",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 60
+        }
+      },
+      {
+        "id": "brand_trust_index",
+        "label": "Brand Trust Index",
+        "icon": "🤝",
+        "formula": "(brand_trust * 0.4 + ethical_marketing * 0.35 + customer_insight * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "weekly_budget_income",
+        "label": "Weekly Budget Allocation",
+        "effects": [
+          {
+            "resource": "budget",
+            "formula": "min(10000, budget + 300)"
+          }
+        ],
+        "description": "The school allocates a small weekly stipend to your marketing lab."
+      },
+      {
+        "id": "insight_from_research",
+        "label": "Research Yields Insights",
+        "condition": {
+          "resource": "research_quality",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "customer_insight",
+            "formula": "min(100, customer_insight + research_quality * 0.04)"
+          }
+        ],
+        "description": "Strong research methodology steadily deepens customer understanding."
+      },
+      {
+        "id": "reach_from_campaigns",
+        "label": "Campaign Momentum",
+        "condition": {
+          "resource": "campaign_effectiveness",
+          "op": ">=",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "audience_reach",
+            "formula": "min(100, audience_reach + campaign_effectiveness * 0.03)"
+          }
+        ],
+        "description": "Effective campaigns gradually expand audience reach through word of mouth."
+      },
+      {
+        "id": "data_literacy_growth",
+        "label": "Data Skills Improvement",
+        "condition": {
+          "resource": "data_literacy",
+          "op": ">=",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "research_quality",
+            "formula": "min(100, research_quality + data_literacy * 0.02)"
+          }
+        ],
+        "description": "Improving data skills makes all research more reliable."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "aggressive_campaigns_hurt_trust",
+        "from_subsystem": "campaign_strategy",
+        "to_subsystem": "brand_ethics",
+        "label": "Aggressive Marketing Backlash",
+        "condition": {
+          "and": [
+            {
+              "resource": "campaign_effectiveness",
+              "op": ">",
+              "value": 60
+            },
+            {
+              "resource": "ethical_marketing",
+              "op": "<",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "brand_trust",
+            "formula": "max(0, brand_trust - (campaign_effectiveness - 60) * 0.2)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Pushing campaigns hard without ethical grounding erodes trust."
+      },
+      {
+        "id": "research_boosts_campaigns",
+        "from_subsystem": "research_data",
+        "to_subsystem": "campaign_strategy",
+        "label": "Data-Driven Campaigns",
+        "condition": {
+          "resource": "research_quality",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "campaign_effectiveness",
+            "formula": "min(100, campaign_effectiveness + (research_quality - 50) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Solid research makes campaigns sharper and more targeted."
+      },
+      {
+        "id": "trust_builds_reach",
+        "from_subsystem": "brand_ethics",
+        "to_subsystem": "customer_connection",
+        "label": "Trust Earns Word of Mouth",
+        "condition": {
+          "resource": "brand_trust",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "audience_reach",
+            "formula": "min(100, audience_reach + (brand_trust - 60) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When people trust your brand, they recommend it to friends."
+      },
+      {
+        "id": "insight_fuels_creativity",
+        "from_subsystem": "customer_connection",
+        "to_subsystem": "campaign_strategy",
+        "label": "Customer Understanding Inspires Ideas",
+        "condition": {
+          "resource": "customer_insight",
+          "op": ">=",
+          "value": 45
+        },
+        "effects": [
+          {
+            "resource": "creativity",
+            "formula": "min(100, creativity + (customer_insight - 45) * 0.04)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Deep understanding of customers sparks genuinely creative campaign ideas."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "audience_reach",
+        "equilibrium": 15,
+        "rate": 0.04,
+        "direction": "toward"
+      },
+      {
+        "resource": "brand_trust",
+        "equilibrium": 35,
+        "rate": 0.03,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "viral_trend",
+        "label": "Viral Social Media Trend",
+        "icon": "📱",
+        "description": "A meme format goes viral at school! If your creative instincts are sharp, you can ride the wave.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "creativity",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "audience_reach",
+            "delta": 12
+          },
+          {
+            "resource": "campaign_effectiveness",
+            "delta": 8
+          },
+          {
+            "resource": "brand_trust",
+            "delta": 3
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "TRENDING: Your marketing lab catches a viral wave! Audience reach spikes overnight.",
+        "ai_image_prompt": "Teens excitedly gathered around a phone showing social media likes and shares going viral, colorful notifications, school hallway background"
+      },
+      {
+        "id": "survey_tool_crash",
+        "label": "Survey Platform Outage",
+        "icon": "💥",
+        "description": "Your online survey tool crashes, and you lose a week of data collection!",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "data_literacy",
+              "op": "<",
+              "value": 45
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "research_quality",
+            "delta": -10
+          },
+          {
+            "resource": "customer_insight",
+            "delta": -5
+          },
+          {
+            "resource": "budget",
+            "delta": -200
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "ALERT: Survey platform down! A week of responses lost. Back up your data, team!",
+        "ai_image_prompt": "Frustrated student at a computer screen showing error messages, broken survey charts, scattered papers, school computer lab"
+      },
+      {
+        "id": "competitor_ad_blitz",
+        "label": "Competitor Ad Blitz",
+        "icon": "⚡",
+        "description": "The rival team launches an aggressive poster and social media campaign, drowning out your message.",
+        "probability": 0.22,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "audience_reach",
+              "op": "<",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "audience_reach",
+            "delta": -8
+          },
+          {
+            "resource": "campaign_effectiveness",
+            "delta": -5
+          },
+          {
+            "resource": "brand_trust",
+            "delta": -3
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "Competitor Corp floods the hallways with flashy ads! Your message gets drowned out.",
+        "ai_image_prompt": "School hallway covered in competing colorful posters and banners, students distracted by rival team's campaign, marketing battle"
+      },
+      {
+        "id": "guest_speaker_bonus",
+        "label": "Guest Marketing Expert Visit",
+        "icon": "🎤",
+        "description": "A local marketing professional visits your lab and shares real-world tips!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "research_quality",
+              "op": ">=",
+              "value": 35
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "data_literacy",
+            "delta": 8
+          },
+          {
+            "resource": "creativity",
+            "delta": 5
+          },
+          {
+            "resource": "ethical_marketing",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Special guest! A marketing pro shares insider tips with your lab team.",
+        "ai_image_prompt": "Professional speaker presenting to engaged students in a classroom, marketing charts on whiteboard, students taking notes enthusiastically"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "prof_analytics",
+        "name": "Prof. Analytics",
+        "role": "Marketing Teacher",
+        "icon": "👨‍🏫",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "research_quality",
+              "op": "<",
+              "value": 20
+            },
+            "action": "warn",
+            "message": "Your research foundation is weak. Campaigns without data are just guesses — and guesses lose money.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "data_literacy",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "Impressive data skills! You're reading the numbers like a real analyst. Keep digging deeper.",
+            "mood_change": "happy",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "research_quality",
+                  "op": ">=",
+                  "value": 50
+                },
+                {
+                  "resource": "campaign_effectiveness",
+                  "op": ">=",
+                  "value": 50
+                }
+              ]
+            },
+            "action": "excited",
+            "message": "Research AND execution — both strong! This is what professional marketers do. I'm genuinely impressed.",
+            "mood_change": "proud",
+            "satisfaction_delta": 8
+          }
+        ]
+      },
+      {
+        "id": "focus_group_fiona",
+        "name": "Focus Group Fiona",
+        "role": "Student Representative",
+        "icon": "👩‍🎓",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "customer_insight",
+              "op": "<",
+              "value": 20
+            },
+            "action": "warn",
+            "message": "You don't really know what students want. Have you actually talked to anyone? Run a focus group!",
+            "mood_change": "frustrated",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "customer_insight",
+              "op": ">=",
+              "value": 55
+            },
+            "action": "praise",
+            "message": "You really understand us! This campaign speaks to what students actually care about.",
+            "mood_change": "happy",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "research_quality",
+                  "op": "<",
+                  "value": 15
+                },
+                {
+                  "resource": "campaign_effectiveness",
+                  "op": ">",
+                  "value": 30
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 3
+                }
+              ]
+            },
+            "action": "crisis_alert",
+            "message": "Your campaign looks flashy but the data behind it is wrong! Students are noticing the claims don't add up!",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "brand_trust",
+                "delta": -8
+              },
+              {
+                "resource": "audience_reach",
+                "delta": -5
+              }
+            ],
+            "trigger_round": "crisis_data_misread"
+          }
+        ]
+      },
+      {
+        "id": "competitor_corp",
+        "name": "Competitor Corp",
+        "role": "Rival Marketing Team",
+        "icon": "🦊",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "audience_reach",
+              "op": ">=",
+              "value": 50
+            },
+            "action": "threatened",
+            "message": "Competitor Corp is getting nervous — they've noticed your growing reach. Expect them to play dirty.",
+            "mood_change": "hostile",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "campaign_effectiveness",
+              "op": "<",
+              "value": 20
+            },
+            "action": "taunt",
+            "message": "Competitor Corp is laughing at your weak campaigns. 'Are they even trying?' they post on the school board.",
+            "mood_change": "smug",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "ethical_marketing",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "expose",
+            "message": "Competitor Corp reports your misleading ads to the school board! An ethics review is launched!",
+            "mood_change": "aggressive",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "brand_trust",
+                "delta": -12
+              },
+              {
+                "resource": "campaign_effectiveness",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_ethics"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "audience_reach",
+          "op": ">",
+          "value": 50
+        },
+        "icon": "📈",
+        "text": "Market Lab reaches {audience_reach}% of the student body! Buzz is building.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "research_quality",
+              "op": ">=",
+              "value": 60
+            },
+            {
+              "resource": "data_literacy",
+              "op": ">=",
+              "value": 55
+            }
+          ]
+        },
+        "icon": "🏆",
+        "text": "Market Lab earns 'Best Research Team' nomination at the school innovation fair!",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A school marketing lab run by Grade 7 students. Research quality at {research_quality}%, creativity at {creativity}%, audience reach at {audience_reach}%. Whiteboards with charts, student teams brainstorming, laptops showing survey data and campaign mockups. Mood: {'energized' if campaign_effectiveness > 50 else 'struggling' if research_quality < 25 else 'focused'}."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_customer_profiling",
+      "round_title": "Week 1: Who Are Your Customers?",
+      "situation": "Your lab has just been assigned to market the school's new eco-friendly stationery line. Before spending a single rupee on ads, Prof. Analytics says you need to know who your customers are. Time to build a customer profile!",
+      "goal": "Choose a strategy to identify and understand your target customers.",
+      "coaching_moment": "Strategic thinking: Great marketing starts with understanding people, not pushing products.",
+      "reflection_prompt": "Why is it important to know your audience before creating any ads?",
+      "ai_image_prompt": "Diverse group of Grade 7 students brainstorming around a whiteboard with customer persona sketches, sticky notes, school lab setting",
+      "choices": [
+        {
+          "id": "w1_survey",
+          "label": "A. Design a Student Survey",
+          "description": "Create a detailed online survey asking students about buying habits, preferences, and values.",
+          "delta": {
+            "research_quality": 12,
+            "customer_insight": 10,
+            "data_literacy": 8,
+            "budget": -150,
+            "creativity": 2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Excellent foundation! Surveys generate real data that guides every future decision. Patient research pays off.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "w1_focus_group",
+          "label": "B. Run Focus Group Sessions",
+          "description": "Invite 3 groups of 8 students for guided conversations about what they want from stationery.",
+          "delta": {
+            "customer_insight": 15,
+            "research_quality": 8,
+            "brand_trust": 5,
+            "budget": -200,
+            "creativity": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Listening to real voices! Focus groups reveal emotions and motivations that surveys miss.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w1_observe",
+          "label": "C. Observational Study",
+          "description": "Spend the week quietly watching what students buy at the school store, noting patterns.",
+          "delta": {
+            "research_quality": 10,
+            "customer_insight": 8,
+            "data_literacy": 5,
+            "budget": -50,
+            "ethical_marketing": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "ethical_reasoning"
+          ],
+          "feedback": "Smart and low-cost! Observing real behavior avoids the bias of people saying one thing and doing another.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "w1_skip_research",
+          "label": "D. Skip Research — Start Marketing!",
+          "description": "Why wait? You already know what's cool. Jump straight into making posters and social media posts.",
+          "delta": {
+            "campaign_effectiveness": 10,
+            "creativity": 8,
+            "audience_reach": 5,
+            "research_quality": -5,
+            "brand_trust": -3,
+            "ethical_marketing": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Fast but risky! Without research, you're guessing. Flashy campaigns that miss the target waste resources.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_survey_design",
+      "round_title": "Week 2: Designing the Perfect Survey",
+      "situation": "Prof. Analytics wants your team to design a proper data collection instrument. But survey design is tricky — biased questions lead to biased data. How will you structure your approach?",
+      "goal": "Choose a survey design approach that balances quality, speed, and ethics.",
+      "coaching_moment": "Ethical reasoning: How you ask questions shapes the answers you get. Leading questions are a form of manipulation.",
+      "reflection_prompt": "Can the way a question is worded change the answer someone gives? Give an example.",
+      "ai_image_prompt": "Student reviewing survey questions on a tablet, red marks on biased questions, teacher guiding, classroom whiteboard showing good vs bad question examples",
+      "choices": [
+        {
+          "id": "w2_rigorous",
+          "label": "A. Rigorous Academic Survey",
+          "description": "Use proper methodology — pilot test, neutral wording, randomized order, 30+ questions.",
+          "delta": {
+            "research_quality": 15,
+            "data_literacy": 12,
+            "customer_insight": 5,
+            "budget": -300,
+            "creativity": -2
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Gold-standard research! It takes longer but the data will be rock-solid and defensible.",
+          "requires": {
+            "resource": "data_literacy",
+            "op": ">=",
+            "value": 20,
+            "label": "Requires Data Literacy ≥ 20"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w2_emoji_survey",
+          "label": "B. Fun Emoji-Based Quick Poll",
+          "description": "Short, fun, visual survey using emoji scales. Low completion fatigue, high response rate.",
+          "delta": {
+            "customer_insight": 10,
+            "audience_reach": 5,
+            "creativity": 8,
+            "research_quality": 5,
+            "budget": -100
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Creative and engaging! High response rates make up for simpler data. Sometimes fun IS the strategy.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "w2_leading",
+          "label": "C. Loaded Questions for Quick Results",
+          "description": "Design questions that steer respondents toward answers you want. Fast 'proof' your product is great.",
+          "delta": {
+            "campaign_effectiveness": 8,
+            "research_quality": -8,
+            "ethical_marketing": -12,
+            "customer_insight": -5,
+            "brand_trust": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Dangerous shortcut! Biased data feels useful but leads to campaigns that ring false. Trust takes a hit.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "w2_interviews",
+          "label": "D. One-on-One Student Interviews",
+          "description": "Interview 15 students in-depth. Rich qualitative data but time-intensive.",
+          "delta": {
+            "customer_insight": 12,
+            "research_quality": 8,
+            "empathy": 3,
+            "brand_trust": 5,
+            "budget": -250
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Deep listening! Personal interviews reveal motivations and stories that no survey captures.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_ab_testing",
+      "round_title": "Week 3: The A/B Testing Lab",
+      "situation": "Time to test your first campaign ideas! A/B testing means showing two versions of something to see which performs better. Your team has created two poster designs, two slogans, and two color schemes. How will you run the test?",
+      "goal": "Design and execute your first A/B test.",
+      "coaching_moment": "Data literacy: A/B testing is how real companies make evidence-based decisions instead of relying on gut feelings.",
+      "reflection_prompt": "Why is it important to test only one variable at a time?",
+      "ai_image_prompt": "Split-screen showing two different poster designs side by side, students voting with colored stickers, data charts on a laptop screen, school hallway",
+      "choices": [
+        {
+          "id": "w3_controlled",
+          "label": "A. Controlled Split Test",
+          "description": "Show Poster A to half the school and Poster B to the other half. Track clicks, votes, and recall.",
+          "delta": {
+            "data_literacy": 15,
+            "research_quality": 12,
+            "campaign_effectiveness": 8,
+            "budget": -300,
+            "customer_insight": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Textbook A/B testing! Controlling variables gives you clean, actionable data. This is how tech companies decide.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "w3_hallway",
+          "label": "B. Hallway Reaction Test",
+          "description": "Hold up both posters in the hallway and watch which one students gravitate toward. Quick and cheap.",
+          "delta": {
+            "customer_insight": 8,
+            "creativity": 5,
+            "campaign_effectiveness": 5,
+            "research_quality": 3,
+            "budget": -50
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Quick and insightful! Real-world reactions matter. But be aware of biases in informal testing.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "w3_multi_variant",
+          "label": "C. Test Everything at Once",
+          "description": "Test all variables simultaneously — poster, slogan, color, font, size. More data, faster.",
+          "delta": {
+            "campaign_effectiveness": 10,
+            "creativity": 8,
+            "research_quality": -5,
+            "data_literacy": -3,
+            "budget": -400
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Ambitious but messy! When everything changes at once, you can't tell what actually worked. Scientists call this a confounding variable.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w3_digital_ab",
+          "label": "D. Digital A/B Test on School App",
+          "description": "Use the school messaging app to send two versions of a digital ad. Track open rates and clicks.",
+          "delta": {
+            "data_literacy": 12,
+            "audience_reach": 8,
+            "campaign_effectiveness": 10,
+            "research_quality": 8,
+            "budget": -250
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Digital testing gives precise metrics! Open rates and click-through rates are the language of modern marketing.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 250,
+            "label": "Requires Budget ≥ 250"
+          },
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_data_analysis",
+      "round_title": "Week 4: Making Sense of the Numbers",
+      "situation": "Your tests are in! You have spreadsheets full of survey responses, A/B test results, and observation notes. But raw data is useless without analysis. Prof. Analytics challenges you: what story does the data tell?",
+      "goal": "Choose how to analyze and interpret your research data.",
+      "coaching_moment": "Critical thinking: Data doesn't speak for itself. The same numbers can tell different stories depending on how you look at them.",
+      "reflection_prompt": "How can the same data be used to support opposite conclusions?",
+      "ai_image_prompt": "Students gathered around a laptop showing colorful bar charts and pie graphs, one student pointing at a trend line, spreadsheet on screen, school lab",
+      "choices": [
+        {
+          "id": "w4_charts",
+          "label": "A. Visual Dashboard & Charts",
+          "description": "Build clear visualizations — bar charts, pie graphs, trend lines. Let the data speak visually.",
+          "delta": {
+            "data_literacy": 15,
+            "research_quality": 10,
+            "campaign_effectiveness": 5,
+            "creativity": 5,
+            "budget": -150
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Powerful! Good visualizations make complex data accessible. This is how you convince stakeholders.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "w4_cherry_pick",
+          "label": "B. Highlight Only the Best Numbers",
+          "description": "Pick the most impressive stats and ignore the rest. Makes your pitch look amazing.",
+          "delta": {
+            "campaign_effectiveness": 12,
+            "audience_reach": 5,
+            "research_quality": -10,
+            "ethical_marketing": -10,
+            "brand_trust": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Cherry-picking is tempting but dangerous! Selective data is misleading. This is how trust gets broken.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w4_segment",
+          "label": "C. Customer Segmentation Analysis",
+          "description": "Divide your audience into groups (budget-conscious, eco-warriors, fashion-forward) and analyze each separately.",
+          "delta": {
+            "customer_insight": 15,
+            "data_literacy": 10,
+            "research_quality": 8,
+            "campaign_effectiveness": 5,
+            "budget": -200
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Brilliant! Segmentation reveals that 'students' isn't one group — it's many groups with different needs.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "w4_peer_review",
+          "label": "D. Peer Review & Cross-Check",
+          "description": "Have another team review your data and challenge your conclusions. Slower but more reliable.",
+          "delta": {
+            "research_quality": 12,
+            "data_literacy": 8,
+            "ethical_marketing": 8,
+            "brand_trust": 5,
+            "budget": -100
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "Humility is a superpower! Peer review catches errors and biases you can't see yourself.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_campaign_concept",
+      "round_title": "Week 5: Crafting the Campaign Concept",
+      "situation": "Research phase is wrapping up. Now it's time to turn insights into a campaign concept. Your team has brainstormed four directions. Each speaks to a different motivation you uncovered in research.",
+      "goal": "Choose a campaign concept that aligns with your research findings.",
+      "coaching_moment": "Creativity: The best campaigns connect emotionally with a specific audience insight — they don't try to appeal to everyone.",
+      "reflection_prompt": "What's the difference between a campaign that informs and one that persuades?",
+      "ai_image_prompt": "Creative brainstorming session with students sketching campaign concepts on large paper, mood boards on wall, colorful markers, energetic classroom",
+      "choices": [
+        {
+          "id": "w5_eco_mission",
+          "label": "A. 'Planet Pens' — Eco Mission Campaign",
+          "description": "Position the stationery as an environmental statement. 'Every pen saves a tree.'",
+          "delta": {
+            "campaign_effectiveness": 12,
+            "creativity": 10,
+            "ethical_marketing": 8,
+            "brand_trust": 8,
+            "audience_reach": 5,
+            "budget": -300
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Purpose-driven marketing! When a campaign aligns with values, it builds deeper loyalty than any discount.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "w5_cool_factor",
+          "label": "B. 'Coolest Kit' — Trend & Style Campaign",
+          "description": "Make eco-stationery fashionable. Celebrity student endorsements, limited edition designs.",
+          "delta": {
+            "campaign_effectiveness": 15,
+            "audience_reach": 10,
+            "creativity": 12,
+            "brand_trust": -3,
+            "ethical_marketing": -3,
+            "budget": -500
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "High impact but shallow roots! Trend-based campaigns spike fast and fade fast. What happens when the trend moves on?",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 500,
+            "label": "Requires Budget ≥ 500"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w5_data_driven",
+          "label": "C. 'The Numbers Don't Lie' — Data Campaign",
+          "description": "Lead with facts: '73% of students want eco options.' Let your research do the convincing.",
+          "delta": {
+            "campaign_effectiveness": 10,
+            "research_quality": 8,
+            "data_literacy": 5,
+            "brand_trust": 8,
+            "ethical_marketing": 5,
+            "budget": -200
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Data-driven messaging is credible and persuasive. When you show the evidence, people trust the conclusion.",
+          "requires": {
+            "resource": "research_quality",
+            "op": ">=",
+            "value": 30,
+            "label": "Requires Research Quality ≥ 30"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "w5_storytelling",
+          "label": "D. 'Meet Maya' — Storytelling Campaign",
+          "description": "Tell the story of Maya, a student who switches to eco-pens and inspires her friends. Emotional narrative.",
+          "delta": {
+            "campaign_effectiveness": 10,
+            "creativity": 15,
+            "customer_insight": 5,
+            "brand_trust": 5,
+            "audience_reach": 5,
+            "budget": -250
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Stories move people! A relatable character makes your product personal. This is the power of narrative marketing.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_data_misread",
+      "id": "crisis_data_misread",
+      "round_title": "CRISIS: The Data Misread Disaster",
+      "situation": "Focus Group Fiona breaks the bad news: your campaign claims are based on flawed data! The survey sample was biased, and key numbers are wrong. Students are calling out inconsistencies on the school forum. Prof. Analytics is furious. Your credibility is on the line.",
+      "goal": "Recover from a data integrity crisis before your brand collapses.",
+      "coaching_moment": "Resilience under pressure: Getting the data wrong is embarrassing, but how you respond defines your character. Covering up is always worse than correcting.",
+      "reflection_prompt": "When you discover you've made a mistake, is it better to hide it or admit it? Why?",
+      "ai_image_prompt": "Students looking worried at a screen showing conflicting data charts, red warning signs, teacher with arms crossed, school lab, tense atmosphere",
+      "condition": {
+        "resource": "research_quality",
+        "operator": "<",
+        "value": 15
+      },
+      "choices": [
+        {
+          "id": "dc_transparent",
+          "label": "A. Full Transparency & Correction",
+          "description": "Publish a correction post admitting the error, explain what went wrong, and share corrected data.",
+          "delta": {
+            "brand_trust": 12,
+            "ethical_marketing": 10,
+            "research_quality": 8,
+            "campaign_effectiveness": -8,
+            "audience_reach": -5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Brave and honest! Admitting mistakes publicly builds more trust than never making them. This is integrity.",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "dc_quiet_fix",
+          "label": "B. Quietly Fix the Numbers",
+          "description": "Update the campaign materials with correct data without drawing attention to the error.",
+          "delta": {
+            "campaign_effectiveness": 5,
+            "research_quality": 5,
+            "ethical_marketing": -8,
+            "brand_trust": -5
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Convenient but risky. If someone notices you changed the numbers without saying anything, trust collapses entirely.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "dc_relaunch",
+          "label": "C. Pause, Redo Research, Relaunch",
+          "description": "Pull the campaign entirely, redo the survey properly, and relaunch in 2 weeks with solid data.",
+          "delta": {
+            "research_quality": 15,
+            "data_literacy": 10,
+            "brand_trust": 8,
+            "campaign_effectiveness": -12,
+            "audience_reach": -8,
+            "budget": -400
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "The hardest but wisest choice. Starting over hurts now but builds an unshakable foundation.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "dc_blame_tool",
+          "label": "D. Blame the Survey Platform",
+          "description": "Claim the survey tool had a glitch that corrupted the data. Not your fault!",
+          "delta": {
+            "campaign_effectiveness": 3,
+            "ethical_marketing": -15,
+            "brand_trust": -10,
+            "customer_insight": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Deflecting blame feels easy but people see through it. A leader takes responsibility. Excuses erode trust faster than mistakes do.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_channel_strategy",
+      "round_title": "Week 6: Choosing Your Channels",
+      "situation": "Your campaign concept is ready. Now: where do you place it? The school has notice boards, a morning announcement PA system, a messaging app, and word-of-mouth networks. Budget is limited — you can't do everything.",
+      "goal": "Allocate your marketing budget across communication channels.",
+      "coaching_moment": "Strategic thinking: Channel selection is about reaching the right people, not the most people.",
+      "reflection_prompt": "Is it better to reach 100 people who care, or 1000 people who scroll past?",
+      "ai_image_prompt": "Student team planning campaign channels on a strategy board, icons for social media, posters, announcements, budget pie chart, school setting",
+      "choices": [
+        {
+          "id": "w6_digital_first",
+          "label": "A. All-In on Digital",
+          "description": "School app notifications, class group messages, digital posters. Measurable and scalable.",
+          "delta": {
+            "audience_reach": 15,
+            "campaign_effectiveness": 10,
+            "data_literacy": 5,
+            "budget": -400,
+            "brand_trust": 2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Digital reach is powerful and trackable! But remember — not everyone checks the app equally.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "w6_grassroots",
+          "label": "B. Grassroots Word-of-Mouth",
+          "description": "Recruit 20 student ambassadors to spread the message personally. Slow but deeply trusted.",
+          "delta": {
+            "brand_trust": 12,
+            "customer_insight": 8,
+            "audience_reach": 8,
+            "campaign_effectiveness": 5,
+            "budget": -200
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "The oldest marketing channel! Personal recommendations carry more weight than any ad. Trust multiplies.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "w6_blitz",
+          "label": "C. Multi-Channel Blitz",
+          "description": "Posters, app, PA announcements, ambassadors — flood every channel simultaneously. Maximum noise.",
+          "delta": {
+            "audience_reach": 18,
+            "campaign_effectiveness": 12,
+            "budget": -600,
+            "ethical_marketing": -3,
+            "brand_trust": -2
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Maximum exposure! But saturation can annoy people. There's a fine line between visible and intrusive.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 600,
+            "label": "Requires Budget ≥ 600"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w6_targeted",
+          "label": "D. Targeted Segment Approach",
+          "description": "Different messages for different groups: eco-message for eco-club, style-message for art students, value-message for budget-shoppers.",
+          "delta": {
+            "campaign_effectiveness": 12,
+            "customer_insight": 10,
+            "creativity": 8,
+            "research_quality": 5,
+            "budget": -350
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Personalization is the future of marketing! When people feel a message was made for them, they listen.",
+          "requires": {
+            "resource": "customer_insight",
+            "op": ">=",
+            "value": 25,
+            "label": "Requires Customer Insight ≥ 25"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_pricing_psychology",
+      "round_title": "Week 7: The Price is Right",
+      "situation": "The stationery line needs pricing. This is where psychology meets math. Your research shows students are price-sensitive but willing to pay more for 'cool' or 'green' products. How do you set the price?",
+      "goal": "Choose a pricing strategy that balances profit, fairness, and psychology.",
+      "coaching_moment": "Ethical reasoning: Pricing can be transparent or manipulative. Anchoring, decoy pricing, and artificial scarcity are powerful but ethically complex tools.",
+      "reflection_prompt": "Is it ethical to use psychological tricks to make people pay more?",
+      "ai_image_prompt": "Students debating price tags on products at a mock store, price comparison charts on board, calculators, ethical dilemma illustrated, school fair booth",
+      "choices": [
+        {
+          "id": "w7_transparent",
+          "label": "A. Transparent Cost-Plus Pricing",
+          "description": "Show the actual cost breakdown and add a fair markup. 'You see exactly where your money goes.'",
+          "delta": {
+            "ethical_marketing": 15,
+            "brand_trust": 12,
+            "customer_insight": 5,
+            "campaign_effectiveness": 3,
+            "budget": 300
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Radical transparency! When customers see the real costs, they respect the price. Trust-based pricing is rare and powerful.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "w7_anchor",
+          "label": "B. Anchor Pricing Strategy",
+          "description": "Show a 'premium' option at high price next to your real option. The contrast makes the real price seem like a deal.",
+          "delta": {
+            "campaign_effectiveness": 12,
+            "audience_reach": 5,
+            "budget": 500,
+            "ethical_marketing": -8,
+            "brand_trust": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Anchor pricing works — studies prove it. But is it honest? Students might feel tricked once they figure out the game.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        },
+        {
+          "id": "w7_bundle",
+          "label": "C. Value Bundle Packs",
+          "description": "Offer a 'study bundle' (pen + notebook + eraser) at a discount. More value, bigger basket size.",
+          "delta": {
+            "campaign_effectiveness": 10,
+            "audience_reach": 8,
+            "customer_insight": 3,
+            "brand_trust": 5,
+            "budget": 400
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Bundles create win-win value! Customers feel they're getting a deal, and you sell more per transaction.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w7_pay_what_feel",
+          "label": "D. 'Pay What You Feel' Experiment",
+          "description": "Let students name their own price for one week. Bold, risky, but generates massive buzz and data.",
+          "delta": {
+            "brand_trust": 10,
+            "audience_reach": 12,
+            "creativity": 10,
+            "customer_insight": 8,
+            "ethical_marketing": 5,
+            "budget": -200
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ],
+          "feedback": "Radical and brave! You might lose money, but the data on willingness-to-pay is priceless. Most people pay fairly when trusted.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_ethics",
+      "id": "crisis_ethics",
+      "round_title": "CRISIS: Ethics Under Fire",
+      "situation": "Competitor Corp has reported your team to the school board for misleading advertising! They claim your campaign exaggerates eco-benefits and uses manipulative language. The school's ethics committee has launched a review. Your brand trust is plummeting and the school fair is in 3 weeks.",
+      "goal": "Navigate the ethics investigation and rebuild your reputation.",
+      "coaching_moment": "Ethical reasoning: Real brands face this too. The difference between marketing and manipulation is transparency and truthfulness.",
+      "reflection_prompt": "Where is the line between persuasion and manipulation in advertising?",
+      "ai_image_prompt": "School board meeting room, students presenting to stern teachers, competitor team watching, evidence documents on table, formal tense atmosphere",
+      "condition": {
+        "resource": "ethical_marketing",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "ec_full_audit",
+          "label": "A. Volunteer for Full Ethics Audit",
+          "description": "Open all your campaign materials, data, and decisions for complete review. Hide nothing.",
+          "delta": {
+            "ethical_marketing": 18,
+            "brand_trust": 15,
+            "research_quality": 5,
+            "campaign_effectiveness": -10,
+            "audience_reach": -5,
+            "budget": -200
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Complete transparency under fire. The ethics committee respects your courage. This is how brands rebuild from scandal.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "ec_counter_attack",
+          "label": "B. Counter-Attack: Expose Competitor",
+          "description": "Dig up dirt on Competitor Corp's own misleading claims. Fight fire with fire.",
+          "delta": {
+            "campaign_effectiveness": 5,
+            "audience_reach": 3,
+            "ethical_marketing": -12,
+            "brand_trust": -8,
+            "customer_insight": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Dirty tactics! Even if Competitor Corp is also guilty, attacking them doesn't fix your own ethics. Both teams lose credibility.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "ec_ethics_pledge",
+          "label": "C. Create an Ethics Charter",
+          "description": "Draft a public 'Marketing Ethics Pledge' with clear rules your team will follow. Invite other teams to sign too.",
+          "delta": {
+            "ethical_marketing": 15,
+            "brand_trust": 12,
+            "customer_insight": 5,
+            "creativity": 5,
+            "campaign_effectiveness": -5,
+            "budget": -150
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Leadership move! Creating standards elevates the whole competition. You become the ethical benchmark others follow.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "ec_rebrand",
+          "label": "D. Quick Rebrand & Pivot",
+          "description": "Drop the controversial claims, rebrand the campaign overnight with a completely new angle.",
+          "delta": {
+            "campaign_effectiveness": 8,
+            "creativity": 10,
+            "ethical_marketing": 5,
+            "brand_trust": -3,
+            "research_quality": -5,
+            "budget": -400
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Fast on your feet! But rebranding without addressing the root issue feels like running away. The questions remain.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_feedback_loop",
+      "round_title": "Week 8: The Feedback Loop",
+      "situation": "Your campaign has been running for a few weeks. Early results are in — some things are working, others aren't. Prof. Analytics says the best marketers iterate. How do you respond to the feedback?",
+      "goal": "Decide how to use campaign performance data to improve.",
+      "coaching_moment": "Adaptability: The first version of anything is never perfect. The ability to learn, pivot, and improve is what separates amateurs from professionals.",
+      "reflection_prompt": "How is 'failing fast and learning' different from just failing?",
+      "ai_image_prompt": "Students reviewing campaign performance metrics on a screen, some graphs going up and others down, team discussion, sticky notes with ideas, school lab",
+      "choices": [
+        {
+          "id": "w8_iterate",
+          "label": "A. Rapid Iteration Cycle",
+          "description": "Run weekly A/B tests, change what's not working every Monday, double down on what is.",
+          "delta": {
+            "campaign_effectiveness": 12,
+            "data_literacy": 10,
+            "research_quality": 5,
+            "adaptability": 3,
+            "budget": -300
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Agile marketing! Weekly iterations compound into massive improvement. This is how startups beat big companies.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "w8_stay_course",
+          "label": "B. Stay the Course",
+          "description": "Your original strategy is sound. Don't panic — let the campaign build momentum over time.",
+          "delta": {
+            "campaign_effectiveness": 5,
+            "brand_trust": 8,
+            "resilience": 3,
+            "budget": -100
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Patience and conviction! Not every dip means failure. Sometimes campaigns need time to take root.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "w8_focus_winners",
+          "label": "C. Kill Losers, Scale Winners",
+          "description": "Identify the one thing working best and put ALL remaining budget behind it. Cut everything else.",
+          "delta": {
+            "campaign_effectiveness": 15,
+            "audience_reach": 10,
+            "creativity": -5,
+            "customer_insight": -3,
+            "budget": -350
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Focus is power! But putting all eggs in one basket is risky. What if that one channel saturates?",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w8_customer_feedback",
+          "label": "D. Direct Customer Feedback Sprint",
+          "description": "Pause advertising for a week and spend it interviewing students about what they've seen. Pure listening mode.",
+          "delta": {
+            "customer_insight": 15,
+            "research_quality": 8,
+            "brand_trust": 8,
+            "campaign_effectiveness": -5,
+            "ethical_marketing": 5,
+            "budget": -150
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Going back to the source! Listening to customers mid-campaign is humble and incredibly valuable.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_9_ethical_dilemma",
+      "round_title": "Week 9: The Ethical Crossroads",
+      "situation": "Your campaign is gaining traction when a dilemma hits: you discover the eco-stationery supplier has been greenwashing — their 'recycled' materials are only 30% recycled. Do you tell your audience? Your campaign is built on the eco-promise.",
+      "goal": "Navigate an ethical dilemma that tests your values against your campaign's success.",
+      "coaching_moment": "Ethical reasoning: Sometimes doing the right thing costs you. But integrity is the one asset that appreciates over time.",
+      "reflection_prompt": "If telling the truth hurts your campaign, should you still tell it?",
+      "ai_image_prompt": "Student holding product packaging showing eco-labels, looking conflicted, comparison of real vs claimed recycling percentages, school lab, moral crossroads",
+      "choices": [
+        {
+          "id": "w9_expose",
+          "label": "A. Full Disclosure to Audience",
+          "description": "Tell everyone the truth: 'We discovered the supplier's eco-claim was exaggerated. Here's what we know.'",
+          "delta": {
+            "ethical_marketing": 18,
+            "brand_trust": 15,
+            "campaign_effectiveness": -12,
+            "audience_reach": -8,
+            "customer_insight": 5,
+            "budget": -100
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Incredibly brave! You lose the eco-angle but gain something more valuable — a reputation for honesty.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "w9_negotiate",
+          "label": "B. Pressure Supplier to Improve",
+          "description": "Privately demand the supplier increase recycled content to 80% or you switch. Keep it quiet for now.",
+          "delta": {
+            "ethical_marketing": 8,
+            "brand_trust": 3,
+            "campaign_effectiveness": 5,
+            "research_quality": 5,
+            "budget": -200
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Smart negotiation! Using your buying power for change is ethical business practice. But the silence period is a risk.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w9_rebrand_honest",
+          "label": "C. Pivot Campaign Away from Eco",
+          "description": "Shift the campaign message from 'eco' to 'quality and design.' Don't lie, just change the focus.",
+          "delta": {
+            "campaign_effectiveness": 8,
+            "creativity": 10,
+            "ethical_marketing": 5,
+            "brand_trust": -3,
+            "customer_insight": -3,
+            "budget": -300
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Clever pivot! You avoid the lie without dropping the campaign. But eco-supporters may feel abandoned.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w9_ignore",
+          "label": "D. Ignore It — 30% Is Still Something",
+          "description": "30% recycled is better than 0%. The campaign is working. Don't rock the boat.",
+          "delta": {
+            "campaign_effectiveness": 10,
+            "audience_reach": 5,
+            "ethical_marketing": -15,
+            "brand_trust": -8,
+            "customer_insight": -5
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "The easy path now, but a ticking time bomb. If anyone discovers the gap between your claims and reality, everything unravels.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_10_launch_prep",
+      "round_title": "Week 10: Launch Week Preparation",
+      "situation": "The school fair is in 2 weeks! This is your big launch moment. Everything you've researched, tested, and built comes together now. How do you prepare for launch day?",
+      "goal": "Plan the final push for your campaign launch at the school fair.",
+      "coaching_moment": "Strategic thinking: Great launches are 90% preparation and 10% execution. The work you did in weeks 1-9 determines success now.",
+      "reflection_prompt": "How does thorough preparation change the outcome of a big event?",
+      "ai_image_prompt": "Students building a colorful marketing booth for school fair, banners being painted, product displays being arranged, countdown calendar on wall, excited team",
+      "choices": [
+        {
+          "id": "w10_rehearse",
+          "label": "A. Full Dress Rehearsal",
+          "description": "Practice your pitch, test the booth layout, rehearse answers to tough questions. Prepare for everything.",
+          "delta": {
+            "campaign_effectiveness": 10,
+            "brand_trust": 8,
+            "research_quality": 5,
+            "customer_insight": 3,
+            "budget": -200
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Preparation is the secret weapon! Athletes, speakers, and marketers who rehearse outperform those who wing it.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w10_hype",
+          "label": "B. Pre-Launch Hype Campaign",
+          "description": "Build anticipation with teasers, countdowns, and mystery reveals all week. Make people excited before they arrive.",
+          "delta": {
+            "audience_reach": 15,
+            "campaign_effectiveness": 12,
+            "creativity": 8,
+            "budget": -400,
+            "ethical_marketing": -2
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Hype builds anticipation! But be careful — if the product doesn't match the hype, the fall is hard.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w10_data_final",
+          "label": "C. Last-Minute Research Sprint",
+          "description": "One final round of customer interviews to fine-tune your pitch and booth design for maximum relevance.",
+          "delta": {
+            "customer_insight": 12,
+            "research_quality": 8,
+            "campaign_effectiveness": 5,
+            "data_literacy": 5,
+            "budget": -250
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Research until the last minute! The teams who listen closest win. These final insights could be game-changing.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w10_collab",
+          "label": "D. Strategic Partnership",
+          "description": "Partner with the school's art club for booth design and the debate team for persuasive pitching. Leverage others' strengths.",
+          "delta": {
+            "creativity": 12,
+            "campaign_effectiveness": 10,
+            "brand_trust": 8,
+            "audience_reach": 5,
+            "budget": -150
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Collaboration multiplies your capability! Smart leaders know they don't have to do everything alone.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_11_launch_day",
+      "round_title": "Week 11: Launch Day!",
+      "situation": "It's school fair day! Your booth is set up, your campaign materials are everywhere, and students are streaming through. But three situations hit you simultaneously. You can only fully address one — the others get a half-effort.",
+      "goal": "Make the critical launch-day decision that defines your campaign's success.",
+      "coaching_moment": "Resilience: Launch days never go as planned. Adaptability under pressure separates good marketers from great ones.",
+      "reflection_prompt": "When everything happens at once, how do you decide what's most important?",
+      "ai_image_prompt": "Busy school fair with a marketing booth, students crowding around, product displays, live demo happening, banner with campaign slogan, energetic festive scene",
+      "choices": [
+        {
+          "id": "w11_demo",
+          "label": "A. Live Product Demonstration",
+          "description": "Focus on showing the product in action. Let quality speak. Hands-on experience converts skeptics.",
+          "delta": {
+            "campaign_effectiveness": 15,
+            "customer_insight": 8,
+            "brand_trust": 10,
+            "audience_reach": 5,
+            "budget": -200
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Show, don't tell! Live demos create memorable experiences. People trust what they can see and touch.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "w11_data_wall",
+          "label": "B. Interactive Data Wall",
+          "description": "Display your research journey — surveys, A/B results, customer quotes. Let visitors see the process, not just the product.",
+          "delta": {
+            "research_quality": 10,
+            "data_literacy": 10,
+            "brand_trust": 12,
+            "ethical_marketing": 8,
+            "budget": -250
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "Showing your work builds credibility! When people see the research behind a claim, they believe it more.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w11_flash_sale",
+          "label": "C. Flash Sale & Urgency Tactics",
+          "description": "'First 50 buyers get 50% off! Limited stock!' Create urgency and drive immediate sales.",
+          "delta": {
+            "audience_reach": 15,
+            "campaign_effectiveness": 12,
+            "budget": 500,
+            "ethical_marketing": -8,
+            "brand_trust": -5,
+            "customer_insight": -3
+          },
+          "skill_tags": [
+            "risk_tolerance"
+          ],
+          "feedback": "Urgency sells! But artificial scarcity is a dark pattern. Students who feel pressured into buying may regret it.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w11_feedback_booth",
+          "label": "D. Live Feedback & Co-Creation Booth",
+          "description": "Invite visitors to rate products, suggest improvements, and vote on next designs. Make them part of the brand.",
+          "delta": {
+            "customer_insight": 15,
+            "brand_trust": 12,
+            "creativity": 8,
+            "ethical_marketing": 5,
+            "campaign_effectiveness": 5,
+            "budget": -150
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Genius! Co-creation turns customers into co-owners. When people shape a brand, they champion it.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_12_legacy",
+      "round_title": "Week 12: Your Marketing Legacy",
+      "situation": "The school fair is over. Results are in. Prof. Analytics asks each team to present their final report and vision for what comes next. This is your last decision — it defines what kind of marketer you want to be.",
+      "goal": "Choose how to wrap up your campaign and define your marketing philosophy.",
+      "coaching_moment": "Strategic thinking: The best marketing professionals don't just sell products — they build relationships, create value, and leave things better than they found them.",
+      "reflection_prompt": "What's more valuable: a customer who buys once, or a community that trusts you forever?",
+      "ai_image_prompt": "Student team presenting final marketing report to teachers and peers, charts showing campaign journey, proud team, school auditorium, hopeful atmosphere",
+      "choices": [
+        {
+          "id": "w12_open_source",
+          "label": "A. Open-Source Your Research",
+          "description": "Share all your data, methods, and templates with the whole school. Help every future team start stronger.",
+          "delta": {
+            "ethical_marketing": 15,
+            "brand_trust": 15,
+            "data_literacy": 10,
+            "research_quality": 8,
+            "audience_reach": 5,
+            "budget": -100
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Generosity as strategy! Open-sourcing your methods builds a legendary reputation. Knowledge shared is knowledge multiplied.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "w12_agency",
+          "label": "B. Launch a Student Marketing Agency",
+          "description": "Turn your lab into a permanent school service. Other clubs hire you for their campaigns. Revenue + legacy.",
+          "delta": {
+            "campaign_effectiveness": 15,
+            "budget": 800,
+            "audience_reach": 10,
+            "creativity": 8,
+            "brand_trust": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Entrepreneurial thinking! A student-run agency creates lasting value, real-world experience, and income.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "w12_mentor",
+          "label": "C. Mentor Next Year's Team",
+          "description": "Create a mentorship program where this year's team trains next year's. Knowledge transfer across generations.",
+          "delta": {
+            "brand_trust": 12,
+            "customer_insight": 8,
+            "ethical_marketing": 10,
+            "data_literacy": 8,
+            "research_quality": 5,
+            "budget": -50
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Teaching others is the deepest form of learning. Your legacy lives on through the students you mentor.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "w12_case_study",
+          "label": "D. Write the Campaign Case Study",
+          "description": "Document everything — wins, failures, data, lessons. Publish it as a school resource. A honest record of your journey.",
+          "delta": {
+            "research_quality": 12,
+            "data_literacy": 12,
+            "ethical_marketing": 8,
+            "campaign_effectiveness": 5,
+            "brand_trust": 10,
+            "budget": -100
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Case studies are how knowledge compounds! Documenting both successes and failures creates real value for future teams.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "data_scientist",
+      "label": "Data Scientist",
+      "condition": "research_quality >= 75 and data_literacy >= 70",
+      "icon": "🔬"
+    },
+    {
+      "id": "creative_genius",
+      "label": "Creative Genius",
+      "condition": "creativity >= 80 and campaign_effectiveness >= 70",
+      "icon": "🎨"
+    },
+    {
+      "id": "ethical_marketer",
+      "label": "Ethical Marketer",
+      "condition": "ethical_marketing >= 75 and brand_trust >= 70",
+      "icon": "⚖️"
+    },
+    {
+      "id": "audience_whisperer",
+      "label": "Audience Whisperer",
+      "condition": "customer_insight >= 70 and audience_reach >= 60",
+      "icon": "👥"
+    },
+    {
+      "id": "budget_wizard",
+      "label": "Budget Wizard",
+      "condition": "budget >= 3000 and campaign_effectiveness >= 50",
+      "icon": "💰"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "A/B Testing",
+      "definition": "A method of comparing two versions of something (an ad, a webpage, a poster) to see which one performs better with a real audience."
+    },
+    {
+      "term": "Customer Profiling",
+      "definition": "Creating a detailed description of your ideal customer — their age, interests, needs, and buying habits — to guide marketing decisions."
+    },
+    {
+      "term": "Market Segmentation",
+      "definition": "Dividing a broad audience into smaller groups based on shared characteristics, so you can tailor messages to each group."
+    },
+    {
+      "term": "Brand Trust",
+      "definition": "The confidence customers have that a brand will deliver on its promises. Built slowly through consistency and honesty."
+    },
+    {
+      "term": "Greenwashing",
+      "definition": "When a company exaggerates or fakes its environmental credentials to attract eco-conscious consumers. A form of misleading marketing."
+    },
+    {
+      "term": "Anchor Pricing",
+      "definition": "A psychological pricing tactic where a high-priced item is shown first to make other prices seem more reasonable by comparison."
+    },
+    {
+      "term": "Return on Investment (ROI)",
+      "definition": "A measure of how much profit or value you get back compared to what you spent. High ROI means your money was well spent."
+    },
+    {
+      "term": "Ethical Marketing",
+      "definition": "Promoting products honestly and responsibly, respecting consumer intelligence, and avoiding manipulative tactics that exploit biases."
+    }
+  ],
+  "endings": [
+    {
+      "id": "research_rockstar",
+      "title": "Research Rockstar",
+      "icon": "🔬",
+      "message": "Your marketing lab becomes legendary for its research rigor! Prof. Analytics recommends your methodology to the district's business education program. Other schools adopt your survey templates and A/B testing frameworks. You proved that great marketing starts with great data — and the data never lies when collected honestly.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "research_quality",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "data_literacy",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "campaign_genius",
+      "title": "Campaign Genius",
+      "icon": "🚀",
+      "message": "Your campaign becomes the talk of the school — and beyond! A local newspaper picks up the story of students who built a real marketing campaign from scratch. The school's stationery sales triple, and your creative approach becomes a case study. You showed that creativity backed by insight is unstoppable.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "campaign_effectiveness",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "audience_reach",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "ethical_marketer",
+      "title": "Ethical Marketer",
+      "icon": "⚖️",
+      "message": "In a world of clickbait and fake reviews, your lab stood for something different: truth. Your Marketing Ethics Charter gets adopted as the school's official advertising standard. Even Competitor Corp admits your approach was better. You proved that honesty isn't a weakness in marketing — it's the ultimate competitive advantage.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "ethical_marketing",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "brand_trust",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "data_driven_leader",
+      "title": "Data-Driven Leader",
+      "icon": "📊",
+      "message": "Your team mastered the rare combination of strong research AND effective campaigns. Prof. Analytics calls it 'the holy grail of marketing.' You understand that data without action is wasted, and action without data is reckless. The school fair was a massive success, and your balanced approach becomes the textbook example.",
+      "type": "triumph",
+      "rarity": "legendary",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "research_quality",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "campaign_effectiveness",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "brand_trust",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "marketing_apprentice",
+      "title": "Marketing Apprentice",
+      "icon": "📝",
+      "message": "Your first campaign didn't break records, but you learned more in 12 weeks than most people learn in a year. You now know the difference between data and opinions, between persuasion and manipulation, between hype and substance. Every great marketer starts somewhere — and you've built a solid foundation to grow from.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          14
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Market Lab: Research, Test, Launch Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What does 'profit' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Total money spent",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Revenue minus costs",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Money borrowed from a bank",
+              "correct": false
+            }
+          ],
+          "explanation": "Profit is what remains after subtracting all costs from total revenue."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "What is a 'budget'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "A list of things to buy",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "A plan for how to spend money",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "A type of bank account",
+              "correct": false
+            }
+          ],
+          "explanation": "A budget is a financial plan that allocates income to different spending categories."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Market Lab: Research, Test, Launch. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Market Lab: Research, Test, Launch Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Market Lab: Research, Test, Launch. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

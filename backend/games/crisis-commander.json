@@ -1,0 +1,1205 @@
+{
+  "game_id": "crisis_commander_v1",
+  "game_type": "ai_arena",
+  "title": "Crisis Commander: Disaster Management",
+  "domain": "disaster_management",
+  "category": "AI Arena",
+  "description": "Lead disaster response operations. Make split-second decisions, manage limited resources, and save lives during a cyclone emergency.",
+  "initial_state": {
+    "budget": {
+      "value": 50000,
+      "label": "Budget",
+      "icon": "💰"
+    },
+    "public_trust": {
+      "value": 70,
+      "label": "Public Trust",
+      "icon": "🤝"
+    },
+    "response_speed": {
+      "value": 60,
+      "label": "Response Speed",
+      "icon": "⚡"
+    },
+    "team_capacity": {
+      "value": 80,
+      "label": "Team Capacity",
+      "icon": "👥"
+    },
+    "media_rating": {
+      "value": 50,
+      "label": "Media Rating",
+      "icon": "📺"
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "impulse_control": {
+      "icon": "🛑",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "emotional_regulation": {
+      "icon": "🧘",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "growth_mindset": {
+      "icon": "🌱",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "self_awareness": {
+      "icon": "🪞",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "ethical_reasoning": {
+      "icon": "⚖️",
+      "value": 60,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 45,
+      "min": 0,
+      "max": 100,
+      "category": "AI Arena"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "ai_arena_config": {
+    "ai_enhanced": true,
+    "dynamic_rounds_enabled": true,
+    "max_dynamic_rounds": 2,
+    "competitor_chat_enabled": false,
+    "npc_chat_enabled": true,
+    "image_generation_enabled": true,
+    "domain": "disaster_management"
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "title": "The Call",
+        "choices": [
+          {
+            "id": "rush_to_center",
+            "label": "I need to rush to the command center right now and assess the situation myself",
+            "description": "Head immediately to the situation room to assess the situation",
+            "next_scene": "scene_2a",
+            "delta": {
+              "response_speed": 10
+            }
+          },
+          {
+            "id": "brief_team",
+            "label": "Let me gather my core team for a quick strategy huddle before we head out",
+            "description": "Gather your core team for a quick strategy huddle before heading out",
+            "next_scene": "scene_2b",
+            "delta": {
+              "team_capacity": 10
+            }
+          }
+        ],
+        "scene_id": "scene_1",
+        "narrative": "You receive an urgent call: Cyclone Vardah is approaching the coast. As the newly appointed District Crisis Manager, this is your first real emergency. The weight of thousands of lives rests on your shoulders."
+      },
+      {
+        "title": "Command Center",
+        "choices": [
+          {
+            "id": "immediate_evacuation",
+            "label": "We should start evacuating the coastal villages immediately — we can't afford to wait",
+            "description": "Begin evacuating coastal villages right away",
+            "next_scene": "scene_3",
+            "delta": {
+              "public_trust": 10,
+              "budget": -5000
+            }
+          },
+          {
+            "id": "assess_first",
+            "label": "I want to model the cyclone's path and study the impact zones before making any moves",
+            "description": "Spend time modeling the cyclone path and potential impact zones",
+            "next_scene": "scene_3",
+            "delta": {
+              "response_speed": -5,
+              "budget": 0
+            }
+          }
+        ],
+        "scene_id": "scene_2a",
+        "narrative": "The situation room buzzes with activity. Satellite imagery shows the cyclone's path heading straight for the coast. Radar operators call out wind speeds. You have 72 hours before landfall. The question is: do you act now or gather more data?"
+      },
+      {
+        "title": "Team Briefing",
+        "choices": [
+          {
+            "id": "assign_roles",
+            "label": "I'll use my authority to assign everyone their roles right away so we move fast",
+            "description": "Use your authority to put people where they're needed most",
+            "next_scene": "scene_3",
+            "delta": {
+              "team_capacity": 5,
+              "response_speed": 5
+            }
+          },
+          {
+            "id": "self_organize",
+            "label": "I trust my team's expertise — let them figure out their best positions on their own",
+            "description": "Trust your team's expertise to find their best positions",
+            "next_scene": "scene_3",
+            "delta": {
+              "team_capacity": 15,
+              "response_speed": -10
+            }
+          }
+        ],
+        "scene_id": "scene_2b",
+        "narrative": "Your team gathers in the briefing room. Each member has unique expertise - from meteorology to logistics to community outreach. How you deploy them now will shape the entire response effort."
+      },
+      {
+        "title": "The Storm Approaches",
+        "transitions_to_gameplay": true,
+        "scene_id": "scene_3",
+        "narrative": "With preparations underway, the real challenge begins. Every decision from here impacts lives. The cyclone is bearing down on the coast, and the people of Tamil Nadu are counting on you. There is no room for error."
+      }
+    ]
+  },
+  "npcs": [
+    {
+      "id": "dr_weather",
+      "name": "Dr. Meera Iyer",
+      "role": "Chief Meteorologist",
+      "avatar": "🌊",
+      "personality": "Calm, data-driven, precise",
+      "backstory": "20 years tracking cyclones along India's eastern coast. Known for accurate predictions. She was the first to warn about Cyclone Hudhud's intensity back in 2014.",
+      "conversation_topics": [
+        "cyclone trajectory",
+        "wind speed patterns",
+        "safe zones",
+        "evacuation timing"
+      ]
+    },
+    {
+      "id": "cmd_sharma",
+      "name": "Commander Sharma",
+      "role": "Field Operations Chief",
+      "avatar": "🎖️",
+      "personality": "Decisive, military precision, protective of team",
+      "backstory": "Ex-army officer who now leads disaster field operations. Believes in speed over perfection. Lost a colleague during the 2004 tsunami relief and has never forgiven himself.",
+      "conversation_topics": [
+        "ground situation",
+        "resource deployment",
+        "team safety",
+        "logistics"
+      ]
+    },
+    {
+      "id": "reporter_priya",
+      "name": "Priya Menon",
+      "role": "Senior News Reporter",
+      "avatar": "📰",
+      "personality": "Persistent, truth-seeking, empathetic",
+      "backstory": "Award-winning journalist covering disasters. Can help or hurt your public image. She covered the Kerala floods and believes in accountability over spin.",
+      "conversation_topics": [
+        "public information",
+        "media strategy",
+        "citizen concerns",
+        "government accountability"
+      ]
+    }
+  ],
+  "competitors": [
+    {
+      "id": "rival_coordinator",
+      "name": "District Coordinator Mehra",
+      "avatar": "🎖️",
+      "personality_type": "balanced",
+      "chat_enabled": true,
+      "chat_personality": "A seasoned government official who has managed disasters for 15 years. Criticizes your decisions when they seem hasty, praises methodical approaches. Believes in following standard operating procedures over improvisation.",
+      "strategy": "methodical",
+      "initial_resources": {
+        "public_trust": 65,
+        "response_speed": 50
+      }
+    }
+  ],
+  "crisis_events": [
+    {
+      "id": "hospital_overflow",
+      "trigger_after_round": 1,
+      "probability": 0.5,
+      "cooldown_rounds": 3,
+      "title": "Hospital Emergency!",
+      "description": "The district hospital is overwhelmed with 200+ patients. ICU beds are full and more injured arriving. You need to act NOW.",
+      "choices": [
+        {
+          "id": "setup_field_hospital",
+          "label": "Set up field hospital",
+          "description": "Deploy emergency medical tents near the district hospital",
+          "delta": {
+            "budget": -8000,
+            "public_trust": 15,
+            "team_capacity": -10
+          },
+          "feedback": "Field hospital operational in 3 hours! Lives saved. The quick setup impressed medical teams across the state."
+        },
+        {
+          "id": "redirect_patients",
+          "label": "Redirect to neighboring districts",
+          "description": "Coordinate with nearby hospitals to share the patient load",
+          "delta": {
+            "budget": -3000,
+            "public_trust": -5,
+            "response_speed": -5
+          },
+          "feedback": "Patients redirected, but some critical cases lost valuable time. Families are upset about the transfers."
+        },
+        {
+          "id": "call_military",
+          "label": "Request military medical support",
+          "description": "Faster but costly and uses political capital",
+          "delta": {
+            "budget": -15000,
+            "public_trust": 10,
+            "team_capacity": 5
+          },
+          "feedback": "Military medical corps arrived within hours. Excellent care provided. The armed forces' efficiency is a sight to behold."
+        }
+      ]
+    },
+    {
+      "id": "bridge_collapse",
+      "trigger_after_round": 2,
+      "probability": 0.4,
+      "cooldown_rounds": 4,
+      "title": "Bridge Collapse!",
+      "description": "The main highway bridge connecting two coastal villages has collapsed. 500+ people are stranded on the wrong side with the cyclone approaching.",
+      "choices": [
+        {
+          "id": "airlift",
+          "label": "Helicopter airlift",
+          "description": "Fast but expensive and limited capacity",
+          "delta": {
+            "budget": -12000,
+            "response_speed": 10,
+            "public_trust": 10
+          },
+          "feedback": "Helicopter rescue saves dozens, but many still stranded. Dramatic footage on news channels boosts morale."
+        },
+        {
+          "id": "boat_rescue",
+          "label": "Deploy rescue boats",
+          "description": "Slower but can evacuate more people",
+          "delta": {
+            "budget": -5000,
+            "response_speed": -5,
+            "public_trust": 15
+          },
+          "feedback": "Boats ferry people across. Local fishermen volunteer their boats. Community rallies together beautifully."
+        },
+        {
+          "id": "temp_bridge",
+          "label": "Build temporary crossing",
+          "description": "Takes time but creates lasting solution",
+          "delta": {
+            "budget": -10000,
+            "response_speed": -10,
+            "team_capacity": -5,
+            "public_trust": 20
+          },
+          "feedback": "Engineers from the Border Roads Organisation work through the night. The temporary bridge becomes a symbol of resilience."
+        }
+      ]
+    },
+    {
+      "id": "supply_shortage",
+      "trigger_after_round": 3,
+      "probability": 0.6,
+      "cooldown_rounds": 2,
+      "title": "Supply Shortage Crisis!",
+      "description": "Food and water supplies are running dangerously low. Panic is spreading in relief camps. Women and children are most affected.",
+      "choices": [
+        {
+          "id": "ration_supplies",
+          "label": "Ration remaining supplies",
+          "description": "Stretch what you have, but people go hungry",
+          "delta": {
+            "budget": 0,
+            "public_trust": -10,
+            "team_capacity": -5
+          },
+          "feedback": "Rationing buys time, but morale drops sharply. Angry crowds gather outside the collector's office."
+        },
+        {
+          "id": "emergency_airlift",
+          "label": "Emergency supply airlift",
+          "description": "Expensive but immediate relief",
+          "delta": {
+            "budget": -15000,
+            "public_trust": 15,
+            "response_speed": 5
+          },
+          "feedback": "Supplies arrive by IAF aircraft. Relief camps celebrate as rice, dal, and clean water are distributed."
+        },
+        {
+          "id": "community_kitchens",
+          "label": "Organize community kitchens",
+          "description": "Engage local volunteers and resources",
+          "delta": {
+            "budget": -3000,
+            "public_trust": 20,
+            "team_capacity": 10
+          },
+          "feedback": "Community comes together. Local restaurants, temples, and mosques feed thousands. The spirit of Tamil Nadu shines through."
+        }
+      ]
+    }
+  ],
+  "base_rounds": [
+    {
+      "id": "round_1",
+      "round_number": 1,
+      "title": "Evacuation Planning",
+      "story": "The cyclone is 48 hours away. Over 50,000 people live in low-lying coastal areas that will be devastated. Your evacuation plan must balance speed with thoroughness. The Chief Minister is watching.",
+      "goal": "Design an effective evacuation strategy for coastal communities",
+      "timed": true,
+      "time_limit_seconds": 45,
+      "timeout_delta": {
+        "public_trust": -10,
+        "response_speed": -15
+      },
+      "timeout_feedback": "Indecision cost precious hours! Some villages weren't warned in time.",
+      "choices": [
+        {
+          "id": "door_to_door",
+          "label": "Door-to-door evacuation",
+          "description": "Send teams to every household in vulnerable zones for personal evacuation notices",
+          "delta": {
+            "budget": -8000,
+            "public_trust": 15,
+            "response_speed": -10,
+            "team_capacity": -15,
+            "media_rating": 10,
+            "resilience": 3,
+            "impulse_control": 4
+          },
+          "feedback": "Every family was personally warned. Elderly and disabled residents were helped to safety. This thorough approach saved lives but exhausted your team.",
+          "memory_tag": "evacuation_planned"
+        },
+        {
+          "id": "broadcast_alert",
+          "label": "Mass broadcast alerts",
+          "description": "Use TV, radio, SMS, and loudspeakers for wide-area emergency warnings",
+          "delta": {
+            "budget": -3000,
+            "public_trust": 5,
+            "response_speed": 15,
+            "team_capacity": 0,
+            "media_rating": 5,
+            "impulse_control": 6,
+            "strategic_thinking": 6
+          },
+          "feedback": "Alerts reached millions quickly. However, some remote fishing hamlets without phone coverage didn't receive the warning in time.",
+          "memory_tag": "evacuation_planned"
+        },
+        {
+          "id": "zone_based",
+          "label": "Zone-based phased evacuation",
+          "description": "Divide the coast into risk zones and evacuate highest-risk areas first, moving inward",
+          "delta": {
+            "budget": -5000,
+            "public_trust": 10,
+            "response_speed": 5,
+            "team_capacity": -5,
+            "media_rating": 15,
+            "strategic_thinking": 9,
+            "emotional_regulation": 2
+          },
+          "feedback": "Systematic zone-based approach ensures the most vulnerable areas are cleared first. NDRF teams praise your methodical planning.",
+          "memory_tag": "evacuation_planned"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "resilience",
+          "impulse_control"
+        ]
+      },
+      "image_prompt": "a bustling emergency operations center filled with officials at large tables covered in maps and charts, urgent discussions under bright overhead lights, tension in the air"
+    },
+    {
+      "id": "round_2",
+      "round_number": 2,
+      "title": "Resource Allocation",
+      "story": "Relief materials are arriving from across the state but demand far exceeds supply. Three regions are competing for the same pool of resources: medical supplies, food packets, and temporary shelters. District collectors from neighboring areas are also requesting your surplus.",
+      "goal": "Distribute limited resources effectively across affected areas",
+      "choices": [
+        {
+          "id": "equal_distribution",
+          "label": "Equal distribution to all zones",
+          "description": "Split resources equally among all affected areas regardless of severity",
+          "delta": {
+            "budget": -5000,
+            "public_trust": 5,
+            "response_speed": 5,
+            "team_capacity": -5,
+            "media_rating": 0,
+            "resilience": 3,
+            "impulse_control": 4
+          },
+          "feedback": "Fair distribution maintains social harmony but some severely affected areas needed more. Panchayat leaders from hard-hit villages express frustration.",
+          "memory_tag": "resources_distributed"
+        },
+        {
+          "id": "need_based",
+          "label": "Need-based prioritization",
+          "description": "Use damage assessment data to send more resources to worst-hit areas",
+          "delta": {
+            "budget": -7000,
+            "public_trust": 10,
+            "response_speed": -5,
+            "team_capacity": -10,
+            "media_rating": 10,
+            "impulse_control": 6,
+            "strategic_thinking": 6
+          },
+          "feedback": "Data-driven allocation ensures the most affected communities get what they need. Block Development Officers coordinate effectively on the ground.",
+          "memory_tag": "resources_distributed"
+        },
+        {
+          "id": "hub_spoke",
+          "label": "Hub-and-spoke distribution",
+          "description": "Set up central distribution hubs and let communities collect from the nearest hub",
+          "delta": {
+            "budget": -3000,
+            "public_trust": -5,
+            "response_speed": 10,
+            "team_capacity": 5,
+            "media_rating": -5,
+            "strategic_thinking": 9,
+            "emotional_regulation": 2
+          },
+          "feedback": "Efficient for your team but some elderly and injured cannot travel to hubs. NGOs step in to fill gaps with last-mile delivery.",
+          "memory_tag": "resources_distributed"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "impulse_control",
+          "strategic_thinking"
+        ]
+      },
+      "image_prompt": "a bustling disaster relief center filled with volunteers sorting medical supplies and food packets, colorful banners overhead, a sense of urgency in the air, bright fluorescent lighting"
+    },
+    {
+      "id": "round_3",
+      "round_number": 3,
+      "title": "Media Management",
+      "story": "National media has descended upon the disaster zone. Cameras are everywhere. A viral video shows an elderly woman crying outside a relief camp that turned her away. Social media outrage is building. How you handle the press now will define public perception of the entire relief effort.",
+      "goal": "Manage media relations during a sensitive crisis moment",
+      "timed": true,
+      "time_limit_seconds": 30,
+      "timeout_delta": {
+        "media_rating": -15,
+        "public_trust": -10
+      },
+      "timeout_feedback": "Your silence was interpreted as guilt. News channels ran with the narrative that the administration is failing.",
+      "choices": [
+        {
+          "id": "press_conference",
+          "label": "Hold an open press conference",
+          "description": "Face the cameras directly, share data on relief efforts, and acknowledge shortcomings",
+          "delta": {
+            "budget": -1000,
+            "public_trust": 10,
+            "response_speed": -5,
+            "team_capacity": 0,
+            "media_rating": 15,
+            "resilience": 3,
+            "impulse_control": 4
+          },
+          "feedback": "Your transparency wins respect. Journalists appreciate the openness. The narrative shifts to focus on the massive scale of the relief operation.",
+          "memory_tag": "media_managed"
+        },
+        {
+          "id": "embedded_journalists",
+          "label": "Invite journalists to the field",
+          "description": "Take select reporters to see relief operations firsthand on the ground",
+          "delta": {
+            "budget": -2000,
+            "public_trust": 5,
+            "response_speed": -10,
+            "team_capacity": -5,
+            "media_rating": 20,
+            "impulse_control": 6,
+            "strategic_thinking": 6
+          },
+          "feedback": "Ground-level coverage shows the heroic work of your teams. Human interest stories emerge. But managing journalist safety diverts some team resources.",
+          "memory_tag": "media_managed"
+        },
+        {
+          "id": "social_media_campaign",
+          "label": "Launch social media counter-narrative",
+          "description": "Release real-time updates, photos, and statistics on social media platforms",
+          "delta": {
+            "budget": -500,
+            "public_trust": -5,
+            "response_speed": 5,
+            "team_capacity": 5,
+            "media_rating": 5,
+            "strategic_thinking": 9,
+            "emotional_regulation": 2
+          },
+          "feedback": "Quick social media updates help, but critics call it PR spin. Some accuse the administration of caring more about image than action.",
+          "memory_tag": "media_managed"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "emotional_regulation"
+        ]
+      },
+      "image_prompt": "a chaotic disaster zone filled with flashing cameras and reporters, a relief camp in disarray, with an elderly woman visibly distressed amidst onlookers and bright media lights"
+    },
+    {
+      "id": "round_4",
+      "round_number": 4,
+      "title": "Dynamic Challenge",
+      "ai_generatable": true,
+      "ai_generation_context": {
+        "theme_options": [
+          "infrastructure damage",
+          "civilian rescue",
+          "logistics coordination"
+        ],
+        "resource_names": [
+          "budget",
+          "public_trust",
+          "response_speed",
+          "team_capacity",
+          "media_rating"
+        ],
+        "difficulty": "medium",
+        "context": "Mid-game crisis event during cyclone disaster response in Tamil Nadu. The player is a District Crisis Manager handling Cyclone Vardah."
+      },
+      "psychological_focus": {
+        "primary_skills": [
+          "emotional_regulation",
+          "adaptability"
+        ]
+      },
+      "image_prompt": "a vibrant beach scene with crashing waves, colorful beach umbrellas scattered across the sand, people engaged in a lively beach volleyball game under a bright blue sky"
+    },
+    {
+      "id": "round_5",
+      "round_number": 5,
+      "title": "Relief Camp Setup",
+      "story": "With the cyclone having passed, thousands of displaced families need shelter. You have three potential locations for the main relief camp. Each has trade-offs in terms of capacity, accessibility, and cost. The Tahsildar is awaiting your decision.",
+      "goal": "Establish effective relief camps for displaced communities",
+      "choices": [
+        {
+          "id": "school_campus",
+          "label": "Use school campus",
+          "description": "Convert government school buildings into temporary relief shelters with existing facilities",
+          "delta": {
+            "budget": -3000,
+            "public_trust": 10,
+            "response_speed": 10,
+            "team_capacity": 0,
+            "media_rating": 5,
+            "resilience": 3,
+            "impulse_control": 4
+          },
+          "feedback": "Schools provide immediate shelter with toilets, kitchens, and open grounds. However, children's education is disrupted. Teachers volunteer to help manage the camps.",
+          "memory_tag": "camp_established"
+        },
+        {
+          "id": "tent_city",
+          "label": "Build dedicated tent city",
+          "description": "Set up a purpose-built camp with NDRF tents on open ground near the highway",
+          "delta": {
+            "budget": -12000,
+            "public_trust": 5,
+            "response_speed": -10,
+            "team_capacity": -10,
+            "media_rating": 15,
+            "impulse_control": 6,
+            "strategic_thinking": 6
+          },
+          "feedback": "Professional camp setup impresses visiting officials and media. Proper sanitation and medical facilities are built. But the cost is high and setup time significant.",
+          "memory_tag": "camp_established"
+        },
+        {
+          "id": "community_hosting",
+          "label": "Community-based hosting",
+          "description": "Partner with local communities to host displaced families in homes, temples, and community halls",
+          "delta": {
+            "budget": -2000,
+            "public_trust": 20,
+            "response_speed": 5,
+            "team_capacity": 5,
+            "media_rating": 10,
+            "strategic_thinking": 9,
+            "emotional_regulation": 2
+          },
+          "feedback": "The warmth of Tamil Nadu's communities shines. Families open their homes. Community halls and temples become shelters. Social bonds strengthen through shared adversity.",
+          "memory_tag": "camp_established"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "adaptability",
+          "resilience"
+        ]
+      },
+      "image_prompt": "a bustling relief camp site in a clearing, large tents being set up under a bright blue sky, volunteers organizing supplies, families arriving with hopeful expressions"
+    },
+    {
+      "id": "round_6",
+      "round_number": 6,
+      "title": "Recovery Planning",
+      "story": "The immediate crisis is receding, but the road to recovery stretches ahead. Homes are destroyed, livelihoods shattered, and infrastructure crippled. The state government wants your recovery plan within 24 hours. How do you prioritize the rebuilding of this district?",
+      "goal": "Create a sustainable long-term recovery plan for the affected region",
+      "timed": true,
+      "time_limit_seconds": 25,
+      "timeout_delta": {
+        "public_trust": -10,
+        "media_rating": -10,
+        "budget": -5000
+      },
+      "timeout_feedback": "Delay in recovery planning frustrated displaced families and the state government. Funds were allocated without a proper plan.",
+      "choices": [
+        {
+          "id": "infrastructure_first",
+          "label": "Infrastructure-first recovery",
+          "description": "Prioritize rebuilding roads, bridges, power lines, and communication networks",
+          "delta": {
+            "budget": -10000,
+            "public_trust": 5,
+            "response_speed": 10,
+            "team_capacity": -10,
+            "media_rating": 5,
+            "resilience": 3,
+            "impulse_control": 4
+          },
+          "feedback": "Roads and power are restored quickly. Economic activity resumes. But families still living in temporary shelters feel neglected. Infrastructure-first is a long-term bet.",
+          "memory_tag": "recovery_planned"
+        },
+        {
+          "id": "livelihood_focus",
+          "label": "Livelihood restoration",
+          "description": "Focus on restoring fishing boats, farming equipment, and small businesses first",
+          "delta": {
+            "budget": -8000,
+            "public_trust": 15,
+            "response_speed": 0,
+            "team_capacity": 5,
+            "media_rating": 10,
+            "impulse_control": 6,
+            "strategic_thinking": 6
+          },
+          "feedback": "Fishermen get new boats. Farmers receive seeds and tools. Small shopkeepers get micro-loans. People feel empowered to rebuild their own lives with dignity.",
+          "memory_tag": "recovery_planned"
+        },
+        {
+          "id": "build_back_better",
+          "label": "Build Back Better program",
+          "description": "Comprehensive plan combining cyclone-resistant housing, disaster preparedness training, and green infrastructure",
+          "delta": {
+            "budget": -15000,
+            "public_trust": 10,
+            "response_speed": -15,
+            "team_capacity": -5,
+            "media_rating": 20,
+            "strategic_thinking": 9,
+            "emotional_regulation": 2
+          },
+          "feedback": "Ambitious but slow. International organizations offer support. The PM praises the vision. However, immediate needs take longer to address while planning the future.",
+          "memory_tag": "recovery_planned"
+        }
+      ],
+      "psychological_focus": {
+        "primary_skills": [
+          "resilience",
+          "impulse_control"
+        ]
+      },
+      "image_prompt": "a devastated neighborhood with crumbled homes and scattered debris, workers assessing damage under a cloudy sky, a sense of urgency and hope in the air, plans and blueprints in hand"
+    },
+    {
+      "id": "round_7",
+      "round_number": 7,
+      "title": "Dynamic Recovery Challenge",
+      "ai_generatable": true,
+      "ai_generation_context": {
+        "theme_options": [
+          "rehabilitation",
+          "rebuilding",
+          "community healing"
+        ],
+        "resource_names": [
+          "budget",
+          "public_trust",
+          "response_speed",
+          "team_capacity",
+          "media_rating"
+        ],
+        "difficulty": "hard",
+        "context": "Late-game recovery phase after cyclone disaster. The player must address long-term recovery challenges in Tamil Nadu's coastal communities."
+      },
+      "psychological_focus": {
+        "primary_skills": [
+          "impulse_control",
+          "strategic_thinking"
+        ]
+      },
+      "image_prompt": "a vibrant beach setting with colorful beach umbrellas and people participating in a lively obstacle course, palm trees swaying in the gentle breeze, bright sunlight illuminating the scene"
+    }
+  ],
+  "rounds": [],
+  "news_events": [
+    {
+      "round": 0,
+      "headline": "Cyclone Vardah expected to make landfall near Chennai coast within 48 hours.",
+      "source": "India Meteorological Department"
+    },
+    {
+      "round": 1,
+      "headline": "Chief Minister announces emergency relief package of ₹500 crore.",
+      "source": "State Government Press Release"
+    },
+    {
+      "round": 3,
+      "headline": "Fishing communities along the coast report unusual wave patterns.",
+      "source": "Tamil Nadu Fisheries Department"
+    },
+    {
+      "round": 5,
+      "headline": "International Red Cross offers assistance for post-cyclone rehabilitation.",
+      "source": "ICRC India Bureau"
+    }
+  ],
+  "dynamic_news_rules": [
+    {
+      "condition": "public_trust > 80",
+      "headline": "Public praises Crisis Manager's decisive leadership. Approval ratings soar.",
+      "source": "Public Opinion Survey"
+    },
+    {
+      "condition": "budget < 10000",
+      "headline": "Budget concerns raised as disaster relief funds run critically low.",
+      "source": "District Finance Office"
+    },
+    {
+      "condition": "team_capacity < 30",
+      "headline": "Reports of exhausted rescue workers. Team burnout becoming a serious issue.",
+      "source": "NDRF Welfare Division"
+    }
+  ],
+  "interdependencies": [
+    {
+      "source": "team_capacity",
+      "target": "response_speed",
+      "condition": "< 30",
+      "effect": "-5",
+      "message": "Exhausted team is slowing down response operations."
+    },
+    {
+      "source": "media_rating",
+      "target": "public_trust",
+      "condition": "> 80",
+      "effect": "+3",
+      "message": "Positive media coverage boosts public confidence."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "first_responder",
+      "title": "First Responder",
+      "description": "Complete evacuation planning successfully",
+      "condition": {
+        "memory_tags_include": [
+          "evacuation_planned"
+        ]
+      },
+      "rarity": "common",
+      "icon": "🚑",
+      "xp_reward": 100
+    },
+    {
+      "id": "media_darling",
+      "title": "Media Darling",
+      "description": "Achieve media rating above 80",
+      "condition": {
+        "media_rating": {
+          "min": 81
+        }
+      },
+      "rarity": "rare",
+      "icon": "🌟",
+      "xp_reward": 100
+    },
+    {
+      "id": "budget_master",
+      "title": "Budget Master",
+      "description": "End the game with budget above ₹20,000",
+      "condition": {
+        "budget": {
+          "min": 20001
+        }
+      },
+      "rarity": "rare",
+      "icon": "💸",
+      "xp_reward": 250
+    },
+    {
+      "id": "peoples_champion",
+      "title": "People's Champion",
+      "description": "Achieve public trust above 90",
+      "condition": {
+        "public_trust": {
+          "min": 91
+        }
+      },
+      "rarity": "epic",
+      "icon": "🏆",
+      "xp_reward": 250
+    },
+    {
+      "id": "crisis_legend",
+      "title": "Crisis Legend",
+      "description": "End the game with all resources above 60",
+      "condition": {
+        "budget": {
+          "min": 60
+        },
+        "public_trust": {
+          "min": 61
+        },
+        "response_speed": {
+          "min": 61
+        },
+        "team_capacity": {
+          "min": 61
+        },
+        "media_rating": {
+          "min": 61
+        }
+      },
+      "rarity": "legendary",
+      "icon": "👑",
+      "xp_reward": 100
+    }
+  ],
+  "endings": [
+    {
+      "id": "master_crisis_manager",
+      "title": "Master Crisis Manager",
+      "description": "Your leadership during Cyclone Vardah will be studied in disaster management courses across India. You saved thousands of lives, managed resources brilliantly, and maintained public confidence throughout. The President of India personally commends your service.",
+      "rarity": "legendary",
+      "conditions": {
+        "public_trust": {
+          "min": 85
+        },
+        "budget": {
+          "min": 15000
+        },
+        "team_capacity": {
+          "min": 60
+        }
+      }
+    },
+    {
+      "id": "effective_leader",
+      "title": "Effective Leader",
+      "description": "You led the crisis response with competence and determination. While not perfect, your decisions saved many lives and the public recognizes your effort. The state government recommends you for a commendation.",
+      "rarity": "rare",
+      "conditions": {
+        "public_trust": {
+          "min": 70
+        },
+        "response_speed": {
+          "min": 50
+        }
+      }
+    },
+    {
+      "id": "budget_conscious_admin",
+      "title": "Budget Conscious Administrator",
+      "description": "You managed to handle the crisis while keeping a tight rein on finances. While some criticize the conservative approach, the district has ample funds for long-term recovery. The CAG commends your fiscal discipline.",
+      "rarity": "common",
+      "conditions": {
+        "budget": {
+          "min": 30000
+        }
+      }
+    },
+    {
+      "id": "learning_from_disaster",
+      "title": "Learning from Disaster",
+      "description": "The cyclone response had its challenges, and not everything went according to plan. But every crisis is a learning opportunity. You take detailed notes on what worked, what didn't, and how to improve next time. Your experience report becomes mandatory reading for new district officers.",
+      "rarity": "common",
+      "is_default": true
+    }
+  ],
+  "random_events": [
+    {
+      "id": "volunteer_surge",
+      "probability": 0.2,
+      "trigger_after_round": 1,
+      "delta": {
+        "team_capacity": 10,
+        "public_trust": 5
+      },
+      "text": "A wave of volunteers arrives to help! College students from Chennai, NGO workers, and retired army personnel join your effort. Team capacity boosted."
+    },
+    {
+      "id": "aftershock",
+      "probability": 0.15,
+      "trigger_after_round": 3,
+      "delta": {
+        "response_speed": -5,
+        "budget": -2000
+      },
+      "text": "Aftershock reported! Secondary infrastructure damage in coastal areas requires additional resources and slows down operations."
+    }
+  ],
+  "how_to_play": [
+    "You are the District Crisis Manager responding to Cyclone Vardah. Every decision affects your resources: Budget, Public Trust, Response Speed, Team Capacity, and Media Rating.",
+    "Talk to NPCs for advice - Dr. Meera Iyer can predict cyclone paths, Commander Sharma knows ground realities, and Priya Menon can shape public perception.",
+    "Some rounds are timed! When the timer appears, make quick decisions or face consequences. In real disasters, hesitation costs lives.",
+    "Watch for crisis events that appear randomly. These require immediate attention and can dramatically change your resource levels. Balance short-term needs with long-term recovery."
+  ],
+  "learning_objectives": [
+    "Understand the key phases of disaster management: preparedness, response, recovery, and mitigation.",
+    "Learn how to allocate scarce resources during emergencies and make difficult trade-off decisions under pressure.",
+    "Appreciate the role of media management, public communication, and community engagement during natural disasters.",
+    "Develop awareness of India's disaster response infrastructure including NDRF, SDRF, and the role of district administration."
+  ],
+  "scoring_criteria": [
+    {
+      "resource": "public_trust",
+      "weight": 0.3,
+      "label": "Public Trust Score"
+    },
+    {
+      "resource": "budget",
+      "weight": 0.2,
+      "label": "Financial Management"
+    },
+    {
+      "resource": "response_speed",
+      "weight": 0.25,
+      "label": "Response Efficiency"
+    },
+    {
+      "resource": "team_capacity",
+      "weight": 0.15,
+      "label": "Team Management"
+    },
+    {
+      "resource": "media_rating",
+      "weight": 0.1,
+      "label": "Media Handling"
+    }
+  ],
+  "nep_tags": [
+    "Environmental Studies",
+    "Social Science",
+    "Civic Responsibility",
+    "Critical Thinking",
+    "Decision Making",
+    "Leadership",
+    "Disaster Management",
+    "Geography"
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "ethical_reasoning",
+        "name": "Ethical Reasoning",
+        "icon": "⚖️",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "temporal_lobe"
+      },
+      {
+        "id": "emotional_regulation",
+        "name": "Emotional Regulation",
+        "icon": "🧘",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "limbic_system"
+      },
+      {
+        "id": "self_awareness",
+        "name": "Self Awareness",
+        "icon": "🪞",
+        "brain_region": "occipital_posterior"
+      },
+      {
+        "id": "growth_mindset",
+        "name": "Growth Mindset",
+        "icon": "🌱",
+        "brain_region": "occipital_posterior"
+      }
+    ]
+  },
+  "coach_mode_default": true,
+  "learning_concept": "Competitive Reasoning & Negotiation",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Outmaneuvering AI competitors with limited resources",
+      "real_world": "Competing for market share in a business with a tight budget",
+      "challenge": "Identify a competitive situation in your life. What is your unique advantage?"
+    },
+    {
+      "skill_tag": "risk_tolerance",
+      "game_context": "Choosing between safe and bold strategies against AI",
+      "real_world": "Deciding when to challenge the status quo versus play it safe",
+      "challenge": "Research one company that made a bold risk that paid off. What conditions made it possible?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "BATNA",
+      "definition": "Best Alternative To a Negotiated Agreement — your fallback if no deal is reached.",
+      "example": "If you can't agree on a price, you could sell to a different buyer — that's your BATNA.",
+      "deep_dive": "A strong BATNA gives negotiating power. Knowing both parties' BATNAs reveals who needs the deal more.",
+      "real_world_example": "A job applicant with another offer has a stronger BATNA and can negotiate more confidently."
+    },
+    {
+      "term": "Win-Win Negotiation",
+      "definition": "Finding solutions where both parties gain value rather than one side winning at the other's expense.",
+      "example": "Agreeing on a payment plan that works for both buyer and seller, rather than a discount that hurts profit.",
+      "deep_dive": "Integrative negotiation expands the 'pie' by identifying trade-offs where each party values things differently.",
+      "real_world_example": "Labor-management negotiations that increase productivity in exchange for better wages can benefit both sides."
+    },
+    {
+      "term": "Anchoring",
+      "definition": "Setting an initial reference point in a negotiation that influences the final outcome.",
+      "example": "The first price mentioned in a negotiation becomes the anchor around which all counteroffers are compared.",
+      "deep_dive": "Research shows people are heavily influenced by the first number they hear, even when irrelevant.",
+      "real_world_example": "Salary negotiations: starting with a high number tends to result in higher final offers."
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_intelligence": 0.5,
+      "crisis_frequency": 0.1,
+      "resource_boost": 1.3
+    },
+    "medium": {
+      "ai_intelligence": 0.75,
+      "crisis_frequency": 0.2,
+      "resource_boost": 1.0
+    },
+    "hard": {
+      "ai_intelligence": 1.0,
+      "crisis_frequency": 0.4,
+      "resource_boost": 0.75
+    }
+  },
+  "dimension_scoring_weights": {
+    "adaptability": 0.35,
+    "strategic_thinking": 0.3,
+    "resilience": 0.25,
+    "empathy": 0.1
+  },
+  "coaching_moment": "Understand the key phases of disaster management: preparedness, response, recovery, and mitigation. Learn how to allocate scarce resources during emergencies and make difficult trade-off decisions under pressure.",
+  "tags": [
+    "adaptability",
+    "ai-arena",
+    "ai-opponent",
+    "crisis-management",
+    "environment",
+    "simulation"
+  ],
+  "cultural_context": "India faces recurring climate-related disasters — cyclones, floods, droughts — that test government response capacity. Disaster management is a core subject in India's civil services examination, and real competency in crisis leadership is urgently needed.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "adaptability",
+    "critical-thinking",
+    "social-emotional-learning"
+  ],
+  "estimated_duration": 25,
+  "target_age": "14-18",
+  "reflection_prompt": "How did you adapt as the AI shifted strategies? Which adaptation worked best?"
+}

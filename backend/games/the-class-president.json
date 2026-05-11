@@ -1,0 +1,1813 @@
+{
+  "game_id": "the-class-president",
+  "title": "The Class President",
+  "game_type": "story_branching",
+  "visible": true,
+  "description": "Run for class president against the most popular kid in school. Navigate alliances, debates, and moral crossroads to discover what leadership really means — is it about winning, or about standing for something?",
+  "theme": "Democratic leadership and integrity",
+  "difficulty": "beginner",
+  "duration_minutes": 45,
+  "target_audience": "students",
+  "icon": "🗳️",
+  "cover_image_prompt": "A 13-year-old Indian girl standing at a school podium with campaign posters behind her, determined expression, school hallway with students watching, vibrant watercolor illustration, warm school lighting, age 10-18 friendly",
+  "learning_objectives": [
+    "Understand the balance between popularity and principled leadership",
+    "Practice persuasion and public speaking under pressure",
+    "Learn to build coalitions without compromising core values",
+    "Develop resilience when facing unfair tactics",
+    "Explore the difference between winning at any cost and winning with integrity"
+  ],
+  "learning_concept": "True leaders earn trust not by telling people what they want to hear, but by standing for what is right — even when it is unpopular.",
+  "psychological_framework": "Transformational Leadership (Burns) — leaders inspire change through vision and integrity; combined with Moral Development (Kohlberg) — progressing from self-interest to principled reasoning",
+  "ai_image_config": {
+    "style": "vibrant watercolor illustration, Indian school setting, campaign posters, warm lighting, age 10-18 friendly, inspiring leadership story aesthetic",
+    "provider": "dalle",
+    "generate_on_first_play": true,
+    "cache_images": true,
+    "cache_directory": "uploads/media/images/story_branching"
+  },
+  "chapters": [
+    {
+      "chapter_id": "ch1",
+      "number": 1,
+      "title": "The Announcement",
+      "icon": "📢",
+      "teaser": "Ms. Mehra announces elections — and {player_name} decides to run.",
+      "always_unlocked": true,
+      "color": "#f59e0b"
+    },
+    {
+      "chapter_id": "ch2",
+      "number": 2,
+      "title": "Campaign Launch",
+      "icon": "🚀",
+      "teaser": "Building a team and a message — but what should the campaign stand for?",
+      "unlocks_after": "ch1",
+      "color": "#10b981"
+    },
+    {
+      "chapter_id": "ch3",
+      "number": 3,
+      "title": "The First Debate",
+      "icon": "🎤",
+      "teaser": "Rohan is charming. {player_name} must find a different way to connect.",
+      "unlocks_after": "ch2",
+      "color": "#6366f1"
+    },
+    {
+      "chapter_id": "ch4",
+      "number": 4,
+      "title": "Coalition Building",
+      "icon": "🤝",
+      "teaser": "Every group wants something — can {player_name} unite them without empty promises?",
+      "unlocks_after": "ch3",
+      "color": "#ec4899"
+    },
+    {
+      "chapter_id": "ch5",
+      "number": 5,
+      "title": "Dirty Tactics Exposed",
+      "icon": "🕵️",
+      "teaser": "Someone is spreading lies. Priya has the proof — but using it is complicated.",
+      "unlocks_after": "ch4",
+      "color": "#ef4444"
+    },
+    {
+      "chapter_id": "ch6",
+      "number": 6,
+      "title": "The Moral Crossroad",
+      "icon": "⚖️",
+      "teaser": "A chance to win big — but it means bending the rules.",
+      "unlocks_after": "ch5",
+      "color": "#8b5cf6"
+    },
+    {
+      "chapter_id": "ch7",
+      "number": 7,
+      "title": "The Rally",
+      "icon": "📣",
+      "teaser": "One speech. The whole school watching. This is the moment.",
+      "unlocks_after": "ch6",
+      "color": "#0ea5e9"
+    },
+    {
+      "chapter_id": "ch8",
+      "number": 8,
+      "title": "Election Day",
+      "icon": "🗳️",
+      "teaser": "Votes are being cast. Last-minute surprises change everything.",
+      "unlocks_after": "ch7",
+      "color": "#f97316"
+    },
+    {
+      "chapter_id": "ch9",
+      "number": 9,
+      "title": "The Results",
+      "icon": "📊",
+      "teaser": "Win or lose — {player_name} must face the outcome with grace.",
+      "unlocks_after": "ch8",
+      "color": "#14b8a6"
+    },
+    {
+      "chapter_id": "ch10",
+      "number": 10,
+      "title": "First Week in Office",
+      "icon": "🏛️",
+      "teaser": "The real test begins — can {player_name} turn promises into action?",
+      "unlocks_after": "ch9",
+      "color": "#f59e0b"
+    }
+  ],
+  "initial_state": {
+    "popularity": {
+      "value": 40,
+      "label": "Popularity",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "integrity": {
+      "value": 60,
+      "label": "Integrity",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "confidence": {
+      "value": 45,
+      "label": "Confidence",
+      "icon": "💪",
+      "min": 0,
+      "max": 100
+    },
+    "trust": {
+      "value": 50,
+      "label": "Trust",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50
+    }
+  },
+  "story_intro": {
+    "scenes": [
+      {
+        "scene_id": "ch1_s1",
+        "chapter": "ch1",
+        "transitions_to_gameplay": true,
+        "title": "The Announcement",
+        "narrative": "Ms. Mehra stood at the front of Class 8-B with that particular smile she reserved for important announcements. 'This year,' she said, adjusting her spectacles, 'we will hold proper democratic elections for class president. Nominations are open until Friday.'\n\nThe room buzzed. Rohan Kapoor, sitting in the back row surrounded by his usual group, was already grinning. Everyone knew he would run — he was the most popular boy in the grade, captain of the basketball team, and had that easy charm that made teachers and students alike gravitate towards him.\n\n{player_name} sat in the middle row, heart beating faster than expected. For months, Aanya had been quietly organizing — the recycling drive, the library petition, the buddy system for new students. Nobody had called it leadership. But Sameer, sitting next to her, leaned over and whispered: 'You should run. You actually care about this stuff.'\n\nThe bell rang. Aanya had until Friday to decide.",
+        "image_prompt": "A female Indian teacher announcing elections to a classroom of excited 13-year-old students, one girl in the middle row looking thoughtful while a popular boy in the back grins confidently, Indian school classroom with green chalkboard, watercolor illustration, warm school light",
+        "coaching_moment": "Leadership often starts not with ambition, but with noticing problems others overlook and wanting to fix them.",
+        "choices": [
+          {
+            "id": "ch1_s1_a",
+            "label": "Submit your nomination right away",
+            "description": "Aanya walks up to Ms. Mehra's desk after class and puts her name forward immediately — no hesitation.",
+            "delta": {
+              "confidence": 10,
+              "popularity": 5,
+              "integrity": 3
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Bold moves get noticed — but also draw early scrutiny.",
+            "memory_tags": [
+              "early_nomination"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_b",
+            "label": "Talk to a few friends first to gauge support",
+            "description": "Aanya spends the next two days quietly asking classmates what they think — building support before committing.",
+            "delta": {
+              "trust": 8,
+              "confidence": 5,
+              "popularity": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Careful preparation builds a stronger foundation — but risks someone else seizing the moment.",
+            "memory_tags": [
+              "careful_start"
+            ],
+            "next_scene": "ch1_s2"
+          },
+          {
+            "id": "ch1_s1_c",
+            "label": "Ask Sameer to be campaign manager first",
+            "description": "Aanya knows she cannot do this alone — she asks Sameer to help her plan before going public.",
+            "delta": {
+              "trust": 10,
+              "confidence": 8,
+              "popularity": -2
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Great leaders build teams before they build campaigns.",
+            "memory_tags": [
+              "sameer_first"
+            ],
+            "next_scene": "ch1_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s2",
+        "chapter": "ch1",
+        "title": "The Rival",
+        "narrative": "By Wednesday, two names are on the nomination board: Aanya Sharma and Rohan Kapoor. The hallway is already divided. Rohan's supporters have made glossy posters with the slogan 'Rohan Rocks!' — someone's older brother apparently works at a print shop.\n\nAanya's side of the board has a single handwritten note: 'Aanya for President — Because Actions Speak Louder.'\n\nDuring lunch, Rohan walks over to Aanya's table with his easy smile. 'Hey, good luck,' he says. It sounds friendly enough. But then he adds, just loud enough for the nearby tables to hear: 'It's cool that you're running. I mean, it'll be good practice for you.'\n\nSameer's jaw tightens. Priya, the school journalist who has been watching from two tables away, scribbles something in her notebook. {player_name} feels a flash of anger — but also notices that Rohan's comment has made several students look over with curiosity. They are paying attention now.",
+        "image_prompt": "A school hallway with a nomination board, glossy posters on one side and a simple handwritten note on the other, a confident boy talking to a determined girl at a lunch table while other students watch, Indian school setting, watercolor illustration",
+        "coaching_moment": "When someone underestimates you, it can be fuel or poison — you choose which.",
+        "choices": [
+          {
+            "id": "ch1_s2_a",
+            "label": "Smile and say 'May the best ideas win'",
+            "description": "Aanya keeps her composure, turning Rohan's condescension into a moment of grace that others notice.",
+            "delta": {
+              "integrity": 10,
+              "trust": 8,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Taking the high road earns quiet respect — but some may see it as weakness.",
+            "next_scene": "ch1_s3"
+          },
+          {
+            "id": "ch1_s2_b",
+            "label": "Fire back with a witty comeback",
+            "description": "Aanya looks Rohan in the eye and says 'Practice? I've been doing the work while you've been doing the talking.'",
+            "delta": {
+              "popularity": 10,
+              "confidence": 8,
+              "integrity": -3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "resilience"
+            ],
+            "consequence_hint": "A sharp response gets cheers — but also sets the tone for a fiercer contest.",
+            "next_scene": "ch1_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch1_s3",
+        "chapter": "ch1",
+        "title": "The Platform Question",
+        "narrative": "That evening, Aanya sits at her desk at home with a blank notebook. Sameer has sent her a voice note: 'We need a platform. Three big promises. What do you actually want to change?'\n\nShe thinks about the school. The broken water cooler on the second floor that nobody has fixed in six months. The fact that the sports budget is ten times the arts budget. The new students who eat lunch alone for weeks because nobody talks to them. The library that closes at 3 PM even though many students stay until 5.\n\nShe cannot promise everything. Rohan will probably promise a bigger sports day and a school trip — things that sound exciting but cost money the school does not have. {player_name} needs to decide what kind of campaign this will be: one that tells people what they want to hear, or one that addresses real problems.",
+        "image_prompt": "A 13-year-old Indian girl sitting at her study desk at home with a blank notebook and a pen, thinking deeply about campaign promises, a window showing evening light, campaign ideas written on sticky notes around her, watercolor illustration, warm home setting",
+        "coaching_moment": "The hardest part of leadership is choosing what to focus on — because you cannot fix everything at once.",
+        "choices": [
+          {
+            "id": "ch1_s3_a",
+            "label": "Focus on practical fixes: water cooler, library hours, buddy system",
+            "description": "Aanya builds her platform around three achievable promises that solve real daily problems students face.",
+            "delta": {
+              "integrity": 12,
+              "trust": 10,
+              "popularity": -3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Practical promises are harder to excite people about — but easier to actually deliver.",
+            "memory_tags": [
+              "practical_platform"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_b",
+            "label": "Go big: equal budgets for sports AND arts, plus a student council with real power",
+            "description": "Aanya aims high — demanding structural changes that would genuinely transform the school.",
+            "delta": {
+              "popularity": 12,
+              "confidence": 8,
+              "integrity": -5
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Big visions inspire — but they also invite the question: can you actually do this?",
+            "memory_tags": [
+              "ambitious_platform"
+            ],
+            "next_chapter": "ch2"
+          },
+          {
+            "id": "ch1_s3_c",
+            "label": "Ask students what THEY want changed — build the platform together",
+            "description": "Aanya decides her first act of leadership is listening — she creates a suggestion box before making any promises.",
+            "delta": {
+              "trust": 15,
+              "integrity": 8,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Listening first builds ownership — but takes longer and may delay your message.",
+            "memory_tags": [
+              "crowd_sourced_platform"
+            ],
+            "next_chapter": "ch2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s1",
+        "chapter": "ch2",
+        "title": "Campaign Headquarters",
+        "narrative": "Sameer has turned a corner of the school library into an unofficial campaign HQ. He has a whiteboard with 'AANYA 2026' written across the top and a timeline of the next two weeks. Priya stops by — she says she is covering the election for the school paper, but Aanya notices she lingers longer at their table than at Rohan's.\n\n'You need visibility,' Sameer says, tapping the board. 'Rohan has the basketball crowd, the back-benchers, and half the teachers already. We need the quiet kids, the new students, the ones who feel like nobody listens to them.'\n\nHe is right. But there is a problem. The school has an unwritten rule: the popular candidate always wins. Nobody has beaten a 'cool kid' in an election here in at least five years. {player_name} needs a different strategy — something that changes the game itself.",
+        "image_prompt": "Two Indian teenagers in a school library corner with a whiteboard showing campaign plans, a girl journalist watching from nearby, campaign materials spread on the table, watercolor illustration, warm library lighting, energetic planning atmosphere",
+        "coaching_moment": "When the game is rigged against you, sometimes the smartest move is to change the game entirely.",
+        "choices": [
+          {
+            "id": "ch2_s1_a",
+            "label": "Go door-to-door — visit every classroom personally",
+            "description": "Aanya spends a week visiting every section during breaks, listening to students one-on-one.",
+            "delta": {
+              "trust": 12,
+              "popularity": 8,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Personal connection is powerful but exhausting — and Rohan has the louder megaphone.",
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_b",
+            "label": "Create a viral campaign — memes, slogans, social media",
+            "description": "Sameer is good with design. They create shareable content that makes Aanya's message catchy and fun.",
+            "delta": {
+              "popularity": 15,
+              "confidence": 8,
+              "integrity": -3
+            },
+            "skill_tags": [
+              "adaptability",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Going viral gets attention fast — but substance can get lost in the noise.",
+            "next_scene": "ch2_s2"
+          },
+          {
+            "id": "ch2_s1_c",
+            "label": "Start delivering on promises NOW — fix the water cooler yourself",
+            "description": "Aanya decides the best campaign is action. She raises money, contacts the plumber, and fixes the water cooler before the election.",
+            "delta": {
+              "integrity": 15,
+              "trust": 10,
+              "popularity": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "resilience"
+            ],
+            "consequence_hint": "Actions speak loudly — but some will say you are just doing it for votes.",
+            "memory_tags": [
+              "action_before_election"
+            ],
+            "next_scene": "ch2_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s2",
+        "chapter": "ch2",
+        "title": "The Undecided Voters",
+        "narrative": "A week into the campaign, Sameer shows Aanya his informal poll. Rohan: 45%. Aanya: 30%. Undecided: 25%. The undecided voters are the key — and most of them are from sections C and D, where students tend to be quieter and less involved in school activities.\n\nAanya learns something interesting from Priya: many of these undecided students feel that elections are 'just a popularity contest' and their vote does not matter. They have never seen a class president actually do anything.\n\n{player_name} realizes this is both the problem and the opportunity. If she can convince these students that THIS election is different — that their vote actually leads to change — she might close the gap. But she only has one week left before the debate.",
+        "image_prompt": "A 13-year-old Indian girl talking earnestly to a small group of skeptical-looking students in a school corridor, some with arms crossed, some curious, campaign poster on the wall behind, watercolor illustration, authentic school atmosphere",
+        "coaching_moment": "The people who feel unheard are often the ones most worth listening to — they just need a reason to believe.",
+        "choices": [
+          {
+            "id": "ch2_s2_a",
+            "label": "Organize a 'town hall' in the school courtyard — open mic for anyone",
+            "description": "Aanya creates a space where every student can voice their concerns publicly — no filters, no agenda.",
+            "delta": {
+              "trust": 12,
+              "popularity": 8,
+              "integrity": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "adaptability"
+            ],
+            "consequence_hint": "Open forums build trust — but you cannot control what people say.",
+            "memory_tags": [
+              "town_hall"
+            ],
+            "next_scene": "ch2_s3"
+          },
+          {
+            "id": "ch2_s2_b",
+            "label": "Write personal letters to every undecided voter",
+            "description": "Aanya writes 30 handwritten notes, each mentioning something specific she has noticed about that student.",
+            "delta": {
+              "trust": 15,
+              "confidence": 5,
+              "popularity": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Personal touch moves hearts — but some may think it is just a tactic.",
+            "next_scene": "ch2_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch2_s3",
+        "chapter": "ch2",
+        "title": "Sameer's Warning",
+        "narrative": "The night before the first debate, Sameer calls Aanya. His voice is unusually serious. 'I heard something today. Rohan's team is planning to bring up your marks in maths. You got a 58 last term. They are going to say: how can someone who can't even pass maths run a school?'\n\nAanya's stomach drops. It is true — she struggled with maths last term. She had been helping organize the school recycling drive during exam week and had not studied enough. She is not ashamed of it, but hearing it used as a weapon hurts.\n\nSameer continues: 'I also found out that Rohan copied in his English test last month. I have a photo of the cheat sheet. We could use it.'\n\n{player_name} stares at the ceiling. She has ammunition. But using it would make her exactly the kind of politician she is running against.",
+        "image_prompt": "A 13-year-old Indian girl sitting on her bed holding a phone, looking troubled, a debate preparation notebook open beside her, evening light through the window, internal conflict visible on her face, watercolor illustration, emotional quiet moment",
+        "coaching_moment": "Having power over someone and choosing not to use it unfairly — that is the real test of character.",
+        "choices": [
+          {
+            "id": "ch2_s3_a",
+            "label": "Refuse to use the cheating evidence — prepare for the maths attack honestly",
+            "description": "Aanya tells Sameer to delete the photo. She will face the maths question head-on with honesty.",
+            "delta": {
+              "integrity": 15,
+              "confidence": 8,
+              "popularity": -5
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Integrity costs you in the short term — but people remember who stayed honest under pressure.",
+            "memory_tags": [
+              "chose_honesty",
+              "refused_dirt"
+            ],
+            "next_chapter": "ch3"
+          },
+          {
+            "id": "ch2_s3_b",
+            "label": "Keep the evidence as insurance — only use it if Rohan attacks first",
+            "description": "Aanya does not want to go low, but she also will not be a punching bag. She keeps the photo just in case.",
+            "delta": {
+              "confidence": 10,
+              "popularity": 5,
+              "integrity": -8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Holding leverage feels safe — but it changes how you see yourself.",
+            "memory_tags": [
+              "kept_insurance"
+            ],
+            "next_chapter": "ch3"
+          },
+          {
+            "id": "ch2_s3_c",
+            "label": "Tell Priya the journalist — let the truth come out through proper channels",
+            "description": "Aanya gives the information to Priya for the school paper — it is not an attack, it is journalism.",
+            "delta": {
+              "popularity": 8,
+              "integrity": 3,
+              "trust": -5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Using intermediaries feels cleaner — but you are still pulling the trigger.",
+            "memory_tags": [
+              "told_journalist"
+            ],
+            "next_chapter": "ch3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s1",
+        "chapter": "ch3",
+        "title": "Debate Morning",
+        "narrative": "The school auditorium is packed. Ms. Mehra has arranged two podiums on stage with microphones. The entire grade — 120 students — is seated. Teachers line the back wall. Principal sir is in the front row.\n\nRohan walks in wearing a new shirt, high-fiving friends as he moves to his podium. He looks completely at ease. Aanya's hands are shaking slightly as she arranges her notes. Sameer gives her a thumbs-up from the second row.\n\n{player_name} looks out at the audience. She spots the undecided voters from sections C and D — some of them came specifically because of the town hall or the letters. Priya is in the press corner with her notebook open. Ms. Mehra announces the format: each candidate gets an opening statement, then three rounds of questions, then closing remarks.\n\nThe microphone is on. The room is quiet. It is Aanya's turn to speak first.",
+        "image_prompt": "A school auditorium debate setup with two podiums, a nervous Indian girl at one podium and a confident boy at the other, packed student audience, teachers watching from the back, watercolor illustration, bright auditorium lights, tense anticipation",
+        "coaching_moment": "The best speeches come not from perfect words, but from genuine belief in what you are saying.",
+        "choices": [
+          {
+            "id": "ch3_s1_a",
+            "label": "Open with a personal story about why you care",
+            "description": "Aanya tells the audience about being the new kid three years ago — eating alone, feeling invisible — and how that made her want to change things.",
+            "delta": {
+              "trust": 12,
+              "popularity": 10,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Vulnerability connects deeply — but it also exposes you.",
+            "memory_tags": [
+              "personal_opening"
+            ],
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_b",
+            "label": "Open with hard facts about problems the school needs to fix",
+            "description": "Aanya lists five specific problems with data — the broken cooler (6 months), the library hours, the budget gap.",
+            "delta": {
+              "integrity": 10,
+              "confidence": 8,
+              "trust": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Facts are powerful — but they need emotion to move people to action.",
+            "next_scene": "ch3_s2"
+          },
+          {
+            "id": "ch3_s1_c",
+            "label": "Open by asking the audience a question: 'What has the last president changed?'",
+            "description": "Aanya flips the script — making the audience think before she speaks, letting the silence do the work.",
+            "delta": {
+              "popularity": 12,
+              "confidence": 10,
+              "integrity": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Provocative questions wake people up — but they can also seem confrontational.",
+            "next_scene": "ch3_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s2",
+        "chapter": "ch3",
+        "title": "The Maths Attack",
+        "narrative": "Round two of the debate. A student from Rohan's section raises his hand for a question. Ms. Mehra nods. The boy stands up and says, loudly: 'Aanya got 58 in maths. If she can't manage her own studies, how can she manage the school?'\n\nA murmur runs through the auditorium. Some people laugh. Rohan does not laugh — but he does not stop it either. He leans back with a small smile.\n\n{player_name}'s face burns. She can feel 120 pairs of eyes on her. Sameer is gripping his chair. Priya's pen has stopped moving. Ms. Mehra looks at Aanya, waiting for her response.\n\nThis is the moment. What Aanya says in the next thirty seconds will define her entire campaign.",
+        "image_prompt": "A tense debate moment — a girl at a podium facing a hostile question from the audience, her face showing determination through embarrassment, the rival candidate smirking slightly, audience watching intently, watercolor illustration, dramatic auditorium lighting",
+        "coaching_moment": "How you respond to an attack reveals more about your character than any prepared speech ever could.",
+        "narrative_variants": {
+          "chose_honesty": "Aanya remembers her decision not to use the cheating evidence. She has nothing to hide behind — only the truth.",
+          "kept_insurance": "Aanya's mind flashes to the photo on Sameer's phone. She could end this right now. But should she?"
+        },
+        "choices": [
+          {
+            "id": "ch3_s2_a",
+            "label": "Own it completely — explain what you were doing instead of studying",
+            "description": "Aanya says: 'Yes, I got 58. I was organizing the recycling drive that week. I chose community over my grade. I am not perfect — but I show up.'",
+            "delta": {
+              "integrity": 15,
+              "trust": 12,
+              "popularity": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Radical honesty can turn a weakness into your greatest strength.",
+            "memory_tags": [
+              "owned_weakness"
+            ],
+            "next_scene": "ch3_s3"
+          },
+          {
+            "id": "ch3_s2_b",
+            "label": "Redirect — 'Leadership is not about marks, it is about making things better'",
+            "description": "Aanya pivots the question, arguing that grades measure one thing but leadership measures something else entirely.",
+            "delta": {
+              "confidence": 12,
+              "popularity": 10,
+              "integrity": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Redirecting is smart — but some may feel you dodged the question.",
+            "next_scene": "ch3_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch3_s3",
+        "chapter": "ch3",
+        "title": "After the Debate",
+        "narrative": "The debate is over. Students stream out of the auditorium in clusters, talking loudly. Sameer finds Aanya backstage. 'That was amazing,' he says. 'The maths moment — you turned it around.'\n\nBut Aanya is not sure. She saw some students nodding during her response, but she also saw others rolling their eyes. Rohan was polished, funny, and made three promises that sounded exciting even if they were vague.\n\nPriya appears with her notebook. 'Off the record,' she says quietly, 'that was the best debate answer I have ever heard in this school. On the record — it is still close. Rohan has the energy. You have the substance. The question is which one voters want more.'\n\n{player_name} walks home replaying every word. The election is in ten days. What happens next will depend on whether she can turn substance into momentum.",
+        "image_prompt": "A girl and her friend talking backstage after a school debate, the girl looking hopeful but uncertain, a journalist girl nearby with a notebook, school curtains and stage equipment in background, watercolor illustration, post-debate atmosphere",
+        "coaching_moment": "After a big performance, the temptation is to obsess over what went wrong. The skill is to learn from it and move forward.",
+        "choices": [
+          {
+            "id": "ch3_s3_a",
+            "label": "Double down on grassroots — organize study groups, buddy walks, visible action",
+            "description": "Aanya decides the next ten days will be about doing, not talking. Every day, one visible action.",
+            "delta": {
+              "trust": 12,
+              "integrity": 10,
+              "popularity": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "resilience"
+            ],
+            "consequence_hint": "Consistent small actions build a reputation — but they take time to compound.",
+            "memory_tags": [
+              "grassroots_strategy"
+            ],
+            "next_chapter": "ch4"
+          },
+          {
+            "id": "ch3_s3_b",
+            "label": "Go on a media blitz — school paper interview, hallway posters, morning announcements",
+            "description": "Aanya and Sameer flood the school with her message, matching Rohan's visibility with their own.",
+            "delta": {
+              "popularity": 15,
+              "confidence": 8,
+              "integrity": -3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Visibility wins attention — but without substance, it fades fast.",
+            "next_chapter": "ch4"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s1",
+        "chapter": "ch4",
+        "title": "The Sports Crowd",
+        "narrative": "Sameer has identified the biggest voting bloc still up for grabs: the sports students. They are about 30 kids who play basketball, football, or athletics — and most of them are Rohan's friends. But Sameer has discovered something: many sports students are frustrated because the school's sports budget mostly goes to cricket, and basketball and football get almost nothing.\n\nRohan, being a basketball player himself, has never raised this issue — probably because he does not want to upset the cricket establishment. This is an opening.\n\nBut approaching Rohan's base is risky. If word gets back to him that Aanya is 'stealing' his voters, the campaign could get nastier. {player_name} needs to decide how to approach this coalition.",
+        "image_prompt": "An Indian girl approaching a group of teenage athletes on a school sports field, some playing basketball, some football, looking curious but guarded, school sports ground setting, watercolor illustration, afternoon light",
+        "coaching_moment": "Building coalitions means finding shared interests — not just asking people to switch sides.",
+        "choices": [
+          {
+            "id": "ch4_s1_a",
+            "label": "Meet the sports captains privately — promise equal budget allocation",
+            "description": "Aanya arranges quiet meetings with the basketball and football captains to discuss fair sports funding.",
+            "delta": {
+              "trust": 10,
+              "popularity": 8,
+              "integrity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Private diplomacy builds real alliances — but it can look like backroom dealing.",
+            "memory_tags": [
+              "sports_alliance"
+            ],
+            "next_scene": "ch4_s2"
+          },
+          {
+            "id": "ch4_s1_b",
+            "label": "Make it a public campaign issue — 'Equal play for all sports'",
+            "description": "Aanya adds sports equity to her platform publicly, forcing the issue into the open.",
+            "delta": {
+              "popularity": 12,
+              "integrity": 8,
+              "trust": -3
+            },
+            "skill_tags": [
+              "risk_tolerance",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Public stances are powerful — but they also make enemies quickly.",
+            "next_scene": "ch4_s2"
+          },
+          {
+            "id": "ch4_s1_c",
+            "label": "Stay away from Rohan's base — focus on the arts and academic students instead",
+            "description": "Aanya decides not to provoke Rohan and instead builds her coalition from students who feel overlooked.",
+            "delta": {
+              "integrity": 10,
+              "trust": 8,
+              "popularity": -5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "adaptability"
+            ],
+            "consequence_hint": "Playing it safe avoids conflict — but also leaves the biggest bloc untouched.",
+            "next_scene": "ch4_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s2",
+        "chapter": "ch4",
+        "title": "An Unlikely Offer",
+        "narrative": "Something unexpected happens. A boy named Vikrant from Rohan's inner circle approaches Aanya during lunch. He looks uncomfortable.\n\n'I want to help your campaign,' he says. 'Rohan promised me I would be vice-president, but last night I heard him offer the same thing to two other people. He is telling everyone what they want to hear.'\n\nVikrant has insider information — Rohan's strategy, his weak points, his schedule. Having him on the team would be a huge advantage.\n\nBut Sameer pulls Aanya aside: 'What if this is a trap? What if Rohan sent him to spy on us?' Priya, overhearing, adds: 'Or what if he is genuine and we are just being paranoid?'\n\n{player_name} has to make a judgment call about trust — one of the hardest skills in any leader's toolkit.",
+        "image_prompt": "A nervous Indian boy approaching a girl and her campaign team at a school lunch table, the team looking surprised and cautious, other students in the background unaware, watercolor illustration, school cafeteria, tense and uncertain mood",
+        "coaching_moment": "Trust is a risk — but without it, no coalition survives. The skill is knowing when to extend it.",
+        "choices": [
+          {
+            "id": "ch4_s2_a",
+            "label": "Welcome Vikrant but keep him at arm's length — limited access",
+            "description": "Aanya accepts his help but gives him a public role, not access to inner strategy. Trust, but verify.",
+            "delta": {
+              "confidence": 10,
+              "trust": 5,
+              "popularity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Cautious trust is wise — but people can tell when they are not fully trusted.",
+            "next_scene": "ch4_s3"
+          },
+          {
+            "id": "ch4_s2_b",
+            "label": "Trust Vikrant fully — bring him into the inner circle",
+            "description": "Aanya decides to bet on people's honesty. She shares the full campaign plan with Vikrant.",
+            "delta": {
+              "trust": 15,
+              "popularity": 8,
+              "confidence": -5
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Full trust inspires loyalty — but if betrayed, the cost is enormous.",
+            "memory_tags": [
+              "trusted_vikrant"
+            ],
+            "next_scene": "ch4_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch4_s3",
+        "chapter": "ch4",
+        "title": "The Coalition Takes Shape",
+        "narrative": "By the end of the week, Aanya's coalition is forming. She has the academic students, some of the sports crowd, the new students she helped through the buddy system, and a growing number of 'quiet voters' who have never cared about elections before.\n\nSameer puts up the latest numbers: Rohan 42%, Aanya 38%, Undecided 20%. The gap is closing.\n\nBut the closer it gets, the more tense everything becomes. Rohan's team has started putting up posters that say 'Experience Matters — Vote Rohan' with a subtle dig at Aanya's lack of any prior student council role. Someone has also started a rumour that Aanya promised different things to different groups.\n\n{player_name} senses the campaign entering a new, more dangerous phase. The question is: how do you respond when the fight gets dirty?",
+        "image_prompt": "A campaign war room scene — an Indian girl looking at poll numbers on a whiteboard with her team, tension visible in their faces, campaign posters and materials around them, watercolor illustration, school library corner, evening light",
+        "coaching_moment": "When things get harder, that is often a sign you are getting closer to something worth fighting for.",
+        "choices": [
+          {
+            "id": "ch4_s3_a",
+            "label": "Address the rumours directly — call a public meeting to clarify your promises",
+            "description": "Aanya confronts the misinformation head-on, publishing her exact promises where everyone can see them.",
+            "delta": {
+              "integrity": 12,
+              "trust": 10,
+              "confidence": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Transparency is the best disinfectant — but it also means admitting you cannot please everyone.",
+            "next_chapter": "ch5"
+          },
+          {
+            "id": "ch4_s3_b",
+            "label": "Ignore the rumours — let your actions do the talking",
+            "description": "Aanya decides that responding to every attack gives it oxygen. She stays focused on her work.",
+            "delta": {
+              "confidence": 10,
+              "integrity": 8,
+              "trust": -3
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Staying above the fray looks noble — but unanswered lies can take root.",
+            "next_chapter": "ch5"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s1",
+        "chapter": "ch5",
+        "title": "The Anonymous Note",
+        "narrative": "Monday morning. {player_name} finds a note in her locker. It is typed, not handwritten: 'Rohan's team paid three students from Section D to vote for him. They were given free lunch coupons from the canteen. I saw it happen. — A Friend.'\n\nAanya shows the note to Sameer. His eyes go wide. 'That's vote buying. If it is true, it could disqualify him.'\n\nBut the note is anonymous. There is no proof. If Aanya brings this to Ms. Mehra without evidence, it could look like a desperate accusation. If she ignores it, an unfair election could happen. Priya, when shown the note, says: 'I can investigate. But I need time — and if Rohan finds out I am looking into this, he will try to cover his tracks.'",
+        "image_prompt": "A girl reading an anonymous typed note found in her school locker, her friend looking over her shoulder with shock, school corridor with lockers, morning light through windows, watercolor illustration, mystery and tension",
+        "coaching_moment": "When you discover something wrong, the question is not just 'what do I know?' — it is 'what is my responsibility to do about it?'",
+        "choices": [
+          {
+            "id": "ch5_s1_a",
+            "label": "Let Priya investigate quietly — gather evidence first",
+            "description": "Aanya decides that accusations without proof are unfair, even against an unfair opponent.",
+            "delta": {
+              "integrity": 12,
+              "confidence": 8,
+              "trust": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Patient investigation gets the truth — but time is running out before the election.",
+            "memory_tags": [
+              "chose_investigation"
+            ],
+            "next_scene": "ch5_s2"
+          },
+          {
+            "id": "ch5_s1_b",
+            "label": "Take the note to Ms. Mehra immediately",
+            "description": "Aanya brings the accusation to the teacher in charge — letting the authority handle it.",
+            "delta": {
+              "integrity": 10,
+              "trust": 8,
+              "popularity": -5
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Going to authority is responsible — but without proof, it may backfire on you.",
+            "next_scene": "ch5_s2"
+          },
+          {
+            "id": "ch5_s1_c",
+            "label": "Confront Rohan directly — give him a chance to explain",
+            "description": "Aanya believes in fairness even for rivals. She shows Rohan the note privately and watches his reaction.",
+            "delta": {
+              "integrity": 15,
+              "confidence": 5,
+              "popularity": -8
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Direct confrontation takes courage — and Rohan's reaction will reveal a lot.",
+            "memory_tags": [
+              "confronted_rival"
+            ],
+            "next_scene": "ch5_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s2",
+        "chapter": "ch5",
+        "title": "The Evidence Emerges",
+        "narrative": "Two days later, Priya's investigation yields results — or Rohan's reaction to the confrontation reveals something. Either way, the truth becomes clearer: it was not Rohan himself, but two overzealous supporters who bought the lunch coupons. Rohan may or may not have known.\n\nThis is a grey area. The violation happened, but did the candidate himself authorize it? In real politics, this ambiguity is where most corruption hides.\n\nMs. Mehra has been informed and calls both candidates to her office. She asks each of them what they think should happen. Rohan says it was 'just my friends being enthusiastic' and it should be forgiven. Now it is Aanya's turn to speak.\n\n{player_name} realizes that what she says here will define not just the election, but what she stands for.",
+        "image_prompt": "Two teenage candidates sitting in a teacher's office, a serious female teacher behind the desk with glasses, one boy looking defensive, one girl thinking carefully, official school office with certificates on walls, watercolor illustration",
+        "coaching_moment": "Justice is not about destroying your opponent — it is about making sure the system works fairly for everyone.",
+        "narrative_variants": {
+          "chose_investigation": "The evidence Priya gathered is strong — photographs and testimonies. Aanya has the facts on her side.",
+          "confronted_rival": "Rohan had looked genuinely surprised when Aanya showed him the note — either he is a good actor, or he truly did not know."
+        },
+        "choices": [
+          {
+            "id": "ch5_s2_a",
+            "label": "Ask for a fair penalty — deduct votes, but do not disqualify",
+            "description": "Aanya argues for proportional justice: the violation was real, but disqualification would be too harsh.",
+            "delta": {
+              "integrity": 15,
+              "trust": 10,
+              "popularity": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Fairness to your rival earns deep respect — even from people who disagree with you.",
+            "memory_tags": [
+              "chose_fairness"
+            ],
+            "next_scene": "ch5_s3"
+          },
+          {
+            "id": "ch5_s2_b",
+            "label": "Push for full disqualification — rules are rules",
+            "description": "Aanya argues that if vote-buying is tolerated, it sends a message that cheating is acceptable.",
+            "delta": {
+              "integrity": 8,
+              "confidence": 10,
+              "trust": -8
+            },
+            "skill_tags": [
+              "resilience",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Strict justice is principled — but can look like you are trying to win by eliminating the competition.",
+            "next_scene": "ch5_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch5_s3",
+        "chapter": "ch5",
+        "title": "The Aftermath",
+        "narrative": "Ms. Mehra makes her decision: the election will continue, but Rohan's team receives a formal warning and the affected votes will be monitored. It is not a perfect outcome for either side.\n\nIn the hallway afterward, something unexpected happens. Rohan catches up with Aanya. His usual charm is gone. He looks tired. 'I really did not know about the coupons,' he says. 'I told those guys to stop. I want to win, but not like that.'\n\nFor the first time, {player_name} sees Rohan as more than a rival — as another thirteen-year-old trying to figure out who he wants to be. The election has changed both of them.\n\nSameer texts: 'New polls — dead heat. 40-40-20. This is anyone's game now.'",
+        "image_prompt": "Two teenage rivals having a quiet honest conversation in a school hallway after a tense meeting, both looking tired but genuine, afternoon light through corridor windows, other students walking past unaware, watercolor illustration, emotional authenticity",
+        "coaching_moment": "Sometimes your greatest learning comes from seeing your opponent as a human being, not just a competitor.",
+        "choices": [
+          {
+            "id": "ch5_s3_a",
+            "label": "Accept his words at face value — offer a clean fight from here",
+            "description": "Aanya shakes Rohan's hand and says: 'Let the best ideas win.' She means it.",
+            "delta": {
+              "trust": 12,
+              "integrity": 10,
+              "confidence": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Trusting your rival's sincerity takes courage — and might be the beginning of mutual respect.",
+            "memory_tags": [
+              "extended_olive_branch"
+            ],
+            "next_chapter": "ch6"
+          },
+          {
+            "id": "ch5_s3_b",
+            "label": "Nod politely but keep your guard up — actions matter more than words",
+            "description": "Aanya appreciates the gesture but reminds herself that the election is not over and people can say anything.",
+            "delta": {
+              "confidence": 12,
+              "integrity": 5,
+              "trust": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Healthy skepticism protects you — but it can also keep you from genuine connection.",
+            "next_chapter": "ch6"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s1",
+        "chapter": "ch6",
+        "title": "The Principal's Offer",
+        "narrative": "Three days before the election, Principal Sharma calls Aanya to his office. He is smiling warmly. 'Aanya, I have been watching your campaign. Very impressive. I want to offer you something.'\n\nHe slides a paper across the desk. It is a proposal to create a new 'Student Advisory Board' — appointed by the principal, not elected. 'If you withdraw from the election,' he says, 'I will appoint you as the head of this board. You would have real influence — more than any class president has ever had. And you would not need to win a popularity contest to get it.'\n\n{player_name}'s mind races. The offer is genuinely tempting. A Student Advisory Board with real power could do more good than a ceremonial presidency. But withdrawing would mean abandoning everyone who believed in her campaign — and it would hand the election to Rohan.",
+        "image_prompt": "A 13-year-old Indian girl sitting across from an older male principal in his wood-paneled office, a document between them, the girl looking torn between opportunity and loyalty, school awards on the wall, watercolor illustration, serious conversation mood",
+        "coaching_moment": "Sometimes the most tempting shortcut is the one that looks like a better path — but skips the journey.",
+        "choices": [
+          {
+            "id": "ch6_s1_a",
+            "label": "Decline respectfully — you started this race and you will finish it",
+            "description": "Aanya thanks the principal but says her supporters deserve to see the election through.",
+            "delta": {
+              "integrity": 15,
+              "trust": 12,
+              "confidence": 10
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Staying in the race honors your supporters — but the advisory board offer may not come again.",
+            "memory_tags": [
+              "declined_shortcut"
+            ],
+            "next_scene": "ch6_s2"
+          },
+          {
+            "id": "ch6_s1_b",
+            "label": "Ask for time to think — consult your team first",
+            "description": "Aanya does not make a decision alone. She takes the offer back to Sameer and her team for honest discussion.",
+            "delta": {
+              "trust": 10,
+              "confidence": 8,
+              "integrity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Consulting others before big decisions is wise — but the clock is ticking.",
+            "next_scene": "ch6_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s2",
+        "chapter": "ch6",
+        "title": "The Team Reacts",
+        "narrative": "Aanya tells Sameer and her core team about the principal's offer. The reactions are split.\n\nSameer says: 'Take it. Real power beats a title any day. You could actually change things from that board.'\n\nBut a quiet girl named Fatima, who joined the campaign just last week after hearing Aanya speak, says something that stops the room: 'If you quit, every kid who thought their vote does not matter will be right. You told us this election was different. Was it?'\n\nThe room goes silent. {player_name} looks at the faces around her — Sameer, practical and strategic; Fatima, idealistic and hopeful; Priya, scribbling in her notebook as always, watching what leadership looks like up close.\n\nThe decision has to be Aanya's alone.",
+        "image_prompt": "A group of teenage students in a heated but respectful discussion in a school library, one girl standing and speaking passionately to the seated group, the campaign leader listening intently, watercolor illustration, warm library light, democratic debate atmosphere",
+        "coaching_moment": "The people who follow you will remember not just what you decided, but whether you kept the promises that brought them to your side.",
+        "narrative_variants": {
+          "declined_shortcut": "Having already turned down the offer, Aanya feels a wave of relief as Fatima speaks. She made the right call.",
+          "crowd_sourced_platform": "Aanya remembers how she built her platform — by listening to students. Walking away now would betray that process."
+        },
+        "choices": [
+          {
+            "id": "ch6_s2_a",
+            "label": "Stay in the race — your campaign means more than personal advantage",
+            "description": "Aanya formally declines the principal's offer and commits to winning the democratic way.",
+            "delta": {
+              "integrity": 15,
+              "trust": 12,
+              "popularity": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Choosing the harder path builds the kind of credibility that lasts beyond any election.",
+            "next_scene": "ch6_s3"
+          },
+          {
+            "id": "ch6_s2_b",
+            "label": "Propose a compromise — run AND push for the advisory board regardless of who wins",
+            "description": "Aanya suggests both candidates advocate for the board, making it part of the democratic agenda.",
+            "delta": {
+              "confidence": 12,
+              "trust": 10,
+              "integrity": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Creative solutions can turn either/or into both/and — but require everyone to agree.",
+            "memory_tags": [
+              "compromise_offer"
+            ],
+            "next_scene": "ch6_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch6_s3",
+        "chapter": "ch6",
+        "title": "Priya's Article",
+        "narrative": "The next morning, the school paper comes out. Priya has written a front-page story: 'THE ELECTION THAT CHANGED SOMETHING.' Without revealing the principal's offer, she writes about how both candidates have been tested — and how the student body is paying more attention to this election than any in school history.\n\nShe quotes unnamed students: 'I never thought my vote mattered before.' 'This is the first time I actually read a candidate's promises.' 'I changed my mind three times this week.'\n\n{player_name} reads the article during assembly and realizes something: regardless of who wins, the process itself has already changed the school. Students who never spoke up are speaking. Students who never listened are listening.\n\nBut she still wants to win. And the final rally is tomorrow.",
+        "image_prompt": "Students reading a school newspaper with a prominent election headline, animated discussions happening in clusters, the campaign girl reading with a thoughtful smile, Indian school assembly setting, watercolor illustration, morning light, democratic energy",
+        "coaching_moment": "Sometimes the greatest victory is not winning the contest — it is changing the culture so that the contest matters.",
+        "choices": [
+          {
+            "id": "ch6_s3_a",
+            "label": "Use Priya's article as fuel — share it with every undecided voter",
+            "description": "Aanya amplifies the message, using the article to show that this election is about something bigger.",
+            "delta": {
+              "popularity": 12,
+              "confidence": 8,
+              "trust": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Riding a wave of momentum feels great — but the rally speech still needs to be earned.",
+            "next_chapter": "ch7"
+          },
+          {
+            "id": "ch6_s3_b",
+            "label": "Stay focused on your rally speech — the article speaks for itself",
+            "description": "Aanya lets Priya's words do their work and pours her energy into preparing for the rally.",
+            "delta": {
+              "confidence": 12,
+              "integrity": 8,
+              "trust": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "resilience"
+            ],
+            "consequence_hint": "Discipline in the final stretch separates contenders from pretenders.",
+            "next_chapter": "ch7"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s1",
+        "chapter": "ch7",
+        "title": "Rally Day",
+        "narrative": "The school courtyard is decorated with banners. Ms. Mehra has arranged a proper stage with a microphone and speakers. Both candidates get ten minutes each. Rohan goes first.\n\nHe is good. Really good. He makes the crowd laugh three times, promises an annual school trip, a bigger sports day, and 'a class president who actually has fun.' The applause is loud and genuine. His supporters chant 'RO-HAN! RO-HAN!'\n\nThen it is Aanya's turn. She steps onto the stage. The courtyard is not as loud for her — but it is listening. She can see Fatima in the front row. Sameer near the back, giving her a nod. Priya with her recorder. Ms. Mehra watching from the side.\n\n{player_name} has ten minutes. This is the speech that decides everything.",
+        "image_prompt": "A school courtyard rally — a girl stepping onto a small stage with a microphone, facing a large crowd of students, banners visible, some cheering, some watching quietly, school building in background, watercolor illustration, powerful moment, afternoon sunlight",
+        "coaching_moment": "The best rallies do not just ask for votes — they ask people to believe in something together.",
+        "choices": [
+          {
+            "id": "ch7_s1_a",
+            "label": "Give an emotional speech about what this school could be",
+            "description": "Aanya paints a vision of a school where every student matters — using stories from her campaign to make it real.",
+            "delta": {
+              "popularity": 15,
+              "trust": 10,
+              "confidence": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Vision speeches move hearts — but only if the audience believes you can deliver.",
+            "memory_tags": [
+              "vision_speech"
+            ],
+            "next_scene": "ch7_s2"
+          },
+          {
+            "id": "ch7_s1_b",
+            "label": "Give a practical speech — specific plans, timelines, accountability measures",
+            "description": "Aanya presents a detailed 100-day plan with clear milestones that anyone can track.",
+            "delta": {
+              "integrity": 15,
+              "trust": 12,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Concrete plans build credibility — but can feel dry compared to Rohan's energy.",
+            "next_scene": "ch7_s2"
+          },
+          {
+            "id": "ch7_s1_c",
+            "label": "Combine both — start with stories, end with a plan",
+            "description": "Aanya structures her speech to build emotional connection first, then channels it into specific commitments.",
+            "delta": {
+              "popularity": 12,
+              "integrity": 10,
+              "confidence": 10
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Balancing heart and head is the hallmark of great communication — if you can pull it off.",
+            "next_scene": "ch7_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s2",
+        "chapter": "ch7",
+        "title": "The Unexpected Question",
+        "narrative": "After the speeches, Ms. Mehra opens five minutes of audience questions. A hand goes up from the back — it is Arjun, a boy who has never spoken in any school event. Ever.\n\n'My question is for both candidates,' he says, voice shaking slightly. 'What will you do for students who do not fit in? Not sports students, not smart students, not popular students. Just... the ones nobody notices.'\n\nThe courtyard goes quiet. It is the kind of question that cuts through all the campaign noise and reaches something real. Rohan answers first — he talks about including everyone and making sure no one is left out. It sounds nice but vague.\n\nNow {player_name} has to answer. And Aanya realizes this question is not about policy. It is about whether she truly sees the people she claims to represent.",
+        "image_prompt": "A shy boy standing up in a crowd to ask a question at a school rally, the girl candidate on stage looking at him with genuine attention, other students turning to look, powerful quiet moment in a noisy event, watercolor illustration",
+        "coaching_moment": "The questions that matter most are often asked by the people who matter most — the ones who have been silent the longest.",
+        "narrative_variants": {
+          "town_hall": "Aanya remembers the town hall she organized — where students like Arjun spoke for the first time. This is that same energy.",
+          "personal_opening": "Having shared her own story of being the new kid, Aanya knows exactly what Arjun is asking. She has lived it."
+        },
+        "choices": [
+          {
+            "id": "ch7_s2_a",
+            "label": "Share a specific plan: a weekly 'open door' where any student can bring concerns directly",
+            "description": "Aanya commits to a concrete weekly meeting that ensures invisible students have a permanent voice.",
+            "delta": {
+              "trust": 15,
+              "integrity": 10,
+              "popularity": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Specific promises to specific people build unshakeable loyalty.",
+            "next_scene": "ch7_s3"
+          },
+          {
+            "id": "ch7_s2_b",
+            "label": "Walk off the stage, go to Arjun, and ask HIM what would help",
+            "description": "Aanya does something no one expects — she leaves the stage and has the conversation right there, in public.",
+            "delta": {
+              "popularity": 15,
+              "trust": 15,
+              "confidence": 10
+            },
+            "skill_tags": [
+              "empathy",
+              "risk_tolerance"
+            ],
+            "consequence_hint": "Grand gestures can be transformative — or they can look performative. Intent matters.",
+            "memory_tags": [
+              "left_stage"
+            ],
+            "next_scene": "ch7_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch7_s3",
+        "chapter": "ch7",
+        "title": "After the Rally",
+        "narrative": "The rally ends. Students scatter to their next class, but the energy is different now. People are actually talking about the issues, not just the candidates.\n\nSameer catches up with Aanya. 'That last answer — or gesture — whatever it was. That was the moment. I could see it on people's faces. For the first time, a lot of students believed that a class president might actually care about them.'\n\nMs. Mehra walks past and says quietly: 'Well done. Both of you.' It is the first time she has complimented either candidate.\n\nBut Priya sends a text that evening: 'Rohan's team is making last-minute promises to individual sections. Free pizza, longer recess, a movie day. He is going all in.'\n\n{player_name} has one day left before the vote. The question is how to spend it.",
+        "image_prompt": "Students walking through school corridors after a rally, animated discussions happening, campaign posters on walls, a girl and her team huddling for a strategy session, watercolor illustration, end-of-day golden school light",
+        "coaching_moment": "The last day before a big moment is when discipline matters most — do not panic, do not overreact.",
+        "choices": [
+          {
+            "id": "ch7_s3_a",
+            "label": "Spend the last day talking to every undecided voter personally",
+            "description": "Aanya uses every break, every lunch minute, to have one-on-one conversations with students still on the fence.",
+            "delta": {
+              "trust": 12,
+              "popularity": 8,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Personal connections are the most powerful force in any election.",
+            "next_chapter": "ch8"
+          },
+          {
+            "id": "ch7_s3_b",
+            "label": "Rest and prepare — you have done everything you can",
+            "description": "Aanya trusts her campaign, goes home early, sleeps well, and arrives fresh for election day.",
+            "delta": {
+              "confidence": 15,
+              "integrity": 8,
+              "trust": 3
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "resilience"
+            ],
+            "consequence_hint": "Knowing when to stop campaigning is itself a leadership skill.",
+            "next_chapter": "ch8"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s1",
+        "chapter": "ch8",
+        "title": "Election Morning",
+        "narrative": "The school is buzzing. Ballot boxes have been set up in each section classroom. Ms. Mehra has arranged monitors to ensure fair voting. Both candidates are required to stay in the staff room until voting is complete.\n\nAanya and Rohan sit on opposite sides of the staff room. It is awkward. Through the window, they can see students lining up. Sameer texts: 'Section A is voting. Turnout looks huge.'\n\nRohan breaks the silence. 'Whatever happens, this was a good election.' {player_name} looks at him. He actually looks nervous for the first time. The confident facade has cracked just a little.\n\nThen the door opens. Ms. Mehra looks serious. 'There is a problem. Section C's ballot box is missing. Someone moved it.'",
+        "image_prompt": "Two teenage candidates sitting in a school staff room looking tense, ballot voting visible through the window, a teacher entering with a concerned expression, school election day atmosphere, watercolor illustration, morning tension",
+        "coaching_moment": "Crises reveal character faster than campaigns do — what you do when things go wrong shows who you really are.",
+        "choices": [
+          {
+            "id": "ch8_s1_a",
+            "label": "Volunteer to help find the ballot box — this is bigger than either candidate",
+            "description": "Aanya stands up immediately and says she will help search, setting aside the competition to protect the process.",
+            "delta": {
+              "integrity": 15,
+              "trust": 12,
+              "popularity": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "empathy"
+            ],
+            "consequence_hint": "Protecting democracy matters more than winning it — and people notice.",
+            "memory_tags": [
+              "protected_process"
+            ],
+            "next_scene": "ch8_s2"
+          },
+          {
+            "id": "ch8_s1_b",
+            "label": "Suggest extending voting hours and getting a new ballot box for Section C",
+            "description": "Aanya thinks practically — the solution is not finding the old box, but ensuring Section C can still vote.",
+            "delta": {
+              "confidence": 12,
+              "trust": 8,
+              "integrity": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Problem-solving in a crisis is leadership in action.",
+            "next_scene": "ch8_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s2",
+        "chapter": "ch8",
+        "title": "The Crisis Resolved",
+        "narrative": "The missing ballot box is found — it had been moved by a janitor who thought it was trash. Section C re-votes with fresh ballots and an additional hour. The crisis is over.\n\nBut something else has happened during the chaos. Aanya and Rohan, working together to solve the problem, have shown the school something unexpected: two rivals cooperating when it mattered.\n\nPriya captures a photo of them both talking to the Section C students, reassuring them their votes will count. It goes on the school noticeboard immediately.\n\n{player_name} returns to the staff room. Voting is almost complete. There is nothing more to do but wait. Sameer texts: 'It is going to be close. Really close.'",
+        "image_prompt": "Two teenage rivals working together during an election crisis, talking to worried younger students near a ballot box, a school journalist photographing the moment, cooperative energy, watercolor illustration, school corridor setting",
+        "coaching_moment": "The moments when rivals become allies — even briefly — are often the most powerful leadership lessons.",
+        "narrative_variants": {
+          "extended_olive_branch": "The handshake from days ago seems to have meant something real. Working together now feels natural, not forced.",
+          "protected_process": "Aanya's instinct to protect the election before protecting her chances showed everyone what kind of leader she is."
+        },
+        "choices": [
+          {
+            "id": "ch8_s2_a",
+            "label": "Suggest to Rohan that whoever wins should include the other in student governance",
+            "description": "Aanya proposes that the election should not waste talent — the loser should still have a role.",
+            "delta": {
+              "trust": 15,
+              "integrity": 10,
+              "confidence": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Inclusive thinking transforms elections from zero-sum games into collective wins.",
+            "memory_tags": [
+              "inclusive_proposal"
+            ],
+            "next_scene": "ch8_s3"
+          },
+          {
+            "id": "ch8_s2_b",
+            "label": "Stay focused — one crisis at a time, the election results come first",
+            "description": "Aanya appreciates the moment but keeps her eye on the prize — today is about winning.",
+            "delta": {
+              "confidence": 12,
+              "popularity": 5,
+              "integrity": 3
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Staying focused is practical — but you might miss a chance to build something bigger than winning.",
+            "next_scene": "ch8_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch8_s3",
+        "chapter": "ch8",
+        "title": "The Count",
+        "narrative": "The votes are being counted in the staff room. Ms. Mehra reads the tallies aloud as the monitors sort ballots. Section A: Rohan 18, Aanya 12. Section B: Aanya 20, Rohan 10. Section C: Aanya 16, Rohan 14. Section D: Rohan 17, Aanya 13.\n\nIt is dead even. The final section — Section E, the smallest with only 20 students — will decide everything.\n\nSameer is literally counting on his fingers. Rohan's leg is bouncing. Priya's pen is poised over her notebook. Ms. Mehra opens the last batch of ballots.\n\n{player_name} closes her eyes for a moment. Whatever happens in the next thirty seconds, she knows she ran the campaign she wanted to run. That has to be enough.",
+        "image_prompt": "A tense vote-counting scene in a school staff room, two candidates watching as a teacher counts ballots, friends and monitors surrounding them, papers and ballot boxes on the table, extreme tension, watercolor illustration, dramatic moment",
+        "coaching_moment": "You cannot control outcomes — you can only control the effort, the honesty, and the spirit you brought to the fight.",
+        "choices": [
+          {
+            "id": "ch8_s3_a",
+            "label": "Open your eyes and face the result — whatever it is",
+            "description": "Aanya takes a deep breath and watches Ms. Mehra read the final count. She is ready either way.",
+            "delta": {
+              "confidence": 15,
+              "integrity": 10,
+              "trust": 8
+            },
+            "skill_tags": [
+              "resilience",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Facing the outcome with grace is leadership — regardless of the numbers.",
+            "next_chapter": "ch9"
+          },
+          {
+            "id": "ch8_s3_b",
+            "label": "Reach out and shake Rohan's hand before the result is announced",
+            "description": "Before anyone knows who won, Aanya offers her hand to Rohan. Win or lose, they both ran.",
+            "delta": {
+              "trust": 15,
+              "integrity": 12,
+              "popularity": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Sportsmanship before the result is more meaningful than sportsmanship after.",
+            "memory_tags": [
+              "pre_result_handshake"
+            ],
+            "next_chapter": "ch9"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s1",
+        "chapter": "ch9",
+        "title": "The Winner",
+        "narrative": "Ms. Mehra reads the final tally from Section E: Aanya 13, Rohan 7. The total: Aanya wins by 9 votes out of 150 cast — the closest election in the school's history.\n\nThe room erupts. Sameer jumps out of his chair. Fatima is crying. Priya is writing furiously. Rohan stares at the table for a long moment, then looks up and nods.\n\n{player_name}'s first thought is not triumph. It is weight. She wanted this — she fought for this — but now the promises are no longer campaign slogans. They are obligations. The water cooler. The library hours. The buddy system. The open-door meetings. Every undecided voter who chose her did so because they believed she would deliver.\n\nMs. Mehra hands her the microphone for a brief acceptance speech. The whole grade is waiting in the auditorium.",
+        "image_prompt": "A victorious moment in a school staff room — a girl surrounded by celebrating friends, a rival candidate nodding respectfully across the room, a teacher handing over a microphone, ballots scattered on the table, watercolor illustration, emotional triumph",
+        "coaching_moment": "Winning is not the finish line — it is the starting line. The real work begins now.",
+        "choices": [
+          {
+            "id": "ch9_s1_a",
+            "label": "Thank Rohan publicly and invite him to work together",
+            "description": "Aanya's first act as president is to reach across the aisle, showing the school that good governance is inclusive.",
+            "delta": {
+              "trust": 15,
+              "integrity": 12,
+              "popularity": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Including your rival signals strength and maturity — and builds a stronger team.",
+            "memory_tags": [
+              "included_rival"
+            ],
+            "next_scene": "ch9_s2"
+          },
+          {
+            "id": "ch9_s1_b",
+            "label": "Focus your speech on the students who believed in you — honor their trust",
+            "description": "Aanya speaks directly to the undecided voters who took a chance on her — telling them this victory belongs to them.",
+            "delta": {
+              "trust": 12,
+              "popularity": 10,
+              "integrity": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Honoring those who believed in you creates deep loyalty — but do not forget those who did not.",
+            "next_scene": "ch9_s2"
+          },
+          {
+            "id": "ch9_s1_c",
+            "label": "Keep it short — 'Thank you. Now let us get to work.'",
+            "description": "Aanya knows that the best speech she can give right now is a short one followed by action.",
+            "delta": {
+              "confidence": 15,
+              "integrity": 10,
+              "trust": 5
+            },
+            "skill_tags": [
+              "delayed_gratification",
+              "resilience"
+            ],
+            "consequence_hint": "Brevity after victory is powerful — actions will speak louder than any acceptance speech.",
+            "next_scene": "ch9_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s2",
+        "chapter": "ch9",
+        "title": "Day One Reality",
+        "narrative": "The celebration fades quickly. By the next morning, Aanya is sitting in the principal's office with a to-do list and realizing that school bureaucracy is harder than any campaign.\n\nThe water cooler repair requires a facilities request that takes two weeks. The library hours change needs approval from the PTA. The buddy system requires volunteer sign-ups, training, and a teacher coordinator. Nothing is as simple as a campaign promise made it sound.\n\nSameer, now officially her 'chief of staff,' looks at the list and whistles. 'So this is what governing feels like. It is not very glamorous, is it?'\n\n{player_name} laughs, but inside she is worried. If she cannot show progress quickly, the students who believed in her will feel betrayed. But rushing things could mean doing them poorly.",
+        "image_prompt": "A teenage girl sitting in a principal's office with a long to-do list, her friend looking overwhelmed beside her, administrative paperwork and school files visible, the reality of governance vs. the excitement of campaigning, watercolor illustration, morning light",
+        "coaching_moment": "The gap between promising change and delivering change is where real leaders are made — or broken.",
+        "narrative_variants": {
+          "action_before_election": "At least the water cooler is already fixed from before the election. One promise delivered before she even took office.",
+          "practical_platform": "Aanya's practical promises suddenly look wise — they are harder to deliver than she expected, but they are achievable."
+        },
+        "choices": [
+          {
+            "id": "ch9_s2_a",
+            "label": "Start with the quickest win — the buddy system — and build momentum",
+            "description": "Aanya picks the easiest promise to deliver first, knowing that small wins create confidence for bigger battles.",
+            "delta": {
+              "confidence": 12,
+              "trust": 10,
+              "integrity": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Quick wins build credibility — but do not let the harder promises slip.",
+            "next_scene": "ch9_s3"
+          },
+          {
+            "id": "ch9_s2_b",
+            "label": "Be transparent — publish the timeline showing when each promise will be delivered",
+            "description": "Aanya puts up a public tracker in the hallway showing every promise, its status, and expected delivery date.",
+            "delta": {
+              "integrity": 15,
+              "trust": 12,
+              "confidence": 5
+            },
+            "skill_tags": [
+              "resilience",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Radical transparency holds you accountable — which is scary but builds extraordinary trust.",
+            "memory_tags": [
+              "public_tracker"
+            ],
+            "next_scene": "ch9_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch9_s3",
+        "chapter": "ch9",
+        "title": "The First Test",
+        "narrative": "Three days into her presidency, the first crisis hits. A group of students from Section A — Rohan's strongest section — submits a petition demanding that Aanya resign because 'the election was unfair.' They claim the Section C re-vote was biased.\n\nIt is not true — the re-vote was supervised by teachers and monitors. But the petition has 15 signatures, which is enough to cause noise.\n\nRohan himself has not signed it. In fact, Priya reports that he told his supporters to stop, but they went ahead anyway. The question is how Aanya handles her first opposition.\n\n{player_name} realizes that winning the election was the easy part. Governing when not everyone accepts your authority — that is the real challenge.",
+        "image_prompt": "A teenage girl president reading a petition handed to her by a group of unhappy students, her expression calm but serious, school hallway setting, other students watching the confrontation, watercolor illustration, tense governance moment",
+        "coaching_moment": "A leader's response to opposition defines their presidency more than any speech or promise ever could.",
+        "choices": [
+          {
+            "id": "ch9_s3_a",
+            "label": "Meet the petition signers face to face — listen to their grievances",
+            "description": "Aanya sits down with the dissenters and hears them out, showing that even opponents deserve a voice.",
+            "delta": {
+              "trust": 15,
+              "integrity": 12,
+              "confidence": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "consequence_hint": "Listening to opposition does not mean agreeing with it — but it transforms enemies into stakeholders.",
+            "memory_tags": [
+              "heard_opposition"
+            ],
+            "next_chapter": "ch10"
+          },
+          {
+            "id": "ch9_s3_b",
+            "label": "Address it publicly — present the facts calmly and move on",
+            "description": "Aanya makes a brief announcement with the election data, debunking the claims respectfully but firmly.",
+            "delta": {
+              "confidence": 12,
+              "integrity": 10,
+              "popularity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "resilience"
+            ],
+            "consequence_hint": "Public factual responses shut down misinformation — but may feel dismissive to the petitioners.",
+            "next_chapter": "ch10"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s1",
+        "chapter": "ch10",
+        "title": "One Week In",
+        "narrative": "One week as president. The buddy system is running — twelve volunteers paired with new students. The library hours petition is with the PTA, expected to be approved next meeting. The public tracker in the hallway shows two promises 'in progress' and one 'delivered.'\n\nBut {player_name} is exhausted. She has been staying after school every day, attending committee meetings, responding to student complaints, and still trying to keep up with her own studies. The maths test is next week and she cannot afford another 58.\n\nSameer notices her drooping at lunch. 'You need help,' he says. 'You cannot run the whole school by yourself. That is not leadership — that is martyrdom.'\n\nHe is right. But letting go of control is hard when you feel personally responsible for every promise.",
+        "image_prompt": "A tired teenage girl at her desk surrounded by student council paperwork, textbooks open but neglected, her friend looking concerned, school library setting, late afternoon exhaustion, watercolor illustration, the weight of leadership visible",
+        "coaching_moment": "The hardest lesson for new leaders: you cannot pour from an empty cup. Delegation is not weakness — it is wisdom.",
+        "choices": [
+          {
+            "id": "ch10_s1_a",
+            "label": "Delegate — assign each promise to a different team member",
+            "description": "Aanya divides her responsibilities among Sameer, Fatima, and two new volunteers, trusting them to deliver.",
+            "delta": {
+              "confidence": 12,
+              "trust": 10,
+              "integrity": 5
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "adaptability"
+            ],
+            "consequence_hint": "Delegation multiplies your impact — but requires trusting others to do things differently than you would.",
+            "next_scene": "ch10_s2"
+          },
+          {
+            "id": "ch10_s1_b",
+            "label": "Ask Rohan to join the team — his popularity and energy could help deliver promises faster",
+            "description": "Aanya formally invites her former rival to co-lead specific projects, building a unity cabinet.",
+            "delta": {
+              "trust": 15,
+              "popularity": 12,
+              "integrity": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "consequence_hint": "Bringing in your rival is bold and transformative — if both sides can truly cooperate.",
+            "memory_tags": [
+              "unity_cabinet"
+            ],
+            "next_scene": "ch10_s2"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s2",
+        "chapter": "ch10",
+        "title": "The Unexpected Success",
+        "narrative": "By Thursday, something beautiful happens. The buddy system pairs have started eating lunch together voluntarily. New students who used to eat alone are now part of a group. One of them, a girl named Meera from Jaipur who joined mid-term, approaches Aanya in the hallway.\n\n'Thank you,' Meera says simply. 'My buddy Kavita introduced me to her friends. I was so scared when I came here. Now I actually like coming to school.'\n\n{player_name} feels a warmth that no election victory could match. This is what it was all about. Not the title, not the podium, not beating Rohan — but this. One student who no longer eats alone.\n\nSameer captures the moment: 'This is your legacy. Not the water cooler. This.'",
+        "image_prompt": "A new student happily eating lunch with a group of friends in a school cafeteria, the class president watching from nearby with a proud smile, buddy system posters on the wall, watercolor illustration, warm lunchtime atmosphere, the reward of service",
+        "coaching_moment": "The true reward of leadership is not recognition — it is watching someone else thrive because of something you started.",
+        "narrative_variants": {
+          "crowd_sourced_platform": "The buddy system was suggested by a student in Aanya's suggestion box. The best ideas came from listening.",
+          "unity_cabinet": "Rohan's team helped recruit half the buddy volunteers. Rivals working together created something neither could alone."
+        },
+        "choices": [
+          {
+            "id": "ch10_s2_a",
+            "label": "Ask Meera to become a buddy herself next term — pay it forward",
+            "description": "Aanya invites Meera to be a buddy for the next new student, creating a chain of kindness.",
+            "delta": {
+              "trust": 15,
+              "integrity": 10,
+              "popularity": 8
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "consequence_hint": "Empowering others to lead creates systems that outlast any single leader.",
+            "next_scene": "ch10_s3"
+          },
+          {
+            "id": "ch10_s2_b",
+            "label": "Share Meera's story at the next assembly — let the school see what is possible",
+            "description": "Aanya asks Meera's permission and then shares the story publicly, inspiring more volunteers.",
+            "delta": {
+              "popularity": 12,
+              "trust": 10,
+              "confidence": 8
+            },
+            "skill_tags": [
+              "strategic_thinking",
+              "empathy"
+            ],
+            "consequence_hint": "Stories of impact inspire action — but always protect the dignity of the person in the story.",
+            "next_scene": "ch10_s3"
+          }
+        ]
+      },
+      {
+        "scene_id": "ch10_s3",
+        "chapter": "ch10",
+        "title": "The Legacy Speech",
+        "narrative": "Friday afternoon. One week as president. Ms. Mehra asks Aanya to address the grade during the last period — a tradition for new presidents.\n\n{player_name} stands at the podium — the same one where she debated Rohan, where she answered Arjun's question, where she learned that leading is less about speaking and more about listening.\n\nShe looks out at the audience. Sameer in the back, loyal from day one. Fatima, who joined because she believed. Priya, always watching, always writing. Rohan, sitting with his friends, giving her a small nod. Arjun, the boy who asked the question that changed everything, sitting in the front row for the first time.\n\nAnd Meera, who no longer eats alone.\n\nAanya takes a breath and speaks — not as a candidate, not as a winner, but as someone who learned something this month that no textbook could teach: leadership is not about being in charge. It is about taking care of the people in your charge.",
+        "image_prompt": "A teenage girl standing at a school podium giving a confident, warm speech to her grade, familiar faces in the audience smiling, school auditorium setting with afternoon light, campaign posters faded on the walls, watercolor illustration, the completion of a journey",
+        "coaching_moment": "The best leaders leave behind not just results, but a culture — a way of doing things that continues after they are gone.",
+        "choices": [
+          {
+            "id": "ch10_s3_a",
+            "label": "End with a challenge: 'Each of you is a leader — you do not need a title to start'",
+            "description": "Aanya turns the speech into a call to action, empowering every student to lead in their own way.",
+            "delta": {
+              "trust": 20,
+              "integrity": 18,
+              "popularity": 15
+            },
+            "skill_tags": [
+              "empathy",
+              "resilience"
+            ],
+            "is_ending": true,
+            "ending_type": "inspiring_leader",
+            "ending_message": "Aanya's presidency became the most transformative in the school's history — not because she had the best ideas, but because she helped everyone else believe in theirs. The buddy system grew to cover three grades. The public tracker became a school tradition. And every year, the new president was asked one question at the debate: 'What will you do for the students nobody notices?' It all started with a girl who almost did not run — and a boy who asked the right question."
+          },
+          {
+            "id": "ch10_s3_b",
+            "label": "End by thanking Rohan: 'This election made both of us better — and the school better'",
+            "description": "Aanya's final message is about unity, acknowledging that democracy works best when both sides push each other.",
+            "delta": {
+              "trust": 20,
+              "integrity": 15,
+              "popularity": 18
+            },
+            "skill_tags": [
+              "empathy",
+              "strategic_thinking"
+            ],
+            "is_ending": true,
+            "ending_type": "unity",
+            "ending_message": "The class election of 2026 became a school legend. Not because of who won, but because of how it was fought — with honesty, with heart, and with a growing respect between two thirteen-year-olds who discovered that the best competition makes everyone better. Aanya and Rohan went on to co-lead the Student Advisory Board the following year. And Priya's article about the election won a district journalism prize. The title? 'The Year the Votes Counted.'"
+          },
+          {
+            "id": "ch10_s3_c",
+            "label": "End by inviting Arjun to the stage: 'You asked the question that defined my presidency'",
+            "description": "Aanya gives the last word to the quietest voice in the room, proving her promise was real.",
+            "delta": {
+              "trust": 25,
+              "integrity": 15,
+              "popularity": 12
+            },
+            "skill_tags": [
+              "empathy",
+              "delayed_gratification"
+            ],
+            "is_ending": true,
+            "ending_type": "servant_leader",
+            "ending_message": "Years later, Arjun would become the school's first student body president who was not from the 'popular crowd.' He would tell interviewers that it started with a question he almost did not ask, and a president who actually listened. Aanya had not just won an election — she had changed who was allowed to lead. And that, as Coach Srinivas might say, was the only legacy that truly mattered."
+          }
+        ]
+      }
+    ]
+  },
+  "glossary_terms": [
+    {
+      "term": "democracy",
+      "definition": "A system where decisions are made by the people, usually through voting — giving everyone an equal voice in choosing leaders."
+    },
+    {
+      "term": "integrity",
+      "definition": "Doing the right thing even when no one is watching and even when it costs you something — staying true to your values under pressure."
+    },
+    {
+      "term": "campaign",
+      "definition": "An organized effort to win an election or achieve a goal, involving planning, communication, and persuasion."
+    },
+    {
+      "term": "coalition",
+      "definition": "A group of different people or groups who come together to support a shared goal, even if they disagree on other things."
+    },
+    {
+      "term": "platform",
+      "definition": "A set of promises and plans that a candidate presents to voters, explaining what they will do if elected."
+    },
+    {
+      "term": "debate",
+      "definition": "A structured discussion where two or more people present and defend their ideas, helping the audience decide who has the stronger argument."
+    },
+    {
+      "term": "mandate",
+      "definition": "The authority given to a leader by voters — the idea that winning an election gives you permission to carry out your promises."
+    },
+    {
+      "term": "accountability",
+      "definition": "Taking responsibility for your actions and decisions, and being willing to explain them to the people who trusted you."
+    },
+    {
+      "term": "transparency",
+      "definition": "Being open and honest about your decisions, plans, and mistakes — not hiding things from the people you serve."
+    },
+    {
+      "term": "persuasion",
+      "definition": "The skill of convincing others to agree with you or support your ideas, using logic, emotion, and trust."
+    },
+    {
+      "term": "constituent",
+      "definition": "A person who lives in the area or belongs to the group that a leader represents — the people whose interests a leader is supposed to serve."
+    },
+    {
+      "term": "governance",
+      "definition": "The process of managing and making decisions for a group, organization, or country — turning plans into reality."
+    },
+    {
+      "term": "opposition",
+      "definition": "People who disagree with or challenge the current leader or proposal — a healthy part of any democracy."
+    },
+    {
+      "term": "delegate",
+      "definition": "To give part of your responsibility to someone else, trusting them to handle it while you focus on other priorities."
+    },
+    {
+      "term": "sportsmanship",
+      "definition": "Treating opponents with respect and fairness, whether you win or lose — valuing the process as much as the result."
+    },
+    {
+      "term": "mandate",
+      "definition": "The authority and responsibility given to a leader by those who chose them — a trust that must be honored."
+    },
+    {
+      "term": "populism",
+      "definition": "Appealing to what people want to hear rather than what they need to hear — often making big promises without a plan to deliver them."
+    },
+    {
+      "term": "grassroots",
+      "definition": "A political movement built from ordinary people at the local level, rather than from powerful organizations or leaders at the top."
+    }
+  ],
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.25,
+    "delayed_gratification": 0.2,
+    "empathy": 0.2,
+    "resilience": 0.15,
+    "adaptability": 0.1,
+    "risk_tolerance": 0.1
+  },
+  "coaching_moment": "True leadership is not about winning elections — it is about earning trust, keeping promises, and making sure every voice is heard.",
+  "estimated_duration": "40-50 minutes",
+  "target_age": "10-18",
+  "tags": [
+    "story",
+    "leadership",
+    "democracy",
+    "integrity",
+    "school",
+    "life-skills",
+    "india"
+  ],
+  "cultural_context": "indian",
+  "nep_stage": "middle_school",
+  "nep_competencies": [
+    "critical_thinking",
+    "leadership",
+    "communication",
+    "social_emotional_learning",
+    "ethical_reasoning"
+  ],
+  "reflection_prompt": "Looking back at the choices you made, which one felt hardest and why? What would you do differently if you replayed?"
+}

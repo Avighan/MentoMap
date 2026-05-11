@@ -1,0 +1,49 @@
+import { describe, it, expect } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import TradesTab from './TradesTab';
+
+const trades = [
+  { tick: 1, dayLabel: 'Mon', symbol: 'TECHV', side: 'buy',  qty: 10, price: 100, charges: 5, realized_pnl: 0 },
+  { tick: 5, dayLabel: 'Tue', symbol: 'TECHV', side: 'sell', qty: 10, price: 130, charges: 5, realized_pnl: 290 },
+  { tick: 6, dayLabel: 'Tue', symbol: 'BHARATBANK', side: 'buy', qty: 5, price: 600, charges: 3 },
+];
+
+describe('TradesTab', () => {
+  it('renders one row per trade and footer summary', () => {
+    render(<TradesTab trades={trades} />);
+    expect(screen.getAllByTestId(/^trade-row-/)).toHaveLength(3);
+    expect(screen.getByTestId('trades-summary').textContent).toContain('Win rate');
+  });
+
+  it('filters by side', () => {
+    render(<TradesTab trades={trades} />);
+    fireEvent.click(screen.getByTestId('trades-filter-buy'));
+    expect(screen.getAllByTestId(/^trade-row-/)).toHaveLength(2);
+  });
+
+  it('filters by day chip', () => {
+    render(<TradesTab trades={trades} />);
+    fireEvent.click(screen.getByTestId('trades-filter-Tue'));
+    expect(screen.getAllByTestId(/^trade-row-/)).toHaveLength(2);
+  });
+
+  it('filters by symbol search', () => {
+    render(<TradesTab trades={trades} />);
+    fireEvent.change(screen.getByTestId('trades-search'), { target: { value: 'bharat' } });
+    expect(screen.getAllByTestId(/^trade-row-/)).toHaveLength(1);
+  });
+
+  it('renders empty footer safely with no trades', () => {
+    render(<TradesTab trades={[]} />);
+    const summary = screen.getByTestId('trades-summary').textContent;
+    expect(summary).toContain('0 trade(s)');
+    expect(summary).toContain('Win rate 0%');
+  });
+
+  it('side and day chip groups operate independently', () => {
+    render(<TradesTab trades={trades} />);
+    // Both groups expose an "all" chip — duplicate testid is per-spec.
+    const allChips = screen.getAllByTestId('trades-filter-all');
+    expect(allChips).toHaveLength(2);
+  });
+});

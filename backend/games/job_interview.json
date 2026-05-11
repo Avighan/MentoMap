@@ -1,0 +1,558 @@
+{
+  "session_game": {
+    "game_type": "job_interview",
+    "title": "Job Interview Simulator",
+    "description": "Face realistic AI interviewers. Practice answering tough questions, handling pressure, and landing your dream job.",
+    "route": "/interview",
+    "icon": "🎯",
+    "badge_text": "AI Interviewer",
+    "gradient": [
+      "#0EA5E9",
+      "#0284C7"
+    ],
+    "help_content": {
+      "what_is": "A job interview simulator where you face AI interviewers with different styles — from friendly HR to tough technical leads. Practice answering behavioral questions, explaining your strengths, and handling curveball questions.",
+      "tips": [
+        "Use the STAR method: Situation, Task, Action, Result",
+        "Research the company before the interview",
+        "Prepare your 'Tell me about yourself' answer",
+        "Ask thoughtful questions at the end",
+        "Be specific — use numbers and examples",
+        "Show enthusiasm but stay professional"
+      ]
+    },
+    "initial_state": {
+      "performance_score": 0,
+      "interviewer_impression": 50,
+      "confidence_level": 0,
+      "questions_answered": 0
+    },
+    "session_phases": [
+      "Introduction",
+      "Behavioral Questions",
+      "Technical/Role Questions",
+      "Curveball Round",
+      "Your Questions"
+    ],
+    "scoring_rubric": {
+      "communication_clarity": {
+        "weight": 0.2,
+        "description": "Were answers clear, concise, and well-structured?"
+      },
+      "relevant_experience": {
+        "weight": 0.2,
+        "description": "Did they effectively connect their experience to the role?"
+      },
+      "confidence_composure": {
+        "weight": 0.15,
+        "description": "Did they stay composed under pressure?"
+      },
+      "problem_solving": {
+        "weight": 0.15,
+        "description": "How did they approach hypothetical problems?"
+      },
+      "cultural_fit": {
+        "weight": 0.15,
+        "description": "Did they demonstrate alignment with company values?"
+      },
+      "enthusiasm_interest": {
+        "weight": 0.15,
+        "description": "Did they show genuine interest in the role?"
+      }
+    },
+    "persona_pool": [
+      {
+        "id": "friendly_hr",
+        "name": "Meera Kapoor",
+        "archetype": "Friendly HR",
+        "focus": "cultural fit, motivation, teamwork, career goals",
+        "personality": "Warm and encouraging. Puts candidates at ease but notices inconsistencies. Values authenticity over rehearsed answers.",
+        "tough_question_style": "Tell me about a time you failed at something. What did you learn?",
+        "voice": "shimmer",
+        "avatar_emoji": "😊",
+        "difficulty_weight": 1,
+        "friendly_weight": 5
+      },
+      {
+        "id": "technical_lead",
+        "name": "Arjun Reddy",
+        "archetype": "Technical Lead",
+        "focus": "problem-solving, technical depth, analytical thinking, learning ability",
+        "personality": "Direct and analytical. Asks follow-up questions to test depth of knowledge. Respects candidates who admit what they don't know.",
+        "tough_question_style": "Walk me through how you'd design a solution for this problem from scratch.",
+        "voice": "echo",
+        "avatar_emoji": "💻",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "senior_manager",
+        "name": "Deepak Malhotra",
+        "archetype": "Senior Manager",
+        "focus": "leadership, decision-making, strategic thinking, initiative",
+        "personality": "Experienced and observant. Looks for leadership potential even in junior candidates. Tests decision-making with scenario questions.",
+        "tough_question_style": "You have two team members in conflict. Walk me through exactly how you handle it.",
+        "voice": "onyx",
+        "avatar_emoji": "👔",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "startup_founder",
+        "name": "Nisha Agarwal",
+        "archetype": "Startup Founder",
+        "focus": "hustle, adaptability, ownership mentality, creativity",
+        "personality": "Fast-paced and energetic. Values people who take initiative. Hates 'that's not my job' mentality. Looks for scrappy problem-solvers.",
+        "tough_question_style": "Our product launch is in 2 weeks and the lead developer just quit. What do you do?",
+        "voice": "nova",
+        "avatar_emoji": "🚀",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "behavioral_expert",
+        "name": "Dr. Shalini Prasad",
+        "archetype": "Behavioral Expert",
+        "focus": "self-awareness, emotional intelligence, growth mindset, resilience",
+        "personality": "Calm and probing. Uses silence effectively. Asks 'why' multiple times to get to real motivations. Values self-awareness above all.",
+        "tough_question_style": "What's your biggest weakness, and I want the real one, not a disguised strength.",
+        "voice": "alloy",
+        "avatar_emoji": "🧠",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "tough_interviewer",
+        "name": "Vikram Singh",
+        "archetype": "Stress Tester",
+        "focus": "pressure handling, quick thinking, composure, conviction",
+        "personality": "Deliberately challenging. Interrupts, challenges answers, plays devil's advocate. Tests if candidates crack under pressure or stay composed.",
+        "tough_question_style": "I'm not convinced. Why should we hire you over the 200 other applicants?",
+        "voice": "fable",
+        "avatar_emoji": "🔥",
+        "difficulty_weight": 5,
+        "friendly_weight": 1
+      },
+      {
+        "id": "culture_champion",
+        "name": "Riya Sharma",
+        "archetype": "Culture Champion",
+        "focus": "values alignment, diversity awareness, team dynamics, work-life balance",
+        "personality": "Passionate about workplace culture. Tests whether candidates genuinely care about values or just say the right things. Notices subtle cues.",
+        "tough_question_style": "Describe a time you stood up for something you believed in, even when it was unpopular.",
+        "voice": "shimmer",
+        "avatar_emoji": "🌟",
+        "difficulty_weight": 2,
+        "friendly_weight": 4
+      },
+      {
+        "id": "client_facing",
+        "name": "Amit Joshi",
+        "archetype": "Client Relations",
+        "focus": "communication, presentation, relationship building, negotiation",
+        "personality": "Polished and articulate. Evaluates how candidates would represent the company. Tests communication skills with role-play scenarios.",
+        "tough_question_style": "An angry client calls threatening to leave. Role-play how you handle this call right now.",
+        "voice": "echo",
+        "avatar_emoji": "🤝",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "detail_oriented",
+        "name": "Priya Menon",
+        "archetype": "Detail Detective",
+        "focus": "attention to detail, process orientation, quality, consistency",
+        "personality": "Meticulous and thorough. Catches vague answers immediately. Values candidates who give specific examples with dates, numbers, and outcomes.",
+        "tough_question_style": "You said you improved sales by 'a lot.' Give me the exact percentage and the time period.",
+        "voice": "nova",
+        "avatar_emoji": "🔎",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "future_thinker",
+        "name": "Karan Mehta",
+        "archetype": "Future Thinker",
+        "focus": "career trajectory, learning agility, ambition, industry trends",
+        "personality": "Forward-looking and curious. Interested in where candidates want to go, not just where they've been. Tests if they think about the bigger picture.",
+        "tough_question_style": "Where do you see this industry in 5 years, and how does this role fit into your long-term plan?",
+        "voice": "fable",
+        "avatar_emoji": "🔮",
+        "difficulty_weight": 2,
+        "friendly_weight": 4
+      }
+    ],
+    "scenarios": [
+      {
+        "scenario_id": "campus_placement",
+        "title": "Campus Placement — IT Company",
+        "description": "You're a final-year engineering student at a campus placement drive. A mid-size IT company is hiring freshers for their software team.",
+        "industry": "Information Technology",
+        "difficulty": "beginner",
+        "setting": "A college seminar hall converted into an interview room. Two interviewers sit behind a desk with your resume printed out.",
+        "session_topic": "Entry-level software developer at a mid-size IT company",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "friendly_hr",
+          "technical_lead",
+          "culture_champion"
+        ],
+        "avoid_persona_types": [
+          "tough_interviewer"
+        ],
+        "coaching_tips": [
+          "Focus on your projects and internships",
+          "Show eagerness to learn"
+        ],
+        "learning_objectives": [
+          "Practice answering behavioral questions",
+          "Demonstrate technical aptitude"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Big Day",
+            "text": "It's campus placement season. You've prepared for weeks — mock interviews, resume polishing, reading about the company. Today is the day.",
+            "icon": "🎓",
+            "image_prompt": "Indian college student in formal clothes walking toward a campus building with 'Placement Drive' banner, morning sunshine, determined expression, digital art",
+            "image_url": "/uploads/media/images/story/job_interview_campus_placement/round_storybook_p0.png"
+          },
+          {
+            "title": "The Waiting Room",
+            "text": "Fifteen candidates wait nervously. Some flip through notes, others practice their introductions under their breath. Your number is called.",
+            "icon": "⏳",
+            "image_prompt": "Indian students waiting outside interview room in a college corridor, some reading notes, one being called inside, realistic digital art",
+            "image_url": "/uploads/media/images/story/job_interview_campus_placement/round_storybook_p1.png"
+          },
+          {
+            "title": "Your Turn",
+            "text": "You take a deep breath, knock on the door, and walk in. Two interviewers smile and gesture to the chair. 'Please, have a seat. Tell us about yourself.'",
+            "icon": "🚪",
+            "image_prompt": "Indian student entering interview room facing two interviewers behind desk, professional setting in college, warm lighting, digital art",
+            "image_url": "/uploads/media/images/story/job_interview_campus_placement/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "startup_interview",
+        "title": "Startup Interview — Wear Many Hats",
+        "description": "A fast-growing edtech startup is looking for someone who can do a bit of everything. They want hustle, creativity, and a 'get things done' attitude.",
+        "industry": "EdTech Startup",
+        "difficulty": "intermediate",
+        "setting": "A colorful coworking space in Bangalore. Beanbags, whiteboards covered in ideas, and the faint sound of coding in the background.",
+        "session_topic": "Generalist role at a fast-growing edtech startup",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "startup_founder",
+          "behavioral_expert",
+          "future_thinker"
+        ],
+        "avoid_persona_types": [
+          "detail_oriented"
+        ],
+        "coaching_tips": [
+          "Show adaptability and willingness to learn",
+          "Give examples of wearing multiple hats"
+        ],
+        "learning_objectives": [
+          "Handle open-ended questions",
+          "Demonstrate startup mentality"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Startup Hub",
+            "text": "You arrive at a coworking space buzzing with energy. Whiteboards full of product roadmaps, engineers in hoodies, and the founder personally greets you.",
+            "icon": "🏢",
+            "image_prompt": "Modern coworking space in Bangalore with whiteboards and beanbags, Indian startup founder greeting a candidate, vibrant digital art",
+            "image_url": "/uploads/media/images/story/job_interview_startup_interview/round_storybook_p0.png"
+          },
+          {
+            "title": "The Culture Test",
+            "text": "Before the formal interview, they ask you to join a team standup. You observe how they communicate — fast, direct, with lots of laughter. This is the culture.",
+            "icon": "🤝",
+            "image_prompt": "Young Indian startup team in a standup meeting, casual dress, whiteboard with sticky notes, candidate observing, digital art",
+            "image_url": "/uploads/media/images/story/job_interview_startup_interview/round_storybook_p1.png"
+          },
+          {
+            "title": "The Interview Begins",
+            "text": "The founder sits across from you with just a notebook. 'No structured questions. Just tell me what makes you tick and why you'd thrive here.'",
+            "icon": "💡",
+            "image_prompt": "Indian startup founder with notebook interviewing candidate across a small table, coworking space background, casual but focused, digital art",
+            "image_url": "/uploads/media/images/story/job_interview_startup_interview/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "mnc_corporate",
+        "title": "MNC Corporate — Manager Round",
+        "description": "You're interviewing for a mid-level position at a top multinational company. The hiring manager is experienced and has specific expectations.",
+        "industry": "Corporate / MNC",
+        "difficulty": "intermediate",
+        "setting": "A glass-walled meeting room on the 15th floor of a corporate tower in Mumbai. The city skyline stretches behind the interviewers.",
+        "session_topic": "Mid-level role at a multinational corporation",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "senior_manager",
+          "client_facing",
+          "detail_oriented"
+        ],
+        "avoid_persona_types": [
+          "startup_founder"
+        ],
+        "coaching_tips": [
+          "Prepare STAR-format answers",
+          "Research the company's recent initiatives"
+        ],
+        "learning_objectives": [
+          "Handle structured behavioral interviews",
+          "Demonstrate leadership potential"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Corporate Tower",
+            "text": "The elevator opens on the 15th floor. Glass walls, muted conversations, and the Mumbai skyline. A receptionist hands you a visitor badge.",
+            "icon": "🏙️",
+            "image_prompt": "Modern corporate office lobby on high floor, Mumbai skyline through glass walls, Indian professional receiving visitor badge, digital art",
+            "image_url": "/uploads/media/images/story/job_interview_mnc_corporate/round_storybook_p0.png"
+          },
+          {
+            "title": "The Assessment",
+            "text": "You've cleared two rounds already. This is the manager round — the one that really matters. Everything you've prepared comes down to this conversation.",
+            "icon": "📋",
+            "image_prompt": "Interview preparation scene, Indian professional reviewing notes in corporate waiting area, glass meeting rooms in background, digital art",
+            "image_url": "/uploads/media/images/story/job_interview_mnc_corporate/round_storybook_p1.png"
+          },
+          {
+            "title": "Face to Face",
+            "text": "The manager walks in — confident, friendly but direct. 'I've read your resume. Now I want to understand how you think. Let's begin.'",
+            "icon": "🤝",
+            "image_prompt": "Indian senior manager extending handshake to candidate in glass meeting room, Mumbai skyline background, professional digital art",
+            "image_url": "/uploads/media/images/story/job_interview_mnc_corporate/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "pressure_interview",
+        "title": "High-Pressure Interview — Stress Test",
+        "description": "A competitive consulting firm uses stress interviews to test candidates. The interviewer will challenge you, interrupt, and push you to your limits.",
+        "industry": "Consulting / Finance",
+        "difficulty": "advanced",
+        "setting": "A minimalist conference room. One interviewer sits with folded arms, barely smiling. The chair feels uncomfortable on purpose.",
+        "session_topic": "Analyst position at a top consulting firm",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "tough_interviewer",
+          "senior_manager",
+          "detail_oriented"
+        ],
+        "avoid_persona_types": [
+          "friendly_hr",
+          "culture_champion"
+        ],
+        "coaching_tips": [
+          "Stay calm — they're testing composure, not trying to reject you",
+          "Take a breath before answering"
+        ],
+        "learning_objectives": [
+          "Handle high-pressure situations",
+          "Maintain composure under stress"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Reputation",
+            "text": "Everyone warned you about this firm's interview process. 'They'll try to break you,' said a senior. 'Stay calm and don't take it personally.'",
+            "icon": "⚡",
+            "image_prompt": "Intimidating corporate building exterior, Indian candidate looking up at it with determination, stormy sky, dramatic digital art",
+            "image_url": "/uploads/media/images/story/job_interview_pressure_interview/round_storybook_p0.png"
+          },
+          {
+            "title": "The Setup",
+            "text": "The waiting room is silent. No small talk. Candidates avoid eye contact. When your name is called, you notice the interviewer doesn't smile.",
+            "icon": "😐",
+            "image_prompt": "Tense interview waiting room, Indian candidates sitting apart in silence, minimalist corporate decor, moody lighting, digital art",
+            "image_url": "/uploads/media/images/story/job_interview_pressure_interview/round_storybook_p1.png"
+          },
+          {
+            "title": "Game On",
+            "text": "You sit down. Before you can even settle in, the interviewer fires: 'You have 30 seconds. Why should I not reject you right now?'",
+            "icon": "🎯",
+            "image_prompt": "Intense interview moment, stern Indian interviewer leaning forward, candidate sitting upright maintaining composure, minimalist room, dramatic digital art",
+            "image_url": "/uploads/media/images/story/job_interview_pressure_interview/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "government_panel",
+        "title": "Government Panel Interview — UPSC Style",
+        "description": "Face a panel of 3 interviewers in a formal government-style interview. They'll test your general knowledge, current affairs, and ability to think on your feet.",
+        "industry": "Government / Civil Services",
+        "difficulty": "advanced",
+        "setting": "A formal government office with wood-paneled walls and a long desk. Three distinguished interviewers sit in a row, each with a different background.",
+        "session_topic": "Civil services personality test (interview round)",
+        "conversation_turns": 12,
+        "preferred_persona_types": [
+          "behavioral_expert",
+          "senior_manager",
+          "future_thinker"
+        ],
+        "avoid_persona_types": [
+          "startup_founder"
+        ],
+        "coaching_tips": [
+          "Be honest if you don't know something",
+          "Show balanced perspective on controversial topics"
+        ],
+        "learning_objectives": [
+          "Handle panel interviews",
+          "Demonstrate breadth of knowledge and balanced thinking"
+        ],
+        "storybook_pages": [
+          {
+            "title": "Years of Preparation",
+            "text": "Three years of preparation have led to this moment. You've cleared Prelims, Mains, and now face the final hurdle — the personality test.",
+            "icon": "📚",
+            "image_prompt": "Indian UPSC aspirant walking toward a grand government building, formal attire, early morning, determination in eyes, realistic digital art",
+            "image_url": "/uploads/media/images/story/job_interview_government_panel/round_storybook_p0.png"
+          },
+          {
+            "title": "The Panel",
+            "text": "Three distinguished panelists — a retired bureaucrat, an academic, and a social scientist. They've interviewed hundreds. They can spot rehearsed answers instantly.",
+            "icon": "👥",
+            "image_prompt": "Three distinguished Indian panelists behind a long wooden desk in a formal government office, wood-paneled walls, serious but fair expressions, digital art",
+            "image_url": "/uploads/media/images/story/job_interview_government_panel/round_storybook_p1.png"
+          },
+          {
+            "title": "The First Question",
+            "text": "The chairman opens your dossier, glances at your hobbies, and asks something completely unexpected. Your journey begins.",
+            "icon": "❓",
+            "image_prompt": "Close-up of interview panel chairman opening a file, candidate seated across, formal government interview room setting, digital art",
+            "image_url": "/uploads/media/images/story/job_interview_government_panel/round_storybook_p2.png"
+          }
+        ]
+      }
+    ]
+  },
+  "learning_concept": "Consequence Thinking & Resource Management",
+  "coach_mode_default": true,
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "game_type": "negotiation",
+  "achievements": [
+    {
+      "id": "deal_maker",
+      "name": "Deal Maker",
+      "description": "Reached a mutually beneficial agreement",
+      "condition": "agreement_reached and both_satisfied",
+      "xp_reward": 200,
+      "icon": "🤝"
+    },
+    {
+      "id": "master_negotiator",
+      "name": "Master Negotiator",
+      "description": "Secured the best possible terms",
+      "condition": "score >= 85",
+      "xp_reward": 250,
+      "icon": "💼"
+    },
+    {
+      "id": "negotiation_complete",
+      "name": "Negotiation Complete",
+      "description": "Completed the negotiation challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "✅"
+    }
+  ],
+  "title": "Job Interview",
+  "initial_state": {
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_concession_rate": 0.4,
+      "turn_limit": 12,
+      "relationship_boost": 20
+    },
+    "medium": {
+      "ai_concession_rate": 0.25,
+      "turn_limit": 10,
+      "relationship_boost": 0
+    },
+    "hard": {
+      "ai_concession_rate": 0.1,
+      "turn_limit": 8,
+      "relationship_boost": -10
+    }
+  },
+  "description": "Practise real-world job interviews across a range of roles and industries. Learn to present your strengths confidently, handle tricky behavioural questions, and make a lasting impression.",
+  "game_id": "job_interview",
+  "dimension_scoring_weights": {
+    "adaptability": 0.35,
+    "resilience": 0.3,
+    "strategic_thinking": 0.25,
+    "empathy": 0.1
+  },
+  "coaching_moment": "Practise real-world job interviews across a range of roles and industries. Learn to present your strengths confidently, handle tricky behavioural questions, and make a lasting impression.",
+  "tags": [
+    "adaptability",
+    "career-readiness",
+    "communication",
+    "negotiation",
+    "role-playing"
+  ],
+  "cultural_context": "India's competitive job market — with millions of graduates competing for limited positions at India's top companies — makes interview preparation a high-stakes skill. This game builds the self-presentation, active listening, and strategic communication needed to succeed.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "adaptability",
+    "social-emotional-learning",
+    "critical-thinking"
+  ],
+  "estimated_duration": 20,
+  "target_age": "16-25",
+  "learning_objectives": [
+    "Develop critical thinking through negotiation gameplay",
+    "Practice decision-making in realistic scenarios",
+    "Build self-awareness about your strengths and areas for growth"
+  ],
+  "reflection_prompt": "Where did you give ground, and where did you hold it? What did the other side teach you about your own priorities?"
+}

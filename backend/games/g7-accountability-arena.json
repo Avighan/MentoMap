@@ -1,0 +1,2437 @@
+{
+  "game_id": "g7-accountability-arena",
+  "title": "Accountability Arena: Own It, Fix It, Lead It",
+  "theme": "Ethics & Teamwork — Accountability",
+  "icon": "🎯",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You're leading a team project at Greenfield Academy. Over 12 weeks, things go wrong — deadlines slip, blame flies, secrets surface, and trust fractures. Can you build a culture where people own their mistakes, give honest feedback, and hold each other accountable? Every choice shapes whether your team rises or falls apart.",
+  "target_audience": "Ages 12-13",
+  "target_age": "12-13",
+  "grade": "7",
+  "difficulty": "intermediate",
+  "duration_minutes": 25,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You lead a team of 5 students on a 12-week school project.",
+    "Each week presents a dilemma involving accountability, honesty, or responsibility.",
+    "Watch your dashboard — Personal Integrity, Team Accountability, Trust, and Morale are all connected.",
+    "Random events like rumors, surprise inspections, and teammate breakdowns will test your resolve.",
+    "NPCs (Mr. Ethics, Free-rider Finn, Coach Accountability) react to your choices and can trigger crises.",
+    "If integrity and accountability drop too low, your team faces major crises. Can you lead with integrity?"
+  ],
+  "learning_objectives": [
+    "Understand what accountability means — owning mistakes, not hiding them",
+    "Practice giving and receiving honest feedback respectfully",
+    "Learn to hold others responsible without destroying relationships",
+    "Explore the courage required for whistleblowing and standing up for what's right",
+    "Build a team culture of trust, ownership, and mutual respect"
+  ],
+  "tags": [
+    "ethics",
+    "accountability",
+    "grade-7",
+    "teamwork",
+    "integrity"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Ethical Reasoning",
+    "Collaboration",
+    "Communication",
+    "Social-Emotional Learning"
+  ],
+  "cultural_context": "School team project, universally relatable — peer dynamics, authority figures, honesty dilemmas",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.1,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.1,
+    "resilience": 0.15,
+    "empathy": 0.2,
+    "ethical_reasoning": 0.25
+  },
+  "initial_state": {
+    "personal_integrity": {
+      "value": 55,
+      "label": "Personal Integrity",
+      "icon": "🛡️",
+      "min": 0,
+      "max": 100
+    },
+    "team_accountability": {
+      "value": 40,
+      "label": "Team Accountability",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "feedback_skill": {
+      "value": 25,
+      "label": "Feedback Skill",
+      "icon": "💬",
+      "min": 0,
+      "max": 100
+    },
+    "trust_score": {
+      "value": 50,
+      "label": "Trust Score",
+      "icon": "🔒",
+      "min": 0,
+      "max": 100
+    },
+    "project_quality": {
+      "value": 30,
+      "label": "Project Quality",
+      "icon": "📊",
+      "min": 0,
+      "max": 100
+    },
+    "team_morale": {
+      "value": 55,
+      "label": "Team Morale",
+      "icon": "😊",
+      "min": 0,
+      "max": 100
+    },
+    "whistleblower_courage": {
+      "value": 20,
+      "label": "Whistleblower Courage",
+      "icon": "📢",
+      "min": 0,
+      "max": 100
+    },
+    "conflict_resolution": {
+      "value": 30,
+      "label": "Conflict Resolution",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "reputation": {
+      "value": 50,
+      "label": "Reputation",
+      "icon": "⭐",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "integrity_values",
+        "label": "Integrity & Values",
+        "icon": "🛡️",
+        "color": "#8B5CF6",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, personal_integrity * 0.5 + whistleblower_courage * 0.25 + reputation * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "team_culture",
+        "label": "Team Culture",
+        "icon": "👥",
+        "color": "#06B6D4",
+        "initial_health": 48,
+        "health_formula": "min(100, max(0, team_accountability * 0.35 + team_morale * 0.35 + trust_score * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "conflict_management",
+        "label": "Conflict Resolution",
+        "icon": "⚖️",
+        "color": "#F59E0B",
+        "initial_health": 30,
+        "health_formula": "min(100, max(0, conflict_resolution * 0.4 + feedback_skill * 0.35 + trust_score * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "project_delivery",
+        "label": "Project Delivery",
+        "icon": "📋",
+        "color": "#10B981",
+        "initial_health": 35,
+        "health_formula": "min(100, max(0, project_quality * 0.45 + team_accountability * 0.3 + team_morale * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "accountability_index",
+        "label": "Accountability Index",
+        "icon": "🎯",
+        "formula": "(personal_integrity * 0.3 + team_accountability * 0.3 + whistleblower_courage * 0.2 + feedback_skill * 0.2)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "team_health",
+        "label": "Team Health",
+        "icon": "💚",
+        "formula": "(team_morale * 0.35 + trust_score * 0.35 + conflict_resolution * 0.3)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "project_success",
+        "label": "Project Success",
+        "icon": "🏆",
+        "formula": "(project_quality * 0.4 + team_accountability * 0.25 + reputation * 0.2 + feedback_skill * 0.15)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 60
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "trust_builds",
+        "label": "Trust Growth",
+        "condition": {
+          "resource": "personal_integrity",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "trust_score",
+            "formula": "min(100, trust_score + 2)"
+          }
+        ],
+        "description": "Consistent integrity gradually builds trust with teammates."
+      },
+      {
+        "id": "morale_from_accountability",
+        "label": "Accountability Morale Boost",
+        "condition": {
+          "resource": "team_accountability",
+          "op": ">=",
+          "value": 55
+        },
+        "effects": [
+          {
+            "resource": "team_morale",
+            "formula": "min(100, team_morale + 2)"
+          }
+        ],
+        "description": "When the team holds itself accountable, morale improves."
+      },
+      {
+        "id": "project_progress",
+        "label": "Weekly Project Progress",
+        "effects": [
+          {
+            "resource": "project_quality",
+            "formula": "min(100, project_quality + int(team_accountability * 0.05 + team_morale * 0.03))"
+          }
+        ],
+        "description": "Project quality improves each week based on team accountability and morale."
+      },
+      {
+        "id": "reputation_tracking",
+        "label": "Reputation Update",
+        "effects": [
+          {
+            "resource": "reputation",
+            "formula": "min(100, max(0, int(personal_integrity * 0.4 + trust_score * 0.3 + team_accountability * 0.3)))"
+          }
+        ],
+        "description": "Your reputation reflects how others see your integrity and leadership."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "low_trust_morale_drain",
+        "from_subsystem": "team_culture",
+        "to_subsystem": "project_delivery",
+        "label": "Trust Deficit → Project Drag",
+        "condition": {
+          "resource": "trust_score",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "project_quality",
+            "formula": "max(0, project_quality - (30 - trust_score) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When trust is low, teammates stop collaborating and project quality suffers."
+      },
+      {
+        "id": "integrity_boosts_courage",
+        "from_subsystem": "integrity_values",
+        "to_subsystem": "conflict_management",
+        "label": "Integrity → Courage",
+        "condition": {
+          "resource": "personal_integrity",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "whistleblower_courage",
+            "formula": "min(100, whistleblower_courage + (personal_integrity - 65) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Strong personal integrity makes it easier to speak up when something is wrong."
+      },
+      {
+        "id": "feedback_improves_accountability",
+        "from_subsystem": "conflict_management",
+        "to_subsystem": "team_culture",
+        "label": "Feedback → Accountability",
+        "condition": {
+          "resource": "feedback_skill",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "team_accountability",
+            "formula": "min(100, team_accountability + (feedback_skill - 50) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Good feedback skills help the whole team hold itself accountable."
+      },
+      {
+        "id": "low_morale_erodes_integrity",
+        "from_subsystem": "team_culture",
+        "to_subsystem": "integrity_values",
+        "label": "Morale Collapse → Integrity Risk",
+        "condition": {
+          "resource": "team_morale",
+          "op": "<",
+          "value": 25
+        },
+        "effects": [
+          {
+            "resource": "personal_integrity",
+            "formula": "max(0, personal_integrity - (25 - team_morale) * 0.12)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "When morale collapses, even good people start cutting corners."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "team_morale",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "trust_score",
+        "equilibrium": 35,
+        "rate": 0.04,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "rumor_mill",
+        "label": "The Rumor Mill",
+        "icon": "🗣️",
+        "description": "A nasty rumor about your team is spreading through school. Someone said your project is full of copied work.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "trust_score",
+              "op": "<",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "reputation",
+            "delta": -10
+          },
+          {
+            "resource": "team_morale",
+            "delta": -8
+          },
+          {
+            "resource": "trust_score",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "RUMOR ALERT: Whispers in the hallway claim your team copied parts of the project. Morale takes a hit.",
+        "ai_image_prompt": "School hallway with students whispering and gossiping, worried expressions, dramatic shadows, semi-realistic style"
+      },
+      {
+        "id": "surprise_inspection",
+        "label": "Surprise Progress Check",
+        "icon": "🔍",
+        "description": "The teacher announces a surprise progress check! Your team's work will be evaluated this week.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "project_quality",
+              "op": "<",
+              "value": 45
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "reputation",
+            "delta": -8
+          },
+          {
+            "resource": "team_morale",
+            "delta": -5
+          },
+          {
+            "resource": "personal_integrity",
+            "delta": -4
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "SURPRISE CHECK: The teacher found gaps in your project. Your reputation takes a dent.",
+        "ai_image_prompt": "Teacher examining student project papers critically, students looking nervous, classroom setting, semi-realistic"
+      },
+      {
+        "id": "team_bonding_event",
+        "label": "Team Bonding Opportunity",
+        "icon": "🎉",
+        "description": "The school organizes a team-building workshop! Your group has a chance to strengthen bonds.",
+        "probability": 0.2,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 2
+        },
+        "effects": [
+          {
+            "resource": "team_morale",
+            "delta": 8
+          },
+          {
+            "resource": "trust_score",
+            "delta": 5
+          },
+          {
+            "resource": "conflict_resolution",
+            "delta": 4
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Team bonding success! A workshop helps your team communicate better and rebuild trust.",
+        "ai_image_prompt": "Diverse group of school students in a team building workshop, laughing and collaborating, bright classroom, semi-realistic"
+      },
+      {
+        "id": "external_recognition",
+        "label": "External Recognition",
+        "icon": "🏅",
+        "description": "A visiting educator praises your team's honest approach to the project!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "personal_integrity",
+              "op": ">=",
+              "value": 65
+            },
+            {
+              "resource": "team_accountability",
+              "op": ">=",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "reputation",
+            "delta": 12
+          },
+          {
+            "resource": "team_morale",
+            "delta": 7
+          },
+          {
+            "resource": "whistleblower_courage",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "RECOGNITION: A visiting educator highlights your team's integrity as a model for others!",
+        "ai_image_prompt": "School assembly, visiting educator shaking hands with student leader, proud teammates, awards podium, semi-realistic"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "mr_ethics",
+        "name": "Mr. Ethics",
+        "role": "Faculty Advisor",
+        "icon": "👨‍🏫",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "personal_integrity",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "I'm concerned about the choices you're making. Integrity is not optional — it's the foundation of everything. Think carefully about the kind of leader you want to be.",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "resource": "personal_integrity",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "praise",
+            "message": "I'm proud of you. Standing up for what's right when it's hard — that's real leadership. Your team is lucky to have you.",
+            "mood_change": "happy",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "resource": "whistleblower_courage",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "It takes real courage to speak truth to power. That's a skill that will serve you your entire life.",
+            "mood_change": "impressed",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "feedback_skill",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "advise",
+            "message": "Your team seems afraid to give each other honest feedback. That silence is not peace — it's avoidance. Learn to speak up kindly but firmly.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -4
+          }
+        ]
+      },
+      {
+        "id": "freerider_finn",
+        "name": "Free-rider Finn",
+        "role": "Teammate",
+        "icon": "😎",
+        "initial_mood": "relaxed",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "team_accountability",
+              "op": "<",
+              "value": 35
+            },
+            "action": "slack_off",
+            "message": "Finn shrugs: 'Nobody's keeping track anyway. I'll do my part... eventually.' He scrolls his phone during the team meeting.",
+            "mood_change": "lazy",
+            "satisfaction_delta": 3,
+            "effects": [
+              {
+                "resource": "project_quality",
+                "delta": -4
+              },
+              {
+                "resource": "team_morale",
+                "delta": -3
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "team_accountability",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "step_up",
+            "message": "Finn surprises everyone: 'Fine, I'll actually do my section properly. You all are making me feel guilty.' He submits solid work.",
+            "mood_change": "motivated",
+            "satisfaction_delta": -3,
+            "effects": [
+              {
+                "resource": "project_quality",
+                "delta": 4
+              },
+              {
+                "resource": "team_morale",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "team_accountability",
+                  "op": "<",
+                  "value": 20
+                },
+                {
+                  "resource": "team_morale",
+                  "op": "<",
+                  "value": 30
+                }
+              ]
+            },
+            "action": "team_collapse",
+            "message": "Finn has stopped showing up entirely. Two other teammates are following his lead. The project is falling apart. Without accountability, the team is disintegrating!",
+            "mood_change": "checked_out",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "project_quality",
+                "delta": -10
+              },
+              {
+                "resource": "trust_score",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_team_breakdown"
+          }
+        ]
+      },
+      {
+        "id": "coach_accountability",
+        "name": "Coach Accountability",
+        "role": "Sports Coach & Mentor",
+        "icon": "🏋️",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "conflict_resolution",
+              "op": ">=",
+              "value": 55
+            },
+            "action": "praise",
+            "message": "Coach nods approvingly: 'You're handling conflict like a real leader. On my team, we say: address it, don't bury it. You're getting it.'",
+            "mood_change": "proud",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "resource": "team_morale",
+              "op": "<",
+              "value": 30
+            },
+            "action": "warn",
+            "message": "Coach pulls you aside: 'Your team is hurting. Morale this low means people have given up. You need to show them you care — and that starts with honesty.'",
+            "mood_change": "serious",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "personal_integrity",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "project_quality",
+                  "op": ">",
+                  "value": 40
+                }
+              ]
+            },
+            "action": "confront",
+            "message": "Coach Accountability storms in: 'I've been watching your team. The project looks good on paper, but I know corners were cut and truth was buried. In sports, we call this a cover-up. It always comes out eventually.'",
+            "mood_change": "angry",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "reputation",
+                "delta": -10
+              },
+              {
+                "resource": "trust_score",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_cover_up"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "personal_integrity",
+          "op": ">=",
+          "value": 75
+        },
+        "icon": "⭐",
+        "text": "Word is spreading: your team leader has serious integrity. Other groups are taking notice.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "team_accountability",
+              "op": ">=",
+              "value": 65
+            },
+            {
+              "resource": "project_quality",
+              "op": ">=",
+              "value": 60
+            }
+          ]
+        },
+        "icon": "📰",
+        "text": "School newsletter features your team's project as an example of excellent collaboration!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "trust_score",
+          "op": "<",
+          "value": 25
+        },
+        "icon": "⚠️",
+        "text": "Warning: Team members have started working alone. Trust has broken down.",
+        "severity": "negative"
+      }
+    ],
+    "ai_scene_prompt_template": "A school team project room at Greenfield Academy. {team_morale}% morale, {trust_score}% trust, {project_quality}% project completion. Diverse group of 12-13 year old students around a table with laptops, notebooks, and project materials. Mood: {'energetic and focused' if team_morale > 60 else 'tense and divided' if team_morale < 35 else 'quiet and uncertain'}. Semi-realistic style."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_first_meeting",
+      "round_title": "Week 1: The First Meeting",
+      "situation": "Your team of five has been assigned a 12-week research project on 'Community Heroes.' At the first meeting, you notice Finn is on his phone, two teammates are nervous, and only one person besides you seems prepared. How you set the tone now will shape the entire project.",
+      "goal": "Establish team norms and expectations from day one.",
+      "coaching_moment": "Accountability starts at the beginning — setting clear expectations prevents problems later.",
+      "reflection_prompt": "Why is it important to establish rules and expectations before problems arise?",
+      "ai_image_prompt": "Diverse group of 12-year-old students at first team meeting in a school library, one on phone, others nervous, project materials on table, semi-realistic",
+      "choices": [
+        {
+          "id": "w1_clear_contract",
+          "label": "A. Create a Team Contract",
+          "description": "Propose that everyone signs a team agreement with clear roles, deadlines, and consequences.",
+          "delta": {
+            "team_accountability": 12,
+            "trust_score": 5,
+            "feedback_skill": 5,
+            "project_quality": 5,
+            "team_morale": 3,
+            "personal_integrity": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Excellent leadership! A team contract creates shared ownership from day one. Research shows teams with clear agreements outperform those without.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w1_casual_start",
+          "label": "B. Keep It Casual",
+          "description": "Don't want to seem bossy — let the team figure things out naturally as you go.",
+          "delta": {
+            "team_morale": 5,
+            "team_accountability": -3,
+            "trust_score": 2,
+            "project_quality": -2
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Friendly approach, but without structure, problems tend to snowball. Sometimes being 'nice' now means bigger conflicts later.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "w1_assign_roles",
+          "label": "C. Assign Roles Yourself",
+          "description": "Take charge and assign each person a specific role based on what you think they're good at.",
+          "delta": {
+            "project_quality": 8,
+            "team_accountability": 5,
+            "team_morale": -4,
+            "trust_score": -3,
+            "personal_integrity": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Efficient, but top-down decisions can breed resentment. People commit more to plans they helped create.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w1_address_finn",
+          "label": "D. Call Out Finn Directly",
+          "description": "Tell Finn to put his phone away and take this seriously — in front of everyone.",
+          "delta": {
+            "personal_integrity": 5,
+            "team_accountability": 6,
+            "team_morale": -6,
+            "trust_score": -4,
+            "conflict_resolution": 3,
+            "feedback_skill": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "ethical_reasoning"
+          ],
+          "feedback": "Brave but blunt. Public call-outs can embarrass people and create enemies. The same message delivered privately would have landed better.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_missing_work",
+      "round_title": "Week 2: The Missing Work",
+      "situation": "Finn was supposed to submit his research section this week. He didn't. When you ask, he says 'I forgot, I'll do it next week.' Two other teammates look annoyed but say nothing. If you let this slide, it sends a message.",
+      "goal": "Address Finn's missed deadline without destroying team dynamics.",
+      "coaching_moment": "Holding someone accountable is uncomfortable, but silence is permission. How you respond sets the standard.",
+      "reflection_prompt": "What's the difference between holding someone accountable and being harsh?",
+      "ai_image_prompt": "School group project scene, one student shrugging while others look frustrated, incomplete work on laptop screen, semi-realistic",
+      "choices": [
+        {
+          "id": "w2_private_talk",
+          "label": "A. Talk to Finn Privately",
+          "description": "Pull Finn aside after class and explain why the missed deadline hurts the team.",
+          "delta": {
+            "feedback_skill": 10,
+            "team_accountability": 6,
+            "trust_score": 5,
+            "personal_integrity": 5,
+            "conflict_resolution": 5,
+            "team_morale": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Perfect approach. Private, respectful accountability preserves dignity while sending a clear message. Finn is more likely to change behavior without public humiliation.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "w2_do_it_yourself",
+          "label": "B. Just Do Finn's Part Yourself",
+          "description": "It's faster to do it yourself than to deal with the conflict. You stay up late and finish his section.",
+          "delta": {
+            "project_quality": 6,
+            "personal_integrity": -8,
+            "team_accountability": -8,
+            "team_morale": -3,
+            "trust_score": -4
+          },
+          "skill_tags": [
+            "resilience",
+            "adaptability"
+          ],
+          "feedback": "You solved the immediate problem but created a bigger one. Now Finn knows someone else will cover for him. This pattern will repeat.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w2_team_discussion",
+          "label": "C. Raise It in the Team Meeting",
+          "description": "Bring up the missed deadline during the team meeting so everyone can discuss it together.",
+          "delta": {
+            "team_accountability": 8,
+            "feedback_skill": 6,
+            "conflict_resolution": 4,
+            "team_morale": -3,
+            "trust_score": 2,
+            "personal_integrity": 4
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Transparent but risky. Group accountability discussions can be powerful — or they can feel like a trial. The tone you set matters enormously.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "w2_ignore_it",
+          "label": "D. Let It Slide This Time",
+          "description": "Everyone has off weeks. Give Finn the benefit of the doubt and don't mention it.",
+          "delta": {
+            "team_morale": 3,
+            "team_accountability": -6,
+            "personal_integrity": -5,
+            "project_quality": -4,
+            "trust_score": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Kindness matters, but ignoring missed commitments tells the team that deadlines are optional. Others may start slacking too.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_copied_work",
+      "round_title": "Week 3: The Copy-Paste Discovery",
+      "situation": "You're reviewing the project and discover that one teammate's section is copied almost word-for-word from a website. She's a quiet, hardworking student who's clearly overwhelmed. Reporting it could get her in serious trouble. Ignoring it could get the whole team in trouble later.",
+      "goal": "Decide how to handle discovered plagiarism by a teammate.",
+      "coaching_moment": "Whistleblowing is one of the hardest forms of accountability. Doing the right thing sometimes means uncomfortable conversations.",
+      "reflection_prompt": "When you discover someone has done something wrong, what factors do you consider before deciding what to do?",
+      "ai_image_prompt": "Student discovering copied text on laptop screen, comparing website and project document, worried expression, classroom, semi-realistic",
+      "choices": [
+        {
+          "id": "w3_help_rewrite",
+          "label": "A. Help Her Rewrite It",
+          "description": "Talk to her privately, explain the problem, and offer to help her write it in her own words.",
+          "delta": {
+            "personal_integrity": 10,
+            "feedback_skill": 8,
+            "trust_score": 6,
+            "project_quality": 5,
+            "team_morale": 4,
+            "team_accountability": 5,
+            "whistleblower_courage": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Compassionate accountability at its best. You addressed the wrong without punishing the person. She'll learn from this and trust you more.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "w3_report_teacher",
+          "label": "B. Report It to the Teacher",
+          "description": "This is plagiarism — it's your duty to report it. Tell the teacher immediately.",
+          "delta": {
+            "personal_integrity": 8,
+            "whistleblower_courage": 15,
+            "trust_score": -10,
+            "team_morale": -12,
+            "reputation": 5,
+            "team_accountability": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "risk_tolerance"
+          ],
+          "feedback": "Honest and principled, but at a high social cost. Sometimes the 'right' thing and the 'kind' thing feel like different paths. Could you have found a middle ground?",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w3_ignore_plagiarism",
+          "label": "C. Pretend You Didn't See It",
+          "description": "It's not that bad. Lots of people do it. Don't rock the boat.",
+          "delta": {
+            "team_morale": 2,
+            "personal_integrity": -12,
+            "whistleblower_courage": -8,
+            "project_quality": -3,
+            "reputation": -5
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Avoidance feels safe now but creates real danger. If discovered later, the entire team could face consequences — and you knew.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w3_replace_section",
+          "label": "D. Quietly Replace Her Section Yourself",
+          "description": "Rewrite her section without telling anyone. Problem solved, nobody gets hurt.",
+          "delta": {
+            "project_quality": 4,
+            "personal_integrity": -6,
+            "team_accountability": -5,
+            "feedback_skill": -4,
+            "trust_score": -2
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "You protected her but missed a teaching moment. She doesn't know what she did wrong and may do it again. And you're burning out covering for others.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_feedback_session",
+      "round_title": "Week 4: The Feedback Session",
+      "situation": "Mr. Ethics suggests your team does a mid-project feedback round where everyone writes anonymous notes about each teammate's contributions. The notes arrive — and they're brutally honest. Finn is called 'useless,' your quiet teammate is called 'a pushover,' and someone wrote that you're 'too controlling.'",
+      "goal": "Navigate hurtful but potentially useful feedback without causing a team meltdown.",
+      "coaching_moment": "Receiving hard feedback is a superpower. How you respond to criticism defines your growth as a leader.",
+      "reflection_prompt": "How can honest feedback be delivered in a way that helps people grow instead of shutting them down?",
+      "ai_image_prompt": "Students reading anonymous feedback notes with mixed reactions, some upset some thoughtful, school setting, semi-realistic",
+      "choices": [
+        {
+          "id": "w4_facilitated_discussion",
+          "label": "A. Facilitate a Constructive Discussion",
+          "description": "Acknowledge the feedback is hard, but guide the team through it — focusing on behaviors, not people.",
+          "delta": {
+            "feedback_skill": 12,
+            "conflict_resolution": 10,
+            "team_accountability": 6,
+            "trust_score": 5,
+            "team_morale": 3,
+            "personal_integrity": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Masterful! Turning harsh feedback into growth takes real skill. By focusing on behaviors not personalities, you kept it safe for everyone.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "w4_throw_away",
+          "label": "B. Throw the Notes Away",
+          "description": "This is too hurtful. Destroy the notes and tell the team to forget about it.",
+          "delta": {
+            "team_morale": 5,
+            "feedback_skill": -8,
+            "team_accountability": -6,
+            "conflict_resolution": -5,
+            "personal_integrity": -4
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Protective instinct, but you just taught your team that truth is too dangerous to handle. They'll never be honest with each other now.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "w4_own_criticism",
+          "label": "C. Start by Acknowledging Your Own Criticism",
+          "description": "Read your 'too controlling' feedback aloud and share what you'll change. Model vulnerability first.",
+          "delta": {
+            "personal_integrity": 10,
+            "feedback_skill": 8,
+            "trust_score": 8,
+            "team_morale": 5,
+            "conflict_resolution": 6,
+            "whistleblower_courage": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "Powerful leadership move! When a leader accepts criticism openly, it gives everyone permission to be honest. Vulnerability is strength.",
+          "requires": {
+            "resource": "personal_integrity",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Personal Integrity ≥ 40"
+          },
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w4_blame_mr_ethics",
+          "label": "D. Blame Mr. Ethics for a Bad Idea",
+          "description": "Tell the team the anonymous feedback exercise was a terrible idea and you disagree with it entirely.",
+          "delta": {
+            "team_morale": 3,
+            "personal_integrity": -8,
+            "feedback_skill": -6,
+            "trust_score": -5,
+            "reputation": -5,
+            "team_accountability": -4
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Deflecting blame onto others is the opposite of accountability. Your team just watched you refuse to face uncomfortable truth.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_take_credit",
+      "round_title": "Week 5: The Credit Dilemma",
+      "situation": "Your team presents a progress update to the class. It goes brilliantly. Afterward, the teacher praises you specifically: 'Great leadership! This is clearly your vision.' But honestly, the best ideas came from your quiet teammate. Do you accept the praise or redirect it?",
+      "goal": "Decide whether to take undeserved credit or share it fairly.",
+      "coaching_moment": "True accountability means owning not just your failures, but also giving away credit that isn't yours.",
+      "reflection_prompt": "Why is giving credit to others sometimes harder than admitting mistakes?",
+      "ai_image_prompt": "Student receiving praise from teacher after class presentation, teammates standing behind, school auditorium, semi-realistic",
+      "choices": [
+        {
+          "id": "w5_redirect_credit",
+          "label": "A. Redirect Credit to Your Teammate",
+          "description": "'Thank you, but the best ideas actually came from Priya. She deserves the credit.'",
+          "delta": {
+            "personal_integrity": 12,
+            "trust_score": 10,
+            "team_morale": 8,
+            "team_accountability": 5,
+            "reputation": 5,
+            "feedback_skill": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Beautiful integrity. Sharing credit builds deep trust and loyalty. Your quiet teammate will remember this — and work even harder.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "w5_accept_credit",
+          "label": "B. Accept the Praise Gracefully",
+          "description": "Smile and say thanks. You did lead the team — why not enjoy the recognition?",
+          "delta": {
+            "reputation": 8,
+            "personal_integrity": -8,
+            "trust_score": -6,
+            "team_morale": -5,
+            "team_accountability": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Feels good in the moment, but your teammates saw what happened. Silent resentment is building. Trust erodes when credit is stolen.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w5_share_credit_vaguely",
+          "label": "C. Say 'It Was a Team Effort'",
+          "description": "A generic response that acknowledges the team without singling anyone out.",
+          "delta": {
+            "team_morale": 3,
+            "personal_integrity": 2,
+            "trust_score": 2,
+            "reputation": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Safe and diplomatic, but vague. Your quiet teammate's specific contribution is still invisible. Sometimes being specific matters.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "w5_downplay_success",
+          "label": "D. Downplay the Whole Thing",
+          "description": "'It's not that great, honestly. We got lucky.' Avoid the credit conversation entirely.",
+          "delta": {
+            "team_morale": -4,
+            "reputation": -3,
+            "personal_integrity": -2,
+            "project_quality": -2
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "False modesty helps no one. Your team worked hard and deserves recognition. Dismissing success is its own kind of dishonesty.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_whistleblower",
+      "round_title": "Week 6: The Whistleblower Moment",
+      "situation": "You discover that a rival team has been cheating — they got advance copies of the evaluation rubric from a student assistant. Reporting them could create drama, and the student assistant is popular. But if you stay quiet, your team competes on an unfair playing field.",
+      "goal": "Decide whether to blow the whistle on cheating by others.",
+      "coaching_moment": "Whistleblowing is accountability aimed outward. It requires courage because the social cost is real.",
+      "reflection_prompt": "Is it your responsibility to report wrongdoing that doesn't directly involve you? Why or why not?",
+      "ai_image_prompt": "Student in school hallway looking at evidence of cheating on phone, other students walking by unaware, moral dilemma, dramatic lighting, semi-realistic",
+      "choices": [
+        {
+          "id": "w6_report_anonymously",
+          "label": "A. Report Anonymously",
+          "description": "Write an anonymous note to the teacher explaining what happened, with evidence.",
+          "delta": {
+            "whistleblower_courage": 12,
+            "personal_integrity": 8,
+            "reputation": 3,
+            "trust_score": 2,
+            "team_morale": 2
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "risk_tolerance"
+          ],
+          "feedback": "A pragmatic act of courage. Anonymous reporting protects you while still addressing the wrong. Not as brave as going public, but effective.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w6_report_openly",
+          "label": "B. Report It Openly With Your Name",
+          "description": "Go to the teacher directly, identify yourself, and present the evidence. Own it.",
+          "delta": {
+            "whistleblower_courage": 18,
+            "personal_integrity": 12,
+            "reputation": -5,
+            "team_morale": -3,
+            "trust_score": 4,
+            "conflict_resolution": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Maximum courage. Going public with your name invites backlash, but it's the most accountable path. History remembers whistleblowers kindly — eventually.",
+          "requires": {
+            "resource": "whistleblower_courage",
+            "op": ">=",
+            "value": 25,
+            "label": "Requires Whistleblower Courage ≥ 25"
+          },
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "w6_stay_quiet",
+          "label": "C. Stay Quiet — Not Your Problem",
+          "description": "Focus on your own team. You didn't cheat. Let the teachers figure it out.",
+          "delta": {
+            "team_morale": 3,
+            "personal_integrity": -8,
+            "whistleblower_courage": -6,
+            "reputation": 2
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "The safe choice, but silence in the face of injustice is a form of complicity. And if you lose to cheaters, how will that feel?",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills."
+          }
+        },
+        {
+          "id": "w6_confront_rival",
+          "label": "D. Confront the Rival Team Directly",
+          "description": "Tell the rival team leader you know what they did and demand they confess themselves.",
+          "delta": {
+            "whistleblower_courage": 10,
+            "conflict_resolution": 8,
+            "personal_integrity": 5,
+            "reputation": -8,
+            "team_morale": -4,
+            "trust_score": -2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Bold and confrontational. Giving them a chance to self-report is generous, but they might deny it or turn the situation against you.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_own_mistake",
+      "round_title": "Week 7: Your Own Mistake",
+      "situation": "You made a serious error — you accidentally deleted an important shared file that had two weeks of everyone's work. You have a backup of most of it, but about 20% is lost. Nobody knows it was you yet. You could quietly restore the backup and hope nobody notices the missing parts.",
+      "goal": "Decide whether to own up to your own mistake or hide it.",
+      "coaching_moment": "The ultimate test of accountability: can you hold yourself to the same standards you hold others?",
+      "reflection_prompt": "Is it harder to hold yourself accountable than to hold others accountable? Why?",
+      "ai_image_prompt": "Student staring at laptop showing deleted files error message, hand on forehead, anxious expression, school computer lab, semi-realistic",
+      "choices": [
+        {
+          "id": "w7_full_confession",
+          "label": "A. Tell the Team Immediately",
+          "description": "Gather the team, explain exactly what happened, apologize, and propose a recovery plan.",
+          "delta": {
+            "personal_integrity": 15,
+            "trust_score": 8,
+            "team_accountability": 8,
+            "feedback_skill": 5,
+            "team_morale": -3,
+            "project_quality": -8,
+            "reputation": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "This is what real accountability looks like. Owning your mistakes openly — especially as the leader — builds massive trust. Your team will respect you more, not less.",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "w7_partial_truth",
+          "label": "B. Blame a 'Technical Glitch'",
+          "description": "Tell the team a 'system error' corrupted some files. Technically... sort of true?",
+          "delta": {
+            "team_morale": 2,
+            "personal_integrity": -10,
+            "project_quality": -5,
+            "trust_score": -3,
+            "reputation": -2
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "A half-truth is a whole lie. You just demonstrated exactly the behavior you've been asking your team not to do. If they find out, trust is destroyed.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "w7_restore_silently",
+          "label": "C. Restore the Backup Silently",
+          "description": "Restore what you can, work overnight to recreate the missing 20%, and say nothing.",
+          "delta": {
+            "project_quality": -2,
+            "personal_integrity": -8,
+            "team_accountability": -5,
+            "trust_score": -2,
+            "whistleblower_courage": -4
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "You worked hard to fix it, but hiding your mistake undermines every accountability speech you've ever given. Leadership by example means this too.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "w7_confess_to_one",
+          "label": "D. Tell One Trusted Teammate First",
+          "description": "Confide in your most trusted teammate, get their advice, then decide how to tell the group.",
+          "delta": {
+            "personal_integrity": 8,
+            "trust_score": 5,
+            "feedback_skill": 6,
+            "conflict_resolution": 4,
+            "project_quality": -6,
+            "team_morale": -1
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Smart emotional strategy. Getting support before a difficult confession is healthy. Just make sure you actually tell the full team — don't let this become a secret between two people.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_team_breakdown",
+      "id": "crisis_team_breakdown",
+      "round_title": "CRISIS: Team Breakdown",
+      "situation": "The team has fractured. Finn has stopped coming. Two others are doing the bare minimum. Your quiet teammate is overwhelmed and doing everything alone. The project deadline is in 5 weeks and you're behind schedule. Mr. Ethics has given you one week to show the team can function — or he'll reassign members.",
+      "goal": "Save the team from collapse before the deadline.",
+      "coaching_moment": "Crisis reveals character. When everything falls apart, accountability means taking ownership of the situation — even the parts that aren't your fault.",
+      "reflection_prompt": "When a team falls apart, who is responsible? The leader? Each member? Everyone?",
+      "ai_image_prompt": "Fragmented school team, empty chairs at project table, one student working alone stressed, scattered papers, tense atmosphere, semi-realistic",
+      "condition": {
+        "resource": "team_accountability",
+        "operator": "<",
+        "value": 20
+      },
+      "choices": [
+        {
+          "id": "tb_emergency_meeting",
+          "label": "A. Emergency Honest Conversation",
+          "description": "Call everyone in. No blame, no excuses — just honest talk about what went wrong and what each person needs.",
+          "delta": {
+            "team_accountability": 12,
+            "trust_score": 8,
+            "team_morale": 8,
+            "feedback_skill": 8,
+            "conflict_resolution": 10,
+            "personal_integrity": 6,
+            "project_quality": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "resilience"
+          ],
+          "feedback": "Courageous honesty in crisis. When a leader says 'let's talk about what really happened,' it opens doors that blame slams shut.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "tb_redistribute",
+          "label": "B. Redistribute Work and Move On",
+          "description": "Don't waste time on feelings — reassign tasks based on who's actually reliable and push forward.",
+          "delta": {
+            "project_quality": 10,
+            "team_accountability": 5,
+            "team_morale": -4,
+            "trust_score": -3,
+            "conflict_resolution": 2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Practical and efficient, but treating people as task-completion machines ignores the real problem. The emotional damage remains.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "tb_involve_teacher",
+          "label": "C. Ask Mr. Ethics to Mediate",
+          "description": "Admit you can't fix this alone. Ask your advisor to facilitate a team reset conversation.",
+          "delta": {
+            "team_accountability": 8,
+            "team_morale": 6,
+            "trust_score": 5,
+            "conflict_resolution": 8,
+            "personal_integrity": 3,
+            "reputation": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Asking for help is a form of accountability — recognizing your limits takes humility. Mr. Ethics can see dynamics you might miss.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "tb_ultimatum",
+          "label": "D. Give Finn an Ultimatum",
+          "description": "Tell Finn: contribute this week or you're asking the teacher to remove him. Enough is enough.",
+          "delta": {
+            "team_accountability": 8,
+            "personal_integrity": 4,
+            "team_morale": -6,
+            "trust_score": -4,
+            "conflict_resolution": 5,
+            "whistleblower_courage": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "ethical_reasoning"
+          ],
+          "feedback": "Drawing a line is sometimes necessary, but ultimatums often backfire. People respond better to being pulled in than pushed out.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_cover_up",
+      "id": "crisis_cover_up",
+      "round_title": "CRISIS: The Cover-Up Exposed",
+      "situation": "Coach Accountability has figured out that your project's impressive results hide some uncomfortable truths — shortcuts were taken, data was cherry-picked, and a few sources were fabricated. The project looks polished, but the integrity underneath is hollow. Coach demands you come clean to the evaluation panel — or he will.",
+      "goal": "Face the consequences of compromised integrity.",
+      "coaching_moment": "Cover-ups always unravel. The question is never 'will it come out?' but 'will it come out from you or from someone else?'",
+      "reflection_prompt": "Why do cover-ups usually make things worse? What makes coming clean so difficult?",
+      "ai_image_prompt": "Stern sports coach confronting a student with evidence of dishonesty, school office, serious atmosphere, documents on desk, semi-realistic",
+      "condition": {
+        "resource": "personal_integrity",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "cu_full_disclosure",
+          "label": "A. Full Disclosure to the Panel",
+          "description": "Go to the evaluation panel yourself, explain every shortcut, and accept the consequences.",
+          "delta": {
+            "personal_integrity": 18,
+            "whistleblower_courage": 12,
+            "trust_score": 10,
+            "reputation": -8,
+            "project_quality": -15,
+            "team_morale": -5,
+            "team_accountability": 8
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "The hardest and bravest choice. Full disclosure will hurt your grade, but your integrity score with everyone who matters just skyrocketed.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "cu_partial_admission",
+          "label": "B. Admit Some Problems, Minimize Others",
+          "description": "Acknowledge the cherry-picked data but downplay the fabricated sources. Damage control.",
+          "delta": {
+            "personal_integrity": 3,
+            "reputation": -5,
+            "project_quality": -8,
+            "trust_score": -3,
+            "team_accountability": 2
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Half-truths are a slippery slope. You reduced the damage but didn't fully own it. Coach Accountability sees through this.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "cu_blame_team",
+          "label": "C. Blame the Team Members Who Cut Corners",
+          "description": "Tell the panel that specific teammates made these decisions without your knowledge.",
+          "delta": {
+            "personal_integrity": -12,
+            "trust_score": -15,
+            "team_morale": -15,
+            "reputation": -8,
+            "team_accountability": -10,
+            "conflict_resolution": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Throwing your team under the bus is the ultimate accountability failure. Even if others contributed to the problem, you're the leader.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "cu_fix_and_resubmit",
+          "label": "D. Ask for Extension to Fix Everything",
+          "description": "Request a 2-week extension to redo all the compromised sections properly — with full transparency about why.",
+          "delta": {
+            "personal_integrity": 12,
+            "project_quality": 5,
+            "trust_score": 6,
+            "team_accountability": 6,
+            "team_morale": 3,
+            "reputation": -3,
+            "whistleblower_courage": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Excellent problem-solving. You're honest about the failure AND offering a solution. This shows maturity — owning the mistake and fixing it.",
+          "requires": {
+            "resource": "trust_score",
+            "op": ">=",
+            "value": 30,
+            "label": "Requires Trust Score ≥ 30"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_peer_pressure",
+      "round_title": "Week 8: The Peer Pressure Test",
+      "situation": "Three other teams are cutting corners to finish faster — sharing answers, splitting up work so nobody actually learns, and one team is using AI to write everything. Your team is doing it honestly but falling behind. Your teammates are getting frustrated: 'Why are we the only ones doing this the hard way?'",
+      "goal": "Maintain ethical standards under competitive pressure.",
+      "coaching_moment": "Integrity is easiest when everyone is watching. The real test is when nobody would know if you cheated.",
+      "reflection_prompt": "Is something wrong just because everyone else is doing it? How do you stay on course when shortcuts tempt you?",
+      "ai_image_prompt": "School competition setting, one team working honestly while others take shortcuts, divided atmosphere, classroom, semi-realistic",
+      "choices": [
+        {
+          "id": "w8_stay_honest",
+          "label": "A. Stay the Course — Integrity Over Speed",
+          "description": "Remind your team that the learning matters more than the grade. Keep doing it right.",
+          "delta": {
+            "personal_integrity": 10,
+            "team_accountability": 8,
+            "team_morale": -3,
+            "project_quality": 3,
+            "whistleblower_courage": 5,
+            "trust_score": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Standing firm when everyone else bends is true integrity. Your team may grumble now, but they'll be proud of this later.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "w8_efficient_shortcuts",
+          "label": "B. Find Ethical Shortcuts",
+          "description": "Use smart strategies to speed up — divide and conquer, templates, better tools — without compromising quality.",
+          "delta": {
+            "project_quality": 8,
+            "team_morale": 6,
+            "team_accountability": 4,
+            "personal_integrity": 4,
+            "feedback_skill": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Innovation, not cheating! Finding better methods within ethical bounds shows strategic thinking and leadership.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w8_use_ai_too",
+          "label": "C. Use AI 'Just a Little'",
+          "description": "Let the team use AI to draft some sections. Everyone else is doing it. You'll edit it to make it your own... mostly.",
+          "delta": {
+            "project_quality": 5,
+            "team_morale": 5,
+            "personal_integrity": -10,
+            "team_accountability": -6,
+            "whistleblower_courage": -5,
+            "trust_score": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "The slippery slope. 'Just a little' dishonesty is how most integrity failures begin. And you just lost the right to criticize other teams.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "w8_report_cheaters",
+          "label": "D. Report the Cheating Teams",
+          "description": "If other teams are cheating, the fair thing is to report it so everyone competes equally.",
+          "delta": {
+            "whistleblower_courage": 12,
+            "personal_integrity": 6,
+            "reputation": -10,
+            "team_morale": -5,
+            "trust_score": 3,
+            "conflict_resolution": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "risk_tolerance"
+          ],
+          "feedback": "Principled but socially costly. You're right that fairness matters, but prepare for pushback from peers who see reporting as 'snitching.'",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_9_difficult_feedback",
+      "round_title": "Week 9: Giving Difficult Feedback",
+      "situation": "Your closest friend on the team has been doing mediocre work. She's going through a tough time at home, but her section is dragging the project down. Everyone else is too uncomfortable to say anything. As her friend, you have to decide: protect the friendship or protect the project.",
+      "goal": "Navigate the tension between caring for a friend and being honest about their work.",
+      "coaching_moment": "The hardest feedback to give is to someone you love. But true friendship includes honesty — delivered with care.",
+      "reflection_prompt": "Can you be both kind AND honest? How do you tell a friend something they don't want to hear?",
+      "ai_image_prompt": "Two friends having a serious but caring conversation in school courtyard, one looking concerned, the other listening, emotional moment, semi-realistic",
+      "choices": [
+        {
+          "id": "w9_caring_honesty",
+          "label": "A. Be Honestly Caring",
+          "description": "Tell her privately: 'I care about you, and I'm worried about your section. How can I help you make it better?'",
+          "delta": {
+            "feedback_skill": 12,
+            "trust_score": 8,
+            "personal_integrity": 8,
+            "team_morale": 5,
+            "project_quality": 5,
+            "conflict_resolution": 6
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "This is the gold standard. Leading with care, being specific about the issue, and offering help. She'll feel supported, not attacked.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w9_fix_her_work",
+          "label": "B. Quietly Fix Her Work Yourself",
+          "description": "Edit and improve her section without telling her. She has enough stress.",
+          "delta": {
+            "project_quality": 5,
+            "personal_integrity": -6,
+            "feedback_skill": -5,
+            "team_accountability": -4,
+            "team_morale": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Kind intention, but you're enabling poor work and denying her the chance to grow. Real friends help you get better, not hide your problems.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "w9_group_addresses",
+          "label": "C. Let the Group Address It",
+          "description": "Bring it up in the team meeting so the feedback comes from everyone, not just you.",
+          "delta": {
+            "team_accountability": 6,
+            "feedback_skill": 4,
+            "trust_score": -4,
+            "team_morale": -5,
+            "conflict_resolution": 3,
+            "personal_integrity": 2
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Group accountability has power, but ambushing a struggling friend in public feels like betrayal. She needed a heads-up from you first.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "w9_lower_standards",
+          "label": "D. Lower Standards — Accept What She Can Give",
+          "description": "She's going through a hard time. Accept her work as-is and compensate elsewhere.",
+          "delta": {
+            "team_morale": 4,
+            "personal_integrity": -4,
+            "project_quality": -6,
+            "team_accountability": -5,
+            "feedback_skill": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Compassionate, but lowering standards sends a message that accountability is conditional. Others may wonder why they're working harder.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_10_final_push",
+      "round_title": "Week 10: The Final Push",
+      "situation": "Two weeks until the final presentation. The project is taking shape, but there's a critical decision: your data section has a flaw that could weaken the whole argument. Fixing it means redoing a major section. Leaving it means hoping the evaluators don't notice.",
+      "goal": "Choose between convenience and accuracy in the final stretch.",
+      "coaching_moment": "Integrity under deadline pressure is the ultimate test. When time is short, cutting corners is most tempting — and most dangerous.",
+      "reflection_prompt": "Is it ever acceptable to submit work you know is flawed? Where is the line between 'good enough' and 'dishonest'?",
+      "ai_image_prompt": "Students working late on project with deadline approaching, clock showing late hour, laptops and papers, focused determination, semi-realistic",
+      "choices": [
+        {
+          "id": "w10_fix_flaw",
+          "label": "A. Fix the Flaw — Do It Right",
+          "description": "Redo the data section properly. It means late nights, but the project will be honest and solid.",
+          "delta": {
+            "project_quality": 12,
+            "personal_integrity": 10,
+            "team_accountability": 6,
+            "team_morale": -3,
+            "trust_score": 5,
+            "reputation": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "delayed_gratification"
+          ],
+          "feedback": "Excellence requires sacrifice. Fixing the flaw before submission is what separates good work from great work — and honest leaders from careless ones.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "w10_acknowledge_flaw",
+          "label": "B. Acknowledge the Limitation",
+          "description": "Add a 'limitations' section that honestly notes the data weakness. Show you understand the problem.",
+          "delta": {
+            "personal_integrity": 8,
+            "project_quality": 5,
+            "feedback_skill": 5,
+            "trust_score": 4,
+            "team_accountability": 4,
+            "reputation": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "Intellectual honesty! Acknowledging limitations is a sign of maturity. Evaluators respect teams who know what they don't know.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "w10_hide_flaw",
+          "label": "C. Leave It and Hope Nobody Notices",
+          "description": "The flaw is subtle. Most people won't catch it. Focus energy on making the presentation impressive.",
+          "delta": {
+            "project_quality": 2,
+            "personal_integrity": -10,
+            "team_accountability": -6,
+            "reputation": -3,
+            "whistleblower_courage": -4
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Hoping nobody notices is a gamble with your integrity. And if they do notice? You'll wish you had fixed it when you had the chance.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "w10_split_effort",
+          "label": "D. Split the Team — Half Fix, Half Polish",
+          "description": "Divide the team so some fix the flaw while others perfect the presentation. Maximum coverage.",
+          "delta": {
+            "project_quality": 8,
+            "team_accountability": 5,
+            "personal_integrity": 6,
+            "team_morale": 2,
+            "trust_score": 3,
+            "conflict_resolution": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Great delegation! Using the team's strengths to tackle both problems simultaneously shows mature leadership thinking.",
+          "requires": {
+            "resource": "team_morale",
+            "op": ">=",
+            "value": 35,
+            "label": "Requires Team Morale ≥ 35"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_12_legacy",
+      "round_title": "Week 12: Your Legacy",
+      "situation": "The project is submitted. The presentation is done. Now comes the team's final reflection. Mr. Ethics asks each team to write a 'lessons learned' document. Your teammates look to you. What tone do you set for this final reflection on 12 weeks of working together?",
+      "goal": "Define your legacy as a leader and the culture you built.",
+      "coaching_moment": "How you end matters as much as how you begin. A leader's final act shapes how the whole journey is remembered.",
+      "reflection_prompt": "What have you learned about accountability? What would you do differently if you could start over?",
+      "ai_image_prompt": "School team celebrating project completion, writing reflection together, mixed emotions of pride and growth, classroom with completed project display, semi-realistic",
+      "choices": [
+        {
+          "id": "w12_honest_reflection",
+          "label": "A. Write a Brutally Honest Reflection",
+          "description": "Document everything — the successes, the failures, the conflicts, the lessons. Hold nothing back.",
+          "delta": {
+            "personal_integrity": 12,
+            "feedback_skill": 10,
+            "team_accountability": 8,
+            "trust_score": 8,
+            "whistleblower_courage": 5,
+            "reputation": 8
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "A legacy of truth. Honest reflection is the highest form of accountability. Your team will carry these lessons into every future project.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "w12_celebrate_team",
+          "label": "B. Focus on Celebrating the Team",
+          "description": "Write about what went well, highlight each person's strengths, and end on a positive note.",
+          "delta": {
+            "team_morale": 10,
+            "trust_score": 5,
+            "reputation": 6,
+            "personal_integrity": 3,
+            "feedback_skill": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Positive and warm, but a reflection that only celebrates misses the growth that came from struggle. Your best lessons came from the hard moments.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "w12_personal_accountability",
+          "label": "C. Write About Your Own Growth",
+          "description": "Make it personal — share your own mistakes, what you learned about leadership, and how you grew.",
+          "delta": {
+            "personal_integrity": 10,
+            "feedback_skill": 8,
+            "trust_score": 6,
+            "team_morale": 6,
+            "whistleblower_courage": 4,
+            "reputation": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "Powerful vulnerability. When a leader shares their growth publicly, it gives everyone permission to be imperfect and keep learning.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w12_action_plan",
+          "label": "D. Create a Guide for Future Teams",
+          "description": "Turn your lessons into an 'Accountability Playbook' — practical tips other teams can use.",
+          "delta": {
+            "project_quality": 8,
+            "team_accountability": 6,
+            "reputation": 8,
+            "feedback_skill": 6,
+            "personal_integrity": 5,
+            "trust_score": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Legacy thinking! Turning your experience into something that helps others is the ultimate leadership move. Your pain becomes someone else's playbook.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "integrity_champion",
+      "label": "Integrity Champion",
+      "condition": "personal_integrity >= 80 and whistleblower_courage >= 60",
+      "icon": "🛡️"
+    },
+    {
+      "id": "feedback_master",
+      "label": "Feedback Master",
+      "condition": "feedback_skill >= 70 and conflict_resolution >= 60",
+      "icon": "💬"
+    },
+    {
+      "id": "trust_builder",
+      "label": "Trust Builder",
+      "condition": "trust_score >= 75 and team_morale >= 70",
+      "icon": "🤝"
+    },
+    {
+      "id": "courageous_voice",
+      "label": "Courageous Voice",
+      "condition": "whistleblower_courage >= 65 and personal_integrity >= 65",
+      "icon": "📢"
+    },
+    {
+      "id": "project_hero",
+      "label": "Project Hero",
+      "condition": "project_quality >= 70 and team_accountability >= 65",
+      "icon": "🏆"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Accountability",
+      "definition": "Taking responsibility for your actions and their consequences — owning both your successes and your mistakes."
+    },
+    {
+      "term": "Whistleblowing",
+      "definition": "Reporting wrongdoing, dishonesty, or unethical behavior, especially when it's risky or unpopular to do so."
+    },
+    {
+      "term": "Integrity",
+      "definition": "Doing the right thing even when nobody is watching. Consistency between your values and your actions."
+    },
+    {
+      "term": "Constructive Feedback",
+      "definition": "Honest, specific, and helpful comments about someone's work or behavior, delivered with respect and care."
+    },
+    {
+      "term": "Plagiarism",
+      "definition": "Presenting someone else's words, ideas, or work as your own without proper credit or attribution."
+    },
+    {
+      "term": "Conflict Resolution",
+      "definition": "The process of finding a peaceful solution to a disagreement, using communication, empathy, and compromise."
+    },
+    {
+      "term": "Team Culture",
+      "definition": "The shared values, norms, and behaviors that define how a group works together — shaped by every member's choices."
+    },
+    {
+      "term": "Moral Courage",
+      "definition": "The strength to act on your ethical beliefs even when facing social pressure, ridicule, or personal cost."
+    }
+  ],
+  "endings": [
+    {
+      "id": "integrity_champion",
+      "title": "Integrity Champion",
+      "icon": "🛡️",
+      "message": "You became the person who always does the right thing — even when it's hard, unpopular, or costly. Your teammates trust you completely because they know you'll never hide the truth or take shortcuts. Mr. Ethics writes in his evaluation: 'A rare student who understands that integrity is not a rule — it's a way of life.' You've proven that owning your mistakes makes you stronger, not weaker.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "personal_integrity",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "trust_score",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "accountability_leader",
+      "title": "Accountability Leader",
+      "icon": "🎯",
+      "message": "Your team became the gold standard for accountability at Greenfield Academy. Clear expectations, honest check-ins, and a culture where everyone owns their work — that's what you built. Even Finn stepped up under your leadership. Other teams ask: 'How did you get everyone to actually do their part?' Your secret? You held yourself accountable first.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "team_accountability",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "project_quality",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "team_healer",
+      "title": "Team Healer",
+      "icon": "💚",
+      "message": "Your greatest achievement wasn't the project — it was the team. You navigated conflicts with empathy, delivered difficult feedback with care, and rebuilt trust when it shattered. Your quiet teammate found her voice. Even Finn admitted you changed how he thinks about responsibility. Coach Accountability calls you 'the best team leader I've seen in years.' You proved that caring deeply and holding standards high aren't opposites.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "team_morale",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "conflict_resolution",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "feedback_skill",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "courageous_voice",
+      "title": "Courageous Voice",
+      "icon": "📢",
+      "message": "You became the person who speaks up when others stay silent. Reporting cheating, calling out plagiarism, admitting your own mistakes in front of everyone — you chose courage over comfort, again and again. Not everyone liked it. Some called you a snitch. But the people who matter — your team, your teachers, your own conscience — know the truth: you made things better by refusing to look away. That takes a rare kind of bravery.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "whistleblower_courage",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "resource": "personal_integrity",
+            "operator": ">=",
+            "value": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "growing_in_integrity",
+      "title": "Growing in Integrity",
+      "icon": "🌱",
+      "message": "The 12 weeks weren't perfect — there were missed deadlines, uncomfortable conversations, and moments where the easy path was more tempting than the right one. But you showed up every week, you tried, and you learned something crucial: accountability isn't about being perfect. It's about being honest. You're still growing, and that's exactly where you should be. The next project? You'll be better.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          13
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Accountability Arena: Own It, Fix It, Lead It Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Accountability Arena: Own It, Fix It, Lead It. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Accountability Arena: Own It, Fix It, Lead It Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Accountability Arena: Own It, Fix It, Lead It. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

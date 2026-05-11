@@ -1,0 +1,2605 @@
+{
+  "game_id": "g7-stock-sim",
+  "title": "Stock Street: Risk, Return & You",
+  "theme": "Investment, Risk Management & Financial Decision-Making",
+  "icon": "📈",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You've just inherited a virtual portfolio worth 50,000 from your grandfather, a retired stock trader. Over 12 months, you must make smart investment decisions across stocks, bonds, mutual funds, and savings. Markets shift, crises hit, and advisors disagree. Can you grow your wealth while managing risk wisely?",
+  "target_audience": "Ages 12-13",
+  "target_age": "12-13",
+  "grade": "7",
+  "difficulty": "intermediate",
+  "duration_minutes": 25,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You manage a portfolio of 50,000 across 12 months of market activity.",
+    "Each round presents an investment decision with trade-offs between risk, return, and safety.",
+    "Watch your dashboard — portfolio value, cash reserves, stock/bond allocations, and risk score are all interconnected.",
+    "Random events like market crashes, IPOs, and inflation spikes will test your resilience.",
+    "NPCs (your finance teacher, an aggressive classmate, and a cautious relative) give advice — but not all advice is equal!",
+    "Aim for balanced growth — going all-in on one asset class is risky, but playing it too safe means missed opportunities!"
+  ],
+  "learning_objectives": [
+    "Understand the relationship between risk and return in investing",
+    "Learn about different asset classes: stocks, bonds, mutual funds, and savings",
+    "Practice portfolio diversification and asset allocation",
+    "Develop critical thinking about financial advice and market news",
+    "Build delayed gratification skills through long-term investment thinking",
+    "Understand how emotions (fear and greed) affect financial decisions"
+  ],
+  "tags": [
+    "finance",
+    "investment",
+    "grade-7",
+    "risk-management",
+    "stocks"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "Financial Literacy",
+    "Critical Thinking",
+    "Problem Solving",
+    "Risk Assessment"
+  ],
+  "cultural_context": "Global financial markets, investment basics, personal finance",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.15,
+    "delayed_gratification": 0.2,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.1,
+    "ethical_reasoning": 0.1
+  },
+  "initial_state": {
+    "portfolio_value": {
+      "value": 50000,
+      "label": "Portfolio Value",
+      "icon": "💼",
+      "min": 0,
+      "max": 200000
+    },
+    "cash_reserves": {
+      "value": 10000,
+      "label": "Cash Reserves",
+      "icon": "💵",
+      "min": 0,
+      "max": 100000
+    },
+    "stocks_allocation": {
+      "value": 20,
+      "label": "Stocks Allocation",
+      "icon": "📊",
+      "min": 0,
+      "max": 100
+    },
+    "bonds_allocation": {
+      "value": 10,
+      "label": "Bonds Allocation",
+      "icon": "🏦",
+      "min": 0,
+      "max": 100
+    },
+    "risk_score": {
+      "value": 50,
+      "label": "Risk Score",
+      "icon": "⚡",
+      "min": 0,
+      "max": 100
+    },
+    "financial_knowledge": {
+      "value": 35,
+      "label": "Financial Knowledge",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "market_confidence": {
+      "value": 50,
+      "label": "Market Confidence",
+      "icon": "📈",
+      "min": 0,
+      "max": 100
+    },
+    "diversification_index": {
+      "value": 20,
+      "label": "Diversification Index",
+      "icon": "🎯",
+      "min": 0,
+      "max": 100
+    },
+    "advisor_trust": {
+      "value": 40,
+      "label": "Advisor Trust",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Month",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "stock_market",
+        "label": "Stock Market",
+        "icon": "📊",
+        "color": "#EF4444",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, stocks_allocation * 0.4 + market_confidence * 0.3 + financial_knowledge * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "bond_market",
+        "label": "Bond Market",
+        "icon": "🏦",
+        "color": "#3B82F6",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, bonds_allocation * 0.5 + (100 - risk_score) * 0.3 + advisor_trust * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "risk_management",
+        "label": "Risk Management",
+        "icon": "🛡️",
+        "color": "#10B981",
+        "initial_health": 45,
+        "health_formula": "min(100, max(0, diversification_index * 0.4 + financial_knowledge * 0.3 + (100 - risk_score) * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "financial_education",
+        "label": "Financial Education",
+        "icon": "📚",
+        "color": "#8B5CF6",
+        "initial_health": 35,
+        "health_formula": "min(100, max(0, financial_knowledge * 0.5 + advisor_trust * 0.25 + diversification_index * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "portfolio_balance",
+        "label": "Portfolio Balance",
+        "icon": "⚖️",
+        "color": "#F59E0B",
+        "initial_health": 40,
+        "health_formula": "min(100, max(0, diversification_index * 0.35 + min(stocks_allocation, bonds_allocation) * 0.3 + cash_reserves / 1000 * 0.35))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "portfolio_growth_rate",
+        "label": "Portfolio Growth Rate",
+        "icon": "📈",
+        "formula": "min(100, max(0, (portfolio_value / 500) * (market_confidence / 100)))",
+        "unit": "%",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 60
+        }
+      },
+      {
+        "id": "risk_adjusted_return",
+        "label": "Risk-Adjusted Return",
+        "icon": "🎯",
+        "formula": "min(100, max(0, (portfolio_value / 500) * (diversification_index / 100) * ((100 - risk_score) / 50)))",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "financial_iq",
+        "label": "Financial IQ",
+        "icon": "🧠",
+        "formula": "(financial_knowledge * 0.4 + diversification_index * 0.3 + advisor_trust * 0.3)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "market_drift",
+        "label": "Market Drift",
+        "effects": [
+          {
+            "resource": "portfolio_value",
+            "formula": "int(portfolio_value + (stocks_allocation * 30 * (market_confidence - 45) / 100) + (bonds_allocation * 15))"
+          }
+        ],
+        "description": "Your stock holdings fluctuate with market confidence, while bonds provide steady returns."
+      },
+      {
+        "id": "cash_interest",
+        "label": "Savings Interest",
+        "condition": {
+          "resource": "cash_reserves",
+          "op": ">=",
+          "value": 1000
+        },
+        "effects": [
+          {
+            "resource": "cash_reserves",
+            "formula": "int(cash_reserves + cash_reserves * 0.004)"
+          }
+        ],
+        "description": "Cash reserves earn a small monthly interest from the savings account."
+      },
+      {
+        "id": "knowledge_compound",
+        "label": "Knowledge Compounds",
+        "condition": {
+          "resource": "financial_knowledge",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "portfolio_value",
+            "formula": "int(portfolio_value + portfolio_value * (financial_knowledge - 40) * 0.0005)"
+          }
+        ],
+        "description": "Higher financial knowledge helps you make better decisions, slightly boosting portfolio performance."
+      },
+      {
+        "id": "confidence_swing",
+        "label": "Confidence Swing",
+        "effects": [
+          {
+            "resource": "market_confidence",
+            "formula": "min(100, max(10, market_confidence + (stocks_allocation - 50) * 0.05 + (portfolio_value - 50000) * 0.0002))"
+          }
+        ],
+        "description": "Market confidence shifts based on your portfolio performance and market exposure."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "high_risk_volatility",
+        "from_subsystem": "stock_market",
+        "to_subsystem": "risk_management",
+        "label": "High Risk Volatility",
+        "condition": {
+          "resource": "risk_score",
+          "op": ">",
+          "value": 70
+        },
+        "effects": [
+          {
+            "resource": "portfolio_value",
+            "formula": "int(max(0, portfolio_value - portfolio_value * (risk_score - 70) * 0.003))",
+            "bounds": [
+              0,
+              200000
+            ]
+          }
+        ],
+        "description": "Excessively high risk exposure causes volatile losses in your portfolio."
+      },
+      {
+        "id": "diversification_stability",
+        "from_subsystem": "risk_management",
+        "to_subsystem": "portfolio_balance",
+        "label": "Diversification Stability",
+        "condition": {
+          "resource": "diversification_index",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "portfolio_value",
+            "formula": "int(min(200000, portfolio_value + (diversification_index - 50) * 20))",
+            "bounds": [
+              0,
+              200000
+            ]
+          }
+        ],
+        "description": "A well-diversified portfolio gains a stability bonus each month."
+      },
+      {
+        "id": "knowledge_returns",
+        "from_subsystem": "financial_education",
+        "to_subsystem": "stock_market",
+        "label": "Knowledge-Driven Returns",
+        "condition": {
+          "resource": "financial_knowledge",
+          "op": ">=",
+          "value": 55
+        },
+        "effects": [
+          {
+            "resource": "market_confidence",
+            "formula": "min(100, market_confidence + (financial_knowledge - 55) * 0.1)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "The more you know about finance, the more confident and effective your market decisions become."
+      },
+      {
+        "id": "overconfidence_penalty",
+        "from_subsystem": "stock_market",
+        "to_subsystem": "risk_management",
+        "label": "Overconfidence Trap",
+        "condition": {
+          "and": [
+            {
+              "resource": "market_confidence",
+              "op": ">",
+              "value": 80
+            },
+            {
+              "resource": "risk_score",
+              "op": ">",
+              "value": 65
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "portfolio_value",
+            "formula": "int(max(0, portfolio_value - portfolio_value * 0.02))",
+            "bounds": [
+              0,
+              200000
+            ]
+          },
+          {
+            "resource": "diversification_index",
+            "formula": "max(0, diversification_index - 3)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Overconfidence combined with high risk leads to careless decisions and losses."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "market_confidence",
+        "equilibrium": 45,
+        "rate": 0.04,
+        "direction": "toward"
+      },
+      {
+        "resource": "advisor_trust",
+        "equilibrium": 35,
+        "rate": 0.03,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "market_crash",
+        "label": "Market Crash",
+        "icon": "📉",
+        "description": "A global economic shock sends stock markets tumbling! Panic selling drives prices down across the board.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "stocks_allocation",
+              "op": ">",
+              "value": 30
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "portfolio_value",
+            "delta": -8000
+          },
+          {
+            "resource": "market_confidence",
+            "delta": -20
+          },
+          {
+            "resource": "stocks_allocation",
+            "delta": -10
+          },
+          {
+            "resource": "risk_score",
+            "delta": 10
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "BREAKING: Global markets crash! Tech stocks plunge 15%. Investors in panic.",
+        "ai_image_prompt": "Stock market trading floor in chaos, red numbers falling on screens, worried traders, dramatic lighting, semi-realistic"
+      },
+      {
+        "id": "ipo_opportunity",
+        "label": "Hot IPO Alert",
+        "icon": "🚀",
+        "description": "A popular tech company is going public! Early investors could see huge gains — or get burned if the hype fizzles.",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 2
+            },
+            {
+              "resource": "financial_knowledge",
+              "op": ">=",
+              "value": 30
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "portfolio_value",
+            "delta": 4000
+          },
+          {
+            "resource": "stocks_allocation",
+            "delta": 5
+          },
+          {
+            "resource": "market_confidence",
+            "delta": 10
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "IPO ALERT: CloudLeap Inc. lists at 2x its issue price! Early investors celebrate.",
+        "ai_image_prompt": "Excited young investors checking phones showing rising stock charts, celebration, confetti, modern office background, semi-realistic"
+      },
+      {
+        "id": "economic_boom",
+        "label": "Economic Boom",
+        "icon": "🌟",
+        "description": "Strong GDP growth and rising consumer spending lift all markets. A great time to be invested!",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "diversification_index",
+              "op": ">=",
+              "value": 30
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "portfolio_value",
+            "delta": 6000
+          },
+          {
+            "resource": "market_confidence",
+            "delta": 12
+          },
+          {
+            "resource": "cash_reserves",
+            "delta": 2000
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "BOOM: Economy grows 8.2% this quarter! Markets rally across sectors.",
+        "ai_image_prompt": "Bustling financial district with green stock tickers, optimistic people, sunny sky, tall buildings, prosperity, semi-realistic"
+      },
+      {
+        "id": "inflation_spike",
+        "label": "Inflation Spike",
+        "icon": "🔥",
+        "description": "Prices are rising fast! Inflation erodes the value of cash holdings and makes bonds less attractive.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "cash_reserves",
+              "op": ">",
+              "value": 8000
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "cash_reserves",
+            "delta": -3000
+          },
+          {
+            "resource": "bonds_allocation",
+            "delta": -5
+          },
+          {
+            "resource": "market_confidence",
+            "delta": -8
+          },
+          {
+            "resource": "risk_score",
+            "delta": 5
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "ALERT: Inflation hits 7.5%! Savings lose value. Central bank considers rate hike.",
+        "ai_image_prompt": "Grocery store with rising price tags, worried shopper comparing prices, inflation headline on newspaper, warm tones, semi-realistic"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "mr_capital",
+        "name": "Mr. Capital",
+        "role": "Finance Teacher",
+        "icon": "👨‍🏫",
+        "initial_mood": "neutral",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "financial_knowledge",
+              "op": "<",
+              "value": 30
+            },
+            "action": "teach",
+            "message": "You're making decisions without understanding the basics. Let me explain: diversification means spreading your investments so one bad bet doesn't ruin everything.",
+            "mood_change": "concerned",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "financial_knowledge",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "praise",
+            "message": "Impressive financial literacy! You're starting to think like a real analyst. Keep questioning, keep learning.",
+            "mood_change": "happy",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "resource": "diversification_index",
+              "op": ">=",
+              "value": 55
+            },
+            "action": "praise",
+            "message": "Excellent diversification! You've spread your risk well across asset classes. This is textbook smart investing.",
+            "mood_change": "happy",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "risk_score",
+                  "op": ">",
+                  "value": 75
+                },
+                {
+                  "resource": "financial_knowledge",
+                  "op": "<",
+                  "value": 50
+                }
+              ]
+            },
+            "action": "warn",
+            "message": "You're taking on far too much risk for your knowledge level. This is how people lose their savings. Study first, invest second!",
+            "mood_change": "worried",
+            "satisfaction_delta": -8
+          }
+        ]
+      },
+      {
+        "id": "bull",
+        "name": "Bull (Classmate)",
+        "role": "Aggressive Investor",
+        "icon": "🐂",
+        "initial_mood": "excited",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "stocks_allocation",
+              "op": "<",
+              "value": 25
+            },
+            "action": "taunt",
+            "message": "Why are you playing it so safe? My crypto portfolio is up 40% this month! Stocks are where the real money is!",
+            "mood_change": "dismissive",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "resource": "stocks_allocation",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "cheer",
+            "message": "Now you're talking! All-in on stocks! We're going to be rich! To the moon!",
+            "mood_change": "ecstatic",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "risk_score",
+              "op": ">",
+              "value": 70
+            },
+            "action": "encourage",
+            "message": "High risk, high reward! That's the only way to get rich before you're 30!",
+            "mood_change": "excited",
+            "satisfaction_delta": 3
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "risk_score",
+                  "op": ">",
+                  "value": 80
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 5
+                }
+              ]
+            },
+            "action": "margin_call",
+            "message": "Bull convinced you to borrow money to invest more! But the market dipped and the broker is demanding you pay up NOW! This is called a margin call crisis!",
+            "mood_change": "panicked",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "portfolio_value",
+                "delta": -5000
+              },
+              {
+                "resource": "market_confidence",
+                "delta": -15
+              }
+            ],
+            "trigger_round": "crisis_margin_call"
+          }
+        ]
+      },
+      {
+        "id": "aunt_sarah",
+        "name": "Aunt Sarah",
+        "role": "Conservative Relative",
+        "icon": "👩‍🦳",
+        "initial_mood": "cautious",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "risk_score",
+              "op": ">",
+              "value": 55
+            },
+            "action": "worry",
+            "message": "This is too risky! Your grandfather always said: 'Never invest money you can't afford to lose.' Put it in a fixed deposit where it's safe!",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "bonds_allocation",
+              "op": ">=",
+              "value": 40
+            },
+            "action": "approve",
+            "message": "Good, you're being sensible. Bonds and savings are the backbone of a secure future. Slow and steady wins the race!",
+            "mood_change": "happy",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "cash_reserves",
+              "op": ">=",
+              "value": 30000
+            },
+            "action": "praise",
+            "message": "Look at those savings! You're being so responsible. Keep that emergency fund strong!",
+            "mood_change": "delighted",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "cash_reserves",
+                  "op": ">",
+                  "value": 40000
+                },
+                {
+                  "resource": "stocks_allocation",
+                  "op": "<",
+                  "value": 10
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 6
+                }
+              ]
+            },
+            "action": "missed_opportunity",
+            "message": "Aunt Sarah's ultra-safe advice has caused you to miss every market rally this year! Your portfolio barely grew while inflation ate away at your savings. Being TOO safe is also a risk!",
+            "mood_change": "regretful",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "portfolio_value",
+                "delta": -3000
+              },
+              {
+                "resource": "financial_knowledge",
+                "delta": 5
+              }
+            ],
+            "trigger_round": "crisis_analysis_paralysis"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "portfolio_value",
+          "op": ">",
+          "value": 70000
+        },
+        "icon": "📈",
+        "text": "Portfolio surges past 70,000! Smart investing pays off.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "diversification_index",
+              "op": ">=",
+              "value": 60
+            },
+            {
+              "resource": "financial_knowledge",
+              "op": ">=",
+              "value": 55
+            }
+          ]
+        },
+        "icon": "🏆",
+        "text": "Financial analysts rank your portfolio among the most well-balanced!",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "portfolio_value",
+          "op": "<",
+          "value": 30000
+        },
+        "icon": "⚠️",
+        "text": "WARNING: Portfolio value has dropped below 30,000. Time to rethink strategy.",
+        "severity": "warning"
+      }
+    ],
+    "ai_scene_prompt_template": "A young investor's financial dashboard showing portfolio value {portfolio_value}, with {stocks_allocation}% in stocks and {bonds_allocation}% in bonds, risk score {risk_score}/100, market confidence {market_confidence}%. Modern financial office environment with charts and screens. Mood: {'bullish and optimistic' if market_confidence > 60 else 'bearish and tense' if market_confidence < 35 else 'cautiously watchful'}."
+  },
+  "rounds": [
+    {
+      "round_id": "month_1_first_investment",
+      "round_title": "Month 1: Your First Investment Decision",
+      "situation": "You open your grandfather's portfolio statement. 50,000 sits in a basic savings account earning almost nothing. Your finance teacher Mr. Capital says: 'The market is waiting for you.' Bull texts: 'Buy tech stocks NOW!' Aunt Sarah calls: 'Don't touch it, keep it safe!' What's your first move?",
+      "goal": "Make your first investment allocation decision.",
+      "coaching_moment": "Asset allocation: How you divide money between stocks, bonds, and cash is the single most important investment decision. It determines 90% of your returns over time.",
+      "reflection_prompt": "Why might different people give you different financial advice? Whose advice should you trust, and why?",
+      "ai_image_prompt": "Young student sitting at desk with laptop showing stock charts, inheritance letter on table, phone with text messages, thoughtful expression, modern room, semi-realistic",
+      "choices": [
+        {
+          "id": "m1_aggressive",
+          "label": "A. Go Heavy on Stocks",
+          "description": "Put 60% into a diversified stock portfolio. Higher risk, higher potential reward. Bull approves!",
+          "delta": {
+            "portfolio_value": 2000,
+            "stocks_allocation": 40,
+            "bonds_allocation": -5,
+            "risk_score": 20,
+            "market_confidence": 10,
+            "diversification_index": 10,
+            "cash_reserves": -5000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Bold start! Stocks can grow fast, but they can also drop fast. You're betting on the market staying strong.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "m1_balanced",
+          "label": "B. Balanced 40-30-30 Split",
+          "description": "40% stocks, 30% bonds, 30% cash. A classic balanced approach that Mr. Capital recommends.",
+          "delta": {
+            "portfolio_value": 1000,
+            "stocks_allocation": 20,
+            "bonds_allocation": 20,
+            "risk_score": 5,
+            "financial_knowledge": 8,
+            "diversification_index": 25,
+            "market_confidence": 5,
+            "cash_reserves": -3000
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Smart and measured! Balancing stocks, bonds, and cash gives you growth potential AND a safety net.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "m1_conservative",
+          "label": "C. Play It Safe — Mostly Bonds",
+          "description": "70% bonds, 20% savings, 10% stocks. Aunt Sarah's preferred strategy. Slow growth, low risk.",
+          "delta": {
+            "bonds_allocation": 30,
+            "stocks_allocation": -10,
+            "risk_score": -15,
+            "cash_reserves": 2000,
+            "financial_knowledge": 5,
+            "market_confidence": -5,
+            "diversification_index": 15
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Safe and steady! Bonds provide reliable returns, but you might miss out on market rallies.",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "m1_learn_first",
+          "label": "D. Learn Before You Invest",
+          "description": "Keep everything in savings for now and spend the month studying finance. Knowledge is the best investment!",
+          "delta": {
+            "financial_knowledge": 15,
+            "advisor_trust": 10,
+            "diversification_index": 5,
+            "cash_reserves": 1000,
+            "market_confidence": -3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "Patient and wise! Warren Buffett says: 'Never invest in something you don't understand.' But remember — waiting too long means missed opportunities.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_2_market_dip",
+      "round_title": "Month 2: The Market Dips",
+      "situation": "Markets drop 5% this week after a disappointing economic report. Your stock holdings are down. Bull says 'Buy the dip!' Aunt Sarah says 'See? I told you stocks are dangerous!' Mr. Capital says: 'Think about what this means for the long term.'",
+      "goal": "Decide how to respond to your first market downturn.",
+      "coaching_moment": "Emotional investing: Fear and greed are the two biggest enemies of good investing. When markets drop, your instinct screams 'SELL!' — but the data says patient investors almost always recover.",
+      "reflection_prompt": "When you see your money losing value, what emotions come up? Should you make decisions based on those emotions?",
+      "ai_image_prompt": "Split screen showing falling red stock chart on laptop and a worried young student deciding what to do, contrasting calm and panic imagery, semi-realistic",
+      "choices": [
+        {
+          "id": "m2_buy_dip",
+          "label": "A. Buy the Dip — Invest More",
+          "description": "Use cash reserves to buy stocks at lower prices. Risky if markets keep falling, brilliant if they recover.",
+          "delta": {
+            "stocks_allocation": 15,
+            "cash_reserves": -5000,
+            "risk_score": 15,
+            "market_confidence": 8,
+            "portfolio_value": -1000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Contrarian move! Buying when others are fearful can be very profitable — if you can handle the stress.",
+          "requires": {
+            "resource": "cash_reserves",
+            "op": ">=",
+            "value": 5000,
+            "label": "Requires Cash Reserves >= 5,000"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "m2_hold_steady",
+          "label": "B. Hold Steady — Don't Panic",
+          "description": "Keep your current allocation. Don't sell in fear, don't buy in greed. Just wait.",
+          "delta": {
+            "financial_knowledge": 8,
+            "resilience": 3,
+            "advisor_trust": 5,
+            "market_confidence": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Patience is a superpower in investing! Most market dips recover within months. Staying calm is underrated.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "m2_sell_panic",
+          "label": "C. Sell Stocks — Move to Safety",
+          "description": "Sell your stocks and move everything to bonds and cash. Stop the bleeding!",
+          "delta": {
+            "stocks_allocation": -15,
+            "bonds_allocation": 10,
+            "cash_reserves": 3000,
+            "risk_score": -20,
+            "market_confidence": -10,
+            "portfolio_value": -2000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "You sold at a loss! Panic selling locks in losses. If the market bounces back next month, you'll miss the recovery.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "m2_research",
+          "label": "D. Research What Caused the Dip",
+          "description": "Before reacting, investigate WHY markets dropped. Is it a temporary blip or a real crisis?",
+          "delta": {
+            "financial_knowledge": 12,
+            "advisor_trust": 8,
+            "diversification_index": 5,
+            "market_confidence": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Analytical thinking! Understanding WHY markets move is more valuable than reacting to THAT they moved.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_3_mutual_funds",
+      "round_title": "Month 3: Discovering Mutual Funds",
+      "situation": "Mr. Capital introduces the class to mutual funds — pools of money managed by professional investors. 'Think of it as hiring an expert to invest for you,' he says. You learn about index funds, sector funds, and debt funds. A whole new world of options opens up!",
+      "goal": "Decide whether and how to incorporate mutual funds into your portfolio.",
+      "coaching_moment": "Diversification: Mutual funds automatically spread your money across many stocks or bonds. It's like not putting all your eggs in one basket — except someone else is also watching the baskets!",
+      "reflection_prompt": "Is it better to pick individual stocks yourself or let a professional manage your money? What are the trade-offs?",
+      "ai_image_prompt": "Classroom with teacher at whiteboard showing pie charts of mutual fund types, engaged students taking notes, finance posters on walls, semi-realistic",
+      "choices": [
+        {
+          "id": "m3_index_fund",
+          "label": "A. Invest in an Index Fund",
+          "description": "An index fund tracks the entire market. Low fees, automatic diversification, steady growth. Warren Buffett's recommendation.",
+          "delta": {
+            "portfolio_value": 2000,
+            "diversification_index": 20,
+            "financial_knowledge": 10,
+            "stocks_allocation": 10,
+            "risk_score": -5,
+            "cash_reserves": -3000
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Excellent choice! Index funds beat 85% of professional stock pickers over time. Low cost, broad exposure.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "m3_sector_fund",
+          "label": "B. Pick a Sector Fund — Technology",
+          "description": "Bet big on tech companies. Could outperform the market if tech booms, but concentrated risk.",
+          "delta": {
+            "portfolio_value": 3000,
+            "stocks_allocation": 15,
+            "risk_score": 12,
+            "diversification_index": 5,
+            "market_confidence": 8,
+            "cash_reserves": -4000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "High conviction bet! Tech has been a winner, but sector concentration is risky if the trend reverses.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "m3_debt_fund",
+          "label": "C. Go for a Debt Mutual Fund",
+          "description": "A fund that invests in government and corporate bonds. Safer than stocks, better returns than savings.",
+          "delta": {
+            "bonds_allocation": 15,
+            "diversification_index": 15,
+            "financial_knowledge": 8,
+            "risk_score": -8,
+            "cash_reserves": -2000,
+            "portfolio_value": 500
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "Solid defensive move! Debt funds cushion your portfolio during market downturns.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "m3_skip",
+          "label": "D. Skip Mutual Funds — Pick Stocks Yourself",
+          "description": "You've been researching companies. Why pay a fund manager when you can pick your own winners?",
+          "delta": {
+            "stocks_allocation": 12,
+            "risk_score": 15,
+            "financial_knowledge": 5,
+            "market_confidence": 10,
+            "diversification_index": -5,
+            "cash_reserves": -3000,
+            "portfolio_value": 1500
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Confident! But remember: even professional stock pickers get it wrong most of the time. Individual stocks are much riskier than diversified funds.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_4_dividend_decision",
+      "round_title": "Month 4: The Dividend Decision",
+      "situation": "Some of your stock investments have paid dividends — small cash payouts from company profits. You've received 2,500 in dividends! Now you must decide: reinvest the dividends to compound your growth, or pocket the cash for safety?",
+      "goal": "Decide what to do with your first investment earnings.",
+      "coaching_moment": "Compound interest: Einstein reportedly called compound interest 'the 8th wonder of the world.' When you reinvest earnings, your money earns money on money — and this snowball effect is what builds real wealth over decades.",
+      "reflection_prompt": "Would you rather have 100 today or 150 in one year? What factors affect your answer?",
+      "ai_image_prompt": "Young student looking at bank statement showing dividend payment, piggy bank and growing plant metaphor in background, warm confident lighting, semi-realistic",
+      "choices": [
+        {
+          "id": "m4_reinvest_all",
+          "label": "A. Reinvest All Dividends",
+          "description": "Put all 2,500 back into your investments. Let compound interest work its magic over time.",
+          "delta": {
+            "portfolio_value": 3500,
+            "stocks_allocation": 5,
+            "financial_knowledge": 8,
+            "diversification_index": 5,
+            "market_confidence": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Power of compounding! Reinvesting dividends is how small portfolios become large ones over time.",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "m4_half_half",
+          "label": "B. Reinvest Half, Save Half",
+          "description": "Put 1,250 back in, keep 1,250 as cash. Growth AND safety.",
+          "delta": {
+            "portfolio_value": 1500,
+            "cash_reserves": 1250,
+            "diversification_index": 8,
+            "financial_knowledge": 5,
+            "advisor_trust": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Balanced approach! You get some compounding benefit while maintaining a cash cushion.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "m4_save_all",
+          "label": "C. Keep All Dividends as Cash",
+          "description": "Add 2,500 to your cash reserves. Never hurts to have an emergency fund.",
+          "delta": {
+            "cash_reserves": 2500,
+            "risk_score": -5,
+            "portfolio_value": -500,
+            "market_confidence": -3,
+            "financial_knowledge": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Safe choice, but opportunity cost! Cash sitting idle loses value to inflation over time.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "m4_new_asset",
+          "label": "D. Invest Dividends in a New Asset Class",
+          "description": "Use the 2,500 to invest in gold or real estate funds — assets you don't own yet. Broaden your portfolio!",
+          "delta": {
+            "diversification_index": 18,
+            "financial_knowledge": 10,
+            "portfolio_value": 1000,
+            "risk_score": 3,
+            "advisor_trust": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Creative diversification! Adding uncorrelated assets (gold, real estate) protects your portfolio in different market conditions.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_5_ethical_investing",
+      "round_title": "Month 5: The Ethics of Investing",
+      "situation": "A tobacco company stock is one of the top performers this year — up 35%! Bull wants you to invest. But Mr. Capital raises a question: 'Should you make money from products that harm people?' You also learn about ESG (Environmental, Social, Governance) investing — companies that do good while doing well.",
+      "goal": "Decide whether ethics should influence your investment choices.",
+      "coaching_moment": "Ethical reasoning: ESG investing asks a powerful question — can you do well financially while doing good for society? More and more investors believe the answer is yes.",
+      "reflection_prompt": "Is it okay to profit from companies that sell harmful products? Where do you draw the line?",
+      "ai_image_prompt": "Split image showing factory with smoke vs clean solar farm, young investor in the middle contemplating, moral dilemma, thought bubbles, semi-realistic",
+      "choices": [
+        {
+          "id": "m5_esg",
+          "label": "A. Go Full ESG — Ethical Portfolio",
+          "description": "Sell any harmful-industry stocks and invest only in companies with strong ESG scores. Solar, healthcare, education.",
+          "delta": {
+            "portfolio_value": -1000,
+            "financial_knowledge": 12,
+            "diversification_index": 10,
+            "advisor_trust": 10,
+            "risk_score": -5,
+            "market_confidence": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Values-driven investing! ESG funds have increasingly matched or beaten traditional funds. Doing good can also mean doing well.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "m5_tobacco",
+          "label": "B. Buy the Tobacco Stock — Profits First",
+          "description": "Invest in the top-performing tobacco stock. Your job is to grow the portfolio, not judge industries.",
+          "delta": {
+            "portfolio_value": 5000,
+            "stocks_allocation": 8,
+            "risk_score": 10,
+            "advisor_trust": -10,
+            "market_confidence": 8,
+            "financial_knowledge": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Profitable but controversial. Many big investors avoid 'sin stocks' because regulation could wipe out gains overnight.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "m5_mixed",
+          "label": "C. Mix Ethics and Profits",
+          "description": "Keep some traditional investments for returns, but add ESG funds for balance. Best of both worlds.",
+          "delta": {
+            "portfolio_value": 2000,
+            "diversification_index": 12,
+            "financial_knowledge": 8,
+            "advisor_trust": 5,
+            "risk_score": 2
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Pragmatic compromise! Many professional investors blend ESG with traditional investing for balanced portfolios.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "m5_research_esg",
+          "label": "D. Research ESG Before Deciding",
+          "description": "Study which ESG companies actually perform well before committing. Not all 'green' investments are equally strong.",
+          "delta": {
+            "financial_knowledge": 15,
+            "advisor_trust": 8,
+            "diversification_index": 5,
+            "market_confidence": 3,
+            "portfolio_value": 500
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "Due diligence! Some ESG funds are genuine, others are 'greenwashing.' Researching before investing is always smart.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_6_market_rally",
+      "round_title": "Month 6: The Bull Run",
+      "situation": "Markets have been surging for three straight weeks! Everything seems to be going up. Social media is full of 'investment gurus' claiming they can predict the market. Bull is ecstatic: 'This rally will never end!' Mr. Capital warns: 'Remember — what goes up can come down.' You feel the excitement building...",
+      "goal": "Decide how to handle a market rally and the emotions it triggers.",
+      "coaching_moment": "Behavioral finance: Greed is just as dangerous as fear. During rallies, everyone feels like a genius. But the biggest losses often happen right after the biggest gains — because people get overconfident and take on too much risk.",
+      "reflection_prompt": "Have you ever made a decision because everyone else was doing it? How did it turn out?",
+      "ai_image_prompt": "Euphoric stock market scene with green charts going up, excited investors celebrating, confetti, phone screens showing social media hype, semi-realistic",
+      "choices": [
+        {
+          "id": "m6_ride_wave",
+          "label": "A. Ride the Wave — Increase Stock Exposure",
+          "description": "Markets are hot! Move more money into stocks to maximize gains. FOMO is real!",
+          "delta": {
+            "stocks_allocation": 15,
+            "portfolio_value": 5000,
+            "risk_score": 18,
+            "market_confidence": 15,
+            "cash_reserves": -4000,
+            "diversification_index": -8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Momentum investing! You're riding the wave — but be ready. Markets that go up 20% can drop 15% in a week.",
+          "requires": {
+            "resource": "cash_reserves",
+            "op": ">=",
+            "value": 4000,
+            "label": "Requires Cash Reserves >= 4,000"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "m6_rebalance",
+          "label": "B. Rebalance — Sell High, Lock Gains",
+          "description": "Sell some winners, buy more bonds, and build your cash reserves. Lock in profits while things are good.",
+          "delta": {
+            "stocks_allocation": -8,
+            "bonds_allocation": 8,
+            "cash_reserves": 5000,
+            "diversification_index": 12,
+            "risk_score": -10,
+            "portfolio_value": 2000,
+            "financial_knowledge": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Professional-grade move! Rebalancing during rallies is exactly what the best investors do. Sell high, buy low.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "m6_hold",
+          "label": "C. Hold Your Positions — Stay the Course",
+          "description": "Don't chase the hype, don't lock profits. Stay with your plan. Discipline over excitement.",
+          "delta": {
+            "financial_knowledge": 6,
+            "portfolio_value": 3000,
+            "advisor_trust": 5,
+            "market_confidence": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Disciplined! Not reacting to market noise — up or down — is a hallmark of sophisticated investors.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "m6_speculate",
+          "label": "D. Speculate on 'Hot Tips' from Social Media",
+          "description": "Everyone on social media is making money on penny stocks and meme stocks. Jump in!",
+          "delta": {
+            "portfolio_value": -3000,
+            "risk_score": 25,
+            "stocks_allocation": 10,
+            "market_confidence": 12,
+            "financial_knowledge": -5,
+            "advisor_trust": -10,
+            "cash_reserves": -3000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Dangerous! Social media 'tips' are how retail investors lose money. By the time you hear about it, the smart money has already sold.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_7_emergency_fund",
+      "round_title": "Month 7: The Emergency Test",
+      "situation": "Your laptop breaks down right before exams, and your family needs 8,000 for an unexpected medical bill. You need cash NOW. This is why financial planners always say: 'Keep an emergency fund!' Do you have enough liquid cash, or will you have to sell investments at a bad time?",
+      "goal": "Handle a real-life financial emergency without destroying your portfolio.",
+      "coaching_moment": "Emergency fund: Financial experts recommend keeping 3-6 months of expenses in easily accessible cash. This prevents you from selling investments at bad times just because you need money urgently.",
+      "reflection_prompt": "Why is having cash available more important than having the highest-return portfolio?",
+      "ai_image_prompt": "Young student at repair shop with broken laptop, family in hospital waiting room in background, wallet on table, stress and concern, semi-realistic",
+      "choices": [
+        {
+          "id": "m7_use_cash",
+          "label": "A. Use Cash Reserves",
+          "description": "Pay from your emergency fund. This is exactly what it's for. No need to sell investments.",
+          "delta": {
+            "cash_reserves": -8000,
+            "financial_knowledge": 10,
+            "advisor_trust": 5,
+            "diversification_index": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "This is why emergency funds exist! You handled the crisis without touching your investments. Smart planning pays off.",
+          "requires": {
+            "resource": "cash_reserves",
+            "op": ">=",
+            "value": 8000,
+            "label": "Requires Cash Reserves >= 8,000"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "m7_sell_stocks",
+          "label": "B. Sell Some Stocks",
+          "description": "Liquidate stock holdings to cover the emergency. Painful, but necessary.",
+          "delta": {
+            "stocks_allocation": -12,
+            "portfolio_value": -4000,
+            "cash_reserves": -4000,
+            "risk_score": -8,
+            "market_confidence": -8,
+            "financial_knowledge": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Forced selling! You had to sell stocks — possibly at a loss — because you didn't have enough cash. Lesson learned about emergency funds.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "m7_sell_bonds",
+          "label": "C. Sell Bonds for Quick Cash",
+          "description": "Bonds are more stable than stocks. Sell some bonds to raise the money with less loss.",
+          "delta": {
+            "bonds_allocation": -10,
+            "cash_reserves": -4000,
+            "portfolio_value": -2000,
+            "diversification_index": -5,
+            "financial_knowledge": 6
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Practical choice. Selling bonds causes less disruption than selling stocks, but it reduces your safety cushion.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "m7_borrow",
+          "label": "D. Borrow Money Instead",
+          "description": "Take a small loan to cover the emergency. Keep your investments untouched, but take on debt.",
+          "delta": {
+            "cash_reserves": -2000,
+            "risk_score": 10,
+            "portfolio_value": -1000,
+            "financial_knowledge": 8,
+            "market_confidence": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Borrowing to avoid selling investments can make sense — but debt has a cost. Interest payments eat into your returns.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_8_long_term",
+      "round_title": "Month 8: Thinking Long-Term",
+      "situation": "Mr. Capital shows the class a powerful chart: 10,000 invested in the stock market 30 years ago would be worth over 200,000 today — even with crashes, recessions, and pandemics along the way. 'Time in the market beats timing the market,' he says. You start thinking about your 10-year plan...",
+      "goal": "Make a strategic decision about your long-term investment approach.",
+      "coaching_moment": "Time horizon: Young investors have the biggest advantage in all of finance — TIME. A 13-year-old investing today has 50+ years for compound interest to work. This means you can afford to take calculated risks that older investors cannot.",
+      "reflection_prompt": "How would your investment strategy change if you were investing for 1 year vs. 30 years?",
+      "ai_image_prompt": "Classroom with large screen showing exponential growth chart over 30 years, inspired students, teacher pointing at compound interest curve, warm educational atmosphere, semi-realistic",
+      "choices": [
+        {
+          "id": "m8_growth",
+          "label": "A. Long-Term Growth Portfolio",
+          "description": "Shift to a growth-focused strategy — more stocks, international funds, and emerging markets. High growth over 10+ years.",
+          "delta": {
+            "stocks_allocation": 12,
+            "portfolio_value": 3000,
+            "diversification_index": 10,
+            "financial_knowledge": 10,
+            "risk_score": 8,
+            "market_confidence": 8
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Playing the long game! Young investors who focus on long-term growth almost always outperform cautious ones.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "m8_sip",
+          "label": "B. Start a Monthly SIP (Systematic Investment Plan)",
+          "description": "Commit to investing a fixed amount every month, regardless of market conditions. Removes emotion from investing.",
+          "delta": {
+            "financial_knowledge": 15,
+            "diversification_index": 12,
+            "portfolio_value": 2000,
+            "advisor_trust": 8,
+            "risk_score": -5,
+            "stocks_allocation": 5,
+            "bonds_allocation": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "resilience"
+          ],
+          "feedback": "SIP is one of the most powerful investment tools! By investing regularly, you automatically buy more when prices are low and less when they're high. This is called 'rupee cost averaging.'",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "m8_income",
+          "label": "C. Dividend Income Strategy",
+          "description": "Focus on companies that pay regular dividends. Create a 'money tree' that pays you quarterly.",
+          "delta": {
+            "portfolio_value": 1500,
+            "cash_reserves": 3000,
+            "stocks_allocation": 5,
+            "financial_knowledge": 8,
+            "diversification_index": 8,
+            "risk_score": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Income investing! Dividends provide cash flow AND growth. Many of the world's best companies are dividend payers.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "m8_aggressive_short",
+          "label": "D. Short-Term Trading — Try to Beat the Market",
+          "description": "Forget long-term. Buy and sell frequently to capture short-term gains. Day trading style!",
+          "delta": {
+            "portfolio_value": -2000,
+            "risk_score": 20,
+            "stocks_allocation": 8,
+            "financial_knowledge": 5,
+            "market_confidence": 10,
+            "diversification_index": -8,
+            "cash_reserves": -2000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Studies show 90% of day traders lose money! Transaction costs and emotional decisions work against short-term traders. The house always wins.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_9_portfolio_review",
+      "round_title": "Month 9: The Portfolio Report Card",
+      "situation": "Mr. Capital announces a mid-year portfolio review competition. Students must present their investment strategy, explain their reasoning, and defend their choices. The class will vote on the best presentation. Your portfolio tells a story — what story is it?",
+      "goal": "Evaluate and improve your portfolio before the final quarter.",
+      "coaching_moment": "Self-assessment: Regular portfolio review is essential. Professional investors review their strategies quarterly. The question isn't just 'Am I making money?' but 'Am I taking the RIGHT risks for the RIGHT reasons?'",
+      "reflection_prompt": "If you had to start over with the same 50,000, what would you do differently?",
+      "ai_image_prompt": "Student presenting portfolio analysis to classmates, charts on screen, proud expression, other students listening, classroom competition atmosphere, semi-realistic",
+      "choices": [
+        {
+          "id": "m9_rebalance",
+          "label": "A. Full Portfolio Rebalance",
+          "description": "Analyze every holding. Sell underperformers, strengthen winners, fix any concentration risks.",
+          "delta": {
+            "diversification_index": 15,
+            "financial_knowledge": 10,
+            "risk_score": -8,
+            "advisor_trust": 8,
+            "portfolio_value": 2000,
+            "market_confidence": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Professional-grade review! Rebalancing is how the best investors maintain healthy portfolios over time.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "m9_double_down",
+          "label": "B. Double Down on Winners",
+          "description": "Your best investments are working. Put even more into what's winning. Concentrate for maximum returns!",
+          "delta": {
+            "portfolio_value": 4000,
+            "stocks_allocation": 10,
+            "risk_score": 12,
+            "diversification_index": -10,
+            "market_confidence": 10,
+            "cash_reserves": -3000
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Concentration can amplify gains — but also amplify losses. Past performance doesn't guarantee future results!",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "m9_hedge",
+          "label": "C. Add Hedging Protection",
+          "description": "Buy some gold and defensive stocks to protect against a potential downturn. Insurance for your portfolio.",
+          "delta": {
+            "diversification_index": 18,
+            "risk_score": -12,
+            "financial_knowledge": 12,
+            "portfolio_value": -500,
+            "bonds_allocation": 5,
+            "advisor_trust": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Hedging is sophisticated! Gold and defensive stocks protect your portfolio when markets fall. This is how professionals manage risk.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "m9_present",
+          "label": "D. Focus on Learning, Not Returns",
+          "description": "Instead of chasing better returns, spend the month deeply understanding every investment you own.",
+          "delta": {
+            "financial_knowledge": 18,
+            "advisor_trust": 10,
+            "diversification_index": 5,
+            "market_confidence": 3,
+            "portfolio_value": 500
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "Knowledge IS the real return! Understanding your investments means you'll make better decisions in every future month.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_10_global_event",
+      "round_title": "Month 10: Global Economic Shock",
+      "situation": "A major international trade dispute erupts! Two of the world's biggest economies impose tariffs on each other. Global markets tumble. Your portfolio drops 12% in three days. The news is apocalyptic: 'Worst week since 2020!' 'Recession incoming!' Everyone is terrified. What do you do?",
+      "goal": "Navigate a global economic crisis with your portfolio intact.",
+      "coaching_moment": "Resilience: Every investor faces market crashes. The difference between successful and unsuccessful investors isn't avoiding crashes — it's how they respond. History shows: every major crash has been followed by a recovery.",
+      "reflection_prompt": "How do you stay calm and think clearly when everything around you seems to be falling apart?",
+      "ai_image_prompt": "Multiple news screens showing crashing markets and trade war headlines, worried people on phones, red graphs everywhere, tense atmosphere, global crisis mood, semi-realistic",
+      "choices": [
+        {
+          "id": "m10_stay_calm",
+          "label": "A. Stay Calm and Hold",
+          "description": "Don't sell anything. Review your long-term plan. Remember: every crash in history was eventually followed by recovery.",
+          "delta": {
+            "portfolio_value": -3000,
+            "financial_knowledge": 12,
+            "resilience": 5,
+            "advisor_trust": 8,
+            "market_confidence": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "delayed_gratification"
+          ],
+          "feedback": "Ice-cold nerves! During the 2020 crash, investors who held recovered within 6 months. Those who panic-sold took years to recover.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "m10_buy_crash",
+          "label": "B. Be Greedy When Others Are Fearful",
+          "description": "Warren Buffett's famous advice. Use cash reserves to buy quality stocks at 'discount' prices.",
+          "delta": {
+            "portfolio_value": -1000,
+            "stocks_allocation": 12,
+            "cash_reserves": -6000,
+            "risk_score": 10,
+            "financial_knowledge": 10,
+            "diversification_index": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Legendary move! Buying during crashes has created some of the biggest fortunes in history. But it takes serious courage.",
+          "requires": {
+            "resource": "cash_reserves",
+            "op": ">=",
+            "value": 6000,
+            "label": "Requires Cash Reserves >= 6,000"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "m10_defensive",
+          "label": "C. Go Fully Defensive",
+          "description": "Move everything to bonds and cash. Protect capital. You can re-enter the market when it stabilizes.",
+          "delta": {
+            "stocks_allocation": -20,
+            "bonds_allocation": 15,
+            "cash_reserves": 5000,
+            "risk_score": -20,
+            "portfolio_value": -5000,
+            "market_confidence": -15,
+            "diversification_index": -10
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Safety first — but at a huge cost. Selling during a crash locks in losses. If markets recover, you'll be on the sidelines.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "m10_partial_hedge",
+          "label": "D. Partially Hedge with Gold and Bonds",
+          "description": "Sell some stocks to buy gold and government bonds. Reduce risk without fully exiting the market.",
+          "delta": {
+            "stocks_allocation": -8,
+            "bonds_allocation": 8,
+            "diversification_index": 12,
+            "portfolio_value": -2000,
+            "risk_score": -8,
+            "financial_knowledge": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Smart hedging! You reduced risk without panic-selling everything. Gold typically rises during stock market crashes.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_margin_call",
+      "id": "crisis_margin_call",
+      "round_title": "CRISIS: Market Crash — Margin Call!",
+      "situation": "Disaster! The market just dropped 20% in a single week, and your aggressive stock position has been decimated. Worse — Bull convinced you to trade on margin (borrowed money), and now the broker is demanding you deposit more cash or they'll sell your stocks at rock-bottom prices. Your portfolio is bleeding. This is the scariest day of your investing life.",
+      "goal": "Survive the margin call crisis without losing everything.",
+      "coaching_moment": "Leverage and debt: Borrowing money to invest (margin trading) amplifies both gains AND losses. A 20% drop on borrowed money can wipe out your entire portfolio. This is why experienced investors rarely use margin — and why it's illegal for minors in most countries!",
+      "reflection_prompt": "Why is borrowing money to invest more dangerous than investing your own money? What role did peer pressure play in this crisis?",
+      "ai_image_prompt": "Dramatic scene of young investor staring at screen showing massive portfolio loss, red charts crashing, phone buzzing with margin call alerts, dark room, stress, semi-realistic",
+      "condition": {
+        "resource": "portfolio_value",
+        "operator": "<",
+        "value": 30000
+      },
+      "choices": [
+        {
+          "id": "mc_emergency_sell",
+          "label": "A. Emergency Sell — Cut Losses",
+          "description": "Sell enough stocks to cover the margin call immediately. Take the hit, stop the bleeding.",
+          "delta": {
+            "stocks_allocation": -25,
+            "portfolio_value": -6000,
+            "cash_reserves": 4000,
+            "risk_score": -25,
+            "market_confidence": -20,
+            "financial_knowledge": 8
+          },
+          "skill_tags": [
+            "resilience",
+            "adaptability"
+          ],
+          "feedback": "Painful but necessary. You saved yourself from total wipeout. The lesson: NEVER borrow money to invest.",
+          "skill_explanation": {
+            "resilience": "Staying focused under pressure builds your ability to bounce back.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "mc_use_reserves",
+          "label": "B. Use Cash Reserves to Cover",
+          "description": "Drain your emergency fund to meet the margin call. Keeps your stocks, but leaves you with zero safety net.",
+          "delta": {
+            "cash_reserves": -10000,
+            "risk_score": -10,
+            "portfolio_value": -3000,
+            "market_confidence": -10,
+            "financial_knowledge": 10,
+            "advisor_trust": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "You kept your stocks but used up your safety net. If another emergency hits, you're in deep trouble.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "mc_negotiate",
+          "label": "C. Negotiate with the Broker",
+          "description": "Ask the broker for a 48-hour extension. Use the time to research which stocks to sell strategically.",
+          "delta": {
+            "financial_knowledge": 12,
+            "portfolio_value": -4000,
+            "stocks_allocation": -15,
+            "risk_score": -15,
+            "advisor_trust": 8,
+            "diversification_index": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Smart negotiation! A 48-hour window lets you sell strategically instead of at the worst possible moment.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "mc_learn_lesson",
+          "label": "D. Accept the Loss and Learn",
+          "description": "Let the broker sell your margin positions. Accept the loss. Document everything you learned. Promise: never trade on margin again.",
+          "delta": {
+            "portfolio_value": -8000,
+            "stocks_allocation": -20,
+            "financial_knowledge": 15,
+            "risk_score": -30,
+            "advisor_trust": 10,
+            "market_confidence": -15,
+            "diversification_index": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "The most expensive lessons are often the most valuable. You lost money but gained wisdom that will save you thousands in the future.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_analysis_paralysis",
+      "id": "crisis_analysis_paralysis",
+      "round_title": "CRISIS: Analysis Paralysis — The Cost of Playing Too Safe",
+      "situation": "You've been hoarding cash for months. Your savings account is fat, but markets have rallied 25% since you started — and you missed ALL of it. Aunt Sarah's advice kept you safe, but your portfolio has barely grown. Meanwhile, inflation has silently eaten away 4% of your purchasing power. Mr. Capital pulls you aside: 'Not investing IS a decision — and right now, it's a bad one.'",
+      "goal": "Break free from analysis paralysis and put your money to work.",
+      "coaching_moment": "Opportunity cost: Every day your money sits in a savings account, it's losing a silent battle against inflation. The 'risk' of not investing can be greater than the risk of investing. The key is finding the right balance between safety and growth.",
+      "reflection_prompt": "Can being 'too careful' actually be risky? How is this different from what you expected?",
+      "ai_image_prompt": "Young investor surrounded by stacks of cash but looking at a chart showing missed market gains, opportunity cost visualization, regretful expression, semi-realistic",
+      "condition": {
+        "and": [
+          {
+            "resource": "cash_reserves",
+            "operator": ">",
+            "value": 40000
+          },
+          {
+            "resource": "stocks_allocation",
+            "operator": "<",
+            "value": 10
+          }
+        ]
+      },
+      "choices": [
+        {
+          "id": "ap_gradual_invest",
+          "label": "A. Gradual Entry — Start a SIP",
+          "description": "Invest 5,000 per month into a balanced fund. Ease into the market slowly to reduce timing risk.",
+          "delta": {
+            "cash_reserves": -5000,
+            "stocks_allocation": 10,
+            "bonds_allocation": 5,
+            "diversification_index": 15,
+            "portfolio_value": 3000,
+            "financial_knowledge": 10,
+            "market_confidence": 10,
+            "risk_score": 8
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Perfect recovery! SIP removes the pressure of 'timing' the market. You invest steadily regardless of market mood.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "ap_lump_sum",
+          "label": "B. Lump Sum — Invest 50% of Cash Now",
+          "description": "Put half your cash into a diversified portfolio immediately. Make up for lost time!",
+          "delta": {
+            "cash_reserves": -20000,
+            "stocks_allocation": 20,
+            "bonds_allocation": 10,
+            "diversification_index": 20,
+            "portfolio_value": 5000,
+            "risk_score": 15,
+            "market_confidence": 15
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Bold correction! Studies show lump-sum investing beats SIP about 66% of the time — but it takes nerve.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "ap_balanced_fund",
+          "label": "C. Auto-Pilot — Buy a Balanced Fund",
+          "description": "Invest in a single balanced fund that automatically manages stocks, bonds, and cash for you.",
+          "delta": {
+            "cash_reserves": -15000,
+            "stocks_allocation": 10,
+            "bonds_allocation": 10,
+            "diversification_index": 20,
+            "portfolio_value": 3000,
+            "financial_knowledge": 8,
+            "risk_score": 5,
+            "advisor_trust": 10
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Smart delegation! A balanced fund lets professionals handle the asset allocation while you focus on learning.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "ap_stay_safe",
+          "label": "D. Stay in Cash — Safety First",
+          "description": "Ignore the pressure. You're comfortable with your savings. Markets could crash any day!",
+          "delta": {
+            "cash_reserves": 1000,
+            "financial_knowledge": 3,
+            "market_confidence": -10,
+            "portfolio_value": -3000,
+            "risk_score": -10,
+            "advisor_trust": -8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Inflation is eating your savings every day. In 10 years, your 40,000 will buy what 28,000 buys today. Doing nothing IS a choice — and it has real costs.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_11_giving_back",
+      "round_title": "Month 11: Investing in Others",
+      "situation": "Your school announces a financial literacy program for younger students — and asks your class to donate from their virtual portfolios to fund it. 'Should investors give back?' asks Mr. Capital. Bull scoffs: 'Charity is for losers.' Aunt Sarah says: 'Always help those who have less.' You also discover micro-lending platforms where your money can fund small businesses in developing regions.",
+      "goal": "Decide whether and how to use your wealth to help others.",
+      "coaching_moment": "Empathy in finance: The best investors understand that markets exist within communities. Impact investing — using money to solve social problems while earning returns — is the fastest-growing area of finance. Generosity and prosperity are not opposites.",
+      "reflection_prompt": "Does having money create a responsibility to help others? Why or why not?",
+      "ai_image_prompt": "Students teaching younger children about money, donation box, micro-lending map on screen, warm community feel, diverse group, generosity, semi-realistic",
+      "choices": [
+        {
+          "id": "m11_impact_invest",
+          "label": "A. Impact Investing — Earn Returns AND Help",
+          "description": "Invest 5,000 in micro-lending platforms. Help small businesses grow while earning 6% interest.",
+          "delta": {
+            "portfolio_value": 1000,
+            "financial_knowledge": 12,
+            "diversification_index": 10,
+            "advisor_trust": 10,
+            "cash_reserves": -5000,
+            "market_confidence": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Impact investing proves you don't have to choose between profits and purpose! Your money funds real businesses while generating returns.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "m11_donate",
+          "label": "B. Donate to the School Program",
+          "description": "Give 3,000 to fund financial literacy classes for younger students. Pure generosity, no returns.",
+          "delta": {
+            "cash_reserves": -3000,
+            "advisor_trust": 15,
+            "financial_knowledge": 8,
+            "market_confidence": 3,
+            "portfolio_value": -1000
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Beautiful generosity! Teaching financial literacy to younger students creates a ripple effect that benefits the whole community.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "m11_teach",
+          "label": "C. Volunteer Your Time Instead of Money",
+          "description": "Don't donate money — instead, teach the younger students yourself. Share knowledge, keep your portfolio intact.",
+          "delta": {
+            "financial_knowledge": 15,
+            "advisor_trust": 12,
+            "portfolio_value": 500,
+            "diversification_index": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Teaching is the best way to learn! By explaining investing to others, you deepened your own understanding.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "m11_skip",
+          "label": "D. Focus on Your Portfolio — No Charity",
+          "description": "Your job is to maximize returns. Charity is nice but it doesn't grow your portfolio.",
+          "delta": {
+            "portfolio_value": 3000,
+            "stocks_allocation": 5,
+            "risk_score": 5,
+            "advisor_trust": -10,
+            "market_confidence": 5,
+            "financial_knowledge": 2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Maximizing returns is logical — but research shows that generous people build stronger networks and make better long-term decisions. Empathy is an investment too.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "month_12_final",
+      "round_title": "Month 12: Your Investment Legacy",
+      "situation": "It's the final month. Mr. Capital asks: 'What kind of investor do you want to be?' Your portfolio tells the story of 12 months of decisions — bold moves, careful planning, crises survived, and lessons learned. One last decision will shape your investing philosophy for life.",
+      "goal": "Make a final strategic decision that defines your investing identity.",
+      "coaching_moment": "Investment philosophy: The greatest investors all have one thing in common — a clear philosophy they stick to through thick and thin. Warren Buffett is a value investor. George Soros is a macro trader. What are you?",
+      "reflection_prompt": "If you could give one piece of financial advice to your future self, what would it be?",
+      "ai_image_prompt": "Young investor confidently presenting portfolio to class, growth charts behind them, awards and certificates, bright future ahead, graduation feel, semi-realistic",
+      "choices": [
+        {
+          "id": "m12_value",
+          "label": "A. Value Investor — Buy Quality, Hold Forever",
+          "description": "Commit to the Warren Buffett approach. Find great companies at fair prices and hold them for decades.",
+          "delta": {
+            "portfolio_value": 5000,
+            "financial_knowledge": 12,
+            "diversification_index": 10,
+            "risk_score": -5,
+            "advisor_trust": 8,
+            "stocks_allocation": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "The most proven strategy in history! Value investing requires patience, research, and conviction — but it works.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "m12_growth",
+          "label": "B. Growth Investor — Bet on the Future",
+          "description": "Focus on innovative companies that are changing the world. Higher risk, but potentially transformative returns.",
+          "delta": {
+            "portfolio_value": 6000,
+            "stocks_allocation": 10,
+            "risk_score": 10,
+            "market_confidence": 10,
+            "financial_knowledge": 8,
+            "diversification_index": 5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Growth investing has created enormous wealth — just ask early Amazon or Tesla investors. But it requires nerves of steel.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "m12_balanced_approach",
+          "label": "C. Balanced Investor — Best of All Worlds",
+          "description": "Maintain a balanced portfolio across all asset classes. Steady growth, managed risk, financial peace of mind.",
+          "delta": {
+            "portfolio_value": 3000,
+            "diversification_index": 15,
+            "financial_knowledge": 10,
+            "advisor_trust": 10,
+            "risk_score": -8,
+            "bonds_allocation": 5,
+            "cash_reserves": 2000
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Balance is wisdom! A diversified portfolio lets you sleep well at night while still building wealth over time.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "m12_impact",
+          "label": "D. Impact Investor — Profit with Purpose",
+          "description": "Dedicate your portfolio to companies that generate both financial returns AND positive social impact.",
+          "delta": {
+            "portfolio_value": 2000,
+            "financial_knowledge": 12,
+            "advisor_trust": 15,
+            "diversification_index": 12,
+            "market_confidence": 5,
+            "risk_score": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "The future of investing! Impact investors are proving that doing well and doing good are not mutually exclusive.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "wolf_of_stock_street",
+      "label": "Wolf of Stock Street",
+      "condition": "portfolio_value >= 80000 and financial_knowledge >= 50",
+      "icon": "🐺"
+    },
+    {
+      "id": "diversification_master",
+      "label": "Diversification Master",
+      "condition": "diversification_index >= 70 and risk_score < 50",
+      "icon": "🎯"
+    },
+    {
+      "id": "crash_survivor",
+      "label": "Crash Survivor",
+      "condition": "portfolio_value >= 50000 and resilience >= 60",
+      "icon": "🛡️"
+    },
+    {
+      "id": "financial_scholar",
+      "label": "Financial Scholar",
+      "condition": "financial_knowledge >= 75",
+      "icon": "🎓"
+    },
+    {
+      "id": "ethical_investor",
+      "label": "Ethical Investor",
+      "condition": "advisor_trust >= 70 and financial_knowledge >= 55",
+      "icon": "💚"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Portfolio",
+      "definition": "A collection of financial investments like stocks, bonds, cash, and other assets held by an investor."
+    },
+    {
+      "term": "Diversification",
+      "definition": "Spreading investments across different asset classes and sectors to reduce risk. 'Don't put all your eggs in one basket.'"
+    },
+    {
+      "term": "Risk vs. Return",
+      "definition": "The principle that higher potential returns come with higher risk of loss, and safer investments typically offer lower returns."
+    },
+    {
+      "term": "Compound Interest",
+      "definition": "Interest earned on both the initial investment AND on previously earned interest. Over time, this creates exponential growth — often called 'the 8th wonder of the world.'"
+    },
+    {
+      "term": "Mutual Fund",
+      "definition": "A pooled investment that collects money from many investors to buy a diversified portfolio of stocks, bonds, or other assets, managed by professional fund managers."
+    },
+    {
+      "term": "ESG Investing",
+      "definition": "Environmental, Social, and Governance investing — choosing companies that demonstrate responsible practices alongside profitability."
+    },
+    {
+      "term": "Margin Call",
+      "definition": "A demand from a broker to deposit more money when investments bought with borrowed money lose value. One of the biggest dangers of leveraged investing."
+    },
+    {
+      "term": "SIP (Systematic Investment Plan)",
+      "definition": "Investing a fixed amount regularly (weekly/monthly) regardless of market conditions. This strategy averages out the cost of buying and removes emotional decision-making."
+    }
+  ],
+  "endings": [
+    {
+      "id": "wolf_of_stock_street",
+      "title": "Wolf of Stock Street",
+      "icon": "🐺",
+      "message": "Your portfolio has crushed the benchmarks! From 50,000 to over 80,000 — you've beaten the market through smart decision-making, calculated risks, and financial knowledge. Professional fund managers would be impressed. Your grandfather would be proud. You've proven that young investors who combine knowledge with courage can achieve extraordinary results.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "portfolio_value",
+            "operator": ">=",
+            "value": 80000
+          },
+          {
+            "resource": "financial_knowledge",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "safe_harbor_captain",
+      "title": "Safe Harbor Captain",
+      "icon": "⚓",
+      "message": "Your portfolio is a fortress! While others rode the roller coaster of market swings, you built a beautifully diversified, low-risk portfolio that weathered every storm. Your risk-adjusted returns are outstanding — meaning you got strong results without taking unnecessary risks. Financial planners everywhere would nod in approval.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "diversification_index",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "risk_score",
+            "operator": "<",
+            "value": 40
+          }
+        ]
+      }
+    },
+    {
+      "id": "financial_scholar",
+      "title": "Financial Scholar",
+      "icon": "🎓",
+      "message": "You emerged as the most financially literate investor in the class! Your deep understanding of markets, asset classes, risk management, and investing psychology puts you years ahead of most adults. The returns will follow — because financial education is the highest-yielding investment of all. Mr. Capital nominates you for the National Financial Olympiad!",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "financial_knowledge",
+            "operator": ">=",
+            "value": 75
+          }
+        ]
+      }
+    },
+    {
+      "id": "balanced_investor",
+      "title": "Balanced Investor",
+      "icon": "⚖️",
+      "message": "You found the golden middle path! Your portfolio grew steadily while staying well-diversified and manageable. You didn't chase the highest returns or hide in cash — you balanced growth, safety, and learning beautifully. This is exactly the approach that builds wealth over decades. The market may be volatile, but your investing temperament is rock-solid.",
+      "type": "triumph",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "diversification_index",
+            "operator": ">=",
+            "value": 50
+          },
+          {
+            "resource": "portfolio_value",
+            "operator": ">=",
+            "value": 55000
+          }
+        ]
+      }
+    },
+    {
+      "id": "market_learner",
+      "title": "Market Learner",
+      "icon": "📖",
+      "message": "Your first year in the market has been a journey of discovery! You experienced rallies, crashes, emotional decisions, and hard lessons. Your portfolio may not have the highest returns, but the knowledge you've gained is priceless. Every legendary investor started somewhere — and now you have 12 months of real experience under your belt. The market will be here tomorrow, and so will you — wiser, calmer, and better prepared.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          14
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Stock Street: Risk, Return & You Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What does 'profit' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Total money spent",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Revenue minus costs",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Money borrowed from a bank",
+              "correct": false
+            }
+          ],
+          "explanation": "Profit is what remains after subtracting all costs from total revenue."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "What is a 'budget'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "A list of things to buy",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "A plan for how to spend money",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "A type of bank account",
+              "correct": false
+            }
+          ],
+          "explanation": "A budget is a financial plan that allocates income to different spending categories."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Stock Street: Risk, Return & You. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Stock Street: Risk, Return & You Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Stock Street: Risk, Return & You. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

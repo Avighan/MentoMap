@@ -1,0 +1,1923 @@
+{
+  "game_id": "startup-monopoly",
+  "title": "Startup Monopoly",
+  "theme": "Entrepreneurship & Business Empire Building",
+  "description": "Build your startup empire in this Monopoly-inspired board game! Buy companies, collect revenue, navigate market crashes, and outsmart AI competitors. Invest in tech, food, fashion, and fintech ventures as you race to become the ultimate startup tycoon. Every decision teaches real business strategy — from cash flow management to knowing when to pivot.",
+  "game_type": "board",
+  "target_audience": "14-25",
+  "duration_minutes": 30,
+  "difficulty": "intermediate",
+  "learning_objectives": [
+    "Financial Literacy",
+    "Entrepreneurship",
+    "Strategic Thinking",
+    "Risk Management"
+  ],
+  "tags": [
+    "monopoly",
+    "board-game",
+    "startup",
+    "business",
+    "strategy",
+    "finance"
+  ],
+  "storybook_pages": [
+    {
+      "title": "Welcome to Startup Monopoly",
+      "text": "You're a fresh entrepreneur with $100K seed money and a dream. The startup world awaits — buy ventures, collect revenue, and build an empire!",
+      "image_prompt": "colorful monopoly board game with startup buildings, coins, dice, entrepreneurship theme, cartoon style, vibrant"
+    },
+    {
+      "title": "The Board",
+      "text": "Roll the dice and move around the board. Land on properties to buy them. When rivals land on your properties, they pay you rent!",
+      "image_prompt": "game board with colorful property tiles, dice rolling, game pieces moving, business district, cartoon style"
+    },
+    {
+      "title": "Build Your Empire",
+      "text": "Upgrade your startups to scale them up. Collect sets of similar industries for bonus revenue. Watch out for Market Crash and Tax tiles!",
+      "image_prompt": "growing business empire, buildings getting taller, money flowing, startup offices, success celebration, cartoon style"
+    }
+  ],
+  "how_to_play": [
+    "Roll the dice and move around the 28-tile board. Each lap earns you $20K Seed Funding.",
+    "Land on an unowned property? Buy it to start collecting revenue when others land there.",
+    "Own all properties in a color group (industry) to double your revenue from that set.",
+    "Use the Shop tile to upgrade your startups — upgrades increase the rent rivals pay you.",
+    "Watch out for Tax tiles (you lose cash) and Market Crash (random bad event).",
+    "Chance tiles give random bonuses or penalties — just like real business!",
+    "First player to reach $500K total valuation (cash + property values) wins. Or survive the longest!"
+  ],
+  "initial_state": {
+    "cash": {
+      "value": 100000,
+      "label": "Cash ($)",
+      "icon": "💰"
+    },
+    "properties_owned": {
+      "value": 0,
+      "label": "Properties",
+      "icon": "🏢"
+    },
+    "total_revenue": {
+      "value": 0,
+      "label": "Revenue Earned",
+      "icon": "📈"
+    },
+    "total_rent_paid": {
+      "value": 0,
+      "label": "Rent Paid",
+      "icon": "📉"
+    },
+    "upgrades_bought": {
+      "value": 0,
+      "label": "Upgrades",
+      "icon": "⬆️"
+    },
+    "laps_completed": {
+      "value": 0,
+      "label": "Laps",
+      "icon": "🔄"
+    },
+    "net_worth": {
+      "value": 100000,
+      "label": "Net Worth ($)",
+      "icon": "💎"
+    },
+    "reputation": {
+      "value": 50,
+      "label": "Reputation",
+      "icon": "⭐"
+    },
+    "strategic_thinking": {
+      "value": 40,
+      "icon": "♟️",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "risk_tolerance": {
+      "value": 40,
+      "icon": "🎲",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "delayed_gratification": {
+      "value": 35,
+      "icon": "⏳",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "impulse_control": {
+      "value": 35,
+      "icon": "🛑",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "resilience": {
+      "value": 40,
+      "icon": "💪",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "adaptability": {
+      "value": 45,
+      "icon": "🦎",
+      "min": 0,
+      "max": 100,
+      "category": "Board & Monopoly"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "board_config": {
+    "renderer": "2d",
+    "grid_size": [
+      8,
+      4
+    ],
+    "movement": "dice",
+    "dice_range": [
+      1,
+      6
+    ],
+    "tile_types": {
+      "start": {
+        "label": "Seed Funding",
+        "bg": "#06D6A0",
+        "text": "#FFFFFF",
+        "icon": "🚀",
+        "border_color": "#059669"
+      },
+      "event": {
+        "label": "Chance Card",
+        "bg": "#FFD166",
+        "text": "#2D3047",
+        "icon": "❓",
+        "border_color": "#EAB308"
+      },
+      "shop": {
+        "label": "Upgrade Center",
+        "bg": "#4CC9F0",
+        "text": "#FFFFFF",
+        "icon": "🔧",
+        "border_color": "#0EA5E9"
+      },
+      "boss": {
+        "label": "Investor Pitch",
+        "bg": "#EF476F",
+        "text": "#FFFFFF",
+        "icon": "💼",
+        "border_color": "#DC2626"
+      },
+      "empty": {
+        "label": "Just Visiting",
+        "bg": "#E5E7EB",
+        "text": "#6B7280",
+        "icon": "👀",
+        "border_color": "#D1D5DB"
+      },
+      "treasure": {
+        "label": "Jackpot!",
+        "bg": "#FBBF24",
+        "text": "#2D3047",
+        "icon": "💎",
+        "border_color": "#D97706"
+      },
+      "rest": {
+        "label": "Team Retreat",
+        "bg": "#34D399",
+        "text": "#FFFFFF",
+        "icon": "☕",
+        "border_color": "#10B981"
+      },
+      "finish": {
+        "label": "IPO!",
+        "bg": "#9B5DE5",
+        "text": "#FFFFFF",
+        "icon": "🔔",
+        "border_color": "#7C3AED"
+      },
+      "property": {
+        "label": "Property",
+        "bg": "#818CF8",
+        "text": "#FFFFFF",
+        "icon": "🏢",
+        "border_color": "#6366F1"
+      },
+      "tax": {
+        "label": "Tax Office",
+        "bg": "#F87171",
+        "text": "#FFFFFF",
+        "icon": "🏛️",
+        "border_color": "#EF4444"
+      }
+    },
+    "tile_effects": {
+      "start": {
+        "delta": {
+          "cash": 20000
+        },
+        "message": "You pass Seed Funding and collect $20K from your angel investors! 🚀"
+      },
+      "rest": {
+        "delta": {
+          "reputation": 5
+        },
+        "message": "Your team takes a well-deserved retreat. Morale is up! ☕"
+      },
+      "treasure": {
+        "delta": {
+          "cash": 25000,
+          "reputation": 5
+        },
+        "message": "Jackpot! You won a startup pitch competition and got $25K! 💎"
+      },
+      "tax": {
+        "delta": {
+          "cash": -15000
+        },
+        "message": "Time to pay taxes! You owe $15K to the government. 🏛️"
+      },
+      "shop": {
+        "shop_items": [
+          {
+            "id": "upgrade_level_1",
+            "label": "Startup Accelerator",
+            "cost_key": "cash",
+            "cost": 10000,
+            "delta": {
+              "reputation": 10,
+              "upgrades_bought": 1
+            },
+            "description": "Join an accelerator to boost your startup's reputation."
+          },
+          {
+            "id": "upgrade_level_2",
+            "label": "Hire Star CTO",
+            "cost_key": "cash",
+            "cost": 25000,
+            "delta": {
+              "reputation": 15,
+              "upgrades_bought": 1
+            },
+            "description": "Hire an experienced CTO to level up your tech."
+          },
+          {
+            "id": "upgrade_level_3",
+            "label": "Marketing Blitz",
+            "cost_key": "cash",
+            "cost": 15000,
+            "delta": {
+              "reputation": 8,
+              "upgrades_bought": 1
+            },
+            "description": "Launch a viral marketing campaign."
+          }
+        ]
+      },
+      "boss": {
+        "challenge": {
+          "question": "An investor asks: 'Your startup has $200K in monthly revenue and $180K in expenses. What's your monthly profit margin?'",
+          "options": [
+            "10%",
+            "20%",
+            "$20K profit but margin unknown",
+            "Approximately 11%"
+          ],
+          "correct": 0,
+          "success_delta": {
+            "cash": 30000,
+            "reputation": 10
+          },
+          "fail_delta": {
+            "cash": -5000,
+            "reputation": -5
+          },
+          "success_message": "Brilliant answer! The investor is impressed and writes you a check for $30K! 🎉",
+          "fail_message": "Not quite right. The investor passes for now, and it costs you $5K in prep expenses. 😓"
+        }
+      }
+    },
+    "power_ups": [
+      {
+        "id": "double_roll",
+        "label": "Hustle Mode",
+        "icon": "⚡",
+        "description": "Roll twice and move the total — cover more ground this turn!"
+      },
+      {
+        "id": "shield",
+        "label": "Legal Shield",
+        "icon": "🛡️",
+        "description": "Block the next rent payment or tax. Your lawyers handle it!"
+      },
+      {
+        "id": "market_insight",
+        "label": "Market Intel",
+        "icon": "🔭",
+        "description": "See the next 3 tiles ahead so you can plan your moves."
+      }
+    ],
+    "ai_competitors": [
+      {
+        "id": "ai_venture_shark",
+        "name": "Venture Shark",
+        "avatar": "🦈",
+        "personality": "aggressive",
+        "color": "#EF4444",
+        "description": "Buys everything in sight and leverages debt. High risk, high reward."
+      },
+      {
+        "id": "ai_steady_eddie",
+        "name": "Steady Eddie",
+        "avatar": "🐢",
+        "personality": "balanced",
+        "color": "#22C55E",
+        "description": "Saves cash, buys strategically, never overpays. Slow but steady."
+      }
+    ],
+    "tiles": [
+      {
+        "position": [
+          0,
+          0
+        ],
+        "type": "start",
+        "label": "Seed Funding 🚀",
+        "icon": "🚀",
+        "event_id": null
+      },
+      {
+        "position": [
+          1,
+          0
+        ],
+        "type": "event",
+        "label": "Food Truck Startup",
+        "icon": "🍔",
+        "event_id": "evt_food_truck"
+      },
+      {
+        "position": [
+          2,
+          0
+        ],
+        "type": "event",
+        "label": "Chance Card",
+        "icon": "❓",
+        "event_id": "evt_chance_1"
+      },
+      {
+        "position": [
+          3,
+          0
+        ],
+        "type": "event",
+        "label": "Coffee Chain",
+        "icon": "☕",
+        "event_id": "evt_coffee_chain"
+      },
+      {
+        "position": [
+          4,
+          0
+        ],
+        "type": "tax",
+        "label": "Income Tax 🏛️",
+        "icon": "🏛️",
+        "event_id": null
+      },
+      {
+        "position": [
+          5,
+          0
+        ],
+        "type": "event",
+        "label": "Ride-Share App",
+        "icon": "🚗",
+        "event_id": "evt_rideshare"
+      },
+      {
+        "position": [
+          6,
+          0
+        ],
+        "type": "event",
+        "label": "Chance Card",
+        "icon": "❓",
+        "event_id": "evt_chance_2"
+      },
+      {
+        "position": [
+          7,
+          0
+        ],
+        "type": "rest",
+        "label": "Team Retreat ☕",
+        "icon": "☕",
+        "event_id": null
+      },
+      {
+        "position": [
+          7,
+          1
+        ],
+        "type": "event",
+        "label": "SaaS Platform",
+        "icon": "💻",
+        "event_id": "evt_saas"
+      },
+      {
+        "position": [
+          7,
+          2
+        ],
+        "type": "event",
+        "label": "E-Commerce Store",
+        "icon": "🛒",
+        "event_id": "evt_ecommerce"
+      },
+      {
+        "position": [
+          7,
+          3
+        ],
+        "type": "shop",
+        "label": "Upgrade Center 🔧",
+        "icon": "🔧",
+        "event_id": null
+      },
+      {
+        "position": [
+          6,
+          3
+        ],
+        "type": "event",
+        "label": "FinTech Startup",
+        "icon": "🏦",
+        "event_id": "evt_fintech"
+      },
+      {
+        "position": [
+          5,
+          3
+        ],
+        "type": "event",
+        "label": "Chance Card",
+        "icon": "❓",
+        "event_id": "evt_chance_3"
+      },
+      {
+        "position": [
+          4,
+          3
+        ],
+        "type": "event",
+        "label": "Health Tech",
+        "icon": "🏥",
+        "event_id": "evt_healthtech"
+      },
+      {
+        "position": [
+          3,
+          3
+        ],
+        "type": "boss",
+        "label": "Investor Pitch 💼",
+        "icon": "💼",
+        "event_id": null
+      },
+      {
+        "position": [
+          2,
+          3
+        ],
+        "type": "event",
+        "label": "EdTech Platform",
+        "icon": "📚",
+        "event_id": "evt_edtech"
+      },
+      {
+        "position": [
+          1,
+          3
+        ],
+        "type": "event",
+        "label": "Chance Card",
+        "icon": "❓",
+        "event_id": "evt_chance_4"
+      },
+      {
+        "position": [
+          0,
+          3
+        ],
+        "type": "finish",
+        "label": "Finish 🏆",
+        "icon": "🏆",
+        "event_id": null
+      },
+      {
+        "position": [
+          0,
+          2
+        ],
+        "type": "event",
+        "label": "Fashion Brand",
+        "icon": "👗",
+        "event_id": "evt_fashion"
+      },
+      {
+        "position": [
+          0,
+          1
+        ],
+        "type": "event",
+        "label": "Gaming Studio",
+        "icon": "🎮",
+        "event_id": "evt_gaming"
+      },
+      {
+        "position": [
+          1,
+          1
+        ],
+        "type": "treasure",
+        "label": "Pitch Win! 💎",
+        "icon": "💎",
+        "event_id": null,
+        "reward_card": "cost_cut"
+      },
+      {
+        "position": [
+          2,
+          1
+        ],
+        "type": "event",
+        "label": "Green Energy",
+        "icon": "🌱",
+        "event_id": "evt_green_energy"
+      },
+      {
+        "position": [
+          3,
+          1
+        ],
+        "type": "event",
+        "label": "AI Startup",
+        "icon": "🤖",
+        "event_id": "evt_ai_startup"
+      },
+      {
+        "position": [
+          4,
+          1
+        ],
+        "type": "empty",
+        "label": "Free Parking 👀",
+        "icon": "👀",
+        "event_id": null
+      },
+      {
+        "position": [
+          5,
+          1
+        ],
+        "type": "event",
+        "label": "Social Media App",
+        "icon": "📱",
+        "event_id": "evt_social_media"
+      },
+      {
+        "position": [
+          6,
+          1
+        ],
+        "type": "event",
+        "label": "Cloud Kitchen",
+        "icon": "🍕",
+        "event_id": "evt_cloud_kitchen"
+      },
+      {
+        "position": [
+          5,
+          2
+        ],
+        "type": "event",
+        "label": "Crypto Exchange",
+        "icon": "🪙",
+        "event_id": "evt_crypto"
+      },
+      {
+        "position": [
+          3,
+          2
+        ],
+        "type": "event",
+        "label": "IPO! 🔔",
+        "icon": "❓",
+        "event_id": null
+      }
+    ],
+    "card_pool": [
+      {
+        "id": "pivot_card",
+        "name": "Pivot Card",
+        "icon": "🔄",
+        "rarity": "rare",
+        "effect_description": "Swap last event effect — flip a -10 to +10 on any resource",
+        "play_effect": {
+          "coins": 20
+        },
+        "is_playable": true,
+        "stackable": false,
+        "knowledge": "Instagram started as Burbn, a check-in app. Twitter began as a podcasting platform. The pivot isn't failure — it's listening to data."
+      },
+      {
+        "id": "funding_round",
+        "name": "Funding Round",
+        "icon": "💰",
+        "rarity": "legendary",
+        "effect_description": "+60 coins, +10 reputation",
+        "play_effect": {
+          "coins": 60,
+          "reputation": 10
+        },
+        "is_playable": true,
+        "stackable": false,
+        "knowledge": "Most startups raise 3–5 rounds before profitability. Each round buys runway but dilutes ownership. Raise only what you can deploy in 18 months.",
+        "min_progress_pct": 40
+      },
+      {
+        "id": "market_insight",
+        "name": "Market Insight",
+        "icon": "📊",
+        "rarity": "rare",
+        "effect_description": "+20 reputation, +15 product_quality",
+        "play_effect": {
+          "reputation": 20,
+          "product_quality": 15
+        },
+        "is_playable": true,
+        "stackable": false,
+        "knowledge": "Peter Drucker: 'The aim of marketing is to know the customer so well the product sells itself.' Deep insight is an unfair advantage."
+      },
+      {
+        "id": "viral_moment",
+        "name": "Viral Moment",
+        "icon": "🚀",
+        "rarity": "legendary",
+        "effect_description": "+40 brand_reputation, +30 customer_satisfaction",
+        "play_effect": {
+          "brand_reputation": 40,
+          "customer_satisfaction": 30
+        },
+        "is_playable": true,
+        "stackable": false,
+        "knowledge": "Dropbox grew 3,900% in 15 months purely through referral loops — zero paid ads. Word-of-mouth is 5× more effective than paid acquisition.",
+        "min_progress_pct": 60
+      },
+      {
+        "id": "quick_hire",
+        "name": "Quick Hire",
+        "icon": "👥",
+        "rarity": "common",
+        "effect_description": "+20 team_morale",
+        "play_effect": {
+          "team_morale": 20
+        },
+        "is_playable": true,
+        "stackable": true,
+        "knowledge": "Steve Jobs: 'Great things are never done by one person.' One A-player is worth three B-players. Culture compounds like interest."
+      },
+      {
+        "id": "cost_cut",
+        "name": "Cost Cut",
+        "icon": "✂️",
+        "rarity": "common",
+        "effect_description": "+15 coins (trim waste)",
+        "play_effect": {
+          "coins": 15
+        },
+        "is_playable": true,
+        "stackable": true,
+        "knowledge": "Paul Graham's 'Default Alive' test: can your current burn rate reach profitability before cash runs out? Cost discipline creates optionality."
+      }
+    ],
+    "max_cards": 8,
+    "difficulty_modifiers": {
+      "easy": {
+        "resource_multiplier": 1.3,
+        "negative_event_chance": 0.2
+      },
+      "medium": {
+        "resource_multiplier": 1.0,
+        "negative_event_chance": 0.4
+      },
+      "hard": {
+        "resource_multiplier": 0.75,
+        "negative_event_chance": 0.65
+      }
+    }
+  },
+  "events": {
+    "evt_food_truck": {
+      "title": "Food Truck Startup — Tasty Wheels",
+      "story": "A popular food truck franchise is for sale! The owner is relocating. Great location near the tech park with loyal customers.",
+      "choices": [
+        {
+          "id": "buy_food_truck",
+          "label": "Buy for $15K — it's got steady customers!",
+          "delta": {
+            "cash": -15000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "reputation": 5,
+            "strategic_thinking": 5
+          },
+          "feedback": "Smart buy! Tasty Wheels is now yours. It generates $3K per lap in revenue. 🍔"
+        },
+        {
+          "id": "negotiate_food_truck",
+          "label": "Negotiate to $10K — push for a better deal",
+          "delta": {
+            "cash": -10000,
+            "properties_owned": 1,
+            "total_revenue": 2000,
+            "risk_tolerance": 8,
+            "delayed_gratification": 5
+          },
+          "feedback": "Tough negotiation, but you got it for $10K! Revenue is slightly lower at $2K per lap since the seller took some recipes."
+        },
+        {
+          "id": "skip_food_truck",
+          "label": "Pass — save cash for bigger opportunities",
+          "delta": {
+            "delayed_gratification": 10,
+            "impulse_control": 8
+          },
+          "feedback": "You pass on the food truck. Smart — or was it? The cash stays safe but you missed out on passive income."
+        }
+      ],
+      "glossary_terms": [
+        "compound_interest",
+        "diversification"
+      ]
+    },
+    "evt_coffee_chain": {
+      "title": "Coffee Chain — Bean Counter Café",
+      "story": "A trendy coffee chain with 3 locations is looking for an investor. Great brand, but the founder wants $30K for 40% equity.",
+      "choices": [
+        {
+          "id": "invest_coffee",
+          "label": "Invest $30K — premium brand, premium returns!",
+          "delta": {
+            "cash": -30000,
+            "properties_owned": 1,
+            "total_revenue": 6000,
+            "reputation": 10,
+            "strategic_thinking": 5
+          },
+          "feedback": "Bean Counter Café is now in your portfolio! Three locations means $6K revenue per lap. ☕"
+        },
+        {
+          "id": "counter_coffee",
+          "label": "Counter-offer $20K for 25% equity",
+          "delta": {
+            "cash": -20000,
+            "properties_owned": 1,
+            "total_revenue": 4000,
+            "risk_tolerance": 5,
+            "resilience": 3
+          },
+          "feedback": "They accepted your counter! You get $4K per lap from your smaller stake."
+        },
+        {
+          "id": "pass_coffee",
+          "label": "Too expensive — keep your powder dry",
+          "delta": {
+            "impulse_control": 10,
+            "cash": 2000
+          },
+          "feedback": "You pass and save $2K on due diligence costs alone. Sometimes the best deal is no deal."
+        }
+      ],
+      "glossary_terms": [
+        "diversification",
+        "inflation"
+      ]
+    },
+    "evt_rideshare": {
+      "title": "Ride-Share App — QuickRide",
+      "story": "A ride-sharing startup needs seed funding. Great tech, growing user base, but burning cash fast. They need $25K immediately.",
+      "choices": [
+        {
+          "id": "fund_rideshare",
+          "label": "Fund $25K — first-mover advantage!",
+          "delta": {
+            "cash": -25000,
+            "properties_owned": 1,
+            "total_revenue": 5000,
+            "reputation": 8,
+            "risk_tolerance": 10
+          },
+          "feedback": "QuickRide takes off! With your funding, they expand to 3 cities. You earn $5K per lap. 🚗"
+        },
+        {
+          "id": "partial_rideshare",
+          "label": "Invest $15K for a smaller stake + advisory role",
+          "delta": {
+            "cash": -15000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "strategic_thinking": 8,
+            "adaptability": 5
+          },
+          "feedback": "Smaller investment, smaller returns ($3K/lap), but you're on the advisory board. Smart move!"
+        },
+        {
+          "id": "skip_rideshare",
+          "label": "Too risky — they're burning cash too fast",
+          "delta": {
+            "impulse_control": 8,
+            "resilience": 3,
+            "cash": 1000
+          },
+          "feedback": "You pass. QuickRide survives anyway... but you could have been early. Saved $1K in legal fees though!"
+        }
+      ],
+      "glossary_terms": [
+        "inflation",
+        "budgeting"
+      ]
+    },
+    "evt_saas": {
+      "title": "SaaS Platform — CloudSync Pro",
+      "story": "A B2B SaaS platform with 500 paying customers is raising a Series A. $40K gets you in on the ground floor. MRR is growing 15% month-over-month.",
+      "choices": [
+        {
+          "id": "invest_saas",
+          "label": "All in! $40K for equity — SaaS = recurring revenue!",
+          "delta": {
+            "cash": -40000,
+            "properties_owned": 1,
+            "total_revenue": 8000,
+            "reputation": 12,
+            "strategic_thinking": 10,
+            "risk_tolerance": 8
+          },
+          "feedback": "CloudSync Pro is a cash machine! $8K per lap in recurring revenue. This could be your best investment. 💻"
+        },
+        {
+          "id": "safe_saas",
+          "label": "Invest $20K via a SAFE note — lower risk",
+          "delta": {
+            "cash": -20000,
+            "properties_owned": 1,
+            "total_revenue": 4000,
+            "delayed_gratification": 10,
+            "strategic_thinking": 5
+          },
+          "feedback": "SAFE note means you convert later at a discount. $4K per lap for now, but could grow! Smart hedge."
+        },
+        {
+          "id": "pass_saas",
+          "label": "Pass — B2B is boring, I want consumer plays",
+          "delta": {
+            "adaptability": -5,
+            "cash": 500
+          },
+          "feedback": "You pass on the boring B2B play. Most unicorns are B2B though... 🤔"
+        }
+      ],
+      "glossary_terms": [
+        "budgeting",
+        "assets_liabilities"
+      ]
+    },
+    "evt_ecommerce": {
+      "title": "E-Commerce Store — TrendMart",
+      "story": "An online marketplace is selling beautiful handcrafted goods. They need $20K for inventory expansion and marketing.",
+      "choices": [
+        {
+          "id": "buy_ecommerce",
+          "label": "Invest $20K — e-commerce is the future!",
+          "delta": {
+            "cash": -20000,
+            "properties_owned": 1,
+            "total_revenue": 4000,
+            "reputation": 6,
+            "adaptability": 5
+          },
+          "feedback": "TrendMart's sales double with your capital! You earn $4K per lap. 🛒"
+        },
+        {
+          "id": "partner_ecommerce",
+          "label": "Offer $10K + your marketing expertise",
+          "delta": {
+            "cash": -10000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "reputation": 8,
+            "strategic_thinking": 5
+          },
+          "feedback": "Your marketing skills helped more than cash! $3K per lap plus extra reputation."
+        },
+        {
+          "id": "skip_ecommerce",
+          "label": "Pass — margins are too thin",
+          "delta": {
+            "impulse_control": 5
+          },
+          "feedback": "You pass. Fair point about margins — but scale fixes that."
+        }
+      ],
+      "glossary_terms": [
+        "assets_liabilities",
+        "emergency_fund"
+      ]
+    },
+    "evt_fintech": {
+      "title": "FinTech Startup — PayQuick",
+      "story": "A payments startup just got regulatory approval. They need $35K for compliance infrastructure. Huge market, high barriers to entry.",
+      "choices": [
+        {
+          "id": "invest_fintech",
+          "label": "Invest $35K — regulated moats = big returns!",
+          "delta": {
+            "cash": -35000,
+            "properties_owned": 1,
+            "total_revenue": 7000,
+            "reputation": 10,
+            "strategic_thinking": 10,
+            "risk_tolerance": 5
+          },
+          "feedback": "PayQuick becomes the go-to payments solution! $7K per lap. The regulatory moat protects you. 🏦"
+        },
+        {
+          "id": "small_fintech",
+          "label": "Invest $15K — hedge against regulatory risk",
+          "delta": {
+            "cash": -15000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "resilience": 8,
+            "impulse_control": 5
+          },
+          "feedback": "Conservative play at $15K. You earn $3K per lap. If regulation changes, you're less exposed."
+        },
+        {
+          "id": "skip_fintech",
+          "label": "Too regulated — prefer move-fast industries",
+          "delta": {
+            "risk_tolerance": 5,
+            "cash": 1000
+          },
+          "feedback": "You skip the regulated play. Speed > compliance? Time will tell."
+        }
+      ],
+      "glossary_terms": [
+        "emergency_fund",
+        "roi"
+      ]
+    },
+    "evt_healthtech": {
+      "title": "Health Tech — MedConnect",
+      "story": "A telemedicine platform is expanding post-pandemic. $30K investment for equity. They already have 10,000 active users.",
+      "choices": [
+        {
+          "id": "invest_health",
+          "label": "Invest $30K — health tech is recession-proof!",
+          "delta": {
+            "cash": -30000,
+            "properties_owned": 1,
+            "total_revenue": 6000,
+            "reputation": 8,
+            "delayed_gratification": 8
+          },
+          "feedback": "MedConnect thrives! $6K per lap from a sector that never dies. 🏥"
+        },
+        {
+          "id": "advise_health",
+          "label": "Offer advisory + $15K for smaller equity",
+          "delta": {
+            "cash": -15000,
+            "properties_owned": 1,
+            "total_revenue": 3500,
+            "strategic_thinking": 8,
+            "adaptability": 5
+          },
+          "feedback": "Your advisory role adds more value than just cash. $3.5K per lap."
+        },
+        {
+          "id": "skip_health",
+          "label": "Regulations are a nightmare — pass",
+          "delta": {
+            "impulse_control": 3,
+            "resilience": 2
+          },
+          "feedback": "Healthcare regulation scares you off. Fair, but the market size is massive."
+        }
+      ],
+      "glossary_terms": [
+        "roi",
+        "tax_planning"
+      ]
+    },
+    "evt_edtech": {
+      "title": "EdTech Platform — LearnFast",
+      "story": "An AI-powered learning platform needs $25K. They have partnerships with 50 schools and growing. Education is a long game.",
+      "choices": [
+        {
+          "id": "invest_edtech",
+          "label": "Invest $25K — education is the ultimate long game!",
+          "delta": {
+            "cash": -25000,
+            "properties_owned": 1,
+            "total_revenue": 5000,
+            "reputation": 10,
+            "delayed_gratification": 12,
+            "strategic_thinking": 5
+          },
+          "feedback": "LearnFast loves your patient capital! $5K per lap and a feel-good investment. 📚"
+        },
+        {
+          "id": "small_edtech",
+          "label": "Invest $12K — keep expectations realistic",
+          "delta": {
+            "cash": -12000,
+            "properties_owned": 1,
+            "total_revenue": 2500,
+            "delayed_gratification": 8
+          },
+          "feedback": "Modest investment, modest returns. $2.5K per lap. Education takes time."
+        },
+        {
+          "id": "skip_edtech",
+          "label": "Pass — too slow, I want faster returns",
+          "delta": {
+            "risk_tolerance": 5,
+            "delayed_gratification": -5
+          },
+          "feedback": "You want speed over impact. EdTech takes years to pay off, but those who wait..."
+        }
+      ],
+      "glossary_terms": [
+        "tax_planning",
+        "compound_interest"
+      ]
+    },
+    "evt_fashion": {
+      "title": "Fashion Brand — UrbanThread",
+      "story": "A D2C fashion brand with massive Instagram following needs $20K. Great brand, trendy designs, but fashion is fickle.",
+      "choices": [
+        {
+          "id": "invest_fashion",
+          "label": "Invest $20K — social media + fashion = gold!",
+          "delta": {
+            "cash": -20000,
+            "properties_owned": 1,
+            "total_revenue": 4000,
+            "reputation": 8,
+            "risk_tolerance": 8
+          },
+          "feedback": "UrbanThread goes viral! You earn $4K per lap from their trendy drops. 👗"
+        },
+        {
+          "id": "collab_fashion",
+          "label": "Offer $10K + collab with your other brands",
+          "delta": {
+            "cash": -10000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "reputation": 5,
+            "adaptability": 8
+          },
+          "feedback": "Cross-brand collab works! $3K per lap and your portfolio gets synergy points."
+        },
+        {
+          "id": "skip_fashion",
+          "label": "Fashion is too trendy — pass",
+          "delta": {
+            "impulse_control": 5
+          },
+          "feedback": "You skip the fashion play. Trends come and go, but brands can last."
+        }
+      ],
+      "glossary_terms": [
+        "compound_interest",
+        "diversification"
+      ]
+    },
+    "evt_gaming": {
+      "title": "Gaming Studio — PixelForge",
+      "story": "An indie game studio with 2 hit mobile games needs $22K for their next title. Gaming market is $200B+ and growing.",
+      "choices": [
+        {
+          "id": "invest_gaming",
+          "label": "Invest $22K — gaming is massive!",
+          "delta": {
+            "cash": -22000,
+            "properties_owned": 1,
+            "total_revenue": 5000,
+            "reputation": 7,
+            "risk_tolerance": 8,
+            "strategic_thinking": 3
+          },
+          "feedback": "PixelForge's new game is a hit! $5K per lap from in-app purchases. 🎮"
+        },
+        {
+          "id": "revenue_share_gaming",
+          "label": "Offer $12K for revenue share instead of equity",
+          "delta": {
+            "cash": -12000,
+            "properties_owned": 1,
+            "total_revenue": 3500,
+            "adaptability": 8
+          },
+          "feedback": "Revenue share means you earn from every download. $3.5K per lap with less downside risk."
+        },
+        {
+          "id": "skip_gaming",
+          "label": "Games are hit-or-miss — too risky",
+          "delta": {
+            "impulse_control": 5,
+            "resilience": 3
+          },
+          "feedback": "You skip gaming. Fair — most games fail. But the ones that hit, hit big."
+        }
+      ],
+      "glossary_terms": [
+        "diversification",
+        "inflation"
+      ]
+    },
+    "evt_green_energy": {
+      "title": "Green Energy — SolarWave",
+      "story": "A solar energy startup has government contracts and needs $35K for new installations. Slow returns but steady income.",
+      "choices": [
+        {
+          "id": "invest_green",
+          "label": "Invest $35K — clean energy is the future!",
+          "delta": {
+            "cash": -35000,
+            "properties_owned": 1,
+            "total_revenue": 6000,
+            "reputation": 12,
+            "delayed_gratification": 12,
+            "strategic_thinking": 8
+          },
+          "feedback": "SolarWave installations power up! Government contracts = stable $6K per lap. 🌱"
+        },
+        {
+          "id": "partial_green",
+          "label": "Invest $18K — dip your toes in green",
+          "delta": {
+            "cash": -18000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "reputation": 6,
+            "delayed_gratification": 8
+          },
+          "feedback": "Modest green investment. $3K per lap. Good for the planet and your wallet."
+        },
+        {
+          "id": "skip_green",
+          "label": "Returns are too slow — I want faster money",
+          "delta": {
+            "delayed_gratification": -8,
+            "risk_tolerance": 5
+          },
+          "feedback": "You skip green energy. Short-term thinking? Or smart capital allocation? Depends who you ask."
+        }
+      ],
+      "glossary_terms": [
+        "inflation",
+        "budgeting"
+      ]
+    },
+    "evt_ai_startup": {
+      "title": "AI Startup — NeuralEdge",
+      "story": "An AI company building enterprise automation tools needs $45K. Their tech is cutting-edge but the market is crowded. Huge upside if they win.",
+      "choices": [
+        {
+          "id": "invest_ai",
+          "label": "Go big! $45K — AI will eat the world!",
+          "delta": {
+            "cash": -45000,
+            "properties_owned": 1,
+            "total_revenue": 10000,
+            "reputation": 15,
+            "risk_tolerance": 12,
+            "strategic_thinking": 8
+          },
+          "feedback": "NeuralEdge is your moonshot! If AI wins (and it will), $10K per lap is just the beginning. 🤖"
+        },
+        {
+          "id": "safe_ai",
+          "label": "Invest $20K via convertible note — be cautious",
+          "delta": {
+            "cash": -20000,
+            "properties_owned": 1,
+            "total_revenue": 4000,
+            "strategic_thinking": 5,
+            "impulse_control": 5
+          },
+          "feedback": "Convertible note = lower risk. $4K per lap now, with upside if they make it big."
+        },
+        {
+          "id": "skip_ai",
+          "label": "Market is too crowded — everyone's doing AI",
+          "delta": {
+            "impulse_control": 5,
+            "adaptability": -3
+          },
+          "feedback": "You skip AI. The market IS crowded, but the winners will be huge."
+        }
+      ],
+      "glossary_terms": [
+        "budgeting",
+        "assets_liabilities"
+      ]
+    },
+    "evt_social_media": {
+      "title": "Social Media App — BuzzFeed+",
+      "story": "A Gen-Z social app with 100K daily active users needs $28K. They're growing 25% month-over-month. No revenue yet — growth first!",
+      "choices": [
+        {
+          "id": "invest_social",
+          "label": "Invest $28K — user growth is king!",
+          "delta": {
+            "cash": -28000,
+            "properties_owned": 1,
+            "total_revenue": 5000,
+            "reputation": 10,
+            "risk_tolerance": 10,
+            "adaptability": 5
+          },
+          "feedback": "BuzzFeed+ hits 500K users and starts monetizing! $5K per lap from ads. 📱"
+        },
+        {
+          "id": "small_social",
+          "label": "Invest $12K — hedge against no-revenue risk",
+          "delta": {
+            "cash": -12000,
+            "properties_owned": 1,
+            "total_revenue": 2500,
+            "impulse_control": 5
+          },
+          "feedback": "Small bet on a big wave. $2.5K per lap is modest but you're in the game."
+        },
+        {
+          "id": "skip_social",
+          "label": "No revenue = no investment. Hard pass.",
+          "delta": {
+            "impulse_control": 10,
+            "delayed_gratification": -3
+          },
+          "feedback": "No revenue, no deal. Warren Buffett would approve. But would Peter Thiel?"
+        }
+      ],
+      "glossary_terms": [
+        "assets_liabilities",
+        "emergency_fund"
+      ]
+    },
+    "evt_cloud_kitchen": {
+      "title": "Cloud Kitchen — FreshBites",
+      "story": "A cloud kitchen operation with 5 virtual brands needs $18K. Low overhead, high margins. The food delivery boom is real.",
+      "choices": [
+        {
+          "id": "invest_kitchen",
+          "label": "Invest $18K — cloud kitchens are efficient!",
+          "delta": {
+            "cash": -18000,
+            "properties_owned": 1,
+            "total_revenue": 4000,
+            "reputation": 5,
+            "strategic_thinking": 5
+          },
+          "feedback": "FreshBites runs 5 brands from one kitchen! $4K per lap from delivery orders. 🍕"
+        },
+        {
+          "id": "franchise_kitchen",
+          "label": "Offer $10K for franchise rights in your city",
+          "delta": {
+            "cash": -10000,
+            "properties_owned": 1,
+            "total_revenue": 2500,
+            "adaptability": 5,
+            "resilience": 3
+          },
+          "feedback": "You franchise one brand locally. $2.5K per lap, lower investment."
+        },
+        {
+          "id": "skip_kitchen",
+          "label": "Food margins are thin — skip",
+          "delta": {
+            "impulse_control": 3
+          },
+          "feedback": "Thin margins are real in food. But cloud kitchens flip that equation."
+        }
+      ],
+      "glossary_terms": [
+        "emergency_fund",
+        "roi"
+      ]
+    },
+    "evt_crypto": {
+      "title": "Crypto Exchange — ChainVault",
+      "story": "A crypto exchange with a compliance-first approach needs $40K. Volatile market but massive transaction fees when trading is hot.",
+      "choices": [
+        {
+          "id": "invest_crypto",
+          "label": "YOLO! $40K — crypto to the moon! 🚀",
+          "delta": {
+            "cash": -40000,
+            "properties_owned": 1,
+            "total_revenue": 8000,
+            "risk_tolerance": 15,
+            "reputation": 5,
+            "strategic_thinking": -3
+          },
+          "feedback": "ChainVault rides the next bull run! $8K per lap... but watch out for the bear. 🪙"
+        },
+        {
+          "id": "small_crypto",
+          "label": "Invest $15K — small position, big potential",
+          "delta": {
+            "cash": -15000,
+            "properties_owned": 1,
+            "total_revenue": 3000,
+            "risk_tolerance": 5,
+            "impulse_control": 5
+          },
+          "feedback": "Measured bet on crypto. $3K per lap. If it crashes, you'll survive."
+        },
+        {
+          "id": "skip_crypto",
+          "label": "Crypto is gambling — hard pass",
+          "delta": {
+            "impulse_control": 12,
+            "risk_tolerance": -5
+          },
+          "feedback": "You pass on crypto. Many would agree. Others would call it the biggest miss of the decade."
+        }
+      ],
+      "glossary_terms": [
+        "roi",
+        "tax_planning"
+      ]
+    },
+    "evt_chance_1": {
+      "title": "Chance Card!",
+      "story": "Your startup gets featured on TechCrunch! Media coverage brings investors and customers knocking.",
+      "choices": [
+        {
+          "id": "chance1_accept",
+          "label": "Accept all the press interviews",
+          "delta": {
+            "cash": 10000,
+            "reputation": 10
+          },
+          "feedback": "The press coverage brings in $10K in sales leads and a massive reputation boost! 📰"
+        },
+        {
+          "id": "chance1_focus",
+          "label": "Stay heads-down building — product first",
+          "delta": {
+            "reputation": 3,
+            "delayed_gratification": 8,
+            "strategic_thinking": 5
+          },
+          "feedback": "You skip the media circus but your product gets better. Slow and steady."
+        }
+      ],
+      "glossary_terms": [
+        "tax_planning",
+        "compound_interest"
+      ]
+    },
+    "evt_chance_2": {
+      "title": "Chance Card!",
+      "story": "A competitor just went bankrupt! Their customers are looking for alternatives. This is your moment.",
+      "choices": [
+        {
+          "id": "chance2_acquire",
+          "label": "Spend $15K to acquire their customer list",
+          "delta": {
+            "cash": -15000,
+            "total_revenue": 5000,
+            "reputation": 8,
+            "strategic_thinking": 8
+          },
+          "feedback": "Brilliant opportunism! Their customers are now yours. $5K boost to revenue. 🎯"
+        },
+        {
+          "id": "chance2_organic",
+          "label": "Let customers come to you naturally — save cash",
+          "delta": {
+            "cash": 3000,
+            "reputation": 3,
+            "impulse_control": 5
+          },
+          "feedback": "Some customers find you organically. Not as many, but it didn't cost much."
+        }
+      ],
+      "glossary_terms": [
+        "compound_interest",
+        "diversification"
+      ]
+    },
+    "evt_chance_3": {
+      "title": "Chance Card!",
+      "story": "Your servers crash during peak hours! You need to decide how to handle the crisis.",
+      "choices": [
+        {
+          "id": "chance3_premium",
+          "label": "Pay $20K for premium cloud infrastructure",
+          "delta": {
+            "cash": -20000,
+            "reputation": 10,
+            "resilience": 10,
+            "strategic_thinking": 5
+          },
+          "feedback": "Expensive fix, but your users never notice. Reputation saved and system is bulletproof now. 🛡️"
+        },
+        {
+          "id": "chance3_cheap",
+          "label": "Patch it yourself overnight — save money",
+          "delta": {
+            "cash": -2000,
+            "reputation": -5,
+            "resilience": 8,
+            "adaptability": 5
+          },
+          "feedback": "You pull an all-nighter and fix it. Some users noticed the downtime though. 😅"
+        }
+      ],
+      "glossary_terms": [
+        "diversification",
+        "inflation"
+      ]
+    },
+    "evt_chance_4": {
+      "title": "Chance Card!",
+      "story": "You receive a mysterious email: a government contract worth $50K. But the paperwork is intense and the deadline is 48 hours.",
+      "choices": [
+        {
+          "id": "chance4_hustle",
+          "label": "Pull an all-nighter to submit the proposal",
+          "delta": {
+            "cash": 50000,
+            "reputation": 10,
+            "resilience": 10,
+            "delayed_gratification": 5
+          },
+          "feedback": "You win the government contract! $50K in the bank and your reputation soars! 🏆"
+        },
+        {
+          "id": "chance4_pass",
+          "label": "Too much work, not enough time — pass",
+          "delta": {
+            "impulse_control": 3,
+            "resilience": -3
+          },
+          "feedback": "You pass on the contract. Rest is important, but was $50K worth losing sleep over? Probably."
+        }
+      ],
+      "glossary_terms": [
+        "inflation",
+        "budgeting"
+      ]
+    }
+  },
+  "world_events": [
+    {
+      "id": "we_market_crash",
+      "title": "Market Crash! Investors Panic!",
+      "description": "Global markets tumble. Startups everywhere are tightening their belts. Your portfolio takes a hit.",
+      "trigger_interval": 10,
+      "delta_all": {
+        "cash": -10000,
+        "reputation": -5
+      },
+      "icon": "📉"
+    },
+    {
+      "id": "we_bull_market",
+      "title": "Bull Market! Everything is Going Up!",
+      "description": "The economy is booming. Investors are throwing money at startups. Everyone benefits!",
+      "trigger_interval": 8,
+      "delta_all": {
+        "cash": 8000,
+        "reputation": 5
+      },
+      "icon": "📈"
+    },
+    {
+      "id": "we_regulation",
+      "title": "New Regulations! Compliance Costs Rise!",
+      "description": "The government introduces new business regulations. Everyone pays more in compliance costs.",
+      "trigger_interval": 12,
+      "delta_all": {
+        "cash": -5000
+      },
+      "icon": "📋"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "ach_first_property",
+      "title": "First Acquisition",
+      "description": "Buy your first startup property",
+      "icon": "🏢",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "properties_owned",
+        "value": 1
+      },
+      "reward": {
+        "delta": {
+          "reputation": 5
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_portfolio_3",
+      "title": "Portfolio Builder",
+      "description": "Own 3 or more startups",
+      "icon": "📊",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "properties_owned",
+        "value": 3
+      },
+      "reward": {
+        "delta": {
+          "cash": 10000,
+          "reputation": 10
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_cash_rich",
+      "title": "Cash Machine",
+      "description": "Accumulate $200K+ in cash",
+      "icon": "💰",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "cash",
+        "value": 200000
+      },
+      "reward": {
+        "delta": {
+          "reputation": 15
+        }
+      },
+      "xp_reward": 100
+    },
+    {
+      "id": "ach_revenue_king",
+      "title": "Revenue King",
+      "description": "Earn $50K+ in total revenue",
+      "icon": "👑",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "total_revenue",
+        "value": 50000
+      },
+      "reward": {
+        "delta": {
+          "cash": 15000,
+          "reputation": 10
+        }
+      },
+      "xp_reward": 200
+    },
+    {
+      "id": "ach_diversified",
+      "title": "Diversified Portfolio",
+      "description": "Own 5 or more startups across different sectors",
+      "icon": "🌐",
+      "condition": {
+        "type": "stat_threshold",
+        "stat": "properties_owned",
+        "value": 5
+      },
+      "reward": {
+        "delta": {
+          "cash": 20000,
+          "reputation": 15
+        }
+      },
+      "xp_reward": 100
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Seed Funding",
+      "definition": "The initial capital raised by a startup to develop their idea into a product. Usually from angel investors or personal savings.",
+      "example": "A startup raises $100K in seed funding to build their MVP (Minimum Viable Product).",
+      "remember_tip": "Think of it as planting a seed — the first money that helps a startup grow.",
+      "deep_dive": "Seed funding typically ranges from $100k to $2M and comes from angels or seed-stage VCs. It funds the company to find product-market fit — validating that a real problem exists and that your solution solves it at scale. Most seed-funded startups spend 60–70% of the raise on engineering talent and 20% on customer acquisition.",
+      "real_world_example": "Airbnb raised $600k in seed funding in 2009 from Y Combinator and angels — valuing the company at $2.4M. When it IPO'd in 2020 it was worth $100B. That seed round returned 40,000× for early believers."
+    },
+    {
+      "term": "Revenue",
+      "definition": "The total income generated by a business from selling products or services, before any expenses are deducted.",
+      "example": "A coffee shop selling 200 cups at $5 each has $1,000 in daily revenue.",
+      "remember_tip": "Revenue = money coming IN. Profit = money left AFTER expenses.",
+      "deep_dive": "Revenue is not profit. Revenue is the total money earned before subtracting any costs. Startups track Monthly Recurring Revenue (MRR) and Annual Recurring Revenue (ARR) as forward-looking indicators. The Rule of 40 (growth rate + profit margin ≥ 40%) is a benchmark for healthy SaaS revenue quality.",
+      "real_world_example": "Amazon reported revenue of $469B in 2021 but only $33B in net income (7% margin). In contrast, Apple had $365B revenue with $95B net income (26% margin). Revenue scale matters less than the business model that converts it."
+    },
+    {
+      "term": "Equity",
+      "definition": "Ownership stake in a company, expressed as a percentage. If you own 40% equity, you own 40% of the company.",
+      "example": "An investor pays $50K for 25% equity, valuing the company at $200K.",
+      "remember_tip": "Equity = your slice of the pie. More equity = bigger slice.",
+      "deep_dive": "Equity represents ownership. A founder who raises $1M for 20% equity values their company at $5M (pre-money valuation). With each funding round, founders are diluted — their ownership shrinks as new shares are issued. Vesting schedules (typically 4 years with a 1-year cliff) align founder incentives with long-term company health.",
+      "real_world_example": "WhatsApp founders Jan Koum and Brian Acton held ~20% each at acquisition by Facebook for $19B (2014). That 20% stake was worth approximately $3.8B each — the consequence of raising very little venture capital and preserving equity."
+    },
+    {
+      "term": "Burn Rate",
+      "definition": "How fast a startup spends money each month. If you burn $10K/month with $60K in the bank, you have 6 months of runway.",
+      "example": "A startup with $200K cash and $40K monthly burn rate has 5 months before running out.",
+      "remember_tip": "Burn Rate = How fast you burn through cash. Lower is usually better.",
+      "deep_dive": "Burn rate is cash spent per month beyond revenue. 'Default alive' (Paul Graham) means: at current burn, will you reach profitability before running out of money? Most startups die not from bad ideas but from running out of runway.",
+      "real_world_example": "Airbnb was 3 weeks from insolvency in 2009. They sold novelty cereal boxes to generate $30k in cash—enough runway to get into Y Combinator, which then funded their survival."
+    },
+    {
+      "term": "Valuation",
+      "definition": "The total estimated worth of a company. Your net worth = cash + the value of all properties and investments.",
+      "example": "A company with $100K revenue and 10x multiple has a $1M valuation.",
+      "remember_tip": "Valuation = What someone would pay to buy your entire company.",
+      "deep_dive": "Startup valuation is as much art as science. Early-stage valuations use comparable transactions and team quality. Later-stage valuations use Revenue multiples (EV/Revenue) or EBITDA multiples. A SaaS company growing 100% YoY might trade at 20× ARR; a slow grower at 5× ARR. Valuation determines dilution in fundraising.",
+      "real_world_example": "In 2021 during the zero-interest-rate era, many SaaS companies traded at 40–50× ARR. By 2023 most had corrected to 5–10×. Figma was acquired by Adobe for $20B in 2022 at ~50× ARR — one of the highest multiples ever. The deal collapsed on regulatory grounds."
+    },
+    {
+      "term": "SAFE Note",
+      "definition": "Simple Agreement for Future Equity. An investment that converts to equity later, usually at a discount. Lower risk for both sides.",
+      "example": "You invest $20K via a SAFE. When the company raises Series A, your investment converts to shares at a 20% discount.",
+      "remember_tip": "SAFE = invest now, get shares later at a discount.",
+      "deep_dive": "A SAFE (Simple Agreement for Future Equity) is a contract where an investor gives money today in exchange for shares at a future priced round. It was invented by Y Combinator in 2013 to simplify early seed investing. Unlike debt, SAFEs have no interest rate or maturity date — but they do have valuation caps and discount rates that determine how many shares the investor receives.",
+      "real_world_example": "Most YC companies raise their first money via SAFE notes. The typical YC deal in 2023 was a $500k SAFE at a $3.5M cap. This means if the company later raises at $10M valuation, the SAFE holder converts at $3.5M — receiving nearly 3× the shares an investor at the later round would get."
+    },
+    {
+      "term": "Series A / B / C",
+      "definition": "Rounds of funding a startup raises as it grows. Series A is usually $1-10M, Series B is $10-50M, Series C is $50M+.",
+      "example": "A startup raises $5M in Series A to hire a sales team and expand to new markets.",
+      "remember_tip": "A, B, C = the levels of funding. Each round is bigger than the last.",
+      "deep_dive": "Funding rounds are stages of a company's growth. Series A (~$5–15M) proves the business model works. Series B (~$15–50M) scales the proven model. Series C+ ($50M+) expands into new markets or prepares for IPO. Each round requires demonstrating clear metrics: DAU/MAU, NPS, CAC/LTV ratio, and gross margin benchmarks.",
+      "real_world_example": "Uber raised Series A in 2011 ($37M at $60M valuation), Series B in 2011 ($37M), Series C in 2013 ($258M), and reached a $17B valuation by Series D in 2014. It IPO'd in 2019 at $82B — though it has never been consistently profitable, raising questions about whether venture capital enabled a business model that markets would not have naturally funded."
+    },
+    {
+      "term": "IPO",
+      "definition": "Initial Public Offering — when a private company sells shares to the public for the first time on a stock exchange.",
+      "example": "When a company IPOs on the stock exchange, anyone can buy their shares.",
+      "remember_tip": "IPO = going public. The startup graduation ceremony!",
+      "deep_dive": "An IPO (Initial Public Offering) converts a private company into a public one by selling shares on a stock exchange. IPOs typically involve investment banks as underwriters who set the initial price and stabilise the market post-listing. The process takes 12–18 months and requires stringent regulatory filings (S-1 in the US). Founders typically face a 180-day lock-up period before selling.",
+      "real_world_example": "Snowflake's 2020 IPO was the largest US software IPO ever — raising $3.4B and doubling on its first trading day. Both Warren Buffett and Salesforce CEO Marc Benioff backed it pre-IPO. But the company had never turned a profit and its P/E ratio was technically infinite — showing IPO pricing is driven by growth expectations, not current earnings."
+    }
+  ],
+  "layout_config": {
+    "layout_type": "dashboard",
+    "sidebar_stats": [
+      "cash",
+      "properties_owned",
+      "total_revenue",
+      "net_worth",
+      "reputation"
+    ],
+    "show_board_above_choices": true,
+    "show_leaderboard": true,
+    "stat_display_format": "cards"
+  },
+  "win_conditions": {
+    "style": "reach_finish",
+    "description": "Race around the board buying startups, collecting revenue, and building your empire. Reach the IPO tile or achieve the highest net worth to win!"
+  },
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "amygdala"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "impulse_control",
+        "name": "Impulse Control",
+        "icon": "🛑",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "hippocampus"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "prefrontal_cortex"
+      }
+    ]
+  },
+  "glossary": {
+    "compound_interest": {
+      "term": "Compound Interest",
+      "definition": "Interest earned on both the initial principal and the accumulated interest from previous periods. The \"eighth wonder of the world.\"",
+      "example": "$1,000 at 10% compounded annually becomes $1,100 after year 1, then $1,210 after year 2.",
+      "deep_dive": "The power of compounding is why time in the market beats timing the market. A single year's delay in investing can cost you years of compounded returns. Einstein reportedly called compound interest the most powerful force in the universe — because small differences in rate or time produce enormous differences in outcome.",
+      "real_world_example": "Warren Buffett started investing at age 11 and had 95% of his net worth after age 65 — almost entirely due to compounding. If he'd started at 30, he'd be worth a fraction of his fortune today."
+    },
+    "diversification": {
+      "term": "Diversification",
+      "definition": "Spreading investments across different assets to reduce risk. \"Don't put all your eggs in one basket.\"",
+      "example": "Instead of buying only tech stocks, investing in stocks, bonds, and real estate.",
+      "deep_dive": "Modern Portfolio Theory (Harry Markowitz, 1952) proved mathematically that diversification reduces risk without proportionally reducing returns. The key insight: assets that don't move together (low correlation) can be combined to create a portfolio with less volatility than any individual asset.",
+      "real_world_example": "Index funds like the S&P 500 automatically diversify across 500 companies. A $10,000 investment in the S&P 500 in 2000 would be worth over $60,000 today — surviving dot-com crashes, financial crises, and COVID — because diversification absorbed the shocks."
+    },
+    "inflation": {
+      "term": "Inflation",
+      "definition": "The rate at which the general level of prices for goods and services rises, reducing purchasing power over time.",
+      "example": "If inflation is 3%, something that costs ₹100 today will cost ₹103 next year.",
+      "deep_dive": "Moderate inflation (2-3%) is actually a sign of a healthy, growing economy. Central banks like the RBI or Fed target this range. Inflation redistributes wealth: debtors benefit (repaying loans with cheaper money) while savers lose if returns don't beat inflation — making investment essential, not optional.",
+      "real_world_example": "In 1950, a movie ticket cost about ₹1. Today it costs ₹200+ — that's inflation over decades. Meanwhile, Zimbabwe's hyperinflation in 2008 peaked at 89.7 sextillion percent per month, wiping out savings overnight. The difference? Monetary discipline."
+    },
+    "budgeting": {
+      "term": "Budgeting",
+      "definition": "Creating a plan for how to spend and save money. The 50/30/20 rule suggests 50% needs, 30% wants, 20% savings.",
+      "example": "Tracking monthly income of ₹50,000: ₹25,000 rent/food, ₹15,000 entertainment, ₹10,000 savings.",
+      "deep_dive": "Budgeting isn't about restriction — it's about intention. Behavioral economics shows that simply tracking spending (even without cutting) reduces discretionary spending by 15-20%. The act of awareness itself changes behavior. Zero-based budgeting (assigning every rupee a job) and envelope methods are proven frameworks used by both individuals and Fortune 500 companies.",
+      "real_world_example": "YNAB (You Need A Budget) users save an average of $600 in their first two months and $6,000 in their first year. The US government uses zero-based budgeting concepts at the federal level to justify every spending allocation."
+    },
+    "assets_liabilities": {
+      "term": "Assets vs Liabilities",
+      "definition": "Assets put money in your pocket (investments, property). Liabilities take money out (loans, credit card debt).",
+      "example": "A rental property generating rent is an asset. A car loan with monthly payments is a liability.",
+      "deep_dive": "Robert Kiyosaki's core insight: the middle class buys liabilities they think are assets. A personal home costs money (mortgage, taxes, maintenance) without generating income — so it's a liability in cash flow terms, not an asset. True financial freedom comes from building assets whose cash flow covers your lifestyle expenses.",
+      "real_world_example": "Robert Kiyosaki's Rich Dad Poor Dad changed how millions think about money. Jeff Bezos turned Amazon warehouses (assets) into cash-generating machines, not just storage. Apple holds $166B in cash and securities — pure assets that generate more assets."
+    },
+    "emergency_fund": {
+      "term": "Emergency Fund",
+      "definition": "Money set aside to cover unexpected expenses like medical bills or job loss. Experts recommend 3-6 months of living expenses.",
+      "example": "Saving ₹10,000 monthly until you have ₹1,80,000 set aside for emergencies.",
+      "deep_dive": "An emergency fund isn't just financial — it's psychological. People with emergency funds make better long-term financial decisions because they're not in scarcity mode. Research shows financial stress impairs cognitive function by 13 IQ points — equivalent to losing a night's sleep. The fund removes that mental tax.",
+      "real_world_example": "During COVID-19, people with 6-month emergency funds could stay selective about job opportunities, while those without had to accept any work immediately — often at lower wages. Companies like Apple and Google maintain billions in cash reserves for the same reason: optionality."
+    },
+    "roi": {
+      "term": "Return on Investment (ROI)",
+      "definition": "A measure of the profitability of an investment, calculated as (Gain - Cost) / Cost × 100%.",
+      "example": "Investing ₹10,000 that grows to ₹12,000 = 20% ROI.",
+      "deep_dive": "ROI is a simple but powerful universal lens. Every decision has an ROI — including your time and education. Businesses use more precise variants: IRR (Internal Rate of Return) accounts for time, while ROIC (Return on Invested Capital) measures operational efficiency. Warren Buffett screens businesses by their ability to generate high ROIC sustainably.",
+      "real_world_example": "Education has one of the highest ROIs — college graduates earn 80% more than high school graduates over a lifetime. Google's first data center ($15,000 in 1998) now underpins a company worth $2 trillion. The S&P 500 has returned an average of 10% annually since 1926 — doubling money every 7 years."
+    },
+    "tax_planning": {
+      "term": "Tax Planning",
+      "definition": "Legally minimizing tax liability through smart financial decisions like deductions, exemptions, and tax-advantaged accounts.",
+      "example": "Investing in ELSS mutual funds to save up to ₹46,800 in taxes under Section 80C.",
+      "deep_dive": "Tax planning is the art of legally keeping more of what you earn. The wealthy don't earn more — they structure income differently. Long-term capital gains are taxed at half the rate of ordinary income in most countries. Business owners can deduct expenses individuals cannot. Understanding this changes how you structure income, investments, and business ownership.",
+      "real_world_example": "Companies like Apple use international tax planning — holding IP in low-tax jurisdictions — to significantly reduce their effective tax rates. Warren Buffett famously pays a lower effective tax rate than his secretary because his wealth comes from capital gains, not salary. Tax efficiency, compounded over decades, creates enormous wealth differentials."
+    }
+  },
+  "win_criteria": [
+    {
+      "id": "highest_cash",
+      "label": "Highest Cash ($)",
+      "metric": "cash",
+      "type": "highest_resource",
+      "icon": "💰",
+      "weight": 1
+    },
+    {
+      "id": "highest_properties_owned",
+      "label": "Highest Properties",
+      "metric": "properties_owned",
+      "type": "highest_resource",
+      "icon": "🏢",
+      "weight": 1
+    },
+    {
+      "id": "highest_total_revenue",
+      "label": "Highest Revenue Earned",
+      "metric": "total_revenue",
+      "type": "highest_resource",
+      "icon": "📈",
+      "weight": 1
+    },
+    {
+      "id": "highest_total_rent_paid",
+      "label": "Highest Rent Paid",
+      "metric": "total_rent_paid",
+      "type": "highest_resource",
+      "icon": "📉",
+      "weight": 1
+    },
+    {
+      "id": "resource_balance",
+      "label": "Best Resource Balance",
+      "metric": "all_resources",
+      "type": "balanced_growth",
+      "icon": "⚖️",
+      "weight": 1.5,
+      "description": "Lowest variance across all resource growth percentages"
+    },
+    {
+      "id": "knowledge_mastery",
+      "label": "Knowledge Mastery",
+      "metric": "glossary_terms_learned",
+      "type": "highest_count",
+      "icon": "📚",
+      "weight": 1
+    },
+    {
+      "id": "challenge_champion",
+      "label": "Challenge Champion",
+      "metric": "boss_wins",
+      "type": "highest_count",
+      "icon": "🗡️",
+      "weight": 1
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "resource_multiplier": 1.4,
+      "negative_event_chance": 0.2
+    },
+    "medium": {
+      "resource_multiplier": 1.0,
+      "negative_event_chance": 0.4
+    },
+    "hard": {
+      "resource_multiplier": 0.65,
+      "negative_event_chance": 0.65
+    }
+  },
+  "coach_mode_default": true,
+  "transfer_exercises": [
+    {
+      "skill_tag": "risk_tolerance",
+      "game_context": "You weighed cash burn vs growth opportunities in Startup Monopoly.",
+      "real_world": "List your top 3 current 'bets'—personal or professional. For each, write the upside, downside, and what you'd do if it fails.",
+      "challenge": "Find one thing you've been avoiding because it feels too risky. Break it into 3 smaller, safer experiments you can run this week."
+    },
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "You chose between quick wins and long-term growth investments.",
+      "real_world": "Apply Paul Graham's 'Default Alive' test: in your current project, can your revenue reach sustainability before your resources run out?",
+      "challenge": "Identify one thing you're spending time on that feels productive but is actually just 'comfort work'. Replace 1 hour of it with deep strategic thinking."
+    },
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "You navigated market pivots and competitor moves.",
+      "real_world": "Map out a simple 2×2 matrix of your strengths vs your biggest competitor's—where are the gaps you can exploit?",
+      "challenge": "Write a one-paragraph 'startup pitch' for a problem you care about. Share it with one person and get their honest reaction."
+    }
+  ],
+  "learning_concept": "Strategic Decision Making",
+  "features": {
+    "voice_enabled": true
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.35,
+    "risk_tolerance": 0.35,
+    "delayed_gratification": 0.3
+  },
+  "coaching_moment": "Build your startup empire in this Monopoly-inspired board game! Buy companies, collect revenue, navigate market crashes, and outsmart AI competitors.",
+  "estimated_duration": 30,
+  "target_age": "14-25",
+  "cultural_context": "India's Startup India initiative has created one of the world's most dynamic entrepreneurial ecosystems. This game develops the resource allocation and competitive strategy skills that define successful Indian startup founders.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "entrepreneurial-thinking",
+    "self-regulation"
+  ],
+  "reflection_prompt": "Which turn was your turning point — and was it skill, luck, or planning?"
+}

@@ -1,0 +1,522 @@
+{
+  "game_id": "space-colony-defense",
+  "title": "Space Colony: Frontier Defense",
+  "description": "Command your space colony's defense forces against an alien invasion on a distant planet. Deploy marines, engineers, and mechs to protect your commander and secure vital resource nodes before the alien swarm overwhelms you.",
+  "theme": "science",
+  "icon": "🚀",
+  "game_type": "strategy_grid",
+  "age_category": "teens",
+  "nep_tags": [
+    "strategic-thinking",
+    "problem-solving",
+    "resource-allocation",
+    "decision-making",
+    "spatial-reasoning"
+  ],
+  "learning_objectives": [
+    "Develop tactical positioning and spatial awareness",
+    "Learn resource management under pressure",
+    "Practice multi-objective decision-making",
+    "Build resilience through adaptive defense strategies"
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Tactical Command",
+        "icon": "🧠",
+        "description": "Multi-step planning and defensive positioning (executive function)"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Threat Assessment",
+        "icon": "⚡",
+        "description": "Evaluating danger levels and committing resources (prospect theory)"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Resource Discipline",
+        "icon": "⏳",
+        "description": "Saving energy for critical moments vs immediate deployment (self-regulation)"
+      },
+      {
+        "id": "adaptability",
+        "name": "Battle Adaptation",
+        "icon": "🔄",
+        "description": "Adjusting formations to alien attack patterns (cognitive flexibility)"
+      },
+      {
+        "id": "resilience",
+        "name": "Defensive Resolve",
+        "icon": "💪",
+        "description": "Maintaining effective defense after unit losses (psychological resilience)"
+      }
+    ]
+  },
+  "how_to_play": [
+    "Click your blue colony units to select them",
+    "Green dots show valid movement positions",
+    "Red highlights mark alien units you can engage",
+    "Use the Mech's EMP Blast or Engineer's Shield to gain tactical advantage",
+    "Protect your Commander — if they fall, the colony is lost!",
+    "Reach 55 Energy or eliminate the Alien Queen to win!",
+    "Watch out for asteroid fields (blocked) and radiation zones (penalty)!"
+  ],
+  "initial_state": {
+    "energy": {
+      "value": 12,
+      "label": "Colony Energy",
+      "icon": "⚡"
+    },
+    "aliens_defeated": {
+      "value": 0,
+      "label": "Aliens Defeated",
+      "icon": "👾"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "strategy_grid_config": {
+    "grid_width": 10,
+    "grid_height": 10,
+    "max_turns": 45,
+    "starting_currency": 12,
+    "terrain_types": {
+      "plain": {
+        "label": "Colony Floor",
+        "icon": "",
+        "color": "#E2E8F0",
+        "passable": true
+      },
+      "reward": {
+        "label": "Power Cell",
+        "icon": "🔋",
+        "color": "#86EFAC",
+        "passable": true,
+        "effect": {
+          "stat": "currency",
+          "value": 4
+        }
+      },
+      "punishment": {
+        "label": "Radiation Zone",
+        "icon": "☢️",
+        "color": "#FCA5A5",
+        "passable": true,
+        "effect": {
+          "stat": "currency",
+          "value": -3
+        }
+      },
+      "resource": {
+        "label": "Mining Node",
+        "icon": "💎",
+        "color": "#C4B5FD",
+        "passable": true,
+        "generates": {
+          "currency": 2
+        }
+      },
+      "objective": {
+        "label": "Command Center",
+        "icon": "🏛️",
+        "color": "#93C5FD",
+        "passable": true,
+        "is_objective": true
+      },
+      "neutral": {
+        "label": "Med Bay",
+        "icon": "🏥",
+        "color": "#FDE68A",
+        "passable": true,
+        "no_capture": true
+      },
+      "blocked": {
+        "label": "Asteroid Field",
+        "icon": "🪨",
+        "color": "#6B7280",
+        "passable": false
+      }
+    },
+    "player_pieces": [
+      {
+        "type_id": "commander",
+        "label": "Commander",
+        "icon": "⭐",
+        "count": 1,
+        "is_king": true,
+        "capture_reward": 0,
+        "description": "Colony Commander. If they fall, all is lost. Can rally nearby troops for enhanced movement.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move",
+        "ability": {
+          "label": "Rally Troops",
+          "type": "buff_adjacent",
+          "stat": "range",
+          "value": 1,
+          "duration": 3,
+          "cost": 5,
+          "cooldown": 5
+        }
+      },
+      {
+        "type_id": "marine",
+        "label": "Space Marine",
+        "icon": "🔫",
+        "count": 3,
+        "capture_reward": 2,
+        "description": "Fast assault unit. Moves in cardinal directions with extended range.",
+        "movement": {
+          "range": 3,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "mech",
+        "label": "Battle Mech",
+        "icon": "🤖",
+        "count": 2,
+        "capture_reward": 3,
+        "description": "Heavy diagonal assault unit with ranged EMP capability.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "ranged",
+        "capture_range": 3,
+        "ability": {
+          "label": "EMP Blast",
+          "type": "freeze_target",
+          "duration": 2,
+          "cost": 6,
+          "cooldown": 4
+        }
+      },
+      {
+        "type_id": "engineer",
+        "label": "Engineer",
+        "icon": "🔧",
+        "count": 2,
+        "capture_reward": 2,
+        "description": "Support unit with short range but can move in all directions.",
+        "movement": {
+          "range": 1,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      }
+    ],
+    "ai_pieces": [
+      {
+        "type_id": "alien_queen",
+        "label": "Alien Queen",
+        "icon": "👽",
+        "count": 1,
+        "is_king": true,
+        "capture_reward": 0,
+        "description": "The hive mind. Destroying her ends the invasion.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "alien_scout",
+        "label": "Scout Drone",
+        "icon": "🛸",
+        "count": 3,
+        "capture_reward": 2,
+        "description": "Fast alien scout that moves in straight lines.",
+        "movement": {
+          "range": 3,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "alien_brute",
+        "label": "Brute",
+        "icon": "🐛",
+        "count": 2,
+        "capture_reward": 3,
+        "description": "Heavy diagonal attacker. Slow but devastating.",
+        "movement": {
+          "range": 2,
+          "directions": [
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      },
+      {
+        "type_id": "alien_swarm",
+        "label": "Swarmling",
+        "icon": "🦠",
+        "count": 3,
+        "capture_reward": 2,
+        "description": "Basic alien unit. Slow but numerous and persistent.",
+        "movement": {
+          "range": 1,
+          "directions": [
+            "N",
+            "S",
+            "E",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ]
+        },
+        "capture_method": "move"
+      }
+    ],
+    "win_conditions": [
+      {
+        "type": "eliminate_king",
+        "enabled": true
+      },
+      {
+        "type": "exhaustion",
+        "enabled": true,
+        "threshold": 1
+      },
+      {
+        "type": "resource_target",
+        "enabled": true,
+        "target": 55
+      }
+    ],
+    "external_events": [
+      {
+        "id": "solar_flare",
+        "label": "Solar Flare",
+        "narrative": "A massive solar flare disrupts all electronic systems! All units lose mobility temporarily.",
+        "trigger": {
+          "type": "turn",
+          "value": 12
+        },
+        "effect": {
+          "type": "debuff_all",
+          "side": "both",
+          "stat": "range",
+          "value": -1,
+          "duration": 3
+        }
+      },
+      {
+        "id": "supply_drop",
+        "label": "Emergency Supply Drop",
+        "narrative": "Earth sends an emergency resupply! Colony forces gain enhanced mobility.",
+        "trigger": {
+          "type": "piece_count",
+          "side": "player",
+          "threshold": 5
+        },
+        "effect": {
+          "type": "buff_all",
+          "side": "player",
+          "stat": "range",
+          "value": 1,
+          "duration": 4
+        }
+      },
+      {
+        "id": "gravity_shift",
+        "label": "Gravity Anomaly",
+        "narrative": "A gravity anomaly warps the battlefield! All units struggle to maintain formation.",
+        "trigger": {
+          "type": "turn",
+          "value": 25
+        },
+        "effect": {
+          "type": "debuff_all",
+          "side": "both",
+          "stat": "range",
+          "value": -1,
+          "duration": 2
+        }
+      }
+    ],
+    "theme_config": {
+      "player_label": "Colony Defense",
+      "ai_label": "Alien Swarm",
+      "currency_label": "Energy",
+      "currency_icon": "⚡",
+      "domain": "space exploration and defense",
+      "move_tips": {
+        "capture": "Every alien neutralized secures the colony. In space defense, reducing threats systematically is better than reactive firefighting.",
+        "resource": "Controlling energy nodes powers your entire defense grid. In space exploration, sustainable energy infrastructure is the foundation of survival.",
+        "objective": "Securing key installations protects the colony core. In space defense, layered defense positions buy time and options.",
+        "risk": "Traversing hazardous zones drains energy but may reach critical objectives. In space, calculated risks are necessary when resources are finite.",
+        "reward": "Resource caches provide vital energy boosts. In space exploration, efficient resource discovery and collection determines colony viability.",
+        "center": "Controlling central positions gives defensive coverage in all directions. In space strategy, central positioning maximizes response flexibility."
+      }
+    }
+  },
+  "theme_colors": {
+    "primary": "#6366F1",
+    "secondary": "#8B5CF6",
+    "background": "#F5F3FF",
+    "text": "#312E81",
+    "accent": "#F59E0B"
+  },
+  "learning_concept": "Strategic Decision Making & Problem Solving",
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "first_completion",
+      "name": "First Completion",
+      "description": "Completed this game for the first time",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "⭐"
+    },
+    {
+      "id": "persistent_learner",
+      "name": "Persistent Learner",
+      "description": "Showed dedication by finishing the challenge",
+      "condition": "game_complete",
+      "xp_reward": 150,
+      "icon": "📚"
+    },
+    {
+      "id": "skill_builder",
+      "name": "Skill Builder",
+      "description": "Demonstrated improvement across all dimensions",
+      "condition": "all_dimensions_above_40",
+      "xp_reward": 200,
+      "icon": "🏆"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_strength": 0.5,
+      "resource_rate": 1.3,
+      "event_chance": 0.1
+    },
+    "medium": {
+      "ai_strength": 0.75,
+      "resource_rate": 1.0,
+      "event_chance": 0.25
+    },
+    "hard": {
+      "ai_strength": 1.0,
+      "resource_rate": 0.75,
+      "event_chance": 0.4
+    }
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.45,
+    "adaptability": 0.3,
+    "resilience": 0.25
+  },
+  "coaching_moment": "Develop tactical positioning and spatial awareness. Learn resource management under pressure.",
+  "tags": [
+    "resource-management",
+    "stem",
+    "strategic-thinking",
+    "strategy"
+  ],
+  "cultural_context": "India's ISRO is planning crewed space missions and lunar base exploration. This game builds the systems thinking and proactive planning that define India's emerging space-technology workforce.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "social-emotional-learning"
+  ],
+  "estimated_duration": 20,
+  "target_age": "12-18",
+  "reflection_prompt": "Which move opened the board for you, and which closed your options? Why?"
+}

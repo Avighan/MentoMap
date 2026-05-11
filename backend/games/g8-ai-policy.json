@@ -1,0 +1,2623 @@
+{
+  "game_id": "g8-ai-policy",
+  "title": "AI Policy Lab: Governing the Future",
+  "theme": "AI & Technology Policy",
+  "icon": "🤖",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You have been appointed to your school's AI Ethics Committee. Over 12 sessions, you will draft AI usage policies, handle deepfakes, address AI-generated cheating, evaluate surveillance proposals, and balance innovation against safety. Every policy decision you make shapes how AI is used — not just in your school, but as a model for schools everywhere.",
+  "target_audience": "Ages 13-14",
+  "target_age": "13-14",
+  "grade": "8",
+  "difficulty": "advanced",
+  "duration_minutes": 30,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You lead your school's AI Ethics Committee across 12 policy sessions.",
+    "Each session presents a real-world AI challenge with trade-offs across innovation, safety, ethics, and stakeholder trust.",
+    "Watch the dashboard — your 5 subsystems (Policy Development, Stakeholder Management, Innovation Balance, Safety & Privacy, Ethical Framework) are interconnected.",
+    "Random events like viral deepfakes, AI competition wins, and data breaches will test your resilience.",
+    "NPCs (Dr. Future, Parent Rep, Student Rep) react to your policies in real time.",
+    "Aim for balanced governance — pushing innovation without ethics will backfire, and locking down AI entirely will stifle learning!"
+  ],
+  "learning_objectives": [
+    "Understand the ethical dimensions of AI policy and governance",
+    "Practice balancing innovation with safety and privacy concerns",
+    "Develop critical thinking about AI's impact on education and society",
+    "Learn stakeholder management and consensus-building",
+    "Build empathy for diverse perspectives on technology adoption",
+    "Understand concepts like algorithmic bias, deepfakes, and data privacy"
+  ],
+  "tags": [
+    "ai",
+    "policy",
+    "grade-8",
+    "ethics",
+    "governance"
+  ],
+  "nep_stage": "Secondary",
+  "nep_competencies": [
+    "Digital Literacy",
+    "Ethical Reasoning",
+    "Critical Thinking",
+    "Civic Responsibility"
+  ],
+  "cultural_context": "School AI governance, global digital citizenship, responsible technology adoption",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.15,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.15,
+    "ethical_reasoning": 0.25
+  },
+  "initial_state": {
+    "policy_quality": {
+      "value": 20,
+      "label": "Policy Quality",
+      "icon": "📜",
+      "min": 0,
+      "max": 100
+    },
+    "stakeholder_approval": {
+      "value": 45,
+      "label": "Stakeholder Approval",
+      "icon": "👥",
+      "min": 0,
+      "max": 100
+    },
+    "innovation_score": {
+      "value": 40,
+      "label": "Innovation Score",
+      "icon": "💡",
+      "min": 0,
+      "max": 100
+    },
+    "safety_index": {
+      "value": 50,
+      "label": "Safety Index",
+      "icon": "🛡️",
+      "min": 0,
+      "max": 100
+    },
+    "ethical_framework": {
+      "value": 35,
+      "label": "Ethical Framework",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "public_trust": {
+      "value": 50,
+      "label": "Public Trust",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "implementation_success": {
+      "value": 10,
+      "label": "Implementation Success",
+      "icon": "✅",
+      "min": 0,
+      "max": 100
+    },
+    "ai_literacy": {
+      "value": 40,
+      "label": "AI Literacy",
+      "icon": "🧠",
+      "min": 0,
+      "max": 100
+    },
+    "committee_unity": {
+      "value": 55,
+      "label": "Committee Unity",
+      "icon": "🤜",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Session",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "policy_development",
+        "label": "Policy Development",
+        "icon": "📜",
+        "color": "#6366F1",
+        "initial_health": 25,
+        "health_formula": "min(100, max(0, policy_quality * 0.5 + implementation_success * 0.3 + committee_unity * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "stakeholder_management",
+        "label": "Stakeholder Management",
+        "icon": "👥",
+        "color": "#EF476F",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, stakeholder_approval * 0.4 + public_trust * 0.3 + committee_unity * 0.3))",
+        "status_thresholds": {
+          "critical": 25,
+          "poor": 40,
+          "fair": 60,
+          "good": 80
+        }
+      },
+      {
+        "id": "innovation_balance",
+        "label": "Innovation Balance",
+        "icon": "💡",
+        "color": "#FFD166",
+        "initial_health": 45,
+        "health_formula": "min(100, max(0, innovation_score * 0.4 + ai_literacy * 0.3 + implementation_success * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "safety_privacy",
+        "label": "Safety & Privacy",
+        "icon": "🛡️",
+        "color": "#06D6A0",
+        "initial_health": 50,
+        "health_formula": "min(100, max(0, safety_index * 0.5 + ethical_framework * 0.3 + public_trust * 0.2))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "ethical_framework_sys",
+        "label": "Ethical Framework",
+        "icon": "⚖️",
+        "color": "#118AB2",
+        "initial_health": 35,
+        "health_formula": "min(100, max(0, ethical_framework * 0.5 + ai_literacy * 0.25 + policy_quality * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "governance_score",
+        "label": "Governance Score",
+        "icon": "🏛️",
+        "formula": "(policy_quality * 0.3 + ethical_framework * 0.25 + implementation_success * 0.2 + committee_unity * 0.15 + public_trust * 0.1)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "innovation_safety_balance",
+        "label": "Innovation-Safety Balance",
+        "icon": "⚖️",
+        "formula": "(min(innovation_score, safety_index) * 0.6 + (100 - abs(innovation_score - safety_index)) * 0.4)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 40,
+          "good": 60
+        }
+      },
+      {
+        "id": "stakeholder_satisfaction",
+        "label": "Stakeholder Satisfaction",
+        "icon": "😊",
+        "formula": "(stakeholder_approval * 0.35 + public_trust * 0.3 + committee_unity * 0.2 + ai_literacy * 0.15)",
+        "unit": "%",
+        "thresholds": {
+          "critical": 30,
+          "warning": 50,
+          "good": 70
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "literacy_growth",
+        "label": "AI Literacy Growth",
+        "condition": {
+          "resource": "policy_quality",
+          "op": ">=",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "ai_literacy",
+            "formula": "min(100, ai_literacy + 2)"
+          }
+        ],
+        "description": "Good policies gradually improve AI literacy across the school community."
+      },
+      {
+        "id": "trust_erosion",
+        "label": "Trust Under Scrutiny",
+        "condition": {
+          "resource": "safety_index",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "public_trust",
+            "formula": "max(0, public_trust - 3)"
+          }
+        ],
+        "description": "Low safety erodes public trust each session."
+      },
+      {
+        "id": "implementation_momentum",
+        "label": "Implementation Momentum",
+        "condition": {
+          "resource": "committee_unity",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "implementation_success",
+            "formula": "min(100, implementation_success + 2)"
+          }
+        ],
+        "description": "A united committee steadily improves policy implementation."
+      },
+      {
+        "id": "stakeholder_drift",
+        "label": "Stakeholder Engagement Drift",
+        "condition": {
+          "resource": "stakeholder_approval",
+          "op": "<",
+          "value": 35
+        },
+        "effects": [
+          {
+            "resource": "committee_unity",
+            "formula": "max(0, committee_unity - 2)"
+          }
+        ],
+        "description": "Low stakeholder approval fragments the committee."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "innovation_risk",
+        "from_subsystem": "innovation_balance",
+        "to_subsystem": "safety_privacy",
+        "label": "Innovation-Safety Tension",
+        "condition": {
+          "resource": "innovation_score",
+          "op": ">",
+          "value": 70
+        },
+        "effects": [
+          {
+            "resource": "safety_index",
+            "formula": "max(0, safety_index - (innovation_score - 70) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Rapid innovation without guardrails can compromise safety."
+      },
+      {
+        "id": "ethics_trust",
+        "from_subsystem": "ethical_framework_sys",
+        "to_subsystem": "stakeholder_management",
+        "label": "Ethics Builds Trust",
+        "condition": {
+          "resource": "ethical_framework",
+          "op": ">=",
+          "value": 55
+        },
+        "effects": [
+          {
+            "resource": "public_trust",
+            "formula": "min(100, public_trust + (ethical_framework - 55) * 0.08)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Strong ethical frameworks earn stakeholder trust over time."
+      },
+      {
+        "id": "literacy_innovation",
+        "from_subsystem": "ethical_framework_sys",
+        "to_subsystem": "innovation_balance",
+        "label": "Literacy Enables Innovation",
+        "condition": {
+          "resource": "ai_literacy",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "innovation_score",
+            "formula": "min(100, innovation_score + (ai_literacy - 60) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Higher AI literacy empowers responsible innovation."
+      },
+      {
+        "id": "safety_policy",
+        "from_subsystem": "safety_privacy",
+        "to_subsystem": "policy_development",
+        "label": "Safety Informs Policy",
+        "condition": {
+          "resource": "safety_index",
+          "op": ">=",
+          "value": 60
+        },
+        "effects": [
+          {
+            "resource": "policy_quality",
+            "formula": "min(100, policy_quality + (safety_index - 60) * 0.05)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Strong safety practices inform better policy-making."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "committee_unity",
+        "equilibrium": 40,
+        "rate": 0.03,
+        "direction": "toward"
+      },
+      {
+        "resource": "public_trust",
+        "equilibrium": 42,
+        "rate": 0.04,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "viral_deepfake",
+        "label": "Viral Deepfake Scandal",
+        "icon": "🎭",
+        "description": "A deepfake video of the school principal making offensive remarks has gone viral on social media. Students are confused, parents are outraged, and media reporters are at the school gate.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            },
+            {
+              "resource": "ai_literacy",
+              "op": "<",
+              "value": 55
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "public_trust",
+            "delta": -10
+          },
+          {
+            "resource": "safety_index",
+            "delta": -8
+          },
+          {
+            "resource": "stakeholder_approval",
+            "delta": -7
+          },
+          {
+            "resource": "committee_unity",
+            "delta": -5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "BREAKING: Deepfake video of school principal goes viral. AI Ethics Committee under pressure to respond.",
+        "ai_image_prompt": "School hallway with students looking at phones showing fake video, worried teachers, media cameras outside, dramatic tension, semi-realistic"
+      },
+      {
+        "id": "ai_competition_win",
+        "label": "National AI Competition Win",
+        "icon": "🏆",
+        "description": "Your school's robotics team wins the National AI Innovation Challenge! The school is celebrated as a leader in responsible AI education.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "innovation_score",
+              "op": ">=",
+              "value": 50
+            },
+            {
+              "resource": "ai_literacy",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "innovation_score",
+            "delta": 8
+          },
+          {
+            "resource": "public_trust",
+            "delta": 6
+          },
+          {
+            "resource": "stakeholder_approval",
+            "delta": 5
+          },
+          {
+            "resource": "ai_literacy",
+            "delta": 5
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "Our school wins National AI Challenge! Students praised for ethical innovation approach.",
+        "ai_image_prompt": "Diverse group of students on stage holding a trophy, AI robotics competition, proud teachers, school banner, celebration"
+      },
+      {
+        "id": "data_breach_scare",
+        "label": "Student Data Breach Scare",
+        "icon": "🔓",
+        "description": "An AI homework tool used by students has been caught selling student data to advertisers. Parents demand answers from the committee.",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            },
+            {
+              "resource": "safety_index",
+              "op": "<",
+              "value": 50
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "safety_index",
+            "delta": -10
+          },
+          {
+            "resource": "public_trust",
+            "delta": -8
+          },
+          {
+            "resource": "stakeholder_approval",
+            "delta": -6
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "DATA ALERT: AI homework app caught harvesting student data. Parents demand investigation.",
+        "ai_image_prompt": "Computer screen showing warning about data breach, concerned parents at school meeting, digital security icons, urgent atmosphere"
+      },
+      {
+        "id": "global_ai_regulation",
+        "label": "Global AI Regulation Wave",
+        "icon": "🌐",
+        "description": "The European Union passes landmark AI regulation. India's education ministry sends new guidelines to all schools. Your committee's existing framework aligns partially.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 5
+            },
+            {
+              "resource": "ethical_framework",
+              "op": ">=",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "ethical_framework",
+            "delta": 6
+          },
+          {
+            "resource": "policy_quality",
+            "delta": 5
+          },
+          {
+            "resource": "public_trust",
+            "delta": 4
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "New global AI regulations boost your committee's credibility. Framework partially aligned with international standards.",
+        "ai_image_prompt": "World map with AI regulation highlights, school committee reviewing documents, international flags, policy papers on table"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "dr_future",
+        "name": "Dr. Future",
+        "role": "Tech Advisor",
+        "icon": "🔬",
+        "initial_mood": "enthusiastic",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "innovation_score",
+              "op": "<",
+              "value": 35
+            },
+            "action": "warn",
+            "message": "We are falling behind! Other schools are using AI for personalized learning, creative projects, and research. If we keep restricting everything, our students lose their competitive edge.",
+            "mood_change": "frustrated",
+            "satisfaction_delta": -6
+          },
+          {
+            "condition": {
+              "resource": "innovation_score",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "praise",
+            "message": "Brilliant! Our students are at the cutting edge of AI innovation. This is how we prepare them for the future economy.",
+            "mood_change": "excited",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "innovation_score",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "ultimatum",
+            "message": "Dr. Future threatens to resign from the committee! 'If this school refuses to embrace AI, I cannot in good conscience continue advising here.'",
+            "mood_change": "angry",
+            "satisfaction_delta": -12,
+            "effects": [
+              {
+                "resource": "committee_unity",
+                "delta": -10
+              },
+              {
+                "resource": "ai_literacy",
+                "delta": -5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "parent_rep",
+        "name": "Parent Representative",
+        "role": "Safety Advocate",
+        "icon": "👩‍👧",
+        "initial_mood": "cautious",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "safety_index",
+              "op": "<",
+              "value": 35
+            },
+            "action": "alert",
+            "message": "Our children's safety is non-negotiable! I have received 50 complaint emails from parents this week alone. We need stricter AI controls NOW.",
+            "mood_change": "alarmed",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "resource": "safety_index",
+              "op": ">=",
+              "value": 70
+            },
+            "action": "support",
+            "message": "Parents are finally feeling confident about how the school handles AI. Thank you for prioritizing our children's safety.",
+            "mood_change": "relieved",
+            "satisfaction_delta": 6
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "safety_index",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "public_trust",
+                  "op": "<",
+                  "value": 30
+                }
+              ]
+            },
+            "action": "crisis_petition",
+            "message": "The Parent Representative has organized a formal petition signed by 200 families demanding an emergency meeting! 'Either this committee acts on safety, or we take this to the education board.'",
+            "mood_change": "angry",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "committee_unity",
+                "delta": -8
+              },
+              {
+                "resource": "stakeholder_approval",
+                "delta": -10
+              }
+            ],
+            "trigger_round": "crisis_privacy"
+          }
+        ]
+      },
+      {
+        "id": "student_rep",
+        "name": "Student Representative",
+        "role": "Student Voice",
+        "icon": "🎓",
+        "initial_mood": "hopeful",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "innovation_score",
+              "op": ">=",
+              "value": 55
+            },
+            "action": "happy",
+            "message": "Students love the new AI tools! They are making incredible projects, learning faster, and actually excited about school.",
+            "mood_change": "excited",
+            "satisfaction_delta": 5
+          },
+          {
+            "condition": {
+              "resource": "ethical_framework",
+              "op": "<",
+              "value": 30
+            },
+            "action": "concern",
+            "message": "Some students are using AI to cheat and bully. Without clear rules, the honest students feel it is unfair. We need guidelines, not just freedom.",
+            "mood_change": "worried",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "innovation_score",
+                  "op": ">",
+                  "value": 70
+                },
+                {
+                  "resource": "ethical_framework",
+                  "op": "<",
+                  "value": 30
+                }
+              ]
+            },
+            "action": "crisis_alert",
+            "message": "The Student Representative reports a wave of AI misuse — generated essays, deepfake bullying, and fake assignments are overwhelming teachers. 'We gave students AI tools but no guardrails. It is chaos!'",
+            "mood_change": "distressed",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "public_trust",
+                "delta": -10
+              },
+              {
+                "resource": "stakeholder_approval",
+                "delta": -8
+              }
+            ],
+            "trigger_round": "crisis_misuse"
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "policy_quality",
+          "op": ">=",
+          "value": 60
+        },
+        "icon": "📜",
+        "text": "School AI Policy rated 'exemplary' by education board. Other schools request copies.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "innovation_score",
+              "op": ">=",
+              "value": 65
+            },
+            {
+              "resource": "safety_index",
+              "op": ">=",
+              "value": 60
+            }
+          ]
+        },
+        "icon": "⭐",
+        "text": "School achieves rare balance: high innovation AND strong safety. National media takes notice.",
+        "severity": "positive"
+      }
+    ],
+    "ai_scene_prompt_template": "A modern school setting with an AI Ethics Committee meeting room, policy_quality {policy_quality}%, innovation_score {innovation_score}%, safety_index {safety_index}%. Digital screens, student projects, ethical guidelines posters. Mood: {'optimistic' if public_trust > 60 else 'tense' if public_trust < 35 else 'focused'}."
+  },
+  "rounds": [
+    {
+      "round_id": "session_1_foundation",
+      "round_title": "Session 1: Laying the Foundation",
+      "situation": "Your school has just formed its first AI Ethics Committee. ChatGPT, image generators, and AI tutoring apps are already being used by students — with no rules in place. The principal wants a foundational AI policy drafted by the end of this session.",
+      "goal": "Establish the foundational approach to your school's AI policy.",
+      "coaching_moment": "Strategic thinking: The foundation you lay now determines every future decision. Think about principles, not just rules.",
+      "reflection_prompt": "Should AI policies focus on what is banned, or on what is encouraged?",
+      "ai_image_prompt": "School committee room with diverse students and teachers around a table, laptops open, whiteboard with AI policy brainstorm, professional atmosphere",
+      "choices": [
+        {
+          "id": "s1_open_framework",
+          "label": "A. Open Innovation Framework",
+          "description": "Default to allowing AI tools unless specifically harmful. Encourage experimentation with light guardrails.",
+          "delta": {
+            "innovation_score": 15,
+            "ai_literacy": 8,
+            "safety_index": -5,
+            "policy_quality": 8,
+            "stakeholder_approval": 3,
+            "ethical_framework": 5,
+            "committee_unity": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "An innovation-first approach! Students can explore freely, but without strong guardrails, misuse risks remain.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "s1_safety_first",
+          "label": "B. Safety-First Policy",
+          "description": "Default to restricting AI tools unless specifically approved. Create a whitelist of permitted tools.",
+          "delta": {
+            "safety_index": 15,
+            "public_trust": 10,
+            "stakeholder_approval": 8,
+            "policy_quality": 10,
+            "innovation_score": -8,
+            "committee_unity": -3,
+            "ethical_framework": 8
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Parents breathe a sigh of relief. But students feel stifled, and Dr. Future warns you are falling behind.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "empathy": "Considering how others feel shows emotional intelligence."
+          }
+        },
+        {
+          "id": "s1_tiered_access",
+          "label": "C. Tiered Access System",
+          "description": "Different AI access levels based on grade, subject, and purpose. Build gradually.",
+          "delta": {
+            "policy_quality": 12,
+            "ethical_framework": 10,
+            "innovation_score": 5,
+            "safety_index": 5,
+            "implementation_success": 5,
+            "stakeholder_approval": 5,
+            "committee_unity": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "A nuanced, thoughtful approach. It takes more effort to implement, but balances competing needs well.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "s1_student_led",
+          "label": "D. Student-Led Policy Design",
+          "description": "Let students draft the initial policy themselves, with teacher review. Radical trust.",
+          "delta": {
+            "innovation_score": 10,
+            "ai_literacy": 12,
+            "committee_unity": 8,
+            "stakeholder_approval": -5,
+            "public_trust": -5,
+            "ethical_framework": 5,
+            "policy_quality": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Students are energized and feel ownership. But parents worry about 'students making the rules' and some teachers are skeptical.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_2_cheating",
+      "round_title": "Session 2: The AI Cheating Epidemic",
+      "situation": "Teachers report that 40% of recent essays show signs of AI generation. Some students openly admit to using ChatGPT. The English department wants a zero-tolerance ban. The Computer Science department argues AI-assisted writing is a skill. The committee must decide.",
+      "goal": "Develop a fair policy on AI-assisted academic work.",
+      "coaching_moment": "Ethical reasoning: What counts as 'cheating' changes when powerful tools become widely available. Think about what learning actually means.",
+      "reflection_prompt": "If a calculator is not cheating in math, when does AI become cheating in writing?",
+      "ai_image_prompt": "Student at desk looking conflicted between handwritten essay and laptop with AI chatbot, teacher observing from behind, classroom setting",
+      "choices": [
+        {
+          "id": "s2_zero_tolerance",
+          "label": "A. Zero-Tolerance AI Ban for Assignments",
+          "description": "All AI-generated content in assignments is academic dishonesty. Use AI detection software.",
+          "delta": {
+            "safety_index": 10,
+            "ethical_framework": 5,
+            "innovation_score": -12,
+            "stakeholder_approval": 5,
+            "public_trust": 5,
+            "ai_literacy": -5,
+            "committee_unity": -8
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Clear and enforceable, but AI detection tools are unreliable and false accusations can devastate innocent students.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "s2_transparent_use",
+          "label": "B. Transparent AI Use Policy",
+          "description": "Students can use AI but must declare it — like citing a source. Grading adjusts for AI-assisted work.",
+          "delta": {
+            "ethical_framework": 12,
+            "policy_quality": 10,
+            "innovation_score": 5,
+            "ai_literacy": 8,
+            "stakeholder_approval": 3,
+            "implementation_success": 5,
+            "committee_unity": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Elegant solution! Transparency over prohibition. But enforcement requires teacher training and new rubrics.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "s2_redesign_assessment",
+          "label": "C. Redesign Assessments Entirely",
+          "description": "Move to oral exams, project-based learning, and in-class writing. Make AI irrelevant to cheating.",
+          "delta": {
+            "policy_quality": 8,
+            "innovation_score": 8,
+            "ethical_framework": 8,
+            "implementation_success": -5,
+            "stakeholder_approval": -3,
+            "ai_literacy": 5,
+            "committee_unity": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "delayed_gratification"
+          ],
+          "feedback": "Visionary! But redesigning all assessments is a massive undertaking. Teachers need time and training.",
+          "requires": {
+            "resource": "ai_literacy",
+            "op": ">=",
+            "value": 35,
+            "label": "Requires AI Literacy >= 35"
+          },
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "s2_subject_specific",
+          "label": "D. Subject-by-Subject Rules",
+          "description": "Let each department set its own AI rules. Math allows calculators, English decides separately.",
+          "delta": {
+            "stakeholder_approval": 8,
+            "committee_unity": -5,
+            "policy_quality": 3,
+            "innovation_score": 3,
+            "implementation_success": -3,
+            "ethical_framework": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Flexible but fragmented. Students complain about inconsistent rules across classes.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_3_surveillance",
+      "round_title": "Session 3: The Surveillance Debate",
+      "situation": "The school administration proposes installing an AI-powered monitoring system that tracks student device usage, flags inappropriate content, and monitors online behavior during school hours. It promises safety — but at what cost to privacy?",
+      "goal": "Decide on the school's approach to AI-powered student surveillance.",
+      "coaching_moment": "Empathy and ethical reasoning: Privacy versus safety is one of the defining debates of our time. There are legitimate concerns on both sides.",
+      "reflection_prompt": "Where is the line between keeping students safe and violating their privacy?",
+      "ai_image_prompt": "Split image: one side showing secure safe school with happy students, other side showing students under surveillance cameras looking uncomfortable, digital monitoring icons",
+      "choices": [
+        {
+          "id": "s3_full_monitoring",
+          "label": "A. Full AI Monitoring System",
+          "description": "Deploy comprehensive device monitoring. Real-time flagging of bullying, self-harm signals, and inappropriate content.",
+          "delta": {
+            "safety_index": 15,
+            "public_trust": -10,
+            "stakeholder_approval": -5,
+            "innovation_score": -5,
+            "ethical_framework": -8,
+            "committee_unity": -8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Maximum safety, but students feel watched and trust collapses. Research shows surveillance reduces creative risk-taking.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        },
+        {
+          "id": "s3_opt_in_safety",
+          "label": "B. Opt-In Safety Net",
+          "description": "Create an AI safety system that students can voluntarily opt into. Focus on self-harm detection with explicit consent.",
+          "delta": {
+            "safety_index": 8,
+            "ethical_framework": 12,
+            "public_trust": 5,
+            "stakeholder_approval": 5,
+            "policy_quality": 8,
+            "committee_unity": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Consent-based safety respects autonomy while protecting the vulnerable. But only 30% of students opt in initially.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "s3_no_surveillance",
+          "label": "C. Reject AI Surveillance Entirely",
+          "description": "No monitoring. Invest in counselors, peer support programs, and digital citizenship education instead.",
+          "delta": {
+            "ethical_framework": 10,
+            "public_trust": 8,
+            "innovation_score": 5,
+            "safety_index": -8,
+            "stakeholder_approval": -5,
+            "ai_literacy": 5,
+            "committee_unity": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "A principled stand for privacy. But when a cyberbullying incident occurs, people will ask why the school did not act.",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "s3_network_level",
+          "label": "D. Network-Level Protection Only",
+          "description": "Filter harmful websites and content at the network level, but do not monitor individual student activity.",
+          "delta": {
+            "safety_index": 8,
+            "ethical_framework": 5,
+            "policy_quality": 5,
+            "public_trust": 3,
+            "innovation_score": -3,
+            "implementation_success": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "A middle ground. Network filtering blocks the worst content without personal surveillance. But students can use VPNs to bypass it.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_4_deepfakes",
+      "round_title": "Session 4: Deepfake Crisis",
+      "situation": "A student has created a realistic deepfake video of a teacher saying embarrassing things and shared it on social media. It has 10,000 views. The teacher is devastated. The student says it was 'just a joke' and created with a free app. The school has no policy on synthetic media.",
+      "goal": "Respond to the deepfake incident and create a synthetic media policy.",
+      "coaching_moment": "Resilience: Crisis moments define leadership. You must address the harm, educate the community, and prevent future incidents — all at once.",
+      "reflection_prompt": "When technology makes it easy to harm others, who is responsible — the creator, the platform, or the school?",
+      "ai_image_prompt": "Upset teacher looking at phone showing fake video, concerned students in background, school corridor, emotional scene, semi-realistic",
+      "choices": [
+        {
+          "id": "s4_strict_punishment",
+          "label": "A. Strict Disciplinary Action",
+          "description": "Suspend the student, ban deepfake apps on school devices, and file a formal report. Send a strong deterrent message.",
+          "delta": {
+            "safety_index": 10,
+            "public_trust": 5,
+            "stakeholder_approval": 8,
+            "innovation_score": -8,
+            "committee_unity": -3,
+            "ethical_framework": 3,
+            "policy_quality": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "Swift justice sends a clear message. But critics argue punishment without education does not prevent the next incident.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "s4_restorative_justice",
+          "label": "B. Restorative Justice Approach",
+          "description": "The student must apologize to the teacher, create an educational presentation on deepfake harms, and mentor younger students on responsible AI use.",
+          "delta": {
+            "ethical_framework": 12,
+            "ai_literacy": 8,
+            "committee_unity": 5,
+            "stakeholder_approval": 3,
+            "public_trust": 3,
+            "policy_quality": 5,
+            "innovation_score": 2
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Restorative justice transforms the offender into an advocate. The student's presentation becomes the school's best deepfake awareness tool.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "s4_tech_solution",
+          "label": "C. Deploy Deepfake Detection Technology",
+          "description": "Install AI-based deepfake detection on the school network, watermark all school-produced media, and create a rapid-response protocol.",
+          "delta": {
+            "safety_index": 12,
+            "innovation_score": 5,
+            "ai_literacy": 5,
+            "policy_quality": 8,
+            "implementation_success": 5,
+            "stakeholder_approval": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Fighting AI with AI! The detection system catches future attempts, but determined students find workarounds.",
+          "requires": {
+            "resource": "innovation_score",
+            "op": ">=",
+            "value": 30,
+            "label": "Requires Innovation Score >= 30"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "s4_media_literacy",
+          "label": "D. School-Wide Media Literacy Campaign",
+          "description": "Launch a 'Trust But Verify' campaign teaching all students to identify synthetic media. Make deepfake awareness part of the curriculum.",
+          "delta": {
+            "ai_literacy": 15,
+            "ethical_framework": 8,
+            "public_trust": 5,
+            "safety_index": 3,
+            "committee_unity": 5,
+            "stakeholder_approval": 5,
+            "implementation_success": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Education over enforcement! Media literacy is a lifelong skill. But the affected teacher feels the response is too slow.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_5_bias",
+      "round_title": "Session 5: Algorithmic Bias in Grading",
+      "situation": "The school piloted an AI grading assistant for objective-type tests. Results look great — until data reveals it consistently scores essays from students with non-English home languages 15% lower. A student's parent, who is a data scientist, has gone public with the analysis.",
+      "goal": "Address the algorithmic bias and decide the future of AI grading tools.",
+      "coaching_moment": "Ethical reasoning: AI systems can encode human biases at scale. Identifying and fixing bias requires both technical skill and moral courage.",
+      "reflection_prompt": "If an AI tool is efficient but unfair to some groups, should we fix it, replace it, or remove it?",
+      "ai_image_prompt": "Data visualization showing grade disparities on a screen, diverse group of concerned parents and teachers examining the data, school meeting room",
+      "choices": [
+        {
+          "id": "s5_immediate_removal",
+          "label": "A. Immediately Remove AI Grading",
+          "description": "Pull the AI grading tool, regrade all affected assignments manually, and issue a public apology.",
+          "delta": {
+            "ethical_framework": 12,
+            "public_trust": 8,
+            "stakeholder_approval": 10,
+            "innovation_score": -10,
+            "implementation_success": -8,
+            "safety_index": 5,
+            "committee_unity": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Accountability in action! Removing the tool shows you prioritize fairness over convenience. But it sets back AI adoption significantly.",
+          "skill_explanation": {
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        },
+        {
+          "id": "s5_bias_audit",
+          "label": "B. Commission a Bias Audit",
+          "description": "Pause the tool, hire an external auditor, fix the bias, and relaunch with safeguards. Keep AI grading but make it fair.",
+          "delta": {
+            "policy_quality": 10,
+            "ethical_framework": 10,
+            "innovation_score": 3,
+            "ai_literacy": 8,
+            "stakeholder_approval": 3,
+            "implementation_success": 5,
+            "safety_index": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Thorough and responsible. The audit reveals bias patterns that help improve all future AI tools. But it takes 3 months and costs resources.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "s5_human_oversight",
+          "label": "C. AI-Assist with Mandatory Human Review",
+          "description": "Keep AI grading as a first pass, but require human teacher review for every assignment. Flag any score with large AI-human divergence.",
+          "delta": {
+            "ethical_framework": 8,
+            "policy_quality": 8,
+            "innovation_score": 5,
+            "safety_index": 8,
+            "stakeholder_approval": 5,
+            "implementation_success": 3,
+            "committee_unity": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Human-in-the-loop is the gold standard! But teachers complain about double workload.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "s5_student_audit",
+          "label": "D. Student-Led Bias Investigation",
+          "description": "Turn this into a learning opportunity. Have the computer science class investigate the bias, present findings, and propose fixes to the committee.",
+          "delta": {
+            "ai_literacy": 15,
+            "innovation_score": 8,
+            "ethical_framework": 8,
+            "committee_unity": 5,
+            "stakeholder_approval": -3,
+            "public_trust": -3,
+            "policy_quality": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "adaptability"
+          ],
+          "feedback": "Brilliant educational move! Students learn about bias firsthand. But affected families feel their children are being used as teaching tools.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_6_innovation",
+      "round_title": "Session 6: The AI Innovation Fair",
+      "situation": "The school is hosting its first AI Innovation Fair. Students have submitted 50 projects — from AI-generated art to an AI that predicts exam stress. But three projects raise ethical red flags: a deepfake detector that invades privacy, a 'student ranking AI' that gamifies grades, and an AI tutor that has no content filters.",
+      "goal": "Decide which student AI projects to approve, restrict, or guide toward improvement.",
+      "coaching_moment": "Adaptability: Supporting student innovation while maintaining ethical boundaries requires nuanced judgment, not blanket rules.",
+      "reflection_prompt": "How do you encourage student creativity without endorsing harmful applications?",
+      "ai_image_prompt": "School science fair with AI projects on display, students presenting, judges examining projects, digital displays, innovation atmosphere, semi-realistic",
+      "choices": [
+        {
+          "id": "s6_approve_all",
+          "label": "A. Approve All Projects With Disclaimers",
+          "description": "Let all 50 projects participate with ethical disclosure labels. Trust students to learn from public feedback.",
+          "delta": {
+            "innovation_score": 15,
+            "ai_literacy": 5,
+            "safety_index": -8,
+            "ethical_framework": -5,
+            "stakeholder_approval": -5,
+            "public_trust": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Maximum innovation! But when a parent sees the 'student ranking AI,' media coverage turns critical.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "s6_ethics_review",
+          "label": "B. Ethics Review Board for Flagged Projects",
+          "description": "Create a student-teacher ethics panel to review the 3 flagged projects. They can approve, request modifications, or reject with explanation.",
+          "delta": {
+            "ethical_framework": 12,
+            "policy_quality": 8,
+            "innovation_score": 5,
+            "committee_unity": 8,
+            "ai_literacy": 8,
+            "implementation_success": 5,
+            "stakeholder_approval": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "An ethics review process that students run themselves! This becomes a model for responsible innovation.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "s6_mentor_redirect",
+          "label": "C. Mentor and Redirect Flagged Projects",
+          "description": "Pair the three flagged project teams with ethics mentors to refine their work. Give them 2 more weeks.",
+          "delta": {
+            "innovation_score": 8,
+            "ethical_framework": 10,
+            "ai_literacy": 10,
+            "committee_unity": 5,
+            "implementation_success": 3,
+            "stakeholder_approval": 3,
+            "public_trust": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Mentorship transforms problematic projects into exemplary ones. The 'ranking AI' team pivots to a wellness-check tool.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "s6_ban_flagged",
+          "label": "D. Ban the Three Flagged Projects",
+          "description": "Remove the problematic projects from the fair. Protect the school's reputation and send a clear ethical signal.",
+          "delta": {
+            "safety_index": 8,
+            "stakeholder_approval": 5,
+            "public_trust": 5,
+            "innovation_score": -10,
+            "committee_unity": -8,
+            "ai_literacy": -3
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "Clean and safe, but the banned students feel censored. Dr. Future argues this kills the innovation spirit.",
+          "skill_explanation": {
+            "resilience": "Learning from setbacks rather than giving up shows resilience.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_privacy",
+      "id": "crisis_privacy",
+      "round_title": "CRISIS: Privacy Meltdown",
+      "situation": "A perfect storm of privacy failures: student data from the AI homework platform has leaked online, parents have discovered that an AI monitoring tool logs every student search query, and a news channel is running a story titled 'Is Your Child Being Watched? Inside the School AI Scandal.' 200 parents have signed a petition. The education board demands answers within 48 hours.",
+      "goal": "Navigate the privacy crisis before it destroys trust in the committee and the school.",
+      "coaching_moment": "Resilience under fire: Privacy crises require transparency, accountability, and swift action. Coverups always make things worse.",
+      "reflection_prompt": "When trust is broken, what is the first step to rebuilding it — action, apology, or transparency?",
+      "ai_image_prompt": "School emergency meeting, packed auditorium with angry parents, media cameras, school officials at podium, intense atmosphere, semi-realistic",
+      "condition": {
+        "resource": "safety_index",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "cp_full_transparency",
+          "label": "A. Full Transparency Report",
+          "description": "Publish a complete audit of all AI tools, what data they collect, and how it was used. Invite parents to review everything.",
+          "delta": {
+            "public_trust": 12,
+            "stakeholder_approval": 10,
+            "ethical_framework": 8,
+            "policy_quality": 8,
+            "safety_index": 5,
+            "innovation_score": -5,
+            "implementation_success": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Radical transparency is painful but powerful. Parents see the committee is honest, even about its failures.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "cp_emergency_shutdown",
+          "label": "B. Emergency AI System Shutdown",
+          "description": "Immediately disable all AI tools school-wide. Conduct a security audit before reactivating any system.",
+          "delta": {
+            "safety_index": 18,
+            "public_trust": 8,
+            "stakeholder_approval": 5,
+            "innovation_score": -15,
+            "ai_literacy": -5,
+            "implementation_success": -10
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "Nuclear option. Safety is restored, but months of innovation progress vanish overnight.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "cp_parent_committee",
+          "label": "C. Parent-Committee Joint Task Force",
+          "description": "Invite the petition organizers to join a new Privacy Task Force. Give parents direct oversight of AI data practices.",
+          "delta": {
+            "stakeholder_approval": 15,
+            "public_trust": 10,
+            "committee_unity": 8,
+            "ethical_framework": 5,
+            "safety_index": 8,
+            "policy_quality": 5,
+            "innovation_score": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Turning critics into partners! The strongest opponents become your best advocates when given real power.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "cp_legal_compliance",
+          "label": "D. Legal Compliance Overhaul",
+          "description": "Hire a data privacy consultant, implement COPPA/DPDPA compliance, and create legally binding data protection agreements with every AI vendor.",
+          "delta": {
+            "policy_quality": 12,
+            "safety_index": 12,
+            "ethical_framework": 8,
+            "public_trust": 5,
+            "stakeholder_approval": 3,
+            "implementation_success": 5,
+            "innovation_score": -5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Professional-grade response. Legal frameworks provide lasting protection, but they take time to implement.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_misuse",
+      "id": "crisis_misuse",
+      "round_title": "CRISIS: AI Misuse Outbreak",
+      "situation": "A wave of AI misuse has swept the school. Students are submitting AI-generated essays, using AI to create fake excuse notes, running deepfake bullying campaigns, and one student has used AI to impersonate a teacher on social media. Teachers are overwhelmed. The Student Representative warns: 'We gave tools without teaching responsibility.'",
+      "goal": "Contain the AI misuse epidemic and restore order without killing innovation.",
+      "coaching_moment": "Adaptability: When a system breaks down, the solution is rarely to go back to the old way. You need a new approach that keeps what works while fixing what failed.",
+      "reflection_prompt": "Is the problem the technology, or how we introduced it?",
+      "ai_image_prompt": "School principal's office with stacks of incident reports, frustrated teachers, screens showing AI-generated fake content, tense meeting, semi-realistic",
+      "condition": {
+        "resource": "innovation_score",
+        "operator": ">",
+        "value": 70
+      },
+      "choices": [
+        {
+          "id": "cm_ai_citizenship",
+          "label": "A. Mandatory AI Citizenship Course",
+          "description": "Launch a 2-week intensive course for all students on responsible AI use, digital ethics, and consequences. No AI access until completion.",
+          "delta": {
+            "ai_literacy": 15,
+            "ethical_framework": 12,
+            "safety_index": 8,
+            "innovation_score": -5,
+            "stakeholder_approval": 8,
+            "public_trust": 5,
+            "implementation_success": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Education over punishment. The AI Citizenship Certificate becomes a point of pride. Other schools adopt the model.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "cm_peer_accountability",
+          "label": "B. Peer Accountability System",
+          "description": "Create student AI ambassadors in every class who help peers use AI responsibly. Positive peer pressure over top-down rules.",
+          "delta": {
+            "committee_unity": 10,
+            "ai_literacy": 10,
+            "ethical_framework": 8,
+            "stakeholder_approval": 5,
+            "public_trust": 5,
+            "innovation_score": 3,
+            "safety_index": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Students policing themselves! The ambassadors reduce misuse by 60% in one month. Culture change from within.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking."
+          }
+        },
+        {
+          "id": "cm_tech_lockdown",
+          "label": "C. Temporary Technology Lockdown",
+          "description": "Block all AI tools for 30 days. Use the time to rebuild policies, train teachers, and create a new launch plan.",
+          "delta": {
+            "safety_index": 15,
+            "public_trust": 8,
+            "innovation_score": -15,
+            "implementation_success": -8,
+            "committee_unity": -5,
+            "ai_literacy": -3,
+            "stakeholder_approval": 3
+          },
+          "skill_tags": [
+            "resilience",
+            "risk_tolerance"
+          ],
+          "feedback": "The nuclear option. Misuse stops immediately, but so does all learning with AI. Students feel punished collectively.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        },
+        {
+          "id": "cm_consequences_framework",
+          "label": "D. Progressive Consequences Framework",
+          "description": "Create a clear 3-strike system: warning, restricted access, suspension of AI privileges. Fair and transparent.",
+          "delta": {
+            "policy_quality": 10,
+            "safety_index": 10,
+            "ethical_framework": 5,
+            "stakeholder_approval": 8,
+            "public_trust": 5,
+            "innovation_score": -3,
+            "implementation_success": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Clear consequences create accountability. Students know exactly what happens if they misuse AI. Fair and enforceable.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_7_inclusion",
+      "round_title": "Session 7: AI and Inclusion",
+      "situation": "An audit reveals a digital divide: students from wealthier families use premium AI tools at home (GPT-4, Midjourney, coding copilots), while others rely on free versions or have no access. The gap in AI-assisted work quality is growing. Some students with disabilities say AI tools have transformed their learning — but only when they can access them.",
+      "goal": "Address the AI equity gap and ensure AI tools help all students equally.",
+      "coaching_moment": "Empathy: Technology can either amplify existing inequalities or bridge them. Your policy choice determines which.",
+      "reflection_prompt": "If AI gives some students an unfair advantage, is the solution to limit AI or to expand access?",
+      "ai_image_prompt": "Two contrasting study environments: one student with premium AI tools and modern setup, another with basic phone and old textbook, split screen, semi-realistic",
+      "choices": [
+        {
+          "id": "s7_universal_access",
+          "label": "A. Universal AI Access Program",
+          "description": "School licenses premium AI tools for all students. Devices provided to those without. Funded by reallocating library budget.",
+          "delta": {
+            "innovation_score": 12,
+            "ai_literacy": 12,
+            "ethical_framework": 8,
+            "stakeholder_approval": 8,
+            "committee_unity": 5,
+            "implementation_success": 5,
+            "safety_index": -3
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Equity in action! Every student gets the same AI tools. But the cost is significant and the library suffers.",
+          "requires": {
+            "resource": "stakeholder_approval",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Stakeholder Approval >= 40"
+          },
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "s7_ai_lab",
+          "label": "B. Open AI Lab Hours",
+          "description": "Create a dedicated AI lab with premium tools, open before and after school. Free access, trained staff support.",
+          "delta": {
+            "ai_literacy": 10,
+            "innovation_score": 8,
+            "ethical_framework": 5,
+            "stakeholder_approval": 5,
+            "implementation_success": 8,
+            "committee_unity": 3,
+            "public_trust": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Accessible and practical. The AI lab becomes the most popular room in school. But working parents cannot always drop off kids early.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        },
+        {
+          "id": "s7_curated_free",
+          "label": "C. Curated Free AI Toolkit",
+          "description": "Research and assemble the best free/open-source AI tools. Train students to use them effectively. Free beats premium when you know how.",
+          "delta": {
+            "ai_literacy": 15,
+            "ethical_framework": 5,
+            "innovation_score": 5,
+            "policy_quality": 5,
+            "committee_unity": 5,
+            "public_trust": 5,
+            "implementation_success": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Smart and sustainable! The curated toolkit proves that free tools plus good training can match premium. Other schools adopt your list.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "s7_ban_premium",
+          "label": "D. Level the Playing Field — Ban Premium AI for Assignments",
+          "description": "Standardize: only school-approved free AI tools can be used for graded work. Premium tools allowed for personal projects only.",
+          "delta": {
+            "ethical_framework": 10,
+            "safety_index": 5,
+            "stakeholder_approval": -5,
+            "innovation_score": -8,
+            "public_trust": -3,
+            "committee_unity": -5,
+            "policy_quality": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Enforcing equality, but parents who paid for premium tools are angry. 'You are punishing our investment in our child's education.'",
+          "skill_explanation": {
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_8_teacher_ai",
+      "round_title": "Session 8: Teachers and AI",
+      "situation": "The focus shifts to how teachers use AI. Some teachers use AI to generate lesson plans and assessments — saving hours of work. But students discover that quiz questions are identical across sections because the AI generated the same content. Meanwhile, 40% of teachers admit they do not understand how AI tools work.",
+      "goal": "Create a policy for teacher AI use and professional development.",
+      "coaching_moment": "Strategic thinking: Teachers are the front line of AI implementation. If they do not understand it, policies cannot succeed.",
+      "reflection_prompt": "Should teachers be held to the same AI use standards as students?",
+      "ai_image_prompt": "Teacher at desk with AI assistant on screen generating lesson plan, other teachers in professional development workshop, modern staff room, semi-realistic",
+      "choices": [
+        {
+          "id": "s8_teacher_training",
+          "label": "A. Comprehensive AI Training for All Teachers",
+          "description": "Mandatory 20-hour AI training for all staff. Cover tools, ethics, pedagogy, and assessment design. Certify AI-literate teachers.",
+          "delta": {
+            "ai_literacy": 12,
+            "implementation_success": 12,
+            "policy_quality": 8,
+            "innovation_score": 5,
+            "committee_unity": 5,
+            "stakeholder_approval": 5,
+            "ethical_framework": 5
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Investment in teachers pays off multiplicatively. AI-literate teachers model responsible use for students.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning."
+          }
+        },
+        {
+          "id": "s8_teacher_guidelines",
+          "label": "B. Teacher AI Use Guidelines",
+          "description": "Publish clear guidelines: teachers must customize AI-generated content, never use AI for grading essays, and disclose AI assistance to students.",
+          "delta": {
+            "policy_quality": 12,
+            "ethical_framework": 10,
+            "stakeholder_approval": 8,
+            "public_trust": 5,
+            "implementation_success": 5,
+            "committee_unity": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "feedback": "Clear, fair rules for teachers. Students appreciate the transparency when teachers say 'I used AI for this outline.'",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "s8_teacher_innovators",
+          "label": "C. AI Teacher Innovator Program",
+          "description": "Identify 10 tech-savvy teachers as AI champions. They experiment, share best practices, and train colleagues peer-to-peer.",
+          "delta": {
+            "innovation_score": 10,
+            "ai_literacy": 8,
+            "committee_unity": 8,
+            "implementation_success": 8,
+            "stakeholder_approval": 3,
+            "policy_quality": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Peer learning works! The innovator teachers create a culture of experimentation and sharing.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "s8_equal_standards",
+          "label": "D. Same Rules for Teachers and Students",
+          "description": "Apply the student AI policy to teachers too. If students must cite AI, so must teachers. If students cannot use AI for essays, teachers cannot use it for assessments.",
+          "delta": {
+            "ethical_framework": 12,
+            "public_trust": 10,
+            "stakeholder_approval": 5,
+            "policy_quality": 5,
+            "innovation_score": -5,
+            "implementation_success": -3,
+            "committee_unity": -5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "empathy"
+          ],
+          "feedback": "Radical fairness. Students love it. Some teachers resist, but the moral authority is undeniable.",
+          "skill_explanation": {
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_9_external",
+      "round_title": "Session 9: The Corporate Offer",
+      "situation": "A major tech company offers the school a free 3-year AI platform: personalized learning paths, AI tutoring, automated grading, and teacher dashboards. It is worth millions. The catch: student data will be used to train the company's commercial AI models. Parents are divided. The principal sees a budget windfall.",
+      "goal": "Decide whether to accept, reject, or negotiate the corporate AI partnership.",
+      "coaching_moment": "Risk tolerance and ethical reasoning: Free technology always has a cost. Understanding the hidden trade-offs separates good governance from naive adoption.",
+      "reflection_prompt": "If something is free, you are the product. How does this apply to student data?",
+      "ai_image_prompt": "Corporate boardroom meeting at school, tech company executives presenting flashy AI platform, skeptical committee members, contract on table, semi-realistic",
+      "choices": [
+        {
+          "id": "s9_accept_deal",
+          "label": "A. Accept the Full Partnership",
+          "description": "Take the deal. Free cutting-edge AI tools for 3 years. Student data (anonymized) feeds the company's models.",
+          "delta": {
+            "innovation_score": 18,
+            "ai_literacy": 10,
+            "implementation_success": 12,
+            "safety_index": -12,
+            "ethical_framework": -10,
+            "public_trust": -8,
+            "stakeholder_approval": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Best-in-class AI tools instantly! But your school becomes a data mine. When the contract details leak, trust collapses.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "s9_negotiate",
+          "label": "B. Negotiate Data Protection Terms",
+          "description": "Accept the partnership only with strict conditions: no data leaves the school, annual audits, and an exit clause.",
+          "delta": {
+            "innovation_score": 10,
+            "policy_quality": 10,
+            "implementation_success": 8,
+            "ethical_framework": 8,
+            "safety_index": 3,
+            "stakeholder_approval": 5,
+            "ai_literacy": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Smart negotiation! The company agrees to modified terms. Your school gets great tools with strong protections.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "s9_reject",
+          "label": "C. Reject the Offer Entirely",
+          "description": "Say no to free tech that profits from student data. Build your own AI toolkit with open-source tools instead.",
+          "delta": {
+            "ethical_framework": 15,
+            "public_trust": 12,
+            "safety_index": 8,
+            "stakeholder_approval": 5,
+            "innovation_score": -5,
+            "implementation_success": -3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "feedback": "Principled stand. The school's rejection goes viral as a model of data ethics. But you miss out on powerful tools.",
+          "skill_explanation": {
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "s9_consortium",
+          "label": "D. Form a Multi-School Consortium",
+          "description": "Invite 10 other schools to negotiate collectively. Shared bargaining power, shared cost of custom privacy terms, shared platform.",
+          "delta": {
+            "policy_quality": 8,
+            "innovation_score": 8,
+            "stakeholder_approval": 8,
+            "ethical_framework": 5,
+            "public_trust": 5,
+            "committee_unity": 5,
+            "implementation_success": 3,
+            "safety_index": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Collective action! The consortium negotiates terms no single school could achieve. But coordination takes months.",
+          "requires": {
+            "resource": "policy_quality",
+            "op": ">=",
+            "value": 35,
+            "label": "Requires Policy Quality >= 35"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_10_governance",
+      "round_title": "Session 10: Building Lasting Governance",
+      "situation": "Your committee term is ending. The school asks you to design the permanent AI governance structure. Will AI policy be made by administrators, teachers, students, parents, or some combination? The structure you create will outlast your committee.",
+      "goal": "Design a sustainable AI governance framework for the school's future.",
+      "coaching_moment": "Delayed gratification: The best governance structures are ones that work long after their creators leave. Think about sustainability, not just the current crisis.",
+      "reflection_prompt": "What makes governance legitimate — expertise, representation, transparency, or accountability?",
+      "ai_image_prompt": "School governance charter being signed, diverse group of stakeholders, official ceremony, school logo, future-looking atmosphere, semi-realistic",
+      "choices": [
+        {
+          "id": "s10_rotating_council",
+          "label": "A. Rotating AI Council",
+          "description": "Elected council with 2 teachers, 2 students, 2 parents, and the IT head. Elections every year. Full transparency.",
+          "delta": {
+            "committee_unity": 12,
+            "stakeholder_approval": 12,
+            "ethical_framework": 8,
+            "policy_quality": 8,
+            "public_trust": 8,
+            "implementation_success": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Democratic and inclusive! The rotating structure prevents power concentration and keeps perspectives fresh.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking."
+          }
+        },
+        {
+          "id": "s10_expert_board",
+          "label": "B. Expert Advisory Board",
+          "description": "A panel of AI ethics experts, data scientists, and educators. High expertise, but less direct representation.",
+          "delta": {
+            "policy_quality": 15,
+            "ethical_framework": 12,
+            "ai_literacy": 8,
+            "safety_index": 5,
+            "stakeholder_approval": -5,
+            "committee_unity": -3,
+            "innovation_score": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Top-tier expertise! But students and parents feel shut out of decisions that affect them directly.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "s10_student_parliament",
+          "label": "C. AI Student Parliament",
+          "description": "Students govern their own AI use through an elected parliament. Teachers set minimum safety standards, students decide everything else.",
+          "delta": {
+            "innovation_score": 12,
+            "ai_literacy": 10,
+            "committee_unity": 8,
+            "stakeholder_approval": -8,
+            "public_trust": -5,
+            "ethical_framework": 5,
+            "policy_quality": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "Radical trust in students! They rise to the occasion with surprisingly mature governance. But parents worry about oversight.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "s10_constitutional",
+          "label": "D. AI Constitution with Amendment Process",
+          "description": "Draft a school AI Constitution: core principles that cannot change, plus an amendment process for evolving rules. Ratified by vote.",
+          "delta": {
+            "policy_quality": 12,
+            "ethical_framework": 15,
+            "public_trust": 10,
+            "stakeholder_approval": 8,
+            "implementation_success": 8,
+            "committee_unity": 5,
+            "safety_index": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "A living document! The AI Constitution gives clear principles while allowing evolution. Constitutional governance at its finest.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_11_future",
+      "round_title": "Session 11: Preparing for Tomorrow's AI",
+      "situation": "News breaks: a new AI model can generate entire textbooks, create personalized curricula, and even conduct one-on-one tutoring sessions that outperform average human tutors. Education as we know it may change forever. Your committee must prepare the school for this wave — not just react to it.",
+      "goal": "Prepare the school for the next generation of AI capabilities.",
+      "coaching_moment": "Adaptability: The pace of AI change is accelerating. The best preparation is not predicting the future — it is building the capacity to adapt.",
+      "reflection_prompt": "If AI can teach as well as a human, what is the unique value a teacher brings?",
+      "ai_image_prompt": "Futuristic classroom with holographic AI tutor, students engaged in collaborative projects, teacher as facilitator, next-gen learning, semi-realistic",
+      "choices": [
+        {
+          "id": "s11_ai_curriculum",
+          "label": "A. AI-Ready Curriculum Redesign",
+          "description": "Redesign the curriculum around skills AI cannot replicate: creativity, collaboration, emotional intelligence, and ethical judgment.",
+          "delta": {
+            "innovation_score": 10,
+            "ai_literacy": 10,
+            "ethical_framework": 10,
+            "policy_quality": 8,
+            "implementation_success": 5,
+            "stakeholder_approval": 5,
+            "committee_unity": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Visionary! Your school becomes a model for human-centric education in the AI age.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "s11_ai_tutor_pilot",
+          "label": "B. AI Tutor Pilot Program",
+          "description": "Pilot the new AI tutoring system for struggling students. Human teachers focus on mentorship and projects while AI handles drill and practice.",
+          "delta": {
+            "innovation_score": 15,
+            "ai_literacy": 8,
+            "implementation_success": 8,
+            "safety_index": -3,
+            "ethical_framework": 3,
+            "stakeholder_approval": 3,
+            "public_trust": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Bold experimentation! The AI tutor helps struggling students catch up, but some parents worry about replacing teachers.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "s11_teacher_evolution",
+          "label": "C. Teacher Role Evolution Program",
+          "description": "Help teachers transition from content delivery to facilitation, mentorship, and emotional support. AI handles information — teachers handle humans.",
+          "delta": {
+            "stakeholder_approval": 10,
+            "committee_unity": 8,
+            "implementation_success": 8,
+            "public_trust": 8,
+            "ai_literacy": 5,
+            "ethical_framework": 5,
+            "policy_quality": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Redefining teaching for the AI age. Teachers feel valued, not replaced. Morale soars.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "s11_research_lab",
+          "label": "D. Student AI Research Lab",
+          "description": "Create a student-run lab that experiments with new AI tools before they are deployed school-wide. Students as researchers, not just consumers.",
+          "delta": {
+            "innovation_score": 12,
+            "ai_literacy": 15,
+            "ethical_framework": 5,
+            "committee_unity": 5,
+            "safety_index": 3,
+            "stakeholder_approval": -3,
+            "policy_quality": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Students as AI researchers! They test, evaluate, and recommend tools. The lab produces the school's most innovative thinkers.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "session_12_legacy",
+      "round_title": "Session 12: Your Legacy",
+      "situation": "Your final session. The committee's work has been noticed nationally. The Ministry of Education invites you to present your school's AI governance model at a national conference. Hundreds of schools will follow your lead. What message do you send?",
+      "goal": "Define the legacy of your AI Ethics Committee and set the direction for AI in education nationwide.",
+      "coaching_moment": "Strategic thinking and ethical reasoning: Legacy is not about what you built — it is about what endures after you leave. Choose the message that will matter in 10 years.",
+      "reflection_prompt": "What is the one lesson about AI governance that every school in the country should learn?",
+      "ai_image_prompt": "Grand conference hall, student leader presenting on stage to packed audience, AI governance presentation on screen, national media, inspirational atmosphere, semi-realistic",
+      "choices": [
+        {
+          "id": "s12_ethics_first",
+          "label": "A. 'Ethics First, Innovation Follows'",
+          "description": "Present the message that AI governance must start with ethical principles. When the foundation is right, innovation takes care of itself.",
+          "delta": {
+            "ethical_framework": 15,
+            "policy_quality": 12,
+            "public_trust": 10,
+            "stakeholder_approval": 8,
+            "implementation_success": 5,
+            "innovation_score": 3,
+            "committee_unity": 5
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "delayed_gratification"
+          ],
+          "feedback": "Your 'Ethics First' framework is adopted by 200 schools within a year. You changed how a nation thinks about AI in education.",
+          "skill_explanation": {
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning.",
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control."
+          }
+        },
+        {
+          "id": "s12_students_lead",
+          "label": "B. 'Let Students Lead'",
+          "description": "Argue that the best AI governance comes from trusting students. Share how student voice transformed your committee.",
+          "delta": {
+            "innovation_score": 12,
+            "ai_literacy": 12,
+            "committee_unity": 10,
+            "stakeholder_approval": 5,
+            "public_trust": 5,
+            "ethical_framework": 5,
+            "policy_quality": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "adaptability"
+          ],
+          "feedback": "A powerful message of trust. Student-led AI governance spreads as a movement. Young voices shape national policy.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "s12_balance",
+          "label": "C. 'The Balance Blueprint'",
+          "description": "Present a practical framework for balancing innovation, safety, ethics, and inclusion. Not philosophy — actionable steps any school can follow.",
+          "delta": {
+            "policy_quality": 10,
+            "implementation_success": 12,
+            "innovation_score": 8,
+            "safety_index": 8,
+            "ethical_framework": 8,
+            "stakeholder_approval": 8,
+            "public_trust": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Practical and replicable! The Balance Blueprint becomes the most downloaded education resource of the year.",
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "s12_open_source",
+          "label": "D. 'Open Source AI Governance'",
+          "description": "Release all your policies, frameworks, and tools as open-source. Invite every school to adapt, improve, and share back.",
+          "delta": {
+            "public_trust": 15,
+            "innovation_score": 10,
+            "ai_literacy": 8,
+            "ethical_framework": 8,
+            "policy_quality": 8,
+            "stakeholder_approval": 5,
+            "committee_unity": 8,
+            "implementation_success": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Open governance for an open world. Schools across 15 countries adopt your framework. Your committee's work becomes a global commons.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "ethics_champion",
+      "label": "Ethics Champion",
+      "condition": "ethical_framework >= 80 and policy_quality >= 70",
+      "icon": "⚖️"
+    },
+    {
+      "id": "innovation_leader",
+      "label": "Innovation Leader",
+      "condition": "innovation_score >= 75 and ai_literacy >= 70",
+      "icon": "💡"
+    },
+    {
+      "id": "trust_builder",
+      "label": "Trust Builder",
+      "condition": "public_trust >= 80 and stakeholder_approval >= 75",
+      "icon": "🤝"
+    },
+    {
+      "id": "perfect_balance",
+      "label": "Perfect Balance",
+      "condition": "innovation_score >= 60 and safety_index >= 60 and ethical_framework >= 60",
+      "icon": "🎯"
+    },
+    {
+      "id": "unity_forger",
+      "label": "Unity Forger",
+      "condition": "committee_unity >= 80 and stakeholder_approval >= 70",
+      "icon": "🤜"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Deepfake",
+      "definition": "AI-generated synthetic media (video, audio, or images) that convincingly depicts someone saying or doing something they never did."
+    },
+    {
+      "term": "Algorithmic Bias",
+      "definition": "Systematic unfairness in AI outputs caused by biased training data, flawed design, or unrepresentative assumptions."
+    },
+    {
+      "term": "Data Privacy",
+      "definition": "The right of individuals to control how their personal information is collected, stored, used, and shared by organizations and technologies."
+    },
+    {
+      "term": "AI Governance",
+      "definition": "The frameworks, policies, and oversight mechanisms that guide the ethical development, deployment, and use of artificial intelligence systems."
+    },
+    {
+      "term": "Digital Citizenship",
+      "definition": "The responsible and ethical use of technology, including understanding rights, responsibilities, and the impact of online behavior."
+    },
+    {
+      "term": "Generative AI",
+      "definition": "AI systems that can create new content — text, images, audio, video, or code — based on patterns learned from training data."
+    },
+    {
+      "term": "Human-in-the-Loop",
+      "definition": "A design principle where humans retain oversight and decision-making authority over AI systems, especially for high-stakes decisions."
+    },
+    {
+      "term": "COPPA/DPDPA",
+      "definition": "Laws protecting children's data: COPPA (Children's Online Privacy Protection Act, US) and DPDPA (Digital Personal Data Protection Act, India) regulate how organizations handle minors' personal information."
+    }
+  ],
+  "endings": [
+    {
+      "id": "governance_pioneer",
+      "title": "Governance Pioneer",
+      "icon": "🏛️",
+      "message": "Your AI Ethics Committee has set a new standard for school governance worldwide! With an exceptional ethical framework, rock-solid policies, and strong stakeholder trust, your school's 'AI Constitution' is adopted by hundreds of institutions. Education ministries cite your work as a blueprint. Your legacy: proving that young people can govern complex technology responsibly and wisely.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "ethical_framework",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "policy_quality",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "public_trust",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "ethics_guardian",
+      "title": "Ethics Guardian",
+      "icon": "⚖️",
+      "message": "You became the moral compass of your school's AI journey. When others pushed for speed, you demanded fairness. When data was at risk, you stood firm for privacy. Your ethical framework prevented every major crisis and earned the respect of parents, teachers, and students alike. Your legacy: a school where technology serves human values, never the other way around.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "ethical_framework",
+            "operator": ">=",
+            "value": 80
+          },
+          {
+            "resource": "safety_index",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "innovation_champion",
+      "title": "Innovation Champion",
+      "icon": "🚀",
+      "message": "Your school became the most innovative AI-powered learning environment in the country! Students create groundbreaking projects, win national competitions, and graduate with AI skills that set them apart. The AI Innovation Fair becomes an annual national event. Your legacy: a generation of students who do not just use AI — they shape it.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "innovation_score",
+            "operator": ">=",
+            "value": 75
+          },
+          {
+            "resource": "ai_literacy",
+            "operator": ">=",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "balanced_leader",
+      "title": "Balanced Leader",
+      "icon": "🎯",
+      "message": "You achieved what many said was impossible: a school where AI innovation thrives alongside strong safety, clear ethics, and genuine stakeholder satisfaction. No single metric is the highest, but every metric is strong. Your committee proved that governance does not mean choosing sides — it means finding the path that respects everyone. Your legacy: the art of balance in the age of AI.",
+      "type": "triumph",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "innovation_score",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "safety_index",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "ethical_framework",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "stakeholder_approval",
+            "operator": ">=",
+            "value": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "policy_apprentice",
+      "title": "Policy Apprentice",
+      "icon": "📝",
+      "message": "Your committee navigated a turbulent year of AI challenges. Not every decision was perfect — some policies needed revision, some stakeholders remained unsatisfied, and a few crises tested your resolve. But you showed up, made difficult choices, and learned lessons that will serve you for life. Every expert was once a beginner. Your journey in AI governance has only just begun.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          10,
+          14
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: AI Policy Lab: Governing the Future Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of AI Policy Lab: Governing the Future. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: AI Policy Lab: Governing the Future Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of AI Policy Lab: Governing the Future. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

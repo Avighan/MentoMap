@@ -72,20 +72,40 @@ const LeaderboardPage = () => {
   const [skillLoading, setSkillLoading] = useState(false);
   const [skillTrend, setSkillTrend] = useState([]);
   // R19 — cohort scoping for skills leaderboard
-  const [skillCohort, setSkillCohort] = useState('global'); // 'global' | 'org'
-  const [skillCohortMeta, setSkillCohortMeta] = useState(null); // { cohort_size, org_id }
+  const [skillCohort, setSkillCohort] = useState('global'); // 'global' | 'org' | 'cohort'
+  const [skillCohortMeta, setSkillCohortMeta] = useState(null); // { cohort_size, org_id, suppressed, reason, k }
+  // Privacy suppression state for non-skills tabs
+  const [coinSuppressed, setCoinSuppressed] = useState(null);   // { suppressed, reason, k }
+  const [xpSuppressed, setXpSuppressed] = useState(null);
+  const [gameSuppressed, setGameSuppressed] = useState(null);
 
   useEffect(() => {
     const load = async () => {
       try {
         const [coins, xp, games] = await Promise.all([
-          getGlobalLeaderboard(50).catch(() => []),
+          getGlobalLeaderboard(50).catch(() => ({})),
           getXPLeaderboard(50).catch(() => ({ leaderboard: [] })),
           getLeaderboard().catch(() => ({ leaderboard: [] })),
         ]);
-        setCoinLeaderboard(Array.isArray(coins) ? coins : coins?.entries || []);
-        setXpLeaderboard(xp?.leaderboard || []);
-        setGameLeaderboard(games?.leaderboard || []);
+        // coins: may be array (legacy) or { rows/entries, suppressed, reason, k }
+        if (Array.isArray(coins)) {
+          setCoinLeaderboard(coins);
+        } else {
+          setCoinLeaderboard(coins?.rows || coins?.entries || []);
+          if (coins?.suppressed != null) {
+            setCoinSuppressed({ suppressed: coins.suppressed, reason: coins.reason, k: coins.k });
+          }
+        }
+        // xp
+        setXpLeaderboard(xp?.rows || xp?.leaderboard || []);
+        if (xp?.suppressed != null) {
+          setXpSuppressed({ suppressed: xp.suppressed, reason: xp.reason, k: xp.k });
+        }
+        // games
+        setGameLeaderboard(games?.rows || games?.leaderboard || []);
+        if (games?.suppressed != null) {
+          setGameSuppressed({ suppressed: games.suppressed, reason: games.reason, k: games.k });
+        }
       } catch (err) {
         console.error('Failed to load leaderboards:', err);
       } finally {
@@ -100,18 +120,18 @@ const LeaderboardPage = () => {
     const loadSkills = async () => {
       setSkillLoading(true);
       try {
-        const cohortParam = skillCohort === 'org' ? '&cohort=org' : '';
-        const res = await apiClient.get(`/api/leaderboard/skills?dimension=${skillDimension}${cohortParam}`);
-        setSkillLeaderboard(res.data?.leaderboard || res.data?.entries || []);
-        if (skillCohort === 'org') {
-          setSkillCohortMeta({
-            org_id: res.data?.org_id,
-            cohort_size: res.data?.cohort_size,
-            caller_role: res.data?.caller_role,
-          });
-        } else {
-          setSkillCohortMeta(null);
-        }
+        const res = await apiClient.get(
+          `/api/leaderboard/skills?dimension=${skillDimension}&scope=${skillCohort}`
+        );
+        setSkillLeaderboard(res.data?.rows || res.data?.leaderboard || res.data?.entries || []);
+        setSkillCohortMeta({
+          org_id: res.data?.org_id,
+          cohort_size: res.data?.cohort_size,
+          caller_role: res.data?.caller_role,
+          suppressed: res.data?.suppressed,
+          reason: res.data?.reason,
+          k: res.data?.k,
+        });
       } catch (err) {
         console.error('Failed to load skills leaderboard:', err);
         setSkillLeaderboard([]);
@@ -141,12 +161,21 @@ const LeaderboardPage = () => {
     { id: 'skills', label: `🧠 ${t('leaderboard.tab_skills')}`, icon: null },
   ];
 
+  // Resolve the display name for a leaderboard row, honouring the privacy schema:
+  // - is_self rows: show display_name (real name)
+  // - peer rows: show peer_label (e.g. "Peer 1") or fall back to display_name / user_id
+  const resolveRowName = (e) => {
+    if (e.is_self) return e.display_name || e.user_id || 'You';
+    return e.peer_label || e.display_name || e.name || e.user_id || e.username || 'Peer';
+  };
+
   const getActiveData = () => {
     switch (activeTab) {
       case 'coins':
         return coinLeaderboard.map(e => ({
           id: e.user_id,
-          name: e.user_id,
+          name: resolveRowName(e),
+          isSelf: !!e.is_self,
           primary: (e.lifetime_earned || 0).toLocaleString(),
           primaryLabel: 'coins earned',
           secondary: `${e.games_completed || 0} games`,
@@ -154,7 +183,8 @@ const LeaderboardPage = () => {
       case 'xp':
         return xpLeaderboard.map(e => ({
           id: e.user_id,
-          name: e.user_id,
+          name: resolveRowName(e),
+          isSelf: !!e.is_self,
           primary: (e.xp || e.total_xp || 0).toLocaleString(),
           primaryLabel: 'XP',
           secondary: `Level ${e.level || Math.floor((e.xp || 0) / 100) + 1}`,
@@ -162,7 +192,8 @@ const LeaderboardPage = () => {
       case 'games':
         return gameLeaderboard.map(e => ({
           id: e.user_id || e.username,
-          name: e.user_id || e.username,
+          name: resolveRowName(e),
+          isSelf: !!e.is_self,
           primary: (e.score || e.mento_score || 0).toLocaleString(),
           primaryLabel: 'Mento Score',
           secondary: e.game_title || e.game_id || '',
@@ -176,6 +207,12 @@ const LeaderboardPage = () => {
         return [];
     }
   };
+
+  // Suppression data for the currently-active non-skills tab
+  const activeTabSuppression = activeTab === 'coins' ? coinSuppressed
+    : activeTab === 'xp' ? xpSuppressed
+    : activeTab === 'games' ? gameSuppressed
+    : null;
 
   const data = activeTab === 'skills' ? [] : getActiveData();
 
@@ -257,32 +294,36 @@ const LeaderboardPage = () => {
             {isAuthenticated && (
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Scope</span>
-                <button
-                  onClick={() => setSkillCohort('global')}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold border ${
-                    skillCohort === 'global'
-                      ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
-                      : 'bg-white border-gray-200 text-gray-500 hover:border-indigo-300'
-                  }`}
-                >
-                  🌍 Global
-                </button>
-                <button
-                  onClick={() => setSkillCohort('org')}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold border ${
-                    skillCohort === 'org'
-                      ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
-                      : 'bg-white border-gray-200 text-gray-500 hover:border-indigo-300'
-                  }`}
-                >
-                  🏫 My cohort
-                </button>
-                {skillCohort === 'org' && skillCohortMeta?.cohort_size != null && (
+                {[
+                  { value: 'global', label: '🌍 Global' },
+                  { value: 'org', label: '🏫 My School' },
+                  { value: 'cohort', label: '👥 My Cohort' },
+                ].map(({ value, label }) => (
+                  <button
+                    key={value}
+                    onClick={() => setSkillCohort(value)}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold border ${
+                      skillCohort === value
+                        ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
+                        : 'bg-white border-gray-200 text-gray-500 hover:border-indigo-300'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+                {skillCohort !== 'global' && skillCohortMeta?.cohort_size != null && (
                   <span className="text-xs text-gray-500">
                     {skillCohortMeta.cohort_size} {skillCohortMeta.cohort_size === 1 ? 'classmate' : 'classmates'}
                     {skillCohortMeta.org_id ? ` · ${skillCohortMeta.org_id}` : ''}
                   </span>
                 )}
+              </div>
+            )}
+
+            {/* k-anonymity suppression banner for skills tab */}
+            {skillCohortMeta?.suppressed && (
+              <div className="rounded-md bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900 mb-3">
+                {skillCohortMeta.reason || `Need at least ${skillCohortMeta.k || 5} participants in this group to show a leaderboard. This protects everyone's privacy.`}
               </div>
             )}
 
@@ -347,7 +388,10 @@ const LeaderboardPage = () => {
                 </div>
                 <div className="divide-y divide-gray-50">
                   {skillLeaderboard.map((entry, i) => {
-                    const isMe = entry.user_id === user?.username || entry.user_id === user?.id;
+                    const isMe = entry.is_self || entry.user_id === user?.username || entry.user_id === user?.id;
+                    const displayName = isMe
+                      ? (entry.display_name || entry.user_id || 'You')
+                      : (entry.peer_label || entry.display_name || entry.user_id || entry.username || 'Peer');
                     const score = entry.score ?? entry.dimension_score ?? 0;
                     const games = entry.games_played ?? entry.games_completed ?? 0;
                     return (
@@ -357,7 +401,9 @@ const LeaderboardPage = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: Math.min(i * 0.03, 0.5) }}
                         className={`grid grid-cols-12 items-center px-4 py-3 ${
-                          isMe ? 'bg-yellow-50 border-l-4 border-yellow-300' : ''
+                          isMe
+                            ? 'bg-yellow-50 border-l-4 border-yellow-300 ring-2 ring-blue-300'
+                            : ''
                         }`}
                       >
                         <span className="col-span-1">
@@ -372,7 +418,7 @@ const LeaderboardPage = () => {
                           </div>
                         </span>
                         <span className="col-span-5 text-sm font-semibold truncate" style={{ color: colors.text }}>
-                          {entry.user_id || entry.username} {isMe ? '(You)' : ''}
+                          {displayName} {isMe ? '(You)' : ''}
                         </span>
                         <span className="col-span-4 pr-4">
                           <div className="flex items-center gap-2">
@@ -398,13 +444,20 @@ const LeaderboardPage = () => {
           </div>
         )}
 
+        {/* Suppression banner — shown for coins/xp/games tabs when k-anonymity is active */}
+        {activeTab !== 'skills' && activeTabSuppression?.suppressed && (
+          <div className="rounded-md bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900 mb-3">
+            {activeTabSuppression.reason || `Need at least ${activeTabSuppression.k || 5} participants in this group to show a leaderboard. This protects everyone's privacy.`}
+          </div>
+        )}
+
         {/* Top 3 Podium */}
         {activeTab !== 'skills' && data.length >= 3 && (
           <div className="flex items-end justify-center gap-3 pt-4 pb-2">
             {[1, 0, 2].map((rank) => {
               const entry = data[rank];
               if (!entry) return null;
-              const isMe = entry.id === user?.username || entry.id === user?.id;
+              const isMe = entry.isSelf || entry.id === user?.username || entry.id === user?.id;
               const heights = ['h-28', 'h-20', 'h-16'];
               const MedalIcon = MEDAL_ICONS[rank];
               return (
@@ -456,7 +509,7 @@ const LeaderboardPage = () => {
           ) : (
             <div className="space-y-2">
               {data.map((entry, i) => {
-                const isMe = entry.id === user?.username || entry.id === user?.id;
+                const isMe = entry.isSelf || entry.id === user?.username || entry.id === user?.id;
                 return (
                   <motion.div
                     key={`${entry.id}-${i}`}
@@ -464,7 +517,9 @@ const LeaderboardPage = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: Math.min(i * 0.03, 0.5) }}
                     className={`flex items-center gap-3 p-3 rounded-lg border ${
-                      isMe ? 'border-yellow-200 bg-yellow-50' : 'border-gray-100 bg-white'
+                      isMe
+                        ? 'border-yellow-200 bg-yellow-50 ring-2 ring-blue-300'
+                        : 'border-gray-100 bg-white'
                     }`}
                   >
                     <div

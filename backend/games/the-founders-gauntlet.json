@@ -1,6 +1,6 @@
 {
   "game_id": "the_founders_gauntlet",
-  "game_type": "rounds",
+  "game_type": "simulation",
   "title": "Founder's Gauntlet: 0 → IPO",
   "subtitle": "Ten quarters. From validated idea to liquidity event.",
   "icon": "🚀",
@@ -88,13 +88,20 @@
   },
   "initial_state": {
     "quarter": 1,
-    "arr": 0,
-    "cash": 150000,
+    "money": 150000,
     "monthly_burn": 25000,
+    "arr": 0,
+    "new_arr_added": 0,
     "customers": 0,
+    "new_customers": 0,
+    "arpu": 500,
+    "gross_margin_pct": 70,
+    "churn_pct": 3.5,
+    "expansion_pct": 0,
+    "marketing_spend": 0,
     "headcount": 2,
-    "founder_equity_pct": 100.0,
-    "esop_pool_pct": 0.0,
+    "founder_equity_pct": 90.0,
+    "esop_pool_pct": 10.0,
     "investor_equity_pct": 0.0
   },
   "psychological_framework": {
@@ -250,21 +257,25 @@
       "monthly_churn_pct": 3.5,
       "nrr_pct": 100,
       "cap_table": {
-        "shares_outstanding": 10000000,
-        "positions": [
+        "starting_valuation": 1500000,
+        "founders": [
           {
-            "holder": "Founders",
-            "shares": 10000000
+            "name": "You (Founder/CEO)",
+            "shares": 5400000,
+            "role": "ceo"
           },
           {
-            "holder": "ESOP pool",
-            "shares": 0
-          },
-          {
-            "holder": "Investors",
-            "shares": 0
+            "name": "Co-founder/CTO",
+            "shares": 3600000,
+            "role": "cto"
           }
-        ]
+        ],
+        "esop_pool_pct": 0.1,
+        "rounds": [],
+        "vesting_schedule": {
+          "cliff_months": 12,
+          "total_months": 48
+        }
       }
     },
     "market": {
@@ -937,6 +948,61 @@
             "default": "lean_canvas",
             "expert_pick": "mom_test",
             "applies_to": "discovery.method"
+          },
+          {
+            "id": "interview_format",
+            "type": "dropdown",
+            "label": "Customer interview format",
+            "description": "Steve Blank's playbook prefers in-context observation over structured Qs.",
+            "options": [
+              "structured",
+              "semi-structured",
+              "in-context"
+            ],
+            "default": "structured",
+            "expert_pick": "in-context",
+            "applies_to": "discovery.interview_format"
+          },
+          {
+            "id": "north_star_metric",
+            "type": "dropdown",
+            "label": "North-star metric",
+            "description": "What single number signals real value? Activation, retention, or ARR?",
+            "options": [
+              "weekly_active_users",
+              "activation_rate",
+              "30d_retention",
+              "paid_arr"
+            ],
+            "default": "weekly_active_users",
+            "expert_pick": "30d_retention",
+            "applies_to": "metrics.north_star"
+          },
+          {
+            "id": "kill_criterion_pct",
+            "type": "slider",
+            "label": "Kill criterion: < % positive reactions kills the idea",
+            "description": "Pre-commit a quantitative kill bar. < 30% positive in interviews = pivot.",
+            "min": 10,
+            "max": 60,
+            "step": 5,
+            "default": 40,
+            "expert_pick": 30,
+            "unit": "%",
+            "applies_to": "discovery.kill_criterion_pct"
+          },
+          {
+            "id": "founder_time_on_sales_pct",
+            "type": "slider",
+            "label": "Founder time on sales (%)",
+            "description": "PG: founders must do sales themselves until $1M ARR.",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "default": 30,
+            "expert_pick": 60,
+            "unit": "%",
+            "applies_to": "founder.time_on_sales_pct"
           }
         ]
       },
@@ -1141,6 +1207,58 @@
             "default": 5,
             "expert_pick": 4,
             "applies_to": "product.design_partners"
+          },
+          {
+            "id": "tech_stack_choice",
+            "type": "dropdown",
+            "label": "Tech stack philosophy",
+            "description": "Boring stack ships faster; bleeding edge attracts talent but burns time.",
+            "options": [
+              "boring_proven",
+              "modern_mainstream",
+              "bleeding_edge"
+            ],
+            "default": "modern_mainstream",
+            "expert_pick": "boring_proven",
+            "applies_to": "product.tech_stack"
+          },
+          {
+            "id": "support_model",
+            "type": "dropdown",
+            "label": "Customer support model",
+            "description": "Founder-led support generates the highest learning velocity early on.",
+            "options": [
+              "founder_led",
+              "first_hire",
+              "outsourced"
+            ],
+            "default": "founder_led",
+            "expert_pick": "founder_led",
+            "applies_to": "ops.support_model"
+          },
+          {
+            "id": "beta_cohort_size",
+            "type": "slider",
+            "label": "Closed-beta cohort size",
+            "description": "Too few = no signal. Too many = unfocused. 8-15 design partners is the sweet spot.",
+            "min": 3,
+            "max": 30,
+            "step": 1,
+            "default": 10,
+            "expert_pick": 12,
+            "applies_to": "gtm.beta_cohort_size"
+          },
+          {
+            "id": "engineering_quality_bar",
+            "type": "slider",
+            "label": "Engineering quality bar (0=ship now, 10=test everything)",
+            "description": "Pre-PMF, code quality bar of 4-5 maximises learning velocity.",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "default": 6,
+            "expert_pick": 4,
+            "applies_to": "eng.quality_bar"
           }
         ]
       },
@@ -1308,6 +1426,62 @@
             "expert_pick": 5,
             "unit": "%",
             "applies_to": "pricing.max_discount_pct"
+          },
+          {
+            "id": "free_trial_days",
+            "type": "slider",
+            "label": "Free-trial length (days)",
+            "description": "B2B SaaS norm 14-30 days. Longer = lower conversion urgency.",
+            "min": 0,
+            "max": 60,
+            "step": 7,
+            "default": 14,
+            "expert_pick": 14,
+            "unit": "d",
+            "applies_to": "gtm.free_trial_days"
+          },
+          {
+            "id": "expansion_motion",
+            "type": "dropdown",
+            "label": "Expansion revenue motion",
+            "description": "Best-in-class SaaS targets 120%+ NRR via seat or usage expansion.",
+            "options": [
+              "none",
+              "seat_expansion",
+              "usage_expansion",
+              "module_upsell"
+            ],
+            "default": "none",
+            "expert_pick": "seat_expansion",
+            "applies_to": "gtm.expansion_motion"
+          },
+          {
+            "id": "churn_definition_days",
+            "type": "slider",
+            "label": "Churn measurement window (days)",
+            "description": "30-day rolling churn is industry standard for monthly-billed SaaS.",
+            "min": 30,
+            "max": 180,
+            "step": 30,
+            "default": 30,
+            "expert_pick": 30,
+            "unit": "d",
+            "applies_to": "metrics.churn_window_days"
+          },
+          {
+            "id": "customer_advisory_board",
+            "type": "dropdown",
+            "label": "Customer Advisory Board cadence",
+            "description": "Quarterly CABs catch product gaps 3-6 months before they show in NPS.",
+            "options": [
+              "none",
+              "annual",
+              "biannual",
+              "quarterly"
+            ],
+            "default": "none",
+            "expert_pick": "quarterly",
+            "applies_to": "gov.customer_advisory_board"
           }
         ]
       },
@@ -1472,6 +1646,65 @@
             "expert_pick": 8,
             "unit": "%",
             "applies_to": "fund.esop_topup_pct"
+          },
+          {
+            "id": "lead_investor_archetype",
+            "type": "dropdown",
+            "label": "Lead investor archetype",
+            "description": "Operator-VCs add pattern-match; brand-name signals dilute attention.",
+            "options": [
+              "operator_vc",
+              "brand_name_vc",
+              "strategic_corp",
+              "angel_syndicate"
+            ],
+            "default": "brand_name_vc",
+            "expert_pick": "operator_vc",
+            "applies_to": "fundraise.lead_archetype"
+          },
+          {
+            "id": "anti_dilution_clause",
+            "type": "dropdown",
+            "label": "Anti-dilution clause",
+            "description": "Broad-based weighted average is founder-friendly market standard.",
+            "options": [
+              "none",
+              "broad_based_wa",
+              "narrow_based_wa",
+              "full_ratchet"
+            ],
+            "default": "broad_based_wa",
+            "expert_pick": "broad_based_wa",
+            "applies_to": "fundraise.anti_dilution"
+          },
+          {
+            "id": "vesting_acceleration",
+            "type": "dropdown",
+            "label": "Founder vesting acceleration on change-of-control",
+            "description": "Double-trigger acceleration is the founder-friendly market norm.",
+            "options": [
+              "none",
+              "single_trigger",
+              "double_trigger"
+            ],
+            "default": "none",
+            "expert_pick": "double_trigger",
+            "applies_to": "fundraise.vesting_acceleration"
+          },
+          {
+            "id": "info_rights_cadence",
+            "type": "dropdown",
+            "label": "Investor information rights cadence",
+            "description": "Monthly reporting builds trust; weekly is over-management.",
+            "options": [
+              "weekly",
+              "monthly",
+              "quarterly",
+              "annual"
+            ],
+            "default": "monthly",
+            "expert_pick": "monthly",
+            "applies_to": "fundraise.info_rights_cadence"
           }
         ]
       },
@@ -1667,6 +1900,62 @@
             "default": "ambiguous",
             "expert_pick": "honest_with_plan",
             "applies_to": "team.crisis_comms"
+          },
+          {
+            "id": "emergency_runway_months",
+            "type": "slider",
+            "label": "Emergency reserve runway (months)",
+            "description": "Carve out a 'never-touch' reserve. 4-6 months is the survivability floor.",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 3,
+            "expert_pick": 5,
+            "unit": "mo",
+            "applies_to": "finance.emergency_reserve_months"
+          },
+          {
+            "id": "customer_comms_channel",
+            "type": "dropdown",
+            "label": "Customer comms channel",
+            "description": "Direct CEO email beats blog post when concentration risk goes public.",
+            "options": [
+              "blog_post",
+              "ceo_email",
+              "phone_calls",
+              "investor_first_then_customers"
+            ],
+            "default": "blog_post",
+            "expert_pick": "ceo_email",
+            "applies_to": "crisis.customer_comms_channel"
+          },
+          {
+            "id": "renegotiate_pricing_pct",
+            "type": "slider",
+            "label": "Concession pricing offered to retained customers (%)",
+            "description": "Discount to anchor customers locks them in but compresses ARR.",
+            "min": 0,
+            "max": 50,
+            "step": 5,
+            "default": 0,
+            "expert_pick": 10,
+            "unit": "%",
+            "applies_to": "crisis.concession_pct"
+          },
+          {
+            "id": "leadership_visibility",
+            "type": "dropdown",
+            "label": "Leadership visibility during crisis",
+            "description": "Daily 10-min standups outperform weekly all-hands during 90-day crises.",
+            "options": [
+              "weekly_allhands",
+              "biweekly_video",
+              "daily_standup",
+              "silent_executive_mode"
+            ],
+            "default": "weekly_allhands",
+            "expert_pick": "daily_standup",
+            "applies_to": "crisis.leadership_visibility"
           }
         ]
       },
@@ -1826,6 +2115,63 @@
             "expert_pick": 4,
             "unit": "mo",
             "applies_to": "people.ramp_months"
+          },
+          {
+            "id": "sourcing_channel_mix",
+            "type": "dropdown",
+            "label": "Primary sourcing channel",
+            "description": "Referrals close 3x faster than inbound but cap your hiring funnel.",
+            "options": [
+              "referrals_only",
+              "agency_recruiters",
+              "inbound_only",
+              "balanced_mix"
+            ],
+            "default": "balanced_mix",
+            "expert_pick": "balanced_mix",
+            "applies_to": "hiring.sourcing_channel"
+          },
+          {
+            "id": "eng_to_sales_ratio",
+            "type": "slider",
+            "label": "Engineering : Sales headcount ratio",
+            "description": "Pre-Series A: 3:1 eng-heavy. Post-Series A: closer to 1.5:1 as GTM scales.",
+            "min": 0.5,
+            "max": 5.0,
+            "step": 0.5,
+            "default": 3.0,
+            "expert_pick": 2.5,
+            "applies_to": "org.eng_to_sales_ratio"
+          },
+          {
+            "id": "comp_structure",
+            "type": "dropdown",
+            "label": "Compensation structure",
+            "description": "Cash-heavy attracts late-stage talent; equity-heavy filters for believers.",
+            "options": [
+              "equity_heavy",
+              "balanced",
+              "cash_heavy",
+              "non_standard"
+            ],
+            "default": "balanced",
+            "expert_pick": "equity_heavy",
+            "applies_to": "comp.structure"
+          },
+          {
+            "id": "performance_review_cadence",
+            "type": "dropdown",
+            "label": "Performance review cadence",
+            "description": "Quarterly OKR reviews build accountability without process overhead.",
+            "options": [
+              "annual",
+              "biannual",
+              "quarterly",
+              "continuous"
+            ],
+            "default": "annual",
+            "expert_pick": "quarterly",
+            "applies_to": "org.review_cadence"
           }
         ]
       },
@@ -1990,6 +2336,58 @@
             "expert_pick": 14,
             "unit": "d",
             "applies_to": "fund.decision_window_days"
+          },
+          {
+            "id": "post_money_use_of_funds_pct_gtm",
+            "type": "slider",
+            "label": "Post-money: % to Go-to-Market",
+            "description": "Series A use-of-funds: ~50-60% GTM, 25-35% R&D, balance G&A. Must sum mentally.",
+            "min": 20,
+            "max": 80,
+            "step": 5,
+            "default": 50,
+            "expert_pick": 55,
+            "unit": "%",
+            "applies_to": "fundraise.use_of_funds.gtm_pct"
+          },
+          {
+            "id": "post_money_use_of_funds_pct_rd",
+            "type": "slider",
+            "label": "Post-money: % to R&D",
+            "description": "R&D allocation drives moat; under-investment kills competitive depth.",
+            "min": 10,
+            "max": 60,
+            "step": 5,
+            "default": 35,
+            "expert_pick": 30,
+            "unit": "%",
+            "applies_to": "fundraise.use_of_funds.rd_pct"
+          },
+          {
+            "id": "growth_target_yoy_pct",
+            "type": "slider",
+            "label": "Series A → B growth target (YoY %)",
+            "description": "T2D3 (triple-triple-double-double-double) is best-in-class venture growth.",
+            "min": 50,
+            "max": 400,
+            "step": 25,
+            "default": 200,
+            "expert_pick": 250,
+            "unit": "%",
+            "applies_to": "fundraise.growth_target_yoy_pct"
+          },
+          {
+            "id": "secondary_sale_pct",
+            "type": "slider",
+            "label": "Founder secondary sale at Series A (%)",
+            "description": "5-10% founder secondary is acceptable; >15% signals lack of conviction.",
+            "min": 0,
+            "max": 20,
+            "step": 1,
+            "default": 0,
+            "expert_pick": 5,
+            "unit": "%",
+            "applies_to": "fundraise.founder_secondary_pct"
           }
         ]
       },
@@ -2327,6 +2725,63 @@
             "expert_pick": 3,
             "unit": "mo",
             "applies_to": "security.compensation_months"
+          },
+          {
+            "id": "pr_strategy",
+            "type": "dropdown",
+            "label": "Public PR strategy",
+            "description": "Proactive transparency outperforms 'no comment' in trust recovery.",
+            "options": [
+              "no_comment",
+              "press_release_only",
+              "ceo_op_ed",
+              "full_transparency_blog"
+            ],
+            "default": "press_release_only",
+            "expert_pick": "full_transparency_blog",
+            "applies_to": "breach.pr_strategy"
+          },
+          {
+            "id": "service_credit_threshold_usd",
+            "type": "slider",
+            "label": "Auto-issue service credit threshold (USD impact)",
+            "description": "Auto-credits below threshold reduce support load by 60-80% during incidents.",
+            "min": 0,
+            "max": 50000,
+            "step": 1000,
+            "default": 0,
+            "expert_pick": 5000,
+            "unit": "$",
+            "applies_to": "breach.service_credit_threshold_usd"
+          },
+          {
+            "id": "legal_escalation_path",
+            "type": "dropdown",
+            "label": "Legal escalation path",
+            "description": "Cyber-specialist counsel is faster than general corporate counsel for breach response.",
+            "options": [
+              "existing_counsel",
+              "cyber_specialist",
+              "in_house_only",
+              "regulator_first"
+            ],
+            "default": "existing_counsel",
+            "expert_pick": "cyber_specialist",
+            "applies_to": "breach.legal_escalation"
+          },
+          {
+            "id": "audit_firm_tier",
+            "type": "dropdown",
+            "label": "Forensic audit firm tier",
+            "description": "Big-4 forensic audit signals seriousness to enterprise customers.",
+            "options": [
+              "regional_boutique",
+              "tier2_specialist",
+              "big4_forensic"
+            ],
+            "default": "tier2_specialist",
+            "expert_pick": "big4_forensic",
+            "applies_to": "breach.audit_firm_tier"
           }
         ]
       },
@@ -2484,6 +2939,62 @@
             "expert_pick": 70,
             "unit": "%",
             "applies_to": "finance.runway_consumption_pct"
+          },
+          {
+            "id": "hiring_pace_q1_q4",
+            "type": "slider",
+            "label": "Hiring pace next 4 quarters (% headcount growth)",
+            "description": "Best-in-class B-stage SaaS hires 60-100% YoY. >150% breaks culture.",
+            "min": 0,
+            "max": 200,
+            "step": 10,
+            "default": 80,
+            "expert_pick": 80,
+            "unit": "%",
+            "applies_to": "fundraise.hiring_pace_pct"
+          },
+          {
+            "id": "geo_expansion",
+            "type": "dropdown",
+            "label": "Geographic expansion approach",
+            "description": "International before $20M ARR usually destroys focus.",
+            "options": [
+              "us_only",
+              "english_speaking",
+              "europe_first",
+              "global_immediate"
+            ],
+            "default": "us_only",
+            "expert_pick": "english_speaking",
+            "applies_to": "gtm.geo_strategy"
+          },
+          {
+            "id": "ma_appetite",
+            "type": "dropdown",
+            "label": "M&A appetite (acqui-hire & tuck-ins)",
+            "description": "1-2 tuck-ins per year accelerates roadmap; >3 distracts the team.",
+            "options": [
+              "none",
+              "opportunistic",
+              "active_pipeline",
+              "transformative_only"
+            ],
+            "default": "none",
+            "expert_pick": "opportunistic",
+            "applies_to": "strategy.ma_appetite"
+          },
+          {
+            "id": "debt_vs_equity_split_pct",
+            "type": "slider",
+            "label": "Growth capital: % from debt (vs equity)",
+            "description": "Venture debt 20-30% of equity round reduces dilution; >40% is risky.",
+            "min": 0,
+            "max": 60,
+            "step": 5,
+            "default": 0,
+            "expert_pick": 25,
+            "unit": "%",
+            "applies_to": "fundraise.debt_pct"
           }
         ]
       },
@@ -2683,6 +3194,64 @@
             "expert_pick": 5,
             "unit": "%",
             "applies_to": "exit.team_grant_pct"
+          },
+          {
+            "id": "deal_structure",
+            "type": "dropdown",
+            "label": "Exit deal structure",
+            "description": "All-cash maximises certainty; stock swaps maximise upside but add risk.",
+            "options": [
+              "all_cash",
+              "cash_plus_stock",
+              "all_stock",
+              "earn_out_heavy"
+            ],
+            "default": "cash_plus_stock",
+            "expert_pick": "cash_plus_stock",
+            "applies_to": "exit.deal_structure"
+          },
+          {
+            "id": "post_deal_role",
+            "type": "dropdown",
+            "label": "Founder post-deal role",
+            "description": "2-year operator commitment usually nets a 10-20% deal premium.",
+            "options": [
+              "clean_break",
+              "advisor_6mo",
+              "operator_2yr",
+              "operator_indefinite"
+            ],
+            "default": "advisor_6mo",
+            "expert_pick": "operator_2yr",
+            "applies_to": "exit.post_deal_role"
+          },
+          {
+            "id": "employee_retention_pool_pct",
+            "type": "slider",
+            "label": "Retention pool for employees (% of deal value)",
+            "description": "5-10% retention pool retains 80%+ of key employees through year 2.",
+            "min": 0,
+            "max": 20,
+            "step": 1,
+            "default": 5,
+            "expert_pick": 8,
+            "unit": "%",
+            "applies_to": "exit.retention_pool_pct"
+          },
+          {
+            "id": "customer_continuity_comm",
+            "type": "dropdown",
+            "label": "Customer continuity communication timing",
+            "description": "Customers told before deal close show 40%+ lower churn through transition.",
+            "options": [
+              "after_close",
+              "day_of_close",
+              "1_week_before",
+              "30_days_before"
+            ],
+            "default": "day_of_close",
+            "expert_pick": "1_week_before",
+            "applies_to": "exit.customer_comm_timing"
           }
         ]
       },
@@ -2755,7 +3324,8 @@
     },
     {
       "term": "Burn multiple",
-      "definition": "Net cash burned ÷ net new ARR added in a period. Below 1 is exceptional; above 2 spooks investors."
+      "definition": "Net cash burned ÷ net new ARR added in a period. Below 1 is exceptional; above 2 spooks investors.",
+      "why_it_matters": "Bessemer's metric: under 1.0x is great, 1-2x is good, over 3x means you're burning capital inefficiently."
     },
     {
       "term": "LTV/CAC",
@@ -2763,11 +3333,13 @@
     },
     {
       "term": "NRR",
-      "definition": "Net Revenue Retention. Revenue from existing customers (incl. expansion, churn) vs. one year ago, as a %. >110% is great; >120% is best-in-class."
+      "definition": "Net Revenue Retention. Revenue from existing customers (incl. expansion, churn) vs. one year ago, as a %. >110% is great; >120% is best-in-class.",
+      "why_it_matters": "Best SaaS companies hit 120%+: they grow even with zero new logos. <100% means the bucket leaks."
     },
     {
       "term": "Pre-money / Post-money",
-      "definition": "Pre-money is company valuation before new investment; post-money = pre-money + new investment. New investor's % = investment / post-money."
+      "definition": "Pre-money is company valuation before new investment; post-money = pre-money + new investment. New investor's % = investment / post-money.",
+      "why_it_matters": "Post-money valuations include investor's cash; pre-money is the negotiation anchor."
     },
     {
       "term": "ESOP",
@@ -2775,39 +3347,167 @@
     },
     {
       "term": "Term sheet",
-      "definition": "Non-binding outline of the economic and control terms of a financing round. Headline valuation, liquidation preference, board composition, and pool top-up timing are the load-bearing clauses."
+      "definition": "Non-binding outline of the economic and control terms of a financing round. Headline valuation, liquidation preference, board composition, and pool top-up timing are the load-bearing clauses.",
+      "why_it_matters": "Sets the structure of every legal document that follows. The terms beyond price often matter more than price."
     },
     {
       "term": "Liquidation preference",
-      "definition": "The investor's right to get their money back (1x, 1.5x, 2x) before any other shareholders at exit. Participating preferred = also share in remaining proceeds; non-participating = either preference or pro-rata, not both."
+      "definition": "The investor's right to get their money back (1x, 1.5x, 2x) before any other shareholders at exit. Participating preferred = also share in remaining proceeds; non-participating = either preference or pro-rata, not both.",
+      "why_it_matters": "1x non-participating is founder-friendly; 2x participating can leave founders with nothing in modest exits."
     },
     {
       "term": "Rule of 40",
-      "definition": "Growth rate % + free cash flow margin %. Public SaaS comps band 30–50%+ for premium multiples."
+      "definition": "Growth rate % + free cash flow margin %. Public SaaS comps band 30–50%+ for premium multiples.",
+      "why_it_matters": "Late-stage investors use this to decide whether to fund growth-at-all-costs or push profitability."
     },
     {
       "term": "PMF (Product-Market Fit)",
-      "definition": "Sean Ellis's threshold: 40% of users say they would be 'very disappointed' to lose the product. The first reliable signal that the market wants what you built."
+      "definition": "Sean Ellis's threshold: 40% of users say they would be 'very disappointed' to lose the product. The first reliable signal that the market wants what you built.",
+      "why_it_matters": "Marc Andreessen: 'The only thing that matters.' Premature scaling pre-PMF is the #1 startup killer."
     },
     {
       "term": "ICP",
-      "definition": "Ideal Customer Profile — the narrow segment definition that focuses sales, product, and marketing. Sequoia rule: focus 1, expand 2, abandon the rest."
+      "definition": "Ideal Customer Profile — the narrow segment definition that focuses sales, product, and marketing. Sequoia rule: focus 1, expand 2, abandon the rest.",
+      "why_it_matters": "Tighter ICP = higher conversion, lower churn. Most early-stage teams define ICP too broadly."
     },
     {
       "term": "Customer discovery",
-      "definition": "Steve Blank's structured process of testing problem and solution hypotheses with real customers before scaling a product."
+      "definition": "Steve Blank's structured process of testing problem and solution hypotheses with real customers before scaling a product.",
+      "why_it_matters": "Cheaper than building. Skipping this step is the most common cause of startups dying with cash in the bank."
     },
     {
       "term": "Letter of Intent (LOI)",
-      "definition": "A non-binding written commitment from a prospective customer indicating intent to buy under stated conditions."
+      "definition": "A non-binding written commitment from a prospective customer indicating intent to buy under stated conditions.",
+      "why_it_matters": "Locks in headline terms before due diligence. Walking away later costs reputation, not cash."
     },
     {
       "term": "S-1",
-      "definition": "The SEC registration filing required to IPO in the US. Discloses financials, risk factors, governance, executive compensation."
+      "definition": "The SEC registration filing required to IPO in the US. Discloses financials, risk factors, governance, executive compensation.",
+      "why_it_matters": "The S-1 is the public's first deep look at your business. Errors here delay or kill IPOs."
     },
     {
       "term": "Cap table",
       "definition": "The ledger of who owns what % of the company across founders, employees, and investors. Cleanliness of the cap table is a load-bearing diligence item at every round."
+    },
+    {
+      "term": "Cash on hand",
+      "definition": "Total liquid funds available right now to spend.",
+      "why_it_matters": "Combined with monthly burn, this defines your runway."
+    },
+    {
+      "term": "Runway",
+      "definition": "Number of months until you run out of cash at current burn.",
+      "why_it_matters": "<6 months = critical. 12-18 months = healthy. Investors and team morale both watch this."
+    },
+    {
+      "term": "Monthly burn",
+      "definition": "Net cash spent per month (expenses minus revenue).",
+      "why_it_matters": "Burn rate vs runway is the central tension of every startup."
+    },
+    {
+      "term": "Gross margin",
+      "definition": "Revenue minus the direct cost of delivering it (COGS), as a percentage.",
+      "why_it_matters": "Software targets 70-85%. Below 50% means scale won't save you."
+    },
+    {
+      "term": "ARPU",
+      "definition": "Average revenue per user — total revenue divided by paying customers.",
+      "why_it_matters": "Combined with CAC, tells you how long it takes to recoup acquiring a customer."
+    },
+    {
+      "term": "CAC",
+      "definition": "Customer Acquisition Cost — sales + marketing spend divided by new customers won.",
+      "why_it_matters": "Must be paid back inside 12-18 months for SaaS to scale healthily."
+    },
+    {
+      "term": "LTV",
+      "definition": "Lifetime Value — total gross profit you'll earn from one customer over their tenure.",
+      "why_it_matters": "Industry rule: LTV should be at least 3× CAC."
+    },
+    {
+      "term": "LTV / CAC",
+      "definition": "Ratio of customer lifetime value to acquisition cost.",
+      "why_it_matters": "Below 3:1 = unit economics are broken. 3-5:1 healthy. Above 5:1 you're under-investing in growth."
+    },
+    {
+      "term": "Payback period",
+      "definition": "Months it takes for one customer's gross profit to repay their CAC.",
+      "why_it_matters": "Under 12 months is excellent SaaS. Over 24 months is a red flag."
+    },
+    {
+      "term": "Churn",
+      "definition": "% of customers (or revenue) you lose each period.",
+      "why_it_matters": "Even great acquisition can't outrun bad retention. Annual churn >10% is dangerous for SaaS."
+    },
+    {
+      "term": "ESOP pool",
+      "definition": "Equity reserved for current and future employees — typically 10-15% at seed stage.",
+      "why_it_matters": "If you forget to top it up before a raise, the new pool dilutes founders, not investors."
+    },
+    {
+      "term": "Vesting",
+      "definition": "Schedule under which equity is earned over time, usually 4 years with a 1-year cliff.",
+      "why_it_matters": "Standard vesting protects co-founders from a teammate leaving early with a chunk of equity."
+    },
+    {
+      "term": "Cliff",
+      "definition": "Initial period (usually 12 months) during which no equity vests.",
+      "why_it_matters": "Leave before the cliff = you get zero shares. Stay past it = the first chunk vests at once."
+    },
+    {
+      "term": "Dilution",
+      "definition": "Reduction in your ownership % when new shares are issued (in fundraising or ESOP top-ups).",
+      "why_it_matters": "Every round dilutes existing holders. Smart founders model the 5-round dilution path early."
+    },
+    {
+      "term": "Convertible note",
+      "definition": "Debt that converts to equity at the next priced round, usually at a discount or capped valuation.",
+      "why_it_matters": "Faster than a priced round but kicks the valuation conversation down the road."
+    },
+    {
+      "term": "SAFE",
+      "definition": "Simple Agreement for Future Equity — Y Combinator's standard pre-seed instrument.",
+      "why_it_matters": "Like a convertible note but no interest, no maturity date. Faster to close."
+    },
+    {
+      "term": "Lead investor",
+      "definition": "The fund that sets the terms and writes the largest check in a round.",
+      "why_it_matters": "Their term sheet anchors negotiations with all other investors in the round."
+    },
+    {
+      "term": "OKR",
+      "definition": "Objective + Key Results — a goal-setting framework: one ambitious objective, 2-4 measurable KRs.",
+      "why_it_matters": "Doerr's rule: more than 5 OKRs and none of them count."
+    },
+    {
+      "term": "KPI",
+      "definition": "Key Performance Indicator — a metric you track regularly (revenue, churn, NPS, etc.).",
+      "why_it_matters": "OKRs change quarterly. KPIs are the always-on dashboard underneath them."
+    },
+    {
+      "term": "North Star metric",
+      "definition": "The single number that best captures the value you deliver to customers.",
+      "why_it_matters": "Forces alignment when teams are pulled in many directions. (e.g., Airbnb: nights booked)"
+    },
+    {
+      "term": "Series A",
+      "definition": "Typically the first priced equity round after seed; in 2026 SaaS, often $5M-$15M at $20M-$80M valuation.",
+      "why_it_matters": "Series A = scaling proven product, not finding it. PMF expected before, not during."
+    },
+    {
+      "term": "Down round",
+      "definition": "A new financing round priced lower than the previous one.",
+      "why_it_matters": "Triggers anti-dilution clauses that hurt founders most. Often a final option, not a preferred one."
+    },
+    {
+      "term": "Bridge round",
+      "definition": "Short-term financing between priced rounds to extend runway.",
+      "why_it_matters": "Use sparingly — repeated bridges signal weakness to the next priced-round lead."
+    },
+    {
+      "term": "Stock option",
+      "definition": "Right to buy a fixed number of shares at a fixed price (the strike price), usually subject to vesting.",
+      "why_it_matters": "Most common ESOP grant type. Tax treatment varies wildly by country."
     }
   ],
   "id": "the_founders_gauntlet"

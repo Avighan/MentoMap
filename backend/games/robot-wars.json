@@ -1,0 +1,795 @@
+{
+  "game_id": "robot-wars",
+  "title": "Robot Wars",
+  "theme": "AI & Robotics",
+  "icon": "🤖",
+  "description": "Command an army of intelligent machines in a chess-style tactical battle for control of a power grid. Deploy your Mainframe, Mech Titan, Artillery Bots, Stealth Drones, Spider Bots, and Nano Swarms across an 8x8 circuit grid. Destroy enemy processors, capture power nodes, and accumulate 10 million energy units to achieve total system dominance.",
+  "game_type": "chess_strategy",
+  "category": "Strategy & Tactics",
+  "target_audience": "Ages 12+",
+  "duration_minutes": 25,
+  "difficulty": "advanced",
+  "learning_objectives": [
+    "Develop computational thinking by planning optimal movement sequences across the grid",
+    "Practice resource allocation by balancing unit actions with power node acquisition",
+    "Learn positional strategy through controlling key data junctions and power cores",
+    "Build risk evaluation skills by weighing engagement odds against potential system losses",
+    "Understand the value of unit diversity and specialization in achieving complex objectives",
+    "Strengthen sequential planning by coordinating multiple bot types toward convergent victory conditions"
+  ],
+  "tags": [
+    "strategy",
+    "robotics",
+    "chess",
+    "artificial_intelligence",
+    "tactical_combat",
+    "resource_management"
+  ],
+  "how_to_play": [
+    "Each turn you receive 2 Action Points (AP). Moving a bot costs 1 AP, and using a special ability costs AP as listed on the ability.",
+    "Bots move like chess pieces: Mainframe=King, Mech Titan=Queen, Artillery Bot=Rook, Stealth Drone=Bishop, Spider Bot=Knight, Nano Swarm=Pawn.",
+    "Engage enemy bots by moving onto their grid square to deal damage. Nano Swarms upgrade to Mech Titan when reaching the far edge of the grid.",
+    "Control power nodes by positioning your bots on them. Each node generates energy income every processing cycle.",
+    "Win by destroying the enemy Mainframe, controlling 3 or more power nodes, or accumulating 10 million energy units.",
+    "Use special abilities strategically: each bot class has two unique subroutines that can override the outcome of critical engagements."
+  ],
+  "objectives": [
+    "Destroy the rival Mainframe to trigger an instant system shutdown victory",
+    "Control 3 or more power nodes for a grid dominance victory",
+    "Accumulate 10 million energy units through strategic power generation"
+  ],
+  "storybook_pages": [
+    {
+      "title": "The Circuit Grid",
+      "text": "Two rival AI networks clash for control of a critical power infrastructure. The 8x8 circuit grid is studded with power cores, data centers, and charging stations — each a vital resource in the war for digital supremacy. Your objective: deploy your robotic forces, capture power nodes, and dismantle the enemy network before it overwhelms your systems.",
+      "image_prompt": "two armies of robots facing each other across a glowing 8x8 circuit board grid with power cores and data centers, neon blue and red lighting, cyberpunk digital art, dramatic perspective"
+    },
+    {
+      "title": "Your Robot Army",
+      "text": "Mainframe (King) - Your central processor, if it falls your network collapses.\nMech Titan (Queen) - Massive combat robot with full directional capability.\nArtillery Bot (Rook) - Heavy weapons platform firing in straight lines.\nStealth Drone (Bishop) - Cloaked diagonal infiltrator and saboteur.\nSpider Bot (Knight) - Agile multi-legged unit with unpredictable L-shaped jumps.\nNano Swarm (Pawn) - Microscopic robot cloud that upgrades to Mech Titan!",
+      "image_prompt": "lineup of six different robot types from a massive mainframe computer to tiny nanobots, each with unique mechanical designs, holographic blueprint display style, glowing circuit lines, futuristic tech art"
+    },
+    {
+      "title": "Power Nodes",
+      "text": "The grid contains 6 critical power nodes: the Power Core provides raw energy, the Data Center processes intelligence, the Charging Station restores damaged units, the Sensor Array reveals enemy positions, the Forge manufactures reinforcements, and the Shield Generator protects your network. Control them to fuel your war machine!",
+      "image_prompt": "birds eye view of a glowing 8x8 circuit grid with six highlighted power nodes showing a lightning bolt power core, server rack, charging pod, radar dish, robotic forge, and force field generator, tron-style neon art"
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "🧠",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🔄",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "prefrontal_cortex"
+      }
+    ]
+  },
+  "initial_state": {
+    "valuation": {
+      "label": "Energy Units",
+      "value": 1000000,
+      "icon": "⚡"
+    },
+    "strategic_thinking": {
+      "icon": "🧠",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "adaptability": {
+      "icon": "🔄",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "chess_config": {
+    "board_size": 8,
+    "max_ap": 2,
+    "win_valuation": 10000000,
+    "win_resource_count": 3,
+    "resource_tiles": [
+      {
+        "pos": [
+          2,
+          2
+        ],
+        "type": "power_core",
+        "income": 200000,
+        "icon": "⚡",
+        "label": "Power Core"
+      },
+      {
+        "pos": [
+          2,
+          5
+        ],
+        "type": "data_center",
+        "income": 150000,
+        "icon": "💾",
+        "label": "Data Center"
+      },
+      {
+        "pos": [
+          5,
+          2
+        ],
+        "type": "charging",
+        "income": 180000,
+        "icon": "🔋",
+        "label": "Charging Station"
+      },
+      {
+        "pos": [
+          5,
+          5
+        ],
+        "type": "sensor",
+        "income": 160000,
+        "icon": "📡",
+        "label": "Sensor Array"
+      },
+      {
+        "pos": [
+          3,
+          3
+        ],
+        "type": "forge",
+        "income": 120000,
+        "icon": "🔥",
+        "label": "Forge"
+      },
+      {
+        "pos": [
+          4,
+          4
+        ],
+        "type": "shield",
+        "income": 140000,
+        "icon": "🛡️",
+        "label": "Shield Generator"
+      }
+    ],
+    "theme_config": {
+      "king_role": "mainframe",
+      "queen_role": "titan",
+      "pawn_role": "nano",
+      "back_row": [
+        "artillery",
+        "spider",
+        "stealth",
+        "mainframe",
+        "titan",
+        "stealth",
+        "spider",
+        "artillery"
+      ],
+      "piece_stats": {
+        "mainframe": {
+          "hp": 10,
+          "attack": 3,
+          "label": "Mainframe",
+          "icon": "🖥️"
+        },
+        "titan": {
+          "hp": 8,
+          "attack": 4,
+          "label": "Mech Titan",
+          "icon": "🤖"
+        },
+        "artillery": {
+          "hp": 7,
+          "attack": 3,
+          "label": "Artillery Bot",
+          "icon": "💣"
+        },
+        "stealth": {
+          "hp": 6,
+          "attack": 3,
+          "label": "Stealth Drone",
+          "icon": "👁️"
+        },
+        "spider": {
+          "hp": 6,
+          "attack": 4,
+          "label": "Spider Bot",
+          "icon": "🕷️"
+        },
+        "nano": {
+          "hp": 3,
+          "attack": 2,
+          "label": "Nano Swarm",
+          "icon": "🔩"
+        }
+      },
+      "piece_moves": {
+        "mainframe": {
+          "type": "king",
+          "range": 1,
+          "diagonal": true,
+          "straight": true
+        },
+        "titan": {
+          "type": "queen",
+          "range": 8,
+          "diagonal": true,
+          "straight": true
+        },
+        "artillery": {
+          "type": "rook",
+          "range": 8,
+          "diagonal": false,
+          "straight": true
+        },
+        "stealth": {
+          "type": "bishop",
+          "range": 8,
+          "diagonal": true,
+          "straight": false
+        },
+        "spider": {
+          "type": "knight",
+          "range": 0,
+          "knight": true
+        },
+        "nano": {
+          "type": "pawn",
+          "range": 1,
+          "pawn": true
+        }
+      },
+      "piece_profiles": {
+        "mainframe": {
+          "title": "Mainframe (Central Processor)",
+          "strengths": [
+            {
+              "name": "Network Boost",
+              "desc": "Enhances processing power of adjacent bots, granting +1 ATK to each allied unit nearby"
+            },
+            {
+              "name": "Threat Detection",
+              "desc": "Advanced sensors detect all threats — cannot be caught off guard by stealth attacks"
+            },
+            {
+              "name": "Passive Generation",
+              "desc": "Generates +50K energy per cycle simply by remaining online and operational"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Critical System",
+              "desc": "Destruction means total network collapse — must be protected at all times"
+            },
+            {
+              "name": "Immobile Architecture",
+              "desc": "Can only reposition 1 grid square in any direction per processing cycle"
+            },
+            {
+              "name": "Overheating",
+              "desc": "If surrounded by enemy bots, takes 1 damage per cycle from thermal overload"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "executive_order",
+              "name": "Overclock",
+              "desc": "Overclock all adjacent bots, boosting their attack power by +2 for 1 turn",
+              "cost": 1,
+              "icon": "⚡"
+            },
+            {
+              "id": "pivot_vision",
+              "name": "System Scan",
+              "desc": "Run a deep system scan to reveal all enemy bot abilities and subroutines",
+              "cost": 1,
+              "icon": "🔍"
+            }
+          ]
+        },
+        "titan": {
+          "title": "Mech Titan (Heavy Assault Platform)",
+          "strengths": [
+            {
+              "name": "Omnidirectional Servos",
+              "desc": "Advanced locomotion allows movement in any direction, any distance — most versatile unit"
+            },
+            {
+              "name": "Heavy Caliber",
+              "desc": "+2 ATK when engaging Spider Bots or Nano Swarms due to area-effect weapons"
+            },
+            {
+              "name": "Magnetic Anchors",
+              "desc": "Cannot be pushed or displaced by Stealth Drone abilities due to mass"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Isolation Protocol",
+              "desc": "-1 ATK if no allied bots within 2 grid squares for data sharing"
+            },
+            {
+              "name": "Cooldown Required",
+              "desc": "Each ability use costs +1 extra AP next cycle from system cooldown"
+            },
+            {
+              "name": "Drive Oscillation",
+              "desc": "Cannot remain stationary in the same grid cell for 2 consecutive cycles"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "tech_pivot",
+              "name": "Jet Boost",
+              "desc": "Activate jump jets to teleport to any empty tile within 3 squares",
+              "cost": 1,
+              "icon": "🚀"
+            },
+            {
+              "id": "deploy_patch",
+              "name": "Self-Repair",
+              "desc": "Activate internal repair nanobots to restore +3 HP to hull integrity",
+              "cost": 1,
+              "icon": "🔧"
+            }
+          ]
+        },
+        "artillery": {
+          "title": "Artillery Bot (Long-Range Bombardier)",
+          "strengths": [
+            {
+              "name": "Linear Targeting",
+              "desc": "Fires in straight lines with unlimited range across the entire grid"
+            },
+            {
+              "name": "Salvage Protocol",
+              "desc": "+100K energy bonus when destroying any enemy bot and recycling components"
+            },
+            {
+              "name": "Reinforced Plating",
+              "desc": "Cannot be destroyed if adjacent to a controlled power node"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "No Diagonal Targeting",
+              "desc": "Targeting systems cannot lock onto diagonal trajectories whatsoever"
+            },
+            {
+              "name": "Power Drain",
+              "desc": "Loses 1 HP per cycle if not adjacent to a power node for recharging"
+            },
+            {
+              "name": "Minimum Firing Range",
+              "desc": "Must reposition at least 2 grid squares when moving due to barrel length"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "close_deal",
+              "name": "Power Siphon",
+              "desc": "Tap into any adjacent power node to extract energy income instantly",
+              "cost": 1,
+              "icon": "🔌"
+            },
+            {
+              "id": "cold_call",
+              "name": "EMP Burst",
+              "desc": "Fire an electromagnetic pulse weakening an enemy within 3 squares by -2 ATK",
+              "cost": 1,
+              "icon": "📡"
+            }
+          ]
+        },
+        "stealth": {
+          "title": "Stealth Drone (Phantom Infiltrator)",
+          "strengths": [
+            {
+              "name": "Diagonal Cloaking",
+              "desc": "Moves along diagonals while cloaked for devastating surprise flanking attacks"
+            },
+            {
+              "name": "Signal Jamming",
+              "desc": "Enemies adjacent to Stealth Drone suffer -1 ATK from electronic interference"
+            },
+            {
+              "name": "Chain Disruption",
+              "desc": "Pushing an enemy bot into another enemy bot causes collision damage to both"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "No Linear Movement",
+              "desc": "Cannot move horizontally or vertically — only diagonal movement circuits installed"
+            },
+            {
+              "name": "Power Dependent",
+              "desc": "-2 ATK if total energy reserves drop below 2 million"
+            },
+            {
+              "name": "Fragile Chassis",
+              "desc": "Takes +1 extra damage from Mech Titan attacks due to thin armor plating"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "viral_campaign",
+              "name": "Repulsor Field",
+              "desc": "Activate a repulsor field to push an enemy bot 2 grid squares away",
+              "cost": 1,
+              "icon": "🧲"
+            },
+            {
+              "id": "rebrand",
+              "name": "Translocate",
+              "desc": "Swap positions with any friendly bot using quantum entanglement link",
+              "cost": 1,
+              "icon": "🔀"
+            }
+          ]
+        },
+        "spider": {
+          "title": "Spider Bot (Multi-Terrain Striker)",
+          "strengths": [
+            {
+              "name": "Multi-Leg Traversal",
+              "desc": "Unique L-shaped movement that climbs over obstacles and bypasses enemy formations"
+            },
+            {
+              "name": "Ambush Protocols",
+              "desc": "+2 ATK when striking from an unexpected vector angle"
+            },
+            {
+              "name": "Hardened Exoskeleton",
+              "desc": "Takes -1 damage from all incoming attacks due to distributed armor plating"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Predictable Patterns",
+              "desc": "Only 8 possible landing positions — can be anticipated and countered"
+            },
+            {
+              "name": "Servo Cooldown",
+              "desc": "Cannot use abilities in consecutive cycles while servos recalibrate"
+            },
+            {
+              "name": "Path Memory",
+              "desc": "Cannot return to a previous grid position within 2 cycles due to pathfinding cache"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "deploy_mvp",
+              "name": "Deploy Firewall",
+              "desc": "Construct a digital firewall on any empty adjacent tile to block enemy movement",
+              "cost": 1,
+              "icon": "🧱"
+            },
+            {
+              "id": "hackathon",
+              "name": "Overclock Servos",
+              "desc": "Overclock leg servos for an immediate second move this processing cycle",
+              "cost": 2,
+              "icon": "⚙️"
+            }
+          ]
+        },
+        "nano": {
+          "title": "Nano Swarm (Adaptive Micro-Units)",
+          "strengths": [
+            {
+              "name": "Adaptive Code",
+              "desc": "+1 ATK for each processing cycle survived, stacking up to +3 maximum"
+            },
+            {
+              "name": "Swarm Tactics",
+              "desc": "You deploy 8 Nano Swarms — overwhelm enemy defenses with sheer unit count"
+            },
+            {
+              "name": "Upgrade Protocol",
+              "desc": "Reaching the far edge of the grid triggers full upgrade to Mech Titan class"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Forward Propagation Only",
+              "desc": "Can only advance forward across the grid, never reverse direction"
+            },
+            {
+              "name": "Minimal Shielding",
+              "desc": "Only 3 HP — easily dispersed by any combat-class bot"
+            },
+            {
+              "name": "Diagonal Engagement Only",
+              "desc": "Can only attack enemies diagonally, not during forward propagation"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "coffee_run",
+              "name": "Repair Swarm",
+              "desc": "Detach repair nanobots to heal any adjacent allied bot +3 HP",
+              "cost": 0,
+              "icon": "🔋"
+            },
+            {
+              "id": "networking",
+              "name": "Mesh Network",
+              "desc": "Link with an adjacent friendly Nano Swarm and swap grid positions",
+              "cost": 0,
+              "icon": "🔗"
+            }
+          ]
+        }
+      },
+      "move_narratives": {
+        "mainframe": {
+          "move": [
+            "{piece} repositions its mobile housing unit, recalculating optimal network coverage for the grid.",
+            "The Mainframe shifts to a more defensible grid position, processors humming with threat analysis.",
+            "{piece} adjusts coordinates with deliberate precision — every repositioning updates the entire network topology."
+          ],
+          "capture": [
+            "{piece} overloads the rival {target}'s circuits with a devastating data surge — total system failure!",
+            "In a critical power play, {piece} fries the enemy {target}'s core processor. The grid balance shifts.",
+            "{piece} deploys a targeted logic bomb, wiping the rival {target} from the network permanently."
+          ]
+        },
+        "titan": {
+          "move": [
+            "{piece} stomps across the grid with thundering hydraulic steps, servos whining under full power.",
+            "The Mech Titan repositions, targeting arrays sweeping the grid for optimal engagement angles.",
+            "{piece} advances with mechanical precision — every step calculated for maximum tactical advantage."
+          ],
+          "capture": [
+            "{piece} unleashes a devastating barrage of plasma fire against the rival {target}, reducing it to scrap!",
+            "With a calculated assault vector, {piece} overpowers and dismantles the enemy {target} completely.",
+            "{piece} activates all weapons systems simultaneously, obliterating the rival {target} in a storm of metal and fire."
+          ]
+        },
+        "artillery": {
+          "move": [
+            "{piece} rolls forward along the firing lane, weapon systems charged and target locks active.",
+            "The Artillery Bot repositions aggressively — controlling the firing corridors is essential for grid dominance.",
+            "{piece} advances along the linear attack vector, barrel tracking potential targets across the grid."
+          ],
+          "capture": [
+            "{piece} fires a devastating shell that tears through the rival {target}, leaving only sparking wreckage!",
+            "The Artillery Bot's cannon roars across the grid — the enemy {target} is reduced to scattered components.",
+            "{piece} delivers a precision bombardment that destroys the rival {target} with overwhelming firepower."
+          ]
+        },
+        "stealth": {
+          "move": [
+            "{piece} glides along the diagonal, cloaking field shimmering as it passes through enemy sensor ranges.",
+            "The Stealth Drone infiltrates through the enemy's blind spot, electronic countermeasures active.",
+            "{piece} repositions along the diagonal vector — a phantom in the network, unseen until it strikes."
+          ],
+          "capture": [
+            "{piece} decloaks and delivers a surgical strike that dismantles the enemy {target} component by component!",
+            "A ghost in the machine! {piece} materializes beside the rival {target} and eliminates it with precision.",
+            "{piece} drops its cloak and destroys the enemy {target} — stealth superiority confirmed!"
+          ]
+        },
+        "spider": {
+          "move": [
+            "{piece} skitters across the grid in an erratic L-shaped pattern, legs clicking against the circuit floor.",
+            "The Spider Bot deploys to a flanking position — its multi-terrain traversal catches enemies off guard!",
+            "{piece} vaults over obstacles with mechanical agility, landing in a strategically advantageous position."
+          ],
+          "capture": [
+            "{piece} pounces on the rival {target} from an unexpected angle, mandibles clamping down on critical components!",
+            "In a flash of mechanical limbs, {piece} ambushes and dismantles the enemy {target} with ruthless efficiency.",
+            "{piece} executes a perfectly calculated strike, reducing the enemy {target} to a pile of spare parts."
+          ]
+        },
+        "nano": {
+          "move": [
+            "The Nano Swarm propagates forward, each micro-unit inching closer to the upgrade threshold.",
+            "{piece} drifts across the grid with collective purpose, millions of tiny bots moving as one.",
+            "Small units, massive potential — {piece} advances toward the far edge and Mech Titan transformation."
+          ],
+          "capture": [
+            "Against all probability, the Nano Swarm engulfs and disassembles the rival {target} molecule by molecule!",
+            "{piece} proves that numbers beat size — the enemy {target} is consumed by the relentless micro-bots!",
+            "Astonishing! {piece} overwhelms the rival {target} through sheer distributed processing power."
+          ],
+          "promote": [
+            "The Nano Swarm reaches the far edge and ASSEMBLES INTO A MECH TITAN! A massive power upgrade online!",
+            "From micro-bots to mega-machine — the Nano Swarm converges and transforms into a towering Mech Titan!",
+            "Upgrade protocol complete! The humble Nano Swarm has self-assembled into a fully operational Mech Titan!"
+          ]
+        }
+      },
+      "resource_narratives": [
+        "Energy streams in from controlled power nodes — your reserves climb with each processing cycle!",
+        "Power nodes generate steady output, fueling your robotic army's expansion across the grid.",
+        "Grid dominance delivers dividends — energy harvested from secured power node infrastructure."
+      ],
+      "role_values": {
+        "mainframe": 100,
+        "titan": 50,
+        "artillery": 30,
+        "stealth": 30,
+        "spider": 25,
+        "nano": 10
+      }
+    }
+  },
+  "rounds": [
+    {
+      "id": "chess_game",
+      "title": "Robot Wars",
+      "story": "The circuit grid awaits your command protocols. Deploy your robotic forces, capture power nodes, and dismantle the enemy network before they achieve system dominance!",
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "risk_tolerance"
+        ],
+        "secondary_skills": [
+          "delayed_gratification",
+          "adaptability",
+          "resilience"
+        ]
+      },
+      "choices": [],
+      "coaching_moment": "Think carefully about the trade-offs before committing to this path.",
+      "reflection_prompt": "What sacrifices did you make, and were they worth it?"
+    }
+  ],
+  "learning_concept": "Pattern Recognition & Strategic Planning",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Planning moves several steps ahead",
+      "real_world": "Mapping out a study plan for exams with realistic milestones",
+      "challenge": "Draw a decision tree for a real goal you have — what are the possible paths and outcomes?"
+    },
+    {
+      "skill_tag": "adaptability",
+      "game_context": "Responding to opponent's unexpected moves",
+      "real_world": "Adjusting your plan when a key team member is unavailable",
+      "challenge": "Describe a time when you had to completely change your approach mid-way. What did you learn?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "grandmaster",
+      "name": "Grandmaster",
+      "description": "Executed a perfect strategic sequence",
+      "condition": "accuracy >= 90",
+      "xp_reward": 250,
+      "icon": "👑"
+    },
+    {
+      "id": "tactical_genius",
+      "name": "Tactical Genius",
+      "description": "Found the winning move in a critical position",
+      "condition": "best_move_found",
+      "xp_reward": 200,
+      "icon": "🧠"
+    },
+    {
+      "id": "chess_complete",
+      "name": "Chess Champion",
+      "description": "Completed the chess strategy challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "♟️"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_depth": 1,
+      "show_hints": true,
+      "starting_advantage": 1.2
+    },
+    "medium": {
+      "ai_depth": 2,
+      "show_hints": false,
+      "starting_advantage": 1.0
+    },
+    "hard": {
+      "ai_depth": 4,
+      "show_hints": false,
+      "starting_advantage": 0.8
+    }
+  },
+  "coach_mode_default": true,
+  "features": {
+    "voice_enabled": true
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.5,
+    "adaptability": 0.3,
+    "risk_tolerance": 0.2
+  },
+  "estimated_duration": 25,
+  "target_age": "Ages 12+",
+  "cultural_context": "India's technology sector is investing heavily in robotics and automation. Competitive robotics — through events like IIT Techfest and Robocon India — is increasingly popular in Indian engineering colleges and schools.",
+  "nep_stage": "middle",
+  "nep_competencies": [
+    "critical-thinking",
+    "adaptability",
+    "entrepreneurial-thinking"
+  ],
+  "reflection_prompt": "What pattern did your opponent rely on, and how did you counter (or fail to)?"
+}

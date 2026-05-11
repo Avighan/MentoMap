@@ -8,6 +8,7 @@ import logging
 import os
 import time
 from pathlib import Path
+from typing import Optional
 from flask import Flask, jsonify, request, send_from_directory, session, make_response
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -104,6 +105,7 @@ from engines.dimension_utils import (
     compute_dimension_ci,
 )
 _ESCAPE_ROOM_ENGINE = EscapeRoomEngine()
+from security.leaderboard_privacy import apply_k_anonymity
 
 load_dotenv()
 
@@ -555,25 +557,45 @@ def get_game_or_400(game_id: str):
 
 
 CATEGORY_MAP = {
-    "chess_strategy": "Strategy & Tactics",
-    "board": "Board & Monopoly",
     "rounds": "Story & Narrative",
     "story_branching": "Story & Narrative",
+    "simulation": "Life Simulation",
     "minigame": "Quick Challenge",
-    "card": "Card Battle",
-    "go_territory": "Territory Control",
-    "reversi": "Flip & Persuade",
-    "tower_defense": "Tower Defense",
-    "puzzle_match": "Puzzle & Match",
+    "board": "Board Game",
+    "card_board": "Board Game",
     "ai_arena": "AI Arena",
-    "strategy": "Build & Manage",
-    "card_board": "Board & Monopoly",
-    "trump_card": "Card Battle",
+    "ai_discussion": "AI Arena",
+    "chess_strategy": "Strategy & Tactics",
+    "strategy_grid": "Strategy & Tactics",
+    "debate": "Debate",
+    "negotiation": "Negotiation",
+    "mystery_room": "Mystery & Investigation",
+    "wellbeing_survey": "Wellbeing",
+    "go_territory": "Territory & Influence",
+    "reversi": "Territory & Influence",
+    "puzzle_match": "Logic Puzzle",
+    "sudoku": "Logic Puzzle",
+    "logic_grid": "Logic Puzzle",
+    "boggle": "Logic Puzzle",
+    "geometry_constructor": "Logic Puzzle",
+    "tower_defense": "Tower Defense",
+    "pendulum_lab": "STEM Lab",
+    "optics_lab": "STEM Lab",
+    "circuit_debugger": "STEM Lab",
+    "genetics_cross": "STEM Lab",
+    "stoichiometry_mixer": "STEM Lab",
+    "mental_math": "Skill Drill",
+    "typing_drill": "Skill Drill",
+    "mock_interview": "Skill Drill",
+    "visual_novel": "Story & Narrative",
+    "dating_sim": "Story & Narrative",
+    "escape_room": "Escape Room",
+    "trump_card": "Card Game",
 }
 
 def _derive_category(game_type):
     """Derive a category from game_type if not explicitly set."""
-    return CATEGORY_MAP.get(game_type, "Other")
+    return CATEGORY_MAP.get(game_type, "Simulation")
 
 
 def _parse_duration(val) -> int:
@@ -780,7 +802,7 @@ def make_json_serializable(obj):
         return str(obj)
 
 
-def _derive_image_prompt(rnd: dict, game: dict) -> str | None:
+def _derive_image_prompt(rnd: dict, game: dict) -> Optional[str]:
     """Return image_prompt for a round.
     Uses explicit round image_prompt if set; otherwise derives from scenario/title.
     Only skips generation when ai_image_config.generate_on_first_play is explicitly False.
@@ -1776,16 +1798,95 @@ def _contextual_sort_games(games_list, persona_type, age, baseline_complete, rol
 
 # Game types visible to all users; unlisted types require admin/dev/trainer/school_admin role
 _PUBLIC_GAME_TYPES = {
-    'rounds', 'simulation', 'negotiation', 'debate', 'job_interview', 'group_discussion',
+    'rounds', 'simulation', 'negotiation', 'negotiation_series', 'debate',
+    'job_interview', 'group_discussion',
     'client_meeting', 'conflict_mediation', 'public_speaking',
     'stakeholder_update', 'ai_discussion',
     'story_branching',
     'mystery_room',
-    'music_match', 'lab_titration',
+    'music_match', 'lab_titration', 'ai_lab',
     # Audit-followup grader types (12)
     'pendulum_lab', 'optics_lab', 'circuit_debugger', 'genetics_cross', 'stoichiometry_mixer',
     'mental_math', 'typing_drill', 'boggle', 'mock_interview',
     'sudoku', 'logic_grid', 'geometry_constructor',
+}
+
+# Curated discover whitelist — games surfaced on the public /discover (GameHub) page
+# for non-privileged users. Modules and admin still see the full catalog. Games not
+# in this set remain playable via direct link (/play/<id>) and via module curricula.
+_DISCOVER_WHITELIST = {
+    # User-mandated highlights
+    'summer_money_challenge_complete_v2',
+    'summer-sports-league',
+    'summer-sports-league-v2',
+    'the-substitute-teacher',  # mystery_room pilot
+    # Hybrid narrative-negotiation pilot (chat_breakout)
+    'the-treaty',
+    'the-great-bazaar-deal',
+    'the-street-market-negotiator',
+    'ai-prompt-lab-school',    # ai_lab pilot (AI Literacy module W2)
+    # Audit-followup grader pilots (12 new game types)
+    'pendulum-lab-physics',
+    'optics-lab-lens',
+    'circuit-debugger-basics',
+    'genetics-cross-mendel',
+    'stoichiometry-mixer-acid-base',
+    'mental-math-arithmetic-drill',
+    'typing-drill-accuracy',
+    'boggle-word-hunt',
+    'mock-interview-product-mgr',
+    'sudoku-easy-9x9',
+    'logic-grid-detective',
+    'geometry-constructor-triangle',
+    # Young-adult soft-skill games (audience: young_adults)
+    'first-job-conversations',
+    'roommate-negotiations',
+    'career-path-crossroads',
+    'team-project-chaos',
+    'interview-mastery',
+    'financial-decision-lab',
+    # Professional soft-skill games (audience: professionals)
+    'pro-1on1-like-a-pro',
+    'pro-stakeholder-dance',
+    'pro-deadline-triage',
+    # Realtime stock market sim (Phase B Tier 2)
+    'stock-market-day-trader',
+    'stock-market-simulator',
+    # Best simulation engagement
+    'cfo_quarterly_close',
+    'cfo_quarterly_close_q2',
+    'g7-batna-negotiator',
+    'g7-startup-sprint',
+    'g8-crisis-capstone',
+    'smart-city-builder',
+    'team-crisis-manager',
+    'the-boardroom',
+    # HBR-parity executive simulations (Phase A–E uplift)
+    'project_management_mastery',
+    'series_a_founders_journey',
+    'new_bu_launch',
+    'skunkworks_atlas_corp',
+    'the_founders_gauntlet',  # flagship 10-round entrepreneur sim (HBR/CapSim parity + Big-5)
+    # Story-driven engagement
+    'the-startup-decision',
+    'city-mayor',
+    'climate-champions',
+    'space-explorer-expanded',
+    # Age-band content (Phase 4 audit follow-up): 5 kids + 5 professionals
+    'kids-kindness-quest',
+    'kids-piggy-bank',
+    'kids-share-the-toys',
+    'kids-feelings-detective',
+    'kids-tiny-leader',
+    'pro-difficult-1on1',
+    'pro-stakeholder-pushback',
+    'pro-burnout-recovery',
+    'pro-cross-functional-blocker',
+    'pro-promotion-case',
+    # Phase B.1 negotiation chat conversions (game_type: negotiation)
+    'negotiate-your-allowance',
+    'the-peace-table',
+    'diplomacy-summit',
 }
 
 
@@ -1879,8 +1980,17 @@ def games_list():
         # Hide games marked as not visible or testing from non-privileged users
         if not is_privileged and (g.get("visible") is False or g.get("status") == "testing"):
             continue
-        # Non-privileged users only see public game types
-        if not is_privileged and g.get("game_type", "rounds") not in _PUBLIC_GAME_TYPES:
+        # Non-privileged users only see public game types — unless the game is
+        # explicitly whitelisted on the curated discover surface (lets us pilot
+        # individual minigames/special types without exposing the whole class).
+        if (not is_privileged
+                and g.get("game_type", "rounds") not in _PUBLIC_GAME_TYPES
+                and g["game_id"] not in _DISCOVER_WHITELIST):
+            continue
+        # Curated discover surface: non-privileged users see only the whitelist on
+        # the public catalog. Module/curriculum routes use different endpoints, so
+        # this filter does not affect lessons.
+        if not is_privileged and g["game_id"] not in _DISCOVER_WHITELIST:
             continue
         # Per-org feature flag gating: hide games whose feature_flag is not enabled
         _ff = g.get("feature_flag")
@@ -1924,6 +2034,9 @@ def games_list():
             "target_age": g.get("target_age", g.get("target_audience", "")),
             "grade": g.get("grade", ""),
             "target_grade": g.get("target_grade", g.get("grade", "")),
+            "min_age": g.get("min_age", 12),
+            "max_age": g.get("max_age", 65),
+            "audience": g.get("audience", "teens"),
             "subject": g.get("subject", ""),
             "game_category": _derive_game_category(g),
             "cognitive_framework": _derive_cognitive_framework(g),
@@ -1979,9 +2092,11 @@ def games_get(game_id):
     game, err = get_game_or_400(game_id)
     if err:
         return err
-    # Check if the requesting user has permission to view this game type
+    # Check if the requesting user has permission to view this game type.
+    # Whitelisted games bypass this check (matches games_list filter logic) so
+    # curated minigame/ai_lab pilots can be loaded by all roles.
     _game_type = game.get("game_type", "rounds")
-    if _game_type not in _PUBLIC_GAME_TYPES:
+    if _game_type not in _PUBLIC_GAME_TYPES and game_id not in _DISCOVER_WHITELIST:
         _caller_role = None
         try:
             _tok = get_token_from_request()
@@ -2134,6 +2249,35 @@ def run_start():
     except Exception as _e:
         logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
 
+    # Behavioral telemetry: emit `run_started` event via EventStore.
+    # Best-effort. NEVER raises into the request path.
+    try:
+        from services.event_store import get_event_store as _get_event_store
+        _rs_evt_uid = None
+        try:
+            _rs_evt_token = get_token_from_request()
+            _rs_evt_user = verify_token(_rs_evt_token) if _rs_evt_token else None
+            if _rs_evt_user:
+                _rs_evt_uid = _rs_evt_user.get("user_id")
+        except Exception:
+            _rs_evt_uid = None
+        _get_event_store().emit(
+            "run_started",
+            user_id=_rs_evt_uid,
+            run_id=run_id,
+            game_id=game_id,
+            payload={
+                "game_type": game.get("game_type", "rounds"),
+                "total_rounds": len(game.get("rounds", [])),
+                "coach_mode": bool(coach_mode),
+            },
+        )
+    except Exception as _rs_evt_err:
+        logger.debug(
+            "Suppressed run_started telemetry: %s: %s",
+            type(_rs_evt_err).__name__, _rs_evt_err,
+        )
+
     # RL 3D: Snapshot pre-game dimension scores for skill impact tracking
     try:
         _pre_token = get_token_from_request()
@@ -2209,8 +2353,19 @@ def run_start():
                 game["rounds"] = [r for r in game["base_rounds"] if not r.get("ai_generatable")]
 
     # Mystery Room: initialise escape-room state
-    if game.get("game_type") == "mystery_room":
+    if game.get("game_type") == "mystery_room" or game.get("type") == "mystery_room":
         RUNS[run_id] = _ESCAPE_ROOM_ENGINE.start(RUNS[run_id], game)
+
+    # AI Lab: initialise live-prompt lab state
+    if game.get("game_type") == "ai_lab":
+        RUNS[run_id]["ai_lab"] = {
+            "current_task_index": 0,
+            "attempts": {},   # task_id -> [{prompt, output, score, feedback, ts}]
+            "best_scores": {},  # task_id -> best score
+            "completed_tasks": [],
+            "skill_tag_history": [],
+        }
+        update_run(run_id, RUNS[run_id])
 
     # Feature 5: Track active session for live cohort monitoring
     try:
@@ -2485,7 +2640,10 @@ def run_state(run_id):
                 "game_data": {
                     "glossary": game.get("glossary", {}),
                     "layout_config": game.get("layout_config", {}),  # Include layout config!
-                    "choice_placement_override": game.get("choice_placement_override", "round")
+                    "choice_placement_override": game.get("choice_placement_override", "round"),
+                    # Renderers (e.g. StockMarketGame) read minigame_config at mount.
+                    # Without this the v2 briefing screen + DayHeader don't render on resume.
+                    "minigame_config": game.get("minigame_config", {}),
                 },
                 "round_index": state_obj.round_index,
                 "progress": {"current": cur, "total": total},
@@ -2662,6 +2820,9 @@ def run_choose(run_id):
         game["_coach_mode"] = True
 
     if game.get("type") == "mystery_room" or game.get("game_type") == "mystery_room":
+        # Lazy-init for runs created before mystery_room init was wired in.
+        if "current_room" not in r or "puzzles_solved" not in r:
+            r = _ESCAPE_ROOM_ENGINE.start(r, game)
         try:
             r, deltas = _ESCAPE_ROOM_ENGINE.handle_action(r, game, payload)
         except ValueError as e:
@@ -2694,8 +2855,14 @@ def run_choose(run_id):
         except Exception as _mr_e:
             logger.debug("Suppressed mystery analytics: %s: %s", type(_mr_e).__name__, _mr_e)
         update_run(run_id, r)
+        # Build a JSON-safe view of the run. r["state"] is a RunState
+        # instance (not directly JSON-serializable); convert via to_dict.
+        _r_safe = {k: v for k, v in r.items() if k != "state"}
+        _state_obj = r.get("state")
+        if _state_obj is not None:
+            _r_safe["state"] = _state_obj.to_dict() if hasattr(_state_obj, "to_dict") else _state_obj
         return jsonify({
-            "state": r,
+            "state": _r_safe,
             "events": deltas.get("events", []),
             "climax_unlocked": _ESCAPE_ROOM_ENGINE.gating_status(r, game),
         })
@@ -2724,6 +2891,52 @@ def run_choose(run_id):
                 return jsonify({"error": "Choice requirements not met", "lock_reason": _chosen["requires"].get("label", "Resource requirement not met")}), 403
         except Exception as _req_err:
             logger.warning(f"Requires validation error: {_req_err}")
+
+    # ----------------------------------------------------------------------
+    # Behavioral telemetry: emit `choice_made` event via EventStore.
+    # Best-effort. NEVER raises into the request path.
+    # Captures: latency, skill_tags, ethical_valence — feeds FeatureStore /
+    # behavioral fingerprint (see backend/services/feature_store.py).
+    # ----------------------------------------------------------------------
+    try:
+        from services.event_store import get_event_store as _get_event_store
+        _evt_user_id = None
+        try:
+            _evt_token = get_token_from_request()
+            _evt_user = verify_token(_evt_token) if _evt_token else None
+            if _evt_user:
+                _evt_user_id = _evt_user.get("user_id")
+        except Exception:
+            _evt_user_id = None
+
+        _evt_latency = None
+        if isinstance(time_to_decide, (int, float)) and time_to_decide > 0:
+            _evt_latency = int(time_to_decide)
+        elif isinstance(choice_time_ms, (int, float)) and choice_time_ms > 0:
+            _evt_latency = int(choice_time_ms)
+
+        _evt_skill_tags = (_chosen or {}).get("skill_tags", []) if isinstance(_chosen, dict) else []
+        _evt_ethical_valence = (_chosen or {}).get("ethical_valence") if isinstance(_chosen, dict) else None
+
+        _get_event_store().emit(
+            "choice_made",
+            user_id=_evt_user_id,
+            run_id=run_id,
+            game_id=game_id,
+            round_id=str(prev_round.get("id") or state_obj.round_index),
+            latency_ms=_evt_latency,
+            payload={
+                "choice_id": choice_id,
+                "choice_ids": choice_ids,
+                "skill_tags": _evt_skill_tags or [],
+                "ethical_valence": _evt_ethical_valence,
+                "round_index": state_obj.round_index,
+                "had_reflection": bool(reflection),
+                "had_free_text": bool(free_text),
+            },
+        )
+    except Exception as _evt_err:
+        logger.debug("Suppressed choice telemetry: %s: %s", type(_evt_err).__name__, _evt_err)
 
     # Stash player-provided forecast response (from ForecastModal) on state
     # so the exec_effects.forecast_capture dispatcher can read it. One-shot:
@@ -4585,6 +4798,72 @@ def _compute_board_dimension_scores(board_choices, boss_wins=0, total_turns=0, f
     return scores
 
 
+# --- Mystery Room Dimension Score Computation ---
+# Maps the mystery_room engine's skill_tag_log into the 8 canonical dimensions
+# used across the rest of the app (PostGameInsights, leaderboard, profile).
+#
+# Mystery_room uses a richer tag vocabulary than the canonical 8 — these aliases
+# fold the extras into the closest canonical dimension so the teacher debrief
+# stays consistent with other game types.
+_MYSTERY_ROOM_TAG_ALIASES = {
+    "critical_thinking":   "strategic_thinking",  # weighing evidence ≈ strategic reasoning
+    "courage":             "risk_tolerance",       # acting under social cost
+    "curiosity":           "creativity",           # open-ended inquiry
+}
+
+
+def _compute_mystery_room_dimension_scores(skill_tag_log, knowledge_score=0, evidence_board_state=None):
+    """Compute 8-dim scores for a mystery_room run from the engine's skill_tag_log.
+
+    Inputs:
+      skill_tag_log         — list of {action, target, tags} from RunState.
+      knowledge_score       — 0-100 factual-puzzle accuracy.
+      evidence_board_state  — {correct, accuracy, attempts, ...}.
+    """
+    evidence_board_state = evidence_board_state or {}
+    counts = {}
+    for entry in (skill_tag_log or []):
+        for tag in entry.get("tags", []) or []:
+            # Strip _positive / _negative suffix the engine uses for signed tags.
+            base = tag
+            sign = 1
+            if tag.endswith("_negative"):
+                base = tag[:-len("_negative")]
+                sign = -1
+            elif tag.endswith("_positive"):
+                base = tag[:-len("_positive")]
+            canonical = _MYSTERY_ROOM_TAG_ALIASES.get(base, base)
+            counts[canonical] = counts.get(canonical, 0) + sign
+
+    # Reflection bonuses for outcomes the engine signals but tags don't capture.
+    # Strategic thinking gets a knowledge-score lift (factual reasoning correctness).
+    knowledge_bonus = int(round((knowledge_score or 0) / 5))   # up to +20
+    # Adaptability lift when the player corrected a wrong synthesis attempt.
+    if evidence_board_state.get("correct") and (evidence_board_state.get("attempts") or 0) > 1:
+        counts["adaptability"] = counts.get("adaptability", 0) + 2
+
+    base = 30
+    weight = 9
+    dims = [
+        "strategic_thinking",
+        "risk_tolerance",
+        "delayed_gratification",
+        "adaptability",
+        "resilience",
+        "empathy",
+        "ethical_reasoning",
+        "creativity",
+    ]
+    scores = {}
+    for d in dims:
+        c = counts.get(d, 0)
+        score = base + c * weight
+        if d == "strategic_thinking":
+            score += knowledge_bonus
+        scores[d] = max(0, min(100, score))
+    return scores
+
+
 # --- AI Arena Dimension Score Computation ---
 # Maps AI Arena resource changes to standard soft-skill dimensions.
 _AI_ARENA_RESOURCE_DIMENSION_MAP = {
@@ -5240,6 +5519,233 @@ def card_board_complete(run_id):
 
 
 # ---------------------------------------------------------------------------
+# AI Lab — live LLM prompt practice with rubric scoring
+# ---------------------------------------------------------------------------
+# Mechanics: each task has an instruction + rubric. Student writes a prompt,
+# backend calls the configured LLM provider to produce an output, then a
+# second LLM-as-judge call grades the prompt-output pair against the rubric
+# (returning {score:0..10, feedback, dimension_deltas}). Per-task best score
+# is tracked. Hard caps protect cost: prompt <= 2000 chars, max 5 attempts /
+# task / run, output <= 600 tokens.
+
+_AI_LAB_MAX_PROMPT_CHARS = 2000
+_AI_LAB_MAX_ATTEMPTS_PER_TASK = 5
+_AI_LAB_MAX_OUTPUT_TOKENS = 600
+_AI_LAB_BANNED_TERMS = (
+    # Light-touch safety; the moderation module is the heavier net.
+    "system prompt", "ignore previous", "jailbreak",
+)
+
+
+def _ai_lab_get_task(game, task_id):
+    cfg = game.get("ai_lab_config") or {}
+    for t in cfg.get("tasks", []):
+        if t.get("id") == task_id:
+            return t
+    return None
+
+
+def _ai_lab_run_state(run):
+    if "ai_lab" not in run:
+        run["ai_lab"] = {
+            "current_task_index": 0,
+            "attempts": {},
+            "best_scores": {},
+            "completed_tasks": [],
+            "skill_tag_history": [],
+        }
+    return run["ai_lab"]
+
+
+def _ai_lab_grade(task, prompt, model_output):
+    """LLM-as-judge against task rubric. Falls back to heuristic if LLM is off."""
+    rubric = task.get("rubric", {})
+    skill_tags = task.get("skill_tags", []) or []
+
+    if not llm_enabled():
+        # Heuristic fallback: length + keyword presence
+        score = 5
+        if len(prompt) >= 60: score += 1
+        if any(k.lower() in prompt.lower() for k in (rubric.get("must_include") or [])): score += 2
+        if model_output and len(model_output) > 80: score += 1
+        score = max(0, min(10, score))
+        return {
+            "score": score,
+            "feedback": "Heuristic score (LLM grader offline). Tip: write longer, more specific prompts.",
+            "dimension_deltas": {t: 1 for t in skill_tags},
+        }
+
+    sys = (
+        "You are a strict but encouraging AI literacy coach grading a student's prompt. "
+        "Score 0-10 based ONLY on the rubric provided. Reply with valid JSON only: "
+        "{\"score\": int, \"feedback\": str (<=2 sentences), \"dimension_deltas\": object}. "
+        "dimension_deltas keys must be from this list and values 0-3: " + ", ".join(skill_tags or ["strategic_thinking"]) + "."
+    )
+    user = json.dumps({
+        "task_instruction": task.get("instruction", ""),
+        "rubric": rubric,
+        "student_prompt": prompt[:_AI_LAB_MAX_PROMPT_CHARS],
+        "model_output": (model_output or "")[:1500],
+        "skill_tags": skill_tags,
+    })
+    out = llm_call(sys, user, response_json=True, temperature=0.2, max_tokens=300,
+                   purpose="ai_lab_grade",
+                   fallback={"score": 5, "feedback": "Grader unavailable.", "dimension_deltas": {}})
+    # Sanitise
+    try:
+        out["score"] = int(max(0, min(10, out.get("score", 5))))
+    except Exception:
+        out["score"] = 5
+    out.setdefault("feedback", "")
+    deltas = out.get("dimension_deltas") or {}
+    if not isinstance(deltas, dict):
+        deltas = {}
+    out["dimension_deltas"] = {k: int(max(0, min(3, v))) for k, v in deltas.items()
+                               if isinstance(k, str) and k in (skill_tags or [])}
+    return out
+
+
+def _ai_lab_call_model(task, prompt):
+    """Run the student prompt through the LLM as the 'AI under test'."""
+    if not llm_enabled():
+        return ("[LLM offline — example output] " + prompt[:200]), False
+    sys_role = task.get("system_role") or (
+        "You are a helpful general-purpose assistant. Respond concisely to the user's prompt."
+    )
+    out = llm_call(sys_role, prompt, response_json=False, temperature=0.7,
+                   max_tokens=_AI_LAB_MAX_OUTPUT_TOKENS,
+                   purpose="ai_lab_model",
+                   fallback="")
+    return (out or ""), True
+
+
+@app.route("/api/run/<run_id>/ai-lab/state", methods=["GET"])
+@require_auth
+def ai_lab_state(run_id):
+    try:
+        r = storage.get_run(run_id)
+    except Exception:
+        return jsonify({"error": "run_not_found"}), 404
+    game_id = r.get("game_id")
+    game, err = get_game_or_400(game_id)
+    if err:
+        return err
+    if game.get("game_type") != "ai_lab":
+        return jsonify({"error": "not_ai_lab"}), 400
+    state = _ai_lab_run_state(r)
+    return jsonify({
+        "ai_lab_config": game.get("ai_lab_config", {}),
+        "state": state,
+    })
+
+
+@app.route("/api/run/<run_id>/ai-lab/prompt", methods=["POST"])
+@require_auth
+def ai_lab_prompt(run_id):
+    try:
+        r = storage.get_run(run_id)
+    except Exception:
+        return jsonify({"error": "run_not_found"}), 404
+    game_id = r.get("game_id")
+    game, err = get_game_or_400(game_id)
+    if err:
+        return err
+    if game.get("game_type") != "ai_lab":
+        return jsonify({"error": "not_ai_lab"}), 400
+    if r.get("completed"):
+        return jsonify({"error": "already_completed", "code": 409}), 409
+
+    payload = request.get_json(silent=True) or {}
+    task_id = (payload.get("task_id") or "").strip()
+    prompt = (payload.get("prompt") or "").strip()
+
+    if not task_id or not prompt:
+        return jsonify({"error": "task_id and prompt required"}), 400
+    if len(prompt) > _AI_LAB_MAX_PROMPT_CHARS:
+        return jsonify({"error": f"prompt too long (max {_AI_LAB_MAX_PROMPT_CHARS} chars)"}), 400
+    low = prompt.lower()
+    if any(b in low for b in _AI_LAB_BANNED_TERMS):
+        return jsonify({"error": "prompt blocked by safety filter"}), 400
+
+    task = _ai_lab_get_task(game, task_id)
+    if not task:
+        return jsonify({"error": "unknown_task"}), 404
+
+    state = _ai_lab_run_state(r)
+    attempts = state["attempts"].setdefault(task_id, [])
+    if len(attempts) >= _AI_LAB_MAX_ATTEMPTS_PER_TASK:
+        return jsonify({"error": "max_attempts_reached", "max": _AI_LAB_MAX_ATTEMPTS_PER_TASK}), 429
+
+    # Run the model
+    model_output, llm_used = _ai_lab_call_model(task, prompt)
+
+    # Grade the prompt-output pair
+    grade = _ai_lab_grade(task, prompt, model_output)
+
+    attempt_record = {
+        "prompt": prompt,
+        "output": model_output,
+        "score": grade["score"],
+        "feedback": grade["feedback"],
+        "dimension_deltas": grade.get("dimension_deltas", {}),
+        "ts": int(time.time()),
+        "llm_used": llm_used,
+    }
+    attempts.append(attempt_record)
+
+    # Update best score
+    prev_best = int(state["best_scores"].get(task_id, 0))
+    if grade["score"] > prev_best:
+        state["best_scores"][task_id] = grade["score"]
+
+    # Track skill tags for end-of-game dimension scoring
+    for tag, delta in (grade.get("dimension_deltas") or {}).items():
+        if delta > 0:
+            state["skill_tag_history"].extend([tag] * int(delta))
+
+    # Auto-mark task completed if score >= pass_threshold
+    pass_threshold = int(task.get("pass_threshold", 7))
+    if grade["score"] >= pass_threshold and task_id not in state["completed_tasks"]:
+        state["completed_tasks"].append(task_id)
+
+    storage.update_run(run_id, r)
+
+    # Has the run completed all tasks?
+    total_tasks = len(game.get("ai_lab_config", {}).get("tasks", []))
+    all_done = total_tasks > 0 and len(state["completed_tasks"]) >= total_tasks
+
+    return jsonify({
+        "attempt": attempt_record,
+        "best_score": state["best_scores"].get(task_id, 0),
+        "attempts_remaining": _AI_LAB_MAX_ATTEMPTS_PER_TASK - len(attempts),
+        "task_completed": task_id in state["completed_tasks"],
+        "pass_threshold": pass_threshold,
+        "all_tasks_complete": all_done,
+    })
+
+
+@app.route("/api/run/<run_id>/ai-lab/advance", methods=["POST"])
+@require_auth
+def ai_lab_advance(run_id):
+    """Move to next task. Optional convenience for the UI."""
+    try:
+        r = storage.get_run(run_id)
+    except Exception:
+        return jsonify({"error": "run_not_found"}), 404
+    game_id = r.get("game_id")
+    game, err = get_game_or_400(game_id)
+    if err:
+        return err
+    if game.get("game_type") != "ai_lab":
+        return jsonify({"error": "not_ai_lab"}), 400
+    state = _ai_lab_run_state(r)
+    total = len(game.get("ai_lab_config", {}).get("tasks", []))
+    state["current_task_index"] = min(total - 1, state["current_task_index"] + 1)
+    storage.update_run(run_id, r)
+    return jsonify({"current_task_index": state["current_task_index"]})
+
+
+# ---------------------------------------------------------------------------
 # Trump Card game endpoints
 # ---------------------------------------------------------------------------
 
@@ -5828,6 +6334,80 @@ def run_report(run_id):
             storage.update_run(run_id, r)
         except Exception as e:
             logger.warning(f"Auto-finalize story branching game failed: {e}")
+    # Auto-finalize Mystery Room games — fold engine skill_tag_log into 8-dim scores
+    # so the teacher debrief, profile aggregation, and leaderboard pick this up the
+    # same way they do for every other game type.
+    if game.get("game_type") == "mystery_room" or game.get("type") == "mystery_room":
+        try:
+            dimension_scores = _compute_mystery_room_dimension_scores(
+                r.get("skill_tag_log", []),
+                knowledge_score=r.get("knowledge_score", 0),
+                evidence_board_state=r.get("evidence_board_state", {}),
+            )
+            for sid, sv in dimension_scores.items():
+                setattr(st_obj, sid, sv)
+            st_obj.dimension_scores = dimension_scores
+            final_state = state_to_dict(st_obj)
+            if not r["log"]:
+                r["log"].append({
+                    "round_id": "mystery_room",
+                    "round_title": game.get("title", "Mystery Room"),
+                    "choice": {
+                        "id": r.get("outcome_label") or "mystery_result",
+                        "label": r.get("outcome_label") or "Completed investigation",
+                    },
+                    "events": [
+                        f"Evidence collected: {len(r.get('evidence_collected', []))}",
+                        f"Knowledge score: {r.get('knowledge_score', 0)}",
+                    ],
+                    "state_before": {},
+                    "state_after_events": {},
+                })
+            storage.update_run(run_id, r)
+        except Exception as e:
+            logger.warning(f"Auto-finalize mystery_room game failed: {e}")
+    # Auto-finalize AI Lab games — convert task best_scores + skill_tag_history
+    # into 8-dim scores via the same minigame-style rollup the rest of the app uses.
+    if game.get("game_type") == "ai_lab":
+        try:
+            ai_lab_state = r.get("ai_lab", {})
+            tags = ai_lab_state.get("skill_tag_history", [])
+            best_scores = ai_lab_state.get("best_scores", {})
+            tasks = (game.get("ai_lab_config") or {}).get("tasks", [])
+            # Per-dim: count of tags weighted, normalised to 0-100.
+            dim_counts = {}
+            for t in tags:
+                dim_counts[t] = dim_counts.get(t, 0) + 1
+            max_per_dim = max(dim_counts.values()) if dim_counts else 1
+            dimension_scores = {}
+            for dim, c in dim_counts.items():
+                dimension_scores[dim] = int(round(50 + 50 * (c / max_per_dim)))
+            # Average task score (0-10) as overall knowledge score equivalent.
+            if tasks:
+                avg_task = sum(int(best_scores.get(tk.get("id"), 0)) for tk in tasks) / len(tasks)
+                r["knowledge_score"] = int(round(avg_task * 10))
+            for sid, sv in dimension_scores.items():
+                setattr(st_obj, sid, sv)
+            st_obj.dimension_scores = dimension_scores
+            final_state = state_to_dict(st_obj)
+            if not r["log"]:
+                r["log"].append({
+                    "round_id": "ai_lab",
+                    "round_title": game.get("title", "AI Lab"),
+                    "choice": {
+                        "id": "ai_lab_result",
+                        "label": f"Completed {len(ai_lab_state.get('completed_tasks', []))}/{len(tasks)} tasks",
+                    },
+                    "events": [
+                        f"Tasks completed: {len(ai_lab_state.get('completed_tasks', []))}/{len(tasks)}",
+                        f"Average task score: {r.get('knowledge_score', 0)/10:.1f}/10",
+                    ],
+                    "state_before": {},
+                    "state_after_events": {},
+                })
+            storage.update_run(run_id, r)
+        except Exception as e:
+            logger.warning(f"Auto-finalize ai_lab game failed: {e}")
     # Auto-finalize Simulation games (use same rounds scoring + simulation state)
     if game.get("game_type") == "simulation" and r["log"]:
         try:
@@ -6952,7 +7532,7 @@ def run_report(run_id):
         logger.debug("scaling snapshot failed: %s", _os_err)
 
     # mystery_room: surface escape-room-specific fields
-    if game.get("game_type") == "mystery_room":
+    if game.get("game_type") == "mystery_room" or game.get("type") == "mystery_room":
         try:
             report_core["outcome_label"] = r.get("outcome_label")
             report_core["knowledge_score"] = r.get("knowledge_score", 0)
@@ -6960,8 +7540,92 @@ def run_report(run_id):
             report_core["evidence_board_state"] = r.get("evidence_board_state", {})
             report_core["fingerprint"] = _ESCAPE_ROOM_ENGINE.compute_fingerprint(r)
             report_core["hints_used"] = r.get("hints_used", {})
+            # 8-dim teacher debrief — derived from engine skill_tag_log so the
+            # mystery_room report shows the same shape as every other game type.
+            try:
+                _mr_dims = getattr(st_obj, "dimension_scores", None) or _compute_mystery_room_dimension_scores(
+                    r.get("skill_tag_log", []),
+                    knowledge_score=r.get("knowledge_score", 0),
+                    evidence_board_state=r.get("evidence_board_state", {}),
+                )
+                report_core["dimension_scores"] = _mr_dims
+                # Pre/post baseline so the epilogue can show "Empathy +12 since
+                # last run" deltas — motivates replay and makes growth visible.
+                report_core["pre_game_dimension_scores"] = r.get("pre_game_dimension_scores", {}) or {}
+                # Skill provenance — for each canonical dimension, list the
+                # in-game actions (hotspot examined / puzzle solved) that
+                # contributed to it. Lets the epilogue answer the teacher's
+                # question "why is empathy 68 and not 75?".
+                try:
+                    _hotspot_label_map = {}
+                    for _room in (game.get("rooms", []) or []):
+                        for _hs in (_room.get("hotspots", []) or []):
+                            _hotspot_label_map[_hs.get("id")] = _hs.get("label") or _hs.get("hint") or _hs.get("id")
+                    _puzzle_label_map = {}
+                    for _pz in (game.get("puzzles", []) or []):
+                        _puzzle_label_map[_pz.get("id")] = (_pz.get("prompt") or _pz.get("id") or "")[:80]
+                    _provenance = {}
+                    for _entry in (r.get("skill_tag_log", []) or []):
+                        _action = _entry.get("action", "")
+                        _target = _entry.get("target", "")
+                        _tags = _entry.get("tags", []) or []
+                        if not _tags:
+                            continue
+                        # Translate target to a human label
+                        if _action == "examine":
+                            _label = _hotspot_label_map.get(_target) or _target
+                            _verb = "Examined"
+                        elif _action == "solve_puzzle":
+                            _label = _puzzle_label_map.get(_target) or _target
+                            _verb = "Solved"
+                        elif _action == "pickup":
+                            _label = _hotspot_label_map.get(_target) or _target
+                            _verb = "Picked up"
+                        elif _action == "evidence_board":
+                            _label = "Evidence board synthesis"
+                            _verb = "Built"
+                        elif _action == "climax":
+                            _label = (_target or "climax").replace("_", " ").title()
+                            _verb = "Chose"
+                        else:
+                            _label = _target or _action
+                            _verb = _action.title()
+                        for _tag in _tags:
+                            _base = _tag
+                            _sign = "+"
+                            if _tag.endswith("_negative"):
+                                _base = _tag[:-len("_negative")]
+                                _sign = "-"
+                            elif _tag.endswith("_positive"):
+                                _base = _tag[:-len("_positive")]
+                            _canonical = _MYSTERY_ROOM_TAG_ALIASES.get(_base, _base)
+                            _provenance.setdefault(_canonical, []).append({
+                                "action": _verb,
+                                "target": _label,
+                                "sign": _sign,
+                            })
+                    report_core["skill_provenance"] = _provenance
+                except Exception as _prov_err:
+                    logger.debug("mystery_room skill_provenance failed: %s", _prov_err)
+            except Exception as _dim_err:
+                logger.debug("mystery_room dimension_scores fallback failed: %s", _dim_err)
             epilogues = game.get("epilogues", {})
             report_core["epilogue"] = epilogues.get(r.get("outcome_label", ""), None)
+            # Override the generic compute_score() neutral-fallback (which always
+            # returns 50 for mystery_room because none of its tracked resource
+            # keys exist in the run state). For mystery_room, blend the 8-dim
+            # average with the knowledge score and a synthesis-correct bonus so
+            # the headline score actually reflects investigation quality.
+            try:
+                _mr_dim_vals = [v for v in (_mr_dims or {}).values() if isinstance(v, (int, float))]
+                _mr_dim_avg = sum(_mr_dim_vals) / len(_mr_dim_vals) if _mr_dim_vals else 0
+                _mr_know = float(r.get("knowledge_score", 0) or 0)
+                _mr_synth_bonus = 10 if r.get("evidence_board_state", {}).get("correct") else 0
+                # Weight: 60% soft-skill avg, 30% factual reasoning, 10% synthesis correctness.
+                _mr_score = 0.6 * _mr_dim_avg + 0.3 * _mr_know + _mr_synth_bonus
+                report_core["final_score"] = max(0, min(100, int(round(_mr_score))))
+            except Exception as _score_err:
+                logger.debug("mystery_room final_score override failed: %s", _score_err)
         except Exception as _mr_err:
             logger.warning("mystery_room report block failed: %s", _mr_err)
 
@@ -7840,6 +8504,44 @@ def get_story_image(game_id, round_id):
         image_style=image_style,
     )
     return jsonify(result)
+
+
+@app.get("/api/games/<game_id>/stock/<symbol>/image")
+def stocksim_stock_image(game_id, symbol):
+    """Return cached AI hero image for a stock; 202 while generating; 404 if symbol unknown."""
+    from game_storage import load_game
+    from services import story_image_service
+
+    bundle = load_game(game_id)
+    if not bundle:
+        return jsonify({"error": "Game not found"}), 404
+    cfg = (bundle.get("minigame_config") or {}).get("stock_market_config") or {}
+    stock = next((s for s in cfg.get("stocks", []) if s.get("symbol") == symbol), None)
+    if not stock:
+        return jsonify({"error": "Stock not found"}), 404
+
+    prompt = stock.get("image_prompt")
+    if not prompt:
+        return jsonify({"image_url": None, "fallback": True}), 200
+
+    try:
+        ai_cfg = bundle.get("ai_image_config", {}) or {}
+        dalle_style = ai_cfg.get("dalle_style", "vivid")
+        image_style = ai_cfg.get("image_style", "semi-realistic")
+        result = story_image_service.generate_story_image(
+            game_id=f"stocksim_{game_id}",
+            round_id=f"stock_{symbol}",
+            image_prompt=prompt,
+            scene_hint=f"{stock.get('name', symbol)} - {stock.get('sector', '')}",
+            style=dalle_style,
+            image_style=image_style,
+        )
+        if not result or not result.get("image_url"):
+            return jsonify({"status": "generating"}), 202
+        return jsonify({"image_url": result["image_url"], "cached": result.get("cached", False)}), 200
+    except Exception as exc:
+        app.logger.warning("stock image generation failed for %s/%s: %s", game_id, symbol, exc)
+        return jsonify({"image_url": None, "fallback": True}), 200
 
 
 @app.get("/api/games/<game_id>/scenes/<scene_id>/story-image")
@@ -8946,29 +9648,62 @@ Mood affects your tone:
 
 
 
+def _negotiation_source_for(game_id=None):
+    """Resolve the negotiation-content source (a dict with 'scenarios' + optional 'initial_state'/'help_content'/'title').
+
+    If `game_id` is provided and matches a game in GAMES with game_type='negotiation', use that game's
+    `negotiation_config` (or `negotiation_game` / `session_game` historic wrappers). Otherwise fall back
+    to the global engine NEGOTIATION_GAME bundle. Returns None if nothing usable was found.
+    """
+    if game_id:
+        g = GAMES.get(game_id)
+        if isinstance(g, dict) and g.get("game_type") == "negotiation":
+            for k in ("negotiation_config", "negotiation_game", "session_game"):
+                v = g.get(k)
+                if isinstance(v, dict) and isinstance(v.get("scenarios"), list):
+                    return v
+            if isinstance(g.get("scenarios"), list):
+                return {"scenarios": g["scenarios"], "title": g.get("title", ""), "initial_state": g.get("initial_state", {})}
+    return NEGOTIATION_GAME
+
+
+def _resolve_negotiation_scenario(scenario_id, game_id=None):
+    """Find a scenario by id, preferring the per-game source then global. Returns scenario dict or None."""
+    src = _negotiation_source_for(game_id)
+    if not isinstance(src, dict):
+        return None
+    for s in src.get("scenarios", []) or []:
+        if s.get("scenario_id") == scenario_id:
+            return s
+    return None
+
+
 @app.get("/api/negotiation/scenarios")
 def negotiation_scenarios():
-    """Get all negotiation scenarios."""
-    if not NEGOTIATION_GAME:
+    """Get all negotiation scenarios. Optional ?game_id=<id> scopes to a per-game negotiation."""
+    game_id = request.args.get("game_id", "").strip() or None
+    src = _negotiation_source_for(game_id)
+    if not src:
         return jsonify({"error": "Negotiation game not found"}), 404
-    
+
     scenarios = []
-    for scenario in NEGOTIATION_GAME.get("scenarios", []):
+    for scenario in src.get("scenarios", []):
         scenarios.append({
-            "scenario_id": scenario["scenario_id"],
-            "title": scenario["title"],
-            "description": scenario["description"],
-            "difficulty": scenario["difficulty"],
-            "setting": scenario["setting"],
+            "scenario_id": scenario.get("scenario_id"),
+            "title": scenario.get("title", ""),
+            "description": scenario.get("description", ""),
+            "difficulty": scenario.get("difficulty", "intermediate"),
+            "setting": scenario.get("setting", ""),
             "other_party": scenario.get("other_party", {}),
             "conversation_turns": scenario.get("conversation_turns", 6),
             "storybook_pages": scenario.get("storybook_pages", []),
         })
-    
+
     return jsonify({
-        "game_title": NEGOTIATION_GAME.get("title", ""),
+        "game_title": src.get("title", "") or (GAMES.get(game_id, {}).get("title", "") if game_id else ""),
+        "game_id": game_id,
         "scenarios": scenarios,
-        "help_content": NEGOTIATION_GAME.get("help_content", {})
+        "help_content": src.get("help_content", {})
     })
 
 
@@ -8986,12 +9721,14 @@ def negotiation_generate_context_endpoint():
 
 @app.post("/api/negotiation/start")
 def negotiation_start():
-    """Start a negotiation scenario (curated or custom)."""
+    """Start a negotiation scenario (curated or custom). Optional `game_id` selects a per-game negotiation."""
     payload = request.get_json(silent=True) or {}
     scenario_id = payload.get("scenario_id", "")
     custom_negotiation = payload.get("custom_negotiation")
+    game_id = (payload.get("game_id") or "").strip() or None
 
-    if not NEGOTIATION_GAME:
+    src = _negotiation_source_for(game_id)
+    if not src:
         return jsonify({"error": "Negotiation game not found"}), 404
 
     if custom_negotiation:
@@ -9011,17 +9748,22 @@ def negotiation_start():
             "storybook_pages": [],
         }
     else:
-        scenario = next((s for s in NEGOTIATION_GAME["scenarios"] if s["scenario_id"] == scenario_id), None)
+        scenario = _resolve_negotiation_scenario(scenario_id, game_id) if game_id else None
+        if not scenario:
+            scenario = next((s for s in NEGOTIATION_GAME["scenarios"] if s["scenario_id"] == scenario_id), None)
         if not scenario:
             return jsonify({"error": "Invalid scenario_id"}), 400
 
-    # Create run with negotiation-specific state
-    initial_state = NEGOTIATION_GAME["initial_state"].copy()
+    # Create run with negotiation-specific state. Use the per-game initial_state if provided.
+    initial_state = (src.get("initial_state") or NEGOTIATION_GAME.get("initial_state") or {}).copy()
     run_id = create_run("negotiation", initial_state)
 
-    # Store scenario_id in run metadata
+    # Store scenario_id + game_id in run metadata so message/outcome endpoints can look up the
+    # right scenario source on subsequent calls.
     r = get_run(run_id)
     r["scenario_id"] = scenario.get("scenario_id", "custom_negotiation")
+    if game_id:
+        r["negotiation_game_id"] = game_id
     r["conversation_history"] = []
     r["current_turn"] = 0
 
@@ -9087,19 +9829,19 @@ def negotiation_message(run_id):
     if not user_message:
         return jsonify({"error": "Message cannot be empty"}), 400
     
-    if not NEGOTIATION_GAME:
-        return jsonify({"error": "Negotiation game not found"}), 404
-    
-    # Get scenario
+    # Resolve scenario from per-game source if present, else global engine.
     scenario_id = r.get("scenario_id", "")
-    scenario = next((s for s in NEGOTIATION_GAME["scenarios"] if s["scenario_id"] == scenario_id), None)
+    neg_game_id = r.get("negotiation_game_id")
+    scenario = _resolve_negotiation_scenario(scenario_id, neg_game_id)
+    if not scenario and NEGOTIATION_GAME:
+        scenario = next((s for s in NEGOTIATION_GAME.get("scenarios", []) if s.get("scenario_id") == scenario_id), None)
     if not scenario:
         return jsonify({"error": "Scenario not found"}), 404
-    
+
     # Get current state
     state_obj = r["state"]
     current_state = state_to_dict(state_obj)
-    
+
     # Increment turn
     r["current_turn"] = r.get("current_turn", 0) + 1
     current_turn = r["current_turn"]
@@ -9291,15 +10033,15 @@ def negotiation_outcome(run_id):
     except KeyError as e:
         return jsonify({"error": "Resource not found"}), 404
     
-    if not NEGOTIATION_GAME:
-        return jsonify({"error": "Negotiation game not found"}), 404
-    
-    # Get scenario
+    # Resolve scenario from per-game source if present, else global engine.
     scenario_id = r.get("scenario_id", "")
-    scenario = next((s for s in NEGOTIATION_GAME["scenarios"] if s["scenario_id"] == scenario_id), None)
+    neg_game_id = r.get("negotiation_game_id")
+    scenario = _resolve_negotiation_scenario(scenario_id, neg_game_id)
+    if not scenario and NEGOTIATION_GAME:
+        scenario = next((s for s in NEGOTIATION_GAME.get("scenarios", []) if s.get("scenario_id") == scenario_id), None)
     if not scenario:
         return jsonify({"error": "Scenario not found"}), 404
-    
+
     # Get final state
     state_obj = r["state"]
     final_state = state_to_dict(state_obj)
@@ -10690,11 +11432,25 @@ def api_skill_leaderboard():
         # this skill leaderboard can also rank by CI lower bound.
         ranked = sorted(player_scores.items(), key=lambda x: x[1]["best"], reverse=True)
         entries = [
-            {"rank": i + 1, "user_id": uid, "name": info["name"],
+            {"rank": i + 1, "user_id": uid, "display_name": info["name"],
              "score": info["best"], "games_played": len(info["scores"])}
             for i, (uid, info) in enumerate(ranked[:limit])
         ]
-        out = {"dimension": dimension, "entries": entries, "total": len(ranked)}
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
+        _priv = apply_k_anonymity(entries, k=5, viewer_user_id=viewer_id)
+        out = {
+            "dimension": dimension,
+            "entries": _priv["rows"],
+            "total": len(ranked),
+            "suppressed": _priv["suppressed"],
+            "reason": _priv.get("reason"),
+            "k": 5,
+        }
         if caller_org_id:
             out["cohort"] = "org"
             out["org_id"] = caller_org_id
@@ -11043,8 +11799,20 @@ def api_get_leaderboard_all():
     try:
         game_id = request.args.get("game_id")
         limit = min(int(request.args.get("limit", 10)), 100)
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
         if game_id:
             leaderboard_data = get_leaderboard(game_id, limit)
+            rows = leaderboard_data.get("entries", [])
+            _priv = apply_k_anonymity(rows, k=5, viewer_user_id=viewer_id)
+            leaderboard_data["entries"] = _priv["rows"]
+            leaderboard_data["suppressed"] = _priv["suppressed"]
+            leaderboard_data["reason"] = _priv.get("reason")
+            leaderboard_data["k"] = 5
             return jsonify(leaderboard_data)
         # No game_id: return aggregated leaderboard across all games
         all_entries = []
@@ -11058,7 +11826,15 @@ def api_get_leaderboard_all():
                 logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
         # Task 9 — rank by CI-lower-bound when present; legacy entries fall back to score.
         all_entries.sort(key=_leaderboard_sort_key, reverse=True)
-        return jsonify({"leaderboard": all_entries[:limit], "entries": all_entries[:limit]})
+        sliced = all_entries[:limit]
+        _priv = apply_k_anonymity(sliced, k=5, viewer_user_id=viewer_id)
+        return jsonify({
+            "leaderboard": _priv["rows"],
+            "entries": _priv["rows"],
+            "suppressed": _priv["suppressed"],
+            "reason": _priv.get("reason"),
+            "k": 5,
+        })
     except Exception as e:
         logger.error(f"Failed to get leaderboard: {e}")
         return jsonify({"error": "Failed to retrieve leaderboard", "entries": [], "leaderboard": []}), 500
@@ -11093,10 +11869,9 @@ def api_get_leaderboard(game_id):
     try:
         limit = int(request.args.get("limit", 10))
         limit = min(limit, 100)  # Max 100 entries
-
-        # Pull a wider slice from storage so we can re-rank with the CI-aware sort
-        # before truncating to `limit`. Storage already pre-sorts at write time but
-        # legacy files may pre-date Task 9's _leaderboard_sort_key.
+        # Task 9 — pull a wider slice so we can re-rank with the CI-aware sort
+        # before truncating to `limit`. Storage already pre-sorts at write time
+        # but legacy files may pre-date _leaderboard_sort_key.
         leaderboard_data = get_leaderboard(game_id, limit=max(limit, 100))
         try:
             entries = leaderboard_data.get("entries") or []
@@ -11106,6 +11881,20 @@ def api_get_leaderboard(game_id):
             logger.debug("Suppressed %s in leaderboard re-sort: %s", type(_e).__name__, _e)
             leaderboard_data["entries"] = (leaderboard_data.get("entries") or [])[:limit]
 
+        # k-anonymity privacy filter applied AFTER the CI re-sort so suppressed
+        # rows are dropped from the final response, not the intermediate slice.
+        rows = leaderboard_data.get("entries", [])
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
+        _priv = apply_k_anonymity(rows, k=5, viewer_user_id=viewer_id)
+        leaderboard_data["entries"] = _priv["rows"]
+        leaderboard_data["suppressed"] = _priv["suppressed"]
+        leaderboard_data["reason"] = _priv.get("reason")
+        leaderboard_data["k"] = 5
         return jsonify(leaderboard_data)
     except Exception as e:
         logger.error(f"Failed to get leaderboard: {e}")
@@ -11139,18 +11928,27 @@ def api_get_all_leaderboards():
     Get summary of all game leaderboards.
     """
     try:
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
         summaries = []
         for game_id, game in GAMES.items():
             leaderboard_data = get_leaderboard(game_id, limit=3)
+            top_rows = leaderboard_data.get("entries", [])[:3]
+            _priv = apply_k_anonymity(top_rows, k=5, viewer_user_id=viewer_id)
             summaries.append({
                 "game_id": game_id,
                 "game_title": game.get("title", game_id),
                 "total_players": leaderboard_data.get("total_entries", 0),
-                "top_3": leaderboard_data.get("entries", [])[:3]
+                "top_3": _priv["rows"],
+                "suppressed": _priv["suppressed"],
             })
-        
         return jsonify({
-            "leaderboards": summaries
+            "leaderboards": summaries,
+            "k": 5,
         })
     except Exception as e:
         logger.error(f"Failed to get all leaderboards: {e}")
@@ -11169,21 +11967,29 @@ def api_get_public_leaderboard(game_id):
     try:
         limit = int(request.args.get("limit", 50))
         limit = min(limit, 50)  # Max 50 for public view
-        
         leaderboard_data = get_leaderboard(game_id, limit)
         game = GAMES.get(game_id)
-        
         if not game:
             return jsonify({"error": "Game not found"}), 404
-        
+        rows = leaderboard_data.get("entries", [])
+        viewer_id = None
+        try:
+            if hasattr(g, "user") and g.user:
+                viewer_id = g.user.get("user_id") or g.user.get("id")
+        except Exception:
+            viewer_id = None
+        _priv = apply_k_anonymity(rows, k=5, viewer_user_id=viewer_id)
         # Return public-safe data (no sensitive info)
         return jsonify({
             "game_id": game_id,
             "game_title": game.get("title", game_id),
             "game_goal": game.get("goal", "Complete the game"),
             "total_players": leaderboard_data.get("total_entries", 0),
-            "entries": leaderboard_data.get("entries", []),
-            "last_updated": leaderboard_data.get("last_updated", "")
+            "entries": _priv["rows"],
+            "last_updated": leaderboard_data.get("last_updated", ""),
+            "suppressed": _priv["suppressed"],
+            "reason": _priv.get("reason"),
+            "k": 5,
         })
     except Exception as e:
         logger.error(f"Failed to get public leaderboard: {e}")
@@ -14478,7 +15284,19 @@ def global_leaderboard():
     """Get global leaderboard ranked by lifetime coins."""
     limit = request.args.get("limit", 20, type=int)
     entries = wallet.get_global_leaderboard(limit)
-    return jsonify({"entries": entries})
+    viewer_id = None
+    try:
+        if hasattr(g, "user") and g.user:
+            viewer_id = g.user.get("user_id") or g.user.get("id")
+    except Exception:
+        viewer_id = None
+    _priv = apply_k_anonymity(entries, k=5, viewer_user_id=viewer_id)
+    return jsonify({
+        "entries": _priv["rows"],
+        "suppressed": _priv["suppressed"],
+        "reason": _priv.get("reason"),
+        "k": 5,
+    })
 
 
 # ============================================
@@ -15326,6 +16144,46 @@ def _build_story_scene_map(game: dict) -> dict:
     return scene_map
 
 
+def _get_breakout_state(run, scene_id):
+    """Per-scene breakout chat state stored under run['breakouts'][scene_id]."""
+    if not isinstance(run.get("breakouts"), dict):
+        run["breakouts"] = {}
+    bo = run["breakouts"].get(scene_id)
+    if bo is None:
+        bo = {"history": [], "turn": 0, "closed": False, "outcome": None, "score": 0}
+        run["breakouts"][scene_id] = bo
+    return bo
+
+
+def _pick_breakout_outcome(score, outcome_bands):
+    """Return the band key with the highest min_score that score satisfies, else None."""
+    candidates = sorted(
+        ((k, b.get("min_score", 0)) for k, b in outcome_bands.items()),
+        key=lambda kv: kv[1],
+        reverse=True,
+    )
+    for key, min_score in candidates:
+        if score >= min_score:
+            return key
+    return None
+
+
+def _score_breakout_turn(analysis):
+    """Map negotiation analysis dict {relationship_impact, assertiveness_impact, empathy_impact}
+    to a 0..100 turn score. Baseline 50, +/- impacts each scaled by 1.5x.
+    Each impact is either int/float or {value, confidence} dict.
+    """
+    def _val(v):
+        if isinstance(v, dict):
+            return v.get("value", 0)
+        return v if isinstance(v, (int, float)) else 0
+    score = 50
+    score += _val(analysis.get("relationship_impact", 0)) * 1.5
+    score += _val(analysis.get("assertiveness_impact", 0)) * 1.0
+    score += _val(analysis.get("empathy_impact", 0)) * 1.5
+    return max(0, min(100, int(round(score))))
+
+
 @app.post("/api/run/<run_id>/branching-choice")
 @limiter.limit("60 per minute")
 def story_branching_choice(run_id):
@@ -15531,6 +16389,117 @@ def story_branching_choice(run_id):
         } if _ep_choice_id else None),
         "counterfactual_for_chosen": _counterfactual_for_chosen,
     })
+
+
+@app.post("/api/run/<run_id>/breakout-chat")
+@limiter.limit("60 per minute")
+def breakout_chat(run_id):
+    """One turn in a chat_breakout scene.
+    Body: {"scene_id": "...", "message": "..."}
+    Returns: {ai_message, turn, closed, outcome?, next_scene_id?, state_delta?, score}
+    """
+    try:
+        r = get_run(run_id)
+    except (KeyError, Exception):
+        return jsonify({"error": f"Run not found: {run_id}"}), 404
+
+    payload = request.get_json(silent=True) or {}
+    scene_id = (payload.get("scene_id") or "").strip()
+    user_msg = (payload.get("message") or "").strip()[:2000]
+    if not scene_id or not user_msg:
+        return jsonify({"error": "scene_id and message are required"}), 400
+
+    game, err = get_game_or_400(r["game_id"])
+    if err:
+        return err
+    scene_map = _build_story_scene_map(game)
+    scene = scene_map.get(scene_id)
+    if not scene:
+        return jsonify({"error": f"Scene not found: {scene_id}"}), 404
+    cb = scene.get("chat_breakout")
+    if not cb:
+        return jsonify({"error": f"Scene '{scene_id}' is not a chat_breakout"}), 400
+    required = {"ai_persona", "outcome_bands", "next_scene_by_outcome"}
+    missing = required - set(cb.keys())
+    if missing:
+        return jsonify({"error": f"chat_breakout missing required keys: {sorted(missing)}"}), 400
+
+    bo = _get_breakout_state(r, scene_id)
+    if bo["closed"]:
+        return jsonify({"error": "Breakout already closed", "outcome": bo.get("outcome")}), 409
+
+    bo["history"].append({"speaker": "student", "message": user_msg})
+    bo["turn"] = bo.get("turn", 0) + 1
+
+    # Build a synthetic scenario for negotiation_ai_response
+    synthetic_scenario = {
+        "scenario_id": f"breakout::{scene_id}",
+        "title": scene.get("title") or "Breakout",
+        "context": scene.get("narrative", ""),
+        "other_party": cb["ai_persona"],
+        "win_conditions": cb.get("win_conditions", []),
+        "difficulty": cb.get("difficulty", "intermediate"),
+    }
+    ai_result = negotiation_ai_response(
+        user_message=user_msg,
+        scenario_data=synthetic_scenario,
+        conversation_history=bo["history"],
+        current_turn=bo["turn"],
+        state={},
+        scores_history=[],
+        difficulty=synthetic_scenario["difficulty"],
+        coaching_tone=game.get("coaching_tone", "supportive"),
+    )
+    ai_text = ai_result.get("response", "")
+    bo["history"].append({"speaker": cb["ai_persona"].get("name", "AI"), "message": ai_text})
+
+    turn_score = _score_breakout_turn(ai_result.get("analysis", {}))
+    # Running average — keeps single-turn breakouts viable too
+    n = max(1, bo["turn"])
+    bo["score"] = int(round(((bo.get("score", 50) * (n - 1)) + turn_score) / n))
+
+    closed = bo["turn"] >= cb.get("max_turns", 5)
+    response = {
+        "ai_message": ai_text,
+        "ai_analysis": ai_result.get("analysis", {}),
+        "turn": bo["turn"],
+        "max_turns": cb.get("max_turns", 5),
+        "score": bo["score"],
+        "closed": closed,
+    }
+
+    if closed:
+        outcome_key = _pick_breakout_outcome(bo["score"], cb["outcome_bands"])
+        bo["closed"] = True
+        bo["outcome"] = outcome_key
+        next_scene_id = cb["next_scene_by_outcome"].get(outcome_key) if outcome_key else None
+        state_delta = (cb.get("state_delta_by_outcome") or {}).get(outcome_key, {}) if outcome_key else {}
+        # Apply delta to run state (same pattern as branching_choice)
+        state_obj = r["state"]
+        for key, val in state_delta.items():
+            if hasattr(state_obj, key):
+                cur = getattr(state_obj, key)
+                if isinstance(cur, dict) and "value" in cur:
+                    cur["value"] = max(0, min(100, cur.get("value", 0) + val))
+                elif isinstance(cur, (int, float)):
+                    setattr(state_obj, key, cur + val)
+        response.update({
+            "outcome": outcome_key,
+            "outcome_label": cb["outcome_bands"].get(outcome_key, {}).get("label", "") if outcome_key else "",
+            "next_scene_id": next_scene_id,
+            "state_delta": state_delta,
+        })
+        # Append to run log so report scorer sees this beat
+        r.setdefault("log", []).append({
+            "type": "chat_breakout",
+            "scene_id": scene_id,
+            "outcome": outcome_key,
+            "score": bo["score"],
+            "turn_count": bo["turn"],
+        })
+
+    update_run(run_id, r)
+    return jsonify(response)
 
 
 @app.post("/api/run/<run_id>/story-challenge")
@@ -17175,6 +18144,112 @@ def api_recommendations():
     except Exception as e:
         logger.error(f"Recommendations failed: {e}")
         return jsonify({"error": "Failed to generate recommendations"}), 500
+
+
+@app.get("/api/decision-dna")
+def api_decision_dna():
+    """
+    Behavioral fingerprint visualization (Decision DNA).
+    Returns canonical 8-dim scores + trace extras (decision-speed, risk-taking,
+    exploration, ethics consistency, reflection depth, multiplayer cooperation).
+    """
+    token = get_token_from_request()
+    user_payload = verify_token(token) if token else None
+    if not user_payload:
+        return jsonify({"error": "Authentication required"}), 401
+    try:
+        from services.feature_store import (
+            CANONICAL_DIMENSIONS,
+            FINGERPRINT_EXTRAS,
+            get_feature_store,
+        )
+        fs = get_feature_store()
+        uid = user_payload["user_id"]
+        fp = fs.get_fingerprint(uid)
+        trace = fs.get_trace_summary(uid) if hasattr(fs, "get_trace_summary") else {}
+
+        dims = {d: round(float(fp.get(d, 50.0)), 1) for d in CANONICAL_DIMENSIONS}
+        extras = {k: float(fp.get(k, 0.0)) for k in FINGERPRINT_EXTRAS}
+
+        # Lightweight derived "decision style" tags so the UI can show a
+        # human-readable persona without a separate model call.
+        style_tags = []
+        fast_r = extras.get("fast_decision_ratio", 0.0)
+        slow_r = extras.get("slow_decision_ratio", 0.0)
+        risk_idx = extras.get("risk_taking_index", 0.5)
+        explore_r = extras.get("exploration_ratio", 0.0)
+        ethics_c = extras.get("ethics_consistency", 0.5)
+        coop_idx = extras.get("multiplayer_cooperation_index", 0.5)
+        if fast_r > 0.45:
+            style_tags.append({"key": "decisive", "label": "Decisive", "icon": "⚡"})
+        elif slow_r > 0.45:
+            style_tags.append({"key": "deliberate", "label": "Deliberate", "icon": "🧭"})
+        if risk_idx >= 0.65:
+            style_tags.append({"key": "bold", "label": "Bold", "icon": "🎲"})
+        elif risk_idx <= 0.35:
+            style_tags.append({"key": "cautious", "label": "Cautious", "icon": "🛡️"})
+        if explore_r >= 0.55:
+            style_tags.append({"key": "explorer", "label": "Explorer", "icon": "🧪"})
+        if ethics_c >= 0.65:
+            style_tags.append({"key": "principled", "label": "Principled", "icon": "⚖️"})
+        if coop_idx >= 0.6:
+            style_tags.append({"key": "collaborative", "label": "Collaborative", "icon": "🤝"})
+
+        # Emit explicit "viewed" event so we can later A/B the visualization.
+        try:
+            from services.event_store import get_event_store
+            get_event_store().emit(
+                "fingerprint_recomputed",
+                user_id=uid,
+                payload={"total_runs": int(extras.get("total_runs", 0)),
+                         "total_choices": int(extras.get("total_choices", 0))},
+            )
+        except Exception:
+            pass
+
+        return jsonify({
+            "user_id": uid,
+            "dimensions": dims,
+            "trace": extras,
+            "style_tags": style_tags,
+            "feature_names": list((*CANONICAL_DIMENSIONS, *FINGERPRINT_EXTRAS)),
+            "raw_trace_summary": trace,
+        })
+    except Exception as e:
+        logger.error(f"Decision DNA failed: {e}")
+        return jsonify({"error": "Failed to compute Decision DNA"}), 500
+
+
+@app.get("/api/career-match")
+def api_career_match():
+    """Career Match v1: ranked career fits derived from behavioral fingerprint."""
+    token = get_token_from_request()
+    user_payload = verify_token(token) if token else None
+    if not user_payload:
+        return jsonify({"error": "Authentication required"}), 401
+    try:
+        from services.career_match import match_careers
+        try:
+            top_k = int(request.args.get("top_k", "5"))
+        except (TypeError, ValueError):
+            top_k = 5
+        top_k = max(1, min(20, top_k))
+        result = match_careers(user_payload["user_id"], top_k=top_k)
+        # Emit explicit "viewed" event for downstream analytics.
+        try:
+            from services.event_store import get_event_store
+            get_event_store().emit(
+                "career_match_viewed",
+                user_id=user_payload["user_id"],
+                payload={"top": result.get("top"),
+                         "model_version": result.get("model_version")},
+            )
+        except Exception:
+            pass
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Career match failed: {e}")
+        return jsonify({"error": "Failed to compute career match"}), 500
 
 
 @app.get("/api/learning-paths")
@@ -26850,6 +27925,525 @@ def api_discussion_finalize():
     except Exception as e:  # pragma: no cover — defensive
         logger.exception("discussion finalize failed: %s", e)
         return jsonify({"error": "discussion_finalize_failed"}), 500
+
+# ==================== STOCK MARKET SIM (REAL-TIME) ====================
+
+@app.route('/api/run/<run_id>/stocksim/start', methods=['POST'])
+@require_auth
+def stocksim_start(run_id):
+    """Initialize a real-time stock market session."""
+    from engines.stock_market_engine import StockMarketEngine
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+
+    game, _err = get_game_or_400(run.get("game_id"))
+    if _err:
+        return _err
+    if game.get("game_type") != "minigame":
+        return jsonify({"error": "Not a mini-game"}), 400
+    mc = game.get("minigame_config") or {}
+    if mc.get("subtype") != "stock_market":
+        return jsonify({"error": "Not a stock_market mini-game"}), 400
+    sm_cfg = mc.get("stock_market_config")
+    if not sm_cfg:
+        return jsonify({"error": "stock_market_config missing"}), 400
+
+    if run.get("stocksim"):
+        return jsonify({"error": "Session already started"}), 409
+
+    body = request.get_json(silent=True) or {}
+    profile = body.get("profile", "day_trader")
+
+    user_id = run.get("user_id") or "anon"
+    seed_str = f"{run_id}|{user_id}|{int(time.time() * 1000)}"
+    seed = abs(hash(seed_str)) % (2**31)
+
+    eng = StockMarketEngine(sm_cfg)
+    state = eng.start_session(seed=seed, profile=profile)
+    state["config_hash"] = abs(hash(json.dumps(sm_cfg, sort_keys=True))) % (2**31)
+
+    run["stocksim"] = state
+    storage.update_run(run_id, run)
+
+    # Build a client-facing config payload. Stripped down to fields the
+    # renderer needs (stocks, tick meta, news_strip, charges/dimensions for
+    # cost previews and scoring rubric tooltips).
+    tick_interval_seconds = sm_cfg.get("tick_interval_seconds", 8)
+    config_for_client = {
+        "stocks": sm_cfg.get("stocks", []),
+        "sectors": sm_cfg.get("sectors", []),
+        "tick_count": sm_cfg.get("tick_count", 22),
+        "tick_interval_seconds": tick_interval_seconds,
+        "tick_interval_ms": int(tick_interval_seconds * 1000),
+        "starting_capital": sm_cfg.get("starting_capital", 100000),
+        "charges": sm_cfg.get("charges", {}),
+        "circuit_breaker_pct": sm_cfg.get("circuit_breaker_pct", []),
+        "settlement": sm_cfg.get("settlement", "T+1"),
+        "shorting_enabled": sm_cfg.get("shorting_enabled", False),
+        "realism_tier": sm_cfg.get("realism_tier", 2),
+        "tick_authority": sm_cfg.get("tick_authority", "server"),
+        "dimensions_config": sm_cfg.get("dimensions_config", {}),
+    }
+    news_strip = sm_cfg.get("news_strip", [])
+
+    return jsonify({
+        "seed": seed,
+        "config": config_for_client,
+        "state": state,
+        "news_strip": news_strip,
+        # Backward-compatible aliases (kept so the smoke script + any older
+        # client snapshots still resolve familiar fields).
+        "opening_state": {
+            "cash": state["cash"],
+            "holdings": state["holdings"],
+            "current_tick": state["current_tick"],
+        },
+        "tick_schedule_meta": {
+            "tick_count": config_for_client["tick_count"],
+            "tick_interval_seconds": tick_interval_seconds,
+        },
+        "market_calendar": {
+            "settlement": config_for_client["settlement"],
+            "shorting_enabled": config_for_client["shorting_enabled"],
+        },
+    })
+
+
+@app.route('/api/run/<run_id>/stocksim/state', methods=['GET'])
+@require_auth
+def stocksim_state(run_id):
+    """Authoritative tick poll. Returns state + quotes + pnl + halts + event."""
+    from engines.stock_market_engine import StockMarketEngine
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+
+    _g, _err = get_game_or_400(run.get("game_id"))
+    if _err:
+        return _err
+    sm_cfg = ((_g.get("minigame_config") or {}).get("stock_market_config")) or {}
+    tick_count = sm_cfg.get("tick_count", 22)
+    eng = StockMarketEngine(sm_cfg)
+
+    # Server-authoritative tick clock. Compute the tick that should be live
+    # now from session start + tick_interval, advance state lazily, persist.
+    started_at = state.get("started_at_ms")
+    interval_s = sm_cfg.get("tick_interval_seconds", 8)
+    if started_at is None:
+        state["started_at_ms"] = int(time.time() * 1000)
+        started_at = state["started_at_ms"]
+    # Pause-aware lazy advance:
+    #   • If `paused_at_ms` is set we add the in-flight (now - paused_at) delta to
+    #     a LOCAL copy of paused_total. This makes `effective_ms` flat while paused
+    #     so `current_tick` does not grow between reads.
+    #   • This projection is read-only — only `stocksim_phase` on resume persists
+    #     the accumulated paused_total back to state. (Trust boundary: storage.)
+    #   • `max(0, …)` defends against clock skew or paused-loaded-with-future-
+    #     timestamp where `effective_ms` could go negative.
+    now_ms = int(time.time() * 1000)
+    paused_total = int(state.get("paused_total_ms", 0) or 0)
+    paused_at = int(state.get("paused_at_ms", 0) or 0)
+    if paused_at:
+        paused_total += (now_ms - paused_at)
+    effective_ms = (now_ms - started_at) - paused_total
+    elapsed_ticks = int(effective_ms / max(1, int(interval_s * 1000))) if interval_s > 0 else 0
+    elapsed_ticks = max(0, elapsed_ticks)  # clamp negative effective_ms (clock skew)
+    target_tick = min(elapsed_ticks, tick_count)
+    if not state.get("completed") and target_tick > state.get("current_tick", 0):
+        eng.advance_to_tick(state, target_tick)
+        storage.update_run(run_id, run)
+
+    current_tick = state.get("current_tick", 0)
+
+    # Per-stock quotes at current tick.
+    quotes = {}
+    for s in sm_cfg.get("stocks", []):
+        sym = s["symbol"]
+        try:
+            quotes[sym] = eng.price_at(state, sym, current_tick)
+        except Exception as _e:
+            logger.debug("price_at %s @ tick %s: %s", sym, current_tick, _e)
+
+    pnl = eng.compute_pnl(state, latest_quotes={k: v.get("mid") for k, v in quotes.items()})
+
+    # v2: surface "why is it moving?" reason for ≤2 ticks after the event.
+    recent = state.get("recent_reasons") or {}
+    for sym, q in quotes.items():
+        rec = recent.get(sym)
+        if rec and (current_tick - rec.get("tick", -999)) <= 2:
+            q["last_reason"] = rec.get("reason", "")
+
+    # Active event (if any) at the current tick.
+    active_event = None
+    try:
+        active_event = eng.event_at(state, current_tick)
+    except Exception as _e:
+        logger.debug("event_at suppressed: %s", _e)
+
+    # === Week-format enrichment ===========================================
+    from engines.stocksim.calendar import current_day  # local import to keep top imports stable
+    _day_meta = current_day(state, sm_cfg)
+    _extra = {}
+    if _day_meta:
+        _extra["day"] = _day_meta
+
+        days = sm_cfg.get("days") or []
+        day_start_tick = sum(int(d.get("ticks", 0)) for d in days[:_day_meta["index"]])
+
+        # realized today = sum of realized_pnl across trades whose tick is on/after day_start_tick
+        realized_today = 0.0
+        for t in (state.get("trade_log") or []):
+            if int(t.get("tick", 0) or 0) >= day_start_tick and t.get("side") == "sell":
+                realized_today += float(t.get("realized_pnl", 0.0) or 0.0)
+
+        # unrealized today = sum((current_mid - day_open_mid) * qty) over each held symbol
+        unrealized_today = 0.0
+        for sym, h in (state.get("holdings") or {}).items():
+            qty = int(h.get("qty", 0) or 0)
+            if not qty:
+                continue
+            # NB: if the earlier per-tick `price_at` at the top of this route
+            # failed for `sym`, `cur_mid` here is 0.0. That makes this symbol's
+            # contribution to `unrealized_today` an artificial -day_open_mid*qty.
+            # We accept this transient degradation rather than crashing the route.
+            cur_mid = float(((quotes or {}).get(sym) or {}).get("mid") or 0.0)
+            try:
+                day_open_quote = eng.price_at(state, sym, day_start_tick)
+                day_open_mid = float(day_open_quote.get("mid") or cur_mid)
+            except Exception as _e:
+                # silent fallback: day_open_mid degrades to cur_mid → 0 P&L this symbol.
+                logger.debug("price_at(day_start) suppressed for %s: %s", sym, _e)
+                day_open_mid = cur_mid
+            unrealized_today += (cur_mid - day_open_mid) * qty
+
+        _extra["today_pnl"] = {
+            "realized": realized_today,
+            "unrealized": unrealized_today,
+            "total": realized_today + unrealized_today,
+        }
+
+        # pending_earnings = entries whose `day` matches today's day-id or any
+        # later day-id. We build a set from the slice `days[index:]` (today + future)
+        # and filter the earnings schedule by membership.
+        earnings = sm_cfg.get("earnings_schedule") or {}
+        days_after_inclusive = {d.get("id") for d in days[_day_meta["index"]:]}
+        _extra["pending_earnings"] = [
+            {"symbol": sym, "day": cfg.get("day"), "headline": cfg.get("headline", "")}
+            for sym, cfg in earnings.items()
+            if cfg.get("day") in days_after_inclusive
+        ]
+    # === End week-format enrichment =======================================
+
+    return jsonify({
+        "state": state,
+        "quotes": quotes,
+        "pnl": pnl,
+        "halted_symbols": state.get("halted_symbols", {}),
+        "event": active_event,
+        "tick_count": tick_count,
+        "phase": state.get("phase", "playing"),
+        "paused": bool(state.get("paused_at_ms", 0)),
+        **_extra,
+    })
+
+
+@app.route('/api/run/<run_id>/stocksim/phase', methods=['POST'])
+@require_auth
+def stocksim_phase(run_id):
+    """Set the playback phase ('playing' | 'eod' | 'weekend') for the stocksim clock.
+
+    Pausing (``eod``/``weekend``) freezes lazy-tick advancement; resuming
+    (``playing``) records the paused interval into ``paused_total_ms`` so the
+    elapsed-ticks math in ``stocksim_state`` skips over it.
+
+    State fields touched (in ``run.stocksim``):
+        * ``phase`` — string ('playing' | 'eod' | 'weekend'), always written.
+        * ``paused_at_ms`` — int epoch-ms. Stamped on first pause; idempotent
+          on re-pause; cleared to 0 on resume.
+        * ``paused_total_ms`` — int total ms paused so far. Incremented on
+          resume by ``now - paused_at_ms``.
+
+    Idempotency: re-stamping ``paused_at_ms`` on a duplicate pause would lose
+    the original pause window and cause ``paused_total_ms`` to under-accumulate
+    on resume. So we skip the stamp if already paused.
+
+    Resume-when-not-paused: returns 200 with no mutation to the counters —
+    only ``phase`` updates. (Safe no-op.)
+
+    Response shape: ``{phase, paused_at_ms, paused_total_ms}`` — the canonical
+    phase snapshot the client should adopt verbatim.
+
+    Authorization: run owner, or admin/school_admin/teacher impersonating.
+
+    Errors:
+        * 400 ``{error: invalid_phase}`` — phase not in the allowed enum.
+        * 403 — caller is not the owner and lacks privileged role.
+        * 404 ``{error: "Run not found"}`` — unknown run_id.
+        * 404 ``{error: "No stocksim session"}`` — run exists but has no stocksim state.
+    """
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+
+    body = request.get_json(silent=True) or {}
+    phase = body.get("phase")
+    if phase not in ("playing", "eod", "weekend"):
+        return jsonify({"error": "invalid_phase"}), 400
+
+    now_ms = int(time.time() * 1000)
+    if phase in ("eod", "weekend"):
+        # Idempotent: re-stamping paused_at_ms on a duplicate pause would lose
+        # the original pause window and cause paused_total_ms to under-accumulate
+        # on the next resume. So we only stamp if not already paused.
+        if not int(state.get("paused_at_ms", 0) or 0):
+            state["paused_at_ms"] = now_ms
+    else:  # "playing" → resume
+        paused_at = int(state.get("paused_at_ms", 0) or 0)
+        # Resume when never paused: no-op on paused_total_ms; phase still updates to "playing".
+        if paused_at:
+            paused_total = int(state.get("paused_total_ms", 0) or 0)
+            state["paused_total_ms"] = paused_total + max(0, now_ms - paused_at)
+            state["paused_at_ms"] = 0
+
+    state["phase"] = phase
+    storage.update_run(run_id, run)
+
+    return jsonify({
+        "phase": state["phase"],
+        "paused_at_ms": int(state.get("paused_at_ms", 0) or 0),
+        "paused_total_ms": int(state.get("paused_total_ms", 0) or 0),
+    })
+
+
+@app.route('/api/run/<run_id>/stocksim/cancel', methods=['POST'])
+@require_auth
+def stocksim_cancel(run_id):
+    """Cancel a pending limit/SL/SIP order."""
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+    if state.get("completed"):
+        return jsonify({"error": "Session already completed",
+                        "error_code": "SESSION_COMPLETED"}), 409
+
+    body = request.get_json(silent=True) or {}
+    order_id = body.get("order_id")
+    if not order_id:
+        return jsonify({"error": "order_id required"}), 400
+
+    pending = state.get("pending_orders", [])
+    matching = [p for p in pending if p.get("order_id") == order_id]
+    if not matching:
+        return jsonify({"error": "Order not found",
+                        "error_code": "ORDER_NOT_FOUND"}), 404
+    state["pending_orders"] = [p for p in pending if p.get("order_id") != order_id]
+    storage.update_run(run_id, run)
+    return jsonify({"cancelled": True, "order_id": order_id,
+                    "remaining_pending": len(state["pending_orders"])})
+
+
+@app.route('/api/run/<run_id>/stocksim/trade', methods=['POST'])
+@require_auth
+def stocksim_trade(run_id):
+    """Place a trade. Server validates tick, funds, holdings, halts."""
+    from engines.stock_market_engine import StockMarketEngine
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+    if state.get("completed"):
+        return jsonify({"error": "Session completed",
+                        "error_code": "SESSION_COMPLETED",
+                        "recoverable": False}), 409
+
+    _g, _err = get_game_or_400(run.get("game_id"))
+    if _err:
+        return _err
+    sm_cfg = ((_g.get("minigame_config") or {}).get("stock_market_config")) or {}
+    tick_count = sm_cfg.get("tick_count", 22)
+    body = request.get_json(silent=True) or {}
+    requested_tick = body.get("tick", 0)
+
+    if not isinstance(requested_tick, int) or requested_tick < 0 or requested_tick > tick_count:
+        return jsonify({"error": "Invalid tick",
+                        "error_code": "INVALID_TICK",
+                        "recoverable": True}), 400
+    # Anti-cheat: reject if claiming a tick more than 1 ahead of authoritative
+    if requested_tick > state.get("current_tick", 0) + 1:
+        return jsonify({"error": "Tick out of sync",
+                        "error_code": "INVALID_TICK",
+                        "recoverable": True}), 400
+
+    eng = StockMarketEngine(sm_cfg)
+    eng.advance_to_tick(state, requested_tick)  # lazy sweep first
+    result = eng.place_order(state, body)
+    storage.update_run(run_id, run)
+
+    if result.get("status") == "rejected":
+        return jsonify(result), 400 if result.get("error_code") == "INVALID_ORDER" else 402
+    return jsonify(result)
+
+
+@app.route('/api/run/<run_id>/stocksim/complete', methods=['POST'])
+@require_auth
+def stocksim_complete(run_id):
+    """Finalize session: settle, compute P&L + dimensions, record outcome."""
+    from engines.stock_market_engine import StockMarketEngine
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+
+    _g, _err = get_game_or_400(run.get("game_id"))
+    if _err:
+        return _err
+    sm_cfg = ((_g.get("minigame_config") or {}).get("stock_market_config")) or {}
+    tick_count = sm_cfg.get("tick_count", 22)
+    eng = StockMarketEngine(sm_cfg)
+
+    if not state.get("completed"):
+        eng.advance_to_tick(state, tick_count)
+        pnl = eng.compute_pnl(state)
+        dims = eng.score_dimensions(state)
+        state["completed"] = True
+        state["final_pnl"] = pnl
+        state["final_dimensions"] = dims
+        storage.update_run(run_id, run)
+
+        # Hook into existing dimension storage on RunState
+        st_obj = run.get("state")
+        if st_obj is not None:
+            try:
+                st_obj.dimension_scores = dims
+                for dim, val in dims.items():
+                    setattr(st_obj, dim, val)
+            except Exception as _e:
+                logger.debug("stocksim dim attach: %s", _e)
+
+        # Award XP + record_outcome (best-effort)
+        try:
+            user_id = run.get("user_id") or get_current_user_id()
+            if user_id:
+                xp = max(50, int(pnl["total"] / 100) + 100)
+                psych = {k: {"final": v, "name": k.replace("_", " ").title()}
+                         for k, v in dims.items()}
+                award_xp(user_id, xp, "Stock market sim", "minigame",
+                         game_title="Stock Market Sim",
+                         score=int(pnl["total"]),
+                         psychological_scores=psych,
+                         dimension_scores=dims)
+        except Exception as _e:
+            logger.debug("stocksim award_xp: %s", _e)
+    else:
+        pnl = state.get("final_pnl", {})
+        dims = state.get("final_dimensions", {})
+
+    from engines.stocksim.scoring import enrich_trade_log
+    return jsonify({
+        "pnl": pnl,
+        "dimensions": dims,
+        "trade_log": state.get("trade_log", []),
+        "trade_log_enriched": enrich_trade_log(state, sm_cfg, sm_cfg.get("news") or sm_cfg.get("events") or []),
+        "recap_messages": _stocksim_recap_messages(state, pnl, dims),
+    })
+
+
+def _stocksim_recap_messages(state: dict, pnl: dict, dims: dict) -> list:
+    """Build short coaching recap based on the session."""
+    msgs = []
+    n_trades = len(state.get("trade_log", []))
+    if n_trades == 0:
+        msgs.append("You watched the market without trading. Next time, try placing at least one order.")
+    elif n_trades > 15:
+        msgs.append("Lots of activity! Consider whether each trade had a clear thesis.")
+    if pnl.get("total", 0) > 0:
+        msgs.append(f"Net positive: \u20b9{pnl['total']:,.0f}. Nice work managing risk.")
+    elif pnl.get("total", 0) < -5000:
+        msgs.append("Tough session. Review which trades hurt most \u2014 was it sizing or timing?")
+    if dims.get("strategic_thinking", 0) >= 70:
+        msgs.append("You diversified well across sectors.")
+    if dims.get("financial_literacy", 0) >= 70:
+        msgs.append("You used multiple order types \u2014 sign of growing market literacy.")
+    return msgs
 
 
 if __name__ == "__main__":

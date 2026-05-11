@@ -1,0 +1,528 @@
+{
+  "session_game": {
+    "game_type": "conflict_mediation",
+    "title": "Conflict Mediation Lab",
+    "description": "Mediate disputes between AI characters. Learn de-escalation, active listening, and finding win-win resolutions.",
+    "route": "/mediation",
+    "icon": "⚖️",
+    "badge_text": "AI Parties",
+    "gradient": [
+      "#8B5CF6",
+      "#7C3AED"
+    ],
+    "help_content": {
+      "what_is": "A conflict mediation simulator where you act as the mediator between two parties in dispute. AI characters represent each side with realistic emotions and positions. Learn to de-escalate, find common ground, and reach fair resolutions.",
+      "tips": [
+        "Listen to both sides fully before suggesting solutions",
+        "Acknowledge emotions — people need to feel heard",
+        "Separate the person from the problem",
+        "Look for underlying interests, not just stated positions",
+        "Reframe negative statements into neutral observations",
+        "Propose options, don't impose solutions"
+      ]
+    },
+    "initial_state": {
+      "performance_score": 0,
+      "resolution_progress": 50,
+      "trust_both_sides": 0,
+      "conflicts_mediated": 0
+    },
+    "session_phases": [
+      "Opening Statements",
+      "Identifying Issues",
+      "Finding Common Ground",
+      "Proposing Solutions",
+      "Agreement"
+    ],
+    "scoring_rubric": {
+      "active_listening": {
+        "weight": 0.2,
+        "description": "Did they truly listen and acknowledge both sides?"
+      },
+      "neutrality": {
+        "weight": 0.2,
+        "description": "Did they remain fair and unbiased throughout?"
+      },
+      "de_escalation": {
+        "weight": 0.2,
+        "description": "Did they effectively calm emotions and reduce tension?"
+      },
+      "solution_quality": {
+        "weight": 0.15,
+        "description": "Was the proposed resolution fair and practical?"
+      },
+      "communication": {
+        "weight": 0.15,
+        "description": "Was their communication clear, empathetic, and professional?"
+      },
+      "process_management": {
+        "weight": 0.1,
+        "description": "Did they manage the conversation flow effectively?"
+      }
+    },
+    "persona_pool": [
+      {
+        "id": "angry_party",
+        "name": "Manish Tiwari",
+        "archetype": "Angry Party",
+        "focus": "being heard, getting justice, expressing frustration",
+        "personality": "Loud and emotional. Feels wronged and wants validation. Will escalate if not acknowledged. Tests your de-escalation skills. Calms down once truly heard.",
+        "tough_question_style": "You're clearly taking their side! Nobody is listening to me!",
+        "voice": "onyx",
+        "avatar_emoji": "😡",
+        "difficulty_weight": 4,
+        "friendly_weight": 1
+      },
+      {
+        "id": "passive_aggressive",
+        "name": "Sunaina Kaul",
+        "archetype": "Passive-Aggressive",
+        "focus": "subtle digs, indirect complaints, avoiding direct confrontation",
+        "personality": "Appears calm but makes subtle undermining comments. Says 'it's fine' when it clearly isn't. Tests your ability to surface real issues beneath the surface.",
+        "tough_question_style": "Oh no, everything is perfectly fine. I'm sure THEY didn't mean anything by it.",
+        "voice": "shimmer",
+        "avatar_emoji": "😏",
+        "difficulty_weight": 4,
+        "friendly_weight": 2
+      },
+      {
+        "id": "reasonable_party",
+        "name": "Aditya Rao",
+        "archetype": "Reasonable Party",
+        "focus": "finding fair solutions, compromise, moving forward",
+        "personality": "Calm and open to compromise. Genuinely wants resolution. But won't accept an unfair deal. Good at articulating needs. Tests if you can leverage cooperation.",
+        "tough_question_style": "I'm willing to find a middle ground, but it needs to be fair to both of us.",
+        "voice": "alloy",
+        "avatar_emoji": "🤝",
+        "difficulty_weight": 1,
+        "friendly_weight": 5
+      },
+      {
+        "id": "emotional_party",
+        "name": "Lakshmi Menon",
+        "archetype": "Emotional Stakeholder",
+        "focus": "personal hurt, trust betrayal, emotional validation",
+        "personality": "Deeply hurt on a personal level. This isn't just about the issue — it's about broken trust. Needs emotional validation before they can discuss solutions. May cry or get very quiet.",
+        "tough_question_style": "It's not about the work. It's that I trusted them and they let me down.",
+        "voice": "nova",
+        "avatar_emoji": "💔",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "power_player",
+        "name": "Rajesh Singhania",
+        "archetype": "Power Player",
+        "focus": "authority, hierarchy, winning, control",
+        "personality": "Senior person who uses their position as leverage. Expects special treatment. Dismisses the other party's concerns. Tests if you can handle power imbalance in mediation.",
+        "tough_question_style": "I've been here 15 years. You expect me to apologize to someone who joined last month?",
+        "voice": "echo",
+        "avatar_emoji": "👑",
+        "difficulty_weight": 5,
+        "friendly_weight": 1
+      },
+      {
+        "id": "facts_person",
+        "name": "Dr. Namrata Joshi",
+        "archetype": "Evidence-Based",
+        "focus": "documentation, policies, precedents, facts",
+        "personality": "Keeps detailed records. Every claim is backed by emails, screenshots, or policy documents. Tests if you can work with objective evidence and not just emotions.",
+        "tough_question_style": "I have the email chain right here. On March 3rd, they committed to...",
+        "voice": "alloy",
+        "avatar_emoji": "📎",
+        "difficulty_weight": 3,
+        "friendly_weight": 3
+      },
+      {
+        "id": "victim_mentality",
+        "name": "Sanjay Dwivedi",
+        "archetype": "Victim Mindset",
+        "focus": "being wronged, unfairness, seeking sympathy, avoiding responsibility",
+        "personality": "Sees themselves as the victim in every situation. Avoids taking responsibility for their part. Seeks sympathy rather than solutions. Tests your ability to gently push toward accountability.",
+        "tough_question_style": "This always happens to me. Everyone takes advantage of my good nature.",
+        "voice": "fable",
+        "avatar_emoji": "😢",
+        "difficulty_weight": 3,
+        "friendly_weight": 2
+      },
+      {
+        "id": "solution_seeker",
+        "name": "Nandini Chakraborty",
+        "archetype": "Solution Seeker",
+        "focus": "moving forward, practical solutions, time efficiency",
+        "personality": "Pragmatic and forward-looking. Less interested in rehashing the past, more interested in fixing the future. May be impatient with emotional processing. Tests balanced mediation.",
+        "tough_question_style": "Can we skip the blame game and figure out what we're actually going to do?",
+        "voice": "nova",
+        "avatar_emoji": "🎯",
+        "difficulty_weight": 2,
+        "friendly_weight": 4
+      }
+    ],
+    "scenarios": [
+      {
+        "scenario_id": "roommate_conflict",
+        "title": "Roommate Conflict — Living Together",
+        "description": "Two roommates are at each other's throats. Cleanliness, noise, shared expenses — small issues have snowballed into major tension. You're their mutual friend asked to help.",
+        "industry": "Personal / Daily Life",
+        "difficulty": "beginner",
+        "setting": "Your apartment's living room. Both roommates sit on opposite ends of the sofa, arms crossed, not making eye contact.",
+        "session_topic": "Mediating a conflict between two roommates about shared living responsibilities",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "angry_party",
+          "passive_aggressive",
+          "reasonable_party"
+        ],
+        "avoid_persona_types": [
+          "power_player"
+        ],
+        "coaching_tips": [
+          "Let each person share without interruption",
+          "Focus on future behavior, not past blame"
+        ],
+        "learning_objectives": [
+          "Practice basic mediation skills",
+          "Learn to manage emotional conversations"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Tension",
+            "text": "Your two friends have been roommates for 6 months. What started as small annoyances — dirty dishes, loud music, unpaid bills — has become a cold war. They've asked you to help.",
+            "icon": "🏠",
+            "image_prompt": "Two Indian roommates sitting apart in a messy apartment living room, arms crossed, tense atmosphere, mutual friend arriving, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_roommate_conflict/round_storybook_p0.png"
+          },
+          {
+            "title": "Both Sides",
+            "text": "You've heard whispered complaints from both sides. Each thinks the other is the problem. Neither has tried to have a real conversation. That's where you come in.",
+            "icon": "👂",
+            "image_prompt": "Split scene showing each Indian roommate separately complaining to their friend, speech bubbles with frustrations, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_roommate_conflict/round_storybook_p1.png"
+          },
+          {
+            "title": "The Conversation",
+            "text": "They're both here. The air is thick with tension. You take a deep breath. 'Okay, let's talk about this. One at a time. Who wants to start?'",
+            "icon": "🗣️",
+            "image_prompt": "Three Indian friends in living room, mediator in middle seat, both parties on sides, about to start conversation, warm but tense, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_roommate_conflict/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "team_dispute",
+        "title": "Team Dispute — Credit & Blame",
+        "description": "Two team members are in a heated dispute over project credit. One feels their work was stolen; the other says they did most of the work. You're the team lead.",
+        "industry": "Workplace",
+        "difficulty": "intermediate",
+        "setting": "A small meeting room. You've called both team members in after their argument disrupted the team standup.",
+        "session_topic": "Resolving a team dispute about project ownership and credit",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "emotional_party",
+          "facts_person",
+          "angry_party"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Ask for specific examples from both sides",
+          "Separate the credit issue from the working relationship"
+        ],
+        "learning_objectives": [
+          "Handle workplace conflicts professionally",
+          "Navigate emotional workplace situations"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Blowup",
+            "text": "It happened in the middle of the team standup. Manish said 'MY project delivered great results.' Lakshmi snapped: 'YOUR project? I did 80% of the work!' The team went silent.",
+            "icon": "💥",
+            "image_prompt": "Indian office standup meeting, two colleagues arguing while team watches uncomfortably, open office space, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_team_dispute/round_storybook_p0.png"
+          },
+          {
+            "title": "Team Lead's Call",
+            "text": "As team lead, this is your problem now. Both are talented. Losing either would hurt the team. But the tension is affecting everyone's work.",
+            "icon": "📞",
+            "image_prompt": "Indian team lead at desk thinking, two angry employee photos on screen, HR escalation email visible, concerned expression, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_team_dispute/round_storybook_p1.png"
+          },
+          {
+            "title": "The Meeting",
+            "text": "You've booked a private room. Both arrive, still fuming. 'I've asked you both here because we need to resolve this. The team can't function like this.'",
+            "icon": "🚪",
+            "image_prompt": "Small meeting room, Indian team lead between two upset colleagues, door closed, private mediation beginning, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_team_dispute/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "family_business",
+        "title": "Family Business — Succession Dispute",
+        "description": "Two siblings are fighting over the family business direction. One wants to modernize, the other wants to preserve traditions. You're a family friend called in to mediate.",
+        "industry": "Family Business",
+        "difficulty": "advanced",
+        "setting": "The family's ancestral home in Jaipur. Family photos line the walls. The weight of three generations hangs in the air.",
+        "session_topic": "Mediating a succession and direction dispute between siblings in a family business",
+        "conversation_turns": 12,
+        "preferred_persona_types": [
+          "power_player",
+          "emotional_party",
+          "solution_seeker"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Acknowledge family history and emotions",
+          "Find solutions that honor both tradition and innovation"
+        ],
+        "learning_objectives": [
+          "Handle complex multi-layered conflicts",
+          "Navigate emotional and business stakes simultaneously"
+        ],
+        "storybook_pages": [
+          {
+            "title": "Three Generations",
+            "text": "The Singhania textile business has been running for 70 years. Their grandfather started it, their father grew it. Now two siblings must decide its future — and they can't agree.",
+            "icon": "🏛️",
+            "image_prompt": "Beautiful ancestral Indian haveli in Jaipur with textile factory in background, family photo frames on wall showing three generations, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_family_business/round_storybook_p0.png"
+          },
+          {
+            "title": "Two Visions",
+            "text": "Rajesh wants to go digital — e-commerce, AI-driven inventory, international expansion. His sister wants to preserve the craftsmanship, the workers, the legacy. Both have valid points.",
+            "icon": "🔀",
+            "image_prompt": "Split scene - modern digital warehouse on one side, traditional Indian textile workshop with artisans on other, two siblings, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_family_business/round_storybook_p1.png"
+          },
+          {
+            "title": "The Family Friend",
+            "text": "You've known both since childhood. Their parents trusted you. 'Please help us figure this out before it tears the family apart.' The weight of generations rests on this conversation.",
+            "icon": "🕊️",
+            "image_prompt": "Indian family meeting in ancestral home drawing room, mediator friend arriving, two siblings waiting, emotional atmosphere, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_family_business/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "student_faculty",
+        "title": "Student vs. Faculty — Academic Conflict",
+        "description": "A student is accusing a professor of unfair grading. The professor insists the grade is justified. You're the department head mediating.",
+        "industry": "Education",
+        "difficulty": "intermediate",
+        "setting": "The department head's office in a university. Books line the walls. Both parties sit across from you.",
+        "session_topic": "Resolving a grading dispute between a student and professor",
+        "conversation_turns": 10,
+        "preferred_persona_types": [
+          "victim_mentality",
+          "power_player",
+          "facts_person"
+        ],
+        "avoid_persona_types": [],
+        "coaching_tips": [
+          "Review the grading criteria objectively",
+          "Acknowledge the power imbalance"
+        ],
+        "learning_objectives": [
+          "Navigate power dynamics in mediation",
+          "Balance empathy with objectivity"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Complaint",
+            "text": "A student walks into your office with tears in their eyes: 'Sir, I worked for three months on that project. Dr. Joshi gave me a C. My classmate who copied half my approach got a B+.'",
+            "icon": "📝",
+            "image_prompt": "Indian university student in professor's office, upset, showing assignment papers, book-lined walls, academic setting, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_student_faculty/round_storybook_p0.png"
+          },
+          {
+            "title": "The Other Side",
+            "text": "Dr. Joshi is firm: 'I've been teaching 20 years. The student's work had fundamental errors. I don't grade on effort alone.' Both believe they're right.",
+            "icon": "👨‍🏫",
+            "image_prompt": "Indian professor at desk defending grading decision, grade sheets visible, academic office, firm but professional expression, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_student_faculty/round_storybook_p1.png"
+          },
+          {
+            "title": "Your Decision",
+            "text": "As department head, you must find a resolution. The student's career could be affected. The professor's authority must be respected. Both sit before you, waiting.",
+            "icon": "⚖️",
+            "image_prompt": "Indian department head behind desk, student on one side, professor on other, university office, mediation about to begin, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_student_faculty/round_storybook_p2.png"
+          }
+        ]
+      },
+      {
+        "scenario_id": "neighbor_dispute",
+        "title": "Neighbor Dispute — The Parking War",
+        "description": "Two neighbors are in an escalating dispute over a parking spot. What started as an inconvenience has turned into a feud. The RWA president (you) must mediate.",
+        "industry": "Community / Residential",
+        "difficulty": "beginner",
+        "setting": "The community hall of an apartment complex. Two neighbors sit on opposite sides of a table, clearly unhappy to be here.",
+        "session_topic": "Mediating a parking dispute between apartment neighbors",
+        "conversation_turns": 8,
+        "preferred_persona_types": [
+          "angry_party",
+          "reasonable_party",
+          "victim_mentality"
+        ],
+        "avoid_persona_types": [
+          "power_player"
+        ],
+        "coaching_tips": [
+          "Focus on practical solutions, not who was 'right'",
+          "Propose clear rules going forward"
+        ],
+        "learning_objectives": [
+          "Handle community conflicts",
+          "Find practical solutions for everyday disputes"
+        ],
+        "storybook_pages": [
+          {
+            "title": "The Parking War",
+            "text": "What started as one car parked in the wrong spot has escalated into blocked driveways, angry notes, and now a formal complaint. As RWA president, you must step in.",
+            "icon": "🚗",
+            "image_prompt": "Indian apartment complex parking lot, two cars blocking each other, angry notes on windshields, frustrated residents, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_neighbor_dispute/round_storybook_p0.png"
+          },
+          {
+            "title": "Taking Sides",
+            "text": "Other residents are taking sides. WhatsApp groups are buzzing. If this isn't resolved soon, a simple parking issue could split the entire community.",
+            "icon": "📱",
+            "image_prompt": "Indian apartment residents in groups discussing, WhatsApp messages on phones, community hall in background, taking sides, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_neighbor_dispute/round_storybook_p1.png"
+          },
+          {
+            "title": "The Mediation",
+            "text": "Both neighbors arrive at the community hall. Neither wants to be here. 'Okay, let's discuss this like adults. This is our community, and we have to live together.'",
+            "icon": "🏘️",
+            "image_prompt": "Indian apartment community hall, RWA president mediating between two neighbors, simple meeting table, residential building visible through window, digital art",
+            "image_url": "/uploads/media/images/story/conflict_mediation_neighbor_dispute/round_storybook_p2.png"
+          }
+        ]
+      }
+    ]
+  },
+  "learning_concept": "Consequence Thinking & Resource Management",
+  "coach_mode_default": true,
+  "transfer_exercises": [
+    {
+      "skill_tag": "delayed_gratification",
+      "game_context": "Managing resources across multiple rounds to reach the best outcome",
+      "real_world": "Planning study time over a semester rather than cramming before exams",
+      "challenge": "Create a resource management plan for your next month: budget time/money/energy across competing priorities."
+    },
+    {
+      "skill_tag": "resilience",
+      "game_context": "Recovering from negative events across game rounds",
+      "real_world": "Maintaining performance after setbacks in a sports season or project",
+      "challenge": "Track your energy/mood for 5 days. Notice patterns. What depletes you? What restores you?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "game_type": "negotiation",
+  "achievements": [
+    {
+      "id": "deal_maker",
+      "name": "Deal Maker",
+      "description": "Reached a mutually beneficial agreement",
+      "condition": "agreement_reached and both_satisfied",
+      "xp_reward": 200,
+      "icon": "🤝"
+    },
+    {
+      "id": "master_negotiator",
+      "name": "Master Negotiator",
+      "description": "Secured the best possible terms",
+      "condition": "score >= 85",
+      "xp_reward": 250,
+      "icon": "💼"
+    },
+    {
+      "id": "negotiation_complete",
+      "name": "Negotiation Complete",
+      "description": "Completed the negotiation challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "✅"
+    }
+  ],
+  "title": "Conflict Mediation",
+  "initial_state": {
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_concession_rate": 0.4,
+      "turn_limit": 12,
+      "relationship_boost": 20
+    },
+    "medium": {
+      "ai_concession_rate": 0.25,
+      "turn_limit": 10,
+      "relationship_boost": 0
+    },
+    "hard": {
+      "ai_concession_rate": 0.1,
+      "turn_limit": 8,
+      "relationship_boost": -10
+    }
+  },
+  "description": "Take the seat of a neutral mediator between two colleagues in dispute. Practice active listening, impartial framing, and de-escalation to reach a resolution that works for everyone.",
+  "game_id": "conflict_mediation",
+  "dimension_scoring_weights": {
+    "empathy": 0.4,
+    "adaptability": 0.3,
+    "ethical_reasoning": 0.2,
+    "strategic_thinking": 0.1
+  },
+  "coaching_moment": "Take the seat of a neutral mediator between two colleagues in dispute. Practice active listening, impartial framing, and de-escalation to reach a resolution that works for everyone.",
+  "tags": [
+    "communication",
+    "conflict-resolution",
+    "creativity",
+    "empathy",
+    "media-literacy",
+    "negotiation"
+  ],
+  "cultural_context": "India's diverse society — with its caste, religious, regional, and linguistic dimensions — creates rich contexts for conflict and equally rich opportunities for mediation. Conflict resolution skills support both professional effectiveness and social cohesion.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "social-emotional-learning",
+    "adaptability",
+    "values-citizenship"
+  ],
+  "estimated_duration": 20,
+  "target_age": "16-25",
+  "learning_objectives": [
+    "Develop critical thinking through negotiation gameplay",
+    "Practice decision-making in realistic scenarios",
+    "Build self-awareness about your strengths and areas for growth"
+  ],
+  "reflection_prompt": "Where did you give ground, and where did you hold it? What did the other side teach you about your own priorities?"
+}

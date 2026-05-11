@@ -1,0 +1,796 @@
+{
+  "game_id": "supply-chain-wars",
+  "title": "Supply Chain Wars",
+  "theme": "Global Logistics",
+  "icon": "🚢",
+  "description": "A chess-inspired strategy game where you control global trade routes and supply chains. Deploy your HQ Warehouse, Fleet Commander, Cargo Ships, Air Freight, Delivery Drones, and Trucks to dominate logistics corridors. Secure ports, factories, and distribution centers to build an unstoppable supply network and outmaneuver the competition.",
+  "game_type": "chess_strategy",
+  "category": "Strategy & Tactics",
+  "target_audience": "16-25",
+  "duration_minutes": 25,
+  "difficulty": "advanced",
+  "learning_objectives": [
+    "Develop strategic thinking by planning multi-step logistics maneuvers across trade routes",
+    "Practice resource allocation by deciding where to deploy limited fleet and freight assets",
+    "Understand supply chain tradeoffs when choosing between speed, cost, and territorial control",
+    "Build spatial reasoning skills through positional control of key logistics hubs",
+    "Learn adaptive decision-making by responding to the opponent's shifting supply chain strategy",
+    "Cultivate systems thinking by managing interconnected nodes in a global distribution network"
+  ],
+  "tags": [
+    "strategy",
+    "logistics",
+    "supply-chain",
+    "resource-management",
+    "global-trade",
+    "operations"
+  ],
+  "how_to_play": [
+    "Each turn you get 2 Action Points (AP). Moving a piece costs 1 AP, and using a special ability costs 1 AP.",
+    "Pieces move like chess: Warehouse=King, Fleet=Queen, Cargo=Rook, Air Freight=Bishop, Delivery Drone=Knight, Truck=Pawn.",
+    "Capture enemy pieces by moving onto their square. Trucks promote to Fleet Commander when reaching the last row.",
+    "Control resource tiles (Ports, Factories, etc.) by placing your pieces on them. Each tile generates income per turn.",
+    "Win by: capturing the enemy HQ Warehouse, controlling 3+ resource tiles, or reaching $10M in trade revenue.",
+    "Use each piece's unique abilities strategically — the Delivery Drone's rapid deployment and the Air Freight's route swapping can dominate any supply corridor."
+  ],
+  "objectives": [
+    "Capture the rival HQ Warehouse for an instant logistics monopoly victory",
+    "Control 3 or more key supply hubs for a trade route domination win",
+    "Build your trade revenue to $10 million through strategic supply chain control"
+  ],
+  "storybook_pages": [
+    {
+      "title": "The Global Supply Chain Showdown",
+      "text": "Two rival logistics empires face off for control of the world's most valuable trade routes. Your fleet of cargo ships, delivery drones, and freight carriers must outmaneuver the competition across contested supply corridors. Every shipment counts — margins are razor-thin and dominance belongs to the most efficient operator.",
+      "image_prompt": "two rival logistics companies facing each other across a world map styled as a chess board, cargo ships and drones, ports and factories glowing, dramatic ocean and sky, digital illustration style"
+    },
+    {
+      "title": "Your Logistics Fleet",
+      "text": "HQ Warehouse (King) — Your headquarters, protect at all costs.\nFleet Commander (Queen) — Most powerful, moves any direction.\nCargo Ship (Rook) — Straight-line shipping lane specialist.\nAir Freight (Bishop) — Diagonal air corridor navigator.\nDelivery Drone (Knight) — L-shaped rapid deployment unit.\nTruck (Pawn) — Ground transport, promotes to Fleet Commander!",
+      "image_prompt": "diverse logistics fleet as chess pieces on a cargo port, warehouse as king, drone as knight, truck as pawn, colorful modern illustration, game character design with shipping and logistics theme"
+    },
+    {
+      "title": "The Trade Route Map",
+      "text": "The 8x8 board represents contested global trade territory with 6 key logistics hubs: Ports, Factories, Distribution Centers, Rail Hubs, Airports, and Markets. Control them to generate trade revenue each turn and build your supply chain empire!",
+      "image_prompt": "birds eye view of a colorful 8x8 game board with glowing logistics hub tiles, shipping containers and cargo cranes, global trade map style with routes connecting nodes, digital game art"
+    }
+  ],
+  "psychological_framework": {
+    "core_skills": [
+      {
+        "id": "strategic_thinking",
+        "name": "Strategic Thinking",
+        "icon": "♟️",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "risk_tolerance",
+        "name": "Risk Tolerance",
+        "icon": "🎲",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "delayed_gratification",
+        "name": "Delayed Gratification",
+        "icon": "⏳",
+        "brain_region": "parietal_lobe"
+      },
+      {
+        "id": "adaptability",
+        "name": "Adaptability",
+        "icon": "🦎",
+        "brain_region": "prefrontal_cortex"
+      },
+      {
+        "id": "resilience",
+        "name": "Resilience",
+        "icon": "💪",
+        "brain_region": "prefrontal_cortex"
+      }
+    ]
+  },
+  "initial_state": {
+    "valuation": {
+      "label": "Trade Revenue",
+      "value": 1000000,
+      "icon": "🚢"
+    },
+    "strategic_thinking": {
+      "icon": "♟️",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "risk_tolerance": {
+      "icon": "🎲",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "delayed_gratification": {
+      "icon": "⏳",
+      "value": 30,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "adaptability": {
+      "icon": "🦎",
+      "value": 35,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "resilience": {
+      "icon": "💪",
+      "value": 40,
+      "min": 0,
+      "max": 100,
+      "category": "Strategy & Tactics"
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50
+    }
+  },
+  "chess_config": {
+    "board_size": 8,
+    "max_ap": 2,
+    "win_valuation": 10000000,
+    "win_resource_count": 3,
+    "resource_tiles": [
+      {
+        "pos": [
+          2,
+          2
+        ],
+        "type": "port",
+        "income": 200000,
+        "icon": "🚢",
+        "label": "Port"
+      },
+      {
+        "pos": [
+          2,
+          5
+        ],
+        "type": "factory",
+        "income": 150000,
+        "icon": "🏭",
+        "label": "Factory"
+      },
+      {
+        "pos": [
+          5,
+          2
+        ],
+        "type": "distribution_center",
+        "income": 180000,
+        "icon": "📦",
+        "label": "Distribution Center"
+      },
+      {
+        "pos": [
+          5,
+          5
+        ],
+        "type": "rail_hub",
+        "income": 160000,
+        "icon": "🚂",
+        "label": "Rail Hub"
+      },
+      {
+        "pos": [
+          3,
+          3
+        ],
+        "type": "airport",
+        "income": 120000,
+        "icon": "✈️",
+        "label": "Airport"
+      },
+      {
+        "pos": [
+          4,
+          4
+        ],
+        "type": "market",
+        "income": 140000,
+        "icon": "🏪",
+        "label": "Market"
+      }
+    ],
+    "theme_config": {
+      "king_role": "warehouse",
+      "queen_role": "fleet",
+      "pawn_role": "truck",
+      "valuation_label": "Trade Revenue",
+      "back_row": [
+        "cargo",
+        "delivery",
+        "airfreight",
+        "warehouse",
+        "fleet",
+        "airfreight",
+        "delivery",
+        "cargo"
+      ],
+      "piece_stats": {
+        "warehouse": {
+          "hp": 10,
+          "attack": 3,
+          "label": "HQ Warehouse",
+          "icon": "🏭"
+        },
+        "fleet": {
+          "hp": 8,
+          "attack": 4,
+          "label": "Fleet Commander",
+          "icon": "🚢"
+        },
+        "cargo": {
+          "hp": 7,
+          "attack": 3,
+          "label": "Cargo Ship",
+          "icon": "📦"
+        },
+        "airfreight": {
+          "hp": 6,
+          "attack": 3,
+          "label": "Air Freight",
+          "icon": "✈️"
+        },
+        "delivery": {
+          "hp": 6,
+          "attack": 4,
+          "label": "Delivery Drone",
+          "icon": "🚁"
+        },
+        "truck": {
+          "hp": 3,
+          "attack": 2,
+          "label": "Truck",
+          "icon": "🚚"
+        }
+      },
+      "piece_moves": {
+        "warehouse": {
+          "type": "king",
+          "range": 1,
+          "diagonal": true,
+          "straight": true
+        },
+        "fleet": {
+          "type": "queen",
+          "range": 8,
+          "diagonal": true,
+          "straight": true
+        },
+        "cargo": {
+          "type": "rook",
+          "range": 8,
+          "diagonal": false,
+          "straight": true
+        },
+        "airfreight": {
+          "type": "bishop",
+          "range": 8,
+          "diagonal": true,
+          "straight": false
+        },
+        "delivery": {
+          "type": "knight",
+          "range": 0,
+          "knight": true
+        },
+        "truck": {
+          "type": "pawn",
+          "range": 1,
+          "pawn": true
+        }
+      },
+      "piece_profiles": {
+        "warehouse": {
+          "title": "HQ Warehouse (The Command Center)",
+          "strengths": [
+            {
+              "name": "Supply Nexus",
+              "desc": "Boosts efficiency of adjacent allies, +1 ATK each"
+            },
+            {
+              "name": "Logistics Oversight",
+              "desc": "Sees all threats — cannot be ambushed by hidden moves"
+            },
+            {
+              "name": "Revenue Hub",
+              "desc": "Generates +$50K trade revenue per turn just by being operational"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "High-Value Target",
+              "desc": "Capture means instant defeat — must be protected at all costs"
+            },
+            {
+              "name": "Immobile Infrastructure",
+              "desc": "Can only move 1 square in any direction"
+            },
+            {
+              "name": "Siege Vulnerability",
+              "desc": "If surrounded by enemies, loses 1 HP per turn from supply disruption"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "executive_order",
+              "name": "Emergency Dispatch",
+              "desc": "Boost all adjacent allies +2 ATK for 1 turn",
+              "cost": 1,
+              "icon": "📡"
+            },
+            {
+              "id": "pivot_vision",
+              "name": "Supply Chain Audit",
+              "desc": "Reveal all enemy piece abilities for 2 turns",
+              "cost": 1,
+              "icon": "🔍"
+            }
+          ]
+        },
+        "fleet": {
+          "title": "Fleet Commander (The Admiral)",
+          "strengths": [
+            {
+              "name": "Full Spectrum Logistics",
+              "desc": "Moves in any direction, any distance — most versatile unit"
+            },
+            {
+              "name": "Naval Superiority",
+              "desc": "+2 ATK when capturing Delivery Drones or Trucks"
+            },
+            {
+              "name": "Flagship Authority",
+              "desc": "Cannot be pushed or displaced by Air Freight"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Overextension",
+              "desc": "-1 ATK if no other allies within 2 squares"
+            },
+            {
+              "name": "Fuel Costs",
+              "desc": "Each ability use costs +1 extra AP next turn"
+            },
+            {
+              "name": "Restless Fleet",
+              "desc": "Cannot stay on same tile 2 turns in a row"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "tech_pivot",
+              "name": "Emergency Reroute",
+              "desc": "Teleport to any empty tile within 3 squares",
+              "cost": 1,
+              "icon": "⚡"
+            },
+            {
+              "id": "deploy_patch",
+              "name": "Dry Dock Repair",
+              "desc": "Heal self +3 HP and remove debuffs",
+              "cost": 1,
+              "icon": "🔧"
+            }
+          ]
+        },
+        "cargo": {
+          "title": "Cargo Ship (The Hauler)",
+          "strengths": [
+            {
+              "name": "Shipping Lane Mastery",
+              "desc": "Moves in straight lines with no range limit"
+            },
+            {
+              "name": "Trade Bonus",
+              "desc": "+$100K bonus when capturing any enemy piece"
+            },
+            {
+              "name": "Port Protection",
+              "desc": "Cannot be captured if adjacent to a resource tile you control"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "No Diagonal Routes",
+              "desc": "Cannot move or attack diagonally at all"
+            },
+            {
+              "name": "Docking Pressure",
+              "desc": "Loses 1 HP per turn if not adjacent to a resource tile"
+            },
+            {
+              "name": "Straight-Line Only",
+              "desc": "Must move at least 2 squares when moving"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "close_deal",
+              "name": "Port Tariff",
+              "desc": "Gain income from any adjacent resource tile instantly",
+              "cost": 1,
+              "icon": "💰"
+            },
+            {
+              "id": "cold_call",
+              "name": "Trade Embargo",
+              "desc": "Weaken an enemy within 3 squares -2 ATK",
+              "cost": 1,
+              "icon": "🚫"
+            }
+          ]
+        },
+        "airfreight": {
+          "title": "Air Freight (The Sky Hauler)",
+          "strengths": [
+            {
+              "name": "Diagonal Air Corridors",
+              "desc": "Controls long diagonals — great for surprise cross-board deliveries"
+            },
+            {
+              "name": "Turbulence Zone",
+              "desc": "Enemies adjacent to Air Freight have -1 ATK from disrupted operations"
+            },
+            {
+              "name": "Shockwave Drop",
+              "desc": "Pushing an enemy into another enemy damages both"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "No Ground Routes",
+              "desc": "Cannot move horizontally or vertically"
+            },
+            {
+              "name": "Fuel Dependent",
+              "desc": "-2 ATK if your trade revenue is below $2M"
+            },
+            {
+              "name": "Fragile Fuselage",
+              "desc": "Takes +1 extra damage from Fleet Commander attacks"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "viral_campaign",
+              "name": "Jet Blast",
+              "desc": "Push any enemy piece 2 squares away",
+              "cost": 1,
+              "icon": "💨"
+            },
+            {
+              "id": "rebrand",
+              "name": "Route Swap",
+              "desc": "Swap positions with any friendly piece on the board",
+              "cost": 1,
+              "icon": "🔀"
+            }
+          ]
+        },
+        "delivery": {
+          "title": "Delivery Drone (The Scout)",
+          "strengths": [
+            {
+              "name": "Aerial Maneuvers",
+              "desc": "Unique L-shaped moves that fly over obstacles"
+            },
+            {
+              "name": "Precision Strike",
+              "desc": "+2 ATK when attacking from an unexpected angle"
+            },
+            {
+              "name": "Armored Hull",
+              "desc": "Takes -1 damage from all attacks"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "Limited Flight Paths",
+              "desc": "Only 8 possible landing zones — can be intercepted"
+            },
+            {
+              "name": "Battery Drain",
+              "desc": "Cannot use abilities 2 turns in a row"
+            },
+            {
+              "name": "No Reverse Thrust",
+              "desc": "Cannot retreat to previous position within 2 turns"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "deploy_mvp",
+              "name": "Drop Barricade",
+              "desc": "Place a blocker on any empty adjacent tile",
+              "cost": 1,
+              "icon": "🛡️"
+            },
+            {
+              "id": "hackathon",
+              "name": "Turbo Boost",
+              "desc": "Move again immediately (costs all remaining AP)",
+              "cost": 2,
+              "icon": "🔋"
+            }
+          ]
+        },
+        "truck": {
+          "title": "Truck (The Ground Runner)",
+          "strengths": [
+            {
+              "name": "Keep on Truckin'",
+              "desc": "+1 ATK for each turn survived (stacks up to +3)"
+            },
+            {
+              "name": "Fleet Strength",
+              "desc": "You have 8 of them — overwhelm with numbers"
+            },
+            {
+              "name": "Promotion Lane",
+              "desc": "Reaching the last row promotes to Fleet Commander — massive power spike"
+            }
+          ],
+          "weaknesses": [
+            {
+              "name": "One-Way Route",
+              "desc": "Can only move forward, never backward"
+            },
+            {
+              "name": "Low Armor",
+              "desc": "Only 3 HP — easily captured by any piece"
+            },
+            {
+              "name": "Diagonal Intercept Only",
+              "desc": "Can only capture diagonally, not when moving forward"
+            }
+          ],
+          "abilities": [
+            {
+              "id": "coffee_run",
+              "name": "Roadside Repair",
+              "desc": "Heal any adjacent ally +3 HP",
+              "cost": 0,
+              "icon": "🔧"
+            },
+            {
+              "id": "networking",
+              "name": "Convoy Swap",
+              "desc": "Swap position with any adjacent friendly Truck",
+              "cost": 0,
+              "icon": "🔄"
+            }
+          ]
+        }
+      },
+      "move_narratives": {
+        "warehouse": {
+          "move": [
+            "{piece} shifts operations, surveying the global supply landscape.",
+            "The HQ Warehouse makes a calculated repositioning for maximum network control.",
+            "{piece} adjusts its position cautiously — every headquarters move ripples through the supply chain."
+          ],
+          "capture": [
+            "{piece} personally overwhelms the rival's {target} — a hostile acquisition!",
+            "In a bold logistics power play, {piece} absorbs the enemy {target} into its network.",
+            "{piece} demonstrates supply chain dominance, eliminating the rival {target} from the map."
+          ]
+        },
+        "fleet": {
+          "move": [
+            "{piece} deploys across the board with the agility of a fleet reroute.",
+            "The Fleet Commander repositions, scanning for the optimal shipping lane.",
+            "{piece} moves with precision — like a perfectly coordinated convoy deployment."
+          ],
+          "capture": [
+            "{piece} launches a devastating naval assault against the rival {target}!",
+            "With a brilliant fleet maneuver, {piece} outflanks and eliminates {target}.",
+            "{piece} executes a blockade that renders the enemy {target} stranded."
+          ]
+        },
+        "cargo": {
+          "move": [
+            "{piece} steams straight ahead, locked on the next shipping lane.",
+            "The Cargo Ship pushes forward aggressively — throughput is everything.",
+            "{piece} repositions along the trade corridor for maximum freight capacity."
+          ],
+          "capture": [
+            "{piece} rams through, absorbing the rival's {target} into the fleet!",
+            "The Cargo Ship steamrolls through — the enemy {target} never saw the hull coming.",
+            "{piece} outmaneuvers the rival {target} with sheer tonnage and momentum."
+          ]
+        },
+        "airfreight": {
+          "move": [
+            "{piece} banks diagonally, disrupting the rival's air corridors.",
+            "The Air Freight flanks the competition from an unexpected flight path.",
+            "{piece} repositions for a cross-map aerial supply run."
+          ],
+          "capture": [
+            "{piece} launches a precision airdrop that takes out the enemy {target}!",
+            "A devastating flyover! {piece} cuts off the rival {target} from all supply lines.",
+            "{piece} dominates the airspace and eliminates the competition's {target} — total air superiority!"
+          ]
+        },
+        "delivery": {
+          "move": [
+            "{piece} vaults over obstacles with an agile aerial hop.",
+            "The Delivery Drone deploys to a flanking position — nobody tracked that flight path!",
+            "{piece} drops into position like a well-timed last-mile delivery."
+          ],
+          "capture": [
+            "{piece} delivers a surprise strike, taking down the rival {target}!",
+            "In a brilliant tactical drop, {piece} exploits a gap and eliminates {target}.",
+            "{piece} executes a precision drone strike that knocks out the enemy {target}."
+          ]
+        },
+        "truck": {
+          "move": [
+            "The determined Truck pushes forward, one mile closer to that promotion.",
+            "{piece} advances with relentless ground-level determination.",
+            "Slow and steady — {piece} hauls toward the final delivery zone."
+          ],
+          "capture": [
+            "Against all odds, the scrappy Truck takes down the rival {target}!",
+            "{piece} proves its worth — the enemy {target} underestimated ground freight!",
+            "What an upset! {piece} captures the rival's {target} in a stunning logistics play."
+          ],
+          "promote": [
+            "The Truck reaches the far port and is PROMOTED TO FLEET COMMANDER! A massive power spike!",
+            "From local delivery to global command — the Truck emerges as a powerful new Fleet Commander!",
+            "A logistics dream realized! The humble Truck earns a promotion to Fleet Commander!"
+          ]
+        }
+      },
+      "resource_narratives": [
+        "Trade revenue flows in from controlled logistics hubs — your supply empire grows!",
+        "Resource hubs generate income, fueling your supply chain expansion.",
+        "Strategic positioning pays dividends — revenue collected from held trade territories."
+      ],
+      "role_values": {
+        "warehouse": 100,
+        "fleet": 50,
+        "cargo": 30,
+        "airfreight": 30,
+        "delivery": 25,
+        "truck": 10
+      }
+    }
+  },
+  "rounds": [
+    {
+      "id": "chess_game",
+      "title": "Supply Chain Wars",
+      "story": "The global trade routes await. Command your logistics fleet to dominate the supply chain!",
+      "psychological_focus": {
+        "primary_skills": [
+          "strategic_thinking",
+          "risk_tolerance"
+        ],
+        "secondary_skills": [
+          "delayed_gratification",
+          "adaptability",
+          "resilience"
+        ]
+      },
+      "choices": [],
+      "coaching_moment": "Think carefully about the trade-offs before committing to this path.",
+      "reflection_prompt": "What sacrifices did you make, and were they worth it?"
+    }
+  ],
+  "learning_concept": "Pattern Recognition & Strategic Planning",
+  "transfer_exercises": [
+    {
+      "skill_tag": "strategic_thinking",
+      "game_context": "Planning moves several steps ahead",
+      "real_world": "Mapping out a study plan for exams with realistic milestones",
+      "challenge": "Draw a decision tree for a real goal you have — what are the possible paths and outcomes?"
+    },
+    {
+      "skill_tag": "adaptability",
+      "game_context": "Responding to opponent's unexpected moves",
+      "real_world": "Adjusting your plan when a key team member is unavailable",
+      "challenge": "Describe a time when you had to completely change your approach mid-way. What did you learn?"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Decision Making",
+      "definition": "The process of selecting among alternatives based on available information and values.",
+      "example": "Choosing between two career paths based on income, passion, and long-term growth.",
+      "deep_dive": "Good decision-making combines rational analysis with awareness of cognitive biases that distort judgment.",
+      "real_world_example": "Leaders make high-stakes decisions daily — the quality of their process matters as much as the decision itself."
+    },
+    {
+      "term": "Critical Thinking",
+      "definition": "Analyzing information objectively to form a well-reasoned judgment.",
+      "example": "Questioning whether a statistic is representative before using it to make a decision.",
+      "deep_dive": "Critical thinking involves identifying assumptions, evaluating evidence, and considering alternative perspectives.",
+      "real_world_example": "Journalists fact-check before publishing; scientists replicate experiments before claiming discoveries."
+    },
+    {
+      "term": "Growth Mindset",
+      "definition": "The belief that abilities can be developed through effort and learning from failure.",
+      "example": "Seeing a poor game result as feedback on what to practice, not evidence of being bad at the game.",
+      "deep_dive": "Research by Carol Dweck shows people with growth mindsets achieve more and recover better from setbacks.",
+      "real_world_example": "Students who believe intelligence is fixed give up when challenged; those with growth mindset persist and improve."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "grandmaster",
+      "name": "Grandmaster",
+      "description": "Executed a perfect strategic sequence",
+      "condition": "accuracy >= 90",
+      "xp_reward": 250,
+      "icon": "👑"
+    },
+    {
+      "id": "tactical_genius",
+      "name": "Tactical Genius",
+      "description": "Found the winning move in a critical position",
+      "condition": "best_move_found",
+      "xp_reward": 200,
+      "icon": "🧠"
+    },
+    {
+      "id": "chess_complete",
+      "name": "Chess Champion",
+      "description": "Completed the chess strategy challenge",
+      "condition": "game_complete",
+      "xp_reward": 100,
+      "icon": "♟️"
+    }
+  ],
+  "difficulty_modifiers": {
+    "easy": {
+      "ai_depth": 1,
+      "show_hints": true,
+      "starting_advantage": 1.2
+    },
+    "medium": {
+      "ai_depth": 2,
+      "show_hints": false,
+      "starting_advantage": 1.0
+    },
+    "hard": {
+      "ai_depth": 4,
+      "show_hints": false,
+      "starting_advantage": 0.8
+    }
+  },
+  "coach_mode_default": true,
+  "features": {
+    "voice_enabled": true
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.4,
+    "delayed_gratification": 0.35,
+    "adaptability": 0.25
+  },
+  "estimated_duration": 25,
+  "target_age": "16-25",
+  "cultural_context": "India is one of the world's most complex logistics environments, with challenges ranging from cold-chain distribution to last-mile rural connectivity. Supply chain thinking is a core competency in India's manufacturing and e-commerce boom.",
+  "nep_stage": "secondary",
+  "nep_competencies": [
+    "critical-thinking",
+    "self-regulation",
+    "adaptability"
+  ],
+  "reflection_prompt": "What pattern did your opponent rely on, and how did you counter (or fail to)?"
+}

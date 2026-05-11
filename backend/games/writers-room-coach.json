@@ -1,0 +1,848 @@
+{
+  "game_id": "writers-room-coach",
+  "title": "✍️ Writer's Room Coach",
+  "theme": "English — Writing & Storytelling",
+  "icon": "✍️",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You're in a real writer's room. Each round, you'll write a short piece and get coaching feedback on the four pillars of strong writing: clarity, structure, voice, and revision. Build a real writing portfolio — from a 3-line story to a full personal essay.",
+  "target_audience": "Ages 11-15",
+  "target_age": "11-15",
+  "grade": "6-9",
+  "subject": "english",
+  "topics": [
+    "writing_craft",
+    "storytelling",
+    "revision",
+    "voice",
+    "structure"
+  ],
+  "difficulty": "beginner",
+  "duration_minutes": 35,
+  "ai_image_config": {
+    "image_style": "cartoon",
+    "dalle_style": "natural",
+    "generate_on_first_play": false
+  },
+  "visual_config": {
+    "theme_preset": "writing_room",
+    "palette": {
+      "primary": "#ec4899",
+      "accent": "#f59e0b"
+    },
+    "labels": {
+      "kpi_main": "Writer's Score"
+    },
+    "icons": {
+      "main": "✍️"
+    }
+  },
+  "animation_config": {
+    "enabled": true,
+    "intensity": "medium",
+    "scene_transitions": true,
+    "data_viz_animations": false,
+    "achievement_animations": true
+  },
+  "how_to_play": [
+    "Each round you'll receive a short writing prompt.",
+    "Write your response in the textbox — short or long, your call.",
+    "Then choose how you'd refine it (the choices teach craft).",
+    "Each choice scores against the four pillars: clarity, structure, voice, revision.",
+    "By the end, you'll have a portfolio of 5-6 pieces and a writer's profile."
+  ],
+  "learning_objectives": [
+    "Distinguish vague writing from specific writing.",
+    "Apply structure: hook → body → ending.",
+    "Find your VOICE — the writing only you can produce.",
+    "Practice revision as part of the craft, not failure.",
+    "Use feedback non-defensively."
+  ],
+  "tags": [
+    "writing",
+    "english",
+    "storytelling",
+    "essay",
+    "creative_writing"
+  ],
+  "nep_stage": "Middle",
+  "nep_competencies": [
+    "communication",
+    "creativity",
+    "critical_thinking",
+    "language_skills"
+  ],
+  "cultural_context": "Personal narrative writing is core to NEP 2020 language curriculum and life-skill communication.",
+  "psychological_framework": {
+    "core_skills": [
+      "expression",
+      "iteration",
+      "self_critique",
+      "voice_development"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "creativity": 0.3,
+    "communication": 0.3,
+    "critical_thinking": 0.2,
+    "self_awareness": 0.2
+  },
+  "initial_state": {
+    "clarity_score": 50,
+    "structure_score": 50,
+    "voice_score": 50,
+    "revision_score": 50,
+    "pieces_written": 0
+  },
+  "simulation_config": {
+    "time_config": {
+      "ticks_per_round": 1,
+      "tick_label": "Draft"
+    },
+    "subsystems": [
+      "clarity",
+      "structure",
+      "voice",
+      "revision"
+    ],
+    "kpi_definitions": {
+      "clarity_score": {
+        "label": "Clarity",
+        "format": "score",
+        "max": 100
+      },
+      "structure_score": {
+        "label": "Structure",
+        "format": "score",
+        "max": 100
+      },
+      "voice_score": {
+        "label": "Voice",
+        "format": "score",
+        "max": 100
+      },
+      "revision_score": {
+        "label": "Revision",
+        "format": "score",
+        "max": 100
+      }
+    },
+    "tick_rules": [
+      "Each round = one piece in your portfolio"
+    ],
+    "interactions": []
+  },
+  "rounds": [
+    {
+      "round_id": "r1_specificity",
+      "round_title": "Round 1 — Specific beats Vague",
+      "situation": "Your prompt: write 2-3 lines about your favourite place. Most writers start vague. The skill is being SPECIFIC. The first sentence below is vague. Pick how YOU'd revise it.",
+      "goal": "Choose specificity over vagueness.",
+      "coaching_moment": "Vague writing is the #1 sign of an undeveloped writer. Concrete details make readers SEE.",
+      "reflection_prompt": "Why does 'specific' often feel harder than 'general'?",
+      "image_prompt": "Cartoon writer at messy desk with notebook, friendly fox mascot Mento pointing at sentence on page, warm cozy room, kid-friendly",
+      "input_field": {
+        "id": "fav_place",
+        "label": "Quick: write 2 lines about your favourite place. (Optional but encouraged.)",
+        "type": "textarea",
+        "max_chars": 300
+      },
+      "vague_example": "I really like my favourite place. It is so nice and cozy.",
+      "choices": [
+        {
+          "id": "r1_a",
+          "label": "A. 'I like the cozy, comfortable place where I always feel happy.'",
+          "is_correct": false,
+          "learning_concept": "Synonyms ≠ specificity.",
+          "delta": {
+            "clarity_score": 5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "writing_craft"
+          ],
+          "outcome_text": "Stacking adjectives ('cozy', 'comfortable', 'happy') doesn't add specificity — it adds noise."
+        },
+        {
+          "id": "r1_b",
+          "label": "B. 'My grandmother's terrace at 4pm, when the parrots come for the chillis drying on the ledge.'",
+          "is_correct": true,
+          "learning_concept": "Specific sensory detail = vivid writing.",
+          "delta": {
+            "clarity_score": 20,
+            "voice_score": 10,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "specificity",
+            "voice"
+          ],
+          "outcome_text": "Beautiful. We can see the parrots, smell the chillis, feel the time of day. THAT is good writing."
+        },
+        {
+          "id": "r1_c",
+          "label": "C. 'A quiet room with books and tea where I think.'",
+          "is_correct": false,
+          "learning_concept": "Generic 'cozy' setting.",
+          "delta": {
+            "clarity_score": 8,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "writing_craft"
+          ],
+          "outcome_text": "OK, but every writer's described this. What's YOURS that nobody else has?"
+        },
+        {
+          "id": "r1_d",
+          "label": "D. 'It's amazing and I love it so much, you wouldn't believe how special it is.'",
+          "is_correct": false,
+          "learning_concept": "Telling instead of showing.",
+          "delta": {
+            "clarity_score": -2,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "writing_craft"
+          ],
+          "outcome_text": "Telling, not showing. The reader has no image. Try again with a *thing* you can see."
+        }
+      ]
+    },
+    {
+      "round_id": "r2_hook",
+      "round_title": "Round 2 — The First Sentence",
+      "situation": "Your prompt: a story about a misunderstanding. Of these openings, which is the strongest HOOK?",
+      "goal": "Recognize a strong opening line.",
+      "coaching_moment": "Readers decide in 5-10 seconds. Your first sentence has to *grab*.",
+      "reflection_prompt": "Why does a strong hook usually involve specificity, surprise, or tension?",
+      "image_prompt": "Cartoon hand holding fishing rod with question marks on hook, books and pages flying around, educational illustration, warm colors",
+      "input_field": {
+        "id": "hook_attempt",
+        "label": "Try writing your own hook for a story about a misunderstanding (1 sentence).",
+        "type": "textarea",
+        "max_chars": 200
+      },
+      "choices": [
+        {
+          "id": "r2_a",
+          "label": "A. 'There was once a boy who had a misunderstanding.'",
+          "is_correct": false,
+          "learning_concept": "Generic openings repel readers.",
+          "delta": {
+            "structure_score": 3,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "writing_craft"
+          ],
+          "outcome_text": "Tells us nothing specific. We're already bored."
+        },
+        {
+          "id": "r2_b",
+          "label": "B. 'The day Aman accused me of stealing his pen, I knew our friendship was over before lunch.'",
+          "is_correct": true,
+          "learning_concept": "Specific names + consequence + tension = great hook.",
+          "delta": {
+            "structure_score": 20,
+            "voice_score": 12,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "structure",
+            "voice"
+          ],
+          "outcome_text": "Tension, stakes, specifics. We HAVE to keep reading. That's a hook."
+        },
+        {
+          "id": "r2_c",
+          "label": "C. 'Misunderstandings can happen anywhere, anytime, to anyone.'",
+          "is_correct": false,
+          "learning_concept": "Generic essay opener.",
+          "delta": {
+            "structure_score": 4,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "writing_craft"
+          ],
+          "outcome_text": "Sounds like a textbook. Specific story > general statement."
+        },
+        {
+          "id": "r2_d",
+          "label": "D. 'Once upon a time...'",
+          "is_correct": false,
+          "learning_concept": "Cliché openings = automatic skip.",
+          "delta": {
+            "structure_score": 2,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "writing_craft"
+          ],
+          "outcome_text": "Cliché. Even fairy tales avoid it now. Find a fresh entry."
+        }
+      ]
+    },
+    {
+      "round_id": "r3_structure",
+      "round_title": "Round 3 — Three-Act Bones",
+      "situation": "Strong stories have three parts: SETUP (who/where), CONFLICT (what goes wrong), RESOLUTION (what changes). Read this draft about a lost dog. Pick how to fix it.",
+      "goal": "Apply 3-part structure to a story.",
+      "coaching_moment": "Without a structure, even good sentences feel pointless. Bones first, then flesh.",
+      "reflection_prompt": "Why do almost all stories — from epics to tweets — have a 3-part shape?",
+      "image_prompt": "Cartoon storyboard with three panels labeled setup, conflict, resolution, friendly fox holding pencil, educational illustration",
+      "draft_excerpt": "A boy lost his dog. He was sad. He found it. The end.",
+      "choices": [
+        {
+          "id": "r3_a",
+          "label": "A. Just add more adjectives: 'A young boy lost his beloved dog. He was very sad. Eventually he found it. The lovely end.'",
+          "is_correct": false,
+          "learning_concept": "Adjectives don't fix structure.",
+          "delta": {
+            "structure_score": 3,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "writing_craft"
+          ],
+          "outcome_text": "Same dead bones, just dressed up. The skeleton is still missing meat."
+        },
+        {
+          "id": "r3_b",
+          "label": "B. Expand each part: SETUP (who, where, what's at stake), CONFLICT (what makes the search hard), RESOLUTION (how does it change him).",
+          "is_correct": true,
+          "learning_concept": "Strong structure carries even simple plots.",
+          "delta": {
+            "structure_score": 25,
+            "clarity_score": 10,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "structure"
+          ],
+          "outcome_text": "YES. Now ask: who's the boy? What's special about THIS dog? What goes wrong on the search? How is he different at the end? Suddenly there's a story."
+        },
+        {
+          "id": "r3_c",
+          "label": "C. Make it longer with random details (the colour of the sky, the food the boy ate).",
+          "is_correct": false,
+          "learning_concept": "Length ≠ depth.",
+          "delta": {
+            "structure_score": 5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "writing_craft"
+          ],
+          "outcome_text": "Random detail bloats. Every detail should serve the structure."
+        },
+        {
+          "id": "r3_d",
+          "label": "D. Cut the conflict — make him find the dog faster.",
+          "is_correct": false,
+          "learning_concept": "Conflict IS the story.",
+          "delta": {
+            "structure_score": -5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "structure"
+          ],
+          "outcome_text": "If you remove the conflict, you remove the story. Conflict is the engine."
+        }
+      ]
+    },
+    {
+      "round_id": "r4_voice",
+      "round_title": "Round 4 — Voice (the only thing that's truly yours)",
+      "situation": "The same scene — kid catches first fish — written in 4 voices. Which one feels most distinctive and alive?",
+      "goal": "Identify a strong voice.",
+      "coaching_moment": "Voice is what makes you different. Two writers can describe the same lake; only one description sounds like YOU.",
+      "reflection_prompt": "What 3 words describe YOUR voice when you write?",
+      "image_prompt": "Cartoon four different writers at typewriters with speech bubbles in different colors, expressing same idea differently, educational",
+      "input_field": {
+        "id": "voice_test",
+        "label": "Optional: write 1 line in YOUR voice about catching a fish.",
+        "type": "textarea",
+        "max_chars": 200
+      },
+      "choices": [
+        {
+          "id": "r4_a",
+          "label": "A. 'The boy felt happy when he caught the fish. It was a good day.'",
+          "is_correct": false,
+          "learning_concept": "Voiceless = invisible.",
+          "delta": {
+            "voice_score": 3,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "voice"
+          ],
+          "outcome_text": "No voice. Could be anyone. Forgettable."
+        },
+        {
+          "id": "r4_b",
+          "label": "B. 'I yelled so loud my dad dropped his beer. The fish flopped on the dock like it was protesting being caught.'",
+          "is_correct": true,
+          "learning_concept": "Distinctive voice with attitude + observation.",
+          "delta": {
+            "voice_score": 25,
+            "clarity_score": 10,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "voice",
+            "specificity"
+          ],
+          "outcome_text": "ALIVE. Voice + specifics + a tiny joke. We hear a person, not a textbook."
+        },
+        {
+          "id": "r4_c",
+          "label": "C. 'In conclusion, the act of catching a fish is one that can bring great joy to a young angler.'",
+          "is_correct": false,
+          "learning_concept": "Stiff academic tone kills story.",
+          "delta": {
+            "voice_score": -5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "voice"
+          ],
+          "outcome_text": "Reads like a school report. Drain the formality. Sound like a person."
+        },
+        {
+          "id": "r4_d",
+          "label": "D. 'It was a fish. He caught it. Wow.'",
+          "is_correct": false,
+          "learning_concept": "Sparse ≠ punchy when there's nothing there.",
+          "delta": {
+            "voice_score": 5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "voice"
+          ],
+          "outcome_text": "Brevity is great. Empty brevity isn't. Where's the SPECIFIC detail?"
+        }
+      ]
+    },
+    {
+      "round_id": "r5_revision",
+      "round_title": "Round 5 — Revision (where good writing happens)",
+      "situation": "First drafts are almost always weak. The skill is REVISION — re-reading and cutting. Here's a paragraph. What's the BEST revision approach?",
+      "goal": "Apply real revision discipline.",
+      "coaching_moment": "Most students hate revision because they confuse 'editing' with 'failure'. Real writers know revision IS the writing.",
+      "reflection_prompt": "What's the difference between PROOFREADING and REVISING?",
+      "image_prompt": "Cartoon writer with red pen marking up draft, friendly mascot Mento crossing out words, educational illustration",
+      "draft_excerpt": "It was a really really hot day. The sun was very very bright. Many people were going about their day. One of them was a girl named Riya. She was walking. She was thinking about a lot of stuff. Her thoughts were quite confusing. She felt overwhelmed.",
+      "choices": [
+        {
+          "id": "r5_a",
+          "label": "A. Just fix typos. Don't change the words.",
+          "is_correct": false,
+          "learning_concept": "Proofreading ≠ revision.",
+          "delta": {
+            "revision_score": 3,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "revision"
+          ],
+          "outcome_text": "That's proofreading, not revision. The structure is still flabby."
+        },
+        {
+          "id": "r5_b",
+          "label": "B. Cut 'really really', 'very very', and 'a lot of stuff'. Replace with ONE specific image. Combine sentences.",
+          "is_correct": true,
+          "learning_concept": "Revision = ruthless cutting + specifics.",
+          "delta": {
+            "revision_score": 25,
+            "clarity_score": 15,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "revision",
+            "specificity"
+          ],
+          "outcome_text": "Now: 'The sun pressed down. Riya walked, replaying her mother's morning words.' Half the words. Twice the impact."
+        },
+        {
+          "id": "r5_c",
+          "label": "C. Make it LONGER — add more description.",
+          "is_correct": false,
+          "learning_concept": "Length is rarely the answer.",
+          "delta": {
+            "revision_score": 0,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "revision"
+          ],
+          "outcome_text": "Bad drafts get worse with more words. They need a sharper knife, not more clay."
+        },
+        {
+          "id": "r5_d",
+          "label": "D. Throw it out and start over.",
+          "is_correct": false,
+          "learning_concept": "Sometimes a sledgehammer is needed — but cutting is usually enough.",
+          "delta": {
+            "revision_score": 5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "revision"
+          ],
+          "outcome_text": "Sometimes valid! But mostly drafts have something worth saving — find the gold, cut the rest."
+        }
+      ]
+    },
+    {
+      "round_id": "r6_feedback",
+      "round_title": "Round 6 — Receiving Feedback",
+      "situation": "You've written your best piece. A trusted reader says: 'The ending feels rushed.' How do you respond?",
+      "goal": "Receive feedback like a pro.",
+      "coaching_moment": "How writers RECEIVE feedback predicts whether they'll grow. Don't defend — listen.",
+      "reflection_prompt": "Why is the urge to defend our writing usually wrong?",
+      "image_prompt": "Cartoon writer listening to friend's feedback with open notebook, both smiling, warm educational illustration",
+      "choices": [
+        {
+          "id": "r6_a",
+          "label": "A. 'No, the ending is fine — you didn't read it carefully.'",
+          "is_correct": false,
+          "learning_concept": "Defending = closing your ears.",
+          "delta": {
+            "revision_score": -10,
+            "voice_score": -5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "humility"
+          ],
+          "outcome_text": "Now they won't give you honest feedback again. You've trained them to lie."
+        },
+        {
+          "id": "r6_b",
+          "label": "B. 'Tell me more. Where does it start to feel rushed? What did you want to know that wasn't there?'",
+          "is_correct": true,
+          "learning_concept": "Curiosity beats defensiveness.",
+          "delta": {
+            "revision_score": 25,
+            "voice_score": 10,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "humility",
+            "growth_mindset"
+          ],
+          "outcome_text": "Now you have actionable info. The feedback is gold once you ask follow-ups."
+        },
+        {
+          "id": "r6_c",
+          "label": "C. Smile and ignore it.",
+          "is_correct": false,
+          "learning_concept": "Polite-but-deaf still loses.",
+          "delta": {
+            "revision_score": -5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "humility"
+          ],
+          "outcome_text": "Useless. You traded growth for ego."
+        },
+        {
+          "id": "r6_d",
+          "label": "D. Rewrite the entire ending immediately based on their guess.",
+          "is_correct": false,
+          "learning_concept": "Don't blindly obey feedback either.",
+          "delta": {
+            "revision_score": 5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "judgement"
+          ],
+          "outcome_text": "Listening ≠ obeying. You're still the author. Process the feedback, then decide."
+        }
+      ]
+    },
+    {
+      "round_id": "r7_personal_essay",
+      "round_title": "Round 7 — Your Personal Essay",
+      "situation": "Final piece for your portfolio: a 1-paragraph personal essay starting with 'I never expected ___'. Pick your APPROACH (not the words).",
+      "goal": "Plan a personal essay strategically.",
+      "coaching_moment": "Personal essays work when they trade BIG general claims for ONE small specific moment.",
+      "reflection_prompt": "Why does 'one small story' often feel more powerful than 'one big lesson'?",
+      "image_prompt": "Cartoon writer writing personal memoir with single magical moment glowing on page, warm and cozy",
+      "input_field": {
+        "id": "personal_essay",
+        "label": "Your personal essay starting with 'I never expected ___'",
+        "type": "textarea",
+        "max_chars": 1500
+      },
+      "choices": [
+        {
+          "id": "r7_a",
+          "label": "A. Big philosophical statement: 'I never expected life to be so complex...'",
+          "is_correct": false,
+          "learning_concept": "Big abstractions = nobody listens.",
+          "delta": {
+            "voice_score": 0,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "essay_craft"
+          ],
+          "outcome_text": "Sounds wise; reads forgettable. Trade abstraction for a moment."
+        },
+        {
+          "id": "r7_b",
+          "label": "B. ONE specific moment: 'I never expected to cry the day my old phone broke — but I did, on the bus, like a fool.'",
+          "is_correct": true,
+          "learning_concept": "Personal essays earn power through specific moments.",
+          "delta": {
+            "voice_score": 25,
+            "structure_score": 15,
+            "clarity_score": 10,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "voice",
+            "essay_craft"
+          ],
+          "outcome_text": "Real. Specific. Vulnerable. Now you have a piece worth reading."
+        },
+        {
+          "id": "r7_c",
+          "label": "C. Generic story everyone has: 'I never expected my first day of school to be so hard.'",
+          "is_correct": false,
+          "learning_concept": "Generic story = generic essay.",
+          "delta": {
+            "voice_score": 5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "essay_craft"
+          ],
+          "outcome_text": "Everyone's written this. What's the version only YOU could write?"
+        },
+        {
+          "id": "r7_d",
+          "label": "D. Multiple stories at once: 'I never expected my dog, my school, my parents...'",
+          "is_correct": false,
+          "learning_concept": "Personal essays focus.",
+          "delta": {
+            "voice_score": 5,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "essay_craft"
+          ],
+          "outcome_text": "Pick ONE. Specific beats sprawling."
+        }
+      ]
+    },
+    {
+      "round_id": "r8_portfolio",
+      "round_title": "Round 8 — Portfolio Reflection",
+      "situation": "You've written 7 pieces. Time to look back at YOUR writer's voice. Which pillar do you want to grow most next?",
+      "goal": "Self-diagnose your writing growth area.",
+      "coaching_moment": "The greatest writers know which muscle of theirs is weakest — and train it.",
+      "reflection_prompt": "Which part of writing do you most enjoy? Which scares you?",
+      "image_prompt": "Cartoon writer surrounded by stacked finished pieces, looking thoughtfully at notebook, mascot fox cheering",
+      "choices": [
+        {
+          "id": "r8_a",
+          "label": "A. Clarity — be more specific, cut the fog.",
+          "is_correct": true,
+          "learning_concept": "Self-aware growth focus.",
+          "delta": {
+            "clarity_score": 15,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "self_awareness"
+          ],
+          "outcome_text": "Solid pick. Clarity is the skill that pays off in EVERY kind of writing."
+        },
+        {
+          "id": "r8_b",
+          "label": "B. Structure — give my pieces real bones.",
+          "is_correct": true,
+          "learning_concept": "Self-aware growth focus.",
+          "delta": {
+            "structure_score": 15,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "self_awareness"
+          ],
+          "outcome_text": "Good. Structure is invisible when it works and obvious when it doesn't."
+        },
+        {
+          "id": "r8_c",
+          "label": "C. Voice — sound more like ME, less like a textbook.",
+          "is_correct": true,
+          "learning_concept": "Self-aware growth focus.",
+          "delta": {
+            "voice_score": 15,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "self_awareness"
+          ],
+          "outcome_text": "Excellent. Voice is the slowest to grow — but the most lasting."
+        },
+        {
+          "id": "r8_d",
+          "label": "D. Revision — actually rewrite instead of submitting first drafts.",
+          "is_correct": true,
+          "learning_concept": "Self-aware growth focus.",
+          "delta": {
+            "revision_score": 20,
+            "pieces_written": 1
+          },
+          "skill_tags": [
+            "self_awareness",
+            "revision"
+          ],
+          "outcome_text": "Great pick. Most amateur writers never revise. The pros do little else."
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": false,
+    "show_subsystem_panel": true
+  },
+  "achievements": [
+    {
+      "id": "ach_specific",
+      "title": "Specific Beats Vague",
+      "icon": "🎯",
+      "criteria": "Pick specificity in Round 1."
+    },
+    {
+      "id": "ach_hooked",
+      "title": "Strong Hook",
+      "icon": "🪝",
+      "criteria": "Pick the strongest hook in Round 2."
+    },
+    {
+      "id": "ach_voice",
+      "title": "Found My Voice",
+      "icon": "🎙️",
+      "criteria": "Pick distinctive voice in Round 4."
+    },
+    {
+      "id": "ach_revisor",
+      "title": "Real Revisor",
+      "icon": "✂️",
+      "criteria": "Cut + revise in Round 5."
+    },
+    {
+      "id": "ach_listener",
+      "title": "Feedback Pro",
+      "icon": "👂",
+      "criteria": "Receive feedback well in Round 6."
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Hook",
+      "definition": "The opening line/paragraph that grabs the reader."
+    },
+    {
+      "term": "Voice",
+      "definition": "The distinct way a writer sounds — tone, rhythm, word choice."
+    },
+    {
+      "term": "Show, don't tell",
+      "definition": "Use specific scenes/sensory details instead of telling readers what to feel."
+    },
+    {
+      "term": "Revision",
+      "definition": "Rewriting parts of a draft for clarity, structure, or voice — not just typos."
+    },
+    {
+      "term": "Three-act structure",
+      "definition": "Setup → conflict → resolution, the bones of most stories."
+    },
+    {
+      "term": "Specificity",
+      "definition": "Concrete, sensory detail. The opposite of vague."
+    },
+    {
+      "term": "Concision",
+      "definition": "Saying more with fewer words."
+    }
+  ],
+  "endings": [
+    {
+      "id": "ending_pro",
+      "title": "Writer in the Making",
+      "criteria": "voice_score >= 75 AND clarity_score >= 75",
+      "message": "You finished with strong voice AND strong clarity. Keep writing — your portfolio is the proof."
+    },
+    {
+      "id": "ending_solid",
+      "title": "Promising Voice",
+      "criteria": "pieces_written >= 6",
+      "message": "Good run. Pick the pillar you scored lowest on and train it."
+    },
+    {
+      "id": "ending_starting",
+      "title": "First Drafts",
+      "criteria": "pieces_written < 6",
+      "message": "First drafts always feel rough. Write 5 more pieces and watch yourself grow."
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "phase": "fundamentals",
+        "rounds": [
+          1,
+          2,
+          3
+        ],
+        "description": "Specificity, hooks, structure."
+      },
+      {
+        "phase": "craft",
+        "rounds": [
+          4,
+          5
+        ],
+        "description": "Voice and revision."
+      },
+      {
+        "phase": "growth",
+        "rounds": [
+          6,
+          7,
+          8
+        ],
+        "description": "Feedback, personal essay, self-diagnosis."
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": "r3_structure",
+      "type": "reflection",
+      "prompt": "Which of your pieces so far has the strongest bones?"
+    },
+    {
+      "after_round": "r6_feedback",
+      "type": "reflection",
+      "prompt": "When was the last time you got writing feedback? How did you handle it?"
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}

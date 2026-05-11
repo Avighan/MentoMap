@@ -1,0 +1,1001 @@
+{
+  "game_id": "my-ward-my-responsibility",
+  "title": "My Ward, My Responsibility",
+  "theme": "Local governance, civic decision-making, and managing public resources",
+  "icon": "🏛️",
+  "description": "You're a ward councillor for a day in a small Indian town. Over 8 decisions — from potholes to festivals — you'll learn how local government actually works. Every rupee you spend, every promise you make, has consequences for real citizens.",
+  "game_type": "rounds",
+  "visible": false,
+  "category": "Simulation",
+  "coaching_tone": "supportive",
+  "target_audience": "students",
+  "duration_minutes": 20,
+  "difficulty": "beginner",
+  "learning_concept": "Civic Governance and Public Service",
+  "cultural_context": "Indian municipal ward setting",
+  "learning_objectives": [
+    "Understand how local government allocates resources under constraints",
+    "Practice making decisions that affect diverse community members",
+    "Learn the tension between popular decisions and sustainable ones"
+  ],
+  "how_to_play": "Each round presents a real civic challenge. Choose how to respond as the ward councillor. Your budget is real, citizen happiness matters, and transparency is tracked. There are no perfect answers — only trade-offs.",
+  "glossary_terms": [
+    {
+      "term": "Ward",
+      "definition": "A small administrative area within a city or town, managed by an elected councillor"
+    },
+    {
+      "term": "Municipal corporation",
+      "definition": "The local government body that manages a city's services — roads, water, sanitation, etc."
+    },
+    {
+      "term": "Public tender",
+      "definition": "An open process where contractors bid for government projects, ensuring fairness and competition"
+    },
+    {
+      "term": "Infrastructure",
+      "definition": "The basic physical structures a community needs — roads, water supply, electricity, drainage"
+    },
+    {
+      "term": "Fiscal responsibility",
+      "definition": "Managing public money carefully, spending only what's needed and keeping records"
+    }
+  ],
+  "initial_state": {
+    "budget_inr": {
+      "icon": "💰",
+      "label": "Ward Budget (₹ lakhs)",
+      "value": 50,
+      "min": 0,
+      "max": 100
+    },
+    "citizen_happiness": {
+      "icon": "😊",
+      "label": "Citizen Happiness",
+      "value": 50,
+      "min": 0,
+      "max": 100
+    },
+    "infrastructure": {
+      "icon": "🏗️",
+      "label": "Infrastructure",
+      "value": 40,
+      "min": 0,
+      "max": 100
+    },
+    "transparency": {
+      "icon": "🔍",
+      "label": "Transparency",
+      "value": 55,
+      "min": 0,
+      "max": 100
+    }
+  },
+  "rounds": [
+    {
+      "id": "r1",
+      "round_number": 1,
+      "title": "Potholes vs. New Park",
+      "situation": "{player_name}, your first day as ward councillor starts with two requests on your desk. The main road has 14 dangerous potholes — two auto-rickshaws have already been damaged this week and an elderly woman tripped and broke her wrist. Meanwhile, a citizens' group has been petitioning for a park for three years. The area has no green space. Kids play on the road.",
+      "story": "Both are genuine needs. But your budget can only do one properly right now.",
+      "image_prompt": "Split image showing potholed Indian road with traffic on one side and empty dusty plot where a park could be on the other",
+      "coaching_moment": "The first decision a leader makes signals their priorities to everyone watching.",
+      "time_limit_seconds": null,
+      "timer_narrative": null,
+      "choices": [
+        {
+          "id": "r1_a",
+          "label": "Fix the potholes first",
+          "description": "Safety first. Repair the road immediately. The park can wait another quarter.",
+          "consequence_hint": "Practical and responsible, but the park petitioners will feel ignored again — three years of waiting becomes four",
+          "delta": {
+            "infrastructure": 12,
+            "citizen_happiness": 3,
+            "budget_inr": -8,
+            "transparency": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "memory_tags": [
+            "chose_infrastructure"
+          ],
+          "events": [
+            {
+              "description": "Road is fixed in 5 days. Auto drivers thank you. The park committee sends a polite but pointed letter.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r1_b",
+          "label": "Build the park",
+          "description": "Citizens have waited three years. A park improves health, community bonding, and property values long-term.",
+          "consequence_hint": "The community celebrates, but another pothole injury could become your political nightmare",
+          "delta": {
+            "citizen_happiness": 12,
+            "infrastructure": -3,
+            "budget_inr": -10,
+            "transparency": 0
+          },
+          "skill_tags": [
+            "empathy",
+            "risk_tolerance"
+          ],
+          "memory_tags": [
+            "chose_popular"
+          ],
+          "events": [
+            {
+              "description": "Park construction begins. Children are excited. A pothole accident the next week makes local news.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r1_c",
+          "label": "Do basic pothole patches + park phase 1",
+          "description": "Quick temporary pothole repair (cheaper) and begin park phase 1 (boundary wall + saplings). Neither is complete but both start.",
+          "consequence_hint": "Something for everyone, but temporary patches fail in monsoon and an incomplete park looks neglected",
+          "delta": {
+            "citizen_happiness": 5,
+            "infrastructure": 5,
+            "budget_inr": -12,
+            "transparency": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "memory_tags": [
+            "chose_balanced"
+          ],
+          "events": [
+            {
+              "description": "Both projects start. Neighbours see activity. The quality of the pothole patches worries the road engineer.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r1_a",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r2",
+      "round_number": 2,
+      "title": "Water Supply Emergency",
+      "situation": "Three colonies in your ward haven't had piped water for 4 days, {player_name}. The corporation's main pipeline burst and the repair estimate is 2 weeks. Over 800 families are affected. You can arrange water tankers — but each tanker costs ₹3,000 and you'd need 6 per day. That's ₹18,000 daily from your already tight budget. The MLA's office says they'll send tankers 'soon.'",
+      "story": "People are angry. Some are buying ₹200 water cans they can't afford. The local newspaper is asking questions.",
+      "image_prompt": "Indian women and children waiting with pots and buckets near a dry water tap, stressed councillor on phone in background",
+      "coaching_moment": "In a crisis, the speed of your response matters more than the perfection of your plan.",
+      "time_limit_seconds": null,
+      "timer_narrative": null,
+      "choices": [
+        {
+          "id": "r2_a",
+          "label": "Arrange tankers immediately from ward budget",
+          "description": "Spend the money now. Get 6 tankers daily until the pipeline is fixed. Citizens can't wait for the MLA.",
+          "consequence_hint": "You solve the crisis fast but burn through budget — ₹2.5 lakhs over 14 days is a big hit",
+          "delta": {
+            "citizen_happiness": 12,
+            "budget_inr": -15,
+            "infrastructure": 0,
+            "transparency": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "risk_tolerance"
+          ],
+          "memory_tags": [
+            "spent_on_crisis"
+          ],
+          "events": [
+            {
+              "description": "Tankers arrive by evening. Families cheer. Your budget takes a serious hit.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r2_b",
+          "label": "Pressure the corporation to fix the pipeline faster",
+          "description": "Go to the municipal commissioner directly. Demand emergency repair. Make it a public issue if needed.",
+          "consequence_hint": "The right long-term approach, but families suffer while you fight bureaucracy",
+          "delta": {
+            "transparency": 10,
+            "infrastructure": 8,
+            "citizen_happiness": -5,
+            "budget_inr": 0
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "memory_tags": [
+            "pressured_system"
+          ],
+          "events": [
+            {
+              "description": "The commissioner sends a team. Repair starts in 3 days instead of 14. But those 3 days are hard.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r2_c",
+          "label": "Organize community water-sharing",
+          "description": "Identify borewells in the ward that have water. Ask those families to share during the crisis. Provide one tanker for the worst-hit area.",
+          "consequence_hint": "Low-cost and community-building, but some families resent sharing their private borewells",
+          "delta": {
+            "citizen_happiness": 5,
+            "budget_inr": -3,
+            "transparency": 5,
+            "infrastructure": 0
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "memory_tags": [
+            "community_solution"
+          ],
+          "events": [
+            {
+              "description": "Most borewell families agree. One refuses loudly. The worst-hit colony gets the tanker. People manage.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r2_b",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r3",
+      "round_number": 3,
+      "title": "The Garbage Contractor Dispute",
+      "situation": "{player_name}, the garbage collection contractor, Mr. Reddy, hasn't collected waste for 8 days. Your ward is filling up with garbage. Mr. Reddy says the corporation owes him ₹3 lakhs and he won't work until he's paid. The corporation says his service was substandard and deducted the amount. Residents are posting angry photos on social media.",
+      "story": "Both sides have a point. But the garbage is piling up while they argue.",
+      "image_prompt": "Overflowing garbage bins on Indian street, annoyed residents, municipal contractor arguing with official",
+      "coaching_moment": "When two parties are fighting, the citizens suffer. A good leader focuses on solving the immediate problem first, then resolving the dispute.",
+      "time_limit_seconds": null,
+      "timer_narrative": null,
+      "choices": [
+        {
+          "id": "r3_a",
+          "label": "Find a temporary replacement",
+          "description": "Hire a local cleaning group to collect garbage for two weeks while the dispute is resolved. Pay from ward funds.",
+          "consequence_hint": "Garbage gets collected, but you're spending money on something the contractor should be doing",
+          "delta": {
+            "citizen_happiness": 10,
+            "budget_inr": -8,
+            "infrastructure": 5,
+            "transparency": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "memory_tags": [
+            "found_alternative"
+          ],
+          "events": [
+            {
+              "description": "The local group does a better job than Mr. Reddy ever did. Residents are happy. Mr. Reddy is furious.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r3_b",
+          "label": "Mediate between Mr. Reddy and the corporation",
+          "description": "Sit both parties down. Review the payment records. Try to find a middle ground so service resumes.",
+          "consequence_hint": "Addresses the root cause, but mediation takes time and garbage piles up for another week",
+          "delta": {
+            "transparency": 10,
+            "citizen_happiness": -5,
+            "budget_inr": 0,
+            "infrastructure": 3
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "memory_tags": [
+            "mediated_dispute"
+          ],
+          "events": [
+            {
+              "description": "After a heated meeting, the corporation agrees to pay ₹2 lakhs and Mr. Reddy resumes collection. It took 5 days.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r3_c",
+          "label": "Organize a community cleanup drive",
+          "description": "Rally residents, school students, and local shop owners for a mass cleanup. Make it a community event while pressuring both parties.",
+          "consequence_hint": "Great for community spirit, but it's not sustainable and lets the contractor off the hook",
+          "delta": {
+            "citizen_happiness": 8,
+            "transparency": 5,
+            "budget_inr": -3,
+            "infrastructure": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "memory_tags": [
+            "community_cleanup"
+          ],
+          "events": [
+            {
+              "description": "100+ people turn up with brooms. Local news covers it. Mr. Reddy is embarrassed and resumes service the next day.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r3_a",
+        "reason": "The most effective leaders adapt their approach based on the situation — not habit."
+      }
+    },
+    {
+      "id": "r4",
+      "round_number": 4,
+      "title": "School Renovation Budget",
+      "situation": "The government school in your ward, {player_name}, needs renovation. The roof leaks during monsoon, classrooms are dark, and there are only two toilets for 300 students. You have ₹5 lakhs earmarked for education. A contractor offers to do the whole job for ₹5 lakhs — but a teacher whispers that this contractor is the MLA's cousin and the quote seems inflated.",
+      "story": "The school needs help desperately. But the money trail smells wrong.",
+      "image_prompt": "Run-down Indian government school with leaking roof, children studying in dim classroom, contractor with papers in background",
+      "coaching_moment": "When public money is involved, the process matters as much as the outcome — because corrupt processes produce corrupt outcomes.",
+      "time_limit_seconds": null,
+      "timer_narrative": null,
+      "conditional_next": [
+        {
+          "if_memory_tag": "chose_populist",
+          "goto_round": "r5_populist"
+        },
+        {
+          "default": "r5_longterm"
+        }
+      ],
+      "choices": [
+        {
+          "id": "r4_a",
+          "label": "Accept the contractor to fix the school fast",
+          "description": "The kids need a safe school now. Even if the quote is slightly high, the renovation happens immediately.",
+          "consequence_hint": "The school gets fixed, but you may have enabled corruption and set a bad precedent for future contracts",
+          "delta": {
+            "citizen_happiness": 10,
+            "infrastructure": 10,
+            "budget_inr": -12,
+            "transparency": -10
+          },
+          "skill_tags": [
+            "empathy",
+            "risk_tolerance"
+          ],
+          "memory_tags": [
+            "chose_populist"
+          ],
+          "events": [
+            {
+              "description": "The renovation starts next week. The MLA calls to thank you. The teacher who warned you looks disappointed.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r4_b",
+          "label": "Issue a public tender",
+          "description": "Follow proper process. Invite three contractors to bid. Select the best value. It'll take 6 weeks longer.",
+          "consequence_hint": "Transparent and proper, but the monsoon is 8 weeks away and the roof still leaks",
+          "delta": {
+            "transparency": 12,
+            "infrastructure": 5,
+            "citizen_happiness": -5,
+            "budget_inr": 3
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "delayed_gratification"
+          ],
+          "memory_tags": [
+            "chose_longterm"
+          ],
+          "events": [
+            {
+              "description": "Three bids come in. The cheapest is ₹3.8 lakhs — saving ₹1.2 lakhs. But the process takes 5 weeks.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r4_c",
+          "label": "Get an independent estimate first",
+          "description": "Before deciding, ask a civil engineer to independently assess the cost. If ₹5 lakhs is fair, proceed. If not, tender.",
+          "consequence_hint": "Smart due diligence, but adds 2 weeks and the MLA might take it as a personal insult",
+          "delta": {
+            "transparency": 10,
+            "infrastructure": 3,
+            "citizen_happiness": 0,
+            "budget_inr": 0
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "memory_tags": [
+            "chose_longterm"
+          ],
+          "events": [
+            {
+              "description": "The engineer says the job should cost ₹3.5-4 lakhs. The contractor's quote was inflated by ₹1-1.5 lakhs.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r4_a",
+        "reason": "Goleman's EQ framework rates empathetic responses as the highest-impact leadership move."
+      }
+    },
+    {
+      "id": "r5_populist",
+      "round_number": 5,
+      "title": "The RTI Enquiry",
+      "situation": "A local activist files an RTI request for all ward expenditure details, {player_name}. Your accounts will be scrutinized — including the school renovation contract you gave to the MLA's cousin without tender. The activist has been vocal on social media: 'Where is the ward's money going?' Your records are technically in order, but the lack of competitive bidding is visible.",
+      "story": "The shortcut you took is about to be examined under a magnifying glass.",
+      "image_prompt": "Indian activist filing RTI papers at a government office, councillor looking worried, stacks of files",
+      "coaching_moment": "Transparency isn't just about sharing information — it's about whether the decisions behind the numbers can withstand scrutiny.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "The RTI response deadline is in 48 hours...",
+      "choices": [
+        {
+          "id": "r5p_a",
+          "label": "Provide full transparency",
+          "description": "Share all records openly. If questioned about the school contract, explain the urgency honestly.",
+          "consequence_hint": "Honesty now limits the damage, but the lack of tender will still be criticized",
+          "delta": {
+            "transparency": 10,
+            "citizen_happiness": -5,
+            "budget_inr": 0,
+            "infrastructure": 0
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "memory_tags": [
+            "faced_scrutiny"
+          ],
+          "events": [
+            {
+              "description": "The activist publishes a blog post. The school contract is highlighted. Comments are split — some understand the urgency, some call it corruption.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r5p_b",
+          "label": "Meet the activist before responding",
+          "description": "Invite the activist for a one-on-one meeting. Walk them through your reasoning. Build an ally instead of a critic.",
+          "consequence_hint": "If the activist is reasonable, this could turn a critic into a supporter. If not, it looks like you're trying to influence them.",
+          "delta": {
+            "transparency": 5,
+            "citizen_happiness": 5,
+            "budget_inr": 0,
+            "infrastructure": 0
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "memory_tags": [
+            "engaged_critic"
+          ],
+          "events": [
+            {
+              "description": "The activist listens. They say, 'I understand the urgency, but next time, follow the process.' They soften their blog post.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r5p_b",
+        "reason": "Goleman's EQ framework rates empathetic responses as the highest-impact leadership move."
+      }
+    },
+    {
+      "id": "r5_longterm",
+      "round_number": 5,
+      "title": "Street Light Placement",
+      "situation": "Your ward has budget for 20 new street lights, {player_name}. Three areas need them: the main market (good for business, high visibility), the back lanes near the government school (children walk there in the dark), and the road near the MLA's house (the MLA has 'requested' it). Installing all 20 in one area means the other two stay dark.",
+      "story": "Where you put street lights says everything about who you serve.",
+      "image_prompt": "Dark Indian street at night with street light plans laid out on table, map showing three different areas",
+      "coaching_moment": "Public resources should go where the need is greatest, not where the pressure is loudest.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "The electrical contractor needs the placement plan by Monday...",
+      "choices": [
+        {
+          "id": "r5l_a",
+          "label": "Prioritize the school route",
+          "description": "Children's safety comes first. Put 12 lights near the school and 8 in the market. The MLA can arrange his own.",
+          "consequence_hint": "Principled and safety-focused, but the MLA won't forget being ignored",
+          "delta": {
+            "infrastructure": 10,
+            "citizen_happiness": 8,
+            "transparency": 5,
+            "budget_inr": -8
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "strategic_thinking"
+          ],
+          "memory_tags": [
+            "prioritized_need"
+          ],
+          "events": [
+            {
+              "description": "Parents are relieved. The school principal sends a thank-you letter. The MLA's assistant calls: 'Sir is not happy.'",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r5l_b",
+          "label": "Split evenly across all three areas",
+          "description": "7 lights each area, with the extra one near the school crossing. Everyone gets something.",
+          "consequence_hint": "Nobody is fully satisfied, but nobody can say you played favourites",
+          "delta": {
+            "citizen_happiness": 5,
+            "infrastructure": 5,
+            "transparency": 8,
+            "budget_inr": -8
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "memory_tags": [
+            "split_evenly"
+          ],
+          "events": [
+            {
+              "description": "The market traders want more. The MLA wants more. But the data shows equal distribution.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r5l_a",
+        "reason": "Ethical decision-making builds lasting trust — the foundation of all leadership."
+      }
+    },
+    {
+      "id": "r6",
+      "round_number": 6,
+      "title": "Traffic Management Chaos",
+      "situation": "{player_name}, the main junction in your ward is a daily nightmare — no signal, no traffic police, auto-rickshaws park anywhere, and there have been 3 accidents this month. The traffic police say it's 'not their priority area.' You can either install a traffic signal (₹2 lakhs from your budget), hire a traffic marshal (₹8,000/month), or make the road one-way (free but businesses will lose walk-in customers).",
+      "story": "Road safety is everyone's problem and nobody's priority.",
+      "image_prompt": "Chaotic Indian junction with auto-rickshaws, pedestrians, and vehicles in disarray, no traffic signal visible",
+      "coaching_moment": "Sometimes the cheapest solution isn't the best, and the most expensive one isn't either — the right solution depends on the specific problem.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "Another accident at the junction today — the newspaper is asking for a comment...",
+      "choices": [
+        {
+          "id": "r6_a",
+          "label": "Install a traffic signal",
+          "description": "Permanent solution. ₹2 lakhs is expensive but it's a one-time cost that solves the problem for years.",
+          "consequence_hint": "Effective long-term, but that ₹2 lakhs comes from other ward needs",
+          "delta": {
+            "infrastructure": 12,
+            "citizen_happiness": 8,
+            "budget_inr": -12,
+            "transparency": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "memory_tags": [
+            "invested_heavily"
+          ],
+          "events": [
+            {
+              "description": "The signal is installed in 10 days. Accidents drop to zero the next month. Other wards ask how you did it.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r6_b",
+          "label": "Hire a traffic marshal",
+          "description": "A trained person managing traffic is cheaper and more flexible. Can adjust for market days vs. regular days.",
+          "consequence_hint": "Affordable and immediate, but it's a recurring cost and if the marshal is absent, chaos returns",
+          "delta": {
+            "citizen_happiness": 8,
+            "infrastructure": 3,
+            "budget_inr": -5,
+            "transparency": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "memory_tags": [
+            "chose_moderate"
+          ],
+          "events": [
+            {
+              "description": "Raju, a retired army havildar, takes the job. Traffic flows smoothly when he's there. Weekends are still messy.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r6_c",
+          "label": "Make it one-way",
+          "description": "Free solution. Change traffic flow to one-way during peak hours. Test it for a month.",
+          "consequence_hint": "Zero cost and worth trying, but shop owners will protest lost foot traffic immediately",
+          "delta": {
+            "budget_inr": 3,
+            "infrastructure": 5,
+            "citizen_happiness": -5,
+            "transparency": 8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "memory_tags": [
+            "tried_free_solution"
+          ],
+          "events": [
+            {
+              "description": "Traffic improves by 60%. But three shop owners come to your office daily complaining about reduced sales.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r6_a",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r7",
+      "round_number": 7,
+      "title": "Festival Permission Controversy",
+      "situation": "{player_name}, Ganesh Chaturthi is coming. A citizens' group wants to install a large pandal on the main road — a tradition for 15 years. But the road will be blocked for 10 days, an ambulance couldn't get through last year, and two minority community members have written saying the loudspeakers disturb them till midnight. The pandal committee is politically connected.",
+      "story": "Tradition, public safety, minority rights, and political pressure — all in one decision.",
+      "image_prompt": "Indian street with large Ganesh pandal being set up, some residents looking happy, others looking concerned, councillor thinking",
+      "coaching_moment": "Respecting tradition while protecting everyone's rights requires creativity, not just choosing sides.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "The pandal committee needs your permission by tomorrow...",
+      "choices": [
+        {
+          "id": "r7_a",
+          "label": "Allow with strict conditions",
+          "description": "Grant permission but require: road access for emergency vehicles, 10 PM loudspeaker cutoff, and the pandal must not block more than half the road.",
+          "consequence_hint": "Balanced and practical, but the committee may ignore the conditions once the pandal is up",
+          "delta": {
+            "citizen_happiness": 5,
+            "transparency": 10,
+            "infrastructure": 0,
+            "budget_inr": -3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "memory_tags": [
+            "set_conditions"
+          ],
+          "events": [
+            {
+              "description": "The committee grumbles but agrees. On day 3, the loudspeakers are still going at 11 PM. You send a warning.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r7_b",
+          "label": "Suggest a different location",
+          "description": "Ask the committee to use the community ground instead of the main road. Offer to help with setup.",
+          "consequence_hint": "Solves the road blockage problem, but the committee sees this as an insult to their 15-year tradition",
+          "delta": {
+            "infrastructure": 5,
+            "citizen_happiness": -5,
+            "transparency": 8,
+            "budget_inr": -5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "memory_tags": [
+            "relocated_event"
+          ],
+          "events": [
+            {
+              "description": "The committee is angry: 'No councillor has ever moved us.' But the community ground works well. The road stays clear.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r7_c",
+          "label": "Allow without conditions",
+          "description": "It's a 15-year tradition. Don't create controversy. Let the festival happen as it always has.",
+          "consequence_hint": "Popular with the majority, but the minority families feel their concerns were dismissed",
+          "delta": {
+            "citizen_happiness": 8,
+            "transparency": -8,
+            "infrastructure": -5,
+            "budget_inr": 0
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "empathy"
+          ],
+          "memory_tags": [
+            "allowed_freely"
+          ],
+          "events": [
+            {
+              "description": "The festival is grand. The road is blocked for 10 days. An ambulance has to take a 20-minute detour. The minority families stay indoors.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r7_a",
+        "reason": "Leadership experts recommend thinking several moves ahead before committing."
+      }
+    },
+    {
+      "id": "r8",
+      "round_number": 8,
+      "title": "Year-End Report to Citizens",
+      "situation": "Your term is ending, {player_name}. You need to present your ward's annual report at a public meeting. The numbers are mixed — some projects succeeded, some didn't. Your budget is tight. Citizen happiness improved in some areas and dropped in others. You can present this honestly or spin it positively.",
+      "story": "How you tell the story of your year defines whether citizens trust the next councillor too.",
+      "image_prompt": "Indian ward councillor at podium presenting charts to seated citizens in a community hall, some charts showing ups and downs",
+      "coaching_moment": "The legacy of a public servant isn't built on how they spin their results — it's built on whether citizens trust the system more when they leave than when they started.",
+      "time_limit_seconds": 30,
+      "timer_narrative": "200 citizens are seated and waiting for your presentation...",
+      "choices": [
+        {
+          "id": "r8_a",
+          "label": "Present the full, honest picture",
+          "description": "Show both successes and failures. Explain what you learned. Let citizens ask tough questions.",
+          "consequence_hint": "Brave and trustworthy — citizens respect honesty even when the results are imperfect",
+          "delta": {
+            "transparency": 15,
+            "citizen_happiness": 5,
+            "infrastructure": 0,
+            "budget_inr": 0
+          },
+          "skill_tags": [
+            "ethical_reasoning",
+            "resilience"
+          ],
+          "memory_tags": [
+            "transparent_report"
+          ],
+          "events": [
+            {
+              "description": "Citizens ask hard questions. You answer honestly. At the end, an elderly man says, 'This is the first time a councillor has told us the truth.'",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r8_b",
+          "label": "Highlight successes, minimize failures",
+          "description": "Focus on what worked — the water crisis response, the school renovation, the new street lights. Mention challenges briefly.",
+          "consequence_hint": "Looks good on the surface, but anyone who checks the numbers will see the gaps",
+          "delta": {
+            "citizen_happiness": 8,
+            "transparency": -8,
+            "infrastructure": 0,
+            "budget_inr": 0
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "memory_tags": [
+            "positive_spin"
+          ],
+          "events": [
+            {
+              "description": "People clap. But the RTI activist in the back row is taking notes. A social media post that evening fact-checks your claims.",
+              "type": "narrative"
+            }
+          ]
+        },
+        {
+          "id": "r8_c",
+          "label": "Let the data speak for itself",
+          "description": "Create an open dashboard — put all spending, all projects, all outcomes online. Let citizens form their own opinions.",
+          "consequence_hint": "Maximum transparency, minimum spin — this is ideal but some citizens will misinterpret raw data",
+          "delta": {
+            "transparency": 12,
+            "citizen_happiness": 3,
+            "budget_inr": -3,
+            "infrastructure": 0
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "memory_tags": [
+            "open_data"
+          ],
+          "events": [
+            {
+              "description": "The dashboard goes live. Local newspapers call it 'unprecedented.' Other wards start asking for similar systems.",
+              "type": "narrative"
+            }
+          ]
+        }
+      ],
+      "expert_pick": {
+        "choice_id": "r8_a",
+        "reason": "Ethical decision-making builds lasting trust — the foundation of all leadership."
+      }
+    }
+  ],
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.18,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.14,
+    "adaptability": 0.14,
+    "resilience": 0.1,
+    "empathy": 0.16,
+    "ethical_reasoning": 0.18
+  },
+  "coaching_moment": "Public service is not about pleasing everyone — it's about making thoughtful decisions with limited resources while staying honest about the trade-offs.",
+  "tags": [
+    "governance",
+    "civic-sense",
+    "budget",
+    "public-service",
+    "ethics",
+    "community",
+    "decision-making"
+  ],
+  "target_age": "12-18",
+  "nep_stage": "middle_school",
+  "nep_competencies": [
+    "values-citizenship",
+    "critical-thinking",
+    "social-emotional-learning",
+    "financial-literacy"
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          3
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          4,
+          6
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          7,
+          9
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 4,
+      "title": "Checkpoint 1: My Ward, My Responsibility Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What is 'empathy'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Telling others what to do",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Understanding and sharing others' feelings",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Winning every argument",
+              "correct": false
+            }
+          ],
+          "explanation": "Empathy is the ability to understand and share the feelings of others."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "A good leader should:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Make all decisions alone",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Listen to the team and consider different views",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Always agree with the majority",
+              "correct": false
+            }
+          ],
+          "explanation": "Good leaders listen to diverse perspectives before making informed decisions."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "What does 'delayed gratification' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Getting rewards immediately",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Waiting for a bigger reward instead of taking a smaller one now",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Never accepting rewards",
+              "correct": false
+            }
+          ],
+          "explanation": "Delayed gratification means resisting a smaller immediate reward for a larger future one."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 4 rounds of My Ward, My Responsibility. Focus on the core principles and how they connect to real-world applications."
+    }
+  ],
+  "reflection_prompt": "Which decision in this run shifted your outcome the most? What signal told you it was the right call?"
+}

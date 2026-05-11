@@ -1,0 +1,2467 @@
+{
+  "game_id": "g8-campaign-master",
+  "title": "Campaign Master: Influence & Impact",
+  "theme": "Marketing — Influence & Campaigns",
+  "icon": "📣",
+  "game_type": "simulation",
+  "category": "Simulation",
+  "description": "You are the Campaign Director for your school's biggest social cause initiative. Over 12 weeks, design and run a full marketing campaign using Cialdini's principles of influence, manage budgets, harness viral moments, and navigate the ethical boundaries of persuasion. Every message you craft, every channel you choose, and every tactic you deploy shapes public opinion — and your credibility.",
+  "target_audience": "Ages 13-14",
+  "target_age": "13-14",
+  "grade": "8",
+  "difficulty": "advanced",
+  "duration_minutes": 30,
+  "ai_image_config": {
+    "image_style": "semi-realistic",
+    "dalle_style": "vivid",
+    "generate_on_first_play": true
+  },
+  "how_to_play": [
+    "You run a 12-week marketing campaign for a school social cause.",
+    "Each round presents a strategic decision about messaging, channels, tactics, or budget allocation.",
+    "Watch the dashboard — your resources (Reach, Trust, Budget, Credibility) are interconnected.",
+    "Random events like viral moments, media scrutiny, and competitor campaigns will test your adaptability.",
+    "NPCs (Prof. Cialdini, Viral Vince, Community Leader) react to your choices and may trigger crises.",
+    "Balance influence power with ethical credibility — aggressive tactics may backfire!",
+    "Aim for maximum campaign impact while maintaining audience trust and ethical standards."
+  ],
+  "learning_objectives": [
+    "Understand Cialdini's 6 principles of influence (reciprocity, commitment, social proof, authority, liking, scarcity)",
+    "Practice designing persuasive campaigns with ethical guardrails",
+    "Develop strategic thinking about audience segmentation and channel selection",
+    "Learn budget allocation and ROI measurement in marketing contexts",
+    "Build critical thinking about manipulation vs. ethical persuasion",
+    "Understand how viral content spreads and how to manage its consequences",
+    "Navigate the tension between effectiveness and ethical responsibility in communication"
+  ],
+  "tags": [
+    "marketing",
+    "influence",
+    "grade-8",
+    "campaigns",
+    "persuasion"
+  ],
+  "nep_stage": "Secondary",
+  "nep_competencies": [
+    "Communication",
+    "Creativity",
+    "Critical Thinking",
+    "Ethical Reasoning"
+  ],
+  "cultural_context": "School-based social cause campaigns, youth activism, digital marketing, globally relevant influence principles",
+  "psychological_framework": {
+    "core_skills": [
+      "strategic_thinking",
+      "risk_tolerance",
+      "delayed_gratification",
+      "adaptability",
+      "resilience",
+      "empathy",
+      "ethical_reasoning"
+    ],
+    "references": [
+      "Robert Cialdini — Influence: The Psychology of Persuasion",
+      "Daniel Kahneman — System 1 & System 2 thinking in persuasion",
+      "CASEL — Social Awareness & Responsible Decision-Making"
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.2,
+    "risk_tolerance": 0.1,
+    "delayed_gratification": 0.1,
+    "adaptability": 0.15,
+    "resilience": 0.1,
+    "empathy": 0.15,
+    "ethical_reasoning": 0.2
+  },
+  "initial_state": {
+    "campaign_reach": {
+      "value": 100,
+      "label": "Campaign Reach",
+      "icon": "📡",
+      "min": 0,
+      "max": 10000
+    },
+    "influence_power": {
+      "value": 20,
+      "label": "Influence Power",
+      "icon": "🧲",
+      "min": 0,
+      "max": 100
+    },
+    "ethical_credibility": {
+      "value": 55,
+      "label": "Ethical Credibility",
+      "icon": "⚖️",
+      "min": 0,
+      "max": 100
+    },
+    "budget": {
+      "value": 3000,
+      "label": "Budget",
+      "icon": "💰",
+      "min": 0,
+      "max": 15000
+    },
+    "audience_trust": {
+      "value": 50,
+      "label": "Audience Trust",
+      "icon": "🤝",
+      "min": 0,
+      "max": 100
+    },
+    "creative_quality": {
+      "value": 35,
+      "label": "Creative Quality",
+      "icon": "🎨",
+      "min": 0,
+      "max": 100
+    },
+    "viral_potential": {
+      "value": 10,
+      "label": "Viral Potential",
+      "icon": "🔥",
+      "min": 0,
+      "max": 100
+    },
+    "data_insights": {
+      "value": 20,
+      "label": "Data Insights",
+      "icon": "📊",
+      "min": 0,
+      "max": 100
+    },
+    "team_energy": {
+      "value": 65,
+      "label": "Team Energy",
+      "icon": "⚡",
+      "min": 0,
+      "max": 100
+    },
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "empathy": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "simulation_config": {
+    "time_config": {
+      "label": "Week",
+      "start": 1,
+      "max": 12
+    },
+    "subsystems": [
+      {
+        "id": "influence_strategy",
+        "label": "Influence Strategy",
+        "icon": "🧲",
+        "color": "#8B5CF6",
+        "initial_health": 30,
+        "health_formula": "min(100, max(0, influence_power * 0.4 + data_insights * 0.3 + creative_quality * 0.3))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "campaign_execution",
+        "label": "Campaign Execution",
+        "icon": "🚀",
+        "color": "#F59E0B",
+        "initial_health": 35,
+        "health_formula": "min(100, max(0, creative_quality * 0.35 + team_energy * 0.3 + budget / 150 * 0.35))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "ethical_marketing",
+        "label": "Ethical Marketing",
+        "icon": "⚖️",
+        "color": "#10B981",
+        "initial_health": 55,
+        "health_formula": "min(100, max(0, ethical_credibility * 0.5 + audience_trust * 0.35 + data_insights * 0.15))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      },
+      {
+        "id": "audience_analytics",
+        "label": "Audience Analytics",
+        "icon": "📊",
+        "color": "#3B82F6",
+        "initial_health": 25,
+        "health_formula": "min(100, max(0, data_insights * 0.45 + campaign_reach / 100 * 0.3 + influence_power * 0.25))",
+        "status_thresholds": {
+          "critical": 20,
+          "poor": 35,
+          "fair": 55,
+          "good": 75
+        }
+      }
+    ],
+    "kpi_definitions": [
+      {
+        "id": "campaign_impact_score",
+        "label": "Campaign Impact Score",
+        "icon": "📣",
+        "formula": "(campaign_reach / 100 * 0.3 + influence_power * 0.3 + creative_quality * 0.2 + audience_trust * 0.2)",
+        "unit": "",
+        "thresholds": {
+          "critical": 20,
+          "warning": 40,
+          "good": 65
+        }
+      },
+      {
+        "id": "ethical_influence_index",
+        "label": "Ethical Influence Index",
+        "icon": "⚖️",
+        "formula": "(ethical_credibility * 0.4 + audience_trust * 0.35 + influence_power * 0.25)",
+        "unit": "",
+        "thresholds": {
+          "critical": 25,
+          "warning": 45,
+          "good": 65
+        }
+      },
+      {
+        "id": "roi",
+        "label": "Return on Investment",
+        "icon": "💹",
+        "formula": "(campaign_reach / 100 * 0.4 + influence_power * 0.3 + audience_trust * 0.3) * (budget / 3000)",
+        "unit": "",
+        "thresholds": {
+          "critical": 15,
+          "warning": 35,
+          "good": 60
+        }
+      }
+    ],
+    "tick_rules": [
+      {
+        "id": "organic_reach_growth",
+        "label": "Organic Reach Growth",
+        "condition": {
+          "resource": "audience_trust",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "campaign_reach",
+            "formula": "int(min(10000, campaign_reach + campaign_reach * 0.08 * (audience_trust / 100)))"
+          }
+        ],
+        "description": "Trusted campaigns attract organic followers each week."
+      },
+      {
+        "id": "viral_amplification",
+        "label": "Viral Amplification",
+        "condition": {
+          "resource": "viral_potential",
+          "op": ">=",
+          "value": 40
+        },
+        "effects": [
+          {
+            "resource": "campaign_reach",
+            "formula": "int(min(10000, campaign_reach + campaign_reach * 0.15 * (viral_potential / 100)))"
+          }
+        ],
+        "description": "High viral potential multiplies reach exponentially."
+      },
+      {
+        "id": "team_fatigue",
+        "label": "Team Fatigue",
+        "condition": {
+          "resource": "team_energy",
+          "op": "<",
+          "value": 30
+        },
+        "effects": [
+          {
+            "resource": "creative_quality",
+            "formula": "max(0, creative_quality - 3)"
+          }
+        ],
+        "description": "Exhausted team members produce lower quality creative work."
+      },
+      {
+        "id": "data_driven_insights",
+        "label": "Data-Driven Optimization",
+        "condition": {
+          "resource": "data_insights",
+          "op": ">=",
+          "value": 50
+        },
+        "effects": [
+          {
+            "resource": "influence_power",
+            "formula": "min(100, influence_power + 2)"
+          }
+        ],
+        "description": "Strong data insights steadily improve targeting and influence effectiveness."
+      }
+    ],
+    "interactions": [
+      {
+        "id": "viral_trust_erosion",
+        "from_subsystem": "campaign_execution",
+        "to_subsystem": "ethical_marketing",
+        "label": "Viral-Trust Tension",
+        "condition": {
+          "and": [
+            {
+              "resource": "viral_potential",
+              "op": ">",
+              "value": 55
+            },
+            {
+              "resource": "ethical_credibility",
+              "op": "<",
+              "value": 40
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "audience_trust",
+            "formula": "max(0, audience_trust - (viral_potential - 55) * 0.2)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Viral content without ethical grounding erodes audience trust."
+      },
+      {
+        "id": "trust_builds_reach",
+        "from_subsystem": "ethical_marketing",
+        "to_subsystem": "audience_analytics",
+        "label": "Trust Amplifies Reach",
+        "condition": {
+          "resource": "audience_trust",
+          "op": ">=",
+          "value": 65
+        },
+        "effects": [
+          {
+            "resource": "campaign_reach",
+            "formula": "int(min(10000, campaign_reach + (audience_trust - 65) * 8))",
+            "bounds": [
+              0,
+              10000
+            ]
+          }
+        ],
+        "description": "Highly trusted campaigns gain organic reach through word-of-mouth."
+      },
+      {
+        "id": "insights_boost_creative",
+        "from_subsystem": "audience_analytics",
+        "to_subsystem": "campaign_execution",
+        "label": "Data-Fueled Creativity",
+        "condition": {
+          "resource": "data_insights",
+          "op": ">=",
+          "value": 45
+        },
+        "effects": [
+          {
+            "resource": "creative_quality",
+            "formula": "min(100, creative_quality + (data_insights - 45) * 0.06)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "Audience data helps the creative team craft more resonant messages."
+      },
+      {
+        "id": "influence_without_ethics",
+        "from_subsystem": "influence_strategy",
+        "to_subsystem": "ethical_marketing",
+        "label": "Manipulative Influence",
+        "condition": {
+          "and": [
+            {
+              "resource": "influence_power",
+              "op": ">=",
+              "value": 60
+            },
+            {
+              "resource": "ethical_credibility",
+              "op": "<",
+              "value": 35
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "ethical_credibility",
+            "formula": "max(0, ethical_credibility - (influence_power - 60) * 0.15)",
+            "bounds": [
+              0,
+              100
+            ]
+          }
+        ],
+        "description": "High influence with low ethics feels manipulative and damages credibility further."
+      }
+    ],
+    "decay_rules": [
+      {
+        "resource": "team_energy",
+        "equilibrium": 45,
+        "rate": 0.04,
+        "direction": "toward"
+      },
+      {
+        "resource": "viral_potential",
+        "equilibrium": 15,
+        "rate": 0.06,
+        "direction": "toward"
+      }
+    ],
+    "random_events": [
+      {
+        "id": "influencer_endorsement",
+        "label": "Influencer Endorsement",
+        "icon": "⭐",
+        "description": "A popular youth influencer discovers your campaign and shares it with their 50K followers!",
+        "probability": 0.18,
+        "condition": {
+          "and": [
+            {
+              "resource": "creative_quality",
+              "op": ">=",
+              "value": 45
+            },
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 3
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "campaign_reach",
+            "delta": 800
+          },
+          {
+            "resource": "viral_potential",
+            "delta": 15
+          },
+          {
+            "resource": "audience_trust",
+            "delta": 5
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 2,
+        "news_text": "TRENDING: Youth influencer shares your campaign! Reach surges overnight.",
+        "ai_image_prompt": "Teenager recording video about social cause campaign, phone screen showing viral numbers, excited supporters, semi-realistic style"
+      },
+      {
+        "id": "media_scrutiny",
+        "label": "Media Investigation",
+        "icon": "🔍",
+        "description": "A school newspaper reporter is investigating whether your campaign tactics are manipulative. They're publishing a story this week.",
+        "probability": 0.2,
+        "condition": {
+          "and": [
+            {
+              "resource": "ethical_credibility",
+              "op": "<",
+              "value": 40
+            },
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "audience_trust",
+            "delta": -10
+          },
+          {
+            "resource": "ethical_credibility",
+            "delta": -8
+          },
+          {
+            "resource": "campaign_reach",
+            "delta": -200
+          }
+        ],
+        "cooldown": 3,
+        "max_occurrences": 2,
+        "news_text": "EXPOSED: School paper questions campaign ethics. Trust takes a hit.",
+        "ai_image_prompt": "Student journalist writing expose article, newspaper headline about manipulation, school newsroom, investigative mood, semi-realistic"
+      },
+      {
+        "id": "competitor_campaign",
+        "label": "Rival Campaign Launch",
+        "icon": "⚔️",
+        "description": "Another team just launched a competing campaign for the same cause, splitting audience attention!",
+        "probability": 0.15,
+        "condition": {
+          "resource": "sim_tick",
+          "op": ">=",
+          "value": 5
+        },
+        "effects": [
+          {
+            "resource": "campaign_reach",
+            "delta": -300
+          },
+          {
+            "resource": "influence_power",
+            "delta": -5
+          },
+          {
+            "resource": "team_energy",
+            "delta": -8
+          }
+        ],
+        "cooldown": 5,
+        "max_occurrences": 1,
+        "news_text": "ALERT: Rival team launches competing campaign! Audience attention splits.",
+        "ai_image_prompt": "Two competing campaign posters side by side on school bulletin board, students looking at both, competitive atmosphere, semi-realistic"
+      },
+      {
+        "id": "sponsorship_offer",
+        "label": "Corporate Sponsorship Offer",
+        "icon": "💼",
+        "description": "A local business offers to sponsor your campaign with extra funds — but they want their logo prominently featured.",
+        "probability": 0.15,
+        "condition": {
+          "and": [
+            {
+              "resource": "campaign_reach",
+              "op": ">=",
+              "value": 1500
+            },
+            {
+              "resource": "sim_tick",
+              "op": ">=",
+              "value": 4
+            }
+          ]
+        },
+        "effects": [
+          {
+            "resource": "budget",
+            "delta": 1500
+          },
+          {
+            "resource": "ethical_credibility",
+            "delta": -5
+          },
+          {
+            "resource": "audience_trust",
+            "delta": -3
+          }
+        ],
+        "cooldown": 4,
+        "max_occurrences": 1,
+        "news_text": "DEAL: Local business sponsors your campaign! Budget boost, but at what cost to authenticity?",
+        "ai_image_prompt": "Business person shaking hands with student campaigner, corporate logo on campaign poster, mixed reactions from audience, semi-realistic"
+      }
+    ],
+    "npc_agents": [
+      {
+        "id": "prof_cialdini",
+        "name": "Prof. Cialdini",
+        "role": "Marketing Mentor",
+        "icon": "🎓",
+        "initial_mood": "supportive",
+        "initial_satisfaction": 60,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "influence_power",
+              "op": "<",
+              "value": 25
+            },
+            "action": "teach",
+            "message": "Remember the 6 principles of influence: Reciprocity, Commitment, Social Proof, Authority, Liking, and Scarcity. You're not using them effectively yet!",
+            "mood_change": "concerned",
+            "satisfaction_delta": -3
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "influence_power",
+                  "op": ">=",
+                  "value": 50
+                },
+                {
+                  "resource": "ethical_credibility",
+                  "op": ">=",
+                  "value": 50
+                }
+              ]
+            },
+            "action": "praise",
+            "message": "Excellent! You're wielding influence responsibly. Ethical persuasion is the most sustainable kind. This is exactly how the best marketers operate.",
+            "mood_change": "proud",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "influence_power",
+                  "op": ">=",
+                  "value": 50
+                },
+                {
+                  "resource": "ethical_credibility",
+                  "op": "<",
+                  "value": 30
+                }
+              ]
+            },
+            "action": "warn",
+            "message": "You have power but no principles. Influence without ethics is manipulation. History remembers manipulators — but not fondly. Course-correct now!",
+            "mood_change": "disappointed",
+            "satisfaction_delta": -10
+          },
+          {
+            "condition": {
+              "resource": "data_insights",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "encourage",
+            "message": "Your audience analytics are sharp! Data-driven persuasion is the future. Now combine those insights with compelling storytelling.",
+            "mood_change": "impressed",
+            "satisfaction_delta": 5
+          }
+        ]
+      },
+      {
+        "id": "viral_vince",
+        "name": "Viral Vince",
+        "role": "Social Media Expert",
+        "icon": "📱",
+        "initial_mood": "enthusiastic",
+        "initial_satisfaction": 55,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "viral_potential",
+              "op": "<",
+              "value": 20
+            },
+            "action": "push",
+            "message": "Your content is flat! Nobody's sharing this. We need controversy, emotion, shock value — something that MAKES people click!",
+            "mood_change": "frustrated",
+            "satisfaction_delta": -5
+          },
+          {
+            "condition": {
+              "resource": "viral_potential",
+              "op": ">=",
+              "value": 50
+            },
+            "action": "excited",
+            "message": "NOW we're cooking! The algorithm loves us. Push harder — more emotion, more urgency, more FOMO!",
+            "mood_change": "hyped",
+            "satisfaction_delta": 8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "viral_potential",
+                  "op": ">",
+                  "value": 60
+                },
+                {
+                  "resource": "ethical_credibility",
+                  "op": "<",
+                  "value": 30
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 4
+                }
+              ]
+            },
+            "action": "backlash_trigger",
+            "message": "Uh oh... Vince's aggressive tactics have caught attention. People are calling our campaign manipulative. Hashtag #CampaignExposed is trending!",
+            "mood_change": "panicked",
+            "satisfaction_delta": -15,
+            "effects": [
+              {
+                "resource": "audience_trust",
+                "delta": -12
+              },
+              {
+                "resource": "campaign_reach",
+                "delta": -500
+              }
+            ],
+            "trigger_round": "crisis_backlash"
+          },
+          {
+            "condition": {
+              "resource": "creative_quality",
+              "op": ">=",
+              "value": 60
+            },
+            "action": "amplify",
+            "message": "Great creative! I can work with this. Let me push it across all channels — this has real viral legs.",
+            "mood_change": "energized",
+            "satisfaction_delta": 5
+          }
+        ]
+      },
+      {
+        "id": "community_leader",
+        "name": "Community Leader Aisha",
+        "role": "Social Impact Evaluator",
+        "icon": "🏘️",
+        "initial_mood": "watchful",
+        "initial_satisfaction": 50,
+        "behaviors": [
+          {
+            "condition": {
+              "resource": "ethical_credibility",
+              "op": ">=",
+              "value": 65
+            },
+            "action": "endorse",
+            "message": "Your campaign truly serves the community. I'm sharing it with all the neighborhood groups. This is what real advocacy looks like!",
+            "mood_change": "supportive",
+            "satisfaction_delta": 10,
+            "effects": [
+              {
+                "resource": "campaign_reach",
+                "delta": 300
+              },
+              {
+                "resource": "audience_trust",
+                "delta": 5
+              }
+            ]
+          },
+          {
+            "condition": {
+              "resource": "ethical_credibility",
+              "op": "<",
+              "value": 35
+            },
+            "action": "criticize",
+            "message": "This campaign feels more like propaganda than advocacy. Are you trying to help people or just win attention? The community sees through this.",
+            "mood_change": "suspicious",
+            "satisfaction_delta": -8
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "ethical_credibility",
+                  "op": "<",
+                  "value": 25
+                },
+                {
+                  "resource": "sim_tick",
+                  "op": ">=",
+                  "value": 5
+                }
+              ]
+            },
+            "action": "trust_crisis",
+            "message": "Community Leader Aisha has publicly denounced your campaign! She's organized a counter-movement calling your tactics dishonest. The community is turning against you.",
+            "mood_change": "hostile",
+            "satisfaction_delta": -20,
+            "effects": [
+              {
+                "resource": "audience_trust",
+                "delta": -15
+              },
+              {
+                "resource": "campaign_reach",
+                "delta": -600
+              },
+              {
+                "resource": "ethical_credibility",
+                "delta": -10
+              }
+            ],
+            "trigger_round": "crisis_trust"
+          },
+          {
+            "condition": {
+              "and": [
+                {
+                  "resource": "campaign_reach",
+                  "op": ">=",
+                  "value": 3000
+                },
+                {
+                  "resource": "audience_trust",
+                  "op": ">=",
+                  "value": 55
+                }
+              ]
+            },
+            "action": "celebrate",
+            "message": "Look at the impact you've made! Real people are changing their habits because of your campaign. This is meaningful work.",
+            "mood_change": "proud",
+            "satisfaction_delta": 8
+          }
+        ]
+      }
+    ],
+    "news_templates": [
+      {
+        "condition": {
+          "resource": "campaign_reach",
+          "op": ">",
+          "value": 3000
+        },
+        "icon": "📈",
+        "text": "Campaign reaches {campaign_reach} people! Your message is spreading across the school and beyond.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "and": [
+            {
+              "resource": "ethical_credibility",
+              "op": ">=",
+              "value": 70
+            },
+            {
+              "resource": "influence_power",
+              "op": ">=",
+              "value": 55
+            }
+          ]
+        },
+        "icon": "🏆",
+        "text": "Your campaign is cited as a model of ethical influence! Teachers are using it as a case study.",
+        "severity": "positive"
+      },
+      {
+        "condition": {
+          "resource": "audience_trust",
+          "op": "<",
+          "value": 25
+        },
+        "icon": "⚠️",
+        "text": "WARNING: Audience trust critically low. People are unfollowing and ignoring your messages.",
+        "severity": "critical"
+      }
+    ],
+    "ai_scene_prompt_template": "A school campaign headquarters for a social cause, campaign reach {campaign_reach}, audience trust {audience_trust}%, team energy {team_energy}%, posters and digital screens showing campaign progress, students working on marketing materials. Mood: {'energized and triumphant' if audience_trust > 60 else 'tense and defensive' if audience_trust < 30 else 'focused and busy'}."
+  },
+  "rounds": [
+    {
+      "round_id": "week_1_cause_selection",
+      "round_title": "Week 1: Choose Your Cause",
+      "situation": "Your school has tasked you with leading a 12-week campaign for a social cause. The principal wants measurable impact. Three causes are shortlisted — each with different audiences, challenges, and emotional hooks. Your first decision shapes everything that follows.",
+      "goal": "Select a cause and initial campaign direction that balances passion with strategic potential.",
+      "coaching_moment": "Strategic thinking: The best campaigns start with a cause that genuinely matters AND has a clear audience. Passion + strategy = impact.",
+      "reflection_prompt": "Why is choosing the right cause the most important decision in any campaign?",
+      "ai_image_prompt": "Students brainstorming around a whiteboard covered in campaign ideas, sticky notes, cause options, school meeting room, semi-realistic",
+      "choices": [
+        {
+          "id": "w1_environment",
+          "label": "A. 'Green Future' — Environmental Action",
+          "description": "Campaign to reduce school plastic waste by 80%. Clear metrics, visual impact, but requires behavior change from everyone.",
+          "delta": {
+            "campaign_reach": 80,
+            "influence_power": 5,
+            "ethical_credibility": 8,
+            "budget": -200,
+            "audience_trust": 8,
+            "creative_quality": 5,
+            "data_insights": 5,
+            "team_energy": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Strong choice! Environmental causes have visual impact and measurable outcomes. Cialdini's 'Social Proof' principle will be your best friend — show people others are already changing.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "w1_health",
+          "label": "B. 'Mind Matters' — Mental Health Awareness",
+          "description": "Break the stigma around teen mental health. Deeply personal, hard to measure, but enormous emotional resonance.",
+          "delta": {
+            "campaign_reach": 60,
+            "influence_power": 8,
+            "ethical_credibility": 10,
+            "budget": -200,
+            "audience_trust": 10,
+            "creative_quality": 8,
+            "team_energy": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Courageous choice! Mental health campaigns require deep empathy. Cialdini's 'Liking' principle matters here — people listen to people they relate to.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "w1_education",
+          "label": "C. 'Learn to Earn' — Education Equity",
+          "description": "Campaign for after-school tutoring access for underserved students. Data-rich, authority-backed, but less emotionally immediate.",
+          "delta": {
+            "campaign_reach": 50,
+            "influence_power": 5,
+            "ethical_credibility": 8,
+            "budget": -200,
+            "audience_trust": 6,
+            "creative_quality": 3,
+            "data_insights": 10,
+            "team_energy": 3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Smart analytical choice! Education equity campaigns benefit from Cialdini's 'Authority' principle — use expert endorsements and data to build your case.",
+          "skill_explanation": {
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w1_all_three",
+          "label": "D. 'Impact 360' — Tackle All Three",
+          "description": "An ambitious umbrella campaign covering all three causes. Maximum scope but risks diluting your message and draining the team.",
+          "delta": {
+            "campaign_reach": 100,
+            "influence_power": 3,
+            "ethical_credibility": 3,
+            "budget": -400,
+            "audience_trust": 2,
+            "creative_quality": -2,
+            "team_energy": -10,
+            "data_insights": 3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Ambitious! But marketing wisdom says: 'If you talk to everyone, you talk to no one.' Broad campaigns struggle to create deep impact. Focus often beats scope.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_2_audience_research",
+      "round_title": "Week 2: Know Your Audience",
+      "situation": "Before launching anything, you need to understand who you're talking to. Prof. Cialdini advises: 'Persuasion starts with understanding.' Your team can conduct audience research — but how deep do you go?",
+      "goal": "Invest in audience understanding to sharpen your campaign strategy.",
+      "coaching_moment": "Data-driven decisions: Great marketers research before they create. Understanding your audience's values, fears, and habits is the foundation of all influence.",
+      "reflection_prompt": "How does understanding your audience change the way you communicate?",
+      "ai_image_prompt": "Students conducting surveys on tablets, analyzing data charts on screen, focus group discussion, school research setting, semi-realistic",
+      "choices": [
+        {
+          "id": "w2_deep_research",
+          "label": "A. Deep Audience Research",
+          "description": "Conduct focus groups, surveys, and interviews. Takes time but reveals what truly motivates your audience.",
+          "delta": {
+            "budget": -500,
+            "data_insights": 18,
+            "influence_power": 5,
+            "creative_quality": 5,
+            "team_energy": -8,
+            "audience_trust": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "Brilliant foundation! Deep research reveals hidden motivations. Cialdini says 'Commitment' works best when you understand what people already believe in.",
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience."
+          }
+        },
+        {
+          "id": "w2_quick_survey",
+          "label": "B. Quick Online Survey",
+          "description": "Send out a Google Form to get basic demographics and preferences. Fast but shallow.",
+          "delta": {
+            "budget": -100,
+            "data_insights": 10,
+            "influence_power": 3,
+            "team_energy": -3
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Efficient but limited. You have surface-level data — enough to start, but you may miss deeper audience insights that make campaigns truly resonate.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance."
+          }
+        },
+        {
+          "id": "w2_social_listening",
+          "label": "C. Social Media Listening",
+          "description": "Analyze what students are already saying online about your cause. Free and revealing, but requires digital skills.",
+          "delta": {
+            "budget": -50,
+            "data_insights": 14,
+            "viral_potential": 8,
+            "creative_quality": 3,
+            "team_energy": -5
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Smart digital-native approach! Social listening reveals what language, emotions, and formats already resonate. Great for tapping into existing conversations.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w2_skip_research",
+          "label": "D. Skip Research — Trust Your Gut",
+          "description": "You already know your classmates. Dive straight into creating content. Save time and budget for execution.",
+          "delta": {
+            "budget": 0,
+            "creative_quality": 5,
+            "team_energy": 5,
+            "influence_power": -3,
+            "data_insights": -5
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Confident but risky! The graveyard of failed campaigns is full of people who said 'I know my audience.' Without data, your assumptions may be wrong.",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "resilience": "Facing challenges head-on strengthens your resilience over time."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_3_messaging",
+      "round_title": "Week 3: Craft Your Core Message",
+      "situation": "Time to create your campaign's central message. Prof. Cialdini reminds you: 'The message matters less than how it makes people FEEL.' Your team has brainstormed four messaging approaches — each uses different influence principles.",
+      "goal": "Choose a messaging strategy that balances persuasion power with ethical integrity.",
+      "coaching_moment": "Ethical reasoning: Every persuasion technique exists on a spectrum from 'informing' to 'manipulating.' Great campaigners know where they stand on that line.",
+      "reflection_prompt": "Where is the line between persuasion and manipulation?",
+      "ai_image_prompt": "Creative team reviewing campaign slogans and posters, brainstorming session, colorful message boards, marketing workshop, semi-realistic",
+      "choices": [
+        {
+          "id": "w3_social_proof",
+          "label": "A. Social Proof: '78% of Students Already Support This'",
+          "description": "Use real survey data to show momentum. People follow the crowd. Honest, data-backed, and leverages Cialdini's Social Proof principle.",
+          "delta": {
+            "influence_power": 10,
+            "ethical_credibility": 5,
+            "audience_trust": 5,
+            "creative_quality": 5,
+            "campaign_reach": 100,
+            "budget": -300
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Social Proof is one of the most powerful and ethical influence tools. When people see others supporting a cause, they feel safe joining in. Transparent data makes it honest.",
+          "requires": {
+            "resource": "data_insights",
+            "op": ">=",
+            "value": 20,
+            "label": "Requires Data Insights >= 20"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "w3_scarcity_fear",
+          "label": "B. Scarcity & Urgency: 'Only 30 Days to Save Our School!'",
+          "description": "Create urgency with countdown timers and dramatic language. Powerful but risks feeling alarmist.",
+          "delta": {
+            "influence_power": 14,
+            "viral_potential": 12,
+            "ethical_credibility": -8,
+            "audience_trust": -3,
+            "creative_quality": 8,
+            "campaign_reach": 200,
+            "budget": -300
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Scarcity drives action fast! But Cialdini himself warns: artificial urgency is manipulation. If the deadline isn't real, people will eventually feel tricked.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w3_storytelling",
+          "label": "C. Personal Stories: 'Meet Anika — This Is Her Reality'",
+          "description": "Feature real student stories that humanize the cause. Uses Cialdini's 'Liking' principle — we help people we relate to.",
+          "delta": {
+            "influence_power": 8,
+            "ethical_credibility": 8,
+            "audience_trust": 10,
+            "creative_quality": 10,
+            "campaign_reach": 80,
+            "budget": -400,
+            "team_energy": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Storytelling is the oldest and most ethical form of persuasion. Real stories build genuine emotional connections. Cialdini's 'Liking' principle at its finest.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "w3_authority_shock",
+          "label": "D. Authority + Shock: Expert Quotes with Startling Statistics",
+          "description": "Lead with expert endorsements and shocking data. Uses Authority principle but risks emotional overload.",
+          "delta": {
+            "influence_power": 12,
+            "ethical_credibility": 2,
+            "audience_trust": 2,
+            "creative_quality": 6,
+            "campaign_reach": 150,
+            "data_insights": 5,
+            "budget": -250
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "risk_tolerance"
+          ],
+          "feedback": "Authority figures add credibility. But pairing them with shock tactics can feel manipulative. Use authority to inform, not to scare.",
+          "skill_explanation": {
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_4_channels",
+      "round_title": "Week 4: Choose Your Channels",
+      "situation": "Your message is ready. Now — where do you broadcast it? Each channel reaches different people in different ways. Viral Vince wants to go all-in on social media. Community Leader Aisha suggests grassroots community outreach. Your budget is limited.",
+      "goal": "Select the channel mix that maximizes reach while staying authentic.",
+      "coaching_moment": "Adaptability: The best campaigns meet people where they already are. Channel choice is as important as the message itself.",
+      "reflection_prompt": "Why might the same message work on one platform but fail on another?",
+      "ai_image_prompt": "Student looking at multiple screens showing social media, school bulletin board, community gathering, choosing channels, semi-realistic",
+      "choices": [
+        {
+          "id": "w4_social_media",
+          "label": "A. Social Media Blitz (Instagram, YouTube, TikTok)",
+          "description": "All-in on digital. Reels, stories, hashtag campaigns. Maximum viral potential but risks echo chamber.",
+          "delta": {
+            "campaign_reach": 400,
+            "viral_potential": 18,
+            "budget": -600,
+            "creative_quality": 5,
+            "team_energy": -10,
+            "ethical_credibility": -2,
+            "audience_trust": -2
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Social media gives you massive reach and viral potential. But algorithms reward outrage over nuance. Watch your ethical credibility!",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "w4_grassroots",
+          "label": "B. Grassroots Community Outreach",
+          "description": "Door-to-door, classroom presentations, community meetings. Slow but deeply trusted.",
+          "delta": {
+            "campaign_reach": 150,
+            "audience_trust": 12,
+            "ethical_credibility": 8,
+            "influence_power": 5,
+            "budget": -400,
+            "team_energy": -12
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Grassroots is the gold standard for trust. Cialdini's 'Reciprocity' principle thrives in face-to-face interactions. People who feel heard become your strongest advocates.",
+          "skill_explanation": {
+            "empathy": "Taking others' perspectives into account builds empathy.",
+            "delayed_gratification": "Investing effort now for later payoff builds discipline."
+          }
+        },
+        {
+          "id": "w4_mixed",
+          "label": "C. Multi-Channel Mix (Digital + Physical)",
+          "description": "Balance social media with posters, school assemblies, and community events. Moderate on all fronts.",
+          "delta": {
+            "campaign_reach": 250,
+            "viral_potential": 8,
+            "audience_trust": 5,
+            "ethical_credibility": 3,
+            "creative_quality": 3,
+            "budget": -700,
+            "team_energy": -8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Balanced and strategic! Multi-channel campaigns reinforce the message through repetition across touchpoints. This is how professional marketers think.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w4_school_media",
+          "label": "D. School Infrastructure (PA, Newsletter, Assemblies)",
+          "description": "Use existing school channels — free, captive audience, but limited creative freedom and reach.",
+          "delta": {
+            "campaign_reach": 120,
+            "audience_trust": 8,
+            "ethical_credibility": 5,
+            "influence_power": 3,
+            "budget": -100,
+            "team_energy": -3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Budget-smart! Using authority channels (school PA, principal's newsletter) leverages Cialdini's 'Authority' principle. The school's credibility transfers to your campaign.",
+          "skill_explanation": {
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_5_creative",
+      "round_title": "Week 5: The Creative Sprint",
+      "situation": "Your team needs to produce the actual campaign materials — posters, videos, posts, presentations. Creative quality will determine whether your message sticks. But the team is already tired, and Viral Vince wants to cut corners for speed.",
+      "goal": "Balance creative quality with team capacity and budget constraints.",
+      "coaching_moment": "Resilience: Creative work under pressure is where campaigns succeed or fail. Great content doesn't need a big budget — it needs clarity and authenticity.",
+      "reflection_prompt": "Is it better to produce one amazing piece of content or ten mediocre ones?",
+      "ai_image_prompt": "Students designing campaign posters and editing videos, creative studio setup, colorful materials, energetic but tired team, semi-realistic",
+      "choices": [
+        {
+          "id": "w5_premium_content",
+          "label": "A. Premium Quality — Fewer Pieces, Higher Impact",
+          "description": "Create 3 stunning, professional-grade pieces. A hero video, a poster series, and an interactive website.",
+          "delta": {
+            "creative_quality": 18,
+            "influence_power": 8,
+            "budget": -800,
+            "team_energy": -15,
+            "audience_trust": 5,
+            "campaign_reach": 100
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Quality over quantity! One viral video can outperform 100 mediocre posts. Investment in craft shows respect for your audience.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 800,
+            "label": "Requires Budget >= 800"
+          },
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w5_volume_content",
+          "label": "B. Volume Strategy — Flood All Channels",
+          "description": "Produce 30+ pieces of quick content. Daily posts, memes, stories. Quantity over quality.",
+          "delta": {
+            "creative_quality": 5,
+            "viral_potential": 12,
+            "campaign_reach": 300,
+            "budget": -500,
+            "team_energy": -18,
+            "audience_trust": -3,
+            "ethical_credibility": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Volume can overwhelm and desensitize. While some pieces may stick, audiences often tune out 'content spam.' Your team's burnout is the hidden cost.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "resilience": "Pushing through difficulty builds mental strength."
+          }
+        },
+        {
+          "id": "w5_ugc",
+          "label": "C. User-Generated Content Campaign",
+          "description": "Create a challenge/hashtag and let your audience make the content. Low cost, high engagement, authentic.",
+          "delta": {
+            "creative_quality": 8,
+            "viral_potential": 15,
+            "campaign_reach": 250,
+            "audience_trust": 8,
+            "ethical_credibility": 5,
+            "budget": -200,
+            "team_energy": -5,
+            "influence_power": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "empathy"
+          ],
+          "feedback": "Brilliant! User-generated content uses Social Proof AND Reciprocity. When people create content for your cause, they become emotionally invested in it. Cialdini's 'Commitment' principle in action!",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "empathy": "Understanding the impact on people around you shows care for others."
+          }
+        },
+        {
+          "id": "w5_ai_content",
+          "label": "D. AI-Generated Content Blitz",
+          "description": "Use AI tools to generate posters, captions, and even video scripts. Fast, cheap, but raises authenticity questions.",
+          "delta": {
+            "creative_quality": 10,
+            "campaign_reach": 200,
+            "budget": -150,
+            "team_energy": 5,
+            "ethical_credibility": -6,
+            "audience_trust": -5,
+            "viral_potential": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "AI tools are powerful but audiences increasingly detect and distrust AI-generated content. If exposed, it undermines your campaign's authenticity. Transparency about AI use is key.",
+          "skill_explanation": {
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability.",
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_6_influence_tactics",
+      "round_title": "Week 6: The Influence Playbook",
+      "situation": "Your campaign is live, but engagement is plateauing. Prof. Cialdini suggests deploying a specific influence technique to reignite momentum. Each option uses a different principle — some ethical, some borderline.",
+      "goal": "Choose an influence tactic that boosts engagement without crossing ethical lines.",
+      "coaching_moment": "Ethical reasoning: Cialdini's principles are tools — like a knife, they can feed or harm. The wielder's intent determines the ethics.",
+      "reflection_prompt": "If a persuasion technique works but the audience doesn't know it's being used on them, is that ethical?",
+      "ai_image_prompt": "Marketing strategy board with influence psychology diagrams, Cialdini's principles illustrated, students debating tactics, semi-realistic",
+      "choices": [
+        {
+          "id": "w6_reciprocity",
+          "label": "A. Reciprocity: Give First, Then Ask",
+          "description": "Offer free workshops, resources, or help sessions related to your cause BEFORE asking for support. People who receive tend to give back.",
+          "delta": {
+            "influence_power": 10,
+            "ethical_credibility": 8,
+            "audience_trust": 8,
+            "budget": -500,
+            "team_energy": -8,
+            "campaign_reach": 150
+          },
+          "skill_tags": [
+            "empathy",
+            "delayed_gratification"
+          ],
+          "feedback": "Reciprocity is the most ethical influence principle. Genuine giving creates genuine loyalty. This builds sustainable support, not just clicks.",
+          "skill_explanation": {
+            "empathy": "Listening to different viewpoints strengthens your empathy skills.",
+            "delayed_gratification": "Prioritizing long-term gains over short-term comfort builds character."
+          }
+        },
+        {
+          "id": "w6_commitment",
+          "label": "B. Commitment Escalation: Small Yes to Big Yes",
+          "description": "Start with tiny asks ('Sign this pledge') and gradually escalate ('Now volunteer for the event'). People who commit small tend to commit big.",
+          "delta": {
+            "influence_power": 12,
+            "ethical_credibility": 3,
+            "audience_trust": 3,
+            "campaign_reach": 200,
+            "budget": -300,
+            "data_insights": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "adaptability"
+          ],
+          "feedback": "Commitment escalation is psychologically powerful. The ethical key: make sure each escalation is genuinely voluntary. Pressure turns commitment into resentment.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "adaptability": "Flexibility in your thinking helps you handle change effectively."
+          }
+        },
+        {
+          "id": "w6_scarcity_fomo",
+          "label": "C. Artificial Scarcity: 'Only 50 Spots Left!'",
+          "description": "Create fake urgency with limited-time offers and exclusive events. Drives fast action but it's manufactured.",
+          "delta": {
+            "influence_power": 15,
+            "viral_potential": 12,
+            "ethical_credibility": -12,
+            "audience_trust": -8,
+            "campaign_reach": 300,
+            "budget": -200
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Artificial scarcity is manipulation disguised as marketing. It works SHORT-TERM but destroys trust when people realize the urgency was fake. Cialdini himself warns against this misuse.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "w6_social_proof_display",
+          "label": "D. Live Social Proof Dashboard",
+          "description": "Display a real-time counter of supporters, volunteer hours, and impact metrics on screens around school. Transparent and inspiring.",
+          "delta": {
+            "influence_power": 8,
+            "ethical_credibility": 6,
+            "audience_trust": 6,
+            "campaign_reach": 120,
+            "creative_quality": 5,
+            "budget": -350,
+            "data_insights": 8
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Transparent social proof is gold! When people SEE real-time momentum, they want to be part of it. This is honest, data-driven influence at its best.",
+          "skill_explanation": {
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_7_viral_moment",
+      "round_title": "Week 7: The Viral Moment",
+      "situation": "One of your campaign posts unexpectedly goes viral — a student's emotional story gets shared 5,000 times overnight. Viral Vince is ecstatic and wants to exploit the momentum. But the student featured is uncomfortable with the sudden attention. The school principal is watching.",
+      "goal": "Navigate the viral moment — maximize impact while respecting the individual and maintaining ethics.",
+      "coaching_moment": "Empathy + Ethics: Viral moments reveal character. How you treat the people in your campaign when the spotlight hits defines your true values.",
+      "reflection_prompt": "When someone's personal story goes viral, who owns that story — the person, the campaign, or the public?",
+      "ai_image_prompt": "Student's phone showing viral post with thousands of shares, mixed reactions, concerned and excited faces, school hallway, semi-realistic",
+      "choices": [
+        {
+          "id": "w7_protect_student",
+          "label": "A. Protect the Student — Pause and Check In",
+          "description": "Stop amplifying the post. Check with the student first. Offer them control over how their story is used going forward.",
+          "delta": {
+            "ethical_credibility": 15,
+            "audience_trust": 10,
+            "viral_potential": -10,
+            "campaign_reach": -100,
+            "influence_power": 3,
+            "team_energy": 5
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "This is ethical leadership. Protecting a real person over campaign metrics shows integrity. Ironically, this kind of authenticity often creates STRONGER long-term loyalty.",
+          "skill_explanation": {
+            "empathy": "Valuing others' experiences alongside your own shows empathetic thinking.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        },
+        {
+          "id": "w7_amplify_carefully",
+          "label": "B. Amplify with Consent",
+          "description": "Ask the student's permission, then share their story across all channels with proper credit and boundaries.",
+          "delta": {
+            "campaign_reach": 500,
+            "viral_potential": 10,
+            "ethical_credibility": 5,
+            "audience_trust": 5,
+            "influence_power": 8,
+            "budget": -200,
+            "team_energy": -5
+          },
+          "skill_tags": [
+            "empathy",
+            "strategic_thinking"
+          ],
+          "feedback": "Consent-based amplification is the gold standard. You respected the individual AND leveraged the moment. This is how ethical influence scales.",
+          "skill_explanation": {
+            "empathy": "Considering how others feel shows emotional intelligence.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        },
+        {
+          "id": "w7_exploit_viral",
+          "label": "C. Ride the Wave — Maximum Amplification",
+          "description": "The post is already public. Push it everywhere — paid promotion, cross-platform sharing, media outreach. The cause is bigger than one person's comfort.",
+          "delta": {
+            "campaign_reach": 1000,
+            "viral_potential": 20,
+            "influence_power": 12,
+            "ethical_credibility": -15,
+            "audience_trust": -10,
+            "budget": -500,
+            "team_energy": -8
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Maximum reach, maximum cost. Using someone's personal story without full consent is exploitation — even for a good cause. Short-term gain, long-term ethical debt.",
+          "skill_explanation": {
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty.",
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically."
+          }
+        },
+        {
+          "id": "w7_redirect",
+          "label": "D. Redirect Attention to the Cause, Not the Person",
+          "description": "Use the viral moment to pivot attention from the individual story to the broader cause and systemic issues.",
+          "delta": {
+            "campaign_reach": 300,
+            "influence_power": 6,
+            "ethical_credibility": 8,
+            "audience_trust": 6,
+            "creative_quality": 5,
+            "data_insights": 3,
+            "budget": -150
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "empathy"
+          ],
+          "feedback": "Clever pivot! You protected the individual while capitalizing on the attention for the cause. This shows strategic empathy — a rare and valuable skill.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "empathy": "Taking others' perspectives into account builds empathy."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_backlash",
+      "id": "crisis_backlash",
+      "round_title": "CRISIS: Public Backlash",
+      "situation": "Hashtag #CampaignExposed is trending. Students are calling your campaign manipulative. Screenshots of aggressive tactics are circulating. Viral Vince's push-the-limits strategy has backfired spectacularly. The principal demands a response within 24 hours. Your credibility is on the line.",
+      "goal": "Navigate the backlash crisis — restore trust or double down on your strategy.",
+      "coaching_moment": "Resilience under fire: Crises reveal character. The best leaders admit mistakes, take responsibility, and pivot — the worst ones deflect and deny.",
+      "reflection_prompt": "When caught doing something wrong, why is admitting it often more powerful than defending it?",
+      "ai_image_prompt": "Students protesting with phones showing angry social media posts, campaign posters defaced, tense school assembly, crisis atmosphere, semi-realistic",
+      "condition": {
+        "resource": "viral_potential",
+        "operator": ">",
+        "value": 60
+      },
+      "choices": [
+        {
+          "id": "cb_full_apology",
+          "label": "A. Full Public Apology & Reset",
+          "description": "Take complete responsibility. Publish a transparent apology, remove aggressive content, and restart with ethical guidelines.",
+          "delta": {
+            "ethical_credibility": 18,
+            "audience_trust": 15,
+            "influence_power": -10,
+            "viral_potential": -20,
+            "campaign_reach": -300,
+            "team_energy": -5
+          },
+          "skill_tags": [
+            "resilience",
+            "ethical_reasoning"
+          ],
+          "feedback": "True leadership! Public apologies are terrifying but they work. Research shows that admitting mistakes INCREASES trust more than never making them. Cialdini's 'Liking' — people like people who are genuine.",
+          "skill_explanation": {
+            "resilience": "Choosing to persist when things get hard develops resilience.",
+            "ethical_reasoning": "Thinking about what's fair for everyone involved shows ethical awareness."
+          }
+        },
+        {
+          "id": "cb_deflect",
+          "label": "B. Deflect & Blame the Platform",
+          "description": "Claim the algorithm amplified your message beyond intention. Blame social media, not your tactics.",
+          "delta": {
+            "ethical_credibility": -8,
+            "audience_trust": -5,
+            "influence_power": -3,
+            "viral_potential": -10,
+            "campaign_reach": -100
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "Deflection rarely works in the age of screenshots. People saw your tactics — blaming the platform insults their intelligence. Trust continues to erode.",
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "adaptability": "Adjusting your approach when conditions change shows flexibility."
+          }
+        },
+        {
+          "id": "cb_partial_acknowledge",
+          "label": "C. Acknowledge Some Issues, Pivot Forward",
+          "description": "Accept that 'some messaging could have been better' while highlighting the genuine impact your campaign has had.",
+          "delta": {
+            "ethical_credibility": 8,
+            "audience_trust": 5,
+            "influence_power": -5,
+            "viral_potential": -12,
+            "campaign_reach": -100,
+            "creative_quality": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Partial acknowledgment is better than denial but less powerful than full accountability. Audiences sense the difference between a real apology and a PR move.",
+          "skill_explanation": {
+            "adaptability": "Being open to new information and changing course builds adaptability.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "cb_double_down",
+          "label": "D. Double Down — Our Cause Justifies Our Methods",
+          "description": "Argue that the cause is so important that aggressive tactics are warranted. Challenge critics to care as much as you do.",
+          "delta": {
+            "influence_power": 5,
+            "ethical_credibility": -15,
+            "audience_trust": -12,
+            "viral_potential": 10,
+            "campaign_reach": 200,
+            "team_energy": -10
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "The 'ends justify the means' argument is one of the oldest traps in ethics. It might rally true believers but it alienates everyone else. This path leads to isolation.",
+          "skill_explanation": {
+            "risk_tolerance": "Being willing to try something uncertain develops risk tolerance.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_8_budget_crunch",
+      "round_title": "Week 8: The Budget Crunch",
+      "situation": "You're two-thirds through the campaign and the budget is running low. The most impactful weeks are ahead — the final push, the big event, the report to the principal. You need to make hard financial choices.",
+      "goal": "Allocate remaining resources strategically for maximum final impact.",
+      "coaching_moment": "Strategic thinking under constraint: Scarcity forces creativity. The best campaigns often come from teams with limited budgets but unlimited ingenuity.",
+      "reflection_prompt": "Does having less money force you to be more creative? Why or why not?",
+      "ai_image_prompt": "Student reviewing campaign budget spreadsheet, counting coins, strategic planning board, tough financial decisions, school office, semi-realistic",
+      "choices": [
+        {
+          "id": "w8_invest_finale",
+          "label": "A. Save Everything for a Grand Finale Event",
+          "description": "Cut all spending now and save the budget for one spectacular closing event that creates lasting impact.",
+          "delta": {
+            "budget": -100,
+            "team_energy": 8,
+            "creative_quality": -5,
+            "campaign_reach": -100,
+            "influence_power": -3
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Delayed gratification in action! Saving for a grand finale is risky — you lose momentum now. But if the event delivers, it could be the defining moment of your campaign.",
+          "skill_explanation": {
+            "delayed_gratification": "Choosing a future benefit over an immediate reward shows patience.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        },
+        {
+          "id": "w8_fundraise",
+          "label": "B. Launch a Crowdfunding Drive",
+          "description": "Ask your audience to fund the campaign's final phase. Turns supporters into stakeholders.",
+          "delta": {
+            "budget": 1200,
+            "audience_trust": 5,
+            "campaign_reach": 100,
+            "ethical_credibility": 3,
+            "team_energy": -5,
+            "influence_power": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "resilience"
+          ],
+          "feedback": "Crowdfunding uses Reciprocity AND Commitment. People who fund your campaign become emotionally invested in its success. They'll share, advocate, and defend it.",
+          "skill_explanation": {
+            "adaptability": "Pivoting your strategy when needed is a sign of adaptive thinking.",
+            "resilience": "Staying focused under pressure builds your ability to bounce back."
+          }
+        },
+        {
+          "id": "w8_free_tactics",
+          "label": "C. Go Zero-Budget — Organic & Creative Only",
+          "description": "No more spending. Use only free channels, word-of-mouth, partnerships, and creative guerrilla marketing.",
+          "delta": {
+            "budget": 0,
+            "creative_quality": 8,
+            "ethical_credibility": 5,
+            "audience_trust": 5,
+            "team_energy": -10,
+            "campaign_reach": 80,
+            "viral_potential": 5
+          },
+          "skill_tags": [
+            "resilience",
+            "adaptability"
+          ],
+          "feedback": "Constraint breeds creativity! Some of the most iconic campaigns in history were zero-budget. Guerrilla marketing rewards cleverness over cash.",
+          "skill_explanation": {
+            "resilience": "Facing challenges head-on strengthens your resilience over time.",
+            "adaptability": "Responding to unexpected situations with creativity shows adaptability."
+          }
+        },
+        {
+          "id": "w8_sponsorship",
+          "label": "D. Accept Corporate Sponsorship",
+          "description": "A local business wants to sponsor your final event. Big money, but their logo goes on everything and they want messaging control.",
+          "delta": {
+            "budget": 2000,
+            "campaign_reach": 200,
+            "ethical_credibility": -10,
+            "audience_trust": -8,
+            "influence_power": 3,
+            "creative_quality": -3
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "strategic_thinking"
+          ],
+          "feedback": "Sponsorship money comes with strings. When a corporation's logo is on your social cause campaign, people question your motives. Is the money worth the credibility cost?",
+          "skill_explanation": {
+            "risk_tolerance": "Not always playing it safe helps you grow as a decision-maker.",
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "crisis_trust",
+      "id": "crisis_trust",
+      "round_title": "CRISIS: Trust Erosion",
+      "situation": "Community Leader Aisha has publicly denounced your campaign. She's organized students and parents into a counter-movement, claiming your campaign exploits the cause for personal glory. Petition signatures against your campaign are growing. The school board is now involved.",
+      "goal": "Rebuild community trust before your campaign is shut down.",
+      "coaching_moment": "Empathy in crisis: When the community turns against you, the only path back is genuine listening and humble action. You cannot influence people who don't trust you.",
+      "reflection_prompt": "Why is community trust the hardest thing to rebuild once lost?",
+      "ai_image_prompt": "Community meeting with concerned parents and students, petition being signed, campaign director facing criticism, school board room, semi-realistic",
+      "condition": {
+        "resource": "audience_trust",
+        "operator": "<",
+        "value": 25
+      },
+      "choices": [
+        {
+          "id": "ct_community_council",
+          "label": "A. Form a Community Advisory Council",
+          "description": "Invite Aisha and critics onto an advisory board that co-governs the campaign. Share power to rebuild trust.",
+          "delta": {
+            "audience_trust": 18,
+            "ethical_credibility": 15,
+            "influence_power": -5,
+            "creative_quality": -3,
+            "team_energy": -8,
+            "campaign_reach": 100
+          },
+          "skill_tags": [
+            "empathy",
+            "ethical_reasoning"
+          ],
+          "feedback": "Sharing power is the ultimate trust signal. By giving critics a seat at the table, you transform opponents into partners. This is mature, ethical leadership.",
+          "skill_explanation": {
+            "empathy": "Understanding the impact on people around you shows care for others.",
+            "ethical_reasoning": "Choosing what's right over what's easy shows moral courage."
+          }
+        },
+        {
+          "id": "ct_impact_report",
+          "label": "B. Publish a Transparent Impact Report",
+          "description": "Release all data — budget spending, reach metrics, actual community impact. Let the numbers speak for themselves.",
+          "delta": {
+            "audience_trust": 12,
+            "ethical_credibility": 10,
+            "data_insights": 8,
+            "campaign_reach": 50,
+            "budget": -200
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Transparency is powerful! When you open your books, critics have to engage with facts. Data-driven accountability rebuilds credibility.",
+          "requires": {
+            "resource": "data_insights",
+            "op": ">=",
+            "value": 30,
+            "label": "Requires Data Insights >= 30"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "ethical_reasoning": "Considering fairness in your decision demonstrates ethical thinking."
+          }
+        },
+        {
+          "id": "ct_rebrand",
+          "label": "C. Rebrand & Relaunch Under Community Control",
+          "description": "Essentially restart the campaign under community leadership. You step back from the spotlight.",
+          "delta": {
+            "audience_trust": 15,
+            "ethical_credibility": 12,
+            "influence_power": -10,
+            "campaign_reach": -200,
+            "creative_quality": -5,
+            "team_energy": -12
+          },
+          "skill_tags": [
+            "resilience",
+            "empathy"
+          ],
+          "feedback": "Radical humility! Stepping back when your ego is involved takes real courage. The campaign may lose your vision, but it gains the community's ownership.",
+          "skill_explanation": {
+            "resilience": "Pushing through difficulty builds mental strength.",
+            "empathy": "Listening to different viewpoints strengthens your empathy skills."
+          }
+        },
+        {
+          "id": "ct_fight_back",
+          "label": "D. Fight the Narrative — Counter-Campaign",
+          "description": "Launch an aggressive counter-narrative challenging Aisha's claims. Highlight your genuine achievements.",
+          "delta": {
+            "audience_trust": -8,
+            "ethical_credibility": -10,
+            "influence_power": 5,
+            "viral_potential": 10,
+            "campaign_reach": 150,
+            "team_energy": -10
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "resilience"
+          ],
+          "feedback": "Fighting fire with fire rarely works in trust crises. Even if your counter-arguments are valid, the act of attacking a community leader makes you look defensive and aggressive.",
+          "skill_explanation": {
+            "risk_tolerance": "Evaluating risk vs. reward is a key life skill.",
+            "resilience": "Choosing to persist when things get hard develops resilience."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_10_data_decision",
+      "round_title": "Week 10: Data-Driven Pivot",
+      "situation": "Your analytics reveal a surprise: the campaign is resonating most with an audience you didn't target — younger students (Grade 6-7). Your original audience (Grade 8-9) is less engaged. Do you pivot to where the data points, or stay course?",
+      "goal": "Use data insights to make a strategic pivot decision.",
+      "coaching_moment": "Adaptability: The best marketers follow the data, even when it contradicts their original plan. Ego kills campaigns; data saves them.",
+      "reflection_prompt": "When data contradicts your plan, should you always follow the data? When might you not?",
+      "ai_image_prompt": "Student analyzing campaign dashboard with audience demographics, data charts showing unexpected trend, pivot decision, semi-realistic",
+      "choices": [
+        {
+          "id": "w10_full_pivot",
+          "label": "A. Full Pivot — Follow the Data",
+          "description": "Redesign the campaign entirely for the younger audience. New tone, new visuals, new channels.",
+          "delta": {
+            "data_insights": 10,
+            "campaign_reach": 400,
+            "creative_quality": -5,
+            "audience_trust": -3,
+            "budget": -500,
+            "team_energy": -12,
+            "influence_power": 5
+          },
+          "skill_tags": [
+            "adaptability",
+            "risk_tolerance"
+          ],
+          "feedback": "Bold data-driven pivot! You'll gain a new audience but risk alienating early supporters. Pivoting this late requires flawless execution.",
+          "skill_explanation": {
+            "adaptability": "Flexibility in your thinking helps you handle change effectively.",
+            "risk_tolerance": "Taking a calculated risk shows you can handle uncertainty."
+          }
+        },
+        {
+          "id": "w10_dual_track",
+          "label": "B. Dual-Track — Serve Both Audiences",
+          "description": "Create separate messaging tracks for each audience while maintaining the core cause. More work, more reach.",
+          "delta": {
+            "campaign_reach": 300,
+            "data_insights": 8,
+            "creative_quality": 3,
+            "team_energy": -15,
+            "budget": -600,
+            "influence_power": 3
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "resilience"
+          ],
+          "feedback": "Segmented marketing is professional-grade thinking! But it doubles the workload. Watch your team's energy — burnout is a real risk.",
+          "skill_explanation": {
+            "strategic_thinking": "Planning your approach carefully is a sign of strategic reasoning.",
+            "resilience": "Learning from setbacks rather than giving up shows resilience."
+          }
+        },
+        {
+          "id": "w10_stay_course",
+          "label": "C. Stay the Course — Trust the Original Plan",
+          "description": "The original audience matters more strategically. Double down on reaching Grade 8-9 students with better tactics.",
+          "delta": {
+            "influence_power": 5,
+            "audience_trust": 5,
+            "ethical_credibility": 3,
+            "creative_quality": 5,
+            "team_energy": 3,
+            "budget": -200
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "strategic_thinking"
+          ],
+          "feedback": "Discipline has value! Not every data signal requires a pivot. Sometimes the original strategy needs time, not change. But ignoring clear data is also risky.",
+          "skill_explanation": {
+            "delayed_gratification": "Investing effort now for later payoff builds discipline.",
+            "strategic_thinking": "Thinking ahead about consequences shows strategic planning ability."
+          }
+        },
+        {
+          "id": "w10_hybrid",
+          "label": "D. Test & Learn — Small Experiment First",
+          "description": "Run a small test campaign for the younger audience. If it works, scale up. If not, stay the course.",
+          "delta": {
+            "data_insights": 12,
+            "campaign_reach": 150,
+            "budget": -300,
+            "team_energy": -5,
+            "creative_quality": 3,
+            "influence_power": 3
+          },
+          "skill_tags": [
+            "adaptability",
+            "strategic_thinking"
+          ],
+          "feedback": "Test-and-learn is the scientific method applied to marketing. Low risk, high insight. This is how data-mature organizations make decisions.",
+          "skill_explanation": {
+            "adaptability": "Adjusting your approach when conditions change shows flexibility.",
+            "strategic_thinking": "Considering long-term impact before acting builds strategic thinking."
+          }
+        }
+      ]
+    },
+    {
+      "round_id": "week_12_legacy",
+      "round_title": "Week 12: Your Campaign Legacy",
+      "situation": "The final week. Your campaign's numbers are in: reach, trust, impact, budget. The principal wants a closing presentation. But more importantly — what lasting change did you create? A campaign that dies when the deadline passes wasn't really a campaign. It was just noise.",
+      "goal": "Define the lasting impact of your campaign and ensure your influence endures beyond the 12 weeks.",
+      "coaching_moment": "Strategic thinking: Great campaigns don't end — they become movements. The question isn't 'How far did we reach?' but 'What permanent change did we create?'",
+      "reflection_prompt": "What's the difference between a campaign that creates buzz and one that creates lasting change?",
+      "ai_image_prompt": "Students presenting campaign results to school assembly, impact data on big screen, proud team, community members in audience, semi-realistic",
+      "choices": [
+        {
+          "id": "w12_movement",
+          "label": "A. Transform into a Permanent Student Movement",
+          "description": "Convert the campaign into an ongoing student organization with leadership roles, annual goals, and school support.",
+          "delta": {
+            "influence_power": 15,
+            "ethical_credibility": 12,
+            "audience_trust": 10,
+            "campaign_reach": 500,
+            "team_energy": -10,
+            "budget": -300
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "delayed_gratification"
+          ],
+          "feedback": "The ultimate legacy! Campaigns end, but movements endure. By building an institution, you've ensured your cause continues beyond you. This is true influence.",
+          "requires": {
+            "resource": "audience_trust",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Audience Trust >= 40"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Weighing multiple outcomes before deciding strengthens your planning skills.",
+            "delayed_gratification": "Resisting the quick fix in favor of lasting results shows maturity."
+          }
+        },
+        {
+          "id": "w12_playbook",
+          "label": "B. Create a Campaign Playbook for Future Students",
+          "description": "Document everything — strategy, mistakes, data, ethics lessons — as a guide for future campaigns.",
+          "delta": {
+            "ethical_credibility": 10,
+            "data_insights": 10,
+            "influence_power": 5,
+            "audience_trust": 8,
+            "creative_quality": 5,
+            "budget": -100
+          },
+          "skill_tags": [
+            "delayed_gratification",
+            "ethical_reasoning"
+          ],
+          "feedback": "Knowledge transfer is a powerful legacy. Your playbook becomes institutional memory. Future campaigners won't start from zero — they'll stand on your shoulders.",
+          "skill_explanation": {
+            "delayed_gratification": "Waiting for the right moment instead of rushing shows self-control.",
+            "ethical_reasoning": "Weighing the ethical implications shows principled reasoning."
+          }
+        },
+        {
+          "id": "w12_big_event",
+          "label": "C. One Last Grand Event — The Impact Showcase",
+          "description": "Host a school-wide event showcasing the campaign's journey, impact data, and community stories. Go out with a bang.",
+          "delta": {
+            "campaign_reach": 800,
+            "influence_power": 10,
+            "creative_quality": 8,
+            "audience_trust": 5,
+            "budget": -600,
+            "team_energy": -12,
+            "viral_potential": 10
+          },
+          "skill_tags": [
+            "risk_tolerance",
+            "adaptability"
+          ],
+          "feedback": "A spectacular closing event creates emotional memory. People remember how you made them feel. But without a follow-up plan, the energy dissipates quickly.",
+          "requires": {
+            "resource": "budget",
+            "op": ">=",
+            "value": 600,
+            "label": "Requires Budget >= 600"
+          },
+          "skill_explanation": {
+            "risk_tolerance": "Stepping outside your comfort zone builds risk assessment skills.",
+            "adaptability": "Being open to new information and changing course builds adaptability."
+          }
+        },
+        {
+          "id": "w12_policy_change",
+          "label": "D. Push for Official School Policy Change",
+          "description": "Use your campaign data and community support to lobby for an actual policy change at the school level.",
+          "delta": {
+            "ethical_credibility": 15,
+            "influence_power": 12,
+            "audience_trust": 12,
+            "campaign_reach": 200,
+            "team_energy": -8,
+            "budget": -200,
+            "data_insights": 5
+          },
+          "skill_tags": [
+            "strategic_thinking",
+            "ethical_reasoning"
+          ],
+          "feedback": "Policy change is the highest form of campaign success. When your advocacy becomes official school policy, you've moved from influence to institutional impact. This is what real change looks like.",
+          "requires": {
+            "resource": "ethical_credibility",
+            "op": ">=",
+            "value": 40,
+            "label": "Requires Ethical Credibility >= 40"
+          },
+          "skill_explanation": {
+            "strategic_thinking": "Looking beyond the obvious choice shows you think strategically.",
+            "ethical_reasoning": "Standing by your values even under pressure builds integrity."
+          }
+        }
+      ]
+    }
+  ],
+  "features": {
+    "show_competitors": false,
+    "show_timer": false,
+    "show_simulation_dashboard": true,
+    "show_news_ticker": true,
+    "show_subsystem_panel": true,
+    "show_npc_panel": true,
+    "show_kpi_charts": true
+  },
+  "achievements": [
+    {
+      "id": "ethical_influencer",
+      "label": "Ethical Influencer",
+      "condition": "ethical_credibility >= 75 and influence_power >= 55",
+      "icon": "⚖️"
+    },
+    {
+      "id": "viral_sensation",
+      "label": "Viral Sensation",
+      "condition": "campaign_reach >= 7000 and viral_potential >= 60",
+      "icon": "🔥"
+    },
+    {
+      "id": "data_mastermind",
+      "label": "Data Mastermind",
+      "condition": "data_insights >= 70 and campaign_reach >= 4000",
+      "icon": "📊"
+    },
+    {
+      "id": "trust_builder",
+      "label": "Trust Builder",
+      "condition": "audience_trust >= 80 and ethical_credibility >= 70",
+      "icon": "🤝"
+    },
+    {
+      "id": "creative_genius",
+      "label": "Creative Genius",
+      "condition": "creative_quality >= 75 and influence_power >= 50",
+      "icon": "🎨"
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "Cialdini's Principles of Influence",
+      "definition": "Six key principles of persuasion identified by psychologist Robert Cialdini: Reciprocity, Commitment/Consistency, Social Proof, Authority, Liking, and Scarcity."
+    },
+    {
+      "term": "Social Proof",
+      "definition": "A psychological phenomenon where people assume the actions of others reflect correct behavior — 'If everyone else is doing it, it must be right.'"
+    },
+    {
+      "term": "Reciprocity",
+      "definition": "The tendency to want to return a favor or gift. In marketing, giving value first (free content, help) makes people more likely to support your cause."
+    },
+    {
+      "term": "Scarcity Principle",
+      "definition": "People value things more when they are rare or limited. Ethical use: highlight genuine deadlines. Unethical use: create fake urgency to pressure decisions."
+    },
+    {
+      "term": "Viral Marketing",
+      "definition": "A strategy where content spreads rapidly through sharing, like a virus. Relies on emotional resonance, relatability, and shareability."
+    },
+    {
+      "term": "Audience Segmentation",
+      "definition": "Dividing a target audience into distinct groups based on demographics, behaviors, or values, to craft more relevant and effective messages for each group."
+    },
+    {
+      "term": "Return on Investment (ROI)",
+      "definition": "A measure of the profit or impact gained relative to the resources spent. In campaigns: how much impact did each dollar of budget create?"
+    },
+    {
+      "term": "Ethical Persuasion",
+      "definition": "Influencing people's decisions through honest, transparent means that respect their autonomy — as opposed to manipulation, which exploits psychological biases without the person's awareness."
+    }
+  ],
+  "endings": [
+    {
+      "id": "influence_master",
+      "title": "Influence Master",
+      "icon": "👑",
+      "message": "You've achieved what few campaigners ever do: massive influence wielded with ethical integrity. Your campaign reached thousands, changed behavior, and earned the trust of the community. Prof. Cialdini would be proud — you proved that ethical persuasion is the most powerful kind. The school has named a leadership award after your campaign. You are the Influence Master.",
+      "type": "triumph",
+      "rarity": "legendary",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "influence_power",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "ethical_credibility",
+            "operator": ">=",
+            "value": 65
+          },
+          {
+            "resource": "campaign_reach",
+            "operator": ">=",
+            "value": 5000
+          }
+        ]
+      }
+    },
+    {
+      "id": "ethical_campaigner",
+      "title": "Ethical Campaigner",
+      "icon": "⚖️",
+      "message": "Your campaign became a case study in ethical marketing. While your reach wasn't the highest, your credibility was unmatched. Community Leader Aisha endorses your approach publicly, and the school adopts your ethics guidelines for all future campaigns. You proved that doing good and doing it right aren't mutually exclusive. The Ethical Campaigner — integrity personified.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "ethical_credibility",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "audience_trust",
+            "operator": ">=",
+            "value": 65
+          }
+        ]
+      }
+    },
+    {
+      "id": "viral_genius",
+      "title": "Viral Genius",
+      "icon": "🔥",
+      "message": "Your campaign broke the internet — well, the school internet. With record-breaking reach and content that people couldn't stop sharing, you proved you understand the digital attention economy. Viral Vince hails you as a prodigy. But some whisper about the ethical costs. Your numbers are undeniable — but was the impact real? The Viral Genius, for better or worse.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "campaign_reach",
+            "operator": ">=",
+            "value": 7000
+          },
+          {
+            "resource": "viral_potential",
+            "operator": ">=",
+            "value": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "community_champion",
+      "title": "Community Champion",
+      "icon": "🏘️",
+      "message": "Your campaign may not have gone viral, but it went deep. Community Leader Aisha considers you a true partner. Real people changed real habits because of your work. The school community feels heard, respected, and empowered. You proved that the loudest campaign isn't always the best — sometimes the most trusted one is. The Community Champion — beloved by the people who matter most.",
+      "type": "triumph",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {
+            "resource": "audience_trust",
+            "operator": ">=",
+            "value": 70
+          },
+          {
+            "resource": "ethical_credibility",
+            "operator": ">=",
+            "value": 55
+          },
+          {
+            "resource": "campaign_reach",
+            "operator": ">=",
+            "value": 2000
+          }
+        ]
+      }
+    },
+    {
+      "id": "campaign_rookie",
+      "title": "Campaign Rookie",
+      "icon": "📋",
+      "message": "Your campaign had its moments — a few good posts, some community engagement, lessons learned the hard way. Not every campaign changes the world, but every campaign teaches the campaigner. You now know what influence means, what ethics demand, and what audiences expect. Next time, you'll be ready. Every master was once a rookie. The Campaign Rookie — your journey is just beginning.",
+      "type": "growth",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "difficulty_curve": {
+    "phases": [
+      {
+        "name": "tutorial",
+        "rounds": [
+          1,
+          4
+        ],
+        "hints_visible": true,
+        "timer_seconds": null,
+        "max_choices": 3
+      },
+      {
+        "name": "core",
+        "rounds": [
+          5,
+          8
+        ],
+        "hints_visible": false,
+        "timer_seconds": 60,
+        "max_choices": 4
+      },
+      {
+        "name": "mastery",
+        "rounds": [
+          9,
+          12
+        ],
+        "hints_visible": false,
+        "timer_seconds": 45,
+        "max_choices": 5
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "after_round": 5,
+      "title": "Checkpoint 1: Campaign Master: Influence & Impact Basics",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp1_q1",
+          "question": "What does 'profit' mean?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Total money spent",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Revenue minus costs",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "Money borrowed from a bank",
+              "correct": false
+            }
+          ],
+          "explanation": "Profit is what remains after subtracting all costs from total revenue."
+        },
+        {
+          "id": "cp1_q2",
+          "question": "What is a 'budget'?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "A list of things to buy",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "A plan for how to spend money",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "A type of bank account",
+              "correct": false
+            }
+          ],
+          "explanation": "A budget is a financial plan that allocates income to different spending categories."
+        },
+        {
+          "id": "cp1_q3",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the key concepts from the first 5 rounds of Campaign Master: Influence & Impact. Focus on the core principles and how they connect to real-world applications."
+    },
+    {
+      "after_round": 10,
+      "title": "Checkpoint 2: Campaign Master: Influence & Impact Advanced",
+      "passing_score": 0.6,
+      "questions": [
+        {
+          "id": "cp2_q1",
+          "question": "In negotiation, 'win-win' means:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "One side wins twice",
+              "correct": false
+            },
+            {
+              "id": "b",
+              "text": "Both sides benefit from the deal",
+              "correct": true
+            },
+            {
+              "id": "c",
+              "text": "The negotiation is cancelled",
+              "correct": false
+            }
+          ],
+          "explanation": "A win-win outcome means both parties gain something valuable from the agreement."
+        }
+      ],
+      "review_summary": "Review the advanced concepts covered in rounds 6-10 of Campaign Master: Influence & Impact. These build on the fundamentals and test deeper understanding."
+    }
+  ],
+  "reflection_prompt": "Which lever, if you'd moved it earlier, would have changed your outcome the most?"
+}
