@@ -3,7 +3,7 @@ import { THEME } from './theme';
 
 const MOOD_COLOR = { positive: THEME.gain, neutral: THEME.textMuted, negative: THEME.loss };
 
-export default function MarketBriefing({ briefing, stocks = [], onBegin }) {
+export default function MarketBriefing({ briefing, stocks = [], earningsByDay, onBegin }) {
   const b = briefing || {};
   return (
     <div style={{
@@ -38,6 +38,17 @@ export default function MarketBriefing({ briefing, stocks = [], onBegin }) {
         {stocks.map(s => (
           <div key={s.symbol} style={{ background: THEME.bgTile, borderRadius: 6, padding: 6 }}>
             <div style={{ fontSize: 11, fontWeight: 800, color: THEME.textPrimary }}>{s.symbol}</div>
+          {earningsByDay?.[s.symbol] && (
+            <span
+              data-testid={`briefing-earnings-${s.symbol}`}
+              style={{
+                marginLeft: 6, fontSize: 10, padding: '2px 6px', borderRadius: 999,
+                background: '#FFF3DC', color: '#854F0B', border: '1px solid #F5E6C8',
+              }}
+            >
+              📅 Earnings: {earningsByDay[s.symbol].day.charAt(0).toUpperCase() + earningsByDay[s.symbol].day.slice(1, 3)}
+            </span>
+          )}
             <div style={{ fontSize: 9, color: THEME.textMuted }}>{s.sector}</div>
             <div style={{ fontSize: 11, color: THEME.textPrimary }}>₹{s.starting_price}</div>
           </div>

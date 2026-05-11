@@ -28,4 +28,16 @@ describe('MarketBriefing', () => {
     fireEvent.click(screen.getByRole('button', { name: /Begin/i }));
     expect(onBegin).toHaveBeenCalled();
   });
+
+  it('renders earnings day chip when stock has scheduled earnings', () => {
+    render(
+      <MarketBriefing
+        briefing={{ headline: 'X', sub: 'Y', macro_tone: 'neutral', sector_mood: {} }}
+        stocks={[{ symbol: 'TECHV', name: 'TechVista', sector: 'IT' }]}
+        earningsByDay={{ TECHV: { day: 'tue', label: 'Tuesday' } }}
+        onBegin={() => {}}
+      />
+    );
+    expect(screen.getByTestId('briefing-earnings-TECHV').textContent).toContain('Earnings: Tue');
+  });
 });
