@@ -9536,6 +9536,21 @@ def admin_update_user_role(user_id):
     return jsonify({"message": f"User {user_id} role updated to {new_role}", "user": {"id": user["id"], "username": user["username"], "role": new_role}})
 
 
+# ---------- Module images (self-hosted) ----------
+@app.get("/static/module_images/<path:path>")
+def serve_module_images(path):
+    """Serve self-hosted module hero images from backend/assets/module_images/."""
+    import os as _os
+    assets_dir = _os.path.realpath(
+        _os.path.join(_os.path.dirname(__file__), "assets", "module_images")
+    )
+    requested = _os.path.realpath(_os.path.join(assets_dir, path))
+    # Path traversal guard
+    if not requested.startswith(assets_dir + _os.sep) and requested != assets_dir:
+        return jsonify({"error": "Forbidden"}), 403
+    return send_from_directory(assets_dir, path)
+
+
 # ---------- Static files ----------
 @app.get("/<path:path>")
 @nocache
