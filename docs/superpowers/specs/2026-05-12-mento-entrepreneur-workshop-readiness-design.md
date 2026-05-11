@@ -3,7 +3,8 @@
 **Module:** `mento_entrepreneur_4week`
 **Date:** 2026-05-12
 **Status:** Design (pre-implementation)
-**Pilot scope:** Single school, single cohort, founder/team will babysit the first run.
+**Pilot scope:** Single live cohort (8–12 students), founder/team running the first run end-to-end.
+**Primary commercial SKU:** "Mento Founder Lab" — 4-week live cohort at ₹2,499–₹3,999, using this module as the asynchronous backbone. The ₹100 standalone module is a secondary/upsell SKU. Implementation must support both shapes from day one.
 
 ---
 
@@ -16,7 +17,9 @@ Make `mento_entrepreneur_4week` production-ready for a real 4-week classroom wor
 3. Students can practice the two highest-leverage entrepreneurial skills — *pitching* and *customer interviewing* — **by voice**, with AI feedback.
 4. Every concept has an **Indian anchor** (founders, currency, regulations, failures).
 5. The module ends with **proof of learning**: a certificate, a skill-delta report, and a student-authored "first pitch deck" PDF.
-6. Cost is bounded: a known ceiling per student per module.
+6. The module **supports a live-cohort delivery model** (scheduled live sessions, founder cameos, RSVP) without forcing it — same module serves async-only buyers too.
+7. The module **produces shareable, viral artifacts** parents can post to WhatsApp / Instagram — the skill report card and pitch-deck PDF are growth assets.
+8. Cost is bounded: a known ceiling per student per module.
 
 This work is bundled into three thematic groups (1 = audio, 2 = Indian context, 3 = closing-the-loop) plus an infrastructure phase that unblocks them.
 
@@ -83,7 +86,7 @@ Flask `/static` route already serves `backend/assets/` via existing static confi
 
 ### 3.3 Expand lesson-type dispatcher
 
-`frontend-react/src/pages/ModuleDetailPage.jsx` adds 5 new lesson types:
+`frontend-react/src/pages/ModuleDetailPage.jsx` adds 6 new lesson types:
 
 | Type | Renderer | Purpose |
 |---|---|---|
@@ -93,6 +96,7 @@ Flask `/static` route already serves `backend/assets/` via existing static confi
 | `micro_quest` | `MicroQuestRenderer` | 2–3 min single-prompt apply-it-now task |
 | `case_study_card` | `CaseStudyCardRenderer` | 60–90s founder story card |
 | `failure_card` | `FailureCardRenderer` | 60s startup-failure card |
+| `cohort_live_session` | `CohortLiveSessionCard` | Scheduled live session (Zoom/Meet) with founder, RSVP, recording link |
 
 All renderers live in `frontend-react/src/components/module/`. Existing types continue to dispatch unchanged.
 
@@ -162,6 +166,16 @@ Module-scoped:
 |---|---|---|
 | `/api/modules/<id>/idea-journal` | GET/POST/PATCH | Read/append/edit idea-journal entries |
 | `/api/modules/<id>/idea-journal/export` | GET | PDF export (reuses `certificate.py` PDF stack) |
+| `/api/modules/<id>/skill-report/card.png` | GET | Server-rendered parent-shareable PNG card (used by WhatsApp share) |
+
+Cohort-scoped:
+
+| Route | Method | Purpose |
+|---|---|---|
+| `/api/cohorts/<cohort_id>/modules/<module_id>/live-sessions` | GET | List scheduled live sessions for this cohort+module |
+| `/api/cohorts/<cohort_id>/modules/<module_id>/live-sessions` | POST | Create live session (teacher/admin) |
+| `/api/cohorts/<cohort_id>/modules/<module_id>/live-sessions/<session_id>` | PATCH/DELETE | Edit/cancel |
+| `/api/cohorts/<cohort_id>/modules/<module_id>/live-sessions/<session_id>/rsvp` | POST | Student RSVP toggle |
 
 ---
 
@@ -344,7 +358,77 @@ Award logic: each week's quiz checkpoint + ≥80% lesson completion = earn that 
 - Reuses existing `_compute_*_dimension_scores` helpers.
 - Returns `{dimensions: {empathy: 72, creativity: 84, ...}, deltas_from_baseline: {...}, highlights: [...], recommendations: [next-module-id, ...]}`.
 - Renders at `/modules/:id/report` (route already exists, currently stub). Layout reuses `PostGameInsights.jsx` patterns.
-- One parent-shareable card image generated server-side (extend `certificate.py` PDF helper with a PNG export — same stack).
+
+**Parent-shareable artifact (growth asset):**
+
+- Server-rendered PNG card via new route `/api/modules/<id>/skill-report/card.png`. Uses the same Pillow/ReportLab stack as `certificate.py`. Output: 1080×1080 (Instagram-square) PNG with:
+  - Student first name + age + module title
+  - Top 3 skills with values + small radar chart
+  - One headline ("Aarav finished the Mento Founder Lab. He scored 84 on creativity.")
+  - Mento branding + URL
+  - Cohort name (if cohort context)
+- **WhatsApp share button** on `/modules/:id/report` opens `https://wa.me/?text=<message>` with a short pre-filled caption + a public CDN URL of the PNG card. On mobile, uses Web Share API (`navigator.share`) for native sheet — falls back to WhatsApp URL on desktop.
+- **Instagram / X share buttons** as secondary options (same PNG, different intent URLs).
+- Card is cached for 24h; regenerates on next report change.
+- Privacy: shareable card uses first-name only by default; full name requires explicit student/parent opt-in toggle.
+
+### 6.7 Cohort Live Sessions (live-cohort SKU support)
+
+Lets a cohort run the module as a guided 4-week live experience. Async students see this section as inert (no live sessions scheduled = no UI surface). Live-cohort students see scheduled sessions prominently.
+
+**Data model** — new file `backend/data/cohort_live_sessions.json`:
+
+```json
+{
+  "<cohort_id>__<module_id>": [
+    {
+      "session_id": "...",
+      "week": 1,
+      "title": "Founder Cameo: How I started Zoho",
+      "host_name": "Sridhar Vembu",
+      "host_bio_short": "Founder, Zoho. Built from a Tamil Nadu village.",
+      "host_avatar_url": "...",
+      "scheduled_at": "2026-06-15T18:00:00+05:30",
+      "duration_min": 60,
+      "meeting_url": "https://meet.google.com/...",
+      "rsvps": ["user_id_1", "user_id_2"],
+      "recording_url": null,
+      "status": "scheduled"   // scheduled | live | recorded | cancelled
+    }
+  ]
+}
+```
+
+**Renderer (`CohortLiveSessionCard`):**
+
+- **Top-of-module banner** in `ModuleDetailPage.jsx` when the cohort has the next session within 7 days. Shows: host avatar, "Live this Saturday — Sridhar Vembu on Zoho's origin," countdown timer, RSVP toggle, "Add to Google Calendar" link, "Join" button (active 10 min before scheduled time).
+- After the session ends and `recording_url` is set, the banner converts to a "Watch recording" card and gets pinned in the relevant week's sidebar.
+- For async-only students (cohort has zero scheduled sessions), banner is hidden entirely — module looks identical to today.
+
+**Admin/teacher UI** — new tab in `AdminDashboard.jsx` → COHORTS → `<cohort>` → "Live Sessions":
+- Schedule new session (datetime picker, host info, meeting URL paste)
+- See RSVPs per session
+- Upload/paste recording URL after session
+- Cancel session (notifies RSVPs via existing `notifications.json` pipeline)
+
+**Notifications (uses existing infra):**
+- 24h before session → "Your Mento live session starts tomorrow at 6 PM"
+- 1h before → "Starting in 1 hour — join link inside"
+- After recording uploaded → "Missed it? Watch the recording"
+
+**Backend** — new file `backend/cohort_live_sessions.py`:
+- CRUD operations, RSVP toggle, notification scheduling (APScheduler hooks)
+- Reuses `_run_scheduler` already running for streak/dispatch jobs
+
+**Not in scope:**
+- We **do not** build a video conferencing tool. Teachers paste a Google Meet / Zoom link they created externally. Reliable, free, parents already know these tools.
+- We **do not** auto-record. Teacher uploads/pastes recording URL post-session.
+- No live chat / Q&A widget — uses the conferencing tool's native chat.
+
+**Why this matters commercially:**
+- Enables the ₹2,499–₹3,999 cohort SKU without a separate codebase.
+- Founder-cameo sessions are a content asset: clips fuel social/influencer channels.
+- RSVP data + attendance becomes a signal for the skill report ("attended 3 of 4 live sessions").
 
 ---
 
@@ -354,24 +438,26 @@ Award logic: each week's quiz checkpoint + ≥80% lesson completion = earn that 
 |---|---|---|
 | **A — Infrastructure** | TTS service, image self-host, lesson types, JSON schema, cost caps, new routes scaffolded | Blocks all bundles |
 | **B — Bundle 1 (audio)** | Narration generation, Pitch Coach, Interview Simulator, Hinglish | After A |
-| **C — Bundle 3 (loop)** | Idea Journal, certificate, micro-quests, SR seeding, XP, skill report | After A; parallel-safe with B |
+| **C — Bundle 3 (loop)** | Idea Journal, certificate, micro-quests, SR seeding, XP, skill report, parent-shareable PNG + WhatsApp share, cohort live sessions | After A; parallel-safe with B |
 | **D — Bundle 2 (Indian)** | Case-study cards, failure museum, ₹ edits, regulatory primer, daily dispatch | Mostly content; can start after A, completes last |
 
 Phases B/C/D can interleave once A is done; A is strictly sequential.
 
 ---
 
-## 8. Pilot scope decisions (single-school)
+## 8. Pilot scope decisions (single live cohort)
 
-Since the first cohort is one school with founder/team support, the following are explicitly **deferred** to v2:
+The first cohort is one 8–12 student live cohort, founder/team running it directly. The following are explicitly **deferred** to v2:
 
-- Multi-school self-serve onboarding for this module.
+- Multi-cohort self-serve onboarding for this module.
 - Teacher UI to review every `interview_sim` transcript individually (teachers can read raw JSON via existing answers endpoint for v1).
 - Mass cost-cap configuration per org (single set of caps embedded in module JSON for v1; orgs can override later).
 - Multi-cohort leaderboards within the module (existing leaderboards remain at platform level).
 - Auto-translation of *content* into HI for new content authored after v1 (we generate HI narration *and* translate existing strings for v1, but new content added later will require manual HI authoring until a translation pipeline is built).
+- Built-in video conferencing — we use Google Meet / Zoom links pasted by host.
+- Built-in payments / cohort sign-up flow — pilot uses external payment link (Razorpay) + manual cohort enrollment for first run.
 
-**In scope for pilot:** everything in Phases A–D. The pilot must be able to (1) run 4 weeks, (2) produce a certificate, (3) produce a skill report, (4) survive a school-WiFi-quality network (audio prefetched, no live calls required for narration).
+**In scope for pilot:** everything in Phases A–D. The pilot must be able to (1) run 4 weeks live with founder cameos, (2) produce a certificate, (3) produce a skill report + WhatsApp-shareable card, (4) survive a home-WiFi-quality network (audio prefetched, no live calls required for narration), (5) cleanly support async-only buyers without showing empty live-session UI.
 
 ---
 
@@ -406,9 +492,11 @@ Since the first cohort is one school with founder/team support, the following ar
 3. ≥50% complete at least one Customer Interview Sim conversation.
 4. Median skill-report shows positive delta on ≥3 of {creativity, strategic_thinking, empathy, resilience, communication}.
 5. ≥70% of pilot students successfully download their certificate and Idea Journal PDF.
-6. Cost per student per module ≤ ₹25 (worst case).
-7. Zero P0 outages caused by external service failures during the 4-week pilot.
-8. Teacher NPS ≥ 7 / 10 at end of pilot.
+6. ≥60% RSVP attendance across the 4 live sessions.
+7. ≥30% of completing students share their skill-report card to WhatsApp/Instagram (measured by share-intent click).
+8. Cost per student per module ≤ ₹50 (worst case, including amortized fixed costs for a 10-student cohort).
+9. Zero P0 outages caused by external service failures during the 4-week pilot.
+10. Parent/Teacher NPS ≥ 7 / 10 at end of pilot.
 
 ---
 
