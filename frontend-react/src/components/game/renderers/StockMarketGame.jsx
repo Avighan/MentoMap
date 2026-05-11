@@ -196,22 +196,21 @@ const StockMarketGame = ({
   const [loadError, setLoadError] = useState(null);
 
   const { org } = useOrg();
-  // v2 UI gate: org flag OR ?stocksim_v2=1 query-string override (per-session).
-  // Override is sticky for the tab via sessionStorage so deep-link refreshes
-  // keep v2 on without re-appending the param.
+  // v2 UI is the default. ?stocksim_v2=0 forces v1 fallback (per-session,
+  // sticky via sessionStorage). org.flags.stocksim_v2_ui === false also forces v1.
   const v2Enabled = (() => {
     try {
-      if (org?.flags?.stocksim_v2_ui) return true;
+      if (org?.flags?.stocksim_v2_ui === false) return false;
       if (typeof window !== 'undefined') {
         const params = new URLSearchParams(window.location.search);
-        if (params.get('stocksim_v2') === '1') {
-          window.sessionStorage?.setItem('stocksim_v2_override', '1');
-          return true;
+        if (params.get('stocksim_v2') === '0') {
+          window.sessionStorage?.setItem('stocksim_v2_override', '0');
+          return false;
         }
-        if (window.sessionStorage?.getItem('stocksim_v2_override') === '1') return true;
+        if (window.sessionStorage?.getItem('stocksim_v2_override') === '0') return false;
       }
     } catch (_e) { /* sandboxed storage – fall through */ }
-    return false;
+    return true;
   })();
   const cfg = gameData?.minigame_config?.stock_market_config || {};
   const briefing = cfg.briefing;
@@ -273,7 +272,10 @@ const StockMarketGame = ({
     try {
       const data = await getStocksimState(runId);
       if (!data) return;
-      setServerState(data.state || {});
+      // Merge top-level `day` into serverState so the rollover guard below
+      // sees the authoritative current day on the *next* poll.
+      const newDay = data.day;
+      setServerState({ ...(data.state || {}), day: newDay });
       currentTickRef.current = data.state?.current_tick ?? 0;
       setQuotes(data.quotes || {});
       const nextPnl = data.pnl || { total: 0, realized: 0, unrealized: 0 };
@@ -282,9 +284,11 @@ const StockMarketGame = ({
       setHaltedSymbols(data.halted_symbols || {});
       if (data.event) setActiveEvent(data.event);
       // v2 day rollover → enter EOD pause.
-      const newDay = data.day;
-      const lastDayIndex = serverStateRef.current?.day?.index ?? -1;
+      // NB: lastDayIndex defaults to newDayIndex (not -1) on first poll so we
+      // don't treat initial Day-1 entry as a rollover. Rollover only fires
+      // when we've already observed a strictly-prior day in this session.
       const newDayIndex = newDay?.index ?? -1;
+      const lastDayIndex = serverStateRef.current?.day?.index ?? newDayIndex;
       if (v2Enabled && newDay && newDayIndex > lastDayIndex && phase === 'playing' && eodSeenDayId !== newDay.id) {
         setEodSeenDayId(newDay.id);
         setPhase('eod');

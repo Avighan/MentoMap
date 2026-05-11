@@ -69,6 +69,18 @@ export const getSkillPortfolio = async () => {
   return response.data;
 };
 
+// --- Career Match v1 ---
+export const getCareerMatch = async (topK = 5) => {
+  const response = await apiClient.get(`/api/career-match?top_k=${topK}`);
+  return response.data;
+};
+
+// --- Decision DNA (behavioral fingerprint) ---
+export const getDecisionDNA = async () => {
+  const response = await apiClient.get('/api/decision-dna');
+  return response.data;
+};
+
 // --- Recommendations (Item 32) ---
 export const getRecommendations = async () => {
   const response = await apiClient.get('/api/profile/recommendations');

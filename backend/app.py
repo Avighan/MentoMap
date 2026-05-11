@@ -2249,6 +2249,35 @@ def run_start():
     except Exception as _e:
         logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
 
+    # Behavioral telemetry: emit `run_started` event via EventStore.
+    # Best-effort. NEVER raises into the request path.
+    try:
+        from services.event_store import get_event_store as _get_event_store
+        _rs_evt_uid = None
+        try:
+            _rs_evt_token = get_token_from_request()
+            _rs_evt_user = verify_token(_rs_evt_token) if _rs_evt_token else None
+            if _rs_evt_user:
+                _rs_evt_uid = _rs_evt_user.get("user_id")
+        except Exception:
+            _rs_evt_uid = None
+        _get_event_store().emit(
+            "run_started",
+            user_id=_rs_evt_uid,
+            run_id=run_id,
+            game_id=game_id,
+            payload={
+                "game_type": game.get("game_type", "rounds"),
+                "total_rounds": len(game.get("rounds", [])),
+                "coach_mode": bool(coach_mode),
+            },
+        )
+    except Exception as _rs_evt_err:
+        logger.debug(
+            "Suppressed run_started telemetry: %s: %s",
+            type(_rs_evt_err).__name__, _rs_evt_err,
+        )
+
     # RL 3D: Snapshot pre-game dimension scores for skill impact tracking
     try:
         _pre_token = get_token_from_request()
@@ -2611,7 +2640,10 @@ def run_state(run_id):
                 "game_data": {
                     "glossary": game.get("glossary", {}),
                     "layout_config": game.get("layout_config", {}),  # Include layout config!
-                    "choice_placement_override": game.get("choice_placement_override", "round")
+                    "choice_placement_override": game.get("choice_placement_override", "round"),
+                    # Renderers (e.g. StockMarketGame) read minigame_config at mount.
+                    # Without this the v2 briefing screen + DayHeader don't render on resume.
+                    "minigame_config": game.get("minigame_config", {}),
                 },
                 "round_index": state_obj.round_index,
                 "progress": {"current": cur, "total": total},
@@ -2859,6 +2891,52 @@ def run_choose(run_id):
                 return jsonify({"error": "Choice requirements not met", "lock_reason": _chosen["requires"].get("label", "Resource requirement not met")}), 403
         except Exception as _req_err:
             logger.warning(f"Requires validation error: {_req_err}")
+
+    # ----------------------------------------------------------------------
+    # Behavioral telemetry: emit `choice_made` event via EventStore.
+    # Best-effort. NEVER raises into the request path.
+    # Captures: latency, skill_tags, ethical_valence — feeds FeatureStore /
+    # behavioral fingerprint (see backend/services/feature_store.py).
+    # ----------------------------------------------------------------------
+    try:
+        from services.event_store import get_event_store as _get_event_store
+        _evt_user_id = None
+        try:
+            _evt_token = get_token_from_request()
+            _evt_user = verify_token(_evt_token) if _evt_token else None
+            if _evt_user:
+                _evt_user_id = _evt_user.get("user_id")
+        except Exception:
+            _evt_user_id = None
+
+        _evt_latency = None
+        if isinstance(time_to_decide, (int, float)) and time_to_decide > 0:
+            _evt_latency = int(time_to_decide)
+        elif isinstance(choice_time_ms, (int, float)) and choice_time_ms > 0:
+            _evt_latency = int(choice_time_ms)
+
+        _evt_skill_tags = (_chosen or {}).get("skill_tags", []) if isinstance(_chosen, dict) else []
+        _evt_ethical_valence = (_chosen or {}).get("ethical_valence") if isinstance(_chosen, dict) else None
+
+        _get_event_store().emit(
+            "choice_made",
+            user_id=_evt_user_id,
+            run_id=run_id,
+            game_id=game_id,
+            round_id=str(prev_round.get("id") or state_obj.round_index),
+            latency_ms=_evt_latency,
+            payload={
+                "choice_id": choice_id,
+                "choice_ids": choice_ids,
+                "skill_tags": _evt_skill_tags or [],
+                "ethical_valence": _evt_ethical_valence,
+                "round_index": state_obj.round_index,
+                "had_reflection": bool(reflection),
+                "had_free_text": bool(free_text),
+            },
+        )
+    except Exception as _evt_err:
+        logger.debug("Suppressed choice telemetry: %s: %s", type(_evt_err).__name__, _evt_err)
 
     # Stash player-provided forecast response (from ForecastModal) on state
     # so the exec_effects.forecast_capture dispatcher can read it. One-shot:
@@ -17768,6 +17846,112 @@ def api_recommendations():
     except Exception as e:
         logger.error(f"Recommendations failed: {e}")
         return jsonify({"error": "Failed to generate recommendations"}), 500
+
+
+@app.get("/api/decision-dna")
+def api_decision_dna():
+    """
+    Behavioral fingerprint visualization (Decision DNA).
+    Returns canonical 8-dim scores + trace extras (decision-speed, risk-taking,
+    exploration, ethics consistency, reflection depth, multiplayer cooperation).
+    """
+    token = get_token_from_request()
+    user_payload = verify_token(token) if token else None
+    if not user_payload:
+        return jsonify({"error": "Authentication required"}), 401
+    try:
+        from services.feature_store import (
+            CANONICAL_DIMENSIONS,
+            FINGERPRINT_EXTRAS,
+            get_feature_store,
+        )
+        fs = get_feature_store()
+        uid = user_payload["user_id"]
+        fp = fs.get_fingerprint(uid)
+        trace = fs.get_trace_summary(uid) if hasattr(fs, "get_trace_summary") else {}
+
+        dims = {d: round(float(fp.get(d, 50.0)), 1) for d in CANONICAL_DIMENSIONS}
+        extras = {k: float(fp.get(k, 0.0)) for k in FINGERPRINT_EXTRAS}
+
+        # Lightweight derived "decision style" tags so the UI can show a
+        # human-readable persona without a separate model call.
+        style_tags = []
+        fast_r = extras.get("fast_decision_ratio", 0.0)
+        slow_r = extras.get("slow_decision_ratio", 0.0)
+        risk_idx = extras.get("risk_taking_index", 0.5)
+        explore_r = extras.get("exploration_ratio", 0.0)
+        ethics_c = extras.get("ethics_consistency", 0.5)
+        coop_idx = extras.get("multiplayer_cooperation_index", 0.5)
+        if fast_r > 0.45:
+            style_tags.append({"key": "decisive", "label": "Decisive", "icon": "⚡"})
+        elif slow_r > 0.45:
+            style_tags.append({"key": "deliberate", "label": "Deliberate", "icon": "🧭"})
+        if risk_idx >= 0.65:
+            style_tags.append({"key": "bold", "label": "Bold", "icon": "🎲"})
+        elif risk_idx <= 0.35:
+            style_tags.append({"key": "cautious", "label": "Cautious", "icon": "🛡️"})
+        if explore_r >= 0.55:
+            style_tags.append({"key": "explorer", "label": "Explorer", "icon": "🧪"})
+        if ethics_c >= 0.65:
+            style_tags.append({"key": "principled", "label": "Principled", "icon": "⚖️"})
+        if coop_idx >= 0.6:
+            style_tags.append({"key": "collaborative", "label": "Collaborative", "icon": "🤝"})
+
+        # Emit explicit "viewed" event so we can later A/B the visualization.
+        try:
+            from services.event_store import get_event_store
+            get_event_store().emit(
+                "fingerprint_recomputed",
+                user_id=uid,
+                payload={"total_runs": int(extras.get("total_runs", 0)),
+                         "total_choices": int(extras.get("total_choices", 0))},
+            )
+        except Exception:
+            pass
+
+        return jsonify({
+            "user_id": uid,
+            "dimensions": dims,
+            "trace": extras,
+            "style_tags": style_tags,
+            "feature_names": list((*CANONICAL_DIMENSIONS, *FINGERPRINT_EXTRAS)),
+            "raw_trace_summary": trace,
+        })
+    except Exception as e:
+        logger.error(f"Decision DNA failed: {e}")
+        return jsonify({"error": "Failed to compute Decision DNA"}), 500
+
+
+@app.get("/api/career-match")
+def api_career_match():
+    """Career Match v1: ranked career fits derived from behavioral fingerprint."""
+    token = get_token_from_request()
+    user_payload = verify_token(token) if token else None
+    if not user_payload:
+        return jsonify({"error": "Authentication required"}), 401
+    try:
+        from services.career_match import match_careers
+        try:
+            top_k = int(request.args.get("top_k", "5"))
+        except (TypeError, ValueError):
+            top_k = 5
+        top_k = max(1, min(20, top_k))
+        result = match_careers(user_payload["user_id"], top_k=top_k)
+        # Emit explicit "viewed" event for downstream analytics.
+        try:
+            from services.event_store import get_event_store
+            get_event_store().emit(
+                "career_match_viewed",
+                user_id=user_payload["user_id"],
+                payload={"top": result.get("top"),
+                         "model_version": result.get("model_version")},
+            )
+        except Exception:
+            pass
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Career match failed: {e}")
+        return jsonify({"error": "Failed to compute career match"}), 500
 
 
 @app.get("/api/learning-paths")
