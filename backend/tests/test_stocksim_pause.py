@@ -209,8 +209,10 @@ def test_paused_state_response_does_not_advance_current_tick(client, week_run):
     )
     assert pr.status_code == 200
 
-    # First /state call right after pause — capture whatever tick the engine
-    # advanced to BEFORE we paused (and any pause-aware adjustment in /state).
+    # First /state call right after pause — capture current_tick. The invariant
+    # under test: once paused, the in-flight `(now_ms - paused_at)` correction
+    # in stocksim_state cancels the growing `(now_ms - started_at)` term, so
+    # current_tick stays flat across repeated /state reads while paused.
     s1 = client.get(f"/api/run/{week_run}/stocksim/state", headers=_auth_headers())
     assert s1.status_code == 200
     body1 = s1.get_json()
@@ -250,3 +252,47 @@ def test_state_includes_phase_default_playing(client, week_run):
     body = resp.get_json()
     assert body.get("phase") == "playing", f"default phase must be 'playing': {body.get('phase')}"
     assert body.get("paused") is False, f"default paused must be False: {body.get('paused')}"
+
+
+def test_phase_endpoint_resume_when_not_paused_is_noop(client, week_run):
+    """POST {phase:'playing'} on a fresh run (never paused) must not mutate the
+    counters; only `phase` updates. Documented no-op for resume-without-prior-pause."""
+    client.post(f"/api/run/{week_run}/stocksim/start", json={}, headers=_auth_headers())
+
+    # Ensure no pause state exists.
+    run = storage.get_run(week_run)
+    sim = run["stocksim"]
+    sim.pop("phase", None)
+    sim["paused_at_ms"] = 0
+    sim["paused_total_ms"] = 0
+    storage.update_run(week_run, run)
+
+    r = client.post(
+        f"/api/run/{week_run}/stocksim/phase",
+        json={"phase": "playing"},
+        headers=_auth_headers(),
+    )
+    assert r.status_code == 200, r.get_data(as_text=True)
+    body = r.get_json()
+    assert body.get("phase") == "playing"
+    assert body.get("paused_at_ms", -1) == 0, f"paused_at_ms must remain 0: {body}"
+    assert body.get("paused_total_ms", -1) == 0, f"paused_total_ms must remain 0: {body}"
+
+    # Verify on disk.
+    run = storage.get_run(week_run)
+    sim = run["stocksim"]
+    assert sim.get("phase") == "playing"
+    assert int(sim.get("paused_at_ms", 0)) == 0
+    assert int(sim.get("paused_total_ms", 0)) == 0
+
+
+def test_phase_endpoint_forbidden_for_other_user(client, week_run):
+    """A non-owner without admin/teacher/school_admin role must get 403."""
+    r = client.post(
+        f"/api/run/{week_run}/stocksim/phase",
+        json={"phase": "eod"},
+        headers=_auth_headers(user_id="someone-else", role="student"),
+    )
+    assert r.status_code == 403, r.get_data(as_text=True)
+    body = r.get_json() or {}
+    assert "Not authorized" in (body.get("error") or "")

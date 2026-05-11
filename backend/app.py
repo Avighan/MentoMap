@@ -27345,6 +27345,14 @@ def stocksim_state(run_id):
     if started_at is None:
         state["started_at_ms"] = int(time.time() * 1000)
         started_at = state["started_at_ms"]
+    # Pause-aware lazy advance:
+    #   • If `paused_at_ms` is set we add the in-flight (now - paused_at) delta to
+    #     a LOCAL copy of paused_total. This makes `effective_ms` flat while paused
+    #     so `current_tick` does not grow between reads.
+    #   • This projection is read-only — only `stocksim_phase` on resume persists
+    #     the accumulated paused_total back to state. (Trust boundary: storage.)
+    #   • `max(0, …)` defends against clock skew or paused-loaded-with-future-
+    #     timestamp where `effective_ms` could go negative.
     now_ms = int(time.time() * 1000)
     paused_total = int(state.get("paused_total_ms", 0) or 0)
     paused_at = int(state.get("paused_at_ms", 0) or 0)
@@ -27352,7 +27360,7 @@ def stocksim_state(run_id):
         paused_total += (now_ms - paused_at)
     effective_ms = (now_ms - started_at) - paused_total
     elapsed_ticks = int(effective_ms / max(1, int(interval_s * 1000))) if interval_s > 0 else 0
-    elapsed_ticks = max(0, elapsed_ticks)
+    elapsed_ticks = max(0, elapsed_ticks)  # clamp negative effective_ms (clock skew)
     target_tick = min(elapsed_ticks, tick_count)
     if not state.get("completed") and target_tick > state.get("current_tick", 0):
         eng.advance_to_tick(state, target_tick)
@@ -27455,9 +27463,36 @@ def stocksim_state(run_id):
 @app.route('/api/run/<run_id>/stocksim/phase', methods=['POST'])
 @require_auth
 def stocksim_phase(run_id):
-    """Set the playback phase ('playing' | 'eod' | 'weekend') for the stocksim
-    clock. Pausing freezes lazy-tick advancement; resuming records the paused
-    interval into ``paused_total_ms`` so the elapsed-ticks math skips it.
+    """Set the playback phase ('playing' | 'eod' | 'weekend') for the stocksim clock.
+
+    Pausing (``eod``/``weekend``) freezes lazy-tick advancement; resuming
+    (``playing``) records the paused interval into ``paused_total_ms`` so the
+    elapsed-ticks math in ``stocksim_state`` skips over it.
+
+    State fields touched (in ``run.stocksim``):
+        * ``phase`` — string ('playing' | 'eod' | 'weekend'), always written.
+        * ``paused_at_ms`` — int epoch-ms. Stamped on first pause; idempotent
+          on re-pause; cleared to 0 on resume.
+        * ``paused_total_ms`` — int total ms paused so far. Incremented on
+          resume by ``now - paused_at_ms``.
+
+    Idempotency: re-stamping ``paused_at_ms`` on a duplicate pause would lose
+    the original pause window and cause ``paused_total_ms`` to under-accumulate
+    on resume. So we skip the stamp if already paused.
+
+    Resume-when-not-paused: returns 200 with no mutation to the counters —
+    only ``phase`` updates. (Safe no-op.)
+
+    Response shape: ``{phase, paused_at_ms, paused_total_ms}`` — the canonical
+    phase snapshot the client should adopt verbatim.
+
+    Authorization: run owner, or admin/school_admin/teacher impersonating.
+
+    Errors:
+        * 400 ``{error: invalid_phase}`` — phase not in the allowed enum.
+        * 403 — caller is not the owner and lacks privileged role.
+        * 404 ``{error: "Run not found"}`` — unknown run_id.
+        * 404 ``{error: "No stocksim session"}`` — run exists but has no stocksim state.
     """
     try:
         run = storage.get_run(run_id)
@@ -27483,11 +27518,14 @@ def stocksim_phase(run_id):
 
     now_ms = int(time.time() * 1000)
     if phase in ("eod", "weekend"):
-        # Idempotent: only stamp paused_at_ms if not already paused.
+        # Idempotent: re-stamping paused_at_ms on a duplicate pause would lose
+        # the original pause window and cause paused_total_ms to under-accumulate
+        # on the next resume. So we only stamp if not already paused.
         if not int(state.get("paused_at_ms", 0) or 0):
             state["paused_at_ms"] = now_ms
     else:  # "playing" → resume
         paused_at = int(state.get("paused_at_ms", 0) or 0)
+        # Resume when never paused: no-op on paused_total_ms; phase still updates to "playing".
         if paused_at:
             paused_total = int(state.get("paused_total_ms", 0) or 0)
             state["paused_total_ms"] = paused_total + max(0, now_ms - paused_at)
