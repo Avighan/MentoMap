@@ -60,6 +60,18 @@ export async function cancelStocksimOrder(runId, orderId) {
 }
 
 /**
+ * Set the simulation phase (server-authoritative pause clock).
+ * Phases: 'playing' (resume) | 'eod' (end-of-day pause) | 'weekend' (weekend pause).
+ * @param {string} runId
+ * @param {string} phase
+ * @returns {Promise<object>}
+ */
+export async function postStocksimPhase(runId, phase) {
+  const res = await apiClient.post(`/api/run/${runId}/stocksim/phase`, { phase });
+  return res.data;
+}
+
+/**
  * Mark the session complete and trigger end-of-game scoring.
  * @param {string} runId
  * @returns {Promise<object>}
@@ -74,5 +86,6 @@ export default {
   getStocksimState,
   placeStocksimTrade,
   cancelStocksimOrder,
+  postStocksimPhase,
   completeStocksim,
 };

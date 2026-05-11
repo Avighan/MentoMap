@@ -34,7 +34,12 @@ import {
   placeStocksimTrade,
   cancelStocksimOrder,
   completeStocksim,
+  postStocksimPhase,
 } from '../../../api/stocksim';
+import DayHeader from './stocksim/DayHeader';
+import EndOfDayModal from './stocksim/EndOfDayModal';
+import WeekendInterlude from './stocksim/WeekendInterlude';
+import { dayBoundaries as computeDayBoundaries } from './stocksim/dayBoundaries';
 import { priceFromSeed } from '../../../utils/stocksimPricing';
 import OrderTicket from './stocksim/OrderTicket';
 import DepthLadder from './stocksim/DepthLadder';
@@ -127,6 +132,22 @@ const PriceChart = ({ history, color, height = CHART_HEIGHT, boundaries = [] }) 
   );
 };
 
+function computeTopMover(quotes, direction) {
+  const entries = Object.entries(quotes || {})
+    .map(([sym, q]) => ({ symbol: sym, changePct: q.last_change_pct ?? 0 }))
+    .sort((a, b) => b.changePct - a.changePct);
+  if (!entries.length) return null;
+  return direction === 'asc' ? entries[0] : entries[entries.length - 1];
+}
+
+function computeEarningsForDay(sessionConfig, day) {
+  if (!day) return [];
+  const sched = sessionConfig?.earnings_schedule || {};
+  return Object.entries(sched)
+    .filter(([, cfg]) => cfg.day === day.id)
+    .map(([symbol, cfg]) => ({ symbol, headline: cfg.headline, surprise: cfg.surprise }));
+}
+
 const SECTOR_COLORS = {
   IT: '#3b82f6',
   Banking: '#10b981',
@@ -195,6 +216,10 @@ const StockMarketGame = ({
   const cfg = gameData?.minigame_config?.stock_market_config || {};
   const briefing = cfg.briefing;
   const [phase, setPhase] = useState(v2Enabled && briefing ? 'briefing' : 'playing');
+  const [eodSeenDayId, setEodSeenDayId] = useState(null);
+  const [weekendStep, setWeekendStep] = useState(0); // 0=saturday, 1=sunday, 2=done
+  const serverStateRef = useRef(serverState);
+  useEffect(() => { serverStateRef.current = serverState; }, [serverState]);
 
   const pollTimerRef = useRef(null);
   const smoothingTimerRef = useRef(null);
@@ -256,6 +281,15 @@ const StockMarketGame = ({
       pnlRef.current = nextPnl;
       setHaltedSymbols(data.halted_symbols || {});
       if (data.event) setActiveEvent(data.event);
+      // v2 day rollover → enter EOD pause.
+      const newDay = data.day;
+      const lastDayIndex = serverStateRef.current?.day?.index ?? -1;
+      const newDayIndex = newDay?.index ?? -1;
+      if (v2Enabled && newDay && newDayIndex > lastDayIndex && phase === 'playing' && eodSeenDayId !== newDay.id) {
+        setEodSeenDayId(newDay.id);
+        setPhase('eod');
+        postStocksimPhase(runId, 'eod').catch(() => {});
+      }
       // Append authoritative mid to price history at the new tick.
       const tick = data.state?.current_tick ?? 0;
       setPriceHistory((prev) => {
@@ -276,7 +310,7 @@ const StockMarketGame = ({
       // eslint-disable-next-line no-console
       console.warn('stocksim poll error', err);
     }
-  }, [runId]);
+  }, [runId, v2Enabled, phase, eodSeenDayId]);
 
   useEffect(() => {
     if (!sessionConfig) return undefined;
@@ -629,7 +663,19 @@ const StockMarketGame = ({
 
   // ── v2 Market Briefing screen ────────────────────────────────────────
   if (v2Enabled && phase === 'briefing') {
-    return <MarketBriefing briefing={briefing} stocks={cfg.stocks || []} onBegin={() => setPhase('playing')} />;
+    return (
+      <MarketBriefing
+        briefing={briefing}
+        stocks={cfg.stocks || []}
+        earningsByDay={Object.fromEntries(
+          Object.entries(sessionConfig?.earnings_schedule || {}).map(([sym, cfg2]) => [
+            sym,
+            { day: cfg2.day, label: (sessionConfig?.days || []).find((d) => d.id === cfg2.day)?.label || cfg2.day },
+          ])
+        )}
+        onBegin={() => setPhase('playing')}
+      />
+    );
   }
 
   // ── Main UI ─────────────────────────────────────────────────────────
@@ -708,6 +754,11 @@ const StockMarketGame = ({
       <div className="flex h-[calc(100vh-56px)]">
         {/* Main area */}
         <div className="flex-1 p-5 overflow-y-auto">
+          {v2Enabled && serverState?.day && (
+            <div style={{ marginBottom: 6 }}>
+              <DayHeader day={serverState.day} />
+            </div>
+          )}
           {/* v2 PersistentStrip — sticky cash/holdings/net-worth/P&L bar */}
           {v2Enabled && (
             <div className="mb-4 sticky top-0 z-30" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -811,6 +862,7 @@ const StockMarketGame = ({
               <PriceChart
                 history={priceHistory[selectedSymbol] || []}
                 color={colorForStock(selectedStockInfo)}
+                boundaries={v2Enabled ? computeDayBoundaries(sessionConfig?.days || []) : []}
               />
             </div>
           )}
@@ -1042,6 +1094,45 @@ const StockMarketGame = ({
           />
         );
       })()}
+      {v2Enabled && phase === 'eod' && (
+        <EndOfDayModal
+          open
+          day={serverState?.day}
+          todayPnL={serverState?.today_pnl || { total: 0, realized: 0, unrealized: 0 }}
+          topMover={computeTopMover(quotes, 'asc')}
+          bottomMover={computeTopMover(quotes, 'desc')}
+          earningsRevealed={computeEarningsForDay(sessionConfig, serverState?.day)}
+          headlines={(serverState?.recent_news || []).slice(0, 2).map((n) => n.text || n.headline)}
+          onContinue={async () => {
+            const isLast = (serverState?.day?.index ?? 0) + 1 >= (serverState?.day?.of ?? 0);
+            if (isLast && (sessionConfig?.weekend_events?.length || 0) > 0) {
+              setPhase('weekend');
+              setWeekendStep(0);
+              await postStocksimPhase(runId, 'weekend').catch(() => {});
+            } else {
+              setPhase('playing');
+              await postStocksimPhase(runId, 'playing').catch(() => {});
+            }
+          }}
+        />
+      )}
+
+      {v2Enabled && phase === 'weekend' && (
+        <WeekendInterlude
+          open
+          event={(sessionConfig?.weekend_events || [])[weekendStep]}
+          onAdvance={async () => {
+            const next = weekendStep + 1;
+            if (next >= (sessionConfig?.weekend_events?.length || 0)) {
+              setPhase('recap');
+              await postStocksimPhase(runId, 'playing').catch(() => {});
+            } else {
+              setWeekendStep(next);
+            }
+          }}
+        />
+      )}
+
       {v2Enabled && (
         <PortfolioModal
           open={portfolioOpen}
