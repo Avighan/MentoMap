@@ -30,6 +30,10 @@ def _download(url: str, dest: Path) -> bool:
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "MentoApp/1.0"})
         with urllib.request.urlopen(req, timeout=30) as resp:
+            ct = resp.headers.get("Content-Type", "")
+            if not ct.startswith("image/"):
+                print(f"  FAILED: unexpected Content-Type {ct!r}")
+                return False
             dest.write_bytes(resp.read())
         return True
     except (urllib.error.URLError, OSError, Exception) as exc:
