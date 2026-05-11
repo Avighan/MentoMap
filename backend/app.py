@@ -27378,6 +27378,52 @@ def stocksim_state(run_id):
     except Exception as _e:
         logger.debug("event_at suppressed: %s", _e)
 
+    # === Week-format enrichment ===========================================
+    from engines.stocksim.calendar import current_day  # local import to keep top imports stable
+    _day_meta = current_day(state, sm_cfg)
+    _extra = {}
+    if _day_meta:
+        _extra["day"] = _day_meta
+
+        days = sm_cfg.get("days") or []
+        day_start_tick = sum(int(d.get("ticks", 0)) for d in days[:_day_meta["index"]])
+
+        # realized today = sum of realized_pnl across trades whose tick is on/after day_start_tick
+        realized_today = 0.0
+        for t in (state.get("trade_log") or []):
+            if int(t.get("tick", 0) or 0) >= day_start_tick and t.get("side") == "sell":
+                realized_today += float(t.get("realized_pnl", 0.0) or 0.0)
+
+        # unrealized today = sum((current_mid - day_open_mid) * qty) over each held symbol
+        unrealized_today = 0.0
+        for sym, h in (state.get("holdings") or {}).items():
+            qty = int(h.get("qty", 0) or 0)
+            if not qty:
+                continue
+            cur_mid = float(((quotes or {}).get(sym) or {}).get("mid") or 0.0)
+            try:
+                day_open_quote = eng.price_at(state, sym, day_start_tick)
+                day_open_mid = float(day_open_quote.get("mid") or cur_mid)
+            except Exception:
+                day_open_mid = cur_mid
+            unrealized_today += (cur_mid - day_open_mid) * qty
+
+        _extra["today_pnl"] = {
+            "realized": realized_today,
+            "unrealized": unrealized_today,
+            "total": realized_today + unrealized_today,
+        }
+
+        # pending_earnings = entries whose day_id is on/after today's index
+        earnings = sm_cfg.get("earnings_schedule") or {}
+        days_after_inclusive = {d.get("id") for d in days[_day_meta["index"]:]}
+        _extra["pending_earnings"] = [
+            {"symbol": sym, "day": cfg.get("day"), "headline": cfg.get("headline", "")}
+            for sym, cfg in earnings.items()
+            if cfg.get("day") in days_after_inclusive
+        ]
+    # === End week-format enrichment =======================================
+
     return jsonify({
         "state": state,
         "quotes": quotes,
@@ -27385,6 +27431,7 @@ def stocksim_state(run_id):
         "halted_symbols": state.get("halted_symbols", {}),
         "event": active_event,
         "tick_count": tick_count,
+        **_extra,
     })
 
 
