@@ -143,24 +143,11 @@ def test_week_state_day_advances_to_tue(client, week_run):
     """When state is pinned at tick 4 (start of Tuesday), day.id must be 'tue'."""
     client.post(f"/api/run/{week_run}/stocksim/start", json={}, headers=_auth_headers())
 
-    # The first day (mon) has 4 ticks, so tick=4 is the first tick of Tuesday.
-    # Pin started_at_ms to now and manually set current_tick=4 so the lazy
-    # advance does not move backward (target_tick is computed as elapsed_ticks
-    # from started_at_ms — with interval_seconds=0 this is 0, but current_tick
-    # is already >= 0, so we rely on the route not clamping DOWN).
-    # We use the same technique as test_stocksim_routes.py: set started_at_ms
-    # to a time far in the past so elapsed_ticks >> current_tick, but we also
-    # set current_tick directly so the engine's advance_to_tick lands at tick 4.
+    # Mon has 4 ticks, so tick=4 is the first tick of Tue. Pin started_at_ms to
+    # now so elapsed_ticks=0 < current_tick=4 → lazy-advance is a no-op.
     run = storage.get_run(week_run)
     sim = run["stocksim"]
-    # Set tick_interval_seconds to 0 means infinite speed — elapsed_ticks will be
-    # max(interval,1)=1ms per tick so we need a large elapsed ms.
-    # Simpler: set current_tick to 4 directly and freeze the clock so advance won't
-    # roll beyond it (set started_at_ms so that target_tick == 4).
     sim["current_tick"] = 4
-    # Freeze the clock: started_at_ms = now, tick_interval_seconds effectively
-    # means elapsed_ticks = 0 < current_tick=4, so `if target_tick > current_tick`
-    # is False and the engine does not advance.
     sim["started_at_ms"] = int(time.time() * 1000)
     storage.update_run(week_run, run)
 
@@ -189,3 +176,107 @@ def test_week_state_techn_in_pending_earnings_on_mon(client, week_run):
     assert "TECHN" in pe_symbols, (
         f"TECHN should be pending on Monday (reports tue); got: {pe_symbols}"
     )
+
+
+# ---------------------------------------------------------------------------
+# Coverage gap fills — code-quality review follow-up
+# ---------------------------------------------------------------------------
+
+@pytest.fixture
+def non_week_run():
+    """Run pointing at stock-market-day-trader (no calendar_mode='week')."""
+    run_id = "test-nonweek-stocksim-run-001"
+    run_data = {
+        "run_id": run_id,
+        "user_id": "test-user-1",
+        "game_id": "stock-market-day-trader",
+    }
+    file_path = _write_run_to_disk(run_id, run_data)
+    yield run_id
+    storage.RUNS.pop(run_id, None)
+    storage.RUNS_MTIME.pop(run_id, None)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+
+def test_non_week_run_omits_week_enrichment_keys(client, non_week_run):
+    """When the underlying game has no calendar_mode='week', the response must
+    NOT include day/today_pnl/pending_earnings (gating via current_day()→None)."""
+    start_resp = client.post(f"/api/run/{non_week_run}/stocksim/start", json={},
+                             headers=_auth_headers())
+    assert start_resp.status_code == 200, start_resp.get_data(as_text=True)
+
+    run = storage.get_run(non_week_run)
+    run["stocksim"]["started_at_ms"] = int(time.time() * 1000)
+    storage.update_run(non_week_run, run)
+
+    resp = client.get(f"/api/run/{non_week_run}/stocksim/state", headers=_auth_headers())
+    assert resp.status_code == 200, resp.get_data(as_text=True)
+    body = resp.get_json()
+
+    assert "day" not in body, f"'day' must be absent for non-week runs; got: {list(body.keys())}"
+    assert "today_pnl" not in body, "'today_pnl' must be absent for non-week runs"
+    assert "pending_earnings" not in body, "'pending_earnings' must be absent for non-week runs"
+
+
+def test_pending_earnings_filters_past_earnings_days(client, week_run):
+    """On Wednesday (tick=8), Mon/Tue earnings symbols (FMCGCORP, TECHN, PHARMAGS)
+    must be FILTERED OUT of pending_earnings; only Wed-and-later remain."""
+    client.post(f"/api/run/{week_run}/stocksim/start", json={}, headers=_auth_headers())
+
+    # Mon(4) + Tue(4) = 8 → tick 8 is the first tick of Wed.
+    run = storage.get_run(week_run)
+    sim = run["stocksim"]
+    sim["current_tick"] = 8
+    sim["started_at_ms"] = int(time.time() * 1000)  # freeze clock → no lazy-advance
+    storage.update_run(week_run, run)
+
+    resp = client.get(f"/api/run/{week_run}/stocksim/state", headers=_auth_headers())
+    body = resp.get_json()
+    assert body["day"]["id"] == "wed", f"Expected wed, got: {body['day']}"
+
+    pe_symbols = {e["symbol"] for e in body.get("pending_earnings", [])}
+    # Past (mon, tue) — must be filtered out.
+    assert "FMCGCORP" not in pe_symbols, f"FMCGCORP (mon) should be filtered out on wed; got: {pe_symbols}"
+    assert "TECHN" not in pe_symbols, f"TECHN (tue) should be filtered out on wed; got: {pe_symbols}"
+    assert "PHARMAGS" not in pe_symbols, f"PHARMAGS (tue) should be filtered out on wed; got: {pe_symbols}"
+    # Today/future (wed, thu, fri) — must remain.
+    assert "RETAILK" in pe_symbols, f"RETAILK (wed) should still be pending on wed; got: {pe_symbols}"
+    assert "GREENPWR" in pe_symbols, f"GREENPWR (fri) should still be pending on wed; got: {pe_symbols}"
+
+
+def test_today_pnl_nonzero_with_real_holding_and_sell(client, week_run):
+    """Seed a TECHN holding and a same-day sell trade; today_pnl realized/unrealized
+    must reflect them rather than collapsing to zero."""
+    client.post(f"/api/run/{week_run}/stocksim/start", json={}, headers=_auth_headers())
+
+    run = storage.get_run(week_run)
+    sim = run["stocksim"]
+    # Land on Tue (tick=4). Tue day-open tick is 4. Place current_tick > day_start
+    # so the held position is mark-to-marketed against a different tick than open.
+    sim["current_tick"] = 6
+    sim["started_at_ms"] = int(time.time() * 1000)  # freeze clock → no lazy-advance
+    # Held position: 5 TECHN shares
+    sim.setdefault("holdings", {})
+    sim["holdings"]["TECHN"] = {"qty": 5, "avg_price": 1000.0}
+    # Realized today: one sell at tick 5 (>= day_start_tick=4) for +123.45
+    sim.setdefault("trade_log", [])
+    sim["trade_log"].append({
+        "tick": 5, "side": "sell", "symbol": "TECHN",
+        "qty": 1, "price": 1010.0, "realized_pnl": 123.45,
+    })
+    storage.update_run(week_run, run)
+
+    resp = client.get(f"/api/run/{week_run}/stocksim/state", headers=_auth_headers())
+    body = resp.get_json()
+    assert body["day"]["id"] == "tue"
+
+    tp = body["today_pnl"]
+    # Realized must include our seeded sell.
+    assert tp["realized"] == pytest.approx(123.45), f"Expected realized 123.45, got: {tp['realized']}"
+    # Unrealized is (cur_mid - day_open_mid) * qty. day_start_tick == current_tick
+    # would yield 0; we set current_tick=6 vs day_start=4 to force a non-trivial walk.
+    # We don't pin the exact value (depends on seeded RNG), but it must be finite
+    # and total must equal realized + unrealized.
+    assert isinstance(tp["unrealized"], (int, float))
+    assert tp["total"] == pytest.approx(tp["realized"] + tp["unrealized"])

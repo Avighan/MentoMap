@@ -27400,11 +27400,17 @@ def stocksim_state(run_id):
             qty = int(h.get("qty", 0) or 0)
             if not qty:
                 continue
+            # NB: if the earlier per-tick `price_at` at the top of this route
+            # failed for `sym`, `cur_mid` here is 0.0. That makes this symbol's
+            # contribution to `unrealized_today` an artificial -day_open_mid*qty.
+            # We accept this transient degradation rather than crashing the route.
             cur_mid = float(((quotes or {}).get(sym) or {}).get("mid") or 0.0)
             try:
                 day_open_quote = eng.price_at(state, sym, day_start_tick)
                 day_open_mid = float(day_open_quote.get("mid") or cur_mid)
-            except Exception:
+            except Exception as _e:
+                # silent fallback: day_open_mid degrades to cur_mid → 0 P&L this symbol.
+                logger.debug("price_at(day_start) suppressed for %s: %s", sym, _e)
                 day_open_mid = cur_mid
             unrealized_today += (cur_mid - day_open_mid) * qty
 
@@ -27414,7 +27420,9 @@ def stocksim_state(run_id):
             "total": realized_today + unrealized_today,
         }
 
-        # pending_earnings = entries whose day_id is on/after today's index
+        # pending_earnings = entries whose `day` matches today's day-id or any
+        # later day-id. We build a set from the slice `days[index:]` (today + future)
+        # and filter the earnings schedule by membership.
         earnings = sm_cfg.get("earnings_schedule") or {}
         days_after_inclusive = {d.get("id") for d in days[_day_meta["index"]:]}
         _extra["pending_earnings"] = [
