@@ -27345,7 +27345,14 @@ def stocksim_state(run_id):
     if started_at is None:
         state["started_at_ms"] = int(time.time() * 1000)
         started_at = state["started_at_ms"]
-    elapsed_ticks = int((time.time() * 1000 - started_at) / max(1, int(interval_s * 1000)))
+    now_ms = int(time.time() * 1000)
+    paused_total = int(state.get("paused_total_ms", 0) or 0)
+    paused_at = int(state.get("paused_at_ms", 0) or 0)
+    if paused_at:
+        paused_total += (now_ms - paused_at)
+    effective_ms = (now_ms - started_at) - paused_total
+    elapsed_ticks = int(effective_ms / max(1, int(interval_s * 1000))) if interval_s > 0 else 0
+    elapsed_ticks = max(0, elapsed_ticks)
     target_tick = min(elapsed_ticks, tick_count)
     if not state.get("completed") and target_tick > state.get("current_tick", 0):
         eng.advance_to_tick(state, target_tick)
@@ -27439,7 +27446,60 @@ def stocksim_state(run_id):
         "halted_symbols": state.get("halted_symbols", {}),
         "event": active_event,
         "tick_count": tick_count,
+        "phase": state.get("phase", "playing"),
+        "paused": bool(state.get("paused_at_ms", 0)),
         **_extra,
+    })
+
+
+@app.route('/api/run/<run_id>/stocksim/phase', methods=['POST'])
+@require_auth
+def stocksim_phase(run_id):
+    """Set the playback phase ('playing' | 'eod' | 'weekend') for the stocksim
+    clock. Pausing freezes lazy-tick advancement; resuming records the paused
+    interval into ``paused_total_ms`` so the elapsed-ticks math skips it.
+    """
+    try:
+        run = storage.get_run(run_id)
+    except (KeyError, SessionNotFoundError, SessionExpiredError):
+        return jsonify({"error": "Run not found"}), 404
+    except StorageIOErr:
+        return jsonify({"error": "Storage temporarily unavailable"}), 500
+    user = getattr(request, "current_user", None) or {}
+    requester_uid = user.get("user_id")
+    owner_uid = run.get("user_id")
+    if requester_uid and owner_uid and requester_uid != owner_uid:
+        role = user.get("role", "")
+        if role not in ("admin", "school_admin", "teacher"):
+            return jsonify({"error": "Not authorized for this run"}), 403
+    state = run.get("stocksim")
+    if not state:
+        return jsonify({"error": "No stocksim session"}), 404
+
+    body = request.get_json(silent=True) or {}
+    phase = body.get("phase")
+    if phase not in ("playing", "eod", "weekend"):
+        return jsonify({"error": "invalid_phase"}), 400
+
+    now_ms = int(time.time() * 1000)
+    if phase in ("eod", "weekend"):
+        # Idempotent: only stamp paused_at_ms if not already paused.
+        if not int(state.get("paused_at_ms", 0) or 0):
+            state["paused_at_ms"] = now_ms
+    else:  # "playing" → resume
+        paused_at = int(state.get("paused_at_ms", 0) or 0)
+        if paused_at:
+            paused_total = int(state.get("paused_total_ms", 0) or 0)
+            state["paused_total_ms"] = paused_total + max(0, now_ms - paused_at)
+            state["paused_at_ms"] = 0
+
+    state["phase"] = phase
+    storage.update_run(run_id, run)
+
+    return jsonify({
+        "phase": state["phase"],
+        "paused_at_ms": int(state.get("paused_at_ms", 0) or 0),
+        "paused_total_ms": int(state.get("paused_total_ms", 0) or 0),
     })
 
 
