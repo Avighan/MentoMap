@@ -651,6 +651,30 @@ const GamePlayPage = () => {
     setShowLeaderboardPreview(false);
   }, [gameId, resetGame]);
 
+  // Browser-back fix: when the user presses the browser back button while inside
+  // a game, immediately tear down all overlays/modals so React Router's unmount
+  // path is unobstructed. Without this, fixed-position overlays sometimes paint
+  // a frame longer than the route transition, making it appear as though the
+  // back key did nothing until the user refreshed. Listener auto-removes on
+  // unmount so it cannot leak across pages.
+  useEffect(() => {
+    const handlePopState = () => {
+      setShowOutcome(false);
+      setOutcomeData(null);
+      setTakeawayData(null);
+      setSelectedChoice(null);
+      setShowChallengeResult(false);
+      setShowDemoSaveModal(false);
+      setShowCheckpoint(false);
+      setShowTimerNudge(false);
+      setShowLeaderboardPreview(false);
+      setShowModuleCompleteModal(false);
+      try { resetGame(); } catch (_e) { /* noop */ }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [resetGame]);
+
   // Load game metadata for intro screen
   useEffect(() => {
     const loadGameMetadata = async () => {

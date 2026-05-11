@@ -67,6 +67,48 @@ def validate_bundle(b: dict) -> None:
             elif game_type == "mystery_room":
                 if not (g.get("rooms") and g.get("puzzles") and g.get("climax")):
                     raise ValueError(f"mystery_room game '{g['game_id']}' missing 'rooms', 'puzzles', or 'climax' key")
+            elif game_type == "music_match":
+                if not g.get("music_rounds"):
+                    raise ValueError(f"music_match game '{g['game_id']}' missing 'music_rounds' key")
+            elif game_type == "lab_titration":
+                if not g.get("titration"):
+                    raise ValueError(f"lab_titration game '{g['game_id']}' missing 'titration' key")
+            elif game_type == "pendulum_lab":
+                if not (g.get("pendulum_lab") and g["pendulum_lab"].get("trials")):
+                    raise ValueError(f"pendulum_lab game '{g['game_id']}' missing 'pendulum_lab.trials'")
+            elif game_type == "optics_lab":
+                if not (g.get("optics_lab") and g["optics_lab"].get("trials")):
+                    raise ValueError(f"optics_lab game '{g['game_id']}' missing 'optics_lab.trials'")
+            elif game_type == "circuit_debugger":
+                if not (g.get("circuit_debugger") and g["circuit_debugger"].get("nodes")):
+                    raise ValueError(f"circuit_debugger game '{g['game_id']}' missing 'circuit_debugger.nodes'")
+            elif game_type == "genetics_cross":
+                if not (g.get("genetics_cross") and g["genetics_cross"].get("phenotypes")):
+                    raise ValueError(f"genetics_cross game '{g['game_id']}' missing 'genetics_cross.phenotypes'")
+            elif game_type == "stoichiometry_mixer":
+                if not g.get("stoichiometry_mixer"):
+                    raise ValueError(f"stoichiometry_mixer game '{g['game_id']}' missing 'stoichiometry_mixer' key")
+            elif game_type == "mental_math":
+                if not (g.get("mental_math") and g["mental_math"].get("problems")):
+                    raise ValueError(f"mental_math game '{g['game_id']}' missing 'mental_math.problems'")
+            elif game_type == "typing_drill":
+                if not (g.get("typing_drill") and g["typing_drill"].get("passages")):
+                    raise ValueError(f"typing_drill game '{g['game_id']}' missing 'typing_drill.passages'")
+            elif game_type == "boggle":
+                if not (g.get("boggle") and g["boggle"].get("grid")):
+                    raise ValueError(f"boggle game '{g['game_id']}' missing 'boggle.grid'")
+            elif game_type == "mock_interview":
+                if not (g.get("mock_interview") and g["mock_interview"].get("questions")):
+                    raise ValueError(f"mock_interview game '{g['game_id']}' missing 'mock_interview.questions'")
+            elif game_type == "sudoku":
+                if not (g.get("sudoku") and g["sudoku"].get("puzzle")):
+                    raise ValueError(f"sudoku game '{g['game_id']}' missing 'sudoku.puzzle'")
+            elif game_type == "logic_grid":
+                if not (g.get("logic_grid") and g["logic_grid"].get("solution")):
+                    raise ValueError(f"logic_grid game '{g['game_id']}' missing 'logic_grid.solution'")
+            elif game_type == "geometry_constructor":
+                if not (g.get("geometry_constructor") and g["geometry_constructor"].get("features")):
+                    raise ValueError(f"geometry_constructor game '{g['game_id']}' missing 'geometry_constructor.features'")
             else:
                 # Unknown game_type: soft-fail with a log line instead of crashing
                 # bundle load. Prod has accumulated games with unregistered types

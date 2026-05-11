@@ -25,11 +25,30 @@ const CardBoardRenderer = React.lazy(() => import('./renderers/CardBoardRenderer
 const TrumpCardRenderer = React.lazy(() => import('./renderers/TrumpCardRenderer'));
 const SimulationRenderer = React.lazy(() => import('./renderers/SimulationRenderer'));
 const MysteryRoomRenderer = React.lazy(() => import('./renderers/MysteryRoomRenderer'));
+const MusicGameRenderer = React.lazy(() => import('./renderers/MusicGameRenderer'));
+const TitrationLabRenderer = React.lazy(() => import('./renderers/TitrationLabRenderer'));
+const PendulumLabRenderer = React.lazy(() => import('./renderers/PendulumLabRenderer'));
+const OpticsLabRenderer = React.lazy(() => import('./renderers/OpticsLabRenderer'));
+const CircuitDebuggerRenderer = React.lazy(() => import('./renderers/CircuitDebuggerRenderer'));
+const GeneticsCrossRenderer = React.lazy(() => import('./renderers/GeneticsCrossRenderer'));
+const StoichiometryMixerRenderer = React.lazy(() => import('./renderers/StoichiometryMixerRenderer'));
+const MentalMathRenderer = React.lazy(() => import('./renderers/MentalMathRenderer'));
+const TypingDrillRenderer = React.lazy(() => import('./renderers/TypingDrillRenderer'));
+const BoggleRenderer = React.lazy(() => import('./renderers/BoggleRenderer'));
+const MockInterviewRenderer = React.lazy(() => import('./renderers/MockInterviewRenderer'));
+const SudokuRenderer = React.lazy(() => import('./renderers/SudokuRenderer'));
+const LogicGridRenderer = React.lazy(() => import('./renderers/LogicGridRenderer'));
+const GeometryConstructorRenderer = React.lazy(() => import('./renderers/GeometryConstructorRenderer'));
 
 const KNOWN_TYPES = new Set([
   'rounds', 'board', 'minigame', 'card', 'strategy', 'story_branching', 'ai_arena',
   'chess_strategy', 'go_territory', 'reversi', 'tower_defense', 'puzzle_match', 'strategy_grid',
   'card_board', 'trump_card', 'simulation', 'mystery_room',
+  'music_match', 'lab_titration',
+  // Audit-followup grader types (12)
+  'pendulum_lab', 'optics_lab', 'circuit_debugger', 'genetics_cross', 'stoichiometry_mixer',
+  'mental_math', 'typing_drill', 'boggle', 'mock_interview',
+  'sudoku', 'logic_grid', 'geometry_constructor',
 ]);
 
 const UnknownGameType = ({ type, onBack }) => (
@@ -84,6 +103,24 @@ const GameTypeRouter = ({ gameType, currentGame, gameState, runId, onGameEnd, on
         {type === 'trump_card' && <TrumpCardRenderer {...commonProps} />}
         {type === 'simulation' && <SimulationRenderer {...commonProps} />}
         {type === 'mystery_room' && <MysteryRoomRenderer {...commonProps} />}
+        {type === 'music_match' && (
+          <MusicGameRenderer game={currentGame} runId={runId} onComplete={onGameEnd} />
+        )}
+        {type === 'lab_titration' && (
+          <TitrationLabRenderer game={currentGame} runId={runId} onComplete={onGameEnd} />
+        )}
+        {type === 'pendulum_lab' && <PendulumLabRenderer {...commonProps} game={currentGame} />}
+        {type === 'optics_lab' && <OpticsLabRenderer {...commonProps} game={currentGame} />}
+        {type === 'circuit_debugger' && <CircuitDebuggerRenderer {...commonProps} game={currentGame} />}
+        {type === 'genetics_cross' && <GeneticsCrossRenderer {...commonProps} game={currentGame} />}
+        {type === 'stoichiometry_mixer' && <StoichiometryMixerRenderer {...commonProps} game={currentGame} />}
+        {type === 'mental_math' && <MentalMathRenderer {...commonProps} game={currentGame} />}
+        {type === 'typing_drill' && <TypingDrillRenderer {...commonProps} game={currentGame} />}
+        {type === 'boggle' && <BoggleRenderer {...commonProps} game={currentGame} />}
+        {type === 'mock_interview' && <MockInterviewRenderer {...commonProps} game={currentGame} />}
+        {type === 'sudoku' && <SudokuRenderer {...commonProps} game={currentGame} />}
+        {type === 'logic_grid' && <LogicGridRenderer {...commonProps} game={currentGame} />}
+        {type === 'geometry_constructor' && <GeometryConstructorRenderer {...commonProps} game={currentGame} />}
       </Suspense>
     </ErrorBoundary>
   );
