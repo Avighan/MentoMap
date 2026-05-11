@@ -57,7 +57,7 @@ const CHART_WIDTH_PER_TICK = 28;
 const DEFAULT_POLL_MS = 8000;
 
 /* Mini sparkline-style SVG chart (chart-only smoothing — not authoritative). */
-const PriceChart = ({ history, color, height = CHART_HEIGHT }) => {
+const PriceChart = ({ history, color, height = CHART_HEIGHT, boundaries = [] }) => {
   if (!history || history.length < 2) return null;
   const width = Math.max(history.length * CHART_WIDTH_PER_TICK, 200);
   const min = Math.min(...history) * 0.95;
@@ -92,6 +92,21 @@ const PriceChart = ({ history, color, height = CHART_HEIGHT }) => {
         </linearGradient>
       </defs>
       <polygon points={fillPoints} fill={`url(#${gradId})`} />
+      {boundaries.map((b) => {
+        if (b < 0 || b >= history.length) return null;
+        const x = (b / (history.length - 1)) * (width - 20) + 10;
+        return (
+          <line
+            key={b}
+            data-testid={`chart-boundary-${b}`}
+            x1={x} x2={x} y1={0} y2={height}
+            stroke="#854F0B"
+            strokeWidth="1"
+            strokeDasharray="4 3"
+            opacity="0.4"
+          />
+        );
+      })}
       <polyline
         points={points}
         fill="none"
