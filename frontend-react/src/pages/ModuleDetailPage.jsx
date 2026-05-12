@@ -30,6 +30,34 @@ import {
   saveLesson,
   completeLesson,
 } from '../api/modules';
+import { getStreak } from '../api/profile';
+
+// Phase C: milestone badges (one per week of the entrepreneur module).
+const MODULE_BADGES = [
+  { week: 1, icon: '🌱', label: 'Idea Validator' },
+  { week: 2, icon: '🔍', label: 'Problem Detective' },
+  { week: 3, icon: '🎤', label: 'Pitch Builder' },
+  { week: 4, icon: '🚀', label: 'Founder' },
+];
+
+function isWeekEarned(progress, moduleObj, weekIdx) {
+  const week = moduleObj?.weeks?.[weekIdx - 1];
+  if (!week) return false;
+  const lessons = week.lessons || [];
+  const required = lessons.filter(
+    (l) => l.type !== 'micro_quest' && l.type !== 'cohort_live_session',
+  );
+  if (required.length === 0) return false;
+  const lessonProgress = progress?.lessons || {};
+  const done = required.filter((l) => {
+    const lid = l.lesson_id || l.id;
+    return lessonProgress[lid]?.status === 'complete';
+  }).length;
+  const quizzes = progress?.quizzes || {};
+  const quiz = quizzes[`w${weekIdx}_quiz`] || (week.quiz_id ? quizzes[week.quiz_id] : null);
+  const quizOk = !!quiz?.score && quiz.score >= 60;
+  return done / required.length >= 0.8 && quizOk;
+}
 import WorksheetRenderer from '../components/module/worksheets';
 import FieldMissionRenderer from '../components/module/FieldMissionRenderer';
 import VoiceLessonRenderer from '../components/module/VoiceLessonRenderer';
@@ -643,6 +671,21 @@ export default function ModuleDetailPage() {
   // Per-active-lesson quiz state — { passed, score, max_score, ratio, threshold }
   const [quizState, setQuizState] = useState(null);
   const [journalOpen, setJournalOpen] = useState(false);
+  const [streakDays, setStreakDays] = useState(0);
+
+  // Phase C: streak chip for the module hero.
+  useEffect(() => {
+    let cancel = false;
+    (async () => {
+      try {
+        const s = await getStreak();
+        if (!cancel) setStreakDays(Number(s?.streak_days || 0));
+      } catch (_) {
+        // streak is decorative; ignore errors
+      }
+    })();
+    return () => { cancel = true; };
+  }, []);
   const saveTimer = useRef(null);
 
   useEffect(() => {
@@ -1195,6 +1238,32 @@ export default function ModuleDetailPage() {
               <div className="h-full rounded-full transition-all"
                 style={{ width: `${summaryPct}%`, background: '#fff' }} />
             </div>
+          </div>
+
+          {/* Phase C: streak + milestone badges */}
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {streakDays > 0 && (
+              <span className="bg-amber-100 text-amber-900 rounded-full px-3 py-1 text-xs font-semibold">
+                🔥 {streakDays}-day streak
+              </span>
+            )}
+            {MODULE_BADGES.map((b) => {
+              const earned = isWeekEarned(progress, module, b.week);
+              return (
+                <span
+                  key={b.week}
+                  title={`Week ${b.week}: ${b.label}`}
+                  className={
+                    'rounded-full px-3 py-1 text-xs border ' +
+                    (earned
+                      ? 'bg-yellow-100 text-yellow-900 border-yellow-300 font-semibold'
+                      : 'bg-slate-50 text-slate-400 border-slate-200')
+                  }
+                >
+                  {b.icon} {b.label}
+                </span>
+              );
+            })}
           </div>
         </div>
       </header>
