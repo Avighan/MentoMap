@@ -51,9 +51,50 @@ _HTML_TAG_RE = re.compile(r"<[^>]+>")
 
 def _strip_html(text: str) -> str:
     """Remove HTML tags and collapse whitespace."""
+    if not isinstance(text, str):
+        return ""
     stripped = _HTML_TAG_RE.sub(" ", text)
     # collapse runs of whitespace
     return re.sub(r"\s+", " ", stripped).strip()
+
+
+# Narration order for dict-shaped lesson.content
+# (skip image_url, image_url_fallback — not narratable)
+_NARRATION_KEYS = ("intro", "mento_says", "story_hook", "cards", "key_takeaway", "question")
+
+
+def _flatten_content(content) -> str:
+    """Reduce a lesson's content field to a single narration string.
+
+    Supports three shapes:
+    - str  → HTML-stripped string
+    - list → joined string items / dict ``body`` fields
+    - dict → values for keys in :data:`_NARRATION_KEYS` joined in reading order
+    """
+    if content is None:
+        return ""
+    if isinstance(content, str):
+        return _strip_html(content)
+    if isinstance(content, list):
+        parts: List[str] = []
+        for item in content:
+            if isinstance(item, str):
+                parts.append(_strip_html(item))
+            elif isinstance(item, dict):
+                body = item.get("body") or item.get("text") or ""
+                parts.append(_strip_html(body))
+        return ". ".join(p for p in parts if p)
+    if isinstance(content, dict):
+        parts: List[str] = []
+        for key in _NARRATION_KEYS:
+            if key not in content:
+                continue
+            val = content[key]
+            flat = _flatten_content(val)  # recurse for nested cards/lists
+            if flat:
+                parts.append(flat)
+        return ". ".join(parts)
+    return ""
 
 
 # ---------------------------------------------------------------------------
@@ -63,15 +104,14 @@ def _strip_html(text: str) -> str:
 def build_script(lesson: dict, lang: str = "en") -> str:
     """Return a narration script string for *lesson* in the requested *lang*.
 
-    - Strips HTML from ``lesson["content"]``.
+    - Strips HTML and flattens dict/list ``lesson["content"]`` shapes.
     - Joins title and body: ``"<title>. <body>"``.
     - For ``lang in ("hi", "hi_mix")``: attempts LLM translation; on any
-      error or if ``call_llm`` is None, falls back to the base English string.
+      error or if ``llm_call`` is None, falls back to the base English string.
     - Always returns a non-empty string when the lesson has content.
     """
     title: str = lesson.get("title", "")
-    raw_content: str = lesson.get("content", "")
-    body = _strip_html(raw_content)
+    body = _flatten_content(lesson.get("content"))
 
     # Build base (English) script
     parts = [p for p in (title, body) if p]
