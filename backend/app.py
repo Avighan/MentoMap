@@ -23343,6 +23343,15 @@ def _run_scheduler():
             except Exception as _e:
                 logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
 
+        def _run_module_dispatch_job():
+            """18:00 IST daily: push today's tip to every in-progress user of the
+            Mento Entrepreneur 4-week workshop. Deduped via dedupe_key."""
+            try:
+                import module_daily_dispatch as _mdd
+                _mdd.run_daily_dispatch("mento_entrepreneur_4week")
+            except Exception as _e:
+                logger.debug("Suppressed module dispatch %s: %s", type(_e).__name__, _e)
+
         _scheduler = BackgroundScheduler()
         _scheduler.add_job(_daily_streak_check, 'cron', hour=9, minute=0, id='streak_check')
         _scheduler.add_job(_daily_cleanup, 'cron', hour=2, minute=0, id='cleanup')
@@ -23350,6 +23359,11 @@ def _run_scheduler():
         _scheduler.add_job(_MULTIPLAYER_ENGINE.cleanup_stale_sessions, 'interval', minutes=5, id='multiplayer_cleanup', replace_existing=True)
         _scheduler.add_job(_recompute_leaderboard_pop_stats, 'cron', hour=3, minute=0, id='leaderboard_pop_stats', replace_existing=True)
         _scheduler.add_job(_run_module_live_session_reminders, 'interval', minutes=15, id='live_session_reminders', replace_existing=True)
+        _scheduler.add_job(
+            _run_module_dispatch_job, 'cron', hour=18, minute=0,
+            id='module_entrepreneur_daily_dispatch', replace_existing=True,
+            timezone='Asia/Kolkata',
+        )
         _scheduler.start()
     except ImportError:
         pass  # APScheduler not installed, skip

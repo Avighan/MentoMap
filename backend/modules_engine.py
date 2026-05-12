@@ -290,6 +290,16 @@ def list_user_modules(user_id: str) -> Dict[str, Dict[str, Any]]:
     return data.get("users", {}).get(str(user_id), {})
 
 
+def list_all_module_progress(module_id: str) -> Dict[str, Dict[str, Any]]:
+    """Return {user_id: progress_dict} for all users with progress on this module."""
+    data = _load_progress()
+    out: Dict[str, Dict[str, Any]] = {}
+    for user_id, modules in (data.get("users") or {}).items():
+        if module_id in (modules or {}):
+            out[user_id] = modules[module_id]
+    return out
+
+
 def start_module(user_id: str, module_id: str) -> Dict[str, Any]:
     """Initialize progress on first start. Idempotent."""
     module = get_module(module_id)
