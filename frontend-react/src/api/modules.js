@@ -145,3 +145,24 @@ export const listMyCohortAssignedModules = async () => {
   const res = await apiClient.get('/api/modules/cohort-assigned');
   return res.data;
 };
+
+// ---------- Pitch Coach (Phase B) ----------
+
+export const submitPitchCoach = async (moduleId, lessonId, blob) => {
+  const fd = new FormData();
+  fd.append('audio', blob, 'pitch.webm');
+  try {
+    const res = await apiClient.post(
+      `/api/modules/${moduleId}/lessons/${lessonId}/pitch-coach`,
+      fd,
+    );
+    return res.data;
+  } catch (err) {
+    if (err?.response?.status === 429) {
+      const e = new Error('cap_reached');
+      e.code = 'cap_reached';
+      throw e;
+    }
+    throw err;
+  }
+};
