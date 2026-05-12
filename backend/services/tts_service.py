@@ -14,7 +14,7 @@ except ImportError:
 Provider = Literal["openai", "elevenlabs"]
 Lang = Literal["en", "hi", "hi_mix"]
 
-_DEFAULT_CACHE_DIR = Path("backend/assets/audio/cache")
+_DEFAULT_CACHE_DIR = Path(__file__).resolve().parent.parent / "assets" / "audio" / "cache"
 _DEFAULT_VOICES = {
     "openai": {"en": "nova", "hi": "nova", "hi_mix": "nova"},
     "elevenlabs": {
@@ -38,7 +38,10 @@ def _read_cache(key: str) -> Optional[bytes]:
     return p.read_bytes() if p.exists() else None
 
 def _write_cache(key: str, data: bytes) -> None:
-    (_cache_dir() / f"{key}.mp3").write_bytes(data)
+    dest = _cache_dir() / f"{key}.mp3"
+    tmp = dest.with_suffix(".tmp")
+    tmp.write_bytes(data)
+    tmp.replace(dest)
 
 def synthesize(
     text: str,
@@ -57,8 +60,8 @@ def synthesize(
         data = _synthesize_elevenlabs(text, voice)
     else:
         raise ValueError(f"unknown provider: {provider}")
-    _write_cache(key, data)
     record_cost(f"tts_{provider}", _estimate_cost(text, provider), {"voice": voice, "lang": lang})
+    _write_cache(key, data)
     return data
 
 def _synthesize_openai(text: str, voice: str) -> bytes:
