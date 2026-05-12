@@ -37,6 +37,34 @@ _MODULE_CACHE: Dict[str, Dict[str, Any]] = {}
 _MODULE_CACHE_MTIME: Dict[str, float] = {}
 
 
+# ---------- Lesson-type registry ----------
+# Lesson types known to the renderer. Unknown types are allowed (forward compat).
+_KNOWN_LESSON_TYPES = {
+    "lesson", "worksheet", "quiz", "field_mission", "reflection",
+    "game", "voice_recording", "assessment",
+    # New (Phase A):
+    "audio_lesson", "pitch_coach", "interview_sim", "micro_quest",
+    "case_study_card", "failure_card", "cohort_live_session",
+}
+
+
+def _validate_lesson_safe(lesson: dict) -> bool:
+    """Return True if lesson has minimum required fields.
+
+    Unknown ``type`` values are accepted for forward compatibility — the engine
+    treats them as generic lessons (no special branching logic).  Only lessons
+    that are missing ``lesson_id`` or ``type`` entirely are rejected.
+    """
+    if not isinstance(lesson, dict):
+        return False
+    if "lesson_id" not in lesson or "type" not in lesson:
+        return False
+    ltype = lesson["type"]
+    if ltype not in _KNOWN_LESSON_TYPES:
+        logger.debug("Unknown lesson type %r — treating as generic lesson (forward compat).", ltype)
+    return True
+
+
 # ---------- Generic JSON helpers ----------
 
 def _ensure_data_dir() -> None:
