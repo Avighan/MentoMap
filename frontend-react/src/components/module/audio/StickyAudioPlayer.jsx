@@ -1,8 +1,8 @@
 import React from "react";
-import { useAudio } from "../../../contexts/AudioContext";
+import { useModuleAudio } from "../../../contexts/ModuleAudioContext";
 
 export default function StickyAudioPlayer() {
-  const { src, playing, rate, play, pause, setSpeed } = useAudio();
+  const { src, playing, rate, play, pause, setSpeed } = useModuleAudio();
   if (!src) return null;
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-3 flex items-center gap-3 z-40">

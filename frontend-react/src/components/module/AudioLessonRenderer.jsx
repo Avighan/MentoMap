@@ -1,12 +1,12 @@
 // frontend-react/src/components/module/AudioLessonRenderer.jsx
 import React, { useState } from "react";
-import { useAudio } from "../../contexts/AudioContext";
+import { useModuleAudio } from "../../contexts/ModuleAudioContext";
 
 const LANG_LABELS = { en: "EN", hi: "हिं", hi_mix: "Hinglish" };
 
 export default function AudioLessonRenderer({ lesson, onComplete }) {
   const [lang, setLang] = useState("en");
-  const { play, pause, playing, src } = useAudio();
+  const { play, pause, playing, src } = useModuleAudio();
 
   const audioUrls = lesson.audio_urls || {};
   const url = audioUrls[lang] || audioUrls.en;
