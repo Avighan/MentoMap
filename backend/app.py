@@ -23277,12 +23277,79 @@ def _run_scheduler():
             except Exception as _e:
                 logger.warning(f"Leaderboard pop stats recompute failed: {_e}")
 
+        def _run_module_live_session_reminders():
+            """Every 15 minutes: find sessions starting in 24h±15m or 1h±15m,
+            push notifications to RSVPs. Also notifies RSVPs when a recording
+            URL is first added (one-shot)."""
+            try:
+                from datetime import datetime, timedelta, timezone
+                import cohort_live_sessions as _cls_sched
+                import notifications as _notif_sched
+                now = datetime.now(timezone.utc)
+                windows = [
+                    (timedelta(hours=24), "24h", "Your Mento live session starts tomorrow"),
+                    (timedelta(hours=1), "1h", "Starting in 1 hour — join link inside"),
+                ]
+                store = _cls_sched._load()
+                dirty = False
+                for key, sessions in store.items():
+                    try:
+                        cohort_id, module_id = key.split("__", 1)
+                    except ValueError:
+                        continue
+                    for s in sessions:
+                        if s.get("status") == "cancelled":
+                            continue
+                        try:
+                            ts = datetime.fromisoformat(s["scheduled_at"].replace("Z", "+00:00"))
+                        except (KeyError, ValueError):
+                            continue
+                        for delta, tag, headline in windows:
+                            target = ts - delta
+                            if abs((target - now).total_seconds()) <= 900:  # +/-15 min
+                                sent_flag = f"_notif_sent_{tag}"
+                                if s.get(sent_flag):
+                                    continue
+                                for uid in s.get("rsvps", []) or []:
+                                    try:
+                                        _notif_sched.create_notification(
+                                            user_id=uid,
+                                            notif_type="game_complete",
+                                            title=headline,
+                                            body=f"{s.get('title','')} - {s.get('host_name','')}",
+                                            action_url=s.get("meeting_url"),
+                                        )
+                                    except Exception:
+                                        pass
+                                s[sent_flag] = True
+                                dirty = True
+                        # Recording-uploaded notification (one-shot)
+                        if s.get("recording_url") and not s.get("_notif_sent_recording"):
+                            for uid in s.get("rsvps", []) or []:
+                                try:
+                                    _notif_sched.create_notification(
+                                        user_id=uid,
+                                        notif_type="game_complete",
+                                        title="Missed it? Watch the recording",
+                                        body=s.get("title", ""),
+                                        action_url=s["recording_url"],
+                                    )
+                                except Exception:
+                                    pass
+                            s["_notif_sent_recording"] = True
+                            dirty = True
+                if dirty:
+                    _cls_sched._save(store)
+            except Exception as _e:
+                logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
+
         _scheduler = BackgroundScheduler()
         _scheduler.add_job(_daily_streak_check, 'cron', hour=9, minute=0, id='streak_check')
         _scheduler.add_job(_daily_cleanup, 'cron', hour=2, minute=0, id='cleanup')
         _scheduler.add_job(_check_cohort_sessions, 'interval', minutes=10, id='cohort_sessions')
         _scheduler.add_job(_MULTIPLAYER_ENGINE.cleanup_stale_sessions, 'interval', minutes=5, id='multiplayer_cleanup', replace_existing=True)
         _scheduler.add_job(_recompute_leaderboard_pop_stats, 'cron', hour=3, minute=0, id='leaderboard_pop_stats', replace_existing=True)
+        _scheduler.add_job(_run_module_live_session_reminders, 'interval', minutes=15, id='live_session_reminders', replace_existing=True)
         _scheduler.start()
     except ImportError:
         pass  # APScheduler not installed, skip
