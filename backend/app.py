@@ -194,6 +194,16 @@ from routes.retention_routes import retention_bp
 app.register_blueprint(grader_bp)
 app.register_blueprint(retention_bp)
 
+# --- Phase A scaffolding: placeholder routes (Phase B/C work) ---
+from routes.module_pitch_coach import bp as _bp_pitch_coach
+from routes.module_interview_sim import bp as _bp_interview_sim
+from routes.module_skill_report import bp as _bp_skill_report
+from routes.module_idea_journal import bp as _bp_idea_journal
+from routes.cohort_live_sessions import bp as _bp_cohort_live
+
+for _bp in (_bp_pitch_coach, _bp_interview_sim, _bp_skill_report, _bp_idea_journal, _bp_cohort_live):
+    app.register_blueprint(_bp)
+
 # Add no-cache decorator to prevent browser caching
 def nocache(view):
     @wraps(view)
