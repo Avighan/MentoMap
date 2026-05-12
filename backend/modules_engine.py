@@ -1263,3 +1263,49 @@ def check_and_increment_usage(user_id: str, module_id: str, key: str, limit: int
         usage[key] = current + 1
         _save_progress(progress)
         return usage[key]
+
+
+# ---------- Phase C: module completion + certificate gating ----------
+
+def check_module_completion(user_id: str, module_id: str) -> Dict[str, Any]:
+    """Return {complete, certificate_eligible, percent, missing_lesson_ids}.
+
+    Eligibility: >=80% of required lessons complete AND all required weekly
+    quizzes attempted. Micro-quests and cohort live sessions are optional.
+    """
+    module = get_module(module_id) or {}
+    prog = get_user_progress(user_id, module_id) or {}
+    all_lessons = [
+        l for w in module.get("weeks", []) for l in w.get("lessons", [])
+    ]
+    required = [
+        l for l in all_lessons
+        if l.get("type") not in ("micro_quest", "cohort_live_session")
+    ]
+
+    def _lid(l: Dict[str, Any]) -> str:
+        return l.get("lesson_id") or l.get("id") or ""
+
+    done_ids = {
+        lid for lid, lp in (prog.get("lessons") or {}).items()
+        if isinstance(lp, dict) and lp.get("status") == "complete"
+    }
+    missing = [_lid(l) for l in required if _lid(l) not in done_ids]
+    percent = (
+        int(100 * (len(required) - len(missing)) / len(required))
+        if required else 0
+    )
+    # Count quizzes that have a score recorded
+    quiz_count = sum(
+        1 for q in (prog.get("quizzes") or {}).values()
+        if isinstance(q, dict) and q.get("score") is not None
+    )
+    required_quizzes = int(module.get("required_quizzes", 4))
+    eligible = percent >= 80 and quiz_count >= required_quizzes
+    return {
+        "complete": len(missing) == 0,
+        "certificate_eligible": eligible,
+        "percent": percent,
+        "missing_lesson_ids": missing,
+    }
+

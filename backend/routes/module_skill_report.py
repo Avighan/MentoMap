@@ -85,5 +85,35 @@ def card_png(module_id):
 
 
 @bp.get("/api/modules/<module_id>/certificate")
+@require_auth
 def certificate(module_id):
-    return jsonify({"error": "not_implemented", "phase": "C"}), 501
+    import modules_engine
+    from certificate import generate_certificate_html
+    from auth import get_user_by_username
+
+    user_id = _user_id()
+    status = modules_engine.check_module_completion(user_id, module_id)
+    if not status["certificate_eligible"]:
+        return jsonify({**status, "error": "module not complete"}), 409
+
+    try:
+        user = get_user_by_username(user_id) or {}
+    except Exception:
+        user = {}
+    module = modules_engine.get_module(module_id) or {}
+    player_name = (
+        user.get("display_name")
+        or user.get("username")
+        or user_id
+        or "Founder"
+    )
+    html = generate_certificate_html(
+        player_name=player_name,
+        game_title=module.get("title") or module_id,
+        game_theme="Entrepreneurship Workshop",
+        mento_score=100.0,
+        mento_rank="A",
+        badges=[],
+        run_id=module_id,
+    )
+    return html, 200, {"Content-Type": "text/html; charset=utf-8"}
