@@ -42,6 +42,7 @@ import CaseStudyCardRenderer from '../components/module/CaseStudyCardRenderer';
 import FailureCardRenderer from '../components/module/FailureCardRenderer';
 import CohortLiveSessionCard from '../components/module/CohortLiveSessionCard';
 import UnknownLessonRenderer from '../components/module/UnknownLessonRenderer';
+import IdeaJournalDrawer from '../components/module/IdeaJournalDrawer';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import CoinCounter from '../components/ui/CoinCounter';
@@ -641,6 +642,7 @@ export default function ModuleDetailPage() {
   const [fieldMissionCount, setFieldMissionCount] = useState(0);
   // Per-active-lesson quiz state — { passed, score, max_score, ratio, threshold }
   const [quizState, setQuizState] = useState(null);
+  const [journalOpen, setJournalOpen] = useState(false);
   const saveTimer = useRef(null);
 
   useEffect(() => {
@@ -1932,6 +1934,20 @@ export default function ModuleDetailPage() {
           </motion.aside>
         </div>
       )}
+
+      {/* Idea Journal — Phase C */}
+      <button
+        type="button"
+        onClick={() => setJournalOpen(true)}
+        className="fixed right-4 bottom-24 z-40 bg-amber-500 hover:bg-amber-600 text-white rounded-full shadow px-4 py-2 text-sm"
+      >
+        📒 Journal
+      </button>
+      <IdeaJournalDrawer
+        moduleId={moduleId}
+        open={journalOpen}
+        onClose={() => setJournalOpen(false)}
+      />
     </div>
   );
 }

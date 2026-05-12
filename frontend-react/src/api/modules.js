@@ -220,3 +220,29 @@ export const endInterview = async (moduleId, lessonId, convId) => {
   );
   return res.data;
 };
+
+// ---------- Idea Journal (Phase C) ----------
+
+export const listIdeaJournal = async (moduleId) => {
+  const res = await apiClient.get(`/api/modules/${moduleId}/idea-journal`);
+  return res.data;
+};
+
+export const addIdeaJournalEntry = async (moduleId, payload) => {
+  const res = await apiClient.post(
+    `/api/modules/${moduleId}/idea-journal`,
+    payload,
+  );
+  return res.data;
+};
+
+export const patchIdeaJournalEntry = async (moduleId, entryId, patch) => {
+  const res = await apiClient.patch(
+    `/api/modules/${moduleId}/idea-journal/${entryId}`,
+    patch,
+  );
+  return res.data;
+};
+
+export const ideaJournalExportUrl = (moduleId) =>
+  `/api/modules/${moduleId}/idea-journal/export`;
