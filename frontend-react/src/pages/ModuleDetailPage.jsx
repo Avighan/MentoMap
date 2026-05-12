@@ -34,6 +34,14 @@ import WorksheetRenderer from '../components/module/worksheets';
 import FieldMissionRenderer from '../components/module/FieldMissionRenderer';
 import VoiceLessonRenderer from '../components/module/VoiceLessonRenderer';
 import WorksheetRubricResult from '../components/module/WorksheetRubricResult';
+import AudioLessonRenderer from '../components/module/AudioLessonRenderer';
+import PitchCoachRenderer from '../components/module/PitchCoachRenderer';
+import InterviewSimRenderer from '../components/module/InterviewSimRenderer';
+import MicroQuestRenderer from '../components/module/MicroQuestRenderer';
+import CaseStudyCardRenderer from '../components/module/CaseStudyCardRenderer';
+import FailureCardRenderer from '../components/module/FailureCardRenderer';
+import CohortLiveSessionCard from '../components/module/CohortLiveSessionCard';
+import UnknownLessonRenderer from '../components/module/UnknownLessonRenderer';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import CoinCounter from '../components/ui/CoinCounter';
@@ -1534,6 +1542,43 @@ export default function ModuleDetailPage() {
                         When you finish the game, return here and click <strong>Mark complete</strong>.
                       </div>
                     </div>
+                  )}
+
+                  {activeLesson.type === 'audio_lesson' && (
+                    <AudioLessonRenderer lesson={activeLesson} onComplete={handleComplete} />
+                  )}
+
+                  {activeLesson.type === 'pitch_coach' && (
+                    <PitchCoachRenderer lesson={activeLesson} onComplete={handleComplete} />
+                  )}
+
+                  {activeLesson.type === 'interview_sim' && (
+                    <InterviewSimRenderer lesson={activeLesson} onComplete={handleComplete} />
+                  )}
+
+                  {activeLesson.type === 'micro_quest' && (
+                    <MicroQuestRenderer lesson={activeLesson} onComplete={handleComplete} />
+                  )}
+
+                  {activeLesson.type === 'case_study_card' && (
+                    <CaseStudyCardRenderer lesson={activeLesson} onComplete={handleComplete} />
+                  )}
+
+                  {activeLesson.type === 'failure_card' && (
+                    <FailureCardRenderer lesson={activeLesson} onComplete={handleComplete} />
+                  )}
+
+                  {activeLesson.type === 'cohort_live_session' && (
+                    <CohortLiveSessionCard lesson={activeLesson} />
+                  )}
+
+                  {![
+                    'lesson', 'worksheet', 'reflection', 'field_mission', 'voice_recording',
+                    'quiz', 'assessment', 'game',
+                    'audio_lesson', 'pitch_coach', 'interview_sim', 'micro_quest',
+                    'case_study_card', 'failure_card', 'cohort_live_session',
+                  ].includes(activeLesson.type) && (
+                    <UnknownLessonRenderer lesson={activeLesson} />
                   )}
                 </motion.div>
 

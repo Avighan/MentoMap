@@ -145,3 +145,78 @@ export const listMyCohortAssignedModules = async () => {
   const res = await apiClient.get('/api/modules/cohort-assigned');
   return res.data;
 };
+
+// ---------- Pitch Coach (Phase B) ----------
+
+export const submitPitchCoach = async (moduleId, lessonId, blob) => {
+  const fd = new FormData();
+  fd.append('audio', blob, 'pitch.webm');
+  try {
+    const res = await apiClient.post(
+      `/api/modules/${moduleId}/lessons/${lessonId}/pitch-coach`,
+      fd,
+    );
+    return res.data;
+  } catch (err) {
+    if (err?.response?.status === 429) {
+      const e = new Error('cap_reached');
+      e.code = 'cap_reached';
+      throw e;
+    }
+    throw err;
+  }
+};
+
+// ---------- Interview Sim (Phase B) ----------
+
+export const listInterviewPersonas = async (moduleId, lessonId) => {
+  const res = await apiClient.get(
+    `/api/modules/${moduleId}/lessons/${lessonId}/interview-sim/personas`,
+  );
+  return res.data;
+};
+
+export const startInterview = async (moduleId, lessonId, personaId) => {
+  try {
+    const res = await apiClient.post(
+      `/api/modules/${moduleId}/lessons/${lessonId}/interview-sim/start`,
+      { persona_id: personaId },
+    );
+    return res.data;
+  } catch (err) {
+    if (err?.response?.status === 429) {
+      const e = new Error('cap_reached');
+      e.code = 'cap_reached';
+      throw e;
+    }
+    throw err;
+  }
+};
+
+export const takeInterviewTurn = async (moduleId, lessonId, convId, blob) => {
+  const fd = new FormData();
+  fd.append('conv_id', convId);
+  fd.append('audio', blob, 'turn.webm');
+  try {
+    const res = await apiClient.post(
+      `/api/modules/${moduleId}/lessons/${lessonId}/interview-sim/turn`,
+      fd,
+    );
+    return res.data;
+  } catch (err) {
+    if (err?.response?.status === 429) {
+      const e = new Error('cap_reached');
+      e.code = 'cap_reached';
+      throw e;
+    }
+    throw err;
+  }
+};
+
+export const endInterview = async (moduleId, lessonId, convId) => {
+  const res = await apiClient.post(
+    `/api/modules/${moduleId}/lessons/${lessonId}/interview-sim/end`,
+    { conv_id: convId },
+  );
+  return res.data;
+};

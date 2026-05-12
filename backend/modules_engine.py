@@ -37,6 +37,34 @@ _MODULE_CACHE: Dict[str, Dict[str, Any]] = {}
 _MODULE_CACHE_MTIME: Dict[str, float] = {}
 
 
+# ---------- Lesson-type registry ----------
+# Lesson types known to the renderer. Unknown types are allowed (forward compat).
+_KNOWN_LESSON_TYPES = {
+    "lesson", "worksheet", "quiz", "field_mission", "reflection",
+    "game", "voice_recording", "assessment",
+    # New (Phase A):
+    "audio_lesson", "pitch_coach", "interview_sim", "micro_quest",
+    "case_study_card", "failure_card", "cohort_live_session",
+}
+
+
+def _validate_lesson_safe(lesson: dict) -> bool:
+    """Return True if lesson has minimum required fields.
+
+    Unknown ``type`` values are accepted for forward compatibility — the engine
+    treats them as generic lessons (no special branching logic).  Only lessons
+    that are missing ``lesson_id`` or ``type`` entirely are rejected.
+    """
+    if not isinstance(lesson, dict):
+        return False
+    if "lesson_id" not in lesson or "type" not in lesson:
+        return False
+    ltype = lesson["type"]
+    if ltype not in _KNOWN_LESSON_TYPES:
+        logger.debug("Unknown lesson type %r — treating as generic lesson (forward compat).", ltype)
+    return True
+
+
 # ---------- Generic JSON helpers ----------
 
 def _ensure_data_dir() -> None:
@@ -172,12 +200,20 @@ def list_modules(
 
 # ---------- Per-user progress ----------
 
+def _progress_file_path() -> str:
+    """Return the progress file path, honouring MODULE_PROGRESS_FILE env override (used in tests)."""
+    override = os.getenv("MODULE_PROGRESS_FILE")
+    if override:
+        return override
+    return PROGRESS_FILE
+
+
 def _load_progress() -> Dict[str, Any]:
-    return _safe_load_json(PROGRESS_FILE, {"users": {}})
+    return _safe_load_json(_progress_file_path(), {"users": {}})
 
 
 def _save_progress(data: Dict[str, Any]) -> None:
-    _safe_write_json(PROGRESS_FILE, data)
+    _safe_write_json(_progress_file_path(), data)
 
 
 def _empty_progress(module_id: str) -> Dict[str, Any]:
@@ -1154,3 +1190,41 @@ def get_cohort_progress(cohort_id: str, module_id: str, student_user_ids: List[s
         "average_percent": round(sum_pct / n) if rows else 0,
         "rows": rows,
     }
+
+
+# ---------- Usage-cap enforcement ----------
+
+class UsageLimitExceeded(Exception):
+    """Raised when a usage-limited feature exceeds its cap."""
+
+
+def check_and_increment_usage(user_id: str, module_id: str, key: str, limit: int) -> int:
+    """Atomic increment of progress[users][user_id][module_id].usage[key].
+
+    Raises UsageLimitExceeded if the current count is already >= limit.
+
+    Args:
+        user_id: User identifier.
+        module_id: Module identifier.
+        key: Usage counter key (e.g. "pitch_coach_runs").
+        limit: Maximum allowed count (inclusive). Raises when current >= limit.
+
+    Returns:
+        New incremented count.
+
+    Note:
+        Atomicity is enforced within a single process via ``_FILE_LOCK``.
+        Inter-process safety is not guaranteed (JSON file storage limitation).
+    """
+    with _FILE_LOCK:
+        progress = _load_progress()
+        user_prog = progress.setdefault("users", {}).setdefault(user_id, {}).setdefault(module_id, {})
+        usage = user_prog.setdefault("usage", {})
+        current = usage.get(key, 0)
+        if current >= limit:
+            raise UsageLimitExceeded(
+                f"{key} limit {limit} reached for {user_id}/{module_id}"
+            )
+        usage[key] = current + 1
+        _save_progress(progress)
+        return usage[key]

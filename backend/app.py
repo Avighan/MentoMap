@@ -194,6 +194,16 @@ from routes.retention_routes import retention_bp
 app.register_blueprint(grader_bp)
 app.register_blueprint(retention_bp)
 
+# --- Phase A scaffolding: placeholder routes (Phase B/C work) ---
+from routes.module_pitch_coach import bp as _bp_pitch_coach
+from routes.module_interview_sim import bp as _bp_interview_sim
+from routes.module_skill_report import bp as _bp_skill_report
+from routes.module_idea_journal import bp as _bp_idea_journal
+from routes.cohort_live_sessions import bp as _bp_cohort_live
+
+for _bp in (_bp_pitch_coach, _bp_interview_sim, _bp_skill_report, _bp_idea_journal, _bp_cohort_live):
+    app.register_blueprint(_bp)
+
 # Add no-cache decorator to prevent browser caching
 def nocache(view):
     @wraps(view)
@@ -9534,6 +9544,21 @@ def admin_update_user_role(user_id):
     user["role"] = new_role
     _save_users(users)
     return jsonify({"message": f"User {user_id} role updated to {new_role}", "user": {"id": user["id"], "username": user["username"], "role": new_role}})
+
+
+# ---------- Module images (self-hosted) ----------
+@app.get("/static/module_images/<path:path>")
+def serve_module_images(path):
+    """Serve self-hosted module hero images from backend/assets/module_images/."""
+    import os as _os
+    assets_dir = _os.path.realpath(
+        _os.path.join(_os.path.dirname(__file__), "assets", "module_images")
+    )
+    requested = _os.path.realpath(_os.path.join(assets_dir, path))
+    # Path traversal guard
+    if not requested.startswith(assets_dir + _os.sep) and requested != assets_dir:
+        return jsonify({"error": "Forbidden"}), 403
+    return send_from_directory(assets_dir, path)
 
 
 # ---------- Static files ----------
