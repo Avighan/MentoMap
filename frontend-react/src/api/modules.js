@@ -264,3 +264,43 @@ export const getModuleCertificate = async (moduleId) => {
 
 export const moduleCertificateUrl = (moduleId) =>
   `/api/modules/${moduleId}/certificate`;
+
+// ---------- Phase C: cohort live sessions ----------
+
+export const listCohortLiveSessions = async (cohortId, moduleId) => {
+  const res = await apiClient.get(
+    `/api/cohorts/${cohortId}/modules/${moduleId}/live-sessions`,
+  );
+  return res.data;
+};
+
+export const createCohortLiveSession = async (cohortId, moduleId, payload) => {
+  const res = await apiClient.post(
+    `/api/cohorts/${cohortId}/modules/${moduleId}/live-sessions`,
+    payload,
+  );
+  return res.data;
+};
+
+export const updateCohortLiveSession = async (cohortId, moduleId, sessionId, patch) => {
+  const res = await apiClient.patch(
+    `/api/cohorts/${cohortId}/modules/${moduleId}/live-sessions/${sessionId}`,
+    patch,
+  );
+  return res.data;
+};
+
+export const deleteCohortLiveSession = async (cohortId, moduleId, sessionId) => {
+  const res = await apiClient.delete(
+    `/api/cohorts/${cohortId}/modules/${moduleId}/live-sessions/${sessionId}`,
+  );
+  return res.data;
+};
+
+export const rsvpCohortLiveSession = async (cohortId, moduleId, sessionId, attending) => {
+  const res = await apiClient.post(
+    `/api/cohorts/${cohortId}/modules/${moduleId}/live-sessions/${sessionId}/rsvp`,
+    { attending },
+  );
+  return res.data;
+};

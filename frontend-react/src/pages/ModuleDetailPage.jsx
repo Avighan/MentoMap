@@ -652,7 +652,7 @@ function RailCard({ title, icon, children }) {
 export default function ModuleDetailPage() {
   const { moduleId } = useParams();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const { t } = useTranslation();
 
   const [module, setModule] = useState(null);
@@ -1239,6 +1239,17 @@ export default function ModuleDetailPage() {
                 style={{ width: `${summaryPct}%`, background: '#fff' }} />
             </div>
           </div>
+
+          {/* Phase C: cohort live-session banner (only when user is in a cohort) */}
+          {user?.cohort_id && (
+            <div className="mt-3">
+              <CohortLiveSessionCard
+                cohortId={user.cohort_id}
+                moduleId={moduleId}
+                currentUserId={user.user_id || user.id || user.username}
+              />
+            </div>
+          )}
 
           {/* Phase C: streak + milestone badges */}
           <div className="mt-2 flex flex-wrap items-center gap-2">
