@@ -611,7 +611,24 @@ def save_worksheet(
         prog["last_active_at"] = _now_iso()
         user_block[module_id] = prog
         _save_progress(data)
-        return prog["worksheets"][lesson_id]
+    # Phase C: auto-append to Idea Journal
+    try:
+        import idea_journal as _ij
+        module = get_module(module_id) or {}
+        lesson = next(
+            (l for w in module.get("weeks", []) for l in w.get("lessons", []) if l.get("id") == lesson_id),
+            None,
+        )
+        _ij.append_entry(user_id, module_id, {
+            "lesson_id": lesson_id,
+            "lesson_title": (lesson or {}).get("title"),
+            "content": json.dumps(answers, ensure_ascii=False)[:2000],
+            "type": "worksheet",
+        })
+    except Exception:
+        # Journal must never block worksheet save.
+        pass
+    return prog["worksheets"][lesson_id]
 
 
 def _moderate_field_mission_text(entry: Dict[str, Any]) -> Optional[Dict[str, Any]]:
