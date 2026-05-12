@@ -246,3 +246,21 @@ export const patchIdeaJournalEntry = async (moduleId, entryId, patch) => {
 
 export const ideaJournalExportUrl = (moduleId) =>
   `/api/modules/${moduleId}/idea-journal/export`;
+
+// ---------- Phase C: skill report + share card + certificate ----------
+
+export const getModuleSkillReport = async (moduleId) => {
+  const res = await apiClient.get(`/api/modules/${moduleId}/skill-report`);
+  return res.data;
+};
+
+export const moduleShareCardUrl = (moduleId) =>
+  `/api/modules/${moduleId}/skill-report/card.png`;
+
+export const getModuleCertificate = async (moduleId) => {
+  const res = await apiClient.get(`/api/modules/${moduleId}/certificate`);
+  return res.data;
+};
+
+export const moduleCertificateUrl = (moduleId) =>
+  `/api/modules/${moduleId}/certificate`;

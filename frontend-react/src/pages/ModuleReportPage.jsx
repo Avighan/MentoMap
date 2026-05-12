@@ -12,7 +12,19 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaArrowLeft, FaCheckCircle, FaClock, FaTrophy, FaBolt } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
-import { getModuleReport, getModuleReportV2 } from '../api/modules';
+import { getModuleReport, getModuleReportV2, getModuleSkillReport } from '../api/modules';
+import ShareCardActions from '../components/module/ShareCardActions';
+
+const DIM_LABELS_FULL = {
+  strategic_thinking: 'Strategic Thinking',
+  creativity: 'Creativity',
+  empathy: 'Empathy',
+  communication: 'Communication',
+  resilience: 'Resilience',
+  adaptability: 'Adaptability',
+  risk_tolerance: 'Risk Tolerance',
+  delayed_gratification: 'Delayed Gratification',
+};
 
 const C = {
   primary: '#F59E0B',
@@ -67,6 +79,7 @@ export default function ModuleReportPage() {
   const { t: i18n } = useTranslation();
   const [report, setReport] = useState(null);
   const [reportV2, setReportV2] = useState(null);
+  const [skillReport, setSkillReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -74,13 +87,15 @@ export default function ModuleReportPage() {
     let cancel = false;
     (async () => {
       try {
-        const [v1, v2] = await Promise.all([
+        const [v1, v2, sk] = await Promise.all([
           getModuleReport(moduleId),
           getModuleReportV2(moduleId).catch(() => null),
+          getModuleSkillReport(moduleId).catch(() => null),
         ]);
         if (!cancel) {
           setReport(v1);
           setReportV2(v2);
+          setSkillReport(sk);
         }
       } catch (e) {
         if (!cancel) setError(e.response?.data?.error || e.message);
@@ -327,6 +342,64 @@ export default function ModuleReportPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Skill scores (Phase C) */}
+        {skillReport?.dimensions && (
+          <div className="rounded-2xl p-4 md:p-5 mb-5"
+            style={{ background: C.card, border: `1.5px solid ${C.borderWarm}` }}>
+            <h3 className="text-sm font-black uppercase tracking-wider mb-3" style={{ color: C.primaryDark }}>
+              🧭 Skill Scores
+            </h3>
+            <div className="space-y-2">
+              {Object.entries(skillReport.dimensions).map(([k, v]) => (
+                <div key={k}>
+                  <div className="flex justify-between text-xs mb-1">
+                    <span style={{ color: C.text }}>{DIM_LABELS_FULL[k] || k}</span>
+                    <span className="font-bold" style={{ color: C.textMid }}>{v}</span>
+                  </div>
+                  <div className="h-2 rounded-full overflow-hidden" style={{ background: '#F1F5F9' }}>
+                    <div className="h-full rounded-full"
+                      style={{
+                        width: `${Math.max(0, Math.min(100, v))}%`,
+                        background: `linear-gradient(90deg, ${C.primary}, ${C.primaryDark})`,
+                      }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            {skillReport.highlights?.length > 0 && (
+              <div className="mt-4">
+                <div className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: C.textMid }}>
+                  Highlights
+                </div>
+                <ul className="list-disc pl-5 space-y-0.5 text-xs" style={{ color: C.text }}>
+                  {skillReport.highlights.map((h) => <li key={h.dimension}>{h.label}</li>)}
+                </ul>
+              </div>
+            )}
+            {skillReport.recommendations?.length > 0 && (
+              <div className="mt-4">
+                <div className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: C.textMid }}>
+                  Try next
+                </div>
+                <ul className="space-y-1 text-xs">
+                  {skillReport.recommendations.map((r) => (
+                    <li key={r.module_id}>
+                      <a className="font-semibold underline" style={{ color: C.indigo }}
+                        href={`/modules/${r.module_id}`}>{r.title}</a>
+                      <span style={{ color: C.textMid }}> — to grow your {r.because_of.replace(/_/g, ' ')}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Parent-shareable card (Phase C) */}
+        <div className="mb-5">
+          <ShareCardActions moduleId={moduleId} />
         </div>
 
         {/* Footer actions */}
