@@ -571,6 +571,24 @@ def complete_lesson(
 
         user_block[module_id] = prog
         _save_progress(data)
+
+        # Phase C: seed any flashcards declared on the lesson into SR
+        try:
+            import spaced_repetition as _sr
+            lesson_obj = next(
+                (
+                    l
+                    for w in module.get("weeks", [])
+                    for l in w.get("lessons", [])
+                    if l.get("lesson_id") == lesson_id or l.get("id") == lesson_id
+                ),
+                None,
+            )
+            for card in (lesson_obj or {}).get("flashcards", []) or []:
+                _sr.schedule_flashcard(user_id, module_id, lesson_id, card)
+        except Exception:
+            pass
+
         return prog
 
 
