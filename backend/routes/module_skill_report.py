@@ -40,8 +40,48 @@ def report(module_id):
 
 
 @bp.get("/api/modules/<module_id>/skill-report/card.png")
+@require_auth
 def card_png(module_id):
-    return jsonify({"error": "not_implemented", "phase": "C"}), 501
+    from flask import Response
+    from share_card import render_card
+    from module_skill_report import build_report
+    from auth import get_user_by_username
+
+    user_id = _user_id()
+    # Resolve display name (auth.get_user_by_username returns the user record).
+    user = {}
+    try:
+        user = get_user_by_username(user_id) or {}
+    except Exception:
+        user = {}
+    name_source = (
+        user.get("display_name") or user.get("username") or user_id or "Founder"
+    )
+    name = str(name_source).split()[0] if name_source else "Founder"
+    age = user.get("age") if isinstance(user, dict) else None
+    report = build_report(user_id, module_id, runs=[])
+    dims = report.get("dimensions") or {}
+    if dims:
+        top_k, top_v = sorted(dims.items(), key=lambda x: -x[1])[0]
+    else:
+        top_k, top_v = "strategic_thinking", 50
+    headline = (
+        f"{name} finished {report['module_title']}. "
+        f"They scored {top_v} on {top_k.replace('_', ' ')}."
+    )
+    png = render_card(
+        first_name=name,
+        age=age,
+        module_title=report["module_title"],
+        dimensions=dims,
+        headline=headline,
+        cohort=user.get("cohort_name") if isinstance(user, dict) else None,
+    )
+    return Response(
+        png,
+        mimetype="image/png",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 @bp.get("/api/modules/<module_id>/certificate")
