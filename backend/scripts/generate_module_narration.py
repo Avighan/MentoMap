@@ -19,9 +19,9 @@ from typing import List, Optional
 # Optional LLM import (per Phase A convention)
 # ---------------------------------------------------------------------------
 try:
-    from llm import call_llm  # type: ignore
+    from llm import llm_call  # type: ignore
 except ImportError:
-    call_llm = None  # type: ignore
+    llm_call = None  # type: ignore
 
 # ---------------------------------------------------------------------------
 # Optional TTS import
@@ -84,14 +84,21 @@ def build_script(lesson: dict, lang: str = "en") -> str:
         return base
 
     # Hindi / Hinglish — attempt LLM translation, fall back to English
-    if lang in ("hi", "hi_mix") and call_llm is not None:
+    if lang in ("hi", "hi_mix") and llm_call is not None:
         try:
             lang_label = "Hindi" if lang == "hi" else "Hinglish (Hindi-English mix)"
             prompt = (
                 f"Translate the following educational narration script into {lang_label}. "
                 f"Return only the translated text, no extra commentary.\n\n{base}"
             )
-            result = call_llm(prompt)
+            result = llm_call(
+                system_prompt="You are a translator producing natural classroom narration for Indian 12-year-old students.",
+                user_prompt=prompt,
+                response_json=False,
+                temperature=0.4,
+                max_tokens=600,
+                purpose="module_narration_translate",
+            )
             if result and result.strip():
                 return result.strip()
         except Exception as exc:  # noqa: BLE001
@@ -127,56 +134,57 @@ def generate_for_module(
     with module_path.open(encoding="utf-8") as fh:
         module_data: dict = json.load(fh)
 
-    lessons: List[dict] = module_data.get("lessons", [])
+    weeks: List[dict] = module_data.get("weeks", [])
     changed = False
 
-    for lesson in lessons:
-        lesson_type = lesson.get("type", "")
-        if lesson_type not in _NARRATED_TYPES:
-            continue
-
-        lesson_id: str = lesson.get("lesson_id") or lesson.get("id", "unknown")
-        audio_urls: dict = lesson.get("audio_urls", {})
-
-        for lang in langs:
-            out_path = _AUDIO_ROOT / module_id / lesson_id / f"{lang}.mp3"
-            static_url = f"/static/audio/module/{module_id}/{lesson_id}/{lang}.mp3"
-
-            # Always record URL regardless of synthesis
-            if out_path.exists():
-                audio_urls[lang] = static_url
+    for week in weeks:
+        for lesson in week.get("lessons", []):
+            lesson_type = lesson.get("type", "")
+            if lesson_type not in _NARRATED_TYPES:
                 continue
 
-            script = build_script(lesson, lang=lang)
-            if not script:
-                logger.warning(
-                    "Empty script for lesson=%s lang=%s — skipping.", lesson_id, lang
-                )
-                continue
+            lesson_id: str = lesson.get("lesson_id") or lesson.get("id", "unknown")
+            audio_urls: dict = lesson.get("audio_urls", {})
 
-            if synthesize is None:
-                logger.warning(
-                    "TTS service unavailable — cannot synthesize lesson=%s lang=%s.",
-                    lesson_id, lang,
-                )
-                continue
+            for lang in langs:
+                out_path = _AUDIO_ROOT / module_id / lesson_id / f"{lang}.mp3"
+                static_url = f"/static/audio/module/{module_id}/{lesson_id}/{lang}.mp3"
 
-            try:
-                out_path.parent.mkdir(parents=True, exist_ok=True)
-                audio_bytes = synthesize(script, provider=provider, lang=lang)
-                tmp = out_path.with_suffix(".tmp")
-                tmp.write_bytes(audio_bytes)
-                tmp.replace(out_path)
-                audio_urls[lang] = static_url
-                logger.info("Synthesised %s", out_path)
-            except Exception as exc:  # noqa: BLE001
-                logger.error(
-                    "Synthesis failed for lesson=%s lang=%s: %s", lesson_id, lang, exc
-                )
+                # Always record URL regardless of synthesis
+                if out_path.exists():
+                    audio_urls[lang] = static_url
+                    continue
 
-        if audio_urls:
-            lesson["audio_urls"] = audio_urls
-            changed = True
+                script = build_script(lesson, lang=lang)
+                if not script:
+                    logger.warning(
+                        "Empty script for lesson=%s lang=%s — skipping.", lesson_id, lang
+                    )
+                    continue
+
+                if synthesize is None:
+                    logger.warning(
+                        "TTS service unavailable — cannot synthesize lesson=%s lang=%s.",
+                        lesson_id, lang,
+                    )
+                    continue
+
+                try:
+                    out_path.parent.mkdir(parents=True, exist_ok=True)
+                    audio_bytes = synthesize(script, provider=provider, lang=lang)
+                    tmp = out_path.with_suffix(".tmp")
+                    tmp.write_bytes(audio_bytes)
+                    tmp.replace(out_path)
+                    audio_urls[lang] = static_url
+                    logger.info("Synthesised %s", out_path)
+                except Exception as exc:  # noqa: BLE001
+                    logger.error(
+                        "Synthesis failed for lesson=%s lang=%s: %s", lesson_id, lang, exc
+                    )
+
+            if audio_urls:
+                lesson["audio_urls"] = audio_urls
+                changed = True
 
     if changed:
         with module_path.open("w", encoding="utf-8") as fh:
