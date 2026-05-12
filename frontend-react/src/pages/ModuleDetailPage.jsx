@@ -1559,7 +1559,7 @@ export default function ModuleDetailPage() {
                   )}
 
                   {activeLesson.type === 'micro_quest' && (
-                    <MicroQuestRenderer lesson={activeLesson} onComplete={handleComplete} />
+                    <MicroQuestRenderer lesson={activeLesson} moduleId={moduleId} onComplete={handleComplete} />
                   )}
 
                   {activeLesson.type === 'case_study_card' && (
