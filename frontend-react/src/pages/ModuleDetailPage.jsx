@@ -30,6 +30,34 @@ import {
   saveLesson,
   completeLesson,
 } from '../api/modules';
+import { getStreak } from '../api/profile';
+
+// Phase C: milestone badges (one per week of the entrepreneur module).
+const MODULE_BADGES = [
+  { week: 1, icon: '🌱', label: 'Idea Validator' },
+  { week: 2, icon: '🔍', label: 'Problem Detective' },
+  { week: 3, icon: '🎤', label: 'Pitch Builder' },
+  { week: 4, icon: '🚀', label: 'Founder' },
+];
+
+function isWeekEarned(progress, moduleObj, weekIdx) {
+  const week = moduleObj?.weeks?.[weekIdx - 1];
+  if (!week) return false;
+  const lessons = week.lessons || [];
+  const required = lessons.filter(
+    (l) => l.type !== 'micro_quest' && l.type !== 'cohort_live_session',
+  );
+  if (required.length === 0) return false;
+  const lessonProgress = progress?.lessons || {};
+  const done = required.filter((l) => {
+    const lid = l.lesson_id || l.id;
+    return lessonProgress[lid]?.status === 'complete';
+  }).length;
+  const quizzes = progress?.quizzes || {};
+  const quiz = quizzes[`w${weekIdx}_quiz`] || (week.quiz_id ? quizzes[week.quiz_id] : null);
+  const quizOk = !!quiz?.score && quiz.score >= 60;
+  return done / required.length >= 0.8 && quizOk;
+}
 import WorksheetRenderer from '../components/module/worksheets';
 import FieldMissionRenderer from '../components/module/FieldMissionRenderer';
 import VoiceLessonRenderer from '../components/module/VoiceLessonRenderer';
@@ -42,6 +70,7 @@ import CaseStudyCardRenderer from '../components/module/CaseStudyCardRenderer';
 import FailureCardRenderer from '../components/module/FailureCardRenderer';
 import CohortLiveSessionCard from '../components/module/CohortLiveSessionCard';
 import UnknownLessonRenderer from '../components/module/UnknownLessonRenderer';
+import IdeaJournalDrawer from '../components/module/IdeaJournalDrawer';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import CoinCounter from '../components/ui/CoinCounter';
@@ -623,7 +652,7 @@ function RailCard({ title, icon, children }) {
 export default function ModuleDetailPage() {
   const { moduleId } = useParams();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const { t } = useTranslation();
 
   const [module, setModule] = useState(null);
@@ -641,6 +670,22 @@ export default function ModuleDetailPage() {
   const [fieldMissionCount, setFieldMissionCount] = useState(0);
   // Per-active-lesson quiz state — { passed, score, max_score, ratio, threshold }
   const [quizState, setQuizState] = useState(null);
+  const [journalOpen, setJournalOpen] = useState(false);
+  const [streakDays, setStreakDays] = useState(0);
+
+  // Phase C: streak chip for the module hero.
+  useEffect(() => {
+    let cancel = false;
+    (async () => {
+      try {
+        const s = await getStreak();
+        if (!cancel) setStreakDays(Number(s?.streak_days || 0));
+      } catch (_) {
+        // streak is decorative; ignore errors
+      }
+    })();
+    return () => { cancel = true; };
+  }, []);
   const saveTimer = useRef(null);
 
   useEffect(() => {
@@ -1194,6 +1239,43 @@ export default function ModuleDetailPage() {
                 style={{ width: `${summaryPct}%`, background: '#fff' }} />
             </div>
           </div>
+
+          {/* Phase C: cohort live-session banner (only when user is in a cohort) */}
+          {user?.cohort_id && (
+            <div className="mt-3">
+              <CohortLiveSessionCard
+                cohortId={user.cohort_id}
+                moduleId={moduleId}
+                currentUserId={user.user_id || user.id || user.username}
+              />
+            </div>
+          )}
+
+          {/* Phase C: streak + milestone badges */}
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {streakDays > 0 && (
+              <span className="bg-amber-100 text-amber-900 rounded-full px-3 py-1 text-xs font-semibold">
+                🔥 {streakDays}-day streak
+              </span>
+            )}
+            {MODULE_BADGES.map((b) => {
+              const earned = isWeekEarned(progress, module, b.week);
+              return (
+                <span
+                  key={b.week}
+                  title={`Week ${b.week}: ${b.label}`}
+                  className={
+                    'rounded-full px-3 py-1 text-xs border ' +
+                    (earned
+                      ? 'bg-yellow-100 text-yellow-900 border-yellow-300 font-semibold'
+                      : 'bg-slate-50 text-slate-400 border-slate-200')
+                  }
+                >
+                  {b.icon} {b.label}
+                </span>
+              );
+            })}
+          </div>
         </div>
       </header>
 
@@ -1557,7 +1639,7 @@ export default function ModuleDetailPage() {
                   )}
 
                   {activeLesson.type === 'micro_quest' && (
-                    <MicroQuestRenderer lesson={activeLesson} onComplete={handleComplete} />
+                    <MicroQuestRenderer lesson={activeLesson} moduleId={moduleId} onComplete={handleComplete} />
                   )}
 
                   {activeLesson.type === 'case_study_card' && (
@@ -1932,6 +2014,20 @@ export default function ModuleDetailPage() {
           </motion.aside>
         </div>
       )}
+
+      {/* Idea Journal — Phase C */}
+      <button
+        type="button"
+        onClick={() => setJournalOpen(true)}
+        className="fixed right-4 bottom-24 z-40 bg-amber-500 hover:bg-amber-600 text-white rounded-full shadow px-4 py-2 text-sm"
+      >
+        📒 Journal
+      </button>
+      <IdeaJournalDrawer
+        moduleId={moduleId}
+        open={journalOpen}
+        onClose={() => setJournalOpen(false)}
+      />
     </div>
   );
 }

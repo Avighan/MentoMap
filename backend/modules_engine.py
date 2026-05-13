@@ -290,6 +290,16 @@ def list_user_modules(user_id: str) -> Dict[str, Dict[str, Any]]:
     return data.get("users", {}).get(str(user_id), {})
 
 
+def list_all_module_progress(module_id: str) -> Dict[str, Dict[str, Any]]:
+    """Return {user_id: progress_dict} for all users with progress on this module."""
+    data = _load_progress()
+    out: Dict[str, Dict[str, Any]] = {}
+    for user_id, modules in (data.get("users") or {}).items():
+        if module_id in (modules or {}):
+            out[user_id] = modules[module_id]
+    return out
+
+
 def start_module(user_id: str, module_id: str) -> Dict[str, Any]:
     """Initialize progress on first start. Idempotent."""
     module = get_module(module_id)
@@ -571,6 +581,24 @@ def complete_lesson(
 
         user_block[module_id] = prog
         _save_progress(data)
+
+        # Phase C: seed any flashcards declared on the lesson into SR
+        try:
+            import spaced_repetition as _sr
+            lesson_obj = next(
+                (
+                    l
+                    for w in module.get("weeks", [])
+                    for l in w.get("lessons", [])
+                    if l.get("lesson_id") == lesson_id or l.get("id") == lesson_id
+                ),
+                None,
+            )
+            for card in (lesson_obj or {}).get("flashcards", []) or []:
+                _sr.schedule_flashcard(user_id, module_id, lesson_id, card)
+        except Exception:
+            pass
+
         return prog
 
 
@@ -611,7 +639,24 @@ def save_worksheet(
         prog["last_active_at"] = _now_iso()
         user_block[module_id] = prog
         _save_progress(data)
-        return prog["worksheets"][lesson_id]
+    # Phase C: auto-append to Idea Journal
+    try:
+        import idea_journal as _ij
+        module = get_module(module_id) or {}
+        lesson = next(
+            (l for w in module.get("weeks", []) for l in w.get("lessons", []) if l.get("id") == lesson_id),
+            None,
+        )
+        _ij.append_entry(user_id, module_id, {
+            "lesson_id": lesson_id,
+            "lesson_title": (lesson or {}).get("title"),
+            "content": json.dumps(answers, ensure_ascii=False)[:2000],
+            "type": "worksheet",
+        })
+    except Exception:
+        # Journal must never block worksheet save.
+        pass
+    return prog["worksheets"][lesson_id]
 
 
 def _moderate_field_mission_text(entry: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -1228,3 +1273,49 @@ def check_and_increment_usage(user_id: str, module_id: str, key: str, limit: int
         usage[key] = current + 1
         _save_progress(progress)
         return usage[key]
+
+
+# ---------- Phase C: module completion + certificate gating ----------
+
+def check_module_completion(user_id: str, module_id: str) -> Dict[str, Any]:
+    """Return {complete, certificate_eligible, percent, missing_lesson_ids}.
+
+    Eligibility: >=80% of required lessons complete AND all required weekly
+    quizzes attempted. Micro-quests and cohort live sessions are optional.
+    """
+    module = get_module(module_id) or {}
+    prog = get_user_progress(user_id, module_id) or {}
+    all_lessons = [
+        l for w in module.get("weeks", []) for l in w.get("lessons", [])
+    ]
+    required = [
+        l for l in all_lessons
+        if l.get("type") not in ("micro_quest", "cohort_live_session")
+    ]
+
+    def _lid(l: Dict[str, Any]) -> str:
+        return l.get("lesson_id") or l.get("id") or ""
+
+    done_ids = {
+        lid for lid, lp in (prog.get("lessons") or {}).items()
+        if isinstance(lp, dict) and lp.get("status") == "complete"
+    }
+    missing = [_lid(l) for l in required if _lid(l) not in done_ids]
+    percent = (
+        int(100 * (len(required) - len(missing)) / len(required))
+        if required else 0
+    )
+    # Count quizzes that have a score recorded
+    quiz_count = sum(
+        1 for q in (prog.get("quizzes") or {}).values()
+        if isinstance(q, dict) and q.get("score") is not None
+    )
+    required_quizzes = int(module.get("required_quizzes", 4))
+    eligible = percent >= 80 and quiz_count >= required_quizzes
+    return {
+        "complete": len(missing) == 0,
+        "certificate_eligible": eligible,
+        "percent": percent,
+        "missing_lesson_ids": missing,
+    }
+
