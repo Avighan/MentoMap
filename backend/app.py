@@ -15548,6 +15548,7 @@ def api_update_profile():
         social=data.get("social"),
         onboarding_complete=data.get("onboarding_complete"),
         baseline_skipped=data.get("baseline_skipped"),
+        preferences=data.get("preferences"),
     )
     return jsonify(result)
 
