@@ -1,0 +1,1287 @@
+{
+  "game_id": "mumbai-manufacturer-inventory",
+  "game_type": "rounds",
+  "title": "🏭 The Mumbai Manufacturer",
+  "theme": "Master inventory strategy at a real Indian auto components manufacturer",
+  "icon": "🏭",
+  "description": "You are Rohan Mehta, COO of Mumbai Motors Pvt. Ltd. — a mid-sized auto components manufacturer in Chakan, Pune supplying crankshafts to Tata Motors, Bajaj Auto, and Mahindra & Mahindra. Navigate 7 strategic quarters and 4 unexpected crises using EOQ, JIT, MRP, and Safety Stock. Every inventory decision ripples through cash flow, customer relationships, and company reputation.",
+  "how_to_play": {
+    "title": "How to Play",
+    "steps": [
+      "Read each quarterly scenario as Rohan Mehta, COO of Mumbai Motors",
+      "Choose your inventory or production strategy from 4 options (A–D)",
+      "Watch how each decision affects Cash, Inventory, Customer Satisfaction, and Reputation",
+      "Navigate 4 unexpected crisis events that appear between rounds",
+      "Maximize your final score across Financial, Operational, Customer, and Strategic dimensions"
+    ],
+    "tips": [
+      "EOQ is mathematically optimal but assumes steady demand — be cautious when demand signals conflict",
+      "JIT saves working capital but has zero buffer for disruptions",
+      "Safety Stock protects against stockouts but ties up cash",
+      "Every crisis has a 'right' answer — prioritize long-term reputation over short-term cash savings"
+    ]
+  },
+  "target_audience": "MBA Students",
+  "age_category": "adults",
+  "duration_minutes": 55,
+  "difficulty": "advanced",
+  "learning_objectives": [
+    "Master core inventory models: EOQ, JIT, MRP, and Safety Stock — and when to apply each",
+    "Identify and mitigate the Bullwhip Effect in multi-tier supply chains",
+    "Apply production planning strategies under demand-supply variability",
+    "Calculate and optimize holding, ordering, stockout, and setup costs using the total cost perspective",
+    "Develop crisis management skills under supply disruption, quality failures, and commodity price shocks",
+    "Make strategic capital allocation decisions balancing short-term cash and long-term competitive advantage"
+  ],
+  "cultural_context": "India",
+  "nep_stage": "Higher Education",
+  "tags": ["supply-chain", "inventory", "operations", "MBA", "manufacturing", "India", "EOQ", "JIT", "MRP"],
+  "domain": "Operations Management",
+  "psychological_framework": {
+    "core_skills": [
+      {"id": "strategic_thinking", "name": "Strategic Thinking", "icon": "🧠", "brain_region": "prefrontal_cortex"},
+      {"id": "risk_tolerance", "name": "Risk Tolerance", "icon": "🎲", "brain_region": "parietal_lobe"},
+      {"id": "delayed_gratification", "name": "Delayed Gratification", "icon": "⏳", "brain_region": "parietal_lobe"},
+      {"id": "adaptability", "name": "Adaptability", "icon": "🦎", "brain_region": "prefrontal_cortex"},
+      {"id": "resilience", "name": "Resilience", "icon": "💪", "brain_region": "prefrontal_cortex"},
+      {"id": "ethical_reasoning", "name": "Ethical Reasoning", "icon": "⚖️", "brain_region": "prefrontal_cortex"}
+    ]
+  },
+  "dimension_scoring_weights": {
+    "strategic_thinking": 0.25,
+    "risk_tolerance": 0.15,
+    "delayed_gratification": 0.15,
+    "adaptability": 0.20,
+    "resilience": 0.15,
+    "ethical_reasoning": 0.10
+  },
+  "initial_state": {
+    "cash_lakhs": {
+      "icon": "💰",
+      "label": "Cash (₹ Lakhs)",
+      "value": 500,
+      "min": -500,
+      "max": 2000
+    },
+    "inventory": {
+      "icon": "📦",
+      "label": "Inventory (units)",
+      "value": 500,
+      "min": 0,
+      "max": 25000
+    },
+    "customer_satisfaction": {
+      "icon": "😊",
+      "label": "Customer Satisfaction",
+      "value": 85,
+      "min": 0,
+      "max": 100
+    },
+    "reputation": {
+      "icon": "⭐",
+      "label": "Company Reputation",
+      "value": 75,
+      "min": 0,
+      "max": 100
+    },
+    "working_capital_efficiency": {
+      "icon": "📊",
+      "label": "Working Capital Efficiency",
+      "value": 70,
+      "min": 0,
+      "max": 100
+    },
+    "quality_score": {
+      "icon": "✅",
+      "label": "Quality Score",
+      "value": 95,
+      "min": 0,
+      "max": 100
+    },
+    "supplier_reliability": {
+      "icon": "🤝",
+      "label": "Supplier Reliability",
+      "value": 80,
+      "min": 0,
+      "max": 100
+    },
+    "strategic_thinking": {"icon": "🧠", "value": 40, "min": 0, "max": 100, "category": "Leadership Skills"},
+    "risk_tolerance": {"icon": "🎲", "value": 45, "min": 0, "max": 100, "category": "Leadership Skills"},
+    "delayed_gratification": {"icon": "⏳", "value": 35, "min": 0, "max": 100, "category": "Leadership Skills"},
+    "adaptability": {"icon": "🦎", "value": 40, "min": 0, "max": 100, "category": "Leadership Skills"},
+    "resilience": {"icon": "💪", "value": 50, "min": 0, "max": 100, "category": "Leadership Skills"},
+    "ethical_reasoning": {"icon": "⚖️", "value": 55, "min": 0, "max": 100, "category": "Leadership Skills"},
+    "dimension_scores": {
+      "strategic_thinking": 50,
+      "risk_tolerance": 50,
+      "delayed_gratification": 50,
+      "adaptability": 50,
+      "resilience": 50,
+      "ethical_reasoning": 50
+    }
+  },
+  "player_profile": {
+    "name": "Rohan Mehta",
+    "role": "COO, Mumbai Motors Pvt. Ltd.",
+    "background": "IIT Bombay + IIM Ahmedabad graduate. 8 years in automotive manufacturing operations.",
+    "goal": "Deliver operational excellence through smart inventory and production decisions across 7 quarters"
+  },
+  "rounds": [
+    {
+      "id": "r1_inventory_decision",
+      "title": "Round 1: The Inventory Decision",
+      "story": "Quarter 1, Week 1 — Chakan Manufacturing Facility\n\nYour Operations Manager, Priya Sharma, walks in with a spreadsheet. Current inventory: {{inventory}} units. Tata Motors expects 8,000 crankshafts this quarter. Demand forecast has ±15% variance.\n\n'Sir, our EOQ analysis shows the optimal order quantity — but the choice of overall inventory strategy is yours. Each approach gives a different risk-return profile.'\n\nKey data: Setup cost Rs. 50,000/order | Holding cost Rs. 200/unit/quarter | Annual demand ~32,000 units | EOQ = 2,000 units",
+      "goal": "Choose your baseline inventory strategy for Q1",
+      "setting": "Chakan Manufacturing Facility, Pune — Q1 Week 1",
+      "nep_tags": ["inventory_management", "EOQ", "cost_analysis", "strategic_planning"],
+      "image_prompt": "Modern Indian manufacturing facility interior, operations manager presenting data on laptop to COO, crankshaft parts visible in background, professional corporate setting, realistic illustration",
+      "coaching_moment": "EOQ minimizes total ordering + holding costs mathematically — but assumes perfectly predictable demand. In practice, the right model depends on your supply reliability and demand variability.",
+      "reflection_prompt": "When does mathematical optimality lose to operational reality?",
+      "expert_pick": "a_eoq",
+      "choices": [
+        {
+          "id": "a_eoq",
+          "label": "A. EOQ Model — Order 2,000 units × 4 times",
+          "description": "Mathematically optimal quantity based on ordering vs. holding cost trade-offs. Rs. 4 Crore total investment. 4 orders per quarter at 2,000 units each.",
+          "delta": {
+            "cash_lakhs": -40,
+            "inventory": 1500,
+            "customer_satisfaction": 5,
+            "reputation": 3,
+            "working_capital_efficiency": 10,
+            "strategic_thinking": 8,
+            "risk_tolerance": 5,
+            "delayed_gratification": 6
+          },
+          "feedback": "Priya nods approvingly. 'Textbook EOQ, sir. The math checks out — we minimize total inventory cost while meeting demand.' Tata Motors gets their crankshafts on time. Cash reduces by Rs. 40 Lakhs but working capital efficiency improves significantly.",
+          "narrative_outcome": "Inventory rises to {{inventory}} units. Cash position: Rs. {{cash_lakhs}} Lakhs. Customer satisfaction improves as deliveries are reliable. Q1 closes smoothly. Priya notes the EOQ approach leaves no buffer for supply disruptions — something to watch.",
+          "memory_tag": "chose_eoq",
+          "learning_concept": "EOQ balances ordering frequency against holding costs. It assumes stable demand — the core assumption to test in Round 2.",
+          "psychometric_tags": ["systematic", "analytical"],
+          "skill_tags": ["strategic_thinking", "delayed_gratification", "risk_tolerance"]
+        },
+        {
+          "id": "b_jit",
+          "label": "B. JIT (Just-In-Time) — Order only as needed",
+          "description": "Pull-based system: order small quantities (200-300 units) only when production demand is confirmed. Minimal holding costs but zero buffer against disruptions.",
+          "delta": {
+            "cash_lakhs": -20,
+            "inventory": -200,
+            "customer_satisfaction": -3,
+            "reputation": 5,
+            "working_capital_efficiency": 20,
+            "strategic_thinking": 10,
+            "risk_tolerance": -5,
+            "adaptability": 8
+          },
+          "feedback": "'Sir, JIT requires perfect supplier synchronization,' Priya warns. Cash consumption drops to Rs. 20 Lakhs. Working capital efficiency surges — but inventory drops below safety margins. Two minor delivery delays to Bajaj Auto cause a dip in satisfaction.",
+          "narrative_outcome": "Inventory falls to {{inventory}} units — lean but fragile. Working capital efficiency is excellent at {{working_capital_efficiency}}. Reputation improves as you're seen as a modern lean manufacturer, but Bajaj Auto has flagged 2 late deliveries.",
+          "memory_tag": "chose_jit",
+          "learning_concept": "JIT eliminates waste but demands perfectly reliable suppliers and predictable demand. One disruption can cascade into stockouts.",
+          "psychometric_tags": ["efficiency-focused", "lean-thinker"],
+          "skill_tags": ["strategic_thinking", "adaptability", "risk_tolerance"]
+        },
+        {
+          "id": "c_safety_stock",
+          "label": "C. Safety Stock — Build a 2,000-unit buffer",
+          "description": "Conservative approach: maintain 2,000 units of safety stock above operational inventory. High holding costs but maximum service level protection.",
+          "delta": {
+            "cash_lakhs": -60,
+            "inventory": 2500,
+            "customer_satisfaction": 8,
+            "reputation": 0,
+            "working_capital_efficiency": -15,
+            "strategic_thinking": 5,
+            "risk_tolerance": -8,
+            "resilience": 10,
+            "delayed_gratification": 8
+          },
+          "feedback": "'High inventory costs, sir,' Priya notes, 'but we'll never miss a delivery.' Cash drops Rs. 60 Lakhs. Inventory is high — excellent service level, but working capital tied up. Finance team raises a concern about excess holding costs.",
+          "narrative_outcome": "Inventory at {{inventory}} units — very high buffer. Customer satisfaction at {{customer_satisfaction}} — zero stockout risk. Working capital efficiency drops to {{working_capital_efficiency}} as cash is locked in inventory. Safe, but expensive.",
+          "memory_tag": "chose_safety_stock",
+          "learning_concept": "Safety stock protects service levels but increases holding costs. It's the right choice in high-uncertainty environments but not for steady-state operations.",
+          "psychometric_tags": ["risk-averse", "protection-focused"],
+          "skill_tags": ["resilience", "delayed_gratification", "risk_tolerance"]
+        },
+        {
+          "id": "d_mrp",
+          "label": "D. MRP (Material Requirements Planning) — Demand-driven schedule",
+          "description": "System-driven approach: use customer order schedules to back-calculate material requirements. Dependent demand logic. Requires ERP integration.",
+          "delta": {
+            "cash_lakhs": -35,
+            "inventory": 1200,
+            "customer_satisfaction": 3,
+            "reputation": 2,
+            "working_capital_efficiency": 5,
+            "strategic_thinking": 12,
+            "adaptability": 6,
+            "delayed_gratification": 5
+          },
+          "feedback": "'MRP needs our ERP to be working perfectly, sir,' Priya says. 'But if customer schedules are accurate, it's the most efficient system.' Moderate cash outlay. Inventory rises to a reasonable level. Deliveries mostly on time with minor schedule slippage.",
+          "narrative_outcome": "Inventory at {{inventory}} units — tied directly to confirmed orders. Cash position: Rs. {{cash_lakhs}} Lakhs. Working capital efficiency holds steady. Strategic thinking improves as you build discipline around demand-driven planning.",
+          "memory_tag": "chose_mrp",
+          "learning_concept": "MRP synchronizes production to confirmed customer demand schedules. It requires accurate BOMs and lead times — 'garbage in, garbage out.'",
+          "psychometric_tags": ["systematic", "process-driven"],
+          "skill_tags": ["strategic_thinking", "adaptability", "delayed_gratification"]
+        }
+      ]
+    },
+    {
+      "id": "ue1_monsoon",
+      "title": "⚡ Crisis: The Monsoon Disruption",
+      "story": "Week 6 — Heavy Monsoon Alert\n\nPriya bursts in, rain dripping from her umbrella.\n\n'Sir — CRISIS! Our steel supplier in Aurangabad is completely flooded. Their factory is under 4 feet of water. No delivery for 3 weeks. AND Tata Motors just sent an urgent order for 500 ADDITIONAL units for their new EV launch — needed in 10 days!'\n\nCurrent inventory: {{inventory}} units. Tata Motors is 40% of revenue. This is your first major test.",
+      "goal": "Resolve the supply crisis while honoring Tata Motors' urgent order",
+      "setting": "Chakan Facility — Monsoon Crisis, Week 6",
+      "nep_tags": ["crisis_management", "supply_disruption", "supplier_diversification"],
+      "image_prompt": "Indian manufacturing facility during heavy monsoon, operations team in crisis meeting, phones ringing, rain visible through windows, urgent atmosphere, realistic illustration",
+      "coaching_moment": "Supply chain resilience requires pre-built alternatives. Single-source dependence on a supplier in a flood-prone region is a structural risk — not just bad luck.",
+      "reflection_prompt": "How much extra cost is appropriate to protect a relationship worth 40% of revenue?",
+      "expert_pick": "a_airfreight",
+      "choices": [
+        {
+          "id": "a_airfreight",
+          "label": "A. Air-freight steel from Bangalore supplier",
+          "description": "Immediately source steel from an alternate Bangalore supplier via air freight. 3x normal freight cost but delivery in 3 days. Fulfill the Tata order and maintain continuity.",
+          "delta": {
+            "cash_lakhs": -15,
+            "customer_satisfaction": 5,
+            "reputation": 8,
+            "supplier_reliability": 5,
+            "resilience": 10,
+            "adaptability": 8,
+            "ethical_reasoning": 5
+          },
+          "feedback": "A bold call. The Bangalore steel arrives in 72 hours. Production continues without interruption. Tata Motors' EV launch team receives their 500 units with one day to spare. 'This is why we partner with Mumbai Motors,' their procurement head says.",
+          "narrative_outcome": "Cash drops Rs. 15 Lakhs for freight premium — but reputation rises to {{reputation}} and customer satisfaction reaches {{customer_satisfaction}}. Tata Motors becomes a stronger long-term partner. Supplier reliability improves as you've now tested an alternate source.",
+          "memory_tag": "airfreight_crisis",
+          "learning_concept": "Supply chain resilience requires redundant supplier options pre-qualified before crises. The premium paid here is the 'insurance cost' of single-source dependency.",
+          "psychometric_tags": ["decisive", "relationship-first"],
+          "skill_tags": ["resilience", "adaptability", "ethical_reasoning"]
+        },
+        {
+          "id": "b_production_halt",
+          "label": "B. Halt production and wait 3 weeks",
+          "description": "Stop production until Aurangabad supplier resumes. Inform Tata Motors of the delay. Protect cash — avoid premium freight costs.",
+          "delta": {
+            "cash_lakhs": -8,
+            "inventory": -200,
+            "customer_satisfaction": -10,
+            "reputation": -5,
+            "working_capital_efficiency": 5,
+            "risk_tolerance": -5,
+            "resilience": 3
+          },
+          "feedback": "'I understand the financial logic, sir,' Priya says, 'but Tata Motors is not happy.' They mark Mumbai Motors as 'at-risk supplier' in their evaluation. Bajaj Auto also hears about the delay. Industry networks move fast.",
+          "narrative_outcome": "Cash saved is Rs. 8 Lakhs (minimal penalties). But reputation drops to {{reputation}} and customer satisfaction falls to {{customer_satisfaction}}. Tata Motors' EV launch is delayed — they absorb the cost but remember who let them down.",
+          "memory_tag": "halted_production",
+          "learning_concept": "Cost-minimizing in a crisis can destroy long-term relationship value worth many times the short-term saving.",
+          "psychometric_tags": ["cautious", "cost-focused"],
+          "skill_tags": ["risk_tolerance", "resilience", "delayed_gratification"]
+        },
+        {
+          "id": "c_partial_fulfillment",
+          "label": "C. Partial fulfillment — ship existing inventory only",
+          "description": "Use current inventory to partially fulfill Tata Motors. Deliver 300 units now, promise remaining 200 in 3 weeks. Honest but incomplete.",
+          "delta": {
+            "cash_lakhs": 0,
+            "inventory": -300,
+            "customer_satisfaction": -15,
+            "reputation": -12,
+            "working_capital_efficiency": 5
+          },
+          "feedback": "Tata Motors accepts the partial delivery but downgrades Mumbai Motors' supplier rating from A to B+. 'We need vendors who can handle crises, Rohan.' The EV launch team scrambles for alternate sources for the remaining 200 units.",
+          "narrative_outcome": "No cash impact. Inventory at {{inventory}} units. But customer satisfaction drops sharply to {{customer_satisfaction}} and reputation falls to {{reputation}}. Tata Motors begins qualifying a backup supplier for crankshafts — a long-term risk.",
+          "memory_tag": "partial_fulfillment",
+          "learning_concept": "Partial fulfillment is transparent but signals unreliability. For high-stakes customers, partial is often worse than a delayed-but-complete delivery.",
+          "psychometric_tags": ["honest", "passive"],
+          "skill_tags": ["ethical_reasoning", "risk_tolerance", "resilience"]
+        },
+        {
+          "id": "d_buffer_build",
+          "label": "D. Emergency buffer order from multiple suppliers",
+          "description": "Emergency orders from 3 suppliers simultaneously — Bangalore, Chennai, and Nashik. Higher logistics cost but diversifies risk and meets the urgent order.",
+          "delta": {
+            "cash_lakhs": -25,
+            "inventory": 300,
+            "customer_satisfaction": 3,
+            "reputation": 0,
+            "supplier_reliability": 10,
+            "adaptability": 12,
+            "strategic_thinking": 8
+          },
+          "feedback": "A complex logistics operation — three suppliers coordinated simultaneously. Costly at Rs. 25 Lakhs but you build relationships with two new qualified suppliers. Tata Motors gets their order. Finance notes the high coordination cost.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Inventory rises to {{inventory}} units with new buffers. Supplier reliability surges to {{supplier_reliability}} — you now have 3 qualified backup sources. Expensive but transforms your supply resilience.",
+          "memory_tag": "emergency_buffer",
+          "learning_concept": "Crisis-driven supplier diversification is costly but builds long-term resilience. Ideally, qualify backups before disruptions occur.",
+          "psychometric_tags": ["proactive", "systems-thinker"],
+          "skill_tags": ["adaptability", "strategic_thinking", "resilience"]
+        }
+      ]
+    },
+    {
+      "id": "r2_bullwhip",
+      "title": "Round 2: Demand Forecast Chaos",
+      "story": "Quarter 2, Week 1 — Sales Strategy Meeting\n\nSales Head Amit Verma enters with two contradictory reports.\n\n'Sir — strange situation. Tata Motors' crankshaft forecast jumped from 8,000 to 15,000 units. Bajaj Auto increased orders 40%. But our market research says actual end consumer demand only grew 25%.'\n\n'This looks like the Bullwhip Effect — inventory managers up the chain are all building buffers, amplifying demand signals. If we produce for 15,000 and actual demand is 10,000, we have massive excess. If we produce for 10,000 and they actually need 15,000, we lose customer trust permanently. What's our play?'",
+      "goal": "Respond to amplified demand signals without over- or under-producing",
+      "setting": "Mumbai Motors HQ — Q2 Sales Review Meeting",
+      "nep_tags": ["bullwhip_effect", "demand_forecasting", "production_planning", "supply_chain"],
+      "image_prompt": "Indian corporate boardroom, two contradictory charts on screen showing amplified demand signals vs actual market demand, diverse team in discussion, tense atmosphere",
+      "coaching_moment": "The Bullwhip Effect: small demand changes at the retail level get amplified as each supply chain tier adds its own safety buffer. The manufacturer sees a demand signal far larger than actual end demand.",
+      "reflection_prompt": "When two data sources conflict, how do you decide which one to trust — and how do you protect yourself if you're wrong?",
+      "expert_pick": "c_collaborative",
+      "choices": [
+        {
+          "id": "a_trust_forecast",
+          "label": "A. Trust customer forecast — produce 11,000 units",
+          "description": "Maximum capacity: 9,000 regular + 2,000 overtime. Trust that Tata knows their business. Risk excess inventory if Bullwhip proves real.",
+          "delta": {
+            "cash_lakhs": -60,
+            "inventory": 6000,
+            "customer_satisfaction": -3,
+            "reputation": -3,
+            "working_capital_efficiency": -25,
+            "risk_tolerance": 8,
+            "strategic_thinking": -3
+          },
+          "feedback": "Production maxes out. 6,000 units sit unsold as actual demand comes in at 10,000. Rs. 12 Lakhs per quarter in holding costs begins accumulating. Finance flags the overstock to the board. The Bullwhip was real.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — heavy production spend. Inventory at {{inventory}} units — significant overstock. Working capital efficiency collapses to {{working_capital_efficiency}}. Future quarters will carry this inventory burden.",
+          "memory_tag": "trusted_inflated_forecast",
+          "learning_concept": "Over-reacting to amplified demand signals is the classic Bullwhip trap. Excess inventory destroys working capital and can lead to forced discounting or write-offs.",
+          "psychometric_tags": ["customer-first", "optimistic"],
+          "skill_tags": ["risk_tolerance", "strategic_thinking", "delayed_gratification"]
+        },
+        {
+          "id": "b_conservative",
+          "label": "B. Conservative — produce for 10,000 units (market research view)",
+          "description": "Trust market research over customer forecasts. Produce for 10,000 units — accept risk of short supply if customer forecast proves right.",
+          "delta": {
+            "cash_lakhs": -40,
+            "inventory": 1000,
+            "customer_satisfaction": -8,
+            "reputation": 2,
+            "working_capital_efficiency": 10,
+            "strategic_thinking": 6,
+            "risk_tolerance": -5,
+            "delayed_gratification": 8
+          },
+          "feedback": "'Analytically sound, sir,' Priya says, 'but Tata's procurement team is unhappy about potential allocation.' Working capital stays healthy. You miss Bajaj Auto's full order by 1,200 units — they accept but note the shortfall.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — contained. Inventory at {{inventory}} units — lean. Working capital efficiency improves to {{working_capital_efficiency}}. But customer satisfaction drops to {{customer_satisfaction}} — two customers feel under-served.",
+          "memory_tag": "conservative_vs_bullwhip",
+          "learning_concept": "Disciplined conservatism during a Bullwhip reduces overstock risk but creates customer tension. Communication of rationale to customers is critical.",
+          "psychometric_tags": ["data-driven", "analytical"],
+          "skill_tags": ["strategic_thinking", "delayed_gratification", "risk_tolerance"]
+        },
+        {
+          "id": "c_collaborative",
+          "label": "C. Collaborative forecasting — share data with Tata Motors",
+          "description": "Initiate CPFR (Collaborative Planning, Forecasting, and Replenishment). Share your market research with Tata. Jointly agree on a 12,000-unit production target.",
+          "delta": {
+            "cash_lakhs": -45,
+            "inventory": 2000,
+            "customer_satisfaction": 5,
+            "reputation": 5,
+            "working_capital_efficiency": 5,
+            "strategic_thinking": 12,
+            "adaptability": 8,
+            "ethical_reasoning": 6
+          },
+          "feedback": "Tata Motors is initially surprised — 'You're sharing your market intelligence with us?' Within 2 days, they revise their forecast to 12,000. The collaboration builds unusual trust. 'This is a partner, not just a vendor,' their procurement VP says.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Inventory at {{inventory}} units — well-calibrated to agreed demand. Customer satisfaction rises to {{customer_satisfaction}}. Reputation gains {{reputation}} as an unusually transparent partner. CPFR seed planted.",
+          "memory_tag": "initiated_cpfr",
+          "learning_concept": "CPFR (Collaborative Planning, Forecasting, and Replenishment) directly addresses the Bullwhip by replacing independent forecasting with shared demand intelligence.",
+          "psychometric_tags": ["collaborative", "transparent"],
+          "skill_tags": ["strategic_thinking", "ethical_reasoning", "adaptability"]
+        },
+        {
+          "id": "d_postponement",
+          "label": "D. Postponement strategy — build semi-finished stock only",
+          "description": "Produce 8,000 semi-finished crankshafts. Hold finishing until customer orders are confirmed. Flexible but slower final delivery time.",
+          "delta": {
+            "cash_lakhs": -20,
+            "inventory": -1000,
+            "customer_satisfaction": -5,
+            "reputation": -2,
+            "working_capital_efficiency": 15,
+            "strategic_thinking": 8,
+            "adaptability": 10,
+            "risk_tolerance": 3
+          },
+          "feedback": "'Clever approach, sir — the postponement reduces our committed inventory risk.' But customers expect finished goods delivery in 7 days, not 14. Bajaj Auto flags the extended lead time as 'unacceptable for their JIT assembly line.'",
+          "narrative_outcome": "Cash efficiency excellent at Rs. {{cash_lakhs}} Lakhs. Working capital efficiency at {{working_capital_efficiency}}. But inventory commitment is low at {{inventory}} units and customer satisfaction dips to {{customer_satisfaction}} due to lead time concerns.",
+          "memory_tag": "postponement_strategy",
+          "learning_concept": "Postponement delays the 'point of commitment' in production to preserve flexibility — but requires customers who can tolerate longer finished-goods lead times.",
+          "psychometric_tags": ["flexible", "risk-hedger"],
+          "skill_tags": ["adaptability", "strategic_thinking", "risk_tolerance"]
+        }
+      ]
+    },
+    {
+      "id": "ue2_quality_crisis",
+      "title": "⚡ Crisis: The Quality Alert",
+      "story": "Quarter 2, Week 4 — Quality Alert Called\n\nQuality Manager Suresh Iyer rushes in holding a defective crankshaft.\n\n'Sir — critical quality issue! Routine inspection found manufacturing defects in a batch of 500 crankshafts. If these reach customers and fail in the field, recall costs could be Rs. 5–10 CRORES plus legal liability for engine failures.'\n\n'200 units from this batch already shipped to Tata. Remaining 300 in warehouse. Full inspection takes 7 days — meaning delivery delay. We need to decide in 24 hours.'\n\nCurrent quality score: {{quality_score}}.",
+      "goal": "Respond to a defective batch with both integrity and business continuity",
+      "setting": "Quality Control Lab, Chakan Facility — Emergency",
+      "nep_tags": ["quality_management", "crisis_communication", "ethical_decision_making"],
+      "image_prompt": "Indian manufacturing quality lab, engineer holding defective crankshaft, quality manager with serious expression, inspection equipment visible, professional setting",
+      "coaching_moment": "Quality failures test your ethical character more than your operational skill. The temptation to minimize disclosure is strong — but the cost of discovered concealment is always higher than the cost of transparency.",
+      "reflection_prompt": "When a quality failure has already left the building, what is the right thing to do — even if it's expensive?",
+      "expert_pick": "a_full_inspection",
+      "choices": [
+        {
+          "id": "a_full_inspection",
+          "label": "A. Full inspection, rework, and proactive recall",
+          "description": "Halt all shipments. Full inspection of remaining 300 units. Proactive notice to Tata to return the 200 shipped units. Rework defective pieces. 7-day delivery delay.",
+          "delta": {
+            "cash_lakhs": -15,
+            "customer_satisfaction": -3,
+            "reputation": 10,
+            "quality_score": 5,
+            "ethical_reasoning": 15,
+            "resilience": 8,
+            "risk_tolerance": -3
+          },
+          "feedback": "Tata Motors' Quality Head: 'Rohan, you called us before we found the defect ourselves. That's rare and that's integrity.' The 7-day delay stings, but the proactive disclosure turns a crisis into a trust-building moment.",
+          "narrative_outcome": "Rs. 15 Lakhs in inspection and rework costs. Reputation jumps to {{reputation}} — 'the manufacturer who called their own recall.' Quality score rises to {{quality_score}}. Customer satisfaction dips slightly to {{customer_satisfaction}} but relationships deepen.",
+          "memory_tag": "proactive_recall",
+          "learning_concept": "Proactive quality disclosure is always better than reactive damage control. The cost of voluntary recall is typically 10x less than a forced recall after field failure.",
+          "psychometric_tags": ["ethical", "proactive"],
+          "skill_tags": ["ethical_reasoning", "resilience", "risk_tolerance"]
+        },
+        {
+          "id": "b_selective_inspection",
+          "label": "B. Selective inspection — only check the 300 remaining units",
+          "description": "Inspect the 300 units still in warehouse. Don't recall the 200 already shipped — hope they perform. Save 7-day delay but carry field failure risk.",
+          "delta": {
+            "cash_lakhs": -5,
+            "customer_satisfaction": -5,
+            "reputation": -5,
+            "quality_score": -8,
+            "ethical_reasoning": -10,
+            "risk_tolerance": 5
+          },
+          "feedback": "Three weeks later, two Tata Nexon EV test vehicles experience crankshaft failure during QA testing. Tata's Quality team traces it back to Mumbai Motors' batch. 'Why didn't you notify us?' Their trust cracks significantly.",
+          "narrative_outcome": "Short-term cash saved (Rs. 5 Lakhs only). But quality score drops to {{quality_score}}. Reputation falls to {{reputation}}. Tata Motors places Mumbai Motors on 'Corrective Action Required' status — next audit determines continued partnership.",
+          "memory_tag": "selective_inspection_failure",
+          "learning_concept": "Selective disclosure in quality failures creates compounding liability. Once a defect reaches the customer, the ethical and legal obligation to notify is unambiguous.",
+          "psychometric_tags": ["risk-taker", "cost-minimizer"],
+          "skill_tags": ["ethical_reasoning", "risk_tolerance", "resilience"]
+        },
+        {
+          "id": "c_customer_notification",
+          "label": "C. Notify customers and pause shipments — no rework",
+          "description": "Immediately notify Tata about the 200 shipped units. Pause all new shipments. But skip rework — scrap the defective 300 units and wait for fresh production.",
+          "delta": {
+            "cash_lakhs": -8,
+            "inventory": -300,
+            "customer_satisfaction": -15,
+            "reputation": -8,
+            "quality_score": 2,
+            "ethical_reasoning": 5,
+            "adaptability": -3
+          },
+          "feedback": "Tata appreciates the notice but is alarmed by the inventory loss. 'Scrapping 300 units affects our Q2 supply plan. Can you rework them instead?' The hard pause combined with scrapping creates a delivery gap that hits satisfaction hard.",
+          "narrative_outcome": "Cash reduces Rs. 8 Lakhs. Inventory drops sharply by 300 units to {{inventory}}. Customer satisfaction falls to {{customer_satisfaction}}. Reputation takes a hit to {{reputation}} — disclosure was good but execution was wasteful.",
+          "memory_tag": "notified_but_scrapped",
+          "learning_concept": "Rework is almost always preferable to scrap in high-value precision manufacturing. Scrapping indicates weak rework capability and raises unit costs significantly.",
+          "psychometric_tags": ["honest", "decisive"],
+          "skill_tags": ["ethical_reasoning", "adaptability", "risk_tolerance"]
+        },
+        {
+          "id": "d_silent_correction",
+          "label": "D. Silent correction — quietly recall without formal notice",
+          "description": "Approach Tata with a 'free upgrade' on the 200 shipped units. Replace silently. Don't file a formal quality report. Minimize paperwork and escalation.",
+          "delta": {
+            "cash_lakhs": -3,
+            "customer_satisfaction": 2,
+            "reputation": -15,
+            "quality_score": -5,
+            "ethical_reasoning": -20,
+            "risk_tolerance": 3
+          },
+          "feedback": "Tata Motors' quality auditors discover the informal swap during their quarterly supplier audit. 'Mumbai Motors replaced parts without a formal quality notification. This is a compliance violation.' The cover-up is worse than the crime.",
+          "narrative_outcome": "Reputation collapses to {{reputation}}. Ethical reasoning score drops sharply. Cash saved minimally (Rs. 3 Lakhs). Tata Motors escalates to formal supplier disciplinary review. What should have been a manageable quality issue becomes an existential supplier risk.",
+          "memory_tag": "silent_cover_up",
+          "learning_concept": "Attempting to handle quality failures informally violates ISO and IATF 16949 automotive quality standards. Concealment always carries higher risk than transparent disclosure.",
+          "psychometric_tags": ["evasive", "short-term"],
+          "skill_tags": ["ethical_reasoning", "resilience", "risk_tolerance"]
+        }
+      ]
+    },
+    {
+      "id": "r3_capacity_dilemma",
+      "title": "Round 3: Production Capacity Dilemma",
+      "story": "Quarter 3, Week 1 — Strategic Planning Meeting\n\nBusiness Development team enters with great news and a hard problem.\n\n'Sir, Mahindra & Mahindra just placed a new order: 6,000 crankshafts per quarter for their XUV700 launch. Rs. 15 Crores annually!'\n\nHead of Manufacturing Deepak Rao adds: 'But our capacity is maxed at 9,000 units/quarter. Mahindra needs 6,000 more. Total demand will be 18,000 units. We can't say no to Mahindra — that's a strategic disaster. How do we deliver?'\n\nCurrent cash: Rs. {{cash_lakhs}} Lakhs.",
+      "goal": "Close the 9,000-unit capacity gap to serve Mahindra's new contract",
+      "setting": "Mumbai Motors HQ — Strategic Planning Session",
+      "nep_tags": ["capacity_planning", "make_vs_buy", "capital_investment", "growth_strategy"],
+      "image_prompt": "Indian corporate boardroom, manufacturing head presenting capacity gap on large screen, diverse leadership team in discussion, engineering diagrams visible, professional setting",
+      "coaching_moment": "Make-vs-Buy is fundamentally about core competency. Invest in capacity only when you control the quality, and outsource when speed to market matters more than margin.",
+      "reflection_prompt": "When a major contract arrives that exceeds your capacity, is it better to invest, outsource, or decline — and what does your choice say about your strategic priorities?",
+      "expert_pick": "b_outsource",
+      "choices": [
+        {
+          "id": "a_cnc_machine",
+          "label": "A. Invest Rs. 3 Crore in new German CNC machine",
+          "description": "State-of-the-art CNC from Germany adds 5,000 units/quarter capacity. 45-day setup. Long-term efficiency gains but can't fulfill full Mahindra order this quarter.",
+          "delta": {
+            "cash_lakhs": -300,
+            "customer_satisfaction": -5,
+            "reputation": 15,
+            "working_capital_efficiency": -30,
+            "strategic_thinking": 15,
+            "delayed_gratification": 15,
+            "risk_tolerance": 5
+          },
+          "feedback": "Deepak is thrilled: 'This machine will reduce per-unit cost by 12% once running, sir.' Mahindra accepts the 45-day ramp-up. Finance gasps at the Rs. 3 Crore capex. Working capital takes a short-term hit, but long-term competitive moat is built.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — significant capex. Working capital efficiency drops to {{working_capital_efficiency}} short-term. Reputation rises to {{reputation}} — Mahindra sees you as a serious long-term partner. Capacity expands 55% for Q4+.",
+          "memory_tag": "bought_cnc_machine",
+          "learning_concept": "CapEx investment in capacity builds a long-term moat but requires patient capital. The 'delayed gratification' of modern equipment takes 2–3 quarters to show in margins.",
+          "psychometric_tags": ["long-term", "bold-investor"],
+          "skill_tags": ["strategic_thinking", "delayed_gratification", "risk_tolerance"]
+        },
+        {
+          "id": "b_outsource",
+          "label": "B. Outsource 6,000 units to Tier-2 vendor in MIDC Nashik",
+          "description": "Contract manufacturing at a vetted MIDC vendor. Immediate capacity with Rs. 60 Lakh one-time qualification cost. Margin slightly lower than in-house.",
+          "delta": {
+            "cash_lakhs": -60,
+            "inventory": 3000,
+            "customer_satisfaction": 5,
+            "reputation": 5,
+            "working_capital_efficiency": 5,
+            "adaptability": 10,
+            "strategic_thinking": 8
+          },
+          "feedback": "The Nashik vendor is qualified and production begins within 3 weeks. Mahindra gets their first delivery on time. Priya notes the outsourced units have slightly higher per-unit cost but quality passes inspection.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — modest investment. Inventory rises to {{inventory}} units covering Mahindra's order. Customer satisfaction up to {{customer_satisfaction}}. Good near-term solution, but vendor quality must be continuously monitored.",
+          "memory_tag": "outsourced_to_nashik",
+          "learning_concept": "Contract manufacturing provides immediate capacity at the cost of margin dilution. It's the right choice when speed-to-market outweighs per-unit cost optimization.",
+          "psychometric_tags": ["pragmatic", "fast-mover"],
+          "skill_tags": ["adaptability", "strategic_thinking", "risk_tolerance"]
+        },
+        {
+          "id": "c_overtime",
+          "label": "C. Run 3-shift overtime at current facility",
+          "description": "Push current machines to 3 shifts. Adds ~3,000 units/quarter. Partially fulfills Mahindra. Higher per-unit labor cost and maintenance risk.",
+          "delta": {
+            "cash_lakhs": -45,
+            "inventory": 2000,
+            "customer_satisfaction": 3,
+            "reputation": 0,
+            "working_capital_efficiency": -10,
+            "supplier_reliability": -5,
+            "resilience": 8,
+            "risk_tolerance": 3
+          },
+          "feedback": "Three-shift production begins. Deepak warns: 'The machines are running at 95% utilization, sir — one breakdown and we miss delivery.' Two machines require unplanned maintenance by Week 10, briefly halting production.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — moderate overtime premium. Inventory rises to {{inventory}} units — covers partial Mahindra order. Equipment reliability drops, risking future delivery reliability. Short-term solution with medium-term risk.",
+          "memory_tag": "overtime_production",
+          "learning_concept": "Running equipment at capacity with no slack creates fragility. The maintenance failure rate of heavily-utilized machines rises non-linearly — not linearly.",
+          "psychometric_tags": ["immediate-fix", "maximize-now"],
+          "skill_tags": ["resilience", "risk_tolerance", "adaptability"]
+        },
+        {
+          "id": "d_partial_mahindra",
+          "label": "D. Accept partial Mahindra order — negotiate 4,000 units only",
+          "description": "Negotiate honestly: 'We can commit to 4,000 units this quarter and 6,000 from Q4 onward.' Protect quality and relationships by being transparent about limits.",
+          "delta": {
+            "cash_lakhs": 0,
+            "customer_satisfaction": -20,
+            "reputation": -10,
+            "working_capital_efficiency": 15,
+            "ethical_reasoning": 8,
+            "strategic_thinking": 3
+          },
+          "feedback": "Mahindra's procurement team is disappointed. 'We chose Mumbai Motors specifically for the capacity.' They continue the contract at 4,000 units but immediately begin qualifying a second supplier — which will likely become the primary if Q4 delivery doesn't improve.",
+          "narrative_outcome": "No cash impact. Working capital efficiency improves to {{working_capital_efficiency}}. But reputation falls to {{reputation}} and customer satisfaction drops to {{customer_satisfaction}}. Mahindra sees Mumbai Motors as a capacity-constrained vendor — not a strategic partner.",
+          "memory_tag": "partial_mahindra_order",
+          "learning_concept": "Honesty about capacity is important — but declining a strategic order without an action plan signals limited ambition and often accelerates customer diversification away from you.",
+          "psychometric_tags": ["honest", "conservative"],
+          "skill_tags": ["ethical_reasoning", "strategic_thinking", "risk_tolerance"]
+        }
+      ]
+    },
+    {
+      "id": "ue3_steel_price",
+      "title": "⚡ Crisis: Raw Material Price Shock",
+      "story": "After Quarter 3 — Global Steel Prices Surge\n\nCFO Meera Patel walks in with grim commodity price charts.\n\n'Sir — major problem. Global steel prices jumped 35% overnight due to geopolitical tensions in Eastern Europe. Prices moved from Rs. 65,000/ton to Rs. 88,000/ton. Our fixed-price contracts with Tata and Mahindra mean WE absorb this cost.'\n\n'Estimated hit: Rs. 40 Lakhs this quarter alone. How do we respond?'\n\nCurrent cash: Rs. {{cash_lakhs}} Lakhs.",
+      "goal": "Absorb a 35% steel price shock while protecting customer and supplier relationships",
+      "setting": "CFO's Office — Emergency Cost Review",
+      "nep_tags": ["commodity_risk", "contract_management", "stakeholder_relationships", "cost_management"],
+      "image_prompt": "Indian corporate office, CFO presenting commodity price charts showing steel price spike, COO looking at financial impact analysis, Bloomberg terminal visible in background, tense professional setting",
+      "coaching_moment": "Commodity price exposure is a supply chain risk that must be managed proactively through hedging, contract structures, or supplier relationships — not absorbed reactively in a crisis.",
+      "reflection_prompt": "When external forces create unavoidable costs, do you absorb them to protect relationships or share them to protect margins?",
+      "expert_pick": "a_absorb",
+      "choices": [
+        {
+          "id": "a_absorb",
+          "label": "A. Absorb full cost — protect customer contracts",
+          "description": "Take the Rs. 40 Lakh hit. Honor all contract terms. Show reliability and integrity. Build long-term goodwill at short-term cost.",
+          "delta": {
+            "cash_lakhs": -40,
+            "customer_satisfaction": 15,
+            "reputation": 12,
+            "supplier_reliability": 10,
+            "ethical_reasoning": 10,
+            "resilience": 8,
+            "delayed_gratification": 12
+          },
+          "feedback": "Tata Motors' CFO calls: 'We heard about the steel price spike, Rohan. You didn't pass it on to us. That's how partnerships work.' Mahindra sends a formal 'preferred supplier' letter. Short-term pain. Long-term strategic gold.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — the Rs. 40 Lakh hit hurts. But reputation rises to {{reputation}} and customer satisfaction reaches {{customer_satisfaction}}. Both customers begin sharing forward demand plans unprompted — the trust dividend starts paying.",
+          "memory_tag": "absorbed_commodity_shock",
+          "learning_concept": "Contract integrity under cost pressure is a trust-multiplier. Companies that absorb external cost shocks for customers build deeper partnerships than those who immediately pass costs through.",
+          "psychometric_tags": ["integrity-first", "relationship-focused"],
+          "skill_tags": ["ethical_reasoning", "resilience", "delayed_gratification"]
+        },
+        {
+          "id": "b_renegotiate",
+          "label": "B. Renegotiate contracts — request 50% cost sharing",
+          "description": "Approach customers transparently: show the commodity data and propose sharing the Rs. 40 Lakh equally. Honest and fair — but risks customer perception.",
+          "delta": {
+            "cash_lakhs": -20,
+            "customer_satisfaction": -5,
+            "reputation": 3,
+            "working_capital_efficiency": 5,
+            "ethical_reasoning": 6,
+            "strategic_thinking": 5
+          },
+          "feedback": "Tata Motors agrees to a one-time cost share but notes it in their supplier evaluation: 'Mumbai Motors re-opened fixed-price contracts mid-term.' Mahindra holds firm and absorbs no cost. You share Rs. 20 Lakhs of the burden.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — partial relief. Customer satisfaction dips to {{customer_satisfaction}}. Reputation stays near {{reputation}}. Legally defensible but sets a precedent that fixed-price contracts can be reopened — which affects future negotiations.",
+          "memory_tag": "renegotiated_contracts",
+          "learning_concept": "Mid-contract renegotiation is legitimate but weakens the signal of contract reliability. Future contract pricing will embed a 'renegotiation risk premium.'",
+          "psychometric_tags": ["negotiator", "practical"],
+          "skill_tags": ["ethical_reasoning", "strategic_thinking", "adaptability"]
+        },
+        {
+          "id": "c_alt_materials",
+          "label": "C. Switch to alternate alloy — reduce steel grade",
+          "description": "Source a slightly lower-grade steel alloy at pre-shock prices. Technical team says it meets minimum specs but quality margin is tighter.",
+          "delta": {
+            "cash_lakhs": -25,
+            "customer_satisfaction": -5,
+            "reputation": -2,
+            "quality_score": -3,
+            "adaptability": 8,
+            "risk_tolerance": 5
+          },
+          "feedback": "Suresh Iyer flags the risk: 'This alloy meets specs, sir, but our quality buffer is near zero.' Tata's receiving inspection notes the material change and flags it for review. No defects detected, but they request our original alloy be restored in Q4.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — partial cost savings. Quality score drops to {{quality_score}} — uncomfortably close to minimum thresholds. Customer satisfaction falls to {{customer_satisfaction}}. A viable short-term bridge but not repeatable.",
+          "memory_tag": "switched_alloy",
+          "learning_concept": "Material substitution in precision manufacturing is a last resort. Automotive customers have strict approved material lists — unauthorized substitution can trigger disqualification.",
+          "psychometric_tags": ["cost-focused", "pragmatic"],
+          "skill_tags": ["adaptability", "risk_tolerance", "ethical_reasoning"]
+        },
+        {
+          "id": "d_price_increase",
+          "label": "D. Pass cost to customers — implement 5% price increase",
+          "description": "Invoke force majeure clause in contracts. Notify customers of a 5% price increase effective next quarter due to commodity price shock.",
+          "delta": {
+            "cash_lakhs": 10,
+            "customer_satisfaction": -15,
+            "reputation": -10,
+            "working_capital_efficiency": 15,
+            "risk_tolerance": 8,
+            "strategic_thinking": -3
+          },
+          "feedback": "Mahindra's response: 'We have three other crankshaft suppliers. If you increase prices, we'll shift 50% of volume immediately.' Tata Motors: 'We'll evaluate this during our annual supplier review — our policy discourages unilateral mid-contract changes.'",
+          "narrative_outcome": "Cash improves slightly to Rs. {{cash_lakhs}} Lakhs. But customer satisfaction collapses to {{customer_satisfaction}} and reputation drops to {{reputation}}. Both customers begin accelerating supplier diversification. A short-term cash gain with significant long-term volume risk.",
+          "memory_tag": "passed_cost_to_customers",
+          "learning_concept": "Passing commodity cost shocks immediately to customers may be justified in extreme cases but damages long-term relationships. It signals that you are a transactional vendor, not a strategic partner.",
+          "psychometric_tags": ["self-protective", "short-term"],
+          "skill_tags": ["risk_tolerance", "strategic_thinking", "ethical_reasoning"]
+        }
+      ]
+    },
+    {
+      "id": "r4_seasonal_volatility",
+      "title": "Round 4: Seasonal Demand Volatility",
+      "story": "Quarter 4, Week 1 — Festival Season Planning\n\nPriya presents the annual demand pattern:\n\n'Sir, Diwali and wedding season drive Q4 auto demand to 22,000 units. Then Q1 January-March drops 40% to 8,000 units as consumers recover from holiday spending. Feast-and-famine cycle.'\n\n'Our regular capacity is 9,000 units/quarter. Q4 peak demand: 22,000. How do we manage this volatility?'\n\nCurrent cash: Rs. {{cash_lakhs}} Lakhs.",
+      "goal": "Build a Q4 production strategy that handles peak demand without over-committing capacity",
+      "setting": "Operations Planning Meeting — Pre-Diwali Quarter",
+      "nep_tags": ["demand_smoothing", "capacity_strategy", "seasonal_planning", "working_capital"],
+      "image_prompt": "Indian manufacturing facility planning session, demand forecast charts showing seasonal peak during Diwali season, operations team in discussion, festive decorations visible in background",
+      "coaching_moment": "Level vs. Chase production is a classic operations tradeoff. Level production smooths workforce but creates inventory. Chase production avoids inventory but requires flexible workforce — hard to achieve in precision manufacturing.",
+      "reflection_prompt": "In a business with high fixed costs and skilled labor, is it better to build inventory or to flex production? What are the hidden costs of each?",
+      "expert_pick": "c_hybrid",
+      "choices": [
+        {
+          "id": "a_level_production",
+          "label": "A. Level production — steady 15,000 units over 2 quarters",
+          "description": "Produce constant 15,000 units per quarter. Build inventory in Q1 (slow period) for Q4 demand. Smooth workforce and operations. High storage costs.",
+          "delta": {
+            "cash_lakhs": -120,
+            "inventory": 8000,
+            "customer_satisfaction": 5,
+            "reputation": 10,
+            "working_capital_efficiency": -25,
+            "strategic_thinking": 8,
+            "delayed_gratification": 12
+          },
+          "feedback": "Workforce is stable — no hiring or firing. Deepak: 'Operations team is happier with consistent planning, sir.' Storage costs accumulate at Rs. 40 Lakhs/quarter. Q4 deliveries are smooth. Q1 inventory is high — some obsolescence risk.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Inventory at {{inventory}} units — well stocked for Q4 peak. Working capital efficiency drops to {{working_capital_efficiency}} due to inventory holding. Customer satisfaction improves to {{customer_satisfaction}} — reliable delivery.",
+          "memory_tag": "level_production_strategy",
+          "learning_concept": "Level production minimizes per-unit cost and maintains workforce stability but creates significant inventory investment and holding costs — especially for high-value precision parts.",
+          "psychometric_tags": ["stability-focused", "workforce-first"],
+          "skill_tags": ["strategic_thinking", "delayed_gratification", "resilience"]
+        },
+        {
+          "id": "b_chase_demand",
+          "label": "B. Chase demand — maximize Q4 production with overtime",
+          "description": "3-shift production in Q4. Hire 50 temporary workers. Produce 22,000 in Q4, drop to 8,000 in Q1. Maximum flexibility, maximum labor cost.",
+          "delta": {
+            "cash_lakhs": -180,
+            "inventory": 2000,
+            "customer_satisfaction": 20,
+            "reputation": 15,
+            "working_capital_efficiency": -15,
+            "risk_tolerance": 10,
+            "adaptability": 12
+          },
+          "feedback": "Full capacity achieved. All Diwali season orders fulfilled on time. Customers praise the delivery speed. But Q1 brings mass lay-offs of temp workers — morale dips. Deepak: 'The machines are taking a beating, sir. We'll need unplanned maintenance in Q2.'",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — heavy labor spend. Customer satisfaction peaks at {{customer_satisfaction}} and reputation at {{reputation}}. Inventory lean at {{inventory}} units. Equipment fatigue risk building for Q2.",
+          "memory_tag": "chase_demand_strategy",
+          "learning_concept": "Chase production achieves maximum customer service levels but creates boom-bust labor cycles, equipment fatigue, and quality risks from rushed hiring and training.",
+          "psychometric_tags": ["customer-first", "all-or-nothing"],
+          "skill_tags": ["adaptability", "risk_tolerance", "resilience"]
+        },
+        {
+          "id": "c_hybrid",
+          "label": "C. Hybrid — 12,000 regular + 3,000 temp worker production",
+          "description": "Moderate base production plus targeted seasonal augmentation. 20 temp workers for Q4 peak. Subcontract 3,000 units to Nashik vendor. Balanced approach.",
+          "delta": {
+            "cash_lakhs": -140,
+            "inventory": 5000,
+            "customer_satisfaction": 12,
+            "reputation": 8,
+            "working_capital_efficiency": -5,
+            "strategic_thinking": 10,
+            "adaptability": 10,
+            "resilience": 8
+          },
+          "feedback": "The balanced approach hits 15,000 of 22,000 units in-house plus 3,000 from Nashik. Customers get 82% of peak demand fulfilled. Workforce stays mostly stable. Finance: 'Best cost-service balance we've had in 3 years, sir.'",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — manageable. Inventory at {{inventory}} units — adequate buffer. Customer satisfaction at {{customer_satisfaction}} and reputation at {{reputation}}. Working capital only slightly impacted. The 'good enough' that works consistently.",
+          "memory_tag": "hybrid_seasonal_strategy",
+          "learning_concept": "Hybrid strategies balance the extremes of level and chase production. They're often suboptimal on individual metrics but optimal on total system performance.",
+          "psychometric_tags": ["balanced", "pragmatic-optimizer"],
+          "skill_tags": ["strategic_thinking", "adaptability", "resilience"]
+        },
+        {
+          "id": "d_subcontract_peak",
+          "label": "D. Subcontract peak excess — route overflow to 2 vendors",
+          "description": "Maintain steady in-house production at 9,000 units. Route all demand above 9,000 to qualified vendors. Margin dilution but zero capacity strain.",
+          "delta": {
+            "cash_lakhs": -100,
+            "inventory": 3000,
+            "customer_satisfaction": 5,
+            "reputation": -5,
+            "working_capital_efficiency": 5,
+            "adaptability": 8,
+            "risk_tolerance": 3
+          },
+          "feedback": "Vendors fulfill the excess orders but at slightly lower quality consistency. Mahindra's incoming inspection flags 0.8% defect rate from the vendor batch (vs. your 0.1%). 'We prefer your in-house parts, Rohan.' Subcontracting creates quality perception risk.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — lower in-house spend. Working capital efficiency holds at {{working_capital_efficiency}}. But reputation dips to {{reputation}} due to quality variance. Customer satisfaction limited at {{customer_satisfaction}}.",
+          "memory_tag": "subcontracted_peak",
+          "learning_concept": "Outsourcing peak production protects working capital but transfers quality risk to vendors whose standards may not match yours. Customer-perceived quality follows the weakest link.",
+          "psychometric_tags": ["asset-light", "risk-transfer"],
+          "skill_tags": ["adaptability", "risk_tolerance", "strategic_thinking"]
+        }
+      ]
+    },
+    {
+      "id": "r5_ev_disruption",
+      "title": "Round 5: Technology Disruption — EV Revolution",
+      "story": "Quarter 5, Week 1 — Board Room Strategic Session\n\nBoard Chairman presents industry transformation data. The room is tense.\n\n'Team — the EV revolution is here. ICE crankshaft demand is declining 15% annually. EV components — motor housings, battery brackets, cooling systems — are growing 60% year over year. Tata Motors is rapidly transitioning to EVs. By 2030, 30% of Indian market will be EV.'\n\n'If we don't transform, we become obsolete. Our Rs. 40 Crore Tata contract is at risk within 5 years. What is our strategic response?'",
+      "goal": "Determine Mumbai Motors' strategic response to the EV industry transformation",
+      "setting": "Board Room — Strategic Planning Session",
+      "nep_tags": ["industry_disruption", "strategic_transformation", "technology_pivot", "EV_transition"],
+      "image_prompt": "Indian boardroom with electric vehicle components displayed, traditional crankshaft next to EV motor housing, board members in serious discussion, market disruption charts on screen",
+      "coaching_moment": "Platform shifts happen slowly then suddenly. Companies that transition during the 'slowly' phase retain customers and build capability. Companies that wait for 'suddenly' scramble for survival.",
+      "reflection_prompt": "When your core product is threatened by technology change, is it better to double down on cost leadership or invest in transformation — even at the risk of your current cash position?",
+      "expert_pick": "b_partial_diversification",
+      "choices": [
+        {
+          "id": "a_full_ev_pivot",
+          "label": "A. Full EV pivot — invest Rs. 3 Crore to retool for EV components",
+          "description": "Complete product transformation. New equipment, retraining 200 staff. First EV component delivery in 9 months. Complete exit from ICE by 2028.",
+          "delta": {
+            "cash_lakhs": -300,
+            "customer_satisfaction": 10,
+            "reputation": 20,
+            "working_capital_efficiency": -35,
+            "strategic_thinking": 18,
+            "delayed_gratification": 20,
+            "adaptability": 15
+          },
+          "feedback": "Tata Motors' EV division: 'Finally a supplier who's thinking 5 years out. We'll work with you on EV component specs.' But 9-month transition gap worries existing ICE customers. Bajaj Auto begins qualifying backup crankshaft suppliers.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — transformational investment. Working capital efficiency at {{working_capital_efficiency}} short-term. Reputation soars to {{reputation}}. Long-term positioning is excellent — but Q6 and Q7 will face transition turbulence.",
+          "memory_tag": "full_ev_pivot",
+          "learning_concept": "Full platform transitions are high-risk, high-reward. The 9-month production gap during retooling creates a window where existing customers must be managed carefully to prevent attrition.",
+          "psychometric_tags": ["visionary", "all-in"],
+          "skill_tags": ["strategic_thinking", "delayed_gratification", "adaptability"]
+        },
+        {
+          "id": "b_partial_diversification",
+          "label": "B. Partial EV diversification — invest Rs. 1.5 Crore for 30% EV capacity",
+          "description": "Maintain ICE production while adding EV motor housing manufacturing line. 30% capacity EV by end of year. Risk-managed transition.",
+          "delta": {
+            "cash_lakhs": -150,
+            "customer_satisfaction": 8,
+            "reputation": 12,
+            "working_capital_efficiency": -15,
+            "strategic_thinking": 15,
+            "delayed_gratification": 12,
+            "adaptability": 12
+          },
+          "feedback": "Board Chairman: 'Balanced approach, Rohan. You're not abandoning our ICE customers or the future.' Tata EV division begins sharing EV component specs. ICE customers continue without disruption. Finance: 'Manageable. We can absorb Rs. 1.5 Crore over 2 years.'",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Working capital efficiency at {{working_capital_efficiency}}. Reputation rises to {{reputation}}. Customer satisfaction improves to {{customer_satisfaction}}. Both ICE and EV customers are retained. The 'ambidextrous' strategy.",
+          "memory_tag": "partial_ev_diversification",
+          "learning_concept": "Ambidextrous strategy — maintaining current business while building future capability — is the safest approach to platform transitions but requires disciplined resource allocation.",
+          "psychometric_tags": ["balanced-visionary", "hedge-builder"],
+          "skill_tags": ["strategic_thinking", "delayed_gratification", "adaptability"]
+        },
+        {
+          "id": "c_cost_leadership",
+          "label": "C. Double down on ICE — become the lowest-cost crankshaft producer",
+          "description": "Invest Rs. 50 Lakhs in production efficiency. Become India's most cost-competitive ICE component manufacturer. Serve the market as it declines slowly.",
+          "delta": {
+            "cash_lakhs": -50,
+            "customer_satisfaction": -5,
+            "reputation": -5,
+            "working_capital_efficiency": 10,
+            "strategic_thinking": -5,
+            "risk_tolerance": 5,
+            "delayed_gratification": -5
+          },
+          "feedback": "Chairman shakes his head: 'Optimizing a declining market, Rohan. That's a good 5-year strategy in a 10-year world.' ICE customer satisfaction holds. But Tata EV division quietly removes Mumbai Motors from their EV supplier consideration list.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — minimal investment. Working capital improves to {{working_capital_efficiency}}. But reputation falls to {{reputation}} as market sees you as 'ICE-only.' Customer satisfaction slightly dips as customers wonder about your long-term commitment.",
+          "memory_tag": "iced_in_ice",
+          "learning_concept": "Cost leadership in a declining market is viable short-term but creates an 'innovator's dilemma' trap — optimizing for a future that is disappearing.",
+          "psychometric_tags": ["status-quo", "efficiency-optimizer"],
+          "skill_tags": ["risk_tolerance", "strategic_thinking", "adaptability"]
+        },
+        {
+          "id": "d_license_ev_tech",
+          "label": "D. License EV technology from German partner — Rs. 80 Lakhs",
+          "description": "License motor housing manufacturing technology from Bosch India. Faster time-to-market than building capability internally. Royalty costs ongoing.",
+          "delta": {
+            "cash_lakhs": -80,
+            "customer_satisfaction": 5,
+            "reputation": 8,
+            "quality_score": 5,
+            "working_capital_efficiency": 5,
+            "strategic_thinking": 10,
+            "adaptability": 12
+          },
+          "feedback": "Bosch India partnership announced. Tata EV team: 'Bosch technology — that's a serious commitment.' License royalties of 3% per unit add ongoing cost, but time-to-market is 4 months vs. 9 months for build-from-scratch.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Quality score improves to {{quality_score}} with Bosch process standards. Reputation at {{reputation}}. Customer satisfaction at {{customer_satisfaction}}. Faster EV entry at the cost of ongoing royalties.",
+          "memory_tag": "licensed_ev_tech",
+          "learning_concept": "Technology licensing is a build-vs-buy decision for intellectual property. It trades long-term margin for speed-to-capability — appropriate when market timing is more critical than IP ownership.",
+          "psychometric_tags": ["pragmatic-innovator", "speed-focused"],
+          "skill_tags": ["strategic_thinking", "adaptability", "risk_tolerance"]
+        }
+      ]
+    },
+    {
+      "id": "ue4_cyber_crisis",
+      "title": "⚡ Crisis: The Cyber Attack",
+      "story": "After Quarter 5 — IT Systems Compromised\n\nIT Head Rahul Bhatt rushes in, laptop in hand.\n\n'Sir — our ERP system has been hit by ransomware. Production scheduling, inventory management, and customer order systems are all encrypted. Attackers are demanding Rs. 50 Lakhs in Bitcoin for the decryption key.'\n\n'We have a 72-hour backup from 3 days ago. Options: Pay, restore from backup, go manual, or hire cybersecurity specialists. Every hour down costs us Rs. 3 Lakhs in delayed production.'\n\nCurrent cash: Rs. {{cash_lakhs}} Lakhs.",
+      "goal": "Restore operations following a ransomware attack without setting dangerous precedent",
+      "setting": "IT Command Center — Emergency Response",
+      "nep_tags": ["cybersecurity", "business_continuity", "crisis_management", "IT_infrastructure"],
+      "image_prompt": "Indian corporate IT room during cyber crisis, multiple screens showing encrypted data, IT team in emergency response mode, operations manager on phone with suppliers, tense atmosphere",
+      "coaching_moment": "Ransomware attacks test operational resilience. Companies with updated backups and tested recovery procedures treat them as an inconvenience. Companies without them face existential choices.",
+      "reflection_prompt": "Is there ever a justification for paying a ransom? What does your decision signal to future attackers?",
+      "expert_pick": "b_restore_backup",
+      "choices": [
+        {
+          "id": "a_pay_ransom",
+          "label": "A. Pay the Rs. 50 Lakh ransom in Bitcoin",
+          "description": "Immediate resolution. Attackers decrypt systems within 4 hours. Operations resume same day. Ethical questions and precedent-setting concerns.",
+          "delta": {
+            "cash_lakhs": -50,
+            "reputation": -15,
+            "working_capital_efficiency": 10,
+            "ethical_reasoning": -15,
+            "risk_tolerance": 8
+          },
+          "feedback": "Systems restored in 4 hours. Production resumes. But the cybersecurity community notes Mumbai Motors paid — within 6 months, two more ransomware attempts occur. 'Once you pay, you're marked as a paying target,' Rahul warns.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — Rs. 50 Lakh loss. Working capital holds. But reputation drops to {{reputation}} when the payment becomes known in the industry. Future cyber insurance premiums double.",
+          "memory_tag": "paid_ransom",
+          "learning_concept": "Paying ransoms rewards attackers, sets precedent for repeat attacks, and may violate compliance regulations. It's the fastest resolution but creates ongoing vulnerability.",
+          "psychometric_tags": ["impatient", "short-term"],
+          "skill_tags": ["ethical_reasoning", "risk_tolerance", "delayed_gratification"]
+        },
+        {
+          "id": "b_restore_backup",
+          "label": "B. Restore from 72-hour backup — accept 3-day delay",
+          "description": "Restore systems from backup. 3-day disruption. Delivery penalties from customers. Data integrity intact. Systems hardened post-recovery.",
+          "delta": {
+            "cash_lakhs": -25,
+            "customer_satisfaction": -5,
+            "reputation": 5,
+            "quality_score": 5,
+            "resilience": 15,
+            "ethical_reasoning": 12,
+            "strategic_thinking": 8
+          },
+          "feedback": "3 tense days of manual operations. Priya's team hand-writes production orders. Tata Motors accepts the delay with a formal 'force majeure' notice. Rahul: 'This is the right call, sir. We don't negotiate with criminals — and we validated our backup.'",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Customer satisfaction dips to {{customer_satisfaction}} — 3-day delay impact. Reputation steady at {{reputation}}. Resilience dramatically improves to reflect validated backup infrastructure. Systems now hardened.",
+          "memory_tag": "restored_from_backup",
+          "learning_concept": "Backup restoration is the textbook ransomware response. The 3-day delay is the 'cost' of not having real-time backups. It also validates business continuity planning.",
+          "psychometric_tags": ["principled", "process-driven"],
+          "skill_tags": ["resilience", "ethical_reasoning", "strategic_thinking"]
+        },
+        {
+          "id": "c_manual_operations",
+          "label": "C. Run manual operations while IT team recovers systems",
+          "description": "5-day manual operations mode. IT team works on independent system recovery. Employee stress and morale issues. Tests operational documentation.",
+          "delta": {
+            "cash_lakhs": -20,
+            "customer_satisfaction": -8,
+            "reputation": 5,
+            "working_capital_efficiency": -5,
+            "resilience": 10,
+            "adaptability": 12
+          },
+          "feedback": "Priya mobilizes her team. Paper-based production orders for 5 days. 'Sir, we discovered that half our team didn't know the manual process,' she admits. Customer satisfaction drops from delivery delays. But the experience reveals process documentation gaps.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Customer satisfaction at {{customer_satisfaction}}. Reputation holds at {{reputation}} — you didn't pay, you didn't give in. Adaptability and resilience improve significantly. 5-day recovery reveals critical dependency on IT systems.",
+          "memory_tag": "manual_operations_mode",
+          "learning_concept": "Manual operations capability is a critical business continuity asset. If your team can't run without the system, the system has become a single point of failure.",
+          "psychometric_tags": ["resilient", "old-school"],
+          "skill_tags": ["adaptability", "resilience", "risk_tolerance"]
+        },
+        {
+          "id": "d_cyber_response_team",
+          "label": "D. Hire cybersecurity specialists — full forensic response",
+          "description": "Bring in top cybersecurity firm. Full forensic investigation. Complete system rebuild with enhanced security architecture. Expensive but transforms vulnerability into strength.",
+          "delta": {
+            "cash_lakhs": -80,
+            "reputation": 10,
+            "quality_score": 5,
+            "supplier_reliability": 5,
+            "resilience": 20,
+            "strategic_thinking": 12,
+            "delayed_gratification": 10
+          },
+          "feedback": "The cybersecurity firm identifies the attack vector: an unpatched vendor portal. Full system rebuild takes 7 days. Tata Motors' IT security team audits the new architecture and approves it. 'Frankly, your systems are now better than ours,' they say.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — expensive. But resilience surges to the highest level in the game. Reputation improves to {{reputation}}. The forensic report becomes a case study Mumbai Motors uses to strengthen all vendor portal security.",
+          "memory_tag": "full_cyber_response",
+          "learning_concept": "Comprehensive crisis response converts a vulnerability into a strategic capability. The cybersecurity investment pays dividends in future incident prevention and enterprise customer confidence.",
+          "psychometric_tags": ["systematic", "long-term-investor"],
+          "skill_tags": ["resilience", "strategic_thinking", "delayed_gratification"]
+        }
+      ]
+    },
+    {
+      "id": "r6_supply_chain_optimization",
+      "title": "Round 6: Supply Chain Optimization",
+      "story": "Quarter 6, Week 1 — CFO Cost Review\n\nMeera Patel presents a comprehensive supply chain cost analysis.\n\n'Sir, our total supply chain cost is 32% of revenue. Industry benchmark: 24%. That's an 8% gap — Rs. 9.6 Crores annually we're leaving on the table.'\n\nSupply Chain Cost Breakdown:\n• Inventory Holding: Rs. 8.5 Cr/year\n• Transportation: Rs. 6.2 Cr/year  \n• Warehousing: Rs. 4.8 Cr/year\n• Ordering/Setup: Rs. 3.5 Cr/year\n• Stockout/Expediting: Rs. 2.8 Cr/year\nTotal: Rs. 25.8 Cr/year\n\nCurrent cash: Rs. {{cash_lakhs}} Lakhs. What's your optimization strategy?",
+      "goal": "Close the 8% supply chain cost gap vs. industry benchmark",
+      "setting": "CFO Office — Supply Chain Cost Deep-Dive",
+      "nep_tags": ["supply_chain_optimization", "total_cost_ownership", "VMI", "AI_forecasting"],
+      "image_prompt": "Indian corporate finance meeting, CFO presenting supply chain cost waterfall chart, multiple cost buckets highlighted, operations team reviewing data, professional analytical setting",
+      "coaching_moment": "Total Cost of Ownership (TCO) thinking looks beyond unit price to the full cost ecosystem: holding, ordering, obsolescence, stockout, and coordination costs. Optimizing one bucket in isolation often inflates another.",
+      "reflection_prompt": "If your supply chain costs are 32% of revenue vs. a 24% benchmark, where would you cut first — and what hidden trade-offs does each cut create?",
+      "expert_pick": "c_ai_demand",
+      "choices": [
+        {
+          "id": "a_vmi",
+          "label": "A. Vendor Managed Inventory (VMI) — shift inventory to suppliers",
+          "description": "Implement VMI with top 5 suppliers. They manage your inventory, reducing holding costs 30%. Rs. 80 Lakhs implementation. Deep supplier integration required.",
+          "delta": {
+            "cash_lakhs": -80,
+            "inventory": -500,
+            "customer_satisfaction": 5,
+            "reputation": 5,
+            "working_capital_efficiency": 15,
+            "supplier_reliability": 15,
+            "strategic_thinking": 10,
+            "adaptability": 8
+          },
+          "feedback": "Suppliers are initially resistant: 'We're a component maker, not a warehouse operator.' Six months of negotiation with Aurangabad and Nashik vendors. But once live, Rs. 2.55 Crores in annual holding cost savings materialize as promised.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Inventory reduces to {{inventory}} units. Working capital efficiency improves to {{working_capital_efficiency}}. Supplier reliability deepens to {{supplier_reliability}} — VMI requires tight supplier integration which reveals stronger partners.",
+          "memory_tag": "implemented_vmi",
+          "learning_concept": "VMI transfers inventory carrying costs and responsibilities to suppliers in exchange for deeper data sharing. It works best when supplier relationships are strong and demand is stable.",
+          "psychometric_tags": ["partnership-builder", "systems-thinker"],
+          "skill_tags": ["strategic_thinking", "adaptability", "delayed_gratification"]
+        },
+        {
+          "id": "b_cross_docking",
+          "label": "B. Cross-docking — eliminate intermediate warehousing",
+          "description": "Direct supplier-to-production-line routing. Eliminates Rs. 4.8 Cr warehousing. Rs. 1.2 Crore investment in logistics coordination system.",
+          "delta": {
+            "cash_lakhs": -120,
+            "customer_satisfaction": 5,
+            "reputation": 5,
+            "working_capital_efficiency": 15,
+            "adaptability": 10,
+            "strategic_thinking": 8,
+            "risk_tolerance": 5
+          },
+          "feedback": "Cross-docking is operationally elegant but demands precise synchronization. First 3 months have 4 near-miss stockouts due to supplier schedule slippage. Once stable, warehousing costs drop significantly. Deepak: 'The complexity is real, sir, but the savings are too.'",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Working capital efficiency improves to {{working_capital_efficiency}}. Customer satisfaction holds at {{customer_satisfaction}}. Reputation at {{reputation}}. Annual savings of Rs. 1.55 Crores materialize by month 6.",
+          "memory_tag": "cross_docking",
+          "learning_concept": "Cross-docking eliminates warehousing by requiring JIT coordination across the entire supply chain. It is high-savings but operationally complex — supplier schedule reliability is mandatory.",
+          "psychometric_tags": ["complexity-tolerant", "efficiency-hunter"],
+          "skill_tags": ["adaptability", "strategic_thinking", "risk_tolerance"]
+        },
+        {
+          "id": "c_ai_demand",
+          "label": "C. AI-powered demand sensing — ML forecasting system",
+          "description": "Rs. 2 Crore investment in machine learning demand forecasting. Reduce stockouts by 60%, inventory by 25%. 12-month implementation. Transformational.",
+          "delta": {
+            "cash_lakhs": -200,
+            "inventory": -1000,
+            "customer_satisfaction": 15,
+            "reputation": 15,
+            "working_capital_efficiency": 20,
+            "quality_score": 3,
+            "strategic_thinking": 15,
+            "adaptability": 12,
+            "delayed_gratification": 15
+          },
+          "feedback": "Tata Motors' supply chain team visits to study the system: 'This is impressive. Your forecast accuracy is 94% vs. our 78%. We want to integrate your demand signal into our own planning.' The technology becomes a competitive moat — no other Tier-1 supplier has it.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — significant investment. Inventory falls to {{inventory}} units — leaner but better served. Customer satisfaction peaks at {{customer_satisfaction}} and reputation at {{reputation}}. Working capital efficiency reaches {{working_capital_efficiency}}.",
+          "memory_tag": "ai_demand_sensing",
+          "learning_concept": "AI-powered demand sensing reduces the Bullwhip Effect at its source — more accurate demand signals produce less amplification at each supply chain tier.",
+          "psychometric_tags": ["tech-forward", "long-term-investor"],
+          "skill_tags": ["strategic_thinking", "delayed_gratification", "adaptability"]
+        },
+        {
+          "id": "d_warehouse_consolidation",
+          "label": "D. Consolidate warehouses — from 5 to 2 strategic locations",
+          "description": "Close 3 regional warehouses. Consolidate to 2 central hubs in Pune and Delhi NCR. Rs. 90 Lakh one-time cost, Rs. 2.5 Crore annual savings.",
+          "delta": {
+            "cash_lakhs": -90,
+            "customer_satisfaction": -5,
+            "reputation": 0,
+            "working_capital_efficiency": 20,
+            "strategic_thinking": 8,
+            "adaptability": 6,
+            "risk_tolerance": 3
+          },
+          "feedback": "3 warehouses close. Logistics team manages the transition. Priya: 'The Hyderabad hub closure increased last-mile lead time to Mahindra Nashik from 12 to 28 hours, sir.' Mahindra flags the extended lead time as 'acceptable but under watch.'",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Working capital efficiency improves to {{working_capital_efficiency}} — significant fixed cost reduction. Customer satisfaction dips to {{customer_satisfaction}} as some lead times increase. Annual savings materializing.",
+          "memory_tag": "warehouse_consolidation",
+          "learning_concept": "Network consolidation reduces fixed cost but increases lead times to remote customers. The trade-off must be modeled: cost savings vs. service level impact by customer location.",
+          "psychometric_tags": ["cost-optimizer", "structural-thinker"],
+          "skill_tags": ["strategic_thinking", "adaptability", "risk_tolerance"]
+        }
+      ]
+    },
+    {
+      "id": "r7_final_challenge",
+      "title": "Round 7: The Final Challenge — Legacy and Sustainability",
+      "story": "Quarter 7, Week 1 — Vision Setting Board Meeting\n\nThe board asks you to make Mumbai Motors' ultimate strategic decision for the next decade.\n\n'Rohan, based on your operational excellence journey over 6 quarters, what's our long-term positioning strategy? This decision will shape Mumbai Motors for the next 10 years.'\n\nYour current scorecard:\n• Cash: Rs. {{cash_lakhs}} Lakhs\n• Customer Satisfaction: {{customer_satisfaction}}/100\n• Reputation: {{reputation}}/100\n• Working Capital Efficiency: {{working_capital_efficiency}}/100\n\nWhat legacy do you build?",
+      "goal": "Make the ultimate 10-year strategic investment for Mumbai Motors",
+      "setting": "Board Room — Final Strategic Review",
+      "nep_tags": ["strategic_vision", "sustainability", "long_term_planning", "corporate_strategy"],
+      "image_prompt": "Indian corporate boardroom, long-term strategic planning session, diverse board members with COO presenting decade-long roadmap, solar panels and EV components visible in vision boards, inspirational setting",
+      "coaching_moment": "Every strategic investment reveals your theory about the future. Sustainability bets on regulatory and consumer preference shifts. Global expansion bets on developing market growth. Vertical integration bets on supply security. Digital bets on efficiency compounding.",
+      "reflection_prompt": "What single investment would you make if you could only make one — and what does that reveal about how you see the next 10 years of Indian manufacturing?",
+      "expert_pick": "d_digital_manufacturing",
+      "choices": [
+        {
+          "id": "a_sustainable_leader",
+          "label": "A. Sustainable Manufacturing — Rs. 8 Crore ESG transformation",
+          "description": "Solar-powered facility. Circular economy adoption. Zero waste to landfill. Premium pricing potential. Rs. 8 Crore investment. India's sustainable manufacturing leader.",
+          "delta": {
+            "cash_lakhs": -800,
+            "customer_satisfaction": 35,
+            "reputation": 50,
+            "quality_score": 5,
+            "strategic_thinking": 15,
+            "delayed_gratification": 20,
+            "ethical_reasoning": 20
+          },
+          "feedback": "Tata Motors names Mumbai Motors as their flagship 'Responsible Supplier' partner. International auto OEMs begin evaluating you for export orders due to ESG credentials. 'This is the supply chain of the future,' says your board chairman. Premium 8% pricing achieved.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — heavy but transformational. Reputation peaks at {{reputation}}. Customer satisfaction at {{customer_satisfaction}}. Quality at {{quality_score}}. ESG credentials open international doors previously inaccessible to Indian Tier-2 manufacturers.",
+          "memory_tag": "sustainability_leader",
+          "learning_concept": "Sustainability investment is increasingly a B2B requirement, not just a B2C preference. Major OEMs are mandating Scope 3 emissions reduction targets that flow through their supply chains.",
+          "psychometric_tags": ["purpose-driven", "long-term-visionary"],
+          "skill_tags": ["ethical_reasoning", "delayed_gratification", "strategic_thinking"]
+        },
+        {
+          "id": "b_global_expansion",
+          "label": "B. Global Expansion — Rs. 12 Crore to Southeast Asia",
+          "description": "New facility in Vietnam. Export to Southeast Asian automotive market. Rs. 12 Crore investment. 200% revenue potential. Significant currency and operational risk.",
+          "delta": {
+            "cash_lakhs": -1200,
+            "customer_satisfaction": 20,
+            "reputation": 30,
+            "working_capital_efficiency": -20,
+            "strategic_thinking": 20,
+            "adaptability": 20,
+            "risk_tolerance": 15
+          },
+          "feedback": "Vietnam plant construction begins. Southeast Asian auto OEMs — Toyota, Honda assembly plants — begin evaluation visits. 'India-quality at competitive pricing — exactly what we're looking for.' Currency risk materializes as INR strengthens 4% vs. VND.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — most capital-intensive choice. Working capital efficiency drops to {{working_capital_efficiency}} short-term. Reputation rises to {{reputation}}. Market reach doubles. Revenue potential 200%+ if Vietnam plant succeeds.",
+          "memory_tag": "global_expansion",
+          "learning_concept": "International expansion multiplies risk and reward simultaneously. Operational success requires local leadership, cultural adaptation, and supply chain replication in an unfamiliar environment.",
+          "psychometric_tags": ["empire-builder", "bold-risk-taker"],
+          "skill_tags": ["strategic_thinking", "adaptability", "risk_tolerance"]
+        },
+        {
+          "id": "c_vertical_integration",
+          "label": "C. Vertical Integration — acquire steel processing supplier for Rs. 15 Crore",
+          "description": "Buy Aurangabad steel processing facility (the same one that flooded in Round 1). Own raw material supply. 15% margin improvement. Complete supply security.",
+          "delta": {
+            "cash_lakhs": -1500,
+            "customer_satisfaction": 5,
+            "reputation": 20,
+            "working_capital_efficiency": -20,
+            "supplier_reliability": 50,
+            "strategic_thinking": 12,
+            "delayed_gratification": 15,
+            "risk_tolerance": 10
+          },
+          "feedback": "Meera Patel: 'Sir — we're acquiring a steel processor, not a crankshaft maker. Two very different businesses.' Integration takes 18 months. Steel processing margins are 40% lower than auto components. But supply disruptions like the monsoon crisis become impossible by Q9.",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs — most expensive single investment. Supplier reliability reaches {{supplier_reliability}} — permanent supply security. Working capital efficiency drops to {{working_capital_efficiency}} managing two business lines. Strategic flexibility reduced but supply chain is fortress-like.",
+          "memory_tag": "vertical_integration",
+          "learning_concept": "Vertical integration trades strategic focus for supply control. Success requires operating an acquired business better than its current owners — which demands capabilities beyond your current core.",
+          "psychometric_tags": ["control-seeker", "supply-security-focused"],
+          "skill_tags": ["strategic_thinking", "delayed_gratification", "risk_tolerance"]
+        },
+        {
+          "id": "d_digital_manufacturing",
+          "label": "D. Digital Manufacturing — Rs. 6 Crore Industry 4.0 transformation",
+          "description": "Complete IoT sensor deployment, predictive maintenance, digital twin technology. 40% efficiency gain. 12-month implementation. Foundation for all future operations.",
+          "delta": {
+            "cash_lakhs": -600,
+            "customer_satisfaction": 20,
+            "reputation": 30,
+            "quality_score": 10,
+            "working_capital_efficiency": 20,
+            "strategic_thinking": 18,
+            "adaptability": 15,
+            "delayed_gratification": 15
+          },
+          "feedback": "IoT sensors on every machine. Predictive maintenance cuts unplanned downtime 70%. Digital twin simulates production changes before physical implementation. Tata's Industry 4.0 assessment team: 'Mumbai Motors is now ahead of our Tier-1 suppliers in digital maturity.'",
+          "narrative_outcome": "Cash at Rs. {{cash_lakhs}} Lakhs. Working capital efficiency rises to {{working_capital_efficiency}}. Quality score improves to {{quality_score}}. Reputation reaches {{reputation}}. Customer satisfaction at {{customer_satisfaction}}. The digital foundation enables all future optimization at compounding speed.",
+          "memory_tag": "digital_manufacturing",
+          "learning_concept": "Industry 4.0 transformation is a capability multiplier — every subsequent decision (inventory, quality, capacity) becomes more accurate and lower-cost when driven by real-time operational data.",
+          "psychometric_tags": ["digital-native", "compound-growth-thinker"],
+          "skill_tags": ["strategic_thinking", "adaptability", "delayed_gratification"]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "supply_chain_master",
+      "title": "🏆 Supply Chain Master — Ready for CXO Roles",
+      "message": "Outstanding! Final cash: Rs. {{cash_lakhs}} Lakhs | Customer Satisfaction: {{customer_satisfaction}} | Reputation: {{reputation}}\n\nYou demonstrated mastery of every inventory model, navigated 4 crises with integrity and skill, and built a manufacturing business positioned for the next decade. You are ready for Chief Operations Officer and Chief Supply Chain Officer roles at India's top corporations.",
+      "rarity": "legendary",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {"resource": "reputation", "operator": ">=", "value": 85},
+          {"resource": "customer_satisfaction", "operator": ">=", "value": 85},
+          {"resource": "working_capital_efficiency", "operator": ">=", "value": 75}
+        ]
+      }
+    },
+    {
+      "id": "operations_excellence",
+      "title": "🥇 Operations Excellence — Senior Management Ready",
+      "message": "Excellent work! Cash: Rs. {{cash_lakhs}} Lakhs | Customer Satisfaction: {{customer_satisfaction}} | Reputation: {{reputation}}\n\nYour operational decisions demonstrated strong command of inventory models and supply chain management. You're ready for Senior VP Operations or Director Supply Chain roles.",
+      "rarity": "rare",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {"resource": "reputation", "operator": ">=", "value": 75},
+          {"resource": "customer_satisfaction", "operator": ">=", "value": 75}
+        ]
+      }
+    },
+    {
+      "id": "strong_manager",
+      "title": "🥈 Strong Manager — Mid-Management Capable",
+      "message": "Good performance! Cash: Rs. {{cash_lakhs}} Lakhs | Customer Satisfaction: {{customer_satisfaction}} | Reputation: {{reputation}}\n\nYour decisions showed solid grounding in operations concepts with room to deepen strategic thinking. Mid-management operations roles are well within your capability.",
+      "rarity": "uncommon",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {"resource": "reputation", "operator": ">=", "value": 65},
+          {"resource": "customer_satisfaction", "operator": ">=", "value": 65}
+        ]
+      }
+    },
+    {
+      "id": "competent_leader",
+      "title": "🥉 Competent Leader — Growing Management Skills",
+      "message": "Decent run! Cash: Rs. {{cash_lakhs}} Lakhs | Customer Satisfaction: {{customer_satisfaction}} | Reputation: {{reputation}}\n\nYou handled the simulation with competence but some decisions created preventable setbacks. Review the EOQ, Bullwhip, and crisis management concepts for deeper mastery.",
+      "rarity": "common",
+      "conditions": {
+        "operator": "AND",
+        "sub_conditions": [
+          {"resource": "reputation", "operator": ">=", "value": 55},
+          {"resource": "customer_satisfaction", "operator": ">=", "value": 55}
+        ]
+      }
+    },
+    {
+      "id": "learning_journey",
+      "title": "📚 Learning Journey — Foundational Skills Present",
+      "message": "Every great COO starts somewhere! Final cash: Rs. {{cash_lakhs}} Lakhs | Customer Satisfaction: {{customer_satisfaction}} | Reputation: {{reputation}}\n\nThe concepts in this simulation — EOQ, Bullwhip, JIT, MRP — are the foundation of operations management. Replay the simulation focusing on the 'expert pick' choices and their learning explanations.",
+      "rarity": "common",
+      "conditions": {}
+    }
+  ],
+  "glossary_terms": [
+    {
+      "term": "EOQ (Economic Order Quantity)",
+      "definition": "The order quantity that minimizes total inventory costs (ordering costs + holding costs). Formula: √(2DS/H) where D=annual demand, S=setup cost per order, H=holding cost per unit per year."
+    },
+    {
+      "term": "JIT (Just-In-Time)",
+      "definition": "Inventory strategy where materials arrive precisely when needed for production — zero buffer stock. Eliminates holding costs but creates vulnerability to any supply disruption."
+    },
+    {
+      "term": "MRP (Materials Requirement Planning)",
+      "definition": "Demand-driven production planning that back-calculates material needs from confirmed customer order schedules. Requires accurate Bills of Materials and lead time data."
+    },
+    {
+      "term": "Safety Stock",
+      "definition": "Buffer inventory held to protect against demand variability and supply disruptions. Calculated as: Z × σ_LT × √LT where Z=service level Z-score, σ_LT=demand std deviation during lead time."
+    },
+    {
+      "term": "Bullwhip Effect",
+      "definition": "The phenomenon where small demand fluctuations at the retail level get progressively amplified as orders move up the supply chain, causing manufacturers to see wild demand swings."
+    },
+    {
+      "term": "CPFR (Collaborative Planning, Forecasting, and Replenishment)",
+      "definition": "A supply chain practice where trading partners share demand data and forecasts to reduce the Bullwhip Effect and improve inventory accuracy across the chain."
+    },
+    {
+      "term": "VMI (Vendor Managed Inventory)",
+      "definition": "An arrangement where the supplier takes responsibility for maintaining the customer's inventory levels within agreed parameters — shifting inventory carrying costs and decisions upstream."
+    },
+    {
+      "term": "TCO (Total Cost of Ownership)",
+      "definition": "A financial analysis that includes all costs of owning and using an asset or supply chain solution — not just purchase price but holding, ordering, maintenance, and disposal costs."
+    },
+    {
+      "term": "Working Capital Efficiency",
+      "definition": "A measure of how effectively a business converts working capital (current assets - current liabilities) into revenue. High inventory ties up working capital and reduces efficiency."
+    },
+    {
+      "term": "Postponement Strategy",
+      "definition": "Delaying the 'point of commitment' in production — building semi-finished goods and completing to order — to preserve flexibility in high-demand-uncertainty environments."
+    }
+  ],
+  "learning_concept": "Inventory Management and Supply Chain Strategy",
+  "transfer_exercises": [
+    "Map your organization's supply chain and identify which inventory model (EOQ/JIT/MRP/Safety Stock) best fits each major component category.",
+    "Calculate the EOQ for your company's top 5 purchased materials and compare with current order quantities.",
+    "Identify the most significant Bullwhip Effect risk in your supply chain — which tier has the most amplification?",
+    "Audit your supply base for single-source dependencies similar to the Aurangabad steel supplier in Round 1."
+  ],
+  "coach_mode_default": true,
+  "reflection_prompt": "Which of the 7 rounds was your hardest decision — and what would you do differently knowing the outcome?",
+  "visible": true,
+  "tier": "premium",
+  "age_band": "adult",
+  "estimated_duration": "50-60 minutes",
+  "nep_competencies": ["critical_thinking", "problem_solving", "ethical_reasoning", "systems_thinking"]
+}
