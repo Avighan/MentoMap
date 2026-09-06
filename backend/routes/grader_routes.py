@@ -254,3 +254,172 @@ def logic_grid_complete(run_id):
 @grader_bp.route("/<run_id>/geometry-constructor/complete", methods=["POST"])
 def geometry_constructor_complete(run_id):
     return _dispatch(run_id, "geometry_constructor")
+
+
+# ==================== PHASE 1 PILOT GAMES ====================
+#
+# Dealcraft, Mumbai Manufacturer, and HelioGrid are multi-round/continuous-
+# lever simulations, not the single-shot "submit everything, grade once"
+# shape the STEM/skill-drill engines above share. Each round (or quarter)
+# needs its own progression call before a final score can be computed, so
+# these get their own route shape instead of being forced through
+# `_dispatch`/`_grade`: a per-game "advance" endpoint that applies one
+# round/quarter and persists the resulting state, plus one route generic
+# to game_type — `/api/run/<run_id>/complete` — that scores whatever state
+# has accumulated by then. All three engine modules live under
+# `backend/games/` (not `backend/engines/`) since each pairs one specific
+# game's JSON with the Python that plays it; see
+# `games/{dealcraft,mumbai_manufacturer,heliogrid}_engine.py`.
+#
+# NOTE: these routes are written to the same `get_run`/`update_run`
+# contract every other route in this module already depends on, but they
+# have not been exercised end-to-end through Flask in this checkout —
+# `storage.py` (imported at the top of this file) does not exist in this
+# repo on any branch, so `from routes.grader_routes import grader_bp`
+# itself cannot succeed here yet. The engine modules they call are fully
+# unit-tested directly (see backend/tests/test_dealcraft.py,
+# test_mumbai_manufacturer.py, test_heliogrid.py) without going through
+# Flask at all.
+
+_PILOT_GAME_MODULES = {
+    "dealcraft": "games.dealcraft_engine",
+    "mumbai_manufacturer": "games.mumbai_manufacturer_engine",
+    "heliogrid": "games.heliogrid_engine",
+}
+
+
+def _pilot_engine(game_type: str):
+    if game_type not in _PILOT_GAME_MODULES:
+        return None
+    return importlib.import_module(_PILOT_GAME_MODULES[game_type])
+
+
+@grader_bp.route("/<run_id>/dealcraft/choose", methods=["POST"])
+def dealcraft_choose(run_id):
+    run, err = _load_run(run_id)
+    if err:
+        return err
+    err = _expect_game_type(run, "dealcraft")
+    if err:
+        return err
+
+    body = request.get_json(silent=True) or {}
+    round_id, choice_id = body.get("round_id"), body.get("choice_id")
+    if not round_id or not choice_id:
+        return jsonify({"error": "Missing 'round_id' or 'choice_id' in request body"}), 400
+
+    engine = _pilot_engine("dealcraft")
+    state = run.setdefault("state", dict(run["game"]["initial_state"]))
+    try:
+        new_state = engine.apply_choice(state, run["game"], round_id, choice_id)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+    run["state"] = new_state
+    update_run(run_id, run)
+    return jsonify({"success": True, "state": new_state})
+
+
+@grader_bp.route("/<run_id>/mumbai_manufacturer/choose", methods=["POST"])
+def mumbai_manufacturer_choose(run_id):
+    """Apply one round's choice, then (if one is scheduled after this
+    round) apply the scheduled crisis event's choice in the same call —
+    the frontend surfaces the event as part of that round's resolution,
+    so there's one round-trip per round rather than two.
+    """
+    run, err = _load_run(run_id)
+    if err:
+        return err
+    err = _expect_game_type(run, "mumbai_manufacturer")
+    if err:
+        return err
+
+    body = request.get_json(silent=True) or {}
+    round_id, choice_id = body.get("round_id"), body.get("choice_id")
+    event_choice_id = body.get("event_choice_id")
+    if not round_id or not choice_id:
+        return jsonify({"error": "Missing 'round_id' or 'choice_id' in request body"}), 400
+
+    engine = _pilot_engine("mumbai_manufacturer")
+    state = run.setdefault("state", dict(run["game"]["initial_state"]))
+    try:
+        new_state = engine.apply_choice(state, run["game"], round_id, choice_id)
+        event = engine.event_after_round(run["game"], round_id)
+        if event is not None:
+            if not event_choice_id:
+                return jsonify({
+                    "error": f"Round '{round_id}' has a scheduled event; missing 'event_choice_id'",
+                    "event": event,
+                }), 400
+            new_state = engine.apply_event(new_state, run["game"], round_id, event_choice_id)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+    run["state"] = new_state
+    update_run(run_id, run)
+    return jsonify({"success": True, "state": new_state})
+
+
+@grader_bp.route("/<run_id>/heliogrid/quarter", methods=["POST"])
+def heliogrid_quarter(run_id):
+    run, err = _load_run(run_id)
+    if err:
+        return err
+    err = _expect_game_type(run, "heliogrid")
+    if err:
+        return err
+
+    body = request.get_json(silent=True) or {}
+    action = body.get("action")
+    if not isinstance(action, dict):
+        return jsonify({"error": "Missing 'action' object in request body"}), 400
+
+    engine = _pilot_engine("heliogrid")
+    state = run.setdefault("state", engine.load_game()["initial_state"])
+    quarter_index = len(state.get("csat_history") or [])
+    try:
+        engine.validate_action(action, run["game"])
+        new_state = engine.resolve_quarter(state, action, quarter_index, run["game"])
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+    run["state"] = new_state
+    update_run(run_id, run)
+    return jsonify({"success": True, "state": new_state, "quarter_result": new_state.get("_last_quarter_result")})
+
+
+@grader_bp.route("/<run_id>/complete", methods=["POST"])
+def pilot_game_complete(run_id):
+    """Generic completion route for any of the three pilot games — the
+    STEM-drill routes above stay per-engine (`/<engine>/complete`) since
+    each has a different `payload_key`; these three all just score
+    whatever `run['state']` has accumulated through the /choose or
+    /quarter calls above, so one route dispatching on game_type covers
+    all three without three near-identical route bodies.
+    """
+    run, err = _load_run(run_id)
+    if err:
+        return err
+
+    game_type = (run.get("game") or {}).get("game_type")
+    engine = _pilot_engine(game_type)
+    if engine is None:
+        return jsonify({
+            "error": "Not a pilot game run",
+            "actual_game_type": game_type,
+            "expected_one_of": sorted(_PILOT_GAME_MODULES),
+        }), 400
+
+    state = run.get("state")
+    if not state:
+        return jsonify({"error": "Run has no state yet — play at least one round/quarter first"}), 400
+
+    try:
+        result = engine.score_run(state, run["game"])
+    except Exception as e:  # noqa: BLE001
+        return jsonify({"error": f"Scoring failed: {e}"}), 500
+
+    summary = result.as_dict()
+    _record(run, game_type, summary)
+    update_run(run_id, run)
+    return jsonify({"success": True, "summary": summary})

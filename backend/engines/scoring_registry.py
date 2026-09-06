@@ -42,6 +42,12 @@ Registered formulas:
   - "weighted_kpi_normalize" — normalize KPIs against min/max ranges,
                               weight into categories, sum into a total,
                               look up a grade from a game-supplied table.
+  - "settlement_engine"    — identical shape to weighted_kpi_normalize,
+                              registered separately for games whose round
+                              mechanics involve a period-close settlement
+                              step (shipping, holding cost, debt) that the
+                              stateless snapshot formula doesn't model —
+                              see games/mumbai_manufacturer_engine.py.
   - "expert_drift"         — end-of-run aggregation of per-round
                               expert-vs-player control drift (extends
                               `DecisionPanelEngine.compute_drift`).
@@ -530,6 +536,50 @@ class WeightedKpiNormalizeFormula:
 
 
 # --------------------------------------------------------------------------
+# Formula: settlement_engine  (new — Mumbai Manufacturer)
+# --------------------------------------------------------------------------
+
+
+class SettlementEngineFormula:
+    """End-of-run scoring for games with period-close/settlement round
+    mechanics (inventory, cash-flow, debt) — same weighted-category-vs-
+    range shape as `weighted_kpi_normalize`, kept as its own registered
+    name so the round-by-round settlement math a game like this needs
+    (shipping revenue, holding cost, bullwhip drift, debt conversion —
+    see `games/mumbai_manufacturer_engine.py`) isn't confused with, or
+    forced into, the *stateless* snapshot formula.
+
+    state / config shape is identical to `weighted_kpi_normalize` — see
+    that formula's docstring. "Lower is better" KPIs (bullwhip_index,
+    supply_chain_cost_ratio, bank_debt, ...) are expressed the same way
+    weighted_kpi_normalize already supports: set `min` to the worst
+    (highest) value and `max` to the best (lowest) value for that KPI, so
+    the min/max normalization inverts naturally without special-casing.
+    """
+
+    def compute(self, state: Dict[str, Any], config: Dict[str, Any]) -> ScoringResult:
+        kpis = state.get("kpis") or {}
+        categories = config.get("categories") or []
+        grade_table = config.get("grade_table") or []
+
+        category_scores: Dict[str, float] = {}
+        for cat in categories:
+            cat_name = cat.get("name") or "category"
+            category_scores[cat_name] = WeightedKpiNormalizeFormula._category_score(cat, kpis)
+
+        total = max(0.0, min(100.0, sum(category_scores.values())))
+        grade, label = WeightedKpiNormalizeFormula._lookup_grade(total, grade_table)
+
+        return ScoringResult(
+            total=round(total, 2),
+            band=grade,
+            label=label,
+            dimensions={k: round(v, 2) for k, v in category_scores.items()},
+            raw={"category_scores": {k: round(v, 2) for k, v in category_scores.items()}},
+        )
+
+
+# --------------------------------------------------------------------------
 # Formula: expert_drift  (new — no game wired up yet)
 # --------------------------------------------------------------------------
 
@@ -623,6 +673,7 @@ def _register_builtins() -> None:
     register("dimension_average", DimensionAverageFormula())
     register("benchmark_scorecard", BenchmarkScorecardFormula())
     register("weighted_kpi_normalize", WeightedKpiNormalizeFormula())
+    register("settlement_engine", SettlementEngineFormula())
     register("expert_drift", ExpertDriftFormula())
 
 
