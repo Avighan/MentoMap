@@ -1,21 +1,13 @@
+"""Shared pytest configuration for backend unit/integration tests.
+
+No global monkeypatching here: `schemas.validate_bundle` already wraps each
+game's per-type validation in a try/except that logs a warning instead of
+raising (see backend/schemas.py), so unrecognised game_type values do not
+prevent `from app import app` from succeeding. A previous version of this
+file additionally replaced `schemas.validate_bundle` with a permissive stub
+for the whole test session; that stub predated (or was never cleaned up
+after) the try/except wrapper landed, and its only effect now was to break
+backend/tests/test_schemas.py's own tests of validate_bundle's raise
+behavior, since `from schemas import validate_bundle` in that module bound
+to the stub instead of the real function.
 """
-Shared pytest configuration for backend unit/integration tests.
-
-The top-level conftest patches `schemas.validate_bundle` so that untracked
-game JSON files with unrecognised game_type values (e.g. ai_lab) do not
-prevent `from app import app` from succeeding.  The patch is applied at
-the *module* level so it takes effect before app.py's module-level
-`load_bundle()` call runs during the first import in any test session.
-"""
-
-def _permissive_validate_bundle(b: dict) -> None:
-    """Replacement for schemas.validate_bundle that silently skips unknown game types."""
-    if "games" not in b or not isinstance(b["games"], list):
-        raise ValueError("Bundle must contain games[] array")
-    # We intentionally omit the per-game type validation so that test
-    # sessions are not broken by untracked games with new/unknown types.
-
-
-# Patch at import time — before app.py's module-level load_bundle() runs.
-import schemas as _schemas_mod  # noqa: E402
-_schemas_mod.validate_bundle = _permissive_validate_bundle
