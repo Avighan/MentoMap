@@ -44,27 +44,46 @@ def _clamp(value: float, lo: float = 0.0, hi: float = 100.0) -> float:
     return max(lo, min(hi, value))
 
 
+_META_STATE_KEYS = {
+    "round_index", "score", "dimension_scores", "competitor_states", "log",
+    "completed", "resources",
+}
+
+
+def _resource_value(obj):
+    """Game resources are stored as `{"value": N, "label":..., "min":..., "max":...}`
+    (see any games/*.json `initial_state`) — unwrap to the numeric value.
+    """
+    if isinstance(obj, dict):
+        return obj.get("value")
+    if isinstance(obj, (int, float)):
+        return obj
+    return None
+
+
 def _score_resource_optimization(state: Any, game_config: dict) -> float:
+    """Compare each per-game resource's end value to its starting value.
+
+    Resources live as dynamic top-level attributes matching the game's
+    `initial_state` keys (e.g. `state.startup_capital`), not nested under a
+    generic "resources" key — mirrors how `RunState(**initial_state)` is
+    constructed (see engine.py) and how choice `delta` dicts apply directly
+    to those same top-level keys.
+    """
     initial = (game_config or {}).get("initial_state", {}) or {}
-    resources = _get(state, "resources", None)
-    if isinstance(resources, dict) and isinstance(initial.get("resources"), dict):
-        gains = 0
-        total = 0
-        for key, start_val in initial["resources"].items():
-            if not isinstance(start_val, (int, float)):
-                continue
-            end_val = resources.get(key, start_val)
-            total += 1
-            if isinstance(end_val, (int, float)) and start_val != 0:
-                gains += max(-1.0, min(1.0, (end_val - start_val) / abs(start_val)))
-        if total:
-            return _clamp(50 + (gains / total) * 50)
-
-    cash = _get(state, "cash", None)
-    start_cash = initial.get("cash")
-    if isinstance(cash, (int, float)) and isinstance(start_cash, (int, float)) and start_cash:
-        return _clamp(50 + ((cash - start_cash) / abs(start_cash)) * 50)
-
+    gains, total = 0.0, 0
+    for key, start_raw in initial.items():
+        if key in _META_STATE_KEYS:
+            continue
+        start_val = _resource_value(start_raw)
+        if not isinstance(start_val, (int, float)):
+            continue
+        end_val = _resource_value(_get(state, key, start_raw))
+        total += 1
+        if isinstance(end_val, (int, float)) and start_val != 0:
+            gains += max(-1.0, min(1.0, (end_val - start_val) / abs(start_val)))
+    if total:
+        return _clamp(50 + (gains / total) * 50)
     return 50.0
 
 
