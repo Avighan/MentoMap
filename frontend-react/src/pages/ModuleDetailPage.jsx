@@ -514,7 +514,7 @@ function LessonContent({ content }) {
             background: `linear-gradient(135deg, ${C.primaryGlow}, ${C.surfaceAlt})`,
             borderColor: C.primaryLight,
           }}>
-          <p className="text-base font-bold" style={{ color: C.primaryDark }}>📏 {content.rule}</p>
+          <p className="text-base font-bold" style={{ color: '#7C2D12' }}>📏 {content.rule}</p>
         </div>
       )}
 
@@ -1301,6 +1301,10 @@ export default function ModuleDetailPage() {
               <Link to={`/modules/${moduleId}/report`}
                 className="bg-white text-emerald-700 font-bold text-xs px-3 py-2 rounded-xl whitespace-nowrap hover:scale-105 transition-transform">
                 📊 View Report Card →
+              </Link>
+              <Link to={`/modules/${moduleId}/workshop-book`}
+                className="bg-amber-50 text-amber-800 font-bold text-xs px-3 py-2 rounded-xl whitespace-nowrap hover:scale-105 transition-transform">
+                📖 Workshop Book
               </Link>
               <Link to="/profile" className="bg-emerald-700/40 hover:bg-emerald-700/60 text-white font-bold text-xs px-3 py-2 rounded-xl whitespace-nowrap transition-colors">
                 Badge

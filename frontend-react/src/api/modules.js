@@ -228,6 +228,11 @@ export const listIdeaJournal = async (moduleId) => {
   return res.data;
 };
 
+export const getIdeaJournalEntries = async (moduleId) => {
+  const res = await apiClient.get(`/api/modules/${moduleId}/idea-journal`);
+  return res.data;
+};
+
 export const addIdeaJournalEntry = async (moduleId, payload) => {
   const res = await apiClient.post(
     `/api/modules/${moduleId}/idea-journal`,

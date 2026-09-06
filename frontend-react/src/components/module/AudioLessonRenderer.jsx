@@ -43,7 +43,24 @@ export default function AudioLessonRenderer({ lesson, onComplete }) {
           </div>
         </div>
       )}
-      <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: lesson.content || "" }} />
+      {/* Body: prefer rich HTML `content`, otherwise fall back to plain `body` / `transcript` */}
+      {lesson.content ? (
+        <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: lesson.content }} />
+      ) : (lesson.body || lesson.transcript) ? (
+        <div className="prose max-w-none whitespace-pre-line text-slate-800 leading-relaxed">
+          {lesson.body || lesson.transcript}
+        </div>
+      ) : null}
+
+      {!url && (lesson.transcript || lesson.body) && (
+        <details className="mt-2 text-sm text-slate-600">
+          <summary className="cursor-pointer">Show transcript</summary>
+          <div className="mt-2 whitespace-pre-line text-slate-700">
+            {lesson.transcript || lesson.body}
+          </div>
+        </details>
+      )}
+
       <button onClick={onComplete} className="px-4 py-2 bg-emerald-600 text-white rounded-lg">
         Mark complete
       </button>

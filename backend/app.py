@@ -1897,6 +1897,8 @@ _DISCOVER_WHITELIST = {
     'negotiate-your-allowance',
     'the-peace-table',
     'diplomacy-summit',
+    # MBA inventory simulation
+    'mumbai-manufacturer-inventory',
 }
 
 
@@ -9559,6 +9561,24 @@ def serve_module_images(path):
     if not requested.startswith(assets_dir + _os.sep) and requested != assets_dir:
         return jsonify({"error": "Forbidden"}), 403
     return send_from_directory(assets_dir, path)
+
+
+# ---------- Module audio (self-hosted) ----------
+@app.get("/static/module_audio/<path:path>")
+def serve_module_audio(path):
+    """Serve self-hosted module audio bonuses from backend/assets/module_audio/."""
+    import os as _os
+    assets_dir = _os.path.realpath(
+        _os.path.join(_os.path.dirname(__file__), "assets", "module_audio")
+    )
+    requested = _os.path.realpath(_os.path.join(assets_dir, path))
+    # Path traversal guard
+    if not requested.startswith(assets_dir + _os.sep) and requested != assets_dir:
+        return jsonify({"error": "Forbidden"}), 403
+    resp = send_from_directory(assets_dir, path)
+    # Long cache - audio files are immutable per filename
+    resp.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    return resp
 
 
 # ---------- Static files ----------
