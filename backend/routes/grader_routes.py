@@ -9,7 +9,16 @@ Each route follows the music_match / lab_titration pattern:
 
 Blueprint URL prefix: /api/run — final routes are
   POST /api/run/<run_id>/<engine-name>/complete
+
+Dispatch is table-driven via `_GRADER_REGISTRY` below instead of each
+route inlining its own `from engines.X import Y` + `_grade(...)` call.
+Adding a new grader is a matter of adding one registry entry and one
+thin route function — no changes to `_grade`, `_load_run`, or `_record`
+are ever needed for a new engine. The URL surface (one decorator per
+engine) is kept exactly as before so route matching / 404 behavior for
+every existing path is unchanged.
 """
+import importlib
 from typing import Any, Dict
 
 from flask import Blueprint, jsonify, request
@@ -100,84 +109,148 @@ def _grade(run_id: str, game_type: str, engine_factory, payload_key: str,
     return jsonify({"success": True, "summary": summary})
 
 
+# ==================== engine registry ====================
+#
+# One entry per grader engine: which module/class to instantiate with the
+# game config, which request-body field carries the submission, and which
+# method to call to grade it. `_dispatch` resolves an entry lazily (same
+# lazy-import timing the old per-route `from engines.X import Y` had) and
+# hands off to the shared `_grade` harness above.
+
+_GRADER_REGISTRY: Dict[str, Dict[str, Any]] = {
+    "pendulum_lab": {
+        "module": "engines.pendulum_lab_engine", "class_name": "PendulumLabEngine",
+        "payload_key": "measurements",
+    },
+    "optics_lab": {
+        "module": "engines.optics_lab_engine", "class_name": "OpticsLabEngine",
+        "payload_key": "measurements",
+    },
+    "circuit_debugger": {
+        "module": "engines.circuit_debugger_engine", "class_name": "CircuitDebuggerEngine",
+        "payload_key": "node_voltages",
+    },
+    "genetics_cross": {
+        "module": "engines.genetics_cross_engine", "class_name": "GeneticsCrossEngine",
+        "payload_key": "predictions",
+    },
+    "stoichiometry_mixer": {
+        "module": "engines.stoichiometry_mixer_engine", "class_name": "StoichiometryMixerEngine",
+        "payload_key": "added_b_moles",
+    },
+    "mental_math": {
+        "module": "engines.mental_math_engine", "class_name": "MentalMathEngine",
+        "payload_key": "attempts",
+    },
+    "typing_drill": {
+        "module": "engines.typing_drill_engine", "class_name": "TypingDrillEngine",
+        "payload_key": "attempts",
+    },
+    "boggle": {
+        "module": "engines.boggle_engine", "class_name": "BoggleEngine",
+        "payload_key": "words",
+    },
+    "mock_interview": {
+        "module": "engines.mock_interview_engine", "class_name": "MockInterviewEngine",
+        "payload_key": "transcript",
+    },
+    "sudoku": {
+        "module": "engines.sudoku_engine", "class_name": "SudokuEngine",
+        "payload_key": "submission",
+    },
+    "logic_grid": {
+        "module": "engines.logic_grid_engine", "class_name": "LogicGridEngine",
+        "payload_key": "submission",
+    },
+    "geometry_constructor": {
+        "module": "engines.geometry_constructor_engine", "class_name": "GeometryConstructorEngine",
+        "payload_key": "points",
+    },
+}
+
+
+def _dispatch(run_id: str, game_type: str):
+    """Resolve `game_type`'s registry entry and run it through `_grade`.
+
+    Kept separate from each route function so a new grader only needs a
+    registry entry + a one-line route — never a change to how dispatch
+    itself works.
+    """
+    entry = _GRADER_REGISTRY[game_type]
+    module = importlib.import_module(entry["module"])
+    engine_class = getattr(module, entry["class_name"])
+    return _grade(
+        run_id, game_type, engine_class, entry["payload_key"],
+        entry.get("method_name", "grade_results"),
+    )
+
+
 # ==================== STEM LAB ENGINES ====================
 
 @grader_bp.route("/<run_id>/pendulum-lab/complete", methods=["POST"])
 def pendulum_lab_complete(run_id):
-    from engines.pendulum_lab_engine import PendulumLabEngine
-    return _grade(run_id, "pendulum_lab", PendulumLabEngine, "measurements")
+    return _dispatch(run_id, "pendulum_lab")
 
 
 @grader_bp.route("/<run_id>/optics-lab/complete", methods=["POST"])
 def optics_lab_complete(run_id):
-    from engines.optics_lab_engine import OpticsLabEngine
-    return _grade(run_id, "optics_lab", OpticsLabEngine, "measurements")
+    return _dispatch(run_id, "optics_lab")
 
 
 @grader_bp.route("/<run_id>/circuit-debugger/complete", methods=["POST"])
 def circuit_debugger_complete(run_id):
-    from engines.circuit_debugger_engine import CircuitDebuggerEngine
-    return _grade(run_id, "circuit_debugger", CircuitDebuggerEngine, "node_voltages")
+    return _dispatch(run_id, "circuit_debugger")
 
 
 @grader_bp.route("/<run_id>/genetics-cross/complete", methods=["POST"])
 def genetics_cross_complete(run_id):
-    from engines.genetics_cross_engine import GeneticsCrossEngine
-    return _grade(run_id, "genetics_cross", GeneticsCrossEngine, "predictions")
+    return _dispatch(run_id, "genetics_cross")
 
 
 @grader_bp.route("/<run_id>/stoichiometry-mixer/complete", methods=["POST"])
 def stoichiometry_mixer_complete(run_id):
-    from engines.stoichiometry_mixer_engine import StoichiometryMixerEngine
-    return _grade(run_id, "stoichiometry_mixer", StoichiometryMixerEngine,
-                  "added_b_moles", method_name="grade_results")
+    return _dispatch(run_id, "stoichiometry_mixer")
 
 
 # ==================== SKILL-DRILL ENGINES ====================
 
 @grader_bp.route("/<run_id>/mental-math/complete", methods=["POST"])
 def mental_math_complete(run_id):
-    from engines.mental_math_engine import MentalMathEngine
-    return _grade(run_id, "mental_math", MentalMathEngine, "attempts")
+    return _dispatch(run_id, "mental_math")
 
 
 @grader_bp.route("/<run_id>/typing-drill/complete", methods=["POST"])
 def typing_drill_complete(run_id):
-    from engines.typing_drill_engine import TypingDrillEngine
-    return _grade(run_id, "typing_drill", TypingDrillEngine, "attempts")
+    return _dispatch(run_id, "typing_drill")
 
 
 @grader_bp.route("/<run_id>/boggle/complete", methods=["POST"])
 def boggle_complete(run_id):
-    from engines.boggle_engine import BoggleEngine
-    return _grade(run_id, "boggle", BoggleEngine, "words")
+    return _dispatch(run_id, "boggle")
 
 
 @grader_bp.route("/<run_id>/mock-interview/complete", methods=["POST"])
 def mock_interview_complete(run_id):
-    from engines.mock_interview_engine import MockInterviewEngine
-    # Mock interview optionally accepts an injected LLM callable; here we
-    # pass None and let the engine attempt its lazy llm import + fall back
-    # to heuristic if unavailable.
-    return _grade(run_id, "mock_interview",
-                  lambda game: MockInterviewEngine(game), "transcript")
+    # Mock interview optionally accepts an injected LLM callable; the
+    # registry instantiates `MockInterviewEngine(game)` with the default
+    # `llm_callable=None`, same as the lambda this route used to pass in —
+    # the engine attempts its own lazy `llm` import and falls back to a
+    # heuristic score if unavailable.
+    return _dispatch(run_id, "mock_interview")
 
 
 # ==================== LOGIC PUZZLE ENGINES ====================
 
 @grader_bp.route("/<run_id>/sudoku/complete", methods=["POST"])
 def sudoku_complete(run_id):
-    from engines.sudoku_engine import SudokuEngine
-    return _grade(run_id, "sudoku", SudokuEngine, "submission")
+    return _dispatch(run_id, "sudoku")
 
 
 @grader_bp.route("/<run_id>/logic-grid/complete", methods=["POST"])
 def logic_grid_complete(run_id):
-    from engines.logic_grid_engine import LogicGridEngine
-    return _grade(run_id, "logic_grid", LogicGridEngine, "submission")
+    return _dispatch(run_id, "logic_grid")
 
 
 @grader_bp.route("/<run_id>/geometry-constructor/complete", methods=["POST"])
 def geometry_constructor_complete(run_id):
-    from engines.geometry_constructor_engine import GeometryConstructorEngine
-    return _grade(run_id, "geometry_constructor", GeometryConstructorEngine, "points")
+    return _dispatch(run_id, "geometry_constructor")
