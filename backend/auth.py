@@ -107,6 +107,26 @@ def _save_blacklist(tokens: list) -> None:
         os.replace(tmp_path, path)
 
 
+def get_user_by_username(identifier: str) -> Optional[dict]:
+    """Look up a user record by username, tolerating an id instead.
+
+    Real call sites (routes/module_skill_report.py) pass whatever
+    `request.current_user.get("user_id") or request.current_user.get("username")`
+    resolved to — which for a JWT-authenticated request is the numeric/hex
+    `id`, not the username the function name implies — so this checks both
+    rather than only supporting the literal name and silently failing for
+    every real caller.
+    """
+    if not identifier:
+        return None
+    users = _load_users()
+    key = identifier.strip().lower()
+    if key in users:
+        return _public_user(users[key])
+    match = next((u for u in users.values() if u.get("id") == identifier), None)
+    return _public_user(match) if match else None
+
+
 def _public_user(record: dict) -> dict:
     return {
         "id": record["id"],

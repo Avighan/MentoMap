@@ -26,6 +26,7 @@ import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from engine import RunState
 from storage_interface import SessionNotFoundError, SessionExpiredError, StorageIOError
 
 logger = logging.getLogger(__name__)
@@ -76,9 +77,20 @@ def _persist(run_id: str, run: dict) -> None:
 
 
 def create_run(game_id: str, initial_state: Any, game: Optional[dict] = None) -> str:
-    """Create a new run for `game_id`, returning the new run_id."""
+    """Create a new run for `game_id`, returning the new run_id.
+
+    `initial_state` is wrapped in `engine.RunState` when it's a plain
+    dict, so `run["state"].round_index` (attribute access — see app.py's
+    generic /choose flow) works immediately after creation, for every
+    game type, not only ones that happen to go through engine.apply_choice
+    first. RunState subclasses dict, so code that instead treats state as
+    a plain dict (the pilot-game engines under backend/games/) is
+    unaffected — see engine.py's module docstring.
+    """
     run_id = uuid.uuid4().hex
     now = datetime.now().isoformat()
+    if isinstance(initial_state, dict) and not isinstance(initial_state, RunState):
+        initial_state = RunState(**initial_state)
     run = {
         "run_id": run_id,
         "game_id": game_id,

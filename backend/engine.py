@@ -1,14 +1,19 @@
 """Core round-based game engine: RunState + choice/free-text application,
 market simulation, and competitor AI decisions.
 
-`RunState` is deliberately a flexible attribute bag. app.py constructs it
-as `RunState(**state_dict)` throughout (see the many `state = RunState(**state_dict)`
-call sites), where `state_dict` is a given game's `initial_state` JSON —
-different games define entirely different resources (cash, customers,
-product_quality, ...). Real usage confirms the shape: app.py does
-`hasattr(state_obj, resource)` / `setattr(state_obj, resource, ...)` for
-per-game resources, and reads `.round_index` / `.competitor_states` /
-`.to_dict()` directly for the handful of engine-managed fields.
+`RunState` is a flexible attribute bag AND a plain dict at once — it has
+to be both. app.py constructs it as `RunState(**state_dict)` throughout
+and reads/writes per-game resources via `hasattr`/`setattr`/`.round_index`
+(attribute style, see the many `state = RunState(**state_dict)` call
+sites). But `storage.create_run()` stores whatever it's given as
+`run["state"]`, and the three pilot-game engines under `backend/games/`
+(dealcraft_engine.py etc., which predate this restoration and are
+already fully working/tested) operate on that same state purely as a
+plain `Dict[str, float]` — `.get(...)`, `dict(state)`, item access. Since
+both families read `run["state"]` off the exact same storage layer,
+RunState subclasses `dict` so it satisfies both: attribute access for
+the generic engine, and native dict semantics (`isinstance(state, dict)`
+is True, `.get()` works, JSON-serializes natively) for the pilot engines.
 """
 import copy
 from typing import Any, Dict, List, Optional, Tuple
@@ -23,17 +28,27 @@ _MANAGED_FIELDS = {
 }
 
 
-class RunState:
+class RunState(dict):
     def __init__(self, **kwargs):
+        super().__init__()
         for field, default in _MANAGED_FIELDS.items():
             value = kwargs.pop(field, None)
-            setattr(self, field, value if value is not None else copy.deepcopy(default))
+            self[field] = value if value is not None else copy.deepcopy(default)
         # Whatever's left is per-game resource state, e.g. {"value": N, "min":..., "max":...}.
         for key, value in kwargs.items():
-            setattr(self, key, value)
+            self[key] = value
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(name)
+
+    def __setattr__(self, name, value):
+        self[name] = value
 
     def to_dict(self) -> Dict[str, Any]:
-        return dict(self.__dict__)
+        return dict(self)
 
 
 def _as_state(state) -> RunState:
