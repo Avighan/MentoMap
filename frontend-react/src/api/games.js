@@ -604,3 +604,35 @@ export const uploadDrawing = async (runId, data) => {
   const response = await apiClient.post(`/api/run/${runId}/upload-drawing`, data);
   return response.data;
 };
+
+// ── Phase 1 pilot games (dealcraft, mumbai_manufacturer, heliogrid) ────────
+// These three run through routes/grader_routes.py's dedicated per-game
+// endpoints rather than the generic /choose flow above — see that file's
+// module docstring on backend for why.
+
+export const dealcraftChoose = async (runId, roundId, choiceId) => {
+  const response = await apiClient.post(`/api/run/${runId}/dealcraft/choose`, {
+    round_id: roundId,
+    choice_id: choiceId,
+  });
+  return response.data;
+};
+
+export const mumbaiManufacturerChoose = async (runId, roundId, choiceId, eventChoiceId) => {
+  const response = await apiClient.post(`/api/run/${runId}/mumbai_manufacturer/choose`, {
+    round_id: roundId,
+    choice_id: choiceId,
+    event_choice_id: eventChoiceId,
+  });
+  return response.data;
+};
+
+export const heliogridQuarter = async (runId, action) => {
+  const response = await apiClient.post(`/api/run/${runId}/heliogrid/quarter`, { action });
+  return response.data;
+};
+
+export const completePilotRun = async (runId) => {
+  const response = await apiClient.post(`/api/run/${runId}/complete`);
+  return response.data;
+};
