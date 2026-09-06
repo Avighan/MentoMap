@@ -20,7 +20,8 @@ Default dimensions: pattern_recognition + vocabulary.
 """
 from typing import Any, Dict, List, Set, Tuple
 
-from engines._grader_common import coerce_weights, distribute_dimension_scores
+from engines._grader_common import coerce_weights
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "pattern_recognition": 0.5,
@@ -126,13 +127,16 @@ class BoggleEngine:
 
         raw = sum(a["points"] for a in accepted)
         ceiling = max(self._max_possible_points(), 1)
-        score = int(round(min(raw, ceiling) / ceiling * 100))
+        result = scoring_registry.compute(
+            "points_ceiling_ratio", {"raw_points": raw, "ceiling": ceiling},
+            {"weights": self.weights},
+        )
 
         return {
-            "score": score,
+            "score": result.total,
             "raw_points": raw,
             "max_possible_points": ceiling,
             "accepted": accepted,
             "rejected": rejected,
-            "dimension_scores": distribute_dimension_scores(score, self.weights),
+            "dimension_scores": result.dimensions,
         }

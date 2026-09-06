@@ -15,7 +15,8 @@ spatial_reasoning + precision.
 import math
 from typing import Any, Dict, List, Tuple
 
-from engines._grader_common import coerce_weights, distribute_dimension_scores
+from engines._grader_common import coerce_weights
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "spatial_reasoning": 0.6,
@@ -127,13 +128,16 @@ class GeometryConstructorEngine:
             results.append({"feature": feat, "satisfied": ok})
 
         total = len(self.target_features)
-        score = int(round((satisfied / total) * 100)) if total else 0
+        result = scoring_registry.compute(
+            "fraction_correct", {"correct": satisfied, "total": total},
+            {"weights": self.weights},
+        )
 
         return {
-            "score": score,
+            "score": result.total,
             "features_satisfied": satisfied,
             "features_total": total,
             "tolerance": self.tolerance,
             "feature_results": results,
-            "dimension_scores": distribute_dimension_scores(score, self.weights),
+            "dimension_scores": result.dimensions,
         }

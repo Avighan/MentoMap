@@ -16,7 +16,8 @@ Default dimensions: deductive_reasoning + persistence.
 """
 from typing import Any, Dict, List
 
-from engines._grader_common import coerce_weights, distribute_dimension_scores
+from engines._grader_common import coerce_weights
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "deductive_reasoning": 0.6,
@@ -83,20 +84,23 @@ class SudokuEngine:
             for c in range(9):
                 if r < len(coerced) and c < len(coerced[r]) and coerced[r][c] == self.solution[r][c]:
                     cells_correct += 1
-        base = cells_correct / 81
-
         valid = _is_valid_sudoku(coerced)
-        # Validity bonus: invalid grids cap at 80% of base.
-        if not valid:
-            base *= 0.8
 
-        score = int(round(base * 100)) - (hints_used * self.hint_penalty_per_use)
-        score = max(0, min(100, score))
+        result = scoring_registry.compute(
+            "penalized_fraction",
+            {
+                "correct": cells_correct,
+                "total": 81,
+                "valid": valid,
+                "penalty_points": hints_used * self.hint_penalty_per_use,
+            },
+            {"weights": self.weights, "invalid_multiplier": 0.8},
+        )
 
         return {
-            "score": score,
+            "score": result.total,
             "cells_correct": cells_correct,
             "valid": valid,
             "hints_used": hints_used,
-            "dimension_scores": distribute_dimension_scores(score, self.weights),
+            "dimension_scores": result.dimensions,
         }

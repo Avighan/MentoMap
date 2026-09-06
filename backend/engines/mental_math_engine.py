@@ -14,7 +14,8 @@ Default dimensions: focus + processing_speed.
 """
 from typing import Any, Dict, List
 
-from engines._grader_common import coerce_weights, distribute_dimension_scores
+from engines._grader_common import coerce_weights
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "focus": 0.5,
@@ -87,16 +88,18 @@ class MentalMathEngine:
             ratio = 1.0
         speed_factor = max(0.75, min(1.25, ratio))
 
-        raw = (accuracy * 0.8 + (speed_factor - 0.75) / 0.5 * 0.2) * 100
-        score = max(0, min(100, int(round(raw))))
+        result = scoring_registry.compute(
+            "speed_accuracy_factor", {"accuracy": accuracy, "speed_factor": speed_factor},
+            {"weights": self.weights},
+        )
 
         return {
-            "score": score,
+            "score": result.total,
             "correct": correct,
             "total": total,
             "accuracy_pct": int(round(accuracy * 100)),
             "avg_elapsed_s": round(avg_elapsed, 2),
             "speed_factor": round(speed_factor, 2),
             "graded": graded,
-            "dimension_scores": distribute_dimension_scores(score, self.weights),
+            "dimension_scores": result.dimensions,
         }

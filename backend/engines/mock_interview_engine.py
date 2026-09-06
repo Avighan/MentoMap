@@ -19,6 +19,7 @@ import json
 from typing import Any, Dict, List, Optional
 
 from engines._grader_common import coerce_weights, distribute_dimension_scores
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "communication": 0.4,
@@ -104,7 +105,9 @@ class MockInterviewEngine:
                 allowed = {r.get("dimension") for r in self.rubric}
                 llm_scores = {k: v for k, v in llm_scores.items() if k in allowed}
             if llm_scores:
-                avg = int(round(sum(llm_scores.values()) / len(llm_scores)))
+                avg = scoring_registry.compute(
+                    "dimension_average", {"dimension_scores": llm_scores}, {},
+                ).total
                 # Map rubric dimensions onto the engine's weighted dimension map.
                 # If rubric uses the same dimension keys as weights, surface
                 # them directly. Otherwise distribute the averaged score.
