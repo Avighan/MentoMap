@@ -13,7 +13,8 @@ WPM). Default dimensions: focus + processing_speed.
 """
 from typing import Any, Dict, List
 
-from engines._grader_common import coerce_weights, distribute_dimension_scores
+from engines._grader_common import coerce_weights
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "focus": 0.6,
@@ -72,17 +73,19 @@ class TypingDrillEngine:
 
         avg_acc = sum(accuracies) / len(accuracies) if accuracies else 0.0
         wpm = ((total_chars / 5) / (total_seconds / 60)) if total_seconds > 0 else 0
-        speed_ratio = min(1.0, wpm / self.target_wpm) if self.target_wpm > 0 else 0
 
-        score = int(round((avg_acc * 70) + (speed_ratio * 30)))
-        score = max(0, min(100, score))
+        result = scoring_registry.compute(
+            "speed_accuracy_capped",
+            {"accuracy": avg_acc, "actual": wpm, "target": self.target_wpm},
+            {"weights": self.weights},
+        )
 
         return {
-            "score": score,
+            "score": result.total,
             "wpm": round(wpm, 1),
             "target_wpm": self.target_wpm,
             "accuracy_pct": int(round(avg_acc * 100)),
             "passages_attempted": len(per_passage),
             "per_passage": per_passage,
-            "dimension_scores": distribute_dimension_scores(score, self.weights),
+            "dimension_scores": result.dimensions,
         }

@@ -11,11 +11,8 @@ Default dimensions: attention_to_detail + numerical_reasoning.
 """
 from typing import Any, Dict
 
-from engines._grader_common import (
-    band_score_by_diff,
-    coerce_weights,
-    distribute_dimension_scores,
-)
+from engines._grader_common import coerce_weights
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "attention_to_detail": 0.4,
@@ -61,14 +58,17 @@ class StoichiometryMixerEngine:
             tolerance = max(ideal_b * 0.05, 0.001)
 
         diff = abs(added - ideal_b)
-        score, band = band_score_by_diff(diff, tolerance)
+        result = scoring_registry.compute(
+            "proximity_band", {"diff": diff, "tolerance": tolerance},
+            {"weights": self.weights},
+        )
         return {
-            "score": score,
-            "band": band,
+            "score": result.total,
+            "band": result.band,
             "added_b_moles": round(added, 5),
             "ideal_b_moles": round(ideal_b, 5),
             "diff_moles": round(diff, 5),
             "tolerance_moles": round(tolerance, 5),
             "ratio": f"{int(ratio_a)}:{int(ratio_b)}",
-            "dimension_scores": distribute_dimension_scores(score, self.weights),
+            "dimension_scores": result.dimensions,
         }

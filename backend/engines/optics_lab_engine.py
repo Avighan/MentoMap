@@ -11,11 +11,8 @@ that the equation holds across multiple object distances).
 """
 from typing import Any, Dict, List
 
-from engines._grader_common import (
-    band_score_by_diff,
-    coerce_weights,
-    distribute_dimension_scores,
-)
+from engines._grader_common import coerce_weights
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "attention_to_detail": 0.5,
@@ -71,14 +68,17 @@ class OpticsLabEngine:
 
         derived = sum(fs) / len(fs)
         diff = abs(derived - true_f)
-        score, band = band_score_by_diff(diff, tolerance)
+        result = scoring_registry.compute(
+            "proximity_band", {"diff": diff, "tolerance": tolerance},
+            {"weights": self.weights},
+        )
         return {
-            "score": score,
-            "band": band,
+            "score": result.total,
+            "band": result.band,
             "derived_f_cm": round(derived, 3),
             "true_f_cm": round(true_f, 3),
             "diff_cm": round(diff, 3),
             "tolerance_cm": tolerance,
             "trials": len(fs),
-            "dimension_scores": distribute_dimension_scores(score, self.weights),
+            "dimension_scores": result.dimensions,
         }

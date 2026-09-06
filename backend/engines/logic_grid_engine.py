@@ -12,7 +12,8 @@ deductive_reasoning + working_memory.
 """
 from typing import Any, Dict, List
 
-from engines._grader_common import coerce_weights, distribute_dimension_scores
+from engines._grader_common import coerce_weights
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "deductive_reasoning": 0.7,
@@ -64,13 +65,16 @@ class LogicGridEngine:
             if row_match == row_total and row_total > 0:
                 rows_correct += 1
 
-        score = int(round((cells_correct / cells_total) * 100)) if cells_total else 0
+        result = scoring_registry.compute(
+            "fraction_correct", {"correct": cells_correct, "total": cells_total},
+            {"weights": self.weights},
+        )
 
         return {
-            "score": score,
+            "score": result.total,
             "cells_correct": cells_correct,
             "cells_total": cells_total,
             "rows_correct": rows_correct,
             "rows_total": len(self.solution),
-            "dimension_scores": distribute_dimension_scores(score, self.weights),
+            "dimension_scores": result.dimensions,
         }

@@ -1,0 +1,110 @@
+{
+  "game_id": "heliogrid",
+  "title": "HelioGrid — Choose Your Customer",
+  "game_type": "continuous_lever_simulation",
+  "category": "strategic_marketing",
+  "theme": "Segmentation, Targeting & Positioning (STP)",
+  "description": "You are CEO of a commercial solar-inverter maker. Eight quarters, no discrete choices — every quarter you set continuous levers (price, per-segment discounts, sales allocation, headcount, comms, research, and feature investment) and the market resolves against four very different customer segments and a drifting rival.",
+  "target_audience": "MBA/graduate",
+  "duration_minutes": 45,
+  "difficulty": "advanced",
+  "learning_objectives": [
+    "Feel the tradeoff of spreading sales/comms effort across many segments vs. focusing on the few that fit your product",
+    "See a competitor's positioning drift in response to the market instead of holding still",
+    "Practice reading fit, market share, and margin together instead of chasing revenue alone"
+  ],
+  "quarters": 8,
+  "initial_state": {
+    "product": {"efficiency": 96.5, "mass": 21.5, "latency": 68},
+    "rival": {"efficiency": 97.0, "mass": 18.5, "latency": 52, "price": 158000},
+    "listPrice": 162000,
+    "budget": 420000,
+    "headcount": 10,
+    "cumulative_profit": 0,
+    "cumulative_revenue": 0,
+    "consecutive_loss_quarters": 0,
+    "csat_history": []
+  },
+  "segments": {
+    "campus_estates": {
+      "label": "Campus Estates",
+      "want": {"efficiency": 98.4, "mass": 16, "latency": 32},
+      "wtp": 188000, "salesNeed": 0.85, "size": 1100
+    },
+    "process_plants": {
+      "label": "Process Plants",
+      "want": {"efficiency": 96.1, "mass": 26, "latency": 85},
+      "wtp": 215000, "salesNeed": 0.4, "size": 720
+    },
+    "retail_chains": {
+      "label": "Retail Chains",
+      "want": {"efficiency": 97.2, "mass": 14, "latency": 50},
+      "wtp": 142000, "salesNeed": 0.55, "size": 1400
+    },
+    "installer_guild": {
+      "label": "Installer Guild",
+      "want": {"efficiency": 95.4, "mass": 22, "latency": 95},
+      "wtp": 108000, "salesNeed": 0.25, "size": 1900
+    }
+  },
+  "segment_focus_rotation": ["campus_estates", "process_plants", "retail_chains", "installer_guild"],
+  "resolution_config": {
+    "feature_spend_denominator": 100000,
+    "efficiency_gain_per_unit": 0.42,
+    "efficiency_mass_crosstalk": 0.14,
+    "mass_reduction_per_unit": 2.1,
+    "mass_efficiency_crosstalk": 0.35,
+    "latency_reduction_per_unit": 9.5,
+    "efficiency_bounds": [94.2, 99.3],
+    "mass_bounds": [11.5, 30],
+    "latency_bounds": [18, 120],
+    "rival_feature_drift_pct": 0.12,
+    "rival_price_drift_pct": 0.08,
+    "rival_price_target_pct_of_wtp": 0.92,
+    "fit_efficiency_weight": 28, "fit_efficiency_scale": 2.4,
+    "fit_mass_weight": 22, "fit_mass_scale": 12,
+    "fit_latency_weight": 18, "fit_latency_scale": 70,
+    "fit_price_penalty_weight": 58, "fit_price_discount_bonus_weight": 7,
+    "fit_bounds": [3, 97],
+    "sales_intensity_headcount_reference": 10,
+    "comms_factor_denominator": 100000,
+    "comms_factor_bounds": [0.7, 1.3],
+    "rival_sales_intensity": 0.6,
+    "rival_comms_factor": 1.0,
+    "quarterly_capture_rate": 0.01,
+    "cogs_price_fraction": 0.4,
+    "cogs_efficiency_slope": 3000,
+    "salary_per_head": 22000,
+    "consecutive_loss_quarters_to_fire": 3
+  },
+  "scoring_config": {
+    "formula": "benchmark_scorecard",
+    "business_model": "heliogrid",
+    "weights": {
+      "cumulative_profit": 0.30,
+      "market_share_pct": 0.25,
+      "csat": 0.25,
+      "cumulative_revenue": 0.20
+    },
+    "benchmarks": {
+      "heliogrid": {
+        "label": "HelioGrid STP simulation",
+        "cumulative_profit": {"good": [-400000, 800000], "great": [800000, 2500000]},
+        "market_share_pct": {"good": [10, 24], "great": [24, 38]},
+        "csat": {"good": [45, 66], "great": [66, 88]},
+        "cumulative_revenue": {"good": [0, 9000000], "great": [9000000, 18000000]}
+      }
+    },
+    "grade_table": [
+      {"min": 88, "grade": "A+", "label": "Segment command"},
+      {"min": 78, "grade": "A", "label": "Clear targeting with a working P&L"},
+      {"min": 68, "grade": "B+", "label": "Solid STP instincts"},
+      {"min": 58, "grade": "B", "label": "Learning the trade-offs of focus"},
+      {"min": 48, "grade": "C", "label": "Spread too thin"},
+      {"min": 0, "grade": "D", "label": "Reset and try a sharper segment bet"}
+    ],
+    "fired_label": "Mandate ended early",
+    "fired_score_cap": 48
+  },
+  "reflection_prompt": "Which segment did you effectively choose to ignore, and what would have happened if you had chased it instead?"
+}

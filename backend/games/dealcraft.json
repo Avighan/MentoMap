@@ -1,0 +1,192 @@
+{
+  "game_id": "dealcraft",
+  "title": "Dealcraft",
+  "game_type": "rounds",
+  "category": "business_simulation",
+  "theme": "Negotiation & Deal-Making",
+  "description": "Seven rounds of a high-stakes commercial negotiation: prep, opening offers, BATNA pressure, concessions, a multi-party table, an ethics checkpoint, and the close. Every choice trades off cash, reputation, skill growth, energy, and integrity.",
+  "target_audience": "MBA/graduate",
+  "duration_minutes": 40,
+  "difficulty": "advanced",
+  "learning_objectives": [
+    "Distinguish value-claiming from value-creating moves in a negotiation",
+    "Manage the tradeoff between short-term cash and long-term reputation",
+    "Recognize when an ethical shortcut compounds into a bigger downside"
+  ],
+  "initial_state": {
+    "cash": 1000,
+    "reputation": 68,
+    "skills": 32,
+    "energy": 100,
+    "integrity": 82
+  },
+  "scoring_config": {
+    "formula": "weighted_kpi_normalize",
+    "categories": [
+      {
+        "name": "Results",
+        "kpis": [{"name": "cash", "min": 400, "max": 2000, "weight": 0.25}]
+      },
+      {
+        "name": "Skill",
+        "kpis": [{"name": "skills", "min": 0, "max": 100, "weight": 0.25}]
+      },
+      {
+        "name": "Reputation",
+        "kpis": [{"name": "reputation", "min": 0, "max": 100, "weight": 0.25}]
+      },
+      {
+        "name": "Judgment",
+        "kpis": [{"name": "integrity", "min": 0, "max": 100, "weight": 0.15}]
+      },
+      {
+        "name": "Resilience",
+        "kpis": [{"name": "energy", "min": 0, "max": 100, "weight": 0.10}]
+      }
+    ],
+    "grade_table": [
+      {"min": 90, "grade": "A+", "label": "Master dealmaker"},
+      {"min": 80, "grade": "A", "label": "Strategic negotiator"},
+      {"min": 70, "grade": "B+", "label": "Value creator"},
+      {"min": 60, "grade": "B", "label": "Capable closer"},
+      {"min": 50, "grade": "C+", "label": "Developing negotiator"},
+      {"min": 0, "grade": "C", "label": "Needs preparation"}
+    ]
+  },
+  "rounds": [
+    {
+      "id": "round_1",
+      "title": "Preparation map",
+      "prompt": "Before you sit at the table, how do you spend your prep time?",
+      "choices": [
+        {"id": "map_interests", "label": "Map interests", "strategic_type": "systematic",
+         "effects": {"cash": 80, "reputation": 4, "skills": 10, "energy": -8, "integrity": 3},
+         "feedback": "Mapping both sides' underlying interests (not just positions) gives you options to trade later — the foundation of value creation."},
+        {"id": "model_numbers", "label": "Model the numbers", "strategic_type": "data_driven",
+         "effects": {"cash": 120, "skills": 8, "energy": -6, "integrity": 1},
+         "feedback": "A tight financial model sharpens your anchor and your walk-away point, but numbers alone miss the relationship side of the deal."},
+        {"id": "call_supplier", "label": "Call the supplier", "strategic_type": "collaborative",
+         "effects": {"reputation": 8, "skills": 4, "energy": -5, "integrity": 2},
+         "feedback": "An early informal call builds trust before the formal ask — reputation compounds even when it doesn't show up on this quarter's ledger."},
+        {"id": "draft_bold_ask", "label": "Draft a bold ask", "strategic_type": "aggressive_efficiency",
+         "effects": {"cash": 150, "reputation": -2, "skills": 3, "energy": -3, "integrity": -1},
+         "feedback": "Skipping prep to draft an aggressive ask can work once, but you're negotiating on assumptions instead of information."}
+      ]
+    },
+    {
+      "id": "round_2",
+      "title": "First offer",
+      "prompt": "It's time to make the opening move. What's your first offer?",
+      "choices": [
+        {"id": "justified_anchor", "label": "Justified anchor", "strategic_type": "balanced",
+         "effects": {"cash": 170, "reputation": 4, "skills": 8, "energy": -7, "integrity": 3},
+         "feedback": "An ambitious anchor backed by visible logic sets the frame without burning trust — the other side can push back on the numbers, not on you."},
+        {"id": "open_extremely_low", "label": "Open extremely low", "strategic_type": "aggressive_efficiency",
+         "effects": {"cash": 260, "reputation": -10, "skills": 3, "energy": -5, "integrity": -6},
+         "feedback": "An unreasonable opener can anchor hard, but it signals bad faith — expect the other side to harden their own position in response."},
+        {"id": "invite_their_proposal", "label": "Invite their proposal", "strategic_type": "collaborative",
+         "effects": {"reputation": 7, "skills": 6, "energy": -4, "integrity": 2},
+         "feedback": "Letting them anchor first gives up some leverage, but the information you learn about their priorities is often worth more."},
+        {"id": "offer_a_range", "label": "Offer a range", "strategic_type": "flexible",
+         "effects": {"cash": 90, "reputation": 3, "skills": 7, "energy": -4, "integrity": 1},
+         "feedback": "A range signals flexibility while still anchoring on the high end — a middle path between an aggressive number and no number at all."}
+      ]
+    },
+    {
+      "id": "round_3",
+      "title": "BATNA test",
+      "prompt": "The other side is testing whether you actually have alternatives. How do you respond?",
+      "choices": [
+        {"id": "validate_backup", "label": "Validate the backup", "strategic_type": "risk_averse",
+         "effects": {"cash": 120, "reputation": 2, "skills": 9, "energy": -8, "integrity": 4},
+         "feedback": "Confirming your BATNA is real (not just assumed) before you lean on it is the single habit that separates prepared negotiators from bluffers."},
+        {"id": "signal_alternatives", "label": "Signal alternatives", "strategic_type": "balanced",
+         "effects": {"cash": 170, "reputation": 1, "skills": 5, "energy": -4, "integrity": 0},
+         "feedback": "A calm, factual mention of other options applies pressure without a confrontation."},
+        {"id": "bluff_better_deal", "label": "Bluff a better deal", "strategic_type": "aggressive_efficiency",
+         "effects": {"cash": 240, "reputation": -12, "skills": 1, "energy": -5, "integrity": -15},
+         "feedback": "A bluff that gets called doesn't just cost this deal — it costs every future deal with anyone who hears about it. The integrity hit here is the real price."},
+        {"id": "share_switching_concerns", "label": "Share switching concerns", "strategic_type": "collaborative",
+         "effects": {"cash": 60, "reputation": 9, "skills": 6, "energy": -4, "integrity": 5},
+         "feedback": "Naming your real hesitation invites them to solve it with you instead of against you — slower, but it usually holds up better."}
+      ]
+    },
+    {
+      "id": "round_4",
+      "title": "Concession design",
+      "prompt": "You need to move off your opening position. How do you concede?",
+      "choices": [
+        {"id": "trade_dont_give", "label": "Trade, do not give", "strategic_type": "balanced",
+         "effects": {"cash": 130, "reputation": 5, "skills": 9, "energy": -6, "integrity": 3},
+         "feedback": "Every concession paired with an ask of your own teaches the other side that nothing here is free — and keeps the deal moving toward a real trade."},
+        {"id": "hold_the_line", "label": "Hold the line", "strategic_type": "focused",
+         "effects": {"cash": 180, "reputation": -5, "skills": 4, "energy": -5, "integrity": 1},
+         "feedback": "Refusing to move protects the number this round, but a negotiation with zero concessions from you risks reading as bad-faith stonewalling."},
+        {"id": "split_the_pain", "label": "Split the pain", "strategic_type": "collaborative",
+         "effects": {"cash": -40, "reputation": 10, "skills": 6, "energy": -4, "integrity": 4},
+         "feedback": "Meeting in the middle costs you cash this round but is often the fastest way to preserve a relationship you'll need again."},
+        {"id": "delay_the_issue", "label": "Delay the issue", "strategic_type": "flexible",
+         "effects": {"cash": 30, "reputation": -3, "skills": -1, "energy": -2, "integrity": -2},
+         "feedback": "Punting on a hard issue doesn't make it go away — it usually resurfaces later, at a worse moment, with less goodwill left to spend on it."}
+      ]
+    },
+    {
+      "id": "round_5",
+      "title": "Multi-party table",
+      "prompt": "A third stakeholder just joined the table with their own agenda. What's your move?",
+      "choices": [
+        {"id": "create_workstreams", "label": "Create workstreams", "strategic_type": "systematic",
+         "effects": {"cash": 100, "reputation": 5, "skills": 10, "energy": -9, "integrity": 2},
+         "feedback": "Splitting a multi-party deal into parallel workstreams keeps every stakeholder's issue moving without letting one blocker stall the whole table."},
+        {"id": "escalate_to_executives", "label": "Escalate to executives", "strategic_type": "aggressive_efficiency",
+         "effects": {"cash": 140, "reputation": 1, "skills": 3, "energy": -5, "integrity": 1},
+         "feedback": "Escalating can break a logjam fast, but it also signals you couldn't resolve this at your own level — use it sparingly."},
+        {"id": "host_joint_workshop", "label": "Host joint workshop", "strategic_type": "collaborative",
+         "effects": {"cash": 60, "reputation": 9, "skills": 8, "energy": -8, "integrity": 3},
+         "feedback": "Getting everyone in one room to align on shared goals costs time and energy, but it's often the only way a genuinely three-way deal actually closes."},
+        {"id": "negotiate_privately", "label": "Negotiate privately", "strategic_type": "focused",
+         "effects": {"cash": 110, "reputation": -4, "skills": 2, "energy": -3, "integrity": -3},
+         "feedback": "Side-channel deals can be efficient, but they erode trust with whoever finds out they were cut out of the room."}
+      ]
+    },
+    {
+      "id": "round_6",
+      "title": "Ethics checkpoint",
+      "prompt": "You just noticed the other side's numbers contain an error that works heavily in your favor. What do you do?",
+      "choices": [
+        {"id": "disclose_the_error", "label": "Disclose the error", "strategic_type": "long_term_investment",
+         "effects": {"cash": -120, "reputation": 12, "skills": 5, "energy": -4, "integrity": 15},
+         "feedback": "Flagging their error costs you the windfall, but a reputation for not exploiting mistakes is worth more than any single deal — people remember who they can trust with the numbers."},
+        {"id": "ask_clarifying_questions", "label": "Ask clarifying questions", "strategic_type": "balanced",
+         "effects": {"cash": 20, "reputation": 7, "skills": 7, "energy": -4, "integrity": 8},
+         "feedback": "Asking a question that lets them catch their own mistake is a middle path — you're not exploiting it, but you're also not doing their job for them."},
+        {"id": "ignore_it", "label": "Ignore it", "strategic_type": "aggressive_efficiency",
+         "effects": {"cash": 230, "reputation": -10, "skills": -2, "energy": -2, "integrity": -18},
+         "feedback": "Quietly banking someone else's mistake is the biggest single integrity hit in this negotiation — and errors like this have a way of surfacing after the ink is dry."},
+        {"id": "ask_legal_privately", "label": "Ask legal privately", "strategic_type": "risk_averse",
+         "effects": {"cash": -20, "reputation": 3, "skills": 4, "energy": -5, "integrity": 6},
+         "feedback": "Routing the question through legal protects you procedurally, though it's slower and less direct than raising it at the table."}
+      ]
+    },
+    {
+      "id": "round_7",
+      "title": "Close the deal",
+      "prompt": "Everything is on the table. How do you bring this home?",
+      "choices": [
+        {"id": "close_with_package", "label": "Close with a package", "strategic_type": "balanced",
+         "effects": {"cash": 220, "reputation": 7, "skills": 10, "energy": -7, "integrity": 5},
+         "feedback": "Bundling every open item into one final package lets both sides see the whole trade at once — usually the cleanest way to get to yes."},
+        {"id": "use_deadline_pressure", "label": "Use deadline pressure", "strategic_type": "aggressive_efficiency",
+         "effects": {"cash": 260, "reputation": -8, "skills": 2, "energy": -5, "integrity": -5},
+         "feedback": "An artificial deadline can force a decision, but it also forces it under duress — watch for buyer's remorse and a colder relationship afterward."},
+        {"id": "close_a_pilot", "label": "Close a pilot", "strategic_type": "risk_averse",
+         "effects": {"cash": 80, "reputation": 9, "skills": 8, "energy": -4, "integrity": 4},
+         "feedback": "Scaling down to a pilot leaves cash on the table now, but it's a low-risk way to prove the relationship before either side commits fully."},
+        {"id": "celebrate_jointly", "label": "Celebrate jointly", "strategic_type": "collaborative",
+         "effects": {"cash": 120, "reputation": 12, "skills": 5, "energy": -6, "integrity": 5},
+         "feedback": "Marking the close together — not just signing and leaving — is what turns a one-off transaction into the start of a relationship."}
+      ]
+    }
+  ],
+  "reflection_prompt": "Where did you create value before claiming it? Which concession protected the relationship best?"
+}

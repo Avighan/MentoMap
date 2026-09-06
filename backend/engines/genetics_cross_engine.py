@@ -11,9 +11,10 @@ trait, this maps perfectly-correct predictions to 100 and nonsense to ~0.
 
 Default dimensions: pattern_recognition + prediction_accuracy.
 """
-from typing import Any, Dict, List
+from typing import Any, Dict
 
-from engines._grader_common import coerce_weights, distribute_dimension_scores
+from engines._grader_common import coerce_weights
+from engines import scoring_registry
 
 _DEFAULT_DIMENSION_WEIGHTS = {
     "pattern_recognition": 0.5,
@@ -83,22 +84,15 @@ class GeneticsCrossEngine:
                 "dimension_scores": {dim: 0 for dim in self.weights},
             }
 
-        # Mean absolute percentage error over the expected keys.
-        # If student didn't predict a key, treat as 0%.
-        diffs: List[float] = []
-        for key, exp_pct in expected.items():
-            try:
-                pred = float((predictions or {}).get(key, 0))
-            except (TypeError, ValueError):
-                pred = 0.0
-            diffs.append(abs(pred - exp_pct))
-        mae = sum(diffs) / len(diffs)
-        score = max(0, int(round(100 - mae)))
+        result = scoring_registry.compute(
+            "mae_accuracy", {"predicted": predictions or {}, "expected": expected},
+            {"weights": self.weights},
+        )
 
         return {
-            "score": score,
+            "score": result.total,
             "expected": expected,
             "predicted": {k: round(float(v), 2) for k, v in (predictions or {}).items()},
-            "mean_abs_error_pct": round(mae, 2),
-            "dimension_scores": distribute_dimension_scores(score, self.weights),
+            "mean_abs_error_pct": result.raw["mean_abs_error_pct"],
+            "dimension_scores": result.dimensions,
         }
