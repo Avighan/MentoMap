@@ -52,6 +52,26 @@ def _expect_game_type(run: Dict[str, Any], expected: str):
     return None
 
 
+def _expect_game_id(run: Dict[str, Any], expected: str):
+    """Same idea as `_expect_game_type` but keyed on `game_id`.
+
+    The three pilot games below each have a bespoke `game_type` in their
+    JSON (dealcraft.json: "rounds", mumbai_manufacturer.json:
+    "business_simulation_settlement", heliogrid.json:
+    "continuous_lever_simulation") that doesn't match the pilot name used
+    for dispatch here — `game_id` does match exactly in all three cases,
+    so that's the field these routes actually key on.
+    """
+    actual = (run.get("game") or {}).get("game_id")
+    if actual != expected:
+        return jsonify({
+            "error": "Wrong game for this endpoint",
+            "expected": expected,
+            "actual": actual,
+        }), 400
+    return None
+
+
 def _record(run: Dict[str, Any], game_type: str, summary: Dict[str, Any]) -> None:
     """Write the engine's grading result into run state so /report picks it up."""
     state_obj = run.setdefault("state", {})
@@ -299,7 +319,7 @@ def dealcraft_choose(run_id):
     run, err = _load_run(run_id)
     if err:
         return err
-    err = _expect_game_type(run, "dealcraft")
+    err = _expect_game_id(run, "dealcraft")
     if err:
         return err
 
@@ -330,7 +350,7 @@ def mumbai_manufacturer_choose(run_id):
     run, err = _load_run(run_id)
     if err:
         return err
-    err = _expect_game_type(run, "mumbai_manufacturer")
+    err = _expect_game_id(run, "mumbai_manufacturer")
     if err:
         return err
 
@@ -365,7 +385,7 @@ def heliogrid_quarter(run_id):
     run, err = _load_run(run_id)
     if err:
         return err
-    err = _expect_game_type(run, "heliogrid")
+    err = _expect_game_id(run, "heliogrid")
     if err:
         return err
 
@@ -401,12 +421,14 @@ def pilot_game_complete(run_id):
     if err:
         return err
 
-    game_type = (run.get("game") or {}).get("game_type")
-    engine = _pilot_engine(game_type)
+    # Dispatch on game_id, not game_type — see _expect_game_id's docstring:
+    # each pilot game's own game_type doesn't match its pilot name.
+    game_id = (run.get("game") or {}).get("game_id")
+    engine = _pilot_engine(game_id)
     if engine is None:
         return jsonify({
             "error": "Not a pilot game run",
-            "actual_game_type": game_type,
+            "actual_game_type": (run.get("game") or {}).get("game_type"),
             "expected_one_of": sorted(_PILOT_GAME_MODULES),
         }), 400
 
@@ -420,6 +442,6 @@ def pilot_game_complete(run_id):
         return jsonify({"error": f"Scoring failed: {e}"}), 500
 
     summary = result.as_dict()
-    _record(run, game_type, summary)
+    _record(run, game_id, summary)
     update_run(run_id, run)
     return jsonify({"success": True, "summary": summary})
