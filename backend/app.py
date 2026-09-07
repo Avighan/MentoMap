@@ -1824,7 +1824,21 @@ _PUBLIC_GAME_TYPES = {
 # Curated discover whitelist — games surfaced on the public /discover (GameHub) page
 # for non-privileged users. Modules and admin still see the full catalog. Games not
 # in this set remain playable via direct link (/play/<id>) and via module curricula.
+#
+# TEMPORARILY restricted to just the 3 pilot games with a real rebuilt frontend
+# play screen (routes/grader_routes.py + PilotGamePlayPage.jsx) — every other
+# entry below is a real, working backend game, but the rebuilt React frontend
+# only knows how to render dealcraft/mumbai_manufacturer/heliogrid so far (see
+# PilotGamePlayPage.jsx's docstring); showing the rest in the catalog just
+# produced dead-end clicks. Restore the commented-out set below (or add
+# specific ids back) once GamePlayPage.jsx's ~50 missing dependencies are
+# restored and can render them, or once more games get pilot-style play screens.
 _DISCOVER_WHITELIST = {
+    'dealcraft',
+    'mumbai_manufacturer',
+    'heliogrid',
+}
+_DISCOVER_WHITELIST_FULL = {
     # User-mandated highlights
     'summer_money_challenge_complete_v2',
     'summer-sports-league',
@@ -1899,13 +1913,6 @@ _DISCOVER_WHITELIST = {
     'diplomacy-summit',
     # MBA inventory simulation
     'mumbai-manufacturer-inventory',
-    # Phase 1 pilot games (routes/grader_routes.py) — added with real engines
-    # and tests but never added here, so they were fully playable via direct
-    # /play/<id> link but invisible on the public catalog. Found while
-    # verifying the rebuilt frontend end-to-end on a real deployment.
-    'dealcraft',
-    'mumbai_manufacturer',
-    'heliogrid',
 }
 
 
