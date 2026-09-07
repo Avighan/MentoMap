@@ -1899,6 +1899,13 @@ _DISCOVER_WHITELIST = {
     'diplomacy-summit',
     # MBA inventory simulation
     'mumbai-manufacturer-inventory',
+    # Phase 1 pilot games (routes/grader_routes.py) — added with real engines
+    # and tests but never added here, so they were fully playable via direct
+    # /play/<id> link but invisible on the public catalog. Found while
+    # verifying the rebuilt frontend end-to-end on a real deployment.
+    'dealcraft',
+    'mumbai_manufacturer',
+    'heliogrid',
 }
 
 
