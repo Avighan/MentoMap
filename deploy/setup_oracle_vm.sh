@@ -31,9 +31,21 @@ echo "==> [2/8] Opening the VM's local firewall for HTTP (port 80)"
 # Oracle's Ubuntu images ship with iptables rules that only allow port 22
 # inbound by default — separate from (and in addition to) the VCN Security
 # List you configure in the OCI web console. Both need to allow port 80.
+#
+# The ACCEPT rule must land BEFORE the default REJECT-all rule Oracle's
+# template includes, or it's dead code — iptables stops at the first
+# match. A hardcoded insert position doesn't reliably land before that
+# REJECT rule (this shipped once and broke a real deploy), so find the
+# REJECT/DROP rule's actual line number and insert just above it instead.
 if command -v iptables >/dev/null 2>&1; then
-  sudo iptables -C INPUT -p tcp --dport 80 -j ACCEPT 2>/dev/null || \
-    sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
+  if ! sudo iptables -C INPUT -p tcp --dport 80 -j ACCEPT 2>/dev/null; then
+    BLOCK_LINE="$(sudo iptables -L INPUT -n --line-numbers | awk '/^[0-9]+ +(REJECT|DROP)/ {print $1; exit}')"
+    if [ -n "$BLOCK_LINE" ]; then
+      sudo iptables -I INPUT "$BLOCK_LINE" -m state --state NEW -p tcp --dport 80 -j ACCEPT
+    else
+      sudo iptables -A INPUT -m state --state NEW -p tcp --dport 80 -j ACCEPT
+    fi
+  fi
   sudo netfilter-persistent save 2>/dev/null || \
     (sudo apt-get install -y iptables-persistent && sudo netfilter-persistent save)
 fi
