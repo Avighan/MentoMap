@@ -591,6 +591,14 @@ def _log_choice_id(entry: dict) -> str:
     return ""
 
 
+def _round_id(rnd: dict):
+    """A round's id key is "id" in most game JSON but "round_id" in a few
+    (e.g. games/startup-founders-journey.json) — both are valid per
+    schemas.py's _validate_rounds_game. Several call sites assumed "id"
+    unconditionally and KeyError'd on the others."""
+    return rnd.get("id") or rnd.get("round_id")
+
+
 def _numeric_state_value(value) -> float:
     """Some games track a state field as a plain number, others as a
     richer {value, min, max, icon, label} object (see e.g.
@@ -3795,9 +3803,9 @@ def run_choose(run_id):
     # Use both ID match and index bounds check for robustness (dynamic rounds can shift indices)
     # Note: state_obj.round_index may have been corrected by round_index repair above,
     # so use the CURRENT value, not the original one used to set prev_round.
-    _last_round_id = game["rounds"][-1]["id"]
+    _last_round_id = _round_id(game["rounds"][-1])
     _at_or_past_last = state_obj.round_index >= len(game["rounds"]) - 1
-    _prev_is_last = prev_round["id"] == _last_round_id
+    _prev_is_last = _round_id(prev_round) == _last_round_id
     done = _prev_is_last or _at_or_past_last
 
     # Early-exit: if simulation engine triggered an early termination (e.g. R8 option 3)
@@ -3815,7 +3823,7 @@ def run_choose(run_id):
 
     # Safety net 2: if current round_index equals the index of the LAST round being played
     # (handles case where prev_round was set before round_index correction)
-    _current_round_id = game["rounds"][min(state_obj.round_index, len(game["rounds"])-1)]["id"]
+    _current_round_id = _round_id(game["rounds"][min(state_obj.round_index, len(game["rounds"])-1)])
     if _current_round_id == _last_round_id and not done:
         logger.warning(f"[SAFETY-2] Game {game_id}: current_round_id matches last_round_id. Forcing done=True.")
         done = True
@@ -17362,7 +17370,7 @@ def ai_arena_timer_expire(run_id):
     state_obj.memory_tags.append(f"timeout_{current_round.get('id', 'unknown')}")
 
     # Advance to next round
-    done = current_round["id"] == game["rounds"][-1]["id"]
+    done = _round_id(current_round) == _round_id(game["rounds"][-1])
     if not done:
         next_round(state_obj, game)
 
