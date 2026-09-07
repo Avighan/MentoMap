@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Simulok — Owner master guide (all roles)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../guide.css" />
+  <style>
+    .badge-owner {
+      display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; background: #FDE8E8; color: #9B1C1C;
+      padding: 0.28rem 0.55rem; border-radius: 6px; margin-bottom: 0.65rem;
+    }
+    .role-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin: 1rem 0 1.5rem;
+    }
+    @media (max-width: 700px) { .role-grid { grid-template-columns: 1fr; } }
+    .role-grid .card h3 { font-size: 1rem; }
+    .role-grid .card .who { font-size: 0.8rem; color: var(--muted); margin: 0 0 0.5rem; }
+    .link-list { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+    .link-list li {
+      padding: 0.65rem 0; border-bottom: 1px solid var(--line);
+      display: grid; gap: 0.15rem;
+    }
+    .link-list li:last-child { border-bottom: 0; }
+    .link-list .label { font-weight: 700; font-size: 0.92rem; }
+    .link-list .share { font-size: 0.8rem; color: var(--muted); }
+    .link-list a { color: var(--accent); font-weight: 600; text-decoration: none; word-break: break-all; font-size: 0.88rem; }
+    .link-list a:hover { text-decoration: underline; }
+    .check { margin: 0.4rem 0 0.4rem 1.15rem; }
+    .check li { margin: 0.35rem 0; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="badge-owner">Internal · owner only</div>
+      <div class="brand">Simulok<span>.ai</span> · Master guide</div>
+      <h1>One page for every role</h1>
+      <p>Links, credentials, classroom flow, demo mode, developer handoff, and Sheet / Apps Script ops. Do not share this URL with students, faculty decks, or public docs.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="warn">
+      <strong>Keep this page private.</strong> It lists the instructor guide, sample passwords, the live Apps Script endpoint pattern, and setup steps. Bookmark it for yourself. Never paste it into a student WhatsApp, a public deck, or the marketing site.
+    </div>
+
+    <nav class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#roles">Roles at a glance</a></li>
+        <li><a href="#links">Master link list</a></li>
+        <li><a href="#share">What to share with whom</a></li>
+        <li><a href="#demo">Demo User / Demo Instructor</a></li>
+        <li><a href="#student">Student — how they use it</a></li>
+        <li><a href="#instructor">Instructor — how they use it</a></li>
+        <li><a href="#owner">Owner / ops — Sheet &amp; Apps Script</a></li>
+        <li><a href="#developer">Developer — brief &amp; code</a></li>
+        <li><a href="#creds">Sample credentials</a></li>
+        <li><a href="#sitting">Run a live sitting (checklist)</a></li>
+        <li><a href="#sims">Classroom-capable simulations</a></li>
+        <li><a href="#repo">Repo map &amp; publish path</a></li>
+        <li><a href="#trouble">Troubleshooting</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Roles -->
+    <section id="roles">
+      <h2>1. Roles at a glance</h2>
+      <div class="role-grid">
+        <div class="card">
+          <p class="who">Audience</p>
+          <h3>Student / Participant</h3>
+          <p>Signs in with ID + name + password, plays the assigned sim once, score goes to the Sheet.</p>
+          <a class="btn" href="https://simulok.in/platform/classroom/guide/student/">Student guide</a>
+        </div>
+        <div class="card">
+          <p class="who">Audience</p>
+          <h3>Instructor / Faculty</h3>
+          <p>Opens/closes sessions, watches live scores, resets runs, opens report cards. Not for students.</p>
+          <a class="btn" href="https://simulok.in/platform/classroom/guide/instructor/">Instructor guide</a>
+        </div>
+        <div class="card">
+          <p class="who">Audience</p>
+          <h3>Demo (sales / walkthrough)</h3>
+          <p>No Sheet. Continue as Demo User or Demo Instructor for a catalog walkthrough.</p>
+          <a class="btn" href="https://simulok.in/platform/">Open platform</a>
+        </div>
+        <div class="card">
+          <p class="who">Audience</p>
+          <h3>Developer</h3>
+          <p>Design pack → try platform → request GitHub access → sandbox then merge.</p>
+          <a class="btn btn-ghost" href="#developer">Developer section</a>
+        </div>
+      </div>
+      <div class="callout">
+        You (owner) sit above all of these: you set up the Sheet, deploy Apps Script, wire <code>ENDPOINT</code>, change passwords for real classes, and decide who gets which URL.
+      </div>
+    </section>
+
+    <!-- 2. Links -->
+    <section id="links">
+      <h2>2. Master link list</h2>
+      <aside class="url-box">
+        <h2>Live URLs</h2>
+        <ul class="link-list">
+          <li>
+            <span class="label">Marketing site</span>
+            <a href="https://simulok.in/">https://simulok.in/</a>
+            <span class="share">Public. Never links to /platform/.</span>
+          </li>
+          <li>
+            <span class="label">Platform (prototype)</span>
+            <a href="https://simulok.in/platform/">https://simulok.in/platform/</a>
+            <span class="share">Unlisted team URL. Share with students + faculty for class; sales for demos.</span>
+          </li>
+          <li>
+            <span class="label">Student classroom guide</span>
+            <a href="https://simulok.in/platform/classroom/guide/student/">…/classroom/guide/student/</a>
+            <span class="share">Share with students only (with platform + roster IDs).</span>
+          </li>
+          <li>
+            <span class="label">Instructor classroom guide</span>
+            <a href="https://simulok.in/platform/classroom/guide/instructor/">…/classroom/guide/instructor/</a>
+            <span class="share">Faculty / you only. Never send to students.</span>
+          </li>
+          <li>
+            <span class="label">This owner master guide</span>
+            <a href="https://simulok.in/platform/classroom/guide/owner/">…/classroom/guide/owner/</a>
+            <span class="share">You only. Bookmark; do not list on student or instructor pages.</span>
+          </li>
+          <li>
+            <span class="label">Classroom hub (blank)</span>
+            <a href="https://simulok.in/platform/classroom/guide/">…/classroom/guide/</a>
+            <span class="share">Intentionally does not list guides (students must not discover instructor/owner pages).</span>
+          </li>
+          <li>
+            <span class="label">Live dashboard</span>
+            <a href="https://simulok.in/platform/classroom/dashboard.html">…/classroom/dashboard.html</a>
+            <span class="share">After FACULTY login in the same browser. Projector-friendly.</span>
+          </li>
+          <li>
+            <span class="label">Dashboard demo (no login)</span>
+            <a href="https://simulok.in/platform/classroom/dashboard.html?demo=1">…/dashboard.html?demo=1</a>
+            <span class="share">Sample data for sales / preview.</span>
+          </li>
+          <li>
+            <span class="label">Zenith (standalone path)</span>
+            <a href="https://simulok.in/platform/cost-accounting/zenith-appliances.html">…/cost-accounting/zenith-appliances.html</a>
+            <span class="share">Also launched from platform when Zenith session is assigned.</span>
+          </li>
+          <li>
+            <span class="label">GitHub repo</span>
+            <a href="https://github.com/sumeetonline90/simulok">https://github.com/sumeetonline90/simulok</a>
+            <span class="share">Collaborators only. Source of truth for site + platform.</span>
+          </li>
+        </ul>
+      </aside>
+    </section>
+
+    <!-- 3. Share matrix -->
+    <section id="share">
+      <h2>3. What to share with whom</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Recipient</th>
+            <th>Send</th>
+            <th>Never send</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Students</td>
+            <td>Platform + student guide + Student ID / password / ask for real name on login</td>
+            <td>Instructor guide, this owner page, dashboard URL alone, Sheet, Apps Script, <code>/exec</code></td>
+          </tr>
+          <tr>
+            <td>Faculty</td>
+            <td>Platform + instructor guide + FACULTY ID / password + “share only student guide with class”</td>
+            <td>This owner page (unless they are also ops), Sheet edit rights unless needed</td>
+          </tr>
+          <tr>
+            <td>Sales / demo</td>
+            <td>Platform + Demo User / Demo Instructor + optional dashboard <code>?demo=1</code></td>
+            <td>Roster passwords, owner guide, live Sheet</td>
+          </tr>
+          <tr>
+            <td>New developers</td>
+            <td><code>App dev/DEVELOPER_ONBOARDING.docx</code> (or .md), Zara design pack folder, then GitHub invite</td>
+            <td>Student WhatsApp lists; prefer not to give production Sheet write access</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 4. Demo -->
+    <section id="demo">
+      <h2>4. Demo User / Demo Instructor</h2>
+      <p class="lede">No Google Sheet. Best for sales and product walkthroughs.</p>
+      <ol class="steps">
+        <li>Open <a href="https://simulok.in/platform/">https://simulok.in/platform/</a>.</li>
+        <li><strong>Participant</strong> → <strong>Continue as Demo User</strong> — full catalog, play sims (including both Zara titles).</li>
+        <li><strong>Instructor / Admin</strong> → <strong>Continue as Demo Instructor</strong> — console layout; live Sheet logging is off.</li>
+        <li>Optional scoreboard look: <a href="https://simulok.in/platform/classroom/dashboard.html?demo=1">dashboard.html?demo=1</a>.</li>
+      </ol>
+      <div class="callout">Live classroom scores need roster login + an open session. Demo mode does not write to the Sheet.</div>
+    </section>
+
+    <!-- 5. Student -->
+    <section id="student">
+      <h2>5. Student — how they use it</h2>
+      <p class="lede">Full screenshots: <a href="https://simulok.in/platform/classroom/guide/student/">student guide</a>.</p>
+      <ol class="steps">
+        <li>Wait until faculty says the session is open.</li>
+        <li>Open the platform → <strong>Participant</strong>.</li>
+        <li>Enter <strong>Student ID</strong>, <strong>Your name</strong>, <strong>Password</strong> → Sign in.</li>
+        <li>Play only the assigned simulation through every round.</li>
+        <li>Finish so completion + KPIs land on the instructor board (one completion per session unless reset).</li>
+      </ol>
+      <ul>
+        <li>Do not refresh to retry after finishing.</li>
+        <li>Zenith may open a separate tab — stay there until done.</li>
+      </ul>
+    </section>
+
+    <!-- 6. Instructor -->
+    <section id="instructor">
+      <h2>6. Instructor — how they use it</h2>
+      <p class="lede">Full screenshots: <a href="https://simulok.in/platform/classroom/guide/instructor/">instructor guide</a>.</p>
+      <ol class="steps">
+        <li>Platform → <strong>Instructor / Admin</strong> → e.g. <code>FACULTY</code> / <code>faculty-demo</code>.</li>
+        <li><strong>Open session</strong> → pick Mumbai / Zara / Zara-new / Zenith.</li>
+        <li>Tell students it’s live; share only platform + student guide + IDs.</li>
+        <li>Watch <strong>Class scores &amp; history</strong> on the console (~6s refresh) or open <strong>Live dashboard</strong>.</li>
+        <li>Click a student for report card + round timeline / KPIs.</li>
+        <li>Past sittings: Session dropdown. <strong>Reset runs</strong> clears that sitting’s logs for another attempt. Or Close → Open for a new <code>Sess_*</code> (keeps history).</li>
+        <li><strong>Close session</strong> when done. Login persists in <code>localStorage</code> until Sign out.</li>
+      </ol>
+      <div class="warn">Only one session open at a time. Wrong title mid-class locks students to that sim.</div>
+    </section>
+
+    <!-- 7. Owner ops -->
+    <section id="owner">
+      <h2>7. Owner / ops — Sheet &amp; Apps Script</h2>
+      <p class="lede">Canonical write-up also in repo: <code>tools/CLASSROOM.md</code>. Same steps below so this HTML stands alone.</p>
+
+      <h3>7.1 Create the Sheet</h3>
+      <ol class="steps">
+        <li>Create a Google Spreadsheet named <strong>Simulok Classroom</strong>.</li>
+        <li>Rename first tab to <strong>Roster</strong>.</li>
+        <li>Import <code>tools/classroom-roster-sample.csv</code> (keep header row).</li>
+        <li>Add empty tab <strong>Sessions</strong> (or let the script create it).</li>
+        <li>Change passwords before a real graded class.</li>
+      </ol>
+
+      <h3>7.2 Deploy Apps Script</h3>
+      <ol class="steps">
+        <li>Sheet → <strong>Extensions → Apps Script</strong>.</li>
+        <li>Paste <code>tools/classroom-session.gs</code>. Save.</li>
+        <li><strong>Deploy → New deployment → Web app</strong>: Execute as <strong>Me</strong>; Who has access: <strong>Anyone</strong>.</li>
+        <li>Authorise (unverified app — continue). Copy the <code>/exec</code> URL.</li>
+      </ol>
+      <div class="warn">
+        After any edit to <code>classroom-session.gs</code>: Manage deployments → edit existing → Version <strong>New version</strong>. Keep the same URL. A brand-new deployment changes the URL and breaks the platform until you update <code>ENDPOINT</code>.
+      </div>
+
+      <h3>7.3 Wire the prototype</h3>
+      <ol class="steps">
+        <li>Set <code>ENDPOINT</code> in <code>assets/js/classroom.js</code> to the <code>/exec</code> URL.</li>
+        <li>Commit → merge to <code>main</code> → Pages deploys (~1 min) → test on <code>/platform/</code>.</li>
+        <li>Locally: reload root <code>index.html</code> after changing the endpoint.</li>
+      </ol>
+      <p>Current live endpoint is the one already in <code>assets/js/classroom.js</code> on <code>main</code> (do not paste it into decks).</p>
+
+      <h3>7.4 What the backend does</h3>
+      <ul>
+        <li>Login (instructor / student), open/close session, list sessions</li>
+        <li>Per-round log + completion with <code>display_name</code></li>
+        <li>Dashboard payload (roster, leaderboard, rounds / KPIs from <code>extra_json</code>)</li>
+        <li><strong>reset_runs</strong> — clear data rows on selected session tab</li>
+      </ul>
+    </section>
+
+    <!-- 8. Developer -->
+    <section id="developer">
+      <h2>8. Developer — brief &amp; code</h2>
+      <p class="lede">Shareable brief (before repo access): <code>App dev/DEVELOPER_ONBOARDING.docx</code> and <code>.md</code>.</p>
+
+      <h3>Design pack pattern (Zara BM example)</h3>
+      <p>Folder: <code>App dev/Zara-BM-Strategy-Simulator/</code></p>
+      <table>
+        <thead>
+          <tr><th>Artefact</th><th>Use</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Round script (<code>Zara-Round-Script.docx</code>)</td><td>Narrative, decisions, outcomes</td></tr>
+          <tr><td>LLD</td><td>State, scoring, structure</td></tr>
+          <tr><td>Prototype / UI guide</td><td>Screens and interaction</td></tr>
+          <tr><td>Student handbook (PDF)</td><td>Learner-facing feel</td></tr>
+        </tbody>
+      </table>
+      <p>Playable id: <code>zara-new</code> (“Zara — Business Model &amp; Globalization”). Separate Fast-Fashion title: <code>zara</code> — do not mix.</p>
+
+      <h3>Access</h3>
+      <ol class="steps">
+        <li>Developer emails GitHub username → add collaborator on <code>sumeetonline90/simulok</code>.</li>
+        <li>After clone: read <code>TEAM_ONBOARDING.md</code>, <code>EDITING_WITH_AI.md</code>, <code>CLAUDE.md</code>.</li>
+        <li>Build in a personal sandbox HTML, then merge into shared <code>index.html</code> + mirror <code>website/assets/js/catalog.js</code>.</li>
+      </ol>
+    </section>
+
+    <!-- 9. Creds -->
+    <section id="creds">
+      <h2>9. Sample credentials</h2>
+      <p class="lede">From <code>tools/classroom-roster-sample.csv</code>. Change before production classes.</p>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Password</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>FACULTY</code></td><td><code>faculty-demo</code></td><td>Instructor</td></tr>
+          <tr><td><code>MBA01</code> … <code>MBA60</code></td><td>See CSV (e.g. MBA01 → <code>kite-17</code>)</td><td>Student</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 10. Checklist -->
+    <section id="sitting">
+      <h2>10. Run a live sitting (checklist)</h2>
+      <ol class="check">
+        <li>Sheet + Apps Script deployed; <code>ENDPOINT</code> on <code>main</code> matches.</li>
+        <li>Passwords set for this cohort (or sample OK for rehearsal).</li>
+        <li>You (or faculty) sign in as instructor → Open session → correct sim.</li>
+        <li>Students get: platform + student guide + IDs; ask for real names.</li>
+        <li>Open Live dashboard on projector (same browser as FACULTY login).</li>
+        <li>After class: Close session. Next cohort: Open again → new <code>Sess_*</code>.</li>
+        <li>Retake same sitting: Reset runs. Graded retake with history: Close → Open new session.</li>
+      </ol>
+    </section>
+
+    <!-- 11. Sims -->
+    <section id="sims">
+      <h2>11. Classroom-capable simulations</h2>
+      <p class="lede">Confidence layer (Sheet logging) covers these assigned titles:</p>
+      <ul>
+        <li>Mumbai Manufacturer</li>
+        <li>Zara (Fast Fashion) — id <code>zara</code></li>
+        <li>Zara — Business Model &amp; Globalization — id <code>zara-new</code></li>
+        <li>Zenith Appliances — under <code>cost-accounting/</code></li>
+      </ul>
+      <p>Demo User can open the wider catalog; live class students only get the assigned title when a session is open.</p>
+    </section>
+
+    <!-- 12. Repo -->
+    <section id="repo">
+      <h2>12. Repo map &amp; publish path</h2>
+      <table>
+        <thead>
+          <tr><th>Path</th><th>What</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>index.html</code> + <code>assets/</code></td><td>Prototype → published as <code>/platform/</code></td></tr>
+          <tr><td><code>website/</code></td><td>Marketing site → <code>https://simulok.in/</code></td></tr>
+          <tr><td><code>classroom/</code></td><td>Dashboard + guides → <code>/platform/classroom/</code></td></tr>
+          <tr><td><code>tools/classroom-session.gs</code></td><td>Apps Script source (redeploy after edit)</td></tr>
+          <tr><td><code>assets/js/classroom.js</code></td><td>Client + <code>ENDPOINT</code></td></tr>
+          <tr><td><code>App dev/</code></td><td>Design packs + developer onboarding</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        Edit in repo → commit → merge to <code>main</code> → <code>.github/workflows/pages.yml</code> runs <code>tools/build-site.sh</code> → live in ~1 minute. There is no CMS. Never link <code>/platform/</code> from the marketing site.
+      </div>
+    </section>
+
+    <!-- 13. Trouble -->
+    <section id="trouble">
+      <h2>13. Troubleshooting</h2>
+      <div class="card" style="margin-bottom:0.75rem">
+        <h3>Instructor login hangs / timeout</h3>
+        <p>Check Apps Script deployment is “Anyone”, redeploy New version, confirm <code>ENDPOINT</code> matches. Hard refresh. Sign out and back in.</p>
+      </div>
+      <div class="card" style="margin-bottom:0.75rem">
+        <h3>“Already completed”</h3>
+        <p>Reset runs on that session, or open a new sitting.</p>
+      </div>
+      <div class="card" style="margin-bottom:0.75rem">
+        <h3>Dashboard asks for instructor sign-in</h3>
+        <p>Sign in as FACULTY on the platform in the <em>same</em> browser first (localStorage).</p>
+      </div>
+      <div class="card" style="margin-bottom:0.75rem">
+        <h3>Names show as MBA01 only</h3>
+        <p>Students must fill <strong>Your name</strong> on Participant login.</p>
+      </div>
+      <div class="card" style="margin-bottom:0.75rem">
+        <h3>Scores not appearing</h3>
+        <p>Session open? Correct sim? Student finished all rounds? Sheet tabs updating? Network / CORS — client posts <code>text/plain</code> JSON string to Apps Script.</p>
+      </div>
+      <div class="card">
+        <h3>After editing .gs nothing changed</h3>
+        <p>You must redeploy a <strong>New version</strong> of the existing web app deployment.</p>
+      </div>
+    </section>
+
+    <footer>
+      Owner master guide · not for students ·
+      <a href="https://simulok.in/platform/">Platform</a> ·
+      Local file: <code>classroom/guide/owner/index.html</code>
+    </footer>
+  </main>
+</body>
+</html>

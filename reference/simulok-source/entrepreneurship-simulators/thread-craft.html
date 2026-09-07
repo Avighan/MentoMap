@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ThreadCraft — Fast Fashion Startup</title>
+</head>
+<body>
+<style>
+:root {
+  --saffron: #D97B2B;
+  --saffron-light: #F5DFC4;
+  --saffron-glow: rgba(217,123,43,0.12);
+  --neem: #1A8A5C;
+  --neem-light: #D0F0E0;
+  --loss: #C0392B;
+  --loss-light: #FADBD8;
+  --ink: #1C2233;
+  --ink-soft: #3A3F4E;
+  --surface: #F4F1EB;
+  --card: #FFFFFF;
+  --card-border: #E4E0D8;
+  --muted: #7E8490;
+  --muted-light: #B8BCC6;
+  --input-bg: #F9F7F3;
+  --shadow: rgba(28,34,51,0.06);
+  --shadow-md: rgba(28,34,51,0.10);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+  --purple: #8E44AD;
+  --purple-light: #E8DAEF;
+  --blue: #2980B9;
+  --blue-light: #D6EAF8;
+  --accent: #8E44AD;
+  --accent-light: #E8DAEF;
+  --accent-glow: rgba(142,68,173,0.12);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --purple:#A569BD;--purple-light:#2D1A3D;--blue:#3498DB;--blue-light:#1A2A3D;
+  --accent:#A569BD;--accent-light:#2D1A3D;--accent-glow:rgba(165,105,189,0.12);
+}}
+:root[data-theme="dark"]{
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --purple:#A569BD;--purple-light:#2D1A3D;--blue:#3498DB;--blue-light:#1A2A3D;
+  --accent:#A569BD;--accent-light:#2D1A3D;--accent-glow:rgba(165,105,189,0.12);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);color:var(--ink);font-family:system-ui,-apple-system,sans-serif;line-height:1.55;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.2;text-wrap:balance}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-0.02em}
+h2{font-size:clamp(1.2rem,2.5vw,1.5rem);letter-spacing:-0.01em}
+h3{font-size:1.05rem}
+.mono{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-variant-numeric:tabular-nums}
+
+#app{min-height:100vh;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;min-height:100vh}
+.screen.active{display:flex}
+
+/* Progress strip */
+.progress-strip{position:fixed;top:0;left:0;right:0;height:4px;background:var(--card-border);z-index:100}
+.progress-strip-fill{height:100%;background:var(--accent);transition:width 0.5s ease;border-radius:0 2px 2px 0}
+
+/* Game header */
+.game-header{position:fixed;top:4px;left:0;right:0;z-index:90;background:var(--card);border-bottom:1px solid var(--card-border);padding:0.5rem 1.2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.game-header .brand{display:flex;align-items:center;gap:0.5rem;font-weight:700;font-size:0.9rem;white-space:nowrap}
+.game-header .brand svg{flex-shrink:0}
+.game-header .step-badge{display:inline-block;background:var(--accent-glow);color:var(--accent);font-size:0.7rem;font-weight:700;padding:0.25em 0.7em;border-radius:3px;letter-spacing:0.04em}
+.game-header .month-label{font-family:Georgia,serif;font-weight:700;font-size:0.85rem;white-space:nowrap;margin-left:auto}
+.game-header .month-label span{color:var(--accent)}
+
+/* Supply chain mini diagram */
+.supply-chain-mini{display:flex;align-items:center;gap:0.15rem;font-size:0.58rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-left:0.5rem}
+.supply-chain-mini .sc-node{background:var(--accent-glow);color:var(--accent);padding:0.15em 0.4em;border-radius:3px;white-space:nowrap}
+.supply-chain-mini .sc-arrow{color:var(--muted-light)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5em;font-family:system-ui,sans-serif;font-weight:600;font-size:0.9rem;padding:0.7em 1.6em;border:none;border-radius:var(--radius);cursor:pointer;transition:transform 0.12s,box-shadow 0.15s}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(142,68,173,0.25)}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(142,68,173,0.35)}
+.btn-secondary{background:var(--card);color:var(--ink);border:1.5px solid var(--card-border)}
+.btn-secondary:hover{border-color:var(--accent)}
+.btn-neem{background:var(--neem);color:#fff;box-shadow:0 2px 8px rgba(26,138,92,0.25)}
+.btn-sm{font-size:0.78rem;padding:0.4em 0.9em}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(41,128,185,0.25)}
+.btn-loss{background:var(--loss);color:#fff}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* ===== TITLE SCREEN ===== */
+.title-screen.active{display:block;padding:3rem 2rem;position:relative;overflow:visible;min-height:auto}
+.title-screen::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 60% 40%,var(--accent-glow) 0%,transparent 60%);pointer-events:none}
+.title-brand{position:relative;z-index:1;text-align:center;max-width:860px;margin:0 auto 1.5rem}
+.title-brand .eyebrow{display:inline-block;background:var(--accent);color:#fff;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:0.3em 0.9em;border-radius:3px;margin-bottom:1.2rem}
+.title-brand h1{font-size:clamp(2.2rem,5vw,3.2rem);margin-bottom:0.3rem}
+.title-brand h1 em{color:var(--accent);font-style:normal}
+.title-brand .subtitle{font-family:Georgia,serif;font-style:italic;font-size:clamp(0.95rem,2vw,1.2rem);color:var(--muted);margin-bottom:1.5rem}
+.title-brand .desc{max-width:640px;margin:0 auto 2rem;color:var(--ink-soft);font-size:0.9rem;line-height:1.65}
+.manual-wrap{position:relative;z-index:1;max-width:860px;width:100%;margin:0 auto;text-align:left}
+.manual-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px var(--shadow)}
+.manual-section h3{font-size:1rem;margin-bottom:0.5rem;color:var(--accent);display:flex;align-items:center;gap:0.5rem}
+.manual-section p{font-size:0.85rem;color:var(--ink-soft);line-height:1.65;margin-bottom:0.4rem}
+.manual-section p:last-child{margin-bottom:0}
+.manual-cta{text-align:center;margin:1.5rem 0 1rem;position:relative;z-index:1}
+.training-meta{text-align:center;font-size:0.78rem;color:var(--muted);margin-top:0.8rem;position:relative;z-index:1}
+
+/* Supply chain diagram on title */
+.sc-diagram{display:flex;align-items:center;justify-content:center;gap:0.35rem;margin-top:1rem;flex-wrap:wrap}
+.sc-diagram .sc-step{background:var(--accent-glow);border:1.5px solid var(--accent);border-radius:var(--radius);padding:0.5rem 0.8rem;text-align:center;min-width:80px}
+.sc-diagram .sc-step .sc-icon{font-size:1.2rem}
+.sc-diagram .sc-step .sc-name{font-size:0.7rem;font-weight:700;margin-top:0.15rem;color:var(--accent)}
+.sc-diagram .sc-arr{color:var(--muted);font-size:0.9rem;flex-shrink:0}
+
+/* Round timeline on title */
+.round-timeline{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.8rem}
+.rt-item{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:0.4rem 0.65rem;font-size:0.72rem;flex:1;min-width:100px}
+.rt-item.shock{background:var(--loss-light);border-color:var(--loss)}
+.rt-item.funding{background:var(--blue-light);border-color:var(--blue)}
+.rt-item .rt-num{font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);font-size:0.65rem}
+.rt-item.shock .rt-num{color:var(--loss)}
+.rt-item.funding .rt-num{color:var(--blue)}
+.rt-item .rt-name{font-weight:600;font-size:0.78rem;margin-top:0.1rem}
+
+/* Metric pills grid */
+.metric-pills{display:flex;flex-wrap:wrap;gap:0.2rem;margin-bottom:0.2rem}
+
+/* ===== SIM SCREEN ===== */
+.sim-screen{padding:calc(44px + 1rem) 1.5rem 1.5rem}
+.sim-wrap{max-width:900px;width:100%;margin:0 auto}
+
+/* Round rail */
+.round-rail{display:flex;gap:0.3rem;align-items:center;margin-bottom:1rem;overflow-x:auto;padding:0.3rem 0;flex-wrap:wrap}
+.rr-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--card-border);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:var(--muted);flex-shrink:0;transition:all 0.3s}
+.rr-dot.done{background:var(--neem);border-color:var(--neem);color:#fff}
+.rr-dot.current{background:var(--accent);border-color:var(--accent);color:#fff;transform:scale(1.15)}
+.rr-dot.shock{border-color:var(--loss);color:var(--loss)}
+.rr-dot.shock.done{background:var(--loss);color:#fff}
+.rr-dot.funding{border-color:var(--blue);color:var(--blue)}
+.rr-dot.funding.done{background:var(--blue);color:#fff}
+
+/* Metric pill */
+.mpill{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:0.45rem 0.65rem;min-width:0;flex:1 1 auto}
+.mpill .mp-label{font-size:0.58rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mpill .mp-val{font-family:ui-monospace,"SF Mono",monospace;font-variant-numeric:tabular-nums;font-size:0.82rem;font-weight:700;margin-top:0.1rem;white-space:nowrap}
+.mpill .mp-val.positive{color:var(--neem)}
+.mpill .mp-val.negative{color:var(--loss)}
+.mpill .mp-val.accent{color:var(--accent)}
+
+/* Event banner */
+.event-banner{border:2px solid var(--accent);border-radius:var(--radius-lg);padding:1.2rem 1.4rem;margin-bottom:1rem;background:var(--accent-glow);animation:fadeUp 0.4s ease}
+.event-banner.shock{border-color:var(--loss);background:var(--loss-light)}
+.event-banner.funding{border-color:var(--blue);background:var(--blue-light)}
+.event-banner .eb-tag{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem}
+.event-banner .eb-tag.tag-shock{color:var(--loss)}
+.event-banner .eb-tag.tag-funding{color:var(--blue)}
+.event-banner .eb-tag.tag-normal{color:var(--accent)}
+.event-banner .eb-title{font-family:Georgia,serif;font-size:1.15rem;font-weight:700;margin-bottom:0.4rem}
+.event-banner .eb-body{font-size:0.88rem;color:var(--ink-soft);line-height:1.6}
+
+/* Scenario card */
+.scenario-card{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px var(--shadow);animation:fadeUp 0.35s ease}
+.scenario-card .sc-tag{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:0.25rem}
+.scenario-card h3{margin-bottom:0.5rem}
+.scenario-card p{font-size:0.88rem;color:var(--ink-soft);line-height:1.6}
+
+/* Decision group */
+.decision-group{margin-bottom:1.2rem}
+.decision-group .dg-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin-bottom:0.5rem;display:flex;align-items:center;gap:0.3rem}
+
+/* Option cards */
+.option-cards{display:flex;flex-direction:column;gap:0.5rem}
+.opt-card{background:var(--card);border:2px solid var(--card-border);border-radius:var(--radius);padding:0.8rem 1rem;cursor:pointer;transition:all 0.15s;display:flex;gap:0.8rem;align-items:flex-start}
+.opt-card:hover{border-color:var(--accent);background:var(--accent-glow)}
+.opt-card.selected{border-color:var(--accent);background:var(--accent-glow);box-shadow:0 0 0 1px var(--accent)}
+.opt-card .opt-letter{width:26px;height:26px;border-radius:50%;background:var(--input-bg);border:1.5px solid var(--card-border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--muted);flex-shrink:0;transition:all 0.15s}
+.opt-card.selected .opt-letter{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt-card .opt-text{flex:1}
+.opt-card .opt-title{font-weight:700;font-size:0.88rem;margin-bottom:0.15rem}
+.opt-card .opt-desc{font-size:0.78rem;color:var(--ink-soft);line-height:1.5}
+.opt-card .opt-cost{font-family:ui-monospace,monospace;font-size:0.7rem;color:var(--loss);font-weight:600;margin-top:0.2rem}
+.opt-card .opt-benefit{font-size:0.7rem;color:var(--neem);font-weight:600;margin-top:0.1rem}
+
+/* Trend cards */
+.trend-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.5rem}
+.trend-card{background:var(--card);border:2px solid var(--card-border);border-radius:var(--radius);padding:0.8rem;cursor:pointer;transition:all 0.15s;text-align:center}
+.trend-card:hover{border-color:var(--accent);background:var(--accent-glow)}
+.trend-card.selected{border-color:var(--accent);background:var(--accent-glow);box-shadow:0 0 0 1px var(--accent)}
+.trend-card .tc-icon{font-size:2rem;margin-bottom:0.3rem}
+.trend-card .tc-name{font-weight:700;font-size:0.85rem;margin-bottom:0.2rem}
+.trend-card .tc-desc{font-size:0.72rem;color:var(--ink-soft);line-height:1.4}
+.trend-card .tc-hint{font-size:0.65rem;color:var(--muted);margin-top:0.3rem;font-style:italic}
+
+/* Feedback section */
+.feedback-section{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px var(--shadow);animation:fadeUp 0.35s ease}
+.feedback-section h3{margin-bottom:0.6rem;color:var(--accent)}
+.feedback-section .fb-outcome{font-size:0.88rem;line-height:1.65;color:var(--ink-soft);margin-bottom:0.6rem}
+.feedback-section .fb-outcome strong{color:var(--ink)}
+
+/* Inventory display */
+.inv-display{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin:0.6rem 0}
+.inv-box{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:0.5rem;text-align:center}
+.inv-box .ib-num{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:1.1rem;font-weight:700}
+.inv-box .ib-num.good{color:var(--neem)}
+.inv-box .ib-num.bad{color:var(--loss)}
+.inv-box .ib-label{font-size:0.62rem;font-weight:600;text-transform:uppercase;color:var(--muted);letter-spacing:0.04em;margin-top:0.1rem}
+
+/* Delta tag */
+.delta{font-size:0.72rem;font-weight:600;margin-left:0.3rem}
+.delta.up{color:var(--neem)}
+.delta.down{color:var(--loss)}
+
+/* Submit area */
+.submit-area{text-align:center;margin:1.5rem 0;position:relative;z-index:1}
+.submit-area .btn{min-width:200px}
+
+/* Funding special styling */
+.funding-card{border:2px solid var(--blue);background:var(--blue-light);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;margin-bottom:0.8rem}
+.funding-card h3{color:var(--blue);margin-bottom:0.4rem}
+.funding-card p{font-size:0.85rem;line-height:1.6}
+
+/* ===== RESULTS SCREEN ===== */
+.results-screen{padding:3rem 2rem}
+.results-wrap{max-width:860px;margin:0 auto}
+.results-headline{text-align:center;margin-bottom:2rem;animation:fadeUp 0.5s ease}
+.results-headline .rh-tag{display:inline-block;background:var(--accent);color:#fff;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:0.3em 0.9em;border-radius:3px;margin-bottom:0.8rem}
+.results-headline h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:0.3rem}
+.results-headline h1 em{color:var(--accent);font-style:normal}
+.results-headline .rh-val{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:clamp(2.5rem,6vw,4rem);font-weight:700;color:var(--accent);margin:0.5rem 0}
+.results-headline .rh-profile{font-family:Georgia,serif;font-style:italic;font-size:1.1rem;color:var(--muted)}
+
+/* Stats grid */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.6rem;margin-bottom:2rem}
+.stat-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:0.8rem;text-align:center;animation:fadeUp 0.4s ease both}
+.stat-card .st-val{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:1.2rem;font-weight:700}
+.stat-card .st-label{font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);margin-top:0.2rem}
+
+/* Takeaways */
+.takeaways{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px var(--shadow)}
+.takeaways h3{color:var(--accent);margin-bottom:0.8rem}
+.takeaways ol{padding-left:1.2rem}
+.takeaways li{font-size:0.85rem;color:var(--ink-soft);line-height:1.65;margin-bottom:0.5rem}
+
+/* Round review */
+.round-review{margin-bottom:1.5rem}
+.round-review h3{color:var(--accent);margin-bottom:0.8rem}
+.rr-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);margin-bottom:0.5rem;overflow:hidden}
+.rr-card .rr-header{padding:0.7rem 1rem;cursor:pointer;display:flex;align-items:center;justify-content:between;gap:0.5rem;font-weight:600;font-size:0.85rem}
+.rr-card .rr-header:hover{background:var(--input-bg)}
+.rr-card .rr-header .rr-toggle{margin-left:auto;color:var(--muted);transition:transform 0.2s;font-size:0.7rem}
+.rr-card.open .rr-header .rr-toggle{transform:rotate(180deg)}
+.rr-card .rr-body{display:none;padding:0 1rem 0.8rem;font-size:0.82rem;color:var(--ink-soft);line-height:1.6}
+.rr-card.open .rr-body{display:block}
+
+.back-hub{text-align:center;margin-top:1rem}
+.back-hub a{color:var(--accent);text-decoration:none;font-weight:600;font-size:0.9rem}
+.back-hub a:hover{text-decoration:underline}
+
+/* Pitch metrics display */
+.pitch-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.5rem;margin:0.8rem 0}
+.pm-item{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:0.6rem;text-align:center}
+.pm-item .pm-val{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:1rem;font-weight:700}
+.pm-item .pm-label{font-size:0.6rem;font-weight:600;text-transform:uppercase;color:var(--muted);margin-top:0.1rem}
+.pm-item .pm-bar{height:4px;background:var(--card-border);border-radius:2px;margin-top:0.3rem;overflow:hidden}
+.pm-item .pm-bar-fill{height:100%;border-radius:2px;transition:width 0.5s}
+
+@media(max-width:640px){
+  .game-header{padding:0.4rem 0.8rem;gap:0.5rem}
+  .supply-chain-mini{display:none}
+  .sim-screen{padding:calc(44px + 0.8rem) 0.8rem 1rem}
+  .trend-cards{grid-template-columns:1fr 1fr}
+  .inv-display{grid-template-columns:repeat(3,1fr)}
+  .metric-pills{gap:0.15rem}
+  .mpill{padding:0.35rem 0.5rem}
+  .mpill .mp-val{font-size:0.72rem}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .pitch-metrics{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<div id="app">
+  <!-- PROGRESS STRIP -->
+  <div class="progress-strip"><div class="progress-strip-fill" id="progressFill" style="width:0%"></div></div>
+
+  <!-- GAME HEADER -->
+  <div class="game-header" id="gameHeader" style="display:none">
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.15"/>
+        <path d="M14 14h7v7h-7z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.35"/>
+        <path d="M6.5 6.5h0M17.5 6.5h0M6.5 17.5h0M17.5 17.5h0" stroke="var(--saffron)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      ThreadCraft
+    </div>
+    <span class="step-badge" id="stepBadge">Month 1 / 15</span>
+    <div class="supply-chain-mini">
+      <span class="sc-node">Design</span><span class="sc-arrow">&rarr;</span>
+      <span class="sc-node">Source</span><span class="sc-arrow">&rarr;</span>
+      <span class="sc-node">Make</span><span class="sc-arrow">&rarr;</span>
+      <span class="sc-node">Ship</span><span class="sc-arrow">&rarr;</span>
+      <span class="sc-node">Sell</span>
+    </div>
+    <div class="month-label" id="monthLabel">Month <span>1</span></div>
+  </div>
+
+  <!-- ===== TITLE SCREEN ===== -->
+  <div class="screen title-screen active" id="titleScreen">
+    <div class="title-brand">
+      <div class="eyebrow">SimuLok &middot; Entrepreneurship Lab</div>
+      <h1><em>ThreadCraft</em></h1>
+      <div class="subtitle">Fast Fashion Startup Simulator</div>
+      <p class="desc">You are Meera, a 21-year-old fashion design student from NIFT Delhi. You've won &#8377;25,00,000 in a startup competition and decided to launch "ThreadCraft" &mdash; an Indian fast-fashion brand that designs, manufactures, and sells trendy affordable clothing. Think Zara meets India.</p>
+
+      <div class="sc-diagram">
+        <div class="sc-step"><div class="sc-icon">&#9999;&#65039;</div><div class="sc-name">Design</div></div>
+        <div class="sc-arr">&rarr;</div>
+        <div class="sc-step"><div class="sc-icon">&#127793;</div><div class="sc-name">Source</div></div>
+        <div class="sc-arr">&rarr;</div>
+        <div class="sc-step"><div class="sc-icon">&#127981;</div><div class="sc-name">Manufacture</div></div>
+        <div class="sc-arr">&rarr;</div>
+        <div class="sc-step"><div class="sc-icon">&#128666;</div><div class="sc-name">Ship</div></div>
+        <div class="sc-arr">&rarr;</div>
+        <div class="sc-step"><div class="sc-icon">&#128717;</div><div class="sc-name">Sell</div></div>
+      </div>
+    </div>
+
+    <div class="manual-wrap">
+      <div class="manual-section">
+        <h3>&#128218; The Challenge</h3>
+        <p>Over 15 months, navigate trend forecasting, supply chain decisions, sustainability trade-offs, competitor warfare, and two funding rounds. Build ThreadCraft from a small online brand to a &#8377;100 Cr+ fashion empire &mdash; or learn valuable lessons trying.</p>
+        <p>You start with <strong>&#8377;25,00,000</strong> in cash. Every month brings new decisions: what to design, where to manufacture, how to market, and when to raise funding.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#127922; 15 Months at a Glance</h3>
+        <div class="round-timeline">
+          <div class="rt-item"><div class="rt-num">Month 1</div><div class="rt-name">Brand Identity</div></div>
+          <div class="rt-item"><div class="rt-num">Month 2</div><div class="rt-name">Market Reading</div></div>
+          <div class="rt-item"><div class="rt-num">Month 3</div><div class="rt-name">Supply Chain</div></div>
+          <div class="rt-item"><div class="rt-num">Month 4</div><div class="rt-name">Marketing</div></div>
+          <div class="rt-item shock"><div class="rt-num">Month 5</div><div class="rt-name">Trend Shock</div></div>
+          <div class="rt-item funding"><div class="rt-num">Month 6</div><div class="rt-name">Series A</div></div>
+          <div class="rt-item"><div class="rt-num">Month 7</div><div class="rt-name">Omnichannel</div></div>
+          <div class="rt-item shock"><div class="rt-num">Month 8</div><div class="rt-name">Cost Shock</div></div>
+          <div class="rt-item shock"><div class="rt-num">Month 9</div><div class="rt-name">Copycat</div></div>
+          <div class="rt-item"><div class="rt-num">Month 10</div><div class="rt-name">Sustainability</div></div>
+          <div class="rt-item shock"><div class="rt-num">Month 11</div><div class="rt-name">Viral Event</div></div>
+          <div class="rt-item shock"><div class="rt-num">Month 12</div><div class="rt-name">Logistics</div></div>
+          <div class="rt-item"><div class="rt-num">Month 13</div><div class="rt-name">Scale</div></div>
+          <div class="rt-item"><div class="rt-num">Month 14</div><div class="rt-name">Series B Prep</div></div>
+          <div class="rt-item funding"><div class="rt-num">Month 15</div><div class="rt-name">Finale</div></div>
+        </div>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#128202; Metrics You'll Track</h3>
+        <p><strong>Cash</strong> &mdash; Your bank balance. Run out and it's game over.</p>
+        <p><strong>Trend Score</strong> &mdash; How well you predict what customers want (0-100).</p>
+        <p><strong>Brand Value</strong> &mdash; How strong your brand is in customers' minds (0-100).</p>
+        <p><strong>Sustainability Rating</strong> &mdash; Your environmental & ethical score (0-100).</p>
+        <p><strong>Dead Stock %</strong> &mdash; Unsold inventory that eats your margins.</p>
+        <p><strong>Valuation</strong> &mdash; What investors think your company is worth.</p>
+      </div>
+
+      <div class="manual-cta">
+        <button class="btn btn-primary" onclick="startGame()" style="font-size:1rem;padding:0.8em 2.5em">
+          Launch ThreadCraft
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="training-meta">&#9201; ~45 min &middot; 15 rounds &middot; 5 shocks &middot; 2 funding rounds</div>
+    </div>
+  </div>
+
+  <!-- ===== SIM SCREEN ===== -->
+  <div class="screen sim-screen" id="simScreen">
+    <div class="sim-wrap">
+      <div class="round-rail" id="roundRail"></div>
+      <div class="metric-pills" id="metricPills"></div>
+      <div id="roundContent"></div>
+      <div class="submit-area" id="submitArea" style="display:none">
+        <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()">Submit Decisions</button>
+      </div>
+      <div id="feedbackContent"></div>
+      <div class="submit-area" id="nextArea" style="display:none">
+        <button class="btn btn-primary" id="nextBtn" onclick="nextRound()">
+          Next Month
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RESULTS SCREEN ===== -->
+  <div class="screen results-screen" id="resultsScreen">
+    <div class="results-wrap" id="resultsContent"></div>
+  </div>
+</div>
+
+<script>
+/* ========== GAME STATE ========== */
+const G = {
+  round: 1,
+  phase: 'decide', // decide | feedback
+  cash: 2500000,
+  monthlyRevenue: 0,
+  monthlyProfit: 0,
+  inventory: 0,
+  trendScore: 50,
+  brandValue: 10,
+  sustainability: 50,
+  valuation: 2500000,
+  deadStockPct: 0,
+  // Accumulated
+  totalRevenue: 0,
+  totalProfit: 0,
+  totalUnitsSold: 0,
+  totalDeadStock: 0,
+  collectionsLaunched: 0,
+  peakRevenue: 0,
+  trendBetsCorrect: 0,
+  trendBetsTotal: 0,
+  // Operational state
+  positioning: null, // 'budget','mid','premium'
+  productionQuality: null, // 'fast','standard','premium','sustainable'
+  salesChannel: null, // 'online','physical','both'
+  manufacturer: null, // 'tirupur','jaipur','surat','split'
+  fabricQuality: null, // 'cheap','consistent','organic'
+  leadTime: 'standard', // 'rush','standard'
+  hasStore: false,
+  storeType: null,
+  hasShopify: false,
+  onMarketplace: false,
+  logistics: 'self', // 'self','delhivery','warehouse'
+  monthlyCosts: {rent:0, staff:0, logistics:0, software:0},
+  // Funding
+  equityGiven: 0,
+  vcChoice: null,
+  seriesADone: false,
+  seriesBDone: false,
+  gammaDeadline: 0,
+  gammaBaseRevenue: 0,
+  // Trend tracking
+  hotTrend: null,
+  playerTrend: null,
+  // Team
+  hasDesigner: false,
+  hasMarketer: false,
+  hasOpsLead: false,
+  // Special flags
+  cottonShockActive: false,
+  copycatActive: false,
+  sustainabilityPivot: false,
+  greenwashRisk: false,
+  invSoftware: false,
+  opsManager: false,
+  fulfillmentCenter: false,
+  // per-round
+  sellingPrice: 999,
+  productionCost: 350,
+  marketingSpend: 0,
+  seasonMult: 1.0,
+  channelReach: 1.0,
+  baseDemand: 300,
+  // History for results
+  history: [],
+  selections: {}
+};
+
+/* Trend pools for randomization */
+const TREND_POOLS = [
+  {id:'ethnic_fusion', name:'Ethnic Fusion', icon:'🎭', desc:'Indo-western fusion with traditional motifs on modern silhouettes', hint:'Wedding season drives ethnic searches'},
+  {id:'streetwear', name:'Streetwear', icon:'👟', desc:'Oversized fits, graphic tees, cargo pants, sneaker culture', hint:'Instagram reels are full of streetwear'},
+  {id:'minimalist', name:'Minimalist', icon:'✨', desc:'Clean lines, neutral tones, capsule wardrobe essentials', hint:'Sustainable fashion accounts pushing this'},
+  {id:'retro', name:'Retro Revival', icon:'🕺', desc:'90s comeback: bell-bottoms, tie-dye, vintage prints', hint:'Bollywood throwback movies trending'},
+  {id:'boho', name:'Boho Chic', icon:'🌻', desc:'Flowy fabrics, earthy tones, handcrafted embroidery', hint:'Festival season approaching'},
+  {id:'athleisure', name:'Athleisure', icon:'🏋️', desc:'Sports-luxe crossover: joggers, hoodies, performance-meets-style', hint:'Gym culture exploding among Gen Z'},
+  {id:'avant_garde', name:'Avant-Garde', icon:'🎨', desc:'Experimental shapes, bold color blocking, deconstructed designs', hint:'Fashion week buzz is strong'},
+  {id:'cottagecore', name:'Cottagecore', icon:'🌿', desc:'Prairie dresses, floral prints, romanticized countryside aesthetic', hint:'Pinterest boards going crazy'}
+];
+
+let currentHotTrend = null;
+let currentTrendPool = [];
+
+function shuffleTrends() {
+  const pool = [...TREND_POOLS];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  currentTrendPool = pool.slice(0, 4);
+  currentHotTrend = currentTrendPool[Math.floor(Math.random() * currentTrendPool.length)];
+}
+
+/* ========== FORMATTING ========== */
+function fmt(n) {
+  if (n >= 10000000) return '₹' + (n / 10000000).toFixed(2) + ' Cr';
+  if (n >= 100000) return '₹' + (n / 100000).toFixed(2) + 'L';
+  if (n >= 1000) return '₹' + (n / 1000).toFixed(1) + 'K';
+  return '₹' + Math.round(n).toLocaleString('en-IN');
+}
+
+function fmtNum(n) {
+  return Math.round(n).toLocaleString('en-IN');
+}
+
+function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+/* ========== SEASON CALENDAR ========== */
+function getSeasonMult(month) {
+  // Month 1 = January-ish
+  const seasons = {
+    1: {mult:1.0, name:'New Year'},
+    2: {mult:1.0, name:'Normal'},
+    3: {mult:0.7, name:'Monsoon Approaching'},
+    4: {mult:1.2, name:'Summer'},
+    5: {mult:1.0, name:'Normal'},
+    6: {mult:1.0, name:'Normal'},
+    7: {mult:1.2, name:'Summer Peak'},
+    8: {mult:0.7, name:'Monsoon'},
+    9: {mult:1.0, name:'Post-Monsoon'},
+    10: {mult:1.5, name:'Festival Season'},
+    11: {mult:1.5, name:'Diwali / Festive'},
+    12: {mult:1.3, name:'Christmas / New Year'},
+    13: {mult:1.0, name:'New Year'},
+    14: {mult:1.0, name:'Normal'},
+    15: {mult:1.2, name:'Spring'}
+  };
+  return seasons[month] || {mult:1.0, name:'Normal'};
+}
+
+/* ========== UI HELPERS ========== */
+function $(id) { return document.getElementById(id); }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  $('gameHeader').style.display = (id === 'simScreen') ? 'flex' : 'none';
+  window.scrollTo(0, 0);
+}
+
+function updateProgress() {
+  const pct = ((G.round - 1) / 15) * 100;
+  $('progressFill').style.width = pct + '%';
+}
+
+function updateHeader() {
+  $('stepBadge').textContent = 'Month ' + G.round + ' / 15';
+  $('monthLabel').innerHTML = 'Month <span>' + G.round + '</span>';
+}
+
+function renderRoundRail() {
+  const shocks = [5,8,9,11,12];
+  const funding = [6,15];
+  let html = '';
+  for (let i = 1; i <= 15; i++) {
+    let cls = 'rr-dot';
+    if (shocks.includes(i)) cls += ' shock';
+    if (funding.includes(i)) cls += ' funding';
+    if (i < G.round) cls += ' done';
+    else if (i === G.round) cls += ' current';
+    html += '<div class="' + cls + '">' + i + '</div>';
+  }
+  $('roundRail').innerHTML = html;
+}
+
+function renderMetrics() {
+  const pills = [
+    {label:'Cash', val: fmt(G.cash), cls: G.cash > 0 ? '' : 'negative'},
+    {label:'Revenue', val: fmt(G.monthlyRevenue), cls: G.monthlyRevenue > 0 ? 'positive' : ''},
+    {label:'Profit', val: fmt(G.monthlyProfit), cls: G.monthlyProfit >= 0 ? 'positive' : 'negative'},
+    {label:'Inventory', val: fmtNum(G.inventory), cls: ''},
+    {label:'Trend', val: G.trendScore + '/100', cls: 'accent'},
+    {label:'Brand', val: G.brandValue + '/100', cls: 'accent'},
+    {label:'Sustain.', val: G.sustainability + '/100', cls: G.sustainability >= 50 ? 'positive' : 'negative'},
+    {label:'Valuation', val: fmt(G.valuation), cls: 'accent'},
+    {label:'Dead Stock', val: G.deadStockPct.toFixed(0) + '%', cls: G.deadStockPct > 20 ? 'negative' : ''}
+  ];
+  let html = '';
+  pills.forEach(p => {
+    html += '<div class="mpill"><div class="mp-label">' + p.label + '</div><div class="mp-val ' + p.cls + '">' + p.val + '</div></div>';
+  });
+  $('metricPills').innerHTML = html;
+}
+
+function makeOptionCards(groupId, options) {
+  let html = '<div class="option-cards" id="opts_' + groupId + '">';
+  options.forEach((o, i) => {
+    const letter = String.fromCharCode(65 + i);
+    html += '<div class="opt-card" data-group="' + groupId + '" data-value="' + o.value + '" onclick="selectOption(this)">';
+    html += '<div class="opt-letter">' + letter + '</div>';
+    html += '<div class="opt-text"><div class="opt-title">' + o.title + '</div>';
+    html += '<div class="opt-desc">' + o.desc + '</div>';
+    if (o.cost) html += '<div class="opt-cost">' + o.cost + '</div>';
+    if (o.benefit) html += '<div class="opt-benefit">' + o.benefit + '</div>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function makeTrendCards(groupId, trends) {
+  let html = '<div class="trend-cards" id="opts_' + groupId + '">';
+  trends.forEach(t => {
+    html += '<div class="trend-card" data-group="' + groupId + '" data-value="' + t.id + '" onclick="selectOption(this)">';
+    html += '<div class="tc-icon">' + t.icon + '</div>';
+    html += '<div class="tc-name">' + t.name + '</div>';
+    html += '<div class="tc-desc">' + t.desc + '</div>';
+    if (t.hint) html += '<div class="tc-hint">"' + t.hint + '"</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function selectOption(el) {
+  const group = el.dataset.group;
+  const container = el.parentElement;
+  container.querySelectorAll('[data-group="' + group + '"]').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  G.selections[group] = el.dataset.value;
+  checkAllSelected();
+}
+
+function checkAllSelected() {
+  const groups = document.querySelectorAll('.decision-group');
+  let allDone = true;
+  groups.forEach(g => {
+    const gId = g.dataset.groupId;
+    if (!G.selections[gId]) allDone = false;
+  });
+  $('submitBtn').disabled = !allDone;
+  if (allDone) {
+    $('submitBtn').style.opacity = '1';
+  } else {
+    $('submitBtn').style.opacity = '0.5';
+  }
+}
+
+/* ========== ROUND DEFINITIONS ========== */
+function getRoundData(round) {
+  const season = getSeasonMult(round);
+  G.seasonMult = season.mult;
+
+  switch(round) {
+    case 1: return roundMonth1(season);
+    case 2: return roundMonth2(season);
+    case 3: return roundMonth3(season);
+    case 4: return roundMonth4(season);
+    case 5: return roundMonth5(season);
+    case 6: return roundMonth6(season);
+    case 7: return roundMonth7(season);
+    case 8: return roundMonth8(season);
+    case 9: return roundMonth9(season);
+    case 10: return roundMonth10(season);
+    case 11: return roundMonth11(season);
+    case 12: return roundMonth12(season);
+    case 13: return roundMonth13(season);
+    case 14: return roundMonth14(season);
+    case 15: return roundMonth15(season);
+  }
+}
+
+/* ===== MONTH 1: Brand Identity ===== */
+function roundMonth1(season) {
+  shuffleTrends();
+  return {
+    event: {type:'normal', tag:'Brand Launch', title:'Brand Identity & First Collection', body:'It\'s day one. You have ₹25,00,000, a design notebook full of sketches, and a burning ambition. Time to define who ThreadCraft is and launch your first collection. The oversized fits trend is blowing up on Instagram — but will it last?'},
+    decisions: [
+      {id:'positioning', label:'Decision 1: Brand Positioning', options:[
+        {value:'budget', title:'Budget Streetwear', desc:'Target college students with ₹499-799 price points. High volume, low margin.', cost:'Selling price: ₹599 avg', benefit:'Largest addressable market'},
+        {value:'mid', title:'Affordable Trendy (Zara Model)', desc:'Fast-fashion at ₹899-1499. Trendy designs, quick turnover.', cost:'Selling price: ₹1,199 avg', benefit:'Best balance of volume & margin'},
+        {value:'premium', title:'Premium Sustainable', desc:'High-quality sustainable fashion at ₹1,599-2,999. Lower volume, high margin.', cost:'Selling price: ₹2,199 avg', benefit:'Higher margins + brand cachet'}
+      ]},
+      {id:'collection_size', label:'Decision 2: First Collection Size', options:[
+        {value:'small', title:'Small Collection (200 units)', desc:'Conservative start. Test the market with minimal risk.', cost:'Cost: ₹70,000'},
+        {value:'medium', title:'Medium Collection (500 units)', desc:'Balanced approach. Enough to test but also make sales.', cost:'Cost: ₹1,50,000'},
+        {value:'large', title:'Large Collection (1000 units)', desc:'Go big or go home. More inventory but more risk.', cost:'Cost: ₹2,80,000'}
+      ]},
+      {id:'production', label:'Decision 3: Production Quality', options:[
+        {value:'fast', title:'Fast & Cheap (2 weeks)', desc:'Quick turnaround, lower quality fabrics. ₹200/unit.', cost:'₹200/unit', benefit:'Speed to market'},
+        {value:'standard', title:'Standard (4 weeks)', desc:'Good quality, reasonable timeline. ₹350/unit.', cost:'₹350/unit', benefit:'Balanced quality'},
+        {value:'premium_prod', title:'Premium Slow (6 weeks)', desc:'Premium fabrics and finishing. ₹550/unit.', cost:'₹550/unit', benefit:'Quality + brand value'}
+      ]},
+      {id:'channel', label:'Decision 4: Sales Channel', options:[
+        {value:'online', title:'Instagram / Online Only', desc:'Sell through Instagram DMs and a basic website. Zero rent.', cost:'No fixed cost', benefit:'Low risk'},
+        {value:'popup', title:'Pop-up at Flea Market', desc:'Weekend pop-up stall at a popular Delhi flea market.', cost:'₹15,000/month', benefit:'+40% customer reach'},
+        {value:'both', title:'Both Online + Pop-up', desc:'Maximize visibility with dual channels.', cost:'₹15,000/month', benefit:'+70% customer reach'}
+      ]},
+      {id:'trend1', label:'Decision 5: Trend Bet — "Oversized fits are trending on Instagram"', type:'trend', trends:[
+        {id:'believe_oversized', icon:'👕', name:'Bet on Oversized', desc:'Go all-in on oversized fits for your first collection', hint:'Instagram reels are obsessed right now'},
+        {id:'safe_mix', icon:'⚖️', name:'Safe Mix', desc:'50% oversized + 50% classic fits as a hedge', hint:'Play it safe, test both'},
+        {id:'ignore_trend', icon:'🙅', name:'Ignore the Trend', desc:'Design what you believe in, not what\'s hyped', hint:'Trends die fast in fashion'},
+        {id:'counter_trend', icon:'🔄', name:'Counter-Bet: Fitted/Tailored', desc:'Bet that oversized is already peaking — go fitted instead', hint:'Contrarian play — high risk, high reward'}
+      ]}
+    ]
+  };
+}
+
+function processMonth1() {
+  const pos = G.selections.positioning;
+  const size = G.selections.collection_size;
+  const prod = G.selections.production;
+  const chan = G.selections.channel;
+  const trend = G.selections.trend1;
+
+  // Set positioning
+  G.positioning = pos;
+  if (pos === 'budget') { G.sellingPrice = 599; G.baseDemand = 400; }
+  else if (pos === 'mid') { G.sellingPrice = 1199; G.baseDemand = 300; }
+  else { G.sellingPrice = 2199; G.baseDemand = 180; }
+
+  // Collection size
+  let units, cost;
+  if (size === 'small') { units = 200; cost = 70000; }
+  else if (size === 'medium') { units = 500; cost = 150000; }
+  else { units = 1000; cost = 280000; }
+
+  // Production quality
+  if (prod === 'fast') { G.productionCost = 200; G.productionQuality = 'fast'; G.brandValue = Math.max(0, G.brandValue - 3); }
+  else if (prod === 'standard') { G.productionCost = 350; G.productionQuality = 'standard'; }
+  else { G.productionCost = 550; G.productionQuality = 'premium'; G.brandValue += 5; }
+
+  // Channel
+  if (chan === 'online') { G.channelReach = 1.0; G.salesChannel = 'online'; G.monthlyCosts.rent = 0; }
+  else if (chan === 'popup') { G.channelReach = 1.4; G.salesChannel = 'physical'; G.monthlyCosts.rent = 15000; }
+  else { G.channelReach = 1.7; G.salesChannel = 'both'; G.monthlyCosts.rent = 15000; }
+
+  // Trend accuracy (oversized IS the hot trend for month 1)
+  let trendAcc;
+  if (trend === 'believe_oversized') { trendAcc = 1.3; G.trendBetsCorrect++; }
+  else if (trend === 'safe_mix') { trendAcc = 1.1; G.trendBetsCorrect += 0.5; }
+  else if (trend === 'ignore_trend') { trendAcc = 0.8; }
+  else { trendAcc = 0.5; } // counter-bet fails month 1
+  G.trendBetsTotal++;
+
+  // Simulate sales
+  G.inventory = units;
+  G.collectionsLaunched++;
+  const actualCost = units * G.productionCost;
+  const totalSpent = Math.max(actualCost, cost);
+
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demand = Math.round(G.baseDemand * trendAcc * G.seasonMult * 1.0 * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const cogs = G.inventory * G.productionCost;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+  const deadStockLoss = deadStock * G.productionCost * 0.3; // holding cost
+  const netProfit = revenue - cogs - opsCosts - deadStockLoss;
+
+  G.cash = G.cash - totalSpent + revenue - opsCosts - deadStockLoss + (cogs - totalSpent > 0 ? 0 : cogs - totalSpent);
+  // Simplified: cash = prev_cash - production_cost + revenue - ops - deadstock_loss
+  G.cash = G.cash; // Already handled
+  // Let me recalculate cleanly
+  G.cash = 2500000 - totalSpent + revenue - opsCosts - deadStockLoss;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = revenue - totalSpent - opsCosts - deadStockLoss;
+  G.totalRevenue += revenue;
+  G.totalProfit += G.monthlyProfit;
+  G.totalUnitsSold += unitsSold;
+  G.totalDeadStock += deadStock;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+
+  G.trendScore = clamp(Math.round(50 + (trendAcc - 1) * 60), 0, 100);
+  updateValuation();
+
+  return {
+    unitsSold, deadStock, revenue, totalSpent, demand, trendAcc,
+    narrative: trendAcc >= 1.2
+      ? 'Your bet on oversized fits paid off! Customers loved the collection, and your Instagram DMs blew up with orders. ' + fmtNum(unitsSold) + ' units sold out of ' + fmtNum(units) + '.'
+      : trendAcc >= 0.9
+      ? 'A decent first month. Your safe approach meant steady sales, though nothing explosive. ' + fmtNum(unitsSold) + ' units sold.'
+      : 'Tough start. The market wanted oversized, and your collection didn\'t match. ' + fmtNum(unitsSold) + ' units sold, leaving ' + fmtNum(deadStock) + ' unsold.'
+  };
+}
+
+/* ===== MONTH 2: Reading the Market ===== */
+function roundMonth2(season) {
+  shuffleTrends();
+  const prevSold = G.totalUnitsSold;
+  const prevDead = G.deadStockPct.toFixed(0);
+
+  return {
+    event: {type:'normal', tag:'Collection 2', title:'Reading the Market', body:'Your first collection sold ' + fmtNum(prevSold) + ' units with ' + prevDead + '% dead stock. Time to read the data and plan Collection 2. What trend will you bet on this month?'},
+    decisions: [
+      {id:'trend2', label:'Decision 1: Trend Bet for Collection 2', type:'trend', trends: currentTrendPool},
+      {id:'reorder', label:'Decision 2: Production Quantity', options:[
+        {value:'conservative', title:'Conservative (250 units)', desc:'Play it safe based on last month\'s data.', cost: fmt(250 * G.productionCost)},
+        {value:'moderate', title:'Moderate (500 units)', desc:'Aim for growth while managing risk.', cost: fmt(500 * G.productionCost)},
+        {value:'aggressive', title:'Aggressive (800 units)', desc:'Bet big on your trend read.', cost: fmt(800 * G.productionCost)},
+        {value:'very_aggressive', title:'All-In (1200 units)', desc:'Maximum production. High risk, high reward.', cost: fmt(1200 * G.productionCost)}
+      ]},
+      {id:'pricing', label:'Decision 3: Pricing Adjustment', options:[
+        {value:'keep', title:'Keep Same Price', desc:'Maintain current pricing at ' + fmt(G.sellingPrice) + '/unit.'},
+        {value:'raise', title:'Raise 15%', desc:'Increase to ' + fmt(Math.round(G.sellingPrice * 1.15)) + '/unit. Higher margin but lower volume.', benefit:'+15% per unit'},
+        {value:'discount', title:'Discount Remaining 20%', desc:'Clear old stock at 20% off, keep new collection at standard price.', cost:'Revenue hit on old stock', benefit:'Clear dead stock'}
+      ]},
+      {id:'deadstock', label:'Decision 4: Dead Stock Strategy', options:[
+        {value:'hold', title:'Hold Inventory', desc:'Store unsold units. Maybe they\'ll sell later.', cost:'₹5,000/month storage'},
+        {value:'liquidate', title:'Liquidate at 40% Off', desc:'Fire sale to recover some cash. Fast.', benefit:'Recover ~60% of cost'},
+        {value:'donate', title:'Donate to NGO', desc:'Zero revenue but great PR and karma.', benefit:'Sustainability +10, Brand +5'}
+      ]}
+    ]
+  };
+}
+
+function processMonth2() {
+  const trend = G.selections.trend2;
+  const reorder = G.selections.reorder;
+  const pricing = G.selections.pricing;
+  const deadstockChoice = G.selections.deadstock;
+
+  // Trend accuracy
+  const isHot = trend === currentHotTrend.id;
+  const isWarm = currentTrendPool.findIndex(t => t.id === trend) < 2 && !isHot;
+  let trendAcc = isHot ? 1.3 : (isWarm ? 1.0 : 0.5);
+  G.trendBetsTotal++;
+  if (isHot) G.trendBetsCorrect++;
+  else if (isWarm) G.trendBetsCorrect += 0.5;
+
+  // Dead stock handling
+  const oldDeadStock = G.inventory;
+  if (deadstockChoice === 'hold') {
+    G.monthlyCosts.logistics += 5000; // temporary
+  } else if (deadstockChoice === 'liquidate') {
+    G.cash += oldDeadStock * G.sellingPrice * 0.6;
+    G.inventory = 0;
+  } else if (deadstockChoice === 'donate') {
+    G.sustainability = clamp(G.sustainability + 10, 0, 100);
+    G.brandValue = clamp(G.brandValue + 5, 0, 100);
+    G.inventory = 0;
+  }
+
+  // Production
+  let newUnits;
+  if (reorder === 'conservative') newUnits = 250;
+  else if (reorder === 'moderate') newUnits = 500;
+  else if (reorder === 'aggressive') newUnits = 800;
+  else newUnits = 1200;
+
+  const prodCost = newUnits * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += newUnits;
+  G.collectionsLaunched++;
+
+  // Pricing
+  if (pricing === 'raise') G.sellingPrice = Math.round(G.sellingPrice * 1.15);
+  // discount handled in revenue calc
+
+  // Sales simulation
+  const marketingMult = 1.0;
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demand = Math.round(G.baseDemand * trendAcc * G.seasonMult * marketingMult * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+  const deadStockLoss = deadStock * G.productionCost * 0.3;
+  const netProfit = revenue - prodCost - opsCosts - deadStockLoss;
+
+  G.cash += revenue - opsCosts - deadStockLoss;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = netProfit;
+  G.totalRevenue += revenue;
+  G.totalProfit += netProfit;
+  G.totalUnitsSold += unitsSold;
+  G.totalDeadStock += deadStock;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+
+  G.trendScore = clamp(Math.round(G.trendScore + (trendAcc - 1) * 30), 0, 100);
+  if (deadstockChoice === 'hold') G.monthlyCosts.logistics -= 5000; // reset temp
+  updateValuation();
+
+  return {
+    unitsSold, deadStock, revenue, prodCost, demand, trendAcc, isHot,
+    hotTrendName: currentHotTrend.name,
+    narrative: isHot
+      ? 'You nailed the trend! ' + currentHotTrend.name + ' was exactly what the market wanted. ' + fmtNum(unitsSold) + ' units flew off the shelves.'
+      : trendAcc >= 1.0
+      ? 'Decent read. Your collection resonated with some customers. ' + fmtNum(unitsSold) + ' units sold. The hot trend was ' + currentHotTrend.name + '.'
+      : 'Ouch. The market wanted ' + currentHotTrend.name + ', not what you stocked. Only ' + fmtNum(unitsSold) + ' units sold.'
+  };
+}
+
+/* ===== MONTH 3: Supply Chain ===== */
+function roundMonth3(season) {
+  return {
+    event: {type:'normal', tag:'Supply Chain', title:'Supply Chain Choices', body:'Your brand is off the ground. Now it\'s time to build a real supply chain. Where you manufacture, what fabrics you use, and how fast you move will define your cost structure for months to come.'},
+    decisions: [
+      {id:'manufacturer', label:'Decision 1: Manufacturer', options:[
+        {value:'tirupur', title:'Tirupur Cluster', desc:'Tamil Nadu\'s garment hub. Cheap, reliable, massive scale. Not the most sustainable.', cost:'₹200/unit base', benefit:'Reliable delivery'},
+        {value:'jaipur', title:'Jaipur Artisan Co-op', desc:'Hand-crafted quality, fair-trade certified. Slower but sustainable.', cost:'₹450/unit base', benefit:'Sustainability +15, Brand +8'},
+        {value:'surat', title:'Surat Factory', desc:'Gujarat\'s textile powerhouse. Mid-range pricing, fast turnaround.', cost:'₹300/unit base', benefit:'Fastest delivery'}
+      ]},
+      {id:'moq', label:'Decision 2: Minimum Order Quantity', options:[
+        {value:'high_moq', title:'Accept MOQ 500 (Lower per-unit)', desc:'Commit to 500 units minimum per order. Better pricing.', cost:'-15% production cost', benefit:'Economies of scale'},
+        {value:'low_moq', title:'Negotiate MOQ 200 (Higher per-unit)', desc:'Smaller batches, more flexibility, higher cost.', cost:'+10% production cost', benefit:'Less dead stock risk'},
+        {value:'split', title:'Split Across 2 Suppliers', desc:'Diversify risk between two manufacturers.', cost:'Standard pricing', benefit:'Supply chain resilience'}
+      ]},
+      {id:'fabric', label:'Decision 3: Fabric Sourcing', options:[
+        {value:'cheap', title:'Cheapest Available', desc:'Whatever\'s available at the lowest price. Quality varies.', benefit:'Maximum margin'},
+        {value:'consistent', title:'Consistent Quality Vendor', desc:'10% premium for reliable, good-quality fabrics every time.', cost:'+10% fabric cost', benefit:'Fewer returns, better reviews'},
+        {value:'organic', title:'Organic Certified', desc:'25% premium. Certified organic cotton & sustainable dyes.', cost:'+25% fabric cost', benefit:'Sustainability +15'}
+      ]},
+      {id:'leadtime', label:'Decision 4: Lead Time', options:[
+        {value:'standard', title:'Standard 4-Week Turnaround', desc:'Industry standard. Reliable and affordable.'},
+        {value:'rush', title:'Rush 2-Week (20% Premium)', desc:'Pay more for speed. Crucial for chasing trends.', cost:'+20% production cost', benefit:'React faster to trends'}
+      ]}
+    ]
+  };
+}
+
+function processMonth3() {
+  const mfr = G.selections.manufacturer;
+  const moq = G.selections.moq;
+  const fabric = G.selections.fabric;
+  const lead = G.selections.leadtime;
+
+  // Manufacturer
+  G.manufacturer = mfr;
+  if (mfr === 'tirupur') {
+    G.productionCost = 200;
+  } else if (mfr === 'jaipur') {
+    G.productionCost = 450;
+    G.sustainability = clamp(G.sustainability + 15, 0, 100);
+    G.brandValue = clamp(G.brandValue + 8, 0, 100);
+  } else {
+    G.productionCost = 300;
+  }
+
+  // MOQ
+  if (moq === 'high_moq') {
+    G.productionCost = Math.round(G.productionCost * 0.85);
+  } else if (moq === 'low_moq') {
+    G.productionCost = Math.round(G.productionCost * 1.10);
+  }
+
+  // Fabric
+  G.fabricQuality = fabric;
+  if (fabric === 'consistent') {
+    G.productionCost = Math.round(G.productionCost * 1.10);
+    G.brandValue = clamp(G.brandValue + 3, 0, 100);
+  } else if (fabric === 'organic') {
+    G.productionCost = Math.round(G.productionCost * 1.25);
+    G.sustainability = clamp(G.sustainability + 15, 0, 100);
+  } else {
+    G.brandValue = clamp(G.brandValue - 2, 0, 100);
+  }
+
+  // Lead time
+  G.leadTime = lead;
+  if (lead === 'rush') {
+    G.productionCost = Math.round(G.productionCost * 1.20);
+  }
+
+  // This month: moderate production + sales
+  const units = 400;
+  const prodCost = units * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += units;
+  G.collectionsLaunched++;
+
+  // Use previous trend momentum
+  const trendAcc = 0.9 + Math.random() * 0.3;
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demand = Math.round(G.baseDemand * trendAcc * G.seasonMult * 1.0 * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+  const netProfit = revenue - prodCost - opsCosts;
+
+  G.cash += revenue - opsCosts;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = netProfit;
+  G.totalRevenue += revenue;
+  G.totalProfit += netProfit;
+  G.totalUnitsSold += unitsSold;
+  G.totalDeadStock += deadStock;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  updateValuation();
+
+  const mfrNames = {tirupur:'Tirupur cluster', jaipur:'Jaipur artisan co-op', surat:'Surat factory'};
+  return {
+    unitsSold, deadStock, revenue, prodCost,
+    narrative: 'Your supply chain is now locked in with the ' + mfrNames[mfr] + '. Production cost settled at ' + fmt(G.productionCost) + '/unit. ' + fmtNum(unitsSold) + ' units sold this month. Revenue: ' + fmt(revenue) + '.'
+  };
+}
+
+/* ===== MONTH 4: Marketing Machine ===== */
+function roundMonth4(season) {
+  shuffleTrends();
+  return {
+    event: {type:'normal', tag:'Marketing', title:'Building the Marketing Machine', body:'Three months in and you have product-market signals. Now it\'s time to pour fuel on the fire. How you market ThreadCraft this month will define whether you\'re a serious brand or just another Instagram shop.'},
+    decisions: [
+      {id:'marketing_strategy', label:'Decision 1: Marketing Strategy', options:[
+        {value:'influencer', title:'Influencer Seeding', desc:'Send free products to 5 micro-influencers (10K-50K followers each).', cost:'₹50,000', benefit:'High trust, organic reach'},
+        {value:'ads', title:'Instagram Ads', desc:'Targeted ad campaigns to fashion-interested Gen Z.', cost:'₹30,000', benefit:'Measurable, scalable'},
+        {value:'ambassador', title:'College Ambassador Program', desc:'Recruit 10 campus ambassadors across Delhi colleges.', cost:'₹20,000', benefit:'Word-of-mouth, loyalty'},
+        {value:'fashion_show', title:'Fashion Show at College Fest', desc:'Host a runway show at a major Delhi college fest.', cost:'₹40,000', benefit:'Brand buzz + PR coverage'}
+      ]},
+      {id:'content', label:'Decision 2: Content Strategy', options:[
+        {value:'product_photos', title:'Product Photos Only', desc:'Clean product shots on white background. Professional but basic.', cost:'Free (DIY)'},
+        {value:'lifestyle', title:'Lifestyle Shoots', desc:'Models wearing ThreadCraft in real Delhi locations.', cost:'₹25,000', benefit:'Brand storytelling'},
+        {value:'bts', title:'Behind-the-Scenes Reels', desc:'Show the design & manufacturing process. Transparency builds trust.', cost:'₹10,000', benefit:'Authenticity + engagement'},
+        {value:'ugc', title:'User-Generated Content Campaign', desc:'Get customers to post photos wearing ThreadCraft for discounts.', cost:'₹5,000 (discount budget)', benefit:'Social proof + free content'}
+      ]},
+      {id:'community', label:'Decision 3: Community Building', options:[
+        {value:'whatsapp', title:'WhatsApp Broadcast', desc:'Build a WhatsApp broadcast list for drops, early access, and style tips.', benefit:'Direct line to customers'},
+        {value:'discord', title:'Discord Community', desc:'Create a fashion community for ThreadCraft fans.', benefit:'Deep engagement, feedback loop'},
+        {value:'none', title:'Skip Community', desc:'Focus on product and marketing instead.', benefit:'Save time and effort'}
+      ]},
+      {id:'trend4', label:'Decision 4: Trend Bet for This Month', type:'trend', trends: currentTrendPool}
+    ]
+  };
+}
+
+function processMonth4() {
+  const strategy = G.selections.marketing_strategy;
+  const content = G.selections.content;
+  const community = G.selections.community;
+  const trend = G.selections.trend4;
+
+  // Marketing spend
+  let mktSpend = 0;
+  let marketingMult = 1.0;
+  if (strategy === 'influencer') { mktSpend = 50000; marketingMult = 1.4; G.brandValue = clamp(G.brandValue + 8, 0, 100); }
+  else if (strategy === 'ads') { mktSpend = 30000; marketingMult = 1.25; }
+  else if (strategy === 'ambassador') { mktSpend = 20000; marketingMult = 1.15; G.brandValue = clamp(G.brandValue + 5, 0, 100); }
+  else { mktSpend = 40000; marketingMult = 1.35; G.brandValue = clamp(G.brandValue + 10, 0, 100); }
+
+  // Content
+  if (content === 'lifestyle') { mktSpend += 25000; G.brandValue = clamp(G.brandValue + 5, 0, 100); marketingMult += 0.1; }
+  else if (content === 'bts') { mktSpend += 10000; G.sustainability = clamp(G.sustainability + 3, 0, 100); G.brandValue = clamp(G.brandValue + 3, 0, 100); }
+  else if (content === 'ugc') { mktSpend += 5000; marketingMult += 0.15; }
+
+  // Community
+  if (community === 'whatsapp') { marketingMult += 0.1; }
+  else if (community === 'discord') { marketingMult += 0.05; G.brandValue = clamp(G.brandValue + 3, 0, 100); }
+
+  G.cash -= mktSpend;
+  G.marketingSpend = mktSpend;
+
+  // Trend
+  const isHot = trend === currentHotTrend.id;
+  const isWarm = currentTrendPool.findIndex(t => t.id === trend) < 2 && !isHot;
+  let trendAcc = isHot ? 1.3 : (isWarm ? 1.0 : 0.5);
+  G.trendBetsTotal++;
+  if (isHot) G.trendBetsCorrect++;
+  else if (isWarm) G.trendBetsCorrect += 0.5;
+
+  // Production (auto)
+  const units = 500;
+  const prodCost = units * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += units;
+  G.collectionsLaunched++;
+
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demand = Math.round(G.baseDemand * trendAcc * G.seasonMult * marketingMult * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software + mktSpend;
+  const netProfit = revenue - prodCost - opsCosts;
+
+  G.cash += revenue - (G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software);
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = netProfit;
+  G.totalRevenue += revenue;
+  G.totalProfit += netProfit;
+  G.totalUnitsSold += unitsSold;
+  G.totalDeadStock += deadStock;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  G.trendScore = clamp(Math.round(G.trendScore + (trendAcc - 1) * 25), 0, 100);
+  updateValuation();
+
+  return {
+    unitsSold, deadStock, revenue, prodCost, mktSpend,
+    narrative: 'Marketing is firing! Your ' + strategy.replace('_', ' ') + ' strategy brought ' + fmtNum(demand) + ' demand this month. ' + fmtNum(unitsSold) + ' units sold. Revenue: ' + fmt(revenue) + '. ' + (isHot ? 'And you nailed the trend!' : 'The hot trend was ' + currentHotTrend.name + '.')
+  };
+}
+
+/* ===== MONTH 5: SHOCK - Trend Whiplash ===== */
+function roundMonth5(season) {
+  const newTrendNames = ['Bollywood Glam', 'Dopamine Dressing', 'Y2K Revival', 'Cottagecore'];
+  const newTrend = newTrendNames[Math.floor(Math.random() * newTrendNames.length)];
+  G._month5NewTrend = newTrend;
+
+  return {
+    event: {type:'shock', tag:'Trend Whiplash', title:'The Trend Just Died Overnight', body:'A massive Bollywood movie just released and EVERYONE wants "' + newTrend + '" now. Social media pivoted overnight. Your current inventory is based on last month\'s trend — suddenly nobody wants it. Your Instagram DMs have gone silent.'},
+    decisions: [
+      {id:'shock_response', label:'Decision 1: Crisis Response', options:[
+        {value:'rush', title:'Rush-Produce New Trend Items', desc:'Emergency production at 2x cost, delivered in 1 week. Chase the new trend.', cost:'2x production cost', benefit:'Capture new trend demand'},
+        {value:'discount', title:'Discount Old Stock + Slow Transition', desc:'Clear existing inventory at 30% off, gradually shift designs.', cost:'-30% revenue on old stock', benefit:'Recover cash, lower risk'},
+        {value:'reframe', title:'Pivot Marketing to Reframe Stock', desc:'Reposition existing collection as "timeless classics" — works 40% of the time.', cost:'₹15,000 marketing', benefit:'If it works: saves inventory cost'}
+      ]},
+      {id:'new_production', label:'Decision 2: New Trend Production Volume', options:[
+        {value:'conservative', title:'Conservative (200 units)', desc:'Test the new trend with minimal commitment.', cost: fmt(200 * G.productionCost * 2)},
+        {value:'moderate', title:'Moderate (500 units)', desc:'Meaningful batch to capture demand.', cost: fmt(500 * G.productionCost * 2)},
+        {value:'aggressive', title:'Aggressive (1000 units)', desc:'Go all-in on the new trend. High risk.', cost: fmt(1000 * G.productionCost * 2)}
+      ]}
+    ]
+  };
+}
+
+function processMonth5() {
+  const response = G.selections.shock_response;
+  const newProd = G.selections.new_production;
+
+  const oldInventory = G.inventory;
+  let newUnits = 0;
+  let rushCost = 0;
+  let reframeSuccess = false;
+  let oldSold = 0;
+
+  if (response === 'rush') {
+    if (newProd === 'conservative') newUnits = 200;
+    else if (newProd === 'moderate') newUnits = 500;
+    else newUnits = 1000;
+
+    rushCost = newUnits * G.productionCost * 2;
+    G.cash -= rushCost;
+    // Old stock becomes dead
+    G.totalDeadStock += oldInventory;
+    G.inventory = newUnits;
+
+    const demand = Math.round(G.baseDemand * 1.3 * G.seasonMult * G.channelReach * (1 + G.brandValue / 200));
+    const unitsSold = Math.min(demand, newUnits);
+    const deadStock = Math.max(0, newUnits - demand);
+    const revenue = unitsSold * G.sellingPrice;
+    oldSold = 0;
+
+    G.monthlyRevenue = revenue;
+    G.monthlyProfit = revenue - rushCost - (G.monthlyCosts.rent + G.monthlyCosts.staff);
+    G.cash += revenue - (G.monthlyCosts.rent + G.monthlyCosts.staff);
+    G.totalRevenue += revenue;
+    G.totalProfit += G.monthlyProfit;
+    G.totalUnitsSold += unitsSold;
+    G.inventory = deadStock;
+    G.deadStockPct = newUnits > 0 ? (deadStock / newUnits * 100) : 0;
+    G.trendScore = clamp(G.trendScore + 8, 0, 100);
+    if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+
+  } else if (response === 'discount') {
+    // Sell old stock at 70%
+    const discountedPrice = Math.round(G.sellingPrice * 0.7);
+    const demandOld = Math.round(G.baseDemand * 0.6 * G.seasonMult * G.channelReach);
+    oldSold = Math.min(demandOld, oldInventory);
+    const oldRevenue = oldSold * discountedPrice;
+    const remaining = oldInventory - oldSold;
+
+    // Small new production
+    if (newProd === 'conservative') newUnits = 200;
+    else if (newProd === 'moderate') newUnits = 500;
+    else newUnits = 1000;
+
+    const newCost = newUnits * G.productionCost;
+    G.cash -= newCost;
+    const newDemand = Math.round(G.baseDemand * 0.8 * G.seasonMult * G.channelReach);
+    const newSold = Math.min(newDemand, newUnits);
+    const newRevenue = newSold * G.sellingPrice;
+
+    const totalRevenue = oldRevenue + newRevenue;
+    G.monthlyRevenue = totalRevenue;
+    const totalCost = newCost + (G.monthlyCosts.rent + G.monthlyCosts.staff);
+    G.monthlyProfit = totalRevenue - totalCost;
+    G.cash += totalRevenue - (G.monthlyCosts.rent + G.monthlyCosts.staff);
+    G.totalRevenue += totalRevenue;
+    G.totalProfit += G.monthlyProfit;
+    G.totalUnitsSold += oldSold + newSold;
+    G.totalDeadStock += remaining + Math.max(0, newUnits - newDemand);
+    G.inventory = remaining + Math.max(0, newUnits - newDemand);
+    G.deadStockPct = (G.inventory) / Math.max(oldInventory + newUnits, 1) * 100;
+    if (totalRevenue > G.peakRevenue) G.peakRevenue = totalRevenue;
+
+  } else { // reframe
+    reframeSuccess = Math.random() < 0.4;
+    G.cash -= 15000;
+
+    if (reframeSuccess) {
+      const demand = Math.round(G.baseDemand * 0.9 * G.seasonMult * G.channelReach * (1 + G.brandValue / 200));
+      const unitsSold = Math.min(demand, oldInventory);
+      const revenue = unitsSold * G.sellingPrice;
+      G.monthlyRevenue = revenue;
+      G.monthlyProfit = revenue - 15000 - (G.monthlyCosts.rent + G.monthlyCosts.staff);
+      G.cash += revenue - (G.monthlyCosts.rent + G.monthlyCosts.staff);
+      G.totalRevenue += revenue;
+      G.totalProfit += G.monthlyProfit;
+      G.totalUnitsSold += unitsSold;
+      G.inventory = oldInventory - unitsSold;
+      G.deadStockPct = oldInventory > 0 ? (G.inventory / oldInventory * 100) : 0;
+      G.brandValue = clamp(G.brandValue + 5, 0, 100);
+      if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+    } else {
+      G.monthlyRevenue = 0;
+      G.monthlyProfit = -15000 - (G.monthlyCosts.rent + G.monthlyCosts.staff);
+      G.cash -= (G.monthlyCosts.rent + G.monthlyCosts.staff);
+      G.totalProfit += G.monthlyProfit;
+      G.deadStockPct = 100;
+      G.trendScore = clamp(G.trendScore - 10, 0, 100);
+    }
+  }
+
+  updateValuation();
+
+  return {
+    narrative: response === 'rush'
+      ? 'You rushed ' + fmtNum(newUnits) + ' units of the new "' + G._month5NewTrend + '" trend at 2x cost (' + fmt(rushCost) + '). Your old inventory of ' + fmtNum(oldInventory) + ' units is now dead stock. Revenue: ' + fmt(G.monthlyRevenue) + '.'
+      : response === 'discount'
+      ? 'You discounted ' + fmtNum(oldSold) + ' old units and started transitioning to "' + G._month5NewTrend + '". Revenue: ' + fmt(G.monthlyRevenue) + '.'
+      : reframeSuccess
+      ? 'The reframing worked! Your "timeless classics" positioning resonated. Customers bought despite the trend shift. Revenue: ' + fmt(G.monthlyRevenue) + '.'
+      : 'The reframing failed. Customers saw through it. Zero sales this month. ' + fmtNum(oldInventory) + ' units sitting in storage. This hurts.'
+  };
+}
+
+/* ===== MONTH 6: FUNDING - Series A ===== */
+function roundMonth6(season) {
+  const revTrend = G.totalRevenue > 0 ? 'Growing' : 'Flat';
+  return {
+    event: {type:'funding', tag:'Series A Demo Day', title:'FashionForward VC Demo Day', body:'You\'ve been invited to pitch at "FashionForward VC Demo Day." Three VCs are interested in ThreadCraft. This is your shot at real funding.'},
+    decisions: [
+      {id:'vc_choice', label:'Decision 1: Choose Your Investor', type:'funding', options:[
+        {value:'alpha', title:'VC Alpha: Pure Financial', desc:'₹50L for 25% equity. No strings, no support, no pressure. Just capital.', cost:'25% equity', benefit:'₹50,00,000 cash'},
+        {value:'beta', title:'VC Beta: Fashion Expert', desc:'₹40L for 20% equity. Fashion industry veteran. Opens doors to designers, manufacturers, Vogue features.', cost:'20% equity', benefit:'₹40,00,000 + mentor access + brand boost'},
+        {value:'gamma', title:'VC Gamma: Growth Machine', desc:'₹60L for 30% equity. Aggressive — expects 3x revenue in 6 months or they push to replace you.', cost:'30% equity + board seat', benefit:'₹60,00,000 cash'},
+        {value:'bootstrap', title:'Decline All — Bootstrap', desc:'Keep 100% equity. Survive on your own cash flow.', benefit:'Full control'}
+      ]},
+      {id:'fund_use', label:'Decision 2: Use of Funds (if raising)', options:[
+        {value:'growth_ops', title:'60% Growth + 40% Operations', desc:'Invest in scaling production and improving operations.'},
+        {value:'balanced', title:'40% Growth + 40% Marketing + 20% Ops', desc:'Balanced approach across all business areas.'},
+        {value:'growth_heavy', title:'80% Growth + 20% Operations', desc:'Aggressive growth push. Burn fast, scale fast.'}
+      ]}
+    ]
+  };
+}
+
+function processMonth6() {
+  const vc = G.selections.vc_choice;
+  const funds = G.selections.fund_use;
+
+  G.vcChoice = vc;
+  G.seriesADone = true;
+
+  if (vc === 'alpha') {
+    G.cash += 5000000;
+    G.equityGiven += 25;
+  } else if (vc === 'beta') {
+    G.cash += 4000000;
+    G.equityGiven += 20;
+    G.brandValue = clamp(G.brandValue + 15, 0, 100);
+  } else if (vc === 'gamma') {
+    G.cash += 6000000;
+    G.equityGiven += 30;
+    G.gammaDeadline = 12; // must hit 3x by month 12
+    G.gammaBaseRevenue = G.monthlyRevenue;
+  }
+  // bootstrap = no change
+
+  // Fund allocation effects
+  if (vc !== 'bootstrap') {
+    if (funds === 'growth_ops') { G.baseDemand = Math.round(G.baseDemand * 1.2); }
+    else if (funds === 'balanced') { G.baseDemand = Math.round(G.baseDemand * 1.15); G.brandValue = clamp(G.brandValue + 5, 0, 100); }
+    else { G.baseDemand = Math.round(G.baseDemand * 1.3); }
+  }
+
+  // Month continues with normal sales
+  const units = 400;
+  const prodCost = units * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += units;
+
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demand = Math.round(G.baseDemand * 1.0 * G.seasonMult * 1.1 * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = revenue - prodCost - opsCosts;
+  G.cash += revenue - opsCosts;
+  G.totalRevenue += revenue;
+  G.totalProfit += G.monthlyProfit;
+  G.totalUnitsSold += unitsSold;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  updateValuation();
+
+  const vcNames = {alpha:'VC Alpha', beta:'VC Beta (fashion expert)', gamma:'VC Gamma (growth machine)', bootstrap:'bootstrapping'};
+  return {
+    unitsSold, revenue,
+    narrative: vc !== 'bootstrap'
+      ? 'You raised ' + (vc === 'alpha' ? '₹50L' : vc === 'beta' ? '₹40L' : '₹60L') + ' from ' + vcNames[vc] + ', giving up ' + (vc === 'alpha' ? '25' : vc === 'beta' ? '20' : '30') + '% equity. Cash position strengthened. Revenue this month: ' + fmt(revenue) + '.'
+      : 'You chose to bootstrap. Bold move — you keep 100% equity but need to be capital-efficient. Revenue: ' + fmt(revenue) + '.'
+  };
+}
+
+/* ===== MONTH 7: Omnichannel ===== */
+function roundMonth7(season) {
+  shuffleTrends();
+  return {
+    event: {type:'normal', tag:'Omnichannel', title:'Omnichannel Expansion', body:'With funding (or grit) behind you, it\'s time to expand how customers discover and buy ThreadCraft. Online, offline, or both? Each channel has its own economics.'},
+    decisions: [
+      {id:'physical', label:'Decision 1: Physical Presence', options:[
+        {value:'none', title:'No Physical Store', desc:'Stay lean. Online is enough for now.'},
+        {value:'popup_premium', title:'Pop-up at Select CityWalk', desc:'Premium Delhi mall. High foot traffic, high rent.', cost:'₹2,00,000/month', benefit:'+50% reach, premium brand signal'},
+        {value:'own_store', title:'Own Small Store', desc:'Your own space. Full control of the experience.', cost:'₹4,00,000 setup + ₹80,000/month', benefit:'+60% reach, brand flagship'},
+        {value:'shop_in_shop', title:'Shop-in-Shop at Lifestyle Store', desc:'Small branded corner inside an existing multi-brand store.', cost:'₹40,000/month', benefit:'+30% reach, low commitment'}
+      ]},
+      {id:'online_upgrade', label:'Decision 2: Online Upgrade', options:[
+        {value:'keep_insta', title:'Keep Instagram DMs', desc:'It works. Low overhead. But hard to scale.'},
+        {value:'shopify', title:'Launch Shopify Store', desc:'Professional e-commerce site. Better conversion, analytics.', cost:'₹20,000 setup + ₹2,000/month', benefit:'Professional checkout, data'},
+        {value:'marketplace', title:'List on Myntra + Ajio', desc:'Massive reach. But 30% commission per sale.', cost:'30% commission on sales', benefit:'Millions of eyeballs'},
+        {value:'all_channels', title:'All Channels', desc:'Shopify + Myntra + Ajio + Instagram. Maximum presence.', cost:'₹20,000 setup + 30% on marketplace sales', benefit:'Maximum reach'}
+      ]},
+      {id:'logistics_upgrade', label:'Decision 3: Logistics', options:[
+        {value:'self_ship', title:'Self-Ship', desc:'Pack and ship yourself. Cheapest but doesn\'t scale.'},
+        {value:'delhivery', title:'Partner with Delhivery', desc:'Professional courier. ₹60/order, nationwide delivery.', cost:'₹60/order'},
+        {value:'warehouse', title:'Warehouse + 3PL', desc:'Outsource everything to a fulfillment center.', cost:'₹1,00,000/month setup', benefit:'Scalable, fast delivery'}
+      ]},
+      {id:'trend7', label:'Decision 4: Collection Trend Bet', type:'trend', trends: currentTrendPool}
+    ]
+  };
+}
+
+function processMonth7() {
+  const physical = G.selections.physical;
+  const online = G.selections.online_upgrade;
+  const logistics = G.selections.logistics_upgrade;
+  const trend = G.selections.trend7;
+
+  // Physical
+  if (physical === 'popup_premium') {
+    G.monthlyCosts.rent = 200000; G.channelReach = Math.max(G.channelReach, 1.5); G.hasStore = true; G.storeType = 'popup';
+    G.brandValue = clamp(G.brandValue + 5, 0, 100);
+  } else if (physical === 'own_store') {
+    G.cash -= 400000; G.monthlyCosts.rent = 80000; G.channelReach = Math.max(G.channelReach, 1.6); G.hasStore = true; G.storeType = 'own';
+    G.brandValue = clamp(G.brandValue + 8, 0, 100);
+  } else if (physical === 'shop_in_shop') {
+    G.monthlyCosts.rent = 40000; G.channelReach = Math.max(G.channelReach, 1.3); G.hasStore = true; G.storeType = 'sis';
+  } else {
+    G.monthlyCosts.rent = 0;
+  }
+
+  // Online
+  if (online === 'shopify') {
+    G.cash -= 20000; G.monthlyCosts.software = 2000; G.hasShopify = true; G.channelReach += 0.15;
+  } else if (online === 'marketplace') {
+    G.onMarketplace = true; G.channelReach += 0.3; // 30% commission handled in revenue
+  } else if (online === 'all_channels') {
+    G.cash -= 20000; G.monthlyCosts.software = 2000; G.hasShopify = true; G.onMarketplace = true; G.channelReach += 0.4;
+  }
+
+  // Logistics
+  G.logistics = logistics === 'self_ship' ? 'self' : logistics === 'delhivery' ? 'delhivery' : 'warehouse';
+  if (logistics === 'warehouse') { G.cash -= 100000; G.monthlyCosts.logistics = 100000; }
+  else if (logistics === 'delhivery') { G.monthlyCosts.logistics = 0; } // per-order, handled in calc
+  else { G.monthlyCosts.logistics = 0; }
+
+  // Trend
+  const isHot = trend === currentHotTrend.id;
+  let trendAcc = isHot ? 1.3 : 0.85;
+  G.trendBetsTotal++;
+  if (isHot) G.trendBetsCorrect++;
+
+  // Production + sales
+  const units = 600;
+  const prodCost = units * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += units;
+  G.collectionsLaunched++;
+
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demand = Math.round(G.baseDemand * trendAcc * G.seasonMult * 1.15 * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  let revenue = unitsSold * G.sellingPrice;
+  if (G.onMarketplace) revenue = Math.round(revenue * 0.85); // effective after commission split
+  const logisticsCost = G.logistics === 'delhivery' ? unitsSold * 60 : 0;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software + logisticsCost;
+  const netProfit = revenue - prodCost - opsCosts;
+
+  G.cash += revenue - opsCosts;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = netProfit;
+  G.totalRevenue += revenue;
+  G.totalProfit += netProfit;
+  G.totalUnitsSold += unitsSold;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  G.trendScore = clamp(Math.round(G.trendScore + (trendAcc - 1) * 20), 0, 100);
+  updateValuation();
+
+  return {
+    unitsSold, deadStock, revenue,
+    narrative: 'Omnichannel expansion is live! ' + (G.hasStore ? 'Your ' + G.storeType + ' store is open. ' : '') + (G.hasShopify ? 'Shopify store launched. ' : '') + (G.onMarketplace ? 'Listed on Myntra & Ajio. ' : '') + fmtNum(unitsSold) + ' units sold. Revenue: ' + fmt(revenue) + '.'
+  };
+}
+
+/* ===== MONTH 8: SHOCK - Cotton Price Surge ===== */
+function roundMonth8(season) {
+  G.cottonShockActive = true;
+  return {
+    event: {type:'shock', tag:'Supply Shock', title:'Cotton Prices Surge 40%', body:'Global cotton prices have jumped 40% due to drought in major producing regions. Your manufacturers are passing the cost increase to you. Production costs just spiked across the board.'},
+    decisions: [
+      {id:'material_response', label:'Decision 1: Material Strategy', options:[
+        {value:'absorb', title:'Absorb the Cost Increase', desc:'Keep quality the same, eat the margin hit.', cost:'+40% production cost'},
+        {value:'poly_blend', title:'Switch to Poly-Blend', desc:'Cheaper synthetic-blend fabrics. Sustainability tanks.', cost:'Saves 20% on cost', benefit:'Sustainability -20'},
+        {value:'coop', title:'Farmer Co-op Bulk Deal', desc:'Lock in stable prices by partnering directly with cotton farmers.', cost:'₹2,00,000 upfront', benefit:'Stable prices for 6 months'},
+        {value:'reduce', title:'Reduce Production Volume', desc:'Make fewer units to limit exposure to high costs.'}
+      ]},
+      {id:'pricing_response', label:'Decision 2: Pricing Response', options:[
+        {value:'hold', title:'Hold Prices', desc:'Squeeze margins but keep customers happy.', cost:'Margin squeeze'},
+        {value:'raise_20', title:'Raise Prices 20%', desc:'Pass costs to customers. Risk losing price-sensitive buyers.', benefit:'+20% selling price'},
+        {value:'value_line', title:'Create a Value Line', desc:'Launch a budget sub-brand alongside your main line.', cost:'₹30,000 setup', benefit:'Capture price-sensitive segment'}
+      ]},
+      {id:'production_adj', label:'Decision 3: Production Adjustment', options:[
+        {value:'normal', title:'Continue Normal Production', desc:'Business as usual despite higher costs.'},
+        {value:'reduce_30', title:'Reduce Next Collection by 30%', desc:'Cut production to match uncertain demand.'},
+        {value:'pause', title:'Pause Production 1 Month', desc:'Zero production this month. Clear existing stock only.'}
+      ]}
+    ]
+  };
+}
+
+function processMonth8() {
+  const material = G.selections.material_response;
+  const pricing = G.selections.pricing_response;
+  const prodAdj = G.selections.production_adj;
+
+  // Material
+  if (material === 'absorb') {
+    G.productionCost = Math.round(G.productionCost * 1.4);
+  } else if (material === 'poly_blend') {
+    G.productionCost = Math.round(G.productionCost * 0.8);
+    G.sustainability = clamp(G.sustainability - 20, 0, 100);
+  } else if (material === 'coop') {
+    G.cash -= 200000;
+    // prices stable
+  } else {
+    G.productionCost = Math.round(G.productionCost * 1.2); // partial increase
+  }
+
+  // Pricing
+  if (pricing === 'raise_20') {
+    G.sellingPrice = Math.round(G.sellingPrice * 1.2);
+    G.baseDemand = Math.round(G.baseDemand * 0.85); // some customers leave
+  } else if (pricing === 'value_line') {
+    G.cash -= 30000;
+    G.baseDemand = Math.round(G.baseDemand * 1.1); // captures new segment
+  }
+
+  // Production
+  let units;
+  if (prodAdj === 'normal') units = 500;
+  else if (prodAdj === 'reduce_30') units = 350;
+  else units = 0;
+
+  if (units > 0) {
+    const prodCost = units * G.productionCost;
+    G.cash -= prodCost;
+    G.inventory += units;
+  }
+
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demand = Math.round(G.baseDemand * 0.9 * G.seasonMult * 1.0 * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+  const totalCost = (units > 0 ? units * G.productionCost : 0) + opsCosts;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = revenue - totalCost;
+  G.cash += revenue - opsCosts;
+  G.totalRevenue += revenue;
+  G.totalProfit += G.monthlyProfit;
+  G.totalUnitsSold += unitsSold;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  updateValuation();
+
+  return {
+    unitsSold, revenue,
+    narrative: 'Cotton crisis navigated. Production cost now ' + fmt(G.productionCost) + '/unit. ' + (material === 'poly_blend' ? 'Sustainability took a hit from switching to synthetics. ' : material === 'coop' ? 'Farmer co-op deal locks in stable prices going forward. ' : '') + fmtNum(unitsSold) + ' units sold. Revenue: ' + fmt(revenue) + '.'
+  };
+}
+
+/* ===== MONTH 9: SHOCK - Copycat ===== */
+function roundMonth9(season) {
+  G.copycatActive = true;
+  return {
+    event: {type:'shock', tag:'Copycat Alert', title:'ThreadKraft Appears', body:'A copycat brand "ThreadKraft" has appeared on Instagram with 5,000 followers already. They\'re selling near-identical designs at 40% lower prices — using YOUR product photos! Comments on their posts say "same as ThreadCraft but cheaper."'},
+    decisions: [
+      {id:'legal', label:'Decision 1: Legal Response', options:[
+        {value:'cease_desist', title:'Send Cease & Desist', desc:'Lawyer sends a formal letter. 50% chance they comply.', cost:'₹15,000'},
+        {value:'instagram', title:'File Instagram Trademark Complaint', desc:'Report their account for IP theft. Free but slow (2-3 weeks).', cost:'Free', benefit:'If successful: account removed'},
+        {value:'ignore', title:'Ignore Them', desc:'Focus on your own brand. They might fade... or grow.'}
+      ]},
+      {id:'brand_defense', label:'Decision 2: Brand Defense', options:[
+        {value:'making_of', title:'Release "Making Of" Video', desc:'Show your design process, quality fabrics, real artisans.', cost:'₹10,000', benefit:'Brand authenticity +10'},
+        {value:'authenticity', title:'Launch Authenticity Badge Program', desc:'QR codes on tags that verify genuine ThreadCraft products.', cost:'₹20,000', benefit:'Customer trust'},
+        {value:'celeb_collab', title:'Celebrity Designer Collab', desc:'Partner with a known designer for a limited capsule.', cost:'₹1,00,000', benefit:'Major brand boost'},
+        {value:'nothing', title:'Do Nothing', desc:'Let the work speak for itself.'}
+      ]},
+      {id:'product_defense', label:'Decision 3: Product Strategy', options:[
+        {value:'accelerate', title:'Accelerate New Designs', desc:'Release designs faster than they can copy. Stay 2 steps ahead.', cost:'+₹50,000 design sprint', benefit:'Trend leadership'},
+        {value:'packaging', title:'Unique Packaging & Labels', desc:'Premium unboxing experience that can\'t be replicated.', cost:'₹30,000', benefit:'Brand differentiation'},
+        {value:'experience', title:'Focus on Customer Experience', desc:'Personalized styling advice, handwritten notes, loyalty program.', cost:'₹15,000/month', benefit:'Retention + word-of-mouth'}
+      ]}
+    ]
+  };
+}
+
+function processMonth9() {
+  const legal = G.selections.legal;
+  const defense = G.selections.brand_defense;
+  const product = G.selections.product_defense;
+
+  let copycatImpact = -0.15; // base demand reduction from copycat
+
+  // Legal
+  if (legal === 'cease_desist') {
+    G.cash -= 15000;
+    if (Math.random() < 0.5) { copycatImpact = -0.05; } // partially effective
+  } else if (legal === 'instagram') {
+    if (Math.random() < 0.4) { copycatImpact = -0.05; } // sometimes works
+  }
+  // ignore: full impact
+
+  // Brand defense
+  if (defense === 'making_of') {
+    G.cash -= 10000; G.brandValue = clamp(G.brandValue + 10, 0, 100); copycatImpact += 0.05;
+  } else if (defense === 'authenticity') {
+    G.cash -= 20000; G.brandValue = clamp(G.brandValue + 5, 0, 100); copycatImpact += 0.03;
+  } else if (defense === 'celeb_collab') {
+    G.cash -= 100000; G.brandValue = clamp(G.brandValue + 18, 0, 100); copycatImpact += 0.1;
+  }
+
+  // Product
+  if (product === 'accelerate') {
+    G.cash -= 50000; G.trendScore = clamp(G.trendScore + 8, 0, 100); copycatImpact += 0.05;
+  } else if (product === 'packaging') {
+    G.cash -= 30000; G.brandValue = clamp(G.brandValue + 5, 0, 100);
+  } else if (product === 'experience') {
+    G.monthlyCosts.staff += 15000; G.brandValue = clamp(G.brandValue + 7, 0, 100); copycatImpact += 0.05;
+  }
+
+  // Sales with copycat impact
+  const units = 500;
+  const prodCost = units * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += units;
+  G.collectionsLaunched++;
+
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demandMult = 1 + copycatImpact;
+  const demand = Math.round(G.baseDemand * demandMult * G.seasonMult * 1.0 * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = revenue - prodCost - opsCosts;
+  G.cash += revenue - opsCosts;
+  G.totalRevenue += revenue;
+  G.totalProfit += G.monthlyProfit;
+  G.totalUnitsSold += unitsSold;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  updateValuation();
+
+  return {
+    unitsSold, revenue, copycatImpact,
+    narrative: 'The copycat battle continues. ' + (copycatImpact > -0.1 ? 'Your defense strategy is working — ThreadKraft\'s impact is limited.' : 'ThreadKraft is eating into your sales.') + ' ' + fmtNum(unitsSold) + ' units sold. Revenue: ' + fmt(revenue) + '. Brand value: ' + G.brandValue + '/100.'
+  };
+}
+
+/* ===== MONTH 10: Sustainability Crossroads ===== */
+function roundMonth10(season) {
+  return {
+    event: {type:'normal', tag:'Sustainability', title:'Sustainability Crossroads', body:'A major fashion magazine wants to feature ThreadCraft — but only if you meet their sustainability criteria. Meanwhile, Gen Z customers are increasingly asking about your environmental impact. Your current sustainability rating: ' + G.sustainability + '/100.'},
+    decisions: [
+      {id:'sustainability', label:'Decision 1: Sustainability Commitment', options:[
+        {value:'full_pivot', title:'Full Sustainability Pivot', desc:'Organic fabrics, fair-trade certification, carbon offset program.', cost:'₹3,00,000 investment, COGS +25%', benefit:'Sustainability +30, Magazine feature (Brand +20)'},
+        {value:'partial', title:'Partial Green', desc:'Recycled packaging, eco-friendly dyes. A meaningful step.', cost:'₹50,000', benefit:'Sustainability +10'},
+        {value:'greenwash', title:'Greenwashing Marketing Only', desc:'Market as sustainable without real changes. 30% risk of being exposed.', cost:'₹20,000 marketing', benefit:'Looks green (until exposed)'},
+        {value:'no_change', title:'No Change', desc:'Focus on growth, not sustainability.'}
+      ]},
+      {id:'waste', label:'Decision 2: Waste Management', options:[
+        {value:'zero_waste', title:'Zero-Waste Pattern Cutting', desc:'Train team on cutting patterns that minimize fabric waste.', cost:'₹40,000 training', benefit:'Sustainability +8, Cost savings over time'},
+        {value:'upcycle', title:'Upcycle Dead Stock', desc:'Turn unsold inventory into accessories and limited editions.', cost:'₹20,000', benefit:'Recover dead stock value, Brand +5'},
+        {value:'none', title:'Continue As-Is', desc:'No changes to waste management.'}
+      ]},
+      {id:'transparency', label:'Decision 3: Transparency', options:[
+        {value:'supply_map', title:'Publish Supply Chain Map', desc:'Show customers exactly where and how their clothes are made.', benefit:'Sustainability +5, Brand +8'},
+        {value:'carbon', title:'Share Carbon Footprint', desc:'Calculate and publish your per-garment carbon footprint.', cost:'₹15,000 for audit', benefit:'Sustainability +5'},
+        {value:'neither', title:'Neither', desc:'Keep operations private.'}
+      ]}
+    ]
+  };
+}
+
+function processMonth10() {
+  const sust = G.selections.sustainability;
+  const waste = G.selections.waste;
+  const transparency = G.selections.transparency;
+
+  let magazineFeature = false;
+  let greenwashExposed = false;
+
+  if (sust === 'full_pivot') {
+    G.cash -= 300000;
+    G.productionCost = Math.round(G.productionCost * 1.25);
+    G.sustainability = clamp(G.sustainability + 30, 0, 100);
+    G.brandValue = clamp(G.brandValue + 20, 0, 100);
+    G.sustainabilityPivot = true;
+    magazineFeature = true;
+  } else if (sust === 'partial') {
+    G.cash -= 50000;
+    G.sustainability = clamp(G.sustainability + 10, 0, 100);
+  } else if (sust === 'greenwash') {
+    G.cash -= 20000;
+    G.greenwashRisk = true;
+    if (Math.random() < 0.3) {
+      greenwashExposed = true;
+      G.brandValue = clamp(G.brandValue - 25, 0, 100);
+      G.sustainability = clamp(G.sustainability - 5, 0, 100);
+    }
+  }
+
+  if (waste === 'zero_waste') {
+    G.cash -= 40000;
+    G.sustainability = clamp(G.sustainability + 8, 0, 100);
+    G.productionCost = Math.round(G.productionCost * 0.95); // future savings
+  } else if (waste === 'upcycle') {
+    G.cash -= 20000;
+    G.cash += G.inventory * G.sellingPrice * 0.3; // recover some dead stock value
+    G.brandValue = clamp(G.brandValue + 5, 0, 100);
+    G.inventory = Math.round(G.inventory * 0.3); // use up 70% as upcycled
+  }
+
+  if (transparency === 'supply_map') {
+    G.sustainability = clamp(G.sustainability + 5, 0, 100);
+    G.brandValue = clamp(G.brandValue + 8, 0, 100);
+  } else if (transparency === 'carbon') {
+    G.cash -= 15000;
+    G.sustainability = clamp(G.sustainability + 5, 0, 100);
+  }
+
+  // Monthly sales
+  const units = 500;
+  const prodCost = units * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += units;
+
+  const brandFactor = 1 + (G.brandValue / 200);
+  const sustainBoost = G.sustainability > 70 ? 1.1 : 1.0;
+  const demand = Math.round(G.baseDemand * 1.0 * G.seasonMult * sustainBoost * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = revenue - prodCost - opsCosts;
+  G.cash += revenue - opsCosts;
+  G.totalRevenue += revenue;
+  G.totalProfit += G.monthlyProfit;
+  G.totalUnitsSold += unitsSold;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  updateValuation();
+
+  return {
+    unitsSold, revenue, magazineFeature, greenwashExposed,
+    narrative: magazineFeature
+      ? 'The magazine feature dropped! ThreadCraft is now known as a sustainable fashion pioneer. Orders surged. Brand value jumped to ' + G.brandValue + '/100. Revenue: ' + fmt(revenue) + '.'
+      : greenwashExposed
+      ? 'DISASTER. A fashion blogger investigated your sustainability claims and found they were hollow. "ThreadCraft\'s Green Lie" went viral. Brand value crashed to ' + G.brandValue + '/100.'
+      : fmtNum(unitsSold) + ' units sold. Sustainability rating: ' + G.sustainability + '/100. Revenue: ' + fmt(revenue) + '.'
+  };
+}
+
+/* ===== MONTH 11: Viral Event ===== */
+function roundMonth11(season) {
+  let eventType, eventBody;
+  if (G.brandValue > 70 && G.sustainability > 70) {
+    eventType = 'viral_good';
+    eventBody = 'A climate activist with 2M followers just featured ThreadCraft as "the brand Gen Z needs." Your Instagram gained 50K followers overnight. Orders are flooding in faster than you can process them.';
+  } else if (G.brandValue > 50) {
+    eventType = 'viral_ok';
+    eventBody = 'ThreadCraft got mentioned in a "Brands to Watch in 2024" roundup by a popular fashion newsletter. Steady positive buzz is building. New followers are trickling in.';
+  } else {
+    eventType = 'viral_bad';
+    eventBody = 'A Twitter thread calling out ThreadCraft for "fast fashion contributing to landfills" just went semi-viral with 5,000 retweets. Comments are brutal. Some customers are demanding refunds.';
+  }
+  G._viralType = eventType;
+
+  const decisions = [];
+  if (eventType === 'viral_good') {
+    decisions.push({id:'viral_response', label:'Decision 1: Handle the Surge', options:[
+      {value:'scale_up', title:'Emergency Scale-Up', desc:'Double production, hire temp staff, extend hours.', cost:'₹2,00,000 emergency costs', benefit:'Capture maximum demand'},
+      {value:'limited_edition', title:'Announce "Limited Edition"', desc:'Cap orders, create scarcity. Higher brand value.', benefit:'Brand exclusivity, no overextension'},
+      {value:'waitlist', title:'Start a Waitlist', desc:'Take pre-orders for next month delivery.', benefit:'Guaranteed future revenue'}
+    ]});
+  } else if (eventType === 'viral_ok') {
+    decisions.push({id:'viral_response', label:'Decision 1: Capitalize on Buzz', options:[
+      {value:'push_marketing', title:'Double Down on Marketing', desc:'Boost ads and influencer spend to amplify the buzz.', cost:'₹40,000'},
+      {value:'new_collection', title:'Rush a Capsule Collection', desc:'Quick 10-piece collection to ride the wave.', cost:'₹1,00,000', benefit:'Fresh products for new eyes'},
+      {value:'steady', title:'Stay Steady', desc:'Don\'t overreact. Keep doing what works.'}
+    ]});
+  } else {
+    decisions.push({id:'viral_response', label:'Decision 1: Damage Control', options:[
+      {value:'apologize', title:'Public Apology + Action Plan', desc:'Acknowledge the criticism, announce concrete sustainability steps.', cost:'₹30,000 for PR', benefit:'If sincere: Brand recovery'},
+      {value:'sustainability_pledge', title:'Launch Sustainability Pledge', desc:'Commit to measurable goals: 50% recycled materials by next year.', cost:'₹50,000 setup', benefit:'Sustainability +10, shows commitment'},
+      {value:'deflect', title:'Deflect & Redirect', desc:'Point out industry-wide issues, redirect to your positives.', benefit:'Works sometimes, looks defensive'},
+      {value:'ignore_viral', title:'Ignore It', desc:'Don\'t feed the trolls. Focus on running the business.'}
+    ]});
+  }
+
+  return {
+    event: {type:'shock', tag: eventType === 'viral_bad' ? 'PR Crisis' : 'Viral Moment', title: eventType === 'viral_good' ? 'Viral Triumph!' : eventType === 'viral_ok' ? '"Brands to Watch" Feature' : 'Viral Backlash', body: eventBody},
+    decisions
+  };
+}
+
+function processMonth11() {
+  const response = G.selections.viral_response;
+  const viralType = G._viralType;
+
+  let revMult = 1.0;
+
+  if (viralType === 'viral_good') {
+    revMult = 2.0;
+    G.brandValue = clamp(G.brandValue + 15, 0, 100);
+    if (response === 'scale_up') { G.cash -= 200000; revMult = 2.5; }
+    else if (response === 'limited_edition') { revMult = 1.5; G.brandValue = clamp(G.brandValue + 10, 0, 100); }
+    else { revMult = 1.8; } // waitlist
+  } else if (viralType === 'viral_ok') {
+    revMult = 1.3;
+    G.brandValue = clamp(G.brandValue + 8, 0, 100);
+    if (response === 'push_marketing') { G.cash -= 40000; revMult = 1.5; }
+    else if (response === 'new_collection') { G.cash -= 100000; revMult = 1.6; G.collectionsLaunched++; }
+  } else {
+    revMult = 0.8;
+    G.brandValue = clamp(G.brandValue - 10, 0, 100);
+    if (response === 'apologize') { G.cash -= 30000; G.brandValue = clamp(G.brandValue + 8, 0, 100); revMult = 0.9; }
+    else if (response === 'sustainability_pledge') { G.cash -= 50000; G.sustainability = clamp(G.sustainability + 10, 0, 100); G.brandValue = clamp(G.brandValue + 5, 0, 100); revMult = 0.85; }
+    else if (response === 'deflect') { revMult = 0.75; }
+    else { revMult = 0.7; G.brandValue = clamp(G.brandValue - 5, 0, 100); }
+  }
+
+  // Sales
+  const units = 600;
+  const prodCost = units * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += units;
+
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demand = Math.round(G.baseDemand * revMult * G.seasonMult * brandFactor * G.channelReach);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = revenue - prodCost - opsCosts;
+  G.cash += revenue - opsCosts;
+  G.totalRevenue += revenue;
+  G.totalProfit += G.monthlyProfit;
+  G.totalUnitsSold += unitsSold;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  updateValuation();
+
+  return {
+    unitsSold, revenue, viralType,
+    narrative: viralType === 'viral_good'
+      ? 'The viral wave was incredible! ' + fmtNum(unitsSold) + ' units sold — your best month ever! Revenue: ' + fmt(revenue) + '. Brand value: ' + G.brandValue + '/100.'
+      : viralType === 'viral_ok'
+      ? 'The "Brands to Watch" mention brought steady growth. ' + fmtNum(unitsSold) + ' units sold. Revenue: ' + fmt(revenue) + '.'
+      : 'You weathered the storm. ' + fmtNum(unitsSold) + ' units sold despite the backlash. Revenue: ' + fmt(revenue) + '. Brand value: ' + G.brandValue + '/100.'
+  };
+}
+
+/* ===== MONTH 12: SHOCK - Logistics Nightmare ===== */
+function roundMonth12(season) {
+  return {
+    event: {type:'shock', tag:'Logistics Breakdown', title:'Festive Season Logistics Nightmare', body:'It\'s festive season and orders are 3x what you expected! Your logistics partner is completely overwhelmed. Deliveries are delayed by 2 weeks. Customers are furious — your Instagram is flooded with angry DMs. 47 one-star reviews in 3 days.'},
+    decisions: [
+      {id:'crisis', label:'Decision 1: Crisis Response', options:[
+        {value:'emergency_courier', title:'Emergency Courier Tie-Up', desc:'Partner with 3 additional courier services at 3x normal shipping cost.', cost:'3x shipping cost (₹1,80/order)', benefit:'Clear backlog in 3 days'},
+        {value:'apologize_discount', title:'Apologize + Discount Next Order', desc:'Send personalized apology with 20% off next purchase.', cost:'20% future revenue hit'},
+        {value:'refund', title:'Partial Refunds + Expedite', desc:'Refund ₹100 per delayed order + rush remaining shipments.', cost:'₹100/order refund'},
+        {value:'accept', title:'Accept the Delay', desc:'Apologize but ride it out. Some customers will understand.', benefit:'Saves money'}
+      ]},
+      {id:'systems', label:'Decision 2: Systems Investment', options:[
+        {value:'inv_software', title:'Inventory Management Software', desc:'Real-time stock tracking, demand forecasting, reorder alerts.', cost:'₹30,000', benefit:'Prevent future stockouts'},
+        {value:'ops_manager', title:'Hire Operations Manager', desc:'Dedicated person to handle logistics, inventory, shipping.', cost:'₹40,000/month'},
+        {value:'fulfillment', title:'Outsource to Fulfillment Center', desc:'Let professionals handle it. More expensive but scalable.', cost:'₹80,000/month'},
+      ]},
+      {id:'customer', label:'Decision 3: Customer Recovery', options:[
+        {value:'priority', title:'Priority Shipping for Repeat Customers', desc:'Fast-track loyal customers. New customers wait.', benefit:'Retain best customers'},
+        {value:'credit', title:'₹100 Credit to All Delayed Orders', desc:'Small goodwill gesture to everyone affected.', cost:'₹100/affected order'},
+        {value:'nothing', title:'No Compensation', desc:'Save money, risk losing customers.'}
+      ]}
+    ]
+  };
+}
+
+function processMonth12() {
+  const crisis = G.selections.crisis;
+  const systems = G.selections.systems;
+  const customer = G.selections.customer;
+
+  // Big festive month sales
+  const festiveUnits = 1000;
+  const prodCost = festiveUnits * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += festiveUnits;
+
+  const brandFactor = 1 + (G.brandValue / 200);
+  let demand = Math.round(G.baseDemand * 3 * G.seasonMult * brandFactor * G.channelReach); // 3x festive
+  const unitsSold = Math.min(demand, G.inventory);
+
+  // Crisis handling
+  let extraCost = 0;
+  let brandImpact = 0;
+  if (crisis === 'emergency_courier') {
+    extraCost = unitsSold * 180;
+    brandImpact = -3; // minor damage
+  } else if (crisis === 'apologize_discount') {
+    brandImpact = -5;
+  } else if (crisis === 'refund') {
+    extraCost = unitsSold * 100;
+    brandImpact = -2;
+  } else {
+    brandImpact = -15; // worst damage
+  }
+
+  G.brandValue = clamp(G.brandValue + brandImpact, 0, 100);
+  G.cash -= extraCost;
+
+  // Systems
+  if (systems === 'inv_software') {
+    G.cash -= 30000; G.invSoftware = true; G.monthlyCosts.software += 0;
+  } else if (systems === 'ops_manager') {
+    G.opsManager = true; G.monthlyCosts.staff += 40000;
+  } else if (systems === 'fulfillment') {
+    G.fulfillmentCenter = true; G.monthlyCosts.logistics = 80000;
+  }
+
+  // Customer
+  if (customer === 'priority') {
+    G.brandValue = clamp(G.brandValue + 3, 0, 100);
+  } else if (customer === 'credit') {
+    extraCost += Math.round(unitsSold * 0.5) * 100; // 50% affected
+    G.cash -= Math.round(unitsSold * 0.5) * 100;
+    G.brandValue = clamp(G.brandValue + 2, 0, 100);
+  }
+
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = revenue - prodCost - opsCosts - extraCost;
+  G.cash += revenue - opsCosts;
+  G.totalRevenue += revenue;
+  G.totalProfit += G.monthlyProfit;
+  G.totalUnitsSold += unitsSold;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  updateValuation();
+
+  return {
+    unitsSold, revenue, extraCost,
+    narrative: 'Festive season chaos survived! Despite the logistics nightmare, ' + fmtNum(unitsSold) + ' units shipped. Extra crisis costs: ' + fmt(extraCost) + '. Revenue: ' + fmt(revenue) + '. Brand took a ' + Math.abs(brandImpact) + '-point hit.'
+  };
+}
+
+/* ===== MONTH 13: Scale or Die ===== */
+function roundMonth13(season) {
+  return {
+    event: {type:'normal', tag:'Scale', title:'Scale or Die', body:'13 months in. You\'ve survived shocks, copycats, trend whiplash, and a logistics meltdown. Now it\'s time to decide: scale up, or stay lean? Cash: ' + fmt(G.cash) + '. Monthly revenue: ' + fmt(G.monthlyRevenue) + '.'},
+    decisions: [
+      {id:'growth', label:'Decision 1: Growth Strategy', options:[
+        {value:'new_cities', title:'Launch in 2 New Cities', desc:'Expand to Mumbai and Bangalore with marketing + logistics.', cost:'₹5,00,000', benefit:'2x addressable market'},
+        {value:'international', title:'Go International (Dubai)', desc:'Enter Dubai market. Higher price points, different logistics.', cost:'₹8,00,000', benefit:'Premium market, 3x pricing'},
+        {value:'deepen', title:'Deepen in Current City', desc:'Become #1 in Delhi before expanding. More stores, more marketing.', cost:'₹2,00,000', benefit:'Stronger base, lower risk'},
+        {value:'menswear', title:'Launch Menswear Line', desc:'Expand into men\'s fashion. New customer segment entirely.', cost:'₹3,00,000', benefit:'Double your addressable market'}
+      ]},
+      {id:'operations', label:'Decision 2: Operations', options:[
+        {value:'own_unit', title:'Build Own Production Unit', desc:'Major investment but massive long-term margin improvement.', cost:'₹10,00,000', benefit:'-30% production cost'},
+        {value:'outsource', title:'Continue Outsourcing', desc:'Keep the current model. Flexible but dependent on vendors.'},
+        {value:'hybrid', title:'Hybrid Model', desc:'Own production for bestsellers, outsource seasonal/experimental.', cost:'₹5,00,000', benefit:'-15% avg production cost'}
+      ]},
+      {id:'team', label:'Decision 3: Team Hiring (Choose up to 2)', options:[
+        {value:'designer', title:'Fashion Designer', desc:'Dedicated design talent to replace your solo design process.', cost:'₹60,000/month', benefit:'Better designs, faster'},
+        {value:'marketer', title:'Marketing Head', desc:'Someone to own growth, content, and brand strategy.', cost:'₹50,000/month', benefit:'Marketing effectiveness +30%'},
+        {value:'ops', title:'Operations Lead', desc:'Handle supply chain, logistics, vendor management.', cost:'₹45,000/month', benefit:'Operational efficiency'},
+        {value:'designer_marketer', title:'Designer + Marketer', desc:'Hire both design and marketing talent.', cost:'₹1,10,000/month'},
+        {value:'designer_ops', title:'Designer + Ops Lead', desc:'Hire design and operations talent.', cost:'₹1,05,000/month'},
+        {value:'marketer_ops', title:'Marketer + Ops Lead', desc:'Hire marketing and operations talent.', cost:'₹95,000/month'}
+      ]}
+    ]
+  };
+}
+
+function processMonth13() {
+  const growth = G.selections.growth;
+  const operations = G.selections.operations;
+  const team = G.selections.team;
+
+  // Growth
+  if (growth === 'new_cities') {
+    G.cash -= 500000; G.baseDemand = Math.round(G.baseDemand * 1.8); G.channelReach *= 1.2;
+  } else if (growth === 'international') {
+    G.cash -= 800000; G.baseDemand = Math.round(G.baseDemand * 1.5); G.sellingPrice = Math.round(G.sellingPrice * 1.5); G.brandValue = clamp(G.brandValue + 10, 0, 100);
+  } else if (growth === 'deepen') {
+    G.cash -= 200000; G.baseDemand = Math.round(G.baseDemand * 1.3); G.brandValue = clamp(G.brandValue + 5, 0, 100);
+  } else {
+    G.cash -= 300000; G.baseDemand = Math.round(G.baseDemand * 1.6); G.collectionsLaunched++;
+  }
+
+  // Operations
+  if (operations === 'own_unit') {
+    G.cash -= 1000000; G.productionCost = Math.round(G.productionCost * 0.7);
+  } else if (operations === 'hybrid') {
+    G.cash -= 500000; G.productionCost = Math.round(G.productionCost * 0.85);
+  }
+
+  // Team
+  if (team === 'designer') { G.monthlyCosts.staff += 60000; G.hasDesigner = true; G.trendScore = clamp(G.trendScore + 5, 0, 100); }
+  else if (team === 'marketer') { G.monthlyCosts.staff += 50000; G.hasMarketer = true; }
+  else if (team === 'ops') { G.monthlyCosts.staff += 45000; G.hasOpsLead = true; }
+  else if (team === 'designer_marketer') { G.monthlyCosts.staff += 110000; G.hasDesigner = true; G.hasMarketer = true; G.trendScore = clamp(G.trendScore + 5, 0, 100); }
+  else if (team === 'designer_ops') { G.monthlyCosts.staff += 105000; G.hasDesigner = true; G.hasOpsLead = true; G.trendScore = clamp(G.trendScore + 5, 0, 100); }
+  else if (team === 'marketer_ops') { G.monthlyCosts.staff += 95000; G.hasMarketer = true; G.hasOpsLead = true; }
+
+  // Sales
+  const units = 800;
+  const prodCost = units * G.productionCost;
+  G.cash -= prodCost;
+  G.inventory += units;
+
+  const marketingMult = G.hasMarketer ? 1.3 : 1.0;
+  const opsMult = G.hasOpsLead ? 1.1 : 1.0;
+  const brandFactor = 1 + (G.brandValue / 200);
+  const demand = Math.round(G.baseDemand * 1.0 * G.seasonMult * marketingMult * brandFactor * G.channelReach * opsMult);
+  const unitsSold = Math.min(demand, G.inventory);
+  const deadStock = Math.max(0, G.inventory - demand);
+  G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+  const revenue = unitsSold * G.sellingPrice;
+  const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+  G.monthlyRevenue = revenue;
+  G.monthlyProfit = revenue - prodCost - opsCosts;
+  G.cash += revenue - opsCosts;
+  G.totalRevenue += revenue;
+  G.totalProfit += G.monthlyProfit;
+  G.totalUnitsSold += unitsSold;
+  G.inventory = deadStock;
+  if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  updateValuation();
+
+  const growthNames = {new_cities:'2 new cities', international:'Dubai', deepen:'Delhi dominance', menswear:'menswear line'};
+  return {
+    unitsSold, revenue,
+    narrative: 'Scaling up with ' + growthNames[growth] + '! ' + (operations === 'own_unit' ? 'Own production unit under construction — costs will drop 30%. ' : '') + fmtNum(unitsSold) + ' units sold. Revenue: ' + fmt(revenue) + '.'
+  };
+}
+
+/* ===== MONTH 14: Series B Prep ===== */
+function roundMonth14(season) {
+  return {
+    event: {type:'normal', tag:'Series B Prep', title:'Preparing for Series B', body:'14 months of data. Your company is either raising or dying. Let\'s look at where ThreadCraft stands and prepare for the next chapter.'},
+    decisions: [
+      {id:'path', label:'Decision 1: The Path Forward', options:[
+        {value:'series_b', title:'Pursue Series B', desc:'Go big. Raise a major round to fuel aggressive growth.', benefit:'Capital for 10x growth'},
+        {value:'acquisition', title:'Seek Acquisition Offer', desc:'Put out feelers to larger fashion houses for a buyout.', benefit:'Cash out + brand survives'},
+        {value:'bootstrapped', title:'Stay Bootstrapped', desc:'No dilution. Grow organically on profits.', benefit:'100% control'},
+        {value:'shutdown', title:'Shut Down Gracefully', desc:'If the numbers don\'t work, a dignified exit.'}
+      ]},
+      {id:'story', label:'Decision 2: Your Story (for fundraise/exit)', options:[
+        {value:'growth', title:'Growth at All Costs', desc:'Show hockey-stick revenue growth. Investors love this.', benefit:'Higher valuations'},
+        {value:'profitable', title:'Profitable + Growing', desc:'Show sustainable unit economics with consistent growth.', benefit:'Serious investors love this'},
+        {value:'sustainable_leader', title:'Sustainable Fashion Leader', desc:'Lead with your sustainability story and impact.', benefit:'Impact investors, premium multiples'},
+        {value:'tech_first', title:'Technology-First Fashion', desc:'Emphasize your data-driven trend forecasting and supply chain.', benefit:'Tech multiples (higher)'}
+      ]},
+      {id:'prepare', label:'Decision 3: Preparation', options:[
+        {value:'data_room', title:'Data Room Cleanup', desc:'Organize all financials, contracts, metrics for due diligence.', cost:'₹20,000'},
+        {value:'cfo', title:'Hire Contract CFO', desc:'Finance professional to build investor-grade financial models.', cost:'₹1,00,000'},
+        {value:'nothing_prep', title:'Wing It', desc:'Save money, pitch with what you have.'}
+      ]}
+    ]
+  };
+}
+
+function processMonth14() {
+  const path = G.selections.path;
+  const story = G.selections.story;
+  const prep = G.selections.prepare;
+
+  G._exitPath = path;
+
+  if (prep === 'data_room') {
+    G.cash -= 20000;
+    G.valuation = Math.round(G.valuation * 1.05); // cleaner data = slightly higher valuation
+  } else if (prep === 'cfo') {
+    G.cash -= 100000;
+    G.valuation = Math.round(G.valuation * 1.15); // pro financials = higher valuation
+  }
+
+  // Story impacts
+  if (story === 'growth') G.valuation = Math.round(G.valuation * 1.1);
+  else if (story === 'profitable' && G.totalProfit > 0) G.valuation = Math.round(G.valuation * 1.2);
+  else if (story === 'sustainable_leader' && G.sustainability > 70) G.valuation = Math.round(G.valuation * 1.25);
+  else if (story === 'tech_first') G.valuation = Math.round(G.valuation * 1.15);
+
+  if (path === 'shutdown') {
+    // Liquidate
+    G.cash += G.inventory * G.sellingPrice * 0.3;
+    G.inventory = 0;
+  }
+
+  // Monthly sales (except shutdown)
+  if (path !== 'shutdown') {
+    const units = 600;
+    const prodCost = units * G.productionCost;
+    G.cash -= prodCost;
+    G.inventory += units;
+
+    const brandFactor = 1 + (G.brandValue / 200);
+    const marketingMult = G.hasMarketer ? 1.3 : 1.0;
+    const demand = Math.round(G.baseDemand * 1.0 * G.seasonMult * marketingMult * brandFactor * G.channelReach);
+    const unitsSold = Math.min(demand, G.inventory);
+    const deadStock = Math.max(0, G.inventory - demand);
+    G.deadStockPct = G.inventory > 0 ? (deadStock / G.inventory * 100) : 0;
+
+    const revenue = unitsSold * G.sellingPrice;
+    const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+    G.monthlyRevenue = revenue;
+    G.monthlyProfit = revenue - prodCost - opsCosts;
+    G.cash += revenue - opsCosts;
+    G.totalRevenue += revenue;
+    G.totalProfit += G.monthlyProfit;
+    G.totalUnitsSold += unitsSold;
+    G.inventory = deadStock;
+    if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  }
+
+  updateValuation();
+
+  return {
+    narrative: path === 'shutdown'
+      ? 'You\'ve decided to shut down gracefully. Inventory liquidated. Final cash position: ' + fmt(G.cash) + '.'
+      : 'Series B preparation underway. ' + (prep === 'cfo' ? 'Your contract CFO has built professional financial models. ' : '') + 'Valuation estimate: ' + fmt(G.valuation) + '. Revenue this month: ' + fmt(G.monthlyRevenue) + '.'
+  };
+}
+
+/* ===== MONTH 15: The Finale ===== */
+function roundMonth15(season) {
+  // Calculate final valuation
+  const avgMonthlyRev = G.totalRevenue / 14;
+  const annualRev = avgMonthlyRev * 12;
+  let revMult = 3;
+  if (G.monthlyRevenue > (G.history.length > 5 ? G.history[5].revenue || 0 : 0)) revMult += 2; // growing
+  if (G.brandValue > 70) revMult += 1;
+  if (G.sustainability > 70) revMult += 1;
+  if (G.totalProfit > 0) revMult += 1;
+  const finalVal = Math.round(annualRev * revMult * (1 + G.brandValue / 100));
+  G.valuation = finalVal;
+
+  const vcOffer = fmt(finalVal) + ' for 20% equity';
+  const acqOffer = fmt(Math.round(finalVal * 0.8)) + ' cash buyout';
+  const ipoScore = Math.min(100, Math.round((G.brandValue + G.sustainability + G.trendScore + (G.totalProfit > 0 ? 30 : 0)) / 3.3));
+
+  const decisions = [];
+
+  if (G._exitPath === 'shutdown') {
+    // No decisions for shutdown path
+    return {
+      event: {type:'normal', tag:'Finale', title:'The End', body:'ThreadCraft has been wound down. Time to tally the final score.'},
+      decisions: [{id:'final', label:'Final Reflection', options:[
+        {value:'lessons', title:'Take the Lessons Forward', desc:'Every failure teaches. You\'re wiser now.'}
+      ]}]
+    };
+  }
+
+  return {
+    event: {type:'funding', tag:'The Finale', title:'Series B / Exit Decision', body:'15 months. From a ₹25L startup competition win to ' + fmt(G.valuation) + ' valuation. Three paths lie before you.'},
+    decisions: [
+      {id:'final_choice', label:'Decision: Your Destiny', type:'funding', options:[
+        {value:'series_b', title:'Accept Series B: ' + vcOffer, desc:'A major VC fund wants in. ' + fmt(finalVal) + ' valuation, 20% dilution. You\'d raise ' + fmt(Math.round(finalVal * 0.2)) + '.', cost:'20% equity', benefit: fmt(Math.round(finalVal * 0.2)) + ' cash'},
+        {value:'acquisition', title:'Accept Acquisition: ' + acqOffer, desc:'A fashion conglomerate offers ' + fmt(Math.round(finalVal * 0.8)) + ' to buy ThreadCraft outright. You walk away rich.', benefit: fmt(Math.round(finalVal * 0.8)) + ' in your bank'},
+        {value:'continue', title:'Continue Bootstrapping', desc:'Keep 100% equity. The journey continues. IPO Readiness Score: ' + ipoScore + '/100.', benefit:'Full ownership'}
+      ]}
+    ]
+  };
+}
+
+function processMonth15() {
+  const choice = G.selections.final_choice || G.selections.final || 'lessons';
+
+  if (choice === 'series_b') {
+    const raised = Math.round(G.valuation * 0.2);
+    G.cash += raised;
+    G.equityGiven += 20;
+    G.seriesBDone = true;
+  } else if (choice === 'acquisition') {
+    G.cash += Math.round(G.valuation * 0.8);
+  }
+
+  // Final month sales
+  if (G._exitPath !== 'shutdown') {
+    const units = 600;
+    const prodCost = units * G.productionCost;
+    G.cash -= prodCost;
+    G.inventory += units;
+
+    const brandFactor = 1 + (G.brandValue / 200);
+    const demand = Math.round(G.baseDemand * 1.0 * G.seasonMult * 1.1 * brandFactor * G.channelReach);
+    const unitsSold = Math.min(demand, G.inventory);
+    const revenue = unitsSold * G.sellingPrice;
+    const opsCosts = G.monthlyCosts.rent + G.monthlyCosts.staff + G.monthlyCosts.logistics + G.monthlyCosts.software;
+    G.monthlyRevenue = revenue;
+    G.monthlyProfit = revenue - prodCost - opsCosts;
+    G.cash += revenue - opsCosts;
+    G.totalRevenue += revenue;
+    G.totalProfit += G.monthlyProfit;
+    G.totalUnitsSold += unitsSold;
+    if (revenue > G.peakRevenue) G.peakRevenue = revenue;
+  }
+
+  updateValuation();
+
+  return {
+    narrative: G._exitPath === 'shutdown'
+      ? 'The ThreadCraft chapter closes. But the lessons live on.'
+      : choice === 'series_b'
+      ? 'Series B secured! ThreadCraft raised ' + fmt(Math.round(G.valuation * 0.2)) + ' at a ' + fmt(G.valuation) + ' valuation. The next chapter begins.'
+      : choice === 'acquisition'
+      ? 'ThreadCraft has been acquired! You walk away with ' + fmt(Math.round(G.valuation * 0.8)) + '. What a journey.'
+      : 'You chose to keep building. ThreadCraft remains yours — 100% founder-owned at ' + fmt(G.valuation) + ' valuation.'
+  };
+}
+
+/* ========== VALUATION ENGINE ========== */
+function updateValuation() {
+  const avgMonthlyRev = G.round > 1 ? G.totalRevenue / (G.round - 1) : G.monthlyRevenue;
+  const annualRev = avgMonthlyRev * 12;
+  let revMult = 3;
+  if (G.monthlyRevenue > avgMonthlyRev) revMult += 2;
+  if (G.brandValue > 70) revMult += 1;
+  if (G.sustainability > 70) revMult += 1;
+  if (G.totalProfit > 0) revMult += 1;
+  const brandMult = 1 + G.brandValue / 100;
+  const sustainBonus = G.sustainability > 60 ? 1.1 : 1.0;
+  G.valuation = Math.round(annualRev * revMult * brandMult * sustainBonus);
+  if (G.valuation < 2500000) G.valuation = 2500000; // floor
+}
+
+/* ========== RENDER ROUND ========== */
+function renderRound() {
+  G.selections = {};
+  G.phase = 'decide';
+  updateProgress();
+  updateHeader();
+  renderRoundRail();
+  renderMetrics();
+
+  const data = getRoundData(G.round);
+  if (!data) return;
+
+  let html = '';
+
+  // Event banner
+  const evtCls = data.event.type === 'shock' ? 'shock' : data.event.type === 'funding' ? 'funding' : '';
+  const tagCls = data.event.type === 'shock' ? 'tag-shock' : data.event.type === 'funding' ? 'tag-funding' : 'tag-normal';
+  html += '<div class="event-banner ' + evtCls + '">';
+  html += '<div class="eb-tag ' + tagCls + '">' + data.event.tag + '</div>';
+  html += '<div class="eb-title">' + data.event.title + '</div>';
+  html += '<div class="eb-body">' + data.event.body + '</div>';
+
+  // Pitch metrics for funding rounds
+  if (data.event.type === 'funding') {
+    html += '<div class="pitch-metrics">';
+    const metrics = [
+      {label:'Monthly Revenue', val: fmt(G.monthlyRevenue), color:'var(--neem)'},
+      {label:'Cash', val: fmt(G.cash), color:'var(--blue)'},
+      {label:'Brand Value', val: G.brandValue + '/100', color:'var(--accent)', pct: G.brandValue},
+      {label:'Sustainability', val: G.sustainability + '/100', color:'var(--neem)', pct: G.sustainability},
+      {label:'Trend Score', val: G.trendScore + '/100', color:'var(--accent)', pct: G.trendScore},
+      {label:'Dead Stock', val: G.deadStockPct.toFixed(0) + '%', color:'var(--loss)', pct: G.deadStockPct},
+      {label:'Equity Given', val: G.equityGiven + '%', color:'var(--muted)', pct: G.equityGiven},
+      {label:'Valuation', val: fmt(G.valuation), color:'var(--accent)'}
+    ];
+    metrics.forEach(m => {
+      html += '<div class="pm-item"><div class="pm-val" style="color:' + m.color + '">' + m.val + '</div><div class="pm-label">' + m.label + '</div>';
+      if (m.pct !== undefined) html += '<div class="pm-bar"><div class="pm-bar-fill" style="width:' + Math.min(100, m.pct) + '%;background:' + m.color + '"></div></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  html += '</div>';
+
+  // Decisions
+  data.decisions.forEach(d => {
+    html += '<div class="decision-group" data-group-id="' + d.id + '">';
+    html += '<div class="dg-label">' + d.label + '</div>';
+    if (d.type === 'trend') {
+      html += makeTrendCards(d.id, d.trends);
+    } else {
+      html += makeOptionCards(d.id, d.options);
+    }
+    html += '</div>';
+  });
+
+  $('roundContent').innerHTML = html;
+  $('feedbackContent').innerHTML = '';
+  $('submitArea').style.display = 'block';
+  $('nextArea').style.display = 'none';
+  $('submitBtn').disabled = true;
+  $('submitBtn').style.opacity = '0.5';
+  $('submitBtn').textContent = 'Submit Decisions';
+
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+/* ========== PROCESS + FEEDBACK ========== */
+function handleSubmit() {
+  // Validate all selected
+  const groups = document.querySelectorAll('.decision-group');
+  let allDone = true;
+  groups.forEach(g => {
+    if (!G.selections[g.dataset.groupId]) allDone = false;
+  });
+  if (!allDone) return;
+
+  // Process round
+  let result;
+  switch(G.round) {
+    case 1: result = processMonth1(); break;
+    case 2: result = processMonth2(); break;
+    case 3: result = processMonth3(); break;
+    case 4: result = processMonth4(); break;
+    case 5: result = processMonth5(); break;
+    case 6: result = processMonth6(); break;
+    case 7: result = processMonth7(); break;
+    case 8: result = processMonth8(); break;
+    case 9: result = processMonth9(); break;
+    case 10: result = processMonth10(); break;
+    case 11: result = processMonth11(); break;
+    case 12: result = processMonth12(); break;
+    case 13: result = processMonth13(); break;
+    case 14: result = processMonth14(); break;
+    case 15: result = processMonth15(); break;
+  }
+
+  // Save history
+  G.history.push({
+    round: G.round,
+    selections: {...G.selections},
+    revenue: G.monthlyRevenue,
+    profit: G.monthlyProfit,
+    cash: G.cash,
+    brandValue: G.brandValue,
+    sustainability: G.sustainability,
+    trendScore: G.trendScore,
+    valuation: G.valuation,
+    narrative: result ? result.narrative : ''
+  });
+
+  // Update metrics
+  renderMetrics();
+
+  // Show feedback
+  G.phase = 'feedback';
+  let fbHtml = '<div class="feedback-section">';
+  fbHtml += '<h3>Month ' + G.round + ' Results</h3>';
+  fbHtml += '<div class="fb-outcome">' + (result ? result.narrative : 'Round processed.') + '</div>';
+
+  // Inventory display
+  if (result && result.unitsSold !== undefined) {
+    fbHtml += '<div class="inv-display">';
+    fbHtml += '<div class="inv-box"><div class="ib-num good">' + fmtNum(result.unitsSold) + '</div><div class="ib-label">Units Sold</div></div>';
+    fbHtml += '<div class="inv-box"><div class="ib-num">' + fmtNum(G.inventory) + '</div><div class="ib-label">Remaining Stock</div></div>';
+    fbHtml += '<div class="inv-box"><div class="ib-num ' + (G.deadStockPct > 20 ? 'bad' : '') + '">' + G.deadStockPct.toFixed(1) + '%</div><div class="ib-label">Dead Stock</div></div>';
+    fbHtml += '</div>';
+  }
+
+  // Financial summary
+  fbHtml += '<div style="margin-top:0.8rem;padding:0.8rem;background:var(--input-bg);border-radius:var(--radius-sm);font-size:0.82rem;line-height:1.8">';
+  fbHtml += '<strong>Revenue:</strong> ' + fmt(G.monthlyRevenue) + '<br>';
+  fbHtml += '<strong>Profit:</strong> <span style="color:' + (G.monthlyProfit >= 0 ? 'var(--neem)' : 'var(--loss)') + '">' + fmt(G.monthlyProfit) + '</span><br>';
+  fbHtml += '<strong>Cash Position:</strong> ' + fmt(G.cash) + '<br>';
+  fbHtml += '<strong>Valuation:</strong> ' + fmt(G.valuation);
+  fbHtml += '</div>';
+
+  // Gamma VC check
+  if (G.vcChoice === 'gamma' && G.round === 12) {
+    const target = G.gammaBaseRevenue * 3;
+    if (G.monthlyRevenue < target) {
+      fbHtml += '<div style="margin-top:0.8rem;padding:0.8rem;background:var(--loss-light);border:1px solid var(--loss);border-radius:var(--radius-sm);font-size:0.82rem;color:var(--loss)">';
+      fbHtml += '<strong>VC Gamma Warning:</strong> You haven\'t hit 3x revenue target. The board is unhappy. Brand pressure increasing.';
+      fbHtml += '</div>';
+      G.brandValue = clamp(G.brandValue - 5, 0, 100);
+    }
+  }
+
+  // Game over check
+  if (G.cash < -500000 && G.round < 15) {
+    fbHtml += '<div style="margin-top:0.8rem;padding:0.8rem;background:var(--loss-light);border:1px solid var(--loss);border-radius:var(--radius-sm);font-size:0.85rem;color:var(--loss)">';
+    fbHtml += '<strong>Cash Crisis!</strong> You\'re deeply in debt. Drastic action needed next month or ThreadCraft folds.';
+    fbHtml += '</div>';
+  }
+
+  fbHtml += '</div>';
+  $('feedbackContent').innerHTML = fbHtml;
+
+  // Hide submit, show next
+  $('submitArea').style.display = 'none';
+  if (G.round < 15) {
+    $('nextArea').style.display = 'block';
+    $('nextBtn').innerHTML = 'Next Month <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  } else {
+    $('nextArea').style.display = 'block';
+    $('nextBtn').innerHTML = 'See Final Results <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  }
+
+  // Scroll to feedback
+  $('feedbackContent').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ========== NEXT ROUND / RESULTS ========== */
+function nextRound() {
+  if (G.round >= 15) {
+    showResults();
+    return;
+  }
+  G.round++;
+  renderRound();
+}
+
+/* ========== RESULTS ========== */
+function showResults() {
+  showScreen('resultsScreen');
+  $('progressFill').style.width = '100%';
+
+  // Determine profile
+  let profile, profileDesc;
+  if (G.valuation > 100000000) {
+    profile = 'The Fashion Mogul';
+    profileDesc = 'You built India\'s next big fashion brand. Vogue is calling.';
+  } else if (G.valuation > 50000000) {
+    profile = 'The Trend Whisperer';
+    profileDesc = 'You read the market like no one else. Your brand is a force.';
+  } else if (G.valuation > 20000000) {
+    profile = 'The Sustainable Pioneer';
+    profileDesc = 'Whether or not the numbers are huge, you proved fashion can be responsible.';
+  } else if (G.valuation > 5000000) {
+    profile = 'The Scrappy Builder';
+    profileDesc = 'You survived 15 months in fashion — that alone is impressive.';
+  } else {
+    profile = 'The Design School Graduate';
+    profileDesc = 'This startup taught you more than any classroom. Try again.';
+  }
+
+  const trendAccuracy = G.trendBetsTotal > 0 ? Math.round((G.trendBetsCorrect / G.trendBetsTotal) * 100) : 0;
+  const avgDeadStock = G.totalUnitsSold > 0 ? Math.round(G.totalDeadStock / (G.totalUnitsSold + G.totalDeadStock) * 100) : 0;
+
+  let html = '';
+
+  // Headline
+  html += '<div class="results-headline">';
+  html += '<div class="rh-tag">15 Months Complete</div>';
+  html += '<h1><em>ThreadCraft</em> — Final Report</h1>';
+  html += '<div class="rh-val">' + fmt(G.valuation) + '</div>';
+  html += '<div class="rh-profile">"' + profile + '" — ' + profileDesc + '</div>';
+  html += '</div>';
+
+  // Stats grid
+  html += '<div class="stats-grid">';
+  const stats = [
+    {val: fmt(G.totalRevenue), label:'Total Revenue'},
+    {val: fmt(G.totalProfit), label:'Total Profit'},
+    {val: fmt(G.cash), label:'Final Cash'},
+    {val: G.collectionsLaunched, label:'Collections Launched'},
+    {val: fmtNum(G.totalUnitsSold), label:'Units Sold'},
+    {val: avgDeadStock + '%', label:'Avg Dead Stock'},
+    {val: G.brandValue + '/100', label:'Brand Value'},
+    {val: G.sustainability + '/100', label:'Sustainability'},
+    {val: trendAccuracy + '%', label:'Trend Accuracy'},
+    {val: fmt(G.peakRevenue), label:'Peak Month Revenue'}
+  ];
+  stats.forEach((s, i) => {
+    html += '<div class="stat-card" style="animation-delay:' + (i * 0.05) + 's"><div class="st-val">' + s.val + '</div><div class="st-label">' + s.label + '</div></div>';
+  });
+  html += '</div>';
+
+  // Takeaways
+  html += '<div class="takeaways"><h3>Key Takeaways</h3><ol>';
+  const takeaways = [
+    'In fashion, timing is everything — the right product at the wrong time is the wrong product.',
+    'Dead stock is the silent killer — every unsold unit eats your margin.',
+    'Supply chain speed is a competitive weapon — Zara wins because of 2-week turnarounds, not better designs.',
+    'Sustainability isn\'t optional anymore — Gen Z customers vote with their wallets.',
+    'Brand value outlasts any single product — invest in brand even when it hurts short-term margins.',
+    'Fundraising is a tool, not a goal — the right VC adds more than money.',
+    'Data beats intuition — track what sells, where, and why, then make collections based on data.'
+  ];
+  takeaways.forEach(t => { html += '<li>' + t + '</li>'; });
+  html += '</ol></div>';
+
+  // Round-by-round review
+  html += '<div class="round-review"><h3>Round-by-Round Review</h3>';
+  G.history.forEach((h, i) => {
+    html += '<div class="rr-card" onclick="this.classList.toggle(\'open\')">';
+    html += '<div class="rr-header">';
+    html += '<span>Month ' + h.round + '</span>';
+    html += '<span style="color:var(--neem);font-family:ui-monospace,monospace;font-size:0.78rem;margin-left:0.5rem">' + fmt(h.revenue) + '</span>';
+    html += '<span style="color:' + (h.profit >= 0 ? 'var(--neem)' : 'var(--loss)') + ';font-family:ui-monospace,monospace;font-size:0.78rem;margin-left:0.3rem">(' + fmt(h.profit) + ')</span>';
+    html += '<span class="rr-toggle">&#9660;</span>';
+    html += '</div>';
+    html += '<div class="rr-body">' + h.narrative + '<br><br>';
+    html += '<strong>Cash:</strong> ' + fmt(h.cash) + ' &middot; <strong>Brand:</strong> ' + h.brandValue + ' &middot; <strong>Sustainability:</strong> ' + h.sustainability + ' &middot; <strong>Valuation:</strong> ' + fmt(h.valuation);
+    html += '</div></div>';
+  });
+  html += '</div>';
+
+  // Back to hub
+  html += '<div class="back-hub"><a href="index.html">&larr; Back to Entrepreneurship Lab</a></div>';
+
+  $('resultsContent').innerHTML = html;
+}
+
+/* ========== START GAME ========== */
+function startGame() {
+  G.round = 1;
+  showScreen('simScreen');
+  renderRound();
+}
+
+// Initialize title screen
+$('progressFill').style.width = '0%';
+</script>
+</body>
+</html>

@@ -1,0 +1,1181 @@
+<meta charset="UTF-8">
+<title>DashMart</title>
+<style>
+:root {
+  --saffron: #D97B2B;
+  --saffron-light: #F5DFC4;
+  --saffron-glow: rgba(217,123,43,0.12);
+  --neem: #1A8A5C;
+  --neem-light: #D0F0E0;
+  --loss: #C0392B;
+  --loss-light: #FADBD8;
+  --ink: #1C2233;
+  --ink-soft: #3A3F4E;
+  --surface: #F4F1EB;
+  --card: #FFFFFF;
+  --card-border: #E4E0D8;
+  --muted: #7E8490;
+  --muted-light: #B8BCC6;
+  --input-bg: #F9F7F3;
+  --shadow: rgba(28,34,51,0.06);
+  --shadow-md: rgba(28,34,51,0.10);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+  --warning:#E67E22;
+  --warning-glow:rgba(230,126,34,0.12);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --warning:#F39C12;--warning-glow:rgba(243,156,18,0.10);
+}}
+:root[data-theme="dark"]{
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --warning:#F39C12;--warning-glow:rgba(243,156,18,0.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);color:var(--ink);font-family:system-ui,-apple-system,sans-serif;line-height:1.55;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.2;text-wrap:balance}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-0.02em}
+h2{font-size:clamp(1.3rem,2.5vw,1.7rem);letter-spacing:-0.01em}
+h3{font-size:1.05rem}
+.mono{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-variant-numeric:tabular-nums}
+.label{font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)}
+#app{min-height:100vh;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;min-height:100vh}
+.screen.active{display:flex}
+
+/* Title */
+.title-screen{display:block!important;padding:3rem 2rem;position:relative;overflow:visible;min-height:auto}
+.title-screen::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 60% 40%,var(--saffron-glow) 0%,transparent 60%);pointer-events:none}
+.title-brand{position:relative;z-index:1;text-align:center;max-width:860px;margin:0 auto 1.5rem}
+.title-brand .eyebrow{display:inline-block;background:var(--saffron);color:#fff;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:0.3em 0.9em;border-radius:3px;margin-bottom:1.2rem}
+.title-brand h1{font-size:clamp(2.4rem,6vw,4rem);margin-bottom:0.3rem}
+.title-brand h1 span{color:var(--saffron)}
+.title-brand .subtitle{font-family:Georgia,serif;font-style:italic;font-size:clamp(1rem,2vw,1.3rem);color:var(--muted);margin-bottom:1.5rem}
+.title-brand .desc{max-width:600px;margin:0 auto 2rem;color:var(--ink-soft);font-size:0.92rem;line-height:1.65}
+.manual-wrap{position:relative;z-index:1;max-width:860px;width:100%;margin:0 auto;text-align:left}
+.manual-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.5rem 1.8rem;margin-bottom:1.2rem;box-shadow:0 2px 8px var(--shadow)}
+.manual-section h3{font-size:1.1rem;margin-bottom:0.7rem;color:var(--saffron);display:flex;align-items:center;gap:0.5rem}
+.manual-section p{font-size:0.88rem;color:var(--ink-soft);line-height:1.7;margin-bottom:0.6rem}
+.manual-section p:last-child{margin-bottom:0}
+.lever-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0.8rem;margin-top:0.8rem}
+.lever-card{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius);padding:0.9rem 1rem}
+.lever-card .lever-name{font-weight:700;font-size:0.85rem;margin-bottom:0.3rem;display:flex;align-items:center;gap:0.4rem}
+.lever-card .lever-desc{font-size:0.78rem;color:var(--muted);line-height:1.55}
+.shock-timeline{display:flex;gap:0.7rem;margin-top:0.8rem;flex-wrap:wrap}
+.shock-pill{background:var(--loss-light);border:1px solid var(--loss);border-radius:var(--radius-sm);padding:0.5rem 0.8rem;flex:1;min-width:160px}
+.shock-pill .shock-round{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--loss);font-weight:700}
+.shock-pill .shock-name{font-size:0.82rem;font-weight:700;margin-top:0.15rem}
+.shock-pill .shock-hint{font-size:0.72rem;color:var(--muted);margin-top:0.2rem}
+.segment-chips{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.6rem}
+.seg-chip{background:var(--input-bg);border:1px solid var(--card-border);border-radius:20px;padding:0.35rem 0.75rem;font-size:0.78rem;display:flex;align-items:center;gap:0.3rem}
+.seg-chip .seg-pct{font-weight:700;color:var(--saffron)}
+.win-box{background:var(--neem-light);border:1px solid var(--neem);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:0.8rem}
+.win-box p{color:var(--ink);font-size:0.85rem;line-height:1.6}
+.manual-cta{text-align:center;margin:1.5rem 0 1rem;position:relative;z-index:1}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:0.5em;font-family:system-ui,sans-serif;font-weight:600;font-size:0.95rem;padding:0.75em 1.8em;border:none;border-radius:var(--radius);cursor:pointer;transition:transform 0.12s,box-shadow 0.15s}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:var(--saffron);color:#fff;box-shadow:0 2px 8px rgba(217,123,43,0.25)}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(217,123,43,0.35)}
+.btn-secondary{background:var(--card);color:var(--ink);border:1.5px solid var(--card-border)}
+.btn-sm{font-size:0.78rem;padding:0.4em 0.9em}
+.btn[disabled]{opacity:0.4;cursor:not-allowed}
+
+/* Company Select */
+.select-screen{padding:2rem;align-items:center}
+.select-screen h2{margin-bottom:0.3rem}
+.select-screen .hint{color:var(--muted);margin-bottom:1.8rem;font-size:0.9rem}
+.company-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;max-width:1100px;width:100%;margin-bottom:2rem}
+.company-card{background:var(--card);border:2px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem;cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s,transform 0.12s;position:relative}
+.company-card:hover{border-color:var(--saffron);transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow-md)}
+.company-card.selected{border-color:var(--saffron);box-shadow:0 0 0 3px var(--saffron-glow),0 6px 20px var(--shadow-md)}
+.company-card .co-badge{display:inline-block;width:36px;height:36px;border-radius:8px;font-size:1rem;line-height:36px;text-align:center;font-weight:800;margin-bottom:0.6rem}
+.company-card h3{margin-bottom:0.15rem;font-size:1rem}
+.company-card .co-tag{font-size:0.75rem;color:var(--saffron);font-weight:600;margin-bottom:0.5rem}
+.company-card .co-desc{font-size:0.82rem;color:var(--ink-soft);margin-bottom:0.7rem;line-height:1.45}
+.company-card .co-stats{display:flex;gap:0.8rem;flex-wrap:wrap}
+.company-card .co-stat{font-size:0.72rem;color:var(--muted)}
+.company-card .co-stat strong{display:block;font-size:0.95rem;color:var(--ink);font-family:ui-monospace,monospace}
+
+/* Game Screen */
+.game-screen{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.game-header{background:var(--card);border-bottom:1px solid var(--card-border);padding:0.5rem 1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;flex-shrink:0;z-index:10}
+.game-header .qtr-label{font-family:Georgia,serif;font-weight:700;font-size:0.95rem;white-space:nowrap}
+.game-header .qtr-label span{color:var(--saffron)}
+.quarter-rail{display:flex;gap:2px;flex:1;max-width:320px}
+.quarter-rail .qr-dot{flex:1;height:4px;border-radius:2px;background:var(--muted-light);transition:background 0.3s}
+.quarter-rail .qr-dot.done{background:var(--neem)}
+.quarter-rail .qr-dot.current{background:var(--saffron)}
+.quarter-rail .qr-dot.shock{background:var(--loss)}
+.metrics-bar{display:flex;gap:1rem;margin-left:auto;flex-wrap:wrap}
+.metric-chip{text-align:right}
+.metric-chip .label{font-size:0.55rem}
+.metric-chip .val{font-family:ui-monospace,monospace;font-weight:700;font-size:0.82rem;font-variant-numeric:tabular-nums}
+.metric-chip .val.positive{color:var(--neem)}
+.metric-chip .val.negative{color:var(--loss)}
+
+.game-body{flex:1;display:grid;grid-template-columns:1fr 280px;gap:0;overflow:hidden;min-height:0}
+@media(max-width:900px){.game-body{grid-template-columns:1fr}.game-sidebar{display:none}}
+.game-main{padding:0;overflow-y:auto;display:flex;flex-direction:column}
+.game-sidebar{background:var(--card);border-left:1px solid var(--card-border);padding:0.8rem;overflow-y:auto;font-size:0.85rem}
+
+/* Tabs */
+.tab-bar{display:flex;background:var(--card);border-bottom:1px solid var(--card-border);padding:0 1rem;gap:0;position:sticky;top:0;z-index:5;overflow-x:auto;flex-shrink:0}
+.tab-btn{padding:0.55em 0.9em;font-size:0.78rem;font-weight:600;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;transition:color 0.15s,border-color 0.15s;white-space:nowrap;font-family:system-ui,sans-serif}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--saffron);border-bottom-color:var(--saffron)}
+.tab-panel{display:none;padding:1rem;flex:1}
+.tab-panel.active{display:block}
+
+/* Event / Shock banners */
+.event-banner{background:var(--saffron-glow);border:1.5px solid var(--saffron);border-radius:var(--radius);padding:0.6rem 0.9rem;margin:0.6rem 1rem 0;display:flex;gap:0.5rem;align-items:flex-start;flex-shrink:0}
+.event-banner.shock{background:var(--loss-light);border-color:var(--loss)}
+.event-banner .ev-icon{font-size:1.1rem;flex-shrink:0}
+.event-banner .ev-text{font-size:0.8rem;line-height:1.4}
+.event-banner .ev-text strong{display:block;margin-bottom:0.1rem}
+
+/* Decision cards */
+.dec-section{margin-bottom:1.1rem}
+.dec-section h3{margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem;font-size:0.9rem}
+.dec-section h3 .icon{font-size:0.95rem}
+.dec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.6rem}
+.dec-card{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);padding:0.7rem}
+.dec-card .dc-label{font-size:0.68rem;color:var(--muted);font-weight:600;margin-bottom:0.3rem}
+.dec-card .dc-city{font-weight:700;font-size:0.82rem;margin-bottom:0.4rem}
+
+/* Slider */
+.slider-wrap{display:flex;flex-direction:column;gap:0.2rem}
+.slider-wrap input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--muted-light);outline:none}
+.slider-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--saffron);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
+.slider-wrap .slider-val{font-family:ui-monospace,monospace;font-size:0.75rem;font-weight:700;color:var(--saffron);text-align:right}
+
+/* Option buttons */
+.option-group{display:flex;flex-direction:column;gap:0.3rem}
+.option-btn{display:block;width:100%;padding:0.4em 0.7em;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);background:var(--input-bg);color:var(--ink);font-size:0.77rem;cursor:pointer;text-align:left;font-family:system-ui,sans-serif;transition:border-color 0.12s,background 0.12s;line-height:1.35}
+.option-btn:hover{border-color:var(--saffron)}
+.option-btn.selected{border-color:var(--saffron);background:var(--saffron-glow);font-weight:600}
+
+/* Product catalog */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.5rem}
+.product-item{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);padding:0.6rem;display:flex;flex-direction:column;gap:0.3rem;font-size:0.78rem;transition:border-color 0.12s}
+.product-item.in-catalog{border-color:var(--neem);background:var(--neem-light)}
+.product-item .pi-name{font-weight:700;font-size:0.82rem}
+.product-item .pi-stats{display:flex;gap:0.6rem;color:var(--muted);font-size:0.7rem}
+.product-item .pi-stats .positive{color:var(--neem)}
+.product-item .pi-stats .negative{color:var(--loss)}
+.product-item .pi-btn{align-self:flex-end;font-size:0.72rem;padding:0.25em 0.6em;border:1px solid var(--card-border);border-radius:var(--radius-sm);background:var(--input-bg);cursor:pointer;font-family:system-ui,sans-serif;font-weight:600}
+.product-item .pi-btn:hover{border-color:var(--saffron)}
+.product-item.in-catalog .pi-btn{border-color:var(--loss);color:var(--loss)}
+
+/* Sidebar */
+.intel-section{margin-bottom:0.8rem}
+.intel-section h4{font-size:0.78rem;margin-bottom:0.4rem;color:var(--ink)}
+.intel-row{display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;border-bottom:1px solid var(--card-border);font-size:0.76rem}
+.intel-row:last-child{border-bottom:none}
+.intel-row .ir-name{display:flex;align-items:center;gap:0.3rem}
+.intel-row .ir-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.intel-row .ir-val{font-family:ui-monospace,monospace;font-weight:600;font-variant-numeric:tabular-nums}
+.share-bar{height:6px;border-radius:3px;background:var(--muted-light);overflow:hidden;display:flex;margin-top:0.2rem}
+.share-bar .sb-seg{height:100%;transition:width 0.5s ease}
+
+/* Region map */
+.region-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin-top:0.3rem}
+.region-cell{background:var(--input-bg);border-radius:var(--radius-sm);padding:0.3rem 0.5rem;font-size:0.7rem;display:flex;justify-content:space-between}
+.region-cell .rc-leader{font-weight:700}
+
+/* Submit area */
+.submit-area{padding:0.6rem 1rem;background:var(--card);border-top:1px solid var(--card-border);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-shrink:0}
+.submit-area .cost-preview{font-size:0.78rem;color:var(--muted)}
+.submit-area .cost-preview strong{color:var(--ink);font-family:ui-monospace,monospace}
+
+/* Results */
+.results-screen{padding:2rem;align-items:center}
+.results-container{max-width:960px;width:100%}
+.results-header{text-align:center;margin-bottom:1.2rem}
+.results-header .rh-quarter{color:var(--saffron);font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.6rem;margin-bottom:1.2rem}
+.result-card{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);padding:0.8rem;text-align:center}
+.result-card .rc-label{margin-bottom:0.2rem}
+.result-card .rc-val{font-family:ui-monospace,monospace;font-size:1.1rem;font-weight:800;font-variant-numeric:tabular-nums}
+.result-card .rc-delta{font-size:0.72rem;font-weight:600;margin-top:0.1rem}
+.result-card .rc-delta.up{color:var(--neem)}
+.result-card .rc-delta.down{color:var(--loss)}
+
+.competitor-table{width:100%;border-collapse:collapse;margin-bottom:1rem;font-size:0.8rem}
+.competitor-table th{text-align:left;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:0.4rem 0.5rem;border-bottom:2px solid var(--card-border);font-weight:600}
+.competitor-table td{padding:0.4rem 0.5rem;border-bottom:1px solid var(--card-border);font-variant-numeric:tabular-nums}
+.competitor-table tr.you td{font-weight:700;background:var(--saffron-glow)}
+.competitor-table .ct-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:0.3rem;vertical-align:middle}
+.competitor-table td:not(:first-child){font-family:ui-monospace,monospace;text-align:right}
+
+/* Shock results banner */
+.shock-impact{background:var(--loss-light);border:1.5px solid var(--loss);border-radius:var(--radius);padding:0.8rem 1rem;margin-bottom:1rem;font-size:0.82rem}
+.shock-impact strong{display:block;margin-bottom:0.2rem}
+
+/* Final */
+.final-screen{padding:2rem;align-items:center;justify-content:center;text-align:center}
+.final-container{max-width:750px;width:100%}
+.final-rank{font-size:4rem;font-family:Georgia,serif;font-weight:800;color:var(--saffron);line-height:1;margin-bottom:0.3rem}
+.final-rank-label{color:var(--muted);font-size:0.85rem;margin-bottom:1.2rem}
+.final-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;margin-bottom:1.2rem}
+.final-metric{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);padding:0.7rem}
+.final-metric .fm-val{font-family:ui-monospace,monospace;font-size:1.1rem;font-weight:800}
+
+/* Heat map */
+.heatmap{border-collapse:collapse;width:100%;font-size:0.68rem;margin-top:0.3rem}
+.heatmap th{font-size:0.6rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);padding:0.3rem 0.2rem;text-align:center;border-bottom:1px solid var(--card-border)}
+.heatmap th:first-child{text-align:left}
+.heatmap td{padding:0.25rem 0.2rem;text-align:center;border-bottom:1px solid var(--card-border);font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.heatmap td:first-child{text-align:left;font-family:system-ui,sans-serif;font-weight:600}
+.hm-cell{display:inline-block;width:100%;padding:0.15rem;border-radius:3px;font-weight:700}
+.hm-hot{background:rgba(232,146,62,0.25);color:var(--saffron)}
+.hm-warm{background:rgba(232,146,62,0.10);color:var(--ink-soft)}
+.hm-cool{background:transparent;color:var(--muted)}
+
+/* User metrics */
+.user-stat{display:flex;align-items:center;gap:0.4rem;padding:0.3rem 0;font-size:0.76rem}
+.user-stat .us-icon{font-size:0.9rem}
+.user-stat .us-val{font-family:ui-monospace,monospace;font-weight:700;margin-left:auto}
+.user-stat .us-delta{font-size:0.65rem;font-weight:600}
+.user-stat .us-delta.up{color:var(--neem)}
+.user-stat .us-delta.down{color:var(--loss)}
+
+/* Product segment tags */
+.seg-tags{display:flex;gap:0.2rem;flex-wrap:wrap;margin-top:0.15rem}
+.seg-tag{font-size:0.6rem;padding:0.1em 0.35em;border-radius:3px;background:var(--saffron-glow);color:var(--saffron);font-weight:600}
+
+/* Finance tab mini P&L */
+.mini-pl{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);overflow:hidden}
+.mini-pl .pl-row{display:flex;justify-content:space-between;padding:0.35rem 0.7rem;font-size:0.78rem;border-bottom:1px solid var(--card-border)}
+.mini-pl .pl-row:last-child{border-bottom:none}
+.mini-pl .pl-row.pl-header{background:var(--input-bg);font-weight:700;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted)}
+.mini-pl .pl-row.pl-total{font-weight:700;background:var(--input-bg)}
+.mini-pl .pl-val{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--muted-light);border-radius:3px}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0.01ms!important;animation-duration:0.01ms!important}}
+@media(max-width:600px){.company-grid{grid-template-columns:1fr}.results-grid{grid-template-columns:repeat(2,1fr)}.final-metrics{grid-template-columns:repeat(2,1fr)}.game-header{padding:0.4rem 0.6rem;gap:0.5rem}.metrics-bar{gap:0.5rem}.dec-grid{grid-template-columns:1fr}.product-grid{grid-template-columns:1fr}}
+</style>
+
+<div id="app"></div>
+
+<script>
+const TOTAL_ROUNDS = 12;
+
+const REGIONS = [
+  { id:'north', name:'North India', cities:['Delhi NCR','Lucknow','Jaipur','Chandigarh'], population:58, tam:2100, growth:1.04 },
+  { id:'south', name:'South India', cities:['Bengaluru','Chennai','Hyderabad','Kochi'], population:52, tam:2000, growth:1.06 },
+  { id:'east', name:'East India', cities:['Kolkata','Patna','Bhubaneswar','Guwahati'], population:40, tam:900, growth:1.03 },
+  { id:'west', name:'West India', cities:['Mumbai','Pune','Ahmedabad','Surat'], population:55, tam:2200, growth:1.05 },
+];
+
+const SEGMENTS = [
+  { id:'pro', name:'Urban Professionals', short:'Pro', emoji:'💼', pct:0.28, priceW:0.10, speedW:0.25, assortW:0.20, brandW:0.18, coverW:0.12, techW:0.15,
+    regionDensity:{north:0.25,south:0.35,east:0.12,west:0.28} },
+  { id:'young', name:'Young Singles', short:'Young', emoji:'🎧', pct:0.24, priceW:0.22, speedW:0.22, assortW:0.10, brandW:0.24, coverW:0.08, techW:0.14,
+    regionDensity:{north:0.28,south:0.30,east:0.15,west:0.27} },
+  { id:'family', name:'Families', short:'Family', emoji:'👨‍👩‍👧', pct:0.30, priceW:0.28, speedW:0.06, assortW:0.28, brandW:0.08, coverW:0.18, techW:0.12,
+    regionDensity:{north:0.32,south:0.22,east:0.25,west:0.21} },
+  { id:'health', name:'Health & Wellness', short:'Health', emoji:'🧘', pct:0.18, priceW:0.08, speedW:0.10, assortW:0.32, brandW:0.12, coverW:0.20, techW:0.18,
+    regionDensity:{north:0.20,south:0.32,east:0.13,west:0.35} },
+];
+
+const COMPANIES = [
+  {
+    id:'nimbudash', name:'NimbuDash', color:'#E8732A', badge:'ND',
+    tag:'The North Star', region:'north',
+    desc:'Dominant in Delhi NCR and North India. Massive dark store network across Hindi heartland. Needs to break into South and West.',
+    startStores:{north:320,south:80,east:60,west:120},
+    startCash:4500, startBrand:74, techLevel:62, aiStyle:'aggressive'
+  },
+  {
+    id:'chakracart', name:'ChakraCart', color:'#7B2FF7', badge:'CC',
+    tag:'The Southern Powerhouse', region:'south',
+    desc:'Tech-first from Bengaluru. Dominates South India with AI-driven ops. Engineering DNA but struggles with Hindi belt penetration.',
+    startStores:{north:70,south:340,east:40,west:100},
+    startCash:3800, startBrand:60, techLevel:82, aiStyle:'tech-first'
+  },
+  {
+    id:'kiranacloud', name:'KiranaCloud', color:'#1A8A5C', badge:'KC',
+    tag:'The Eastern Pioneer', region:'east',
+    desc:'Only major player in East India. Deep kirana partnerships in tier-2 cities. Low-cost model with strong unit economics.',
+    startStores:{north:60,south:50,east:300,west:70},
+    startCash:3200, startBrand:58, techLevel:55, aiStyle:'balanced'
+  },
+  {
+    id:'freshmandi', name:'FreshMandi', color:'#2980B9', badge:'FM',
+    tag:'The Western Giant', region:'west',
+    desc:'Mumbai-born grocery veteran. Strongest brand and widest assortment in West India. Conglomerate backing means deep pockets.',
+    startStores:{north:90,south:70,east:40,west:350},
+    startCash:5200, startBrand:80, techLevel:48, aiStyle:'conservative'
+  },
+];
+
+// ─── PRODUCT CATALOG ───
+const PRODUCTS = [
+  { id:'staples', name:'Staples & Grains', cat:'Grocery', costCr:5, marginImpact:0.02, assortBoost:3, desc:'Rice, atta, dal — high frequency basics', segments:['family','health'] },
+  { id:'dairy', name:'Dairy & Fresh', cat:'Grocery', costCr:8, marginImpact:0.01, assortBoost:5, desc:'Milk, curd, paneer — daily need, cold chain required', segments:['family','pro'] },
+  { id:'fruits', name:'Fruits & Vegetables', cat:'Grocery', costCr:10, marginImpact:-0.01, assortBoost:6, desc:'High wastage but drives daily visits', segments:['family','health'] },
+  { id:'snacks', name:'Snacks & Beverages', cat:'Grocery', costCr:3, marginImpact:0.03, assortBoost:2, desc:'Chips, biscuits, soft drinks — impulse buys, good margins', segments:['young'] },
+  { id:'pharma', name:'Pharmacy & OTC', cat:'Health', costCr:15, marginImpact:0.04, assortBoost:8, desc:'Medicines, vitamins — high AOV, regulatory requirements', segments:['family','health','pro'] },
+  { id:'personal', name:'Personal Care', cat:'Beauty', costCr:6, marginImpact:0.03, assortBoost:4, desc:'Shampoo, skincare, hygiene — brand-driven', segments:['young','pro'] },
+  { id:'baby', name:'Baby & Childcare', cat:'Family', costCr:8, marginImpact:0.03, assortBoost:5, desc:'Diapers, formula, baby food — high loyalty category', segments:['family'] },
+  { id:'cleaning', name:'Home Cleaning', cat:'Home', costCr:4, marginImpact:0.02, assortBoost:3, desc:'Detergent, floor cleaner — staple with decent margins', segments:['family'] },
+  { id:'petcare', name:'Pet Care', cat:'Lifestyle', costCr:7, marginImpact:0.04, assortBoost:3, desc:'Pet food, supplies — niche but fast-growing, premium', segments:['pro','young'] },
+  { id:'electronics', name:'Small Electronics', cat:'Tech', costCr:20, marginImpact:0.05, assortBoost:4, desc:'Chargers, earphones, accessories — high AOV, inventory risk', segments:['young','pro'] },
+  { id:'organic', name:'Organic & Gourmet', cat:'Health', costCr:12, marginImpact:0.05, assortBoost:5, desc:'Organic staples, superfoods — premium segment, lower volume', segments:['health','pro'] },
+  { id:'frozen', name:'Frozen & Ready-to-Eat', cat:'Food', costCr:9, marginImpact:0.02, assortBoost:4, desc:'Frozen parathas, momos, ready meals — needs freezer capacity', segments:['young','pro'] },
+  { id:'stationery', name:'Stationery & Office', cat:'Essentials', costCr:4, marginImpact:0.02, assortBoost:2, desc:'Pens, notebooks, printer paper — steady demand', segments:['pro','family'] },
+  { id:'flowers', name:'Flowers & Gifting', cat:'Lifestyle', costCr:6, marginImpact:0.06, assortBoost:3, desc:'Bouquets, gift packs — seasonal spikes, high margins', segments:['pro','family'] },
+  { id:'meats', name:'Meats & Seafood', cat:'Protein', costCr:14, marginImpact:0.01, assortBoost:6, desc:'Chicken, fish, eggs — cold chain intensive, regional taste', segments:['family','young'] },
+  { id:'premium_spirits', name:'Premium Beverages', cat:'Lifestyle', costCr:18, marginImpact:0.07, assortBoost:4, desc:'Specialty coffee, kombucha, cold-pressed juice — high margin niche', segments:['pro','health'] },
+];
+
+const PRICING_OPTS = [
+  { id:'deep', label:'Deep Discount', desc:'15-25% below market', priceScore:95, marginHit:-0.08 },
+  { id:'competitive', label:'Competitive', desc:'Match market rates', priceScore:65, marginHit:0 },
+  { id:'premium', label:'Convenience Premium', desc:'10-15% above', priceScore:35, marginHit:0.06 },
+];
+const SPEED_OPTS = [
+  { id:'10min', label:'10-Minute Promise', desc:'Max speed, highest ops cost', speedBonus:30, costMult:1.35 },
+  { id:'15min', label:'15-Minute Standard', desc:'Fast and sustainable', speedBonus:15, costMult:1.10 },
+  { id:'30min', label:'30-Minute Saver', desc:'Lower cost, slower', speedBonus:0, costMult:0.85 },
+];
+const MARKETING_OPTS = [
+  { id:'low', label:'Low (2%)', desc:'Organic only', brandBoost:1, costPct:0.02 },
+  { id:'medium', label:'Medium (6%)', desc:'Steady awareness', brandBoost:3, costPct:0.06 },
+  { id:'high', label:'High (12%)', desc:'Aggressive campaigns', brandBoost:6, costPct:0.12 },
+  { id:'blitz', label:'Blitz (20%)', desc:'IPL sponsorship level', brandBoost:12, costPct:0.20 },
+];
+const TECH_OPTS = [
+  { id:'maintain', label:'Maintain', desc:'Keep lights on', techBoost:0, costCr:8 },
+  { id:'invest', label:'Invest', desc:'Better app, routes', techBoost:2, costCr:22 },
+  { id:'leap', label:'AI Leap', desc:'Demand prediction, auto ops', techBoost:5, costCr:50 },
+];
+const LOYALTY_OPTS = [
+  { id:'none', label:'No Program', desc:'Save the cost', retentionBoost:0, costPct:0 },
+  { id:'cashback', label:'Cashback Rewards', desc:'1-3% cashback', retentionBoost:4, costPct:0.015 },
+  { id:'subscription', label:'Subscription Pass', desc:'Monthly pass', retentionBoost:10, costPct:0.03 },
+];
+const PRIVATE_LABEL_OPTS = [
+  { id:'0', label:'0% Private Label', desc:'Pure marketplace', marginBoost:0, brandRisk:0 },
+  { id:'10', label:'10% Private Label', desc:'Basics only', marginBoost:0.02, brandRisk:0 },
+  { id:'20', label:'20% Private Label', desc:'Expand to snacks, care', marginBoost:0.04, brandRisk:-2 },
+  { id:'30', label:'30% Private Label', desc:'Aggressive own-brand', marginBoost:0.06, brandRisk:-4 },
+];
+const FUNDRAISE_OPTS = [
+  { id:'none', label:'No Raise', desc:'Operate on cash flow', cashInject:0, dilution:0 },
+  { id:'small', label:'Bridge Round', desc:'~500 Cr, modest dilution', cashInject:500, dilution:4 },
+  { id:'large', label:'Major Round', desc:'~2000 Cr, heavy dilution', cashInject:2000, dilution:12 },
+];
+
+// ─── SHOCKS (4 major disruptions) ───
+const SHOCK_ROUNDS = {
+  3: { title:'Monsoon Fury', icon:'🌊', isShock:true,
+    text:'Unprecedented flooding across North and East India. Delivery networks crippled for weeks. Companies with strong tech and dense stores are less affected. Revenue drops 25% in flooded regions.',
+    effect: (co) => { co.stores.north=Math.round(co.stores.north*0.92); co.stores.east=Math.round(co.stores.east*0.90); co.cash-=Math.round(co.stores.north*0.1+co.stores.east*0.1); },
+    regionPenalty:{north:0.75, east:0.70, south:1.0, west:0.95},
+    mitigation:'tech', mitigationThreshold:65, mitigationBonus:0.15 },
+  6: { title:'Regulatory Crackdown', icon:'⚖️', isShock:true,
+    text:'DPIIT bans dark stores in residential zones. 20% of stores must relocate. Companies with strong brand and compliance (tech investment) get faster approvals.',
+    effect: (co) => { REGIONS.forEach(r=>{ co.stores[r.id]=Math.round(co.stores[r.id]*0.82); }); },
+    regionPenalty:{north:0.85, south:0.85, east:0.85, west:0.85},
+    mitigation:'brand', mitigationThreshold:70, mitigationBonus:0.12 },
+  9: { title:'Kirana Alliance', icon:'🏪', isShock:true,
+    text:'National kirana federation launches WhatsApp ordering with same-day delivery. 15% of family and value orders shift back to local stores. Loyalty programs and private labels retain customers.',
+    effect: (co) => { co.brand=Math.max(30,co.brand-5); },
+    regionPenalty:{north:0.88, south:0.90, east:0.85, west:0.88},
+    mitigation:'loyalty', mitigationField:'loyalty', mitigationValues:['cashback','subscription'], mitigationBonus:0.10 },
+  11: { title:'Funding Winter', icon:'❄️', isShock:true,
+    text:'Global VC pullback hits Indian startups. No fundraising available this round. Companies with negative EBITDA lose brand score as media reports "burning cash." Profitable companies get a valuation boost.',
+    effect: (co) => { if(co.cumEbitda<0){co.brand=Math.max(20,co.brand-8);co.cash-=100;} else{co.brand=Math.min(100,co.brand+5);co.cash+=200;} },
+    regionPenalty:{north:1.0, south:1.0, east:1.0, west:1.0},
+    noFundraise:true },
+};
+
+const QUARTER_EVENTS = {
+  1: { title:'Market Opens', icon:'🏁', text:'The quick commerce battlefield spans all of India. Four companies, each dominant in their region, compete to become the national leader. Speed is the promise — profitability is the prize.' },
+  2: { title:'Festival Season', icon:'🪔', text:'Navratri to Diwali drives a massive demand spike. Marketing is 2x more effective. Gifting and sweets categories explode.' },
+  4: { title:'Summer Heat Wave', icon:'🌡️', text:'Record temperatures boost demand for beverages, dairy, and ice cream. Companies with frozen/beverage categories see 30% higher orders.' },
+  5: { title:'The ARPU Chase', icon:'📈', text:'Investors demand path to profitability. Companies with positive unit economics get a valuation boost. Cash burn scrutiny intensifies.' },
+  7: { title:'Tier-2 Boom', icon:'🚀', text:'Tier-2 cities show 40% faster growth. East and North regions benefit most. Companies with stores in smaller cities gain disproportionately.' },
+  8: { title:'Private Label Push', icon:'🏷️', text:'Consumer acceptance of private labels hits all-time high. Companies with 20%+ private label see brand risk reduced and margin boost doubled this round.' },
+  10: { title:'AI Revolution', icon:'🤖', text:'New AI tools slash logistics costs. Companies with high tech levels (70+) get a 20% cost reduction on store operations this round.' },
+  12: { title:'The Endgame', icon:'🏆', text:'Final round. The market matures. Only companies with sustainable models survive. Your legacy is set by the decisions you made.' },
+};
+
+// ─── STATE ───
+let state = { screen:'title', selectedCompany:null, quarter:0, companies:[], decisions:{}, history:[], activeTab:'operations' };
+
+// ─── ENGINE ───
+function initCompanies(pid) {
+  return COMPANIES.map(c => ({
+    id:c.id, isPlayer:c.id===pid, name:c.name, color:c.color, badge:c.badge, aiStyle:c.aiStyle, homeRegion:c.region,
+    stores:{...c.startStores}, cash:c.startCash, brand:c.startBrand, tech:c.techLevel,
+    revenue:0, ebitda:0, orders:0, marketShare:0.25, aov:420, cumRevenue:0, cumEbitda:0,
+    pricing:'competitive', category:'grocery', marketing:'medium', speed:'15min',
+    techInvest:'maintain', loyalty:'none', privateLabel:'0', fundraise:'none',
+    storeInvest:{}, dilutionTotal:0,
+    catalog:['staples','dairy','snacks','cleaning'],
+    regionShares:{north:0.25,south:0.25,east:0.25,west:0.25},
+    users:Math.round(Object.values(c.startStores).reduce((a,b)=>a+b,0)*800),
+    newUsers:0, churnedUsers:0,
+  }));
+}
+
+function defaultDecisions(co) {
+  const d = { pricing:'competitive', marketing:'medium', speed:'15min',
+    techInvest:'maintain', loyalty:'none', privateLabel:'0', fundraise:'none', storeInvest:{},
+    addProducts:[], removeProducts:[] };
+  REGIONS.forEach(r => { d.storeInvest[r.id] = 5; });
+  return d;
+}
+
+function aiDecisions(co, q) {
+  const s = co.aiStyle;
+  const d = defaultDecisions(co);
+  if (s==='aggressive') {
+    d.pricing = q<=4?'deep':'competitive'; d.marketing=q===2?'blitz':'high';
+    d.speed='10min'; d.techInvest='invest'; d.loyalty=q>=4?'cashback':'none'; d.privateLabel='10';
+    REGIONS.forEach(r=>{d.storeInvest[r.id]=r.id===co.homeRegion?15:(q<=6?20:8);});
+    if(q>=4 && !co.catalog.includes('pharma')) d.addProducts.push('pharma');
+    if(q>=6 && !co.catalog.includes('personal')) d.addProducts.push('personal');
+  } else if (s==='tech-first') {
+    d.pricing='competitive'; d.marketing='medium';
+    d.speed='10min'; d.techInvest='leap'; d.loyalty=q>=5?'subscription':'none'; d.privateLabel='0';
+    REGIONS.forEach(r=>{d.storeInvest[r.id]=co.stores[r.id]<150?18:6;});
+    if(q>=3 && !co.catalog.includes('electronics')) d.addProducts.push('electronics');
+    if(q>=5 && !co.catalog.includes('pharma')) d.addProducts.push('pharma');
+  } else if (s==='balanced') {
+    d.pricing='competitive'; d.marketing=q===2?'high':'medium';
+    d.speed='15min'; d.techInvest='invest'; d.loyalty=q>=4?'cashback':'none'; d.privateLabel='10';
+    REGIONS.forEach(r=>{d.storeInvest[r.id]=r.id===co.homeRegion?12:10;});
+    if(q>=3 && !co.catalog.includes('fruits')) d.addProducts.push('fruits');
+    if(q>=6 && !co.catalog.includes('baby')) d.addProducts.push('baby');
+  } else {
+    d.pricing='premium'; d.marketing=q<=3?'medium':'low';
+    d.speed='30min'; d.techInvest='maintain'; d.loyalty=q>=6?'subscription':'none'; d.privateLabel='20';
+    REGIONS.forEach(r=>{d.storeInvest[r.id]=r.id===co.homeRegion?8:4;});
+    if(q>=2 && !co.catalog.includes('organic')) d.addProducts.push('organic');
+    if(q>=5 && !co.catalog.includes('premium_spirits')) d.addProducts.push('premium_spirits');
+  }
+  if (Math.random()<0.1) d.pricing=PRICING_OPTS[Math.floor(Math.random()*3)].id;
+  return d;
+}
+
+function resolveQuarter(companies, quarter) {
+  const shock = SHOCK_ROUNDS[quarter];
+  const event = QUARTER_EVENTS[quarter];
+  const isFestival=quarter===2, isSummer=quarter===4, isTier2=quarter===7, isPL=quarter===8, isAI=quarter===10;
+
+  if(shock) companies.forEach(co => shock.effect(co));
+
+  companies.forEach(co => {
+    const mOpt=MARKETING_OPTS.find(m=>m.id===co.marketing);
+    const tOpt=TECH_OPTS.find(t=>t.id===co.techInvest);
+    const lOpt=LOYALTY_OPTS.find(l=>l.id===co.loyalty);
+    const plOpt=PRIVATE_LABEL_OPTS.find(p=>p.id===co.privateLabel);
+    const fOpt=FUNDRAISE_OPTS.find(f=>f.id===co.fundraise);
+
+    REGIONS.forEach(r=>{
+      const n=co.storeInvest[r.id]||0;
+      co.stores[r.id]=(co.stores[r.id]||0)+n;
+    });
+
+    let bb=mOpt.brandBoost; if(isFestival) bb*=2;
+    co.brand=Math.min(100,Math.max(10,co.brand+bb-1.5+plOpt.brandRisk+(isPL&&parseInt(co.privateLabel)>=20?3:0)));
+    co.tech=Math.min(100,co.tech+tOpt.techBoost);
+
+    if(fOpt.cashInject>0 && !(shock && shock.noFundraise)){
+      co.cash+=fOpt.cashInject;co.dilutionTotal=(co.dilutionTotal||0)+fOpt.dilution;
+    }
+
+    co.addProducts?.forEach(pid=>{if(!co.catalog.includes(pid))co.catalog.push(pid);});
+    co.removeProducts?.forEach(pid=>{co.catalog=co.catalog.filter(p=>p!==pid);});
+  });
+
+  let totalOrders=0, coOrders={}, coRevenue={};
+  companies.forEach(co=>{coOrders[co.id]=0;coRevenue[co.id]=0;});
+  let regionOrders={};
+  REGIONS.forEach(r=>{regionOrders[r.id]={};companies.forEach(co=>{regionOrders[r.id][co.id]=0;});});
+
+  REGIONS.forEach(region=>{
+    let tam=region.tam*(isFestival?1.5:1)*(isSummer?1.15:1)*Math.pow(region.growth,quarter);
+    if(isTier2 && (region.id==='east'||region.id==='north')) tam*=1.4;
+    if(shock && shock.regionPenalty) tam*=shock.regionPenalty[region.id];
+
+    SEGMENTS.forEach(seg=>{
+      const segDensity=seg.regionDensity?.[region.id]||0.25;
+      const segO=tam*seg.pct*(segDensity/0.25);
+      let scores={}, total=0;
+      companies.forEach(co=>{
+        const pOpt=PRICING_OPTS.find(p=>p.id===co.pricing);
+        const sOpt=SPEED_OPTS.find(s=>s.id===co.speed);
+        const lOpt=LOYALTY_OPTS.find(l=>l.id===co.loyalty);
+        const cs=co.stores[region.id]||0;
+        const coverScore=Math.min(100,cs*0.35);
+        let speedScore=Math.min(100,(cs*0.25)+(co.tech*0.3)+sOpt.speedBonus);
+
+        const catalogProducts=co.catalog.map(pid=>PRODUCTS.find(p=>p.id===pid)).filter(Boolean);
+        const baseAssort=catalogProducts.reduce((s,p)=>s+p.assortBoost,0)*3;
+        const segMatch=catalogProducts.filter(p=>p.segments?.includes(seg.id)).length;
+        const affinityBonus=segMatch*4;
+        const assortScore=Math.min(100,baseAssort+affinityBonus);
+        const techScore=Math.min(100,co.tech+(lOpt.retentionBoost||0));
+
+        if(shock && shock.mitigation==='tech' && co.tech>=shock.mitigationThreshold) {
+          speedScore*=(1+shock.mitigationBonus);
+        }
+
+        const sc=seg.priceW*pOpt.priceScore+seg.speedW*speedScore+seg.assortW*assortScore+
+          seg.brandW*co.brand+seg.coverW*coverScore+seg.techW*techScore;
+        scores[co.id]=Math.max(1,sc);total+=scores[co.id];
+      });
+
+      companies.forEach(co=>{
+        const share=scores[co.id]/total;
+        const catalogProducts=co.catalog.map(pid=>PRODUCTS.find(p=>p.id===pid)).filter(Boolean);
+        const segMatch=catalogProducts.filter(p=>p.segments?.includes(seg.id)).length;
+        const freqMod=1+catalogProducts.length*0.015+segMatch*0.02;
+        const orders=segO*share*freqMod;
+        coOrders[co.id]+=orders;
+        regionOrders[region.id][co.id]+=orders;
+
+        const baseAOV=420;
+        const aovMod=1+catalogProducts.reduce((s,p)=>s+(p.marginImpact>0.03?0.05:0),0);
+        coRevenue[co.id]+=orders*baseAOV*aovMod*(isFestival?1.2:1)*(isSummer&&co.catalog.some(p=>['dairy','frozen','snacks'].includes(p))?1.15:1)*90/1e7;
+      });
+    });
+  });
+
+  const mktTotal=Object.values(coOrders).reduce((a,b)=>a+b,0);
+
+  companies.forEach(co=>{
+    const pOpt=PRICING_OPTS.find(p=>p.id===co.pricing);
+    const mOpt=MARKETING_OPTS.find(m=>m.id===co.marketing);
+    const sOpt=SPEED_OPTS.find(s=>s.id===co.speed);
+    const tOpt=TECH_OPTS.find(t=>t.id===co.techInvest);
+    const lOpt=LOYALTY_OPTS.find(l=>l.id===co.loyalty);
+    const plOpt=PRIVATE_LABEL_OPTS.find(p=>p.id===co.privateLabel);
+
+    co.orders=Math.round(coOrders[co.id]);
+    co.marketShare=mktTotal>0?coOrders[co.id]/mktTotal:0.25;
+    co.revenue=Math.round(coRevenue[co.id]);
+    co.aov=420;
+
+    REGIONS.forEach(r=>{
+      const rTotal=Object.values(regionOrders[r.id]).reduce((a,b)=>a+b,0);
+      co.regionShares[r.id]=rTotal>0?regionOrders[r.id][co.id]/rTotal:0.25;
+    });
+
+    const catalogProducts=co.catalog.map(pid=>PRODUCTS.find(p=>p.id===pid)).filter(Boolean);
+    const catalogMarginBoost=catalogProducts.reduce((s,p)=>s+p.marginImpact,0)/catalogProducts.length*0.5;
+    const catalogCost=catalogProducts.reduce((s,p)=>s+p.costCr,0)*0.3;
+
+    const gm=0.16+pOpt.marginHit+(co.tech*0.0008)+plOpt.marginBoost+catalogMarginBoost;
+    const gp=co.revenue*gm;
+    const totalStores=Object.values(co.stores).reduce((a,b)=>a+b,0);
+    let storeCost=totalStores*0.10*sOpt.costMult;
+    if(isAI && co.tech>=70) storeCost*=0.80;
+    const mktCost=co.revenue*mOpt.costPct;
+    const loyaltyCost=co.revenue*lOpt.costPct;
+    const techCost=tOpt.costCr;
+    const opex=storeCost+mktCost+loyaltyCost+techCost+catalogCost;
+    co.ebitda=Math.round(gp-opex);
+
+    let investCost=0;
+    REGIONS.forEach(r=>{investCost+=(co.storeInvest[r.id]||0)*1.5;});
+    co.cash=Math.round(co.cash+co.ebitda-investCost);
+    co.cumRevenue=(co.cumRevenue||0)+co.revenue;
+    co.cumEbitda=(co.cumEbitda||0)+co.ebitda;
+
+    const mOpt2=MARKETING_OPTS.find(m=>m.id===co.marketing);
+    const lOpt2=LOYALTY_OPTS.find(l=>l.id===co.loyalty);
+    const storeAcq=totalStores*35;
+    const mktAcq=Math.round(co.revenue*(mOpt2.costPct||0)*800);
+    const techAcq=Math.round(co.tech*15);
+    const catalogAcq=Math.round(co.catalog.length*120);
+    const pricingAcq=PRICING_OPTS.find(p=>p.id===co.pricing).priceScore*8;
+    const newU=Math.round(storeAcq+mktAcq+techAcq+catalogAcq+pricingAcq);
+    const churnRate=0.06-(lOpt2.retentionBoost||0)*0.003-(co.brand*0.0002);
+    const churned=Math.round(co.users*Math.max(0.01,churnRate));
+    co.newUsers=newU;
+    co.churnedUsers=churned;
+    co.users=co.users+newU-churned;
+  });
+}
+
+// ─── FORMATTING ───
+function fmt(n){return Math.abs(n)>=100?n.toLocaleString('en-IN'):n.toFixed(1);}
+function fmtCr(n){return '₹'+fmt(n)+' Cr';}
+function fmtPct(n){return(n*100).toFixed(1)+'%';}
+
+// ─── RENDER ───
+function render(){
+  const app=document.getElementById('app');
+  if(state.screen==='title') app.innerHTML=renderTitle();
+  else if(state.screen==='select') app.innerHTML=renderSelect();
+  else if(state.screen==='play') app.innerHTML=renderPlay();
+  else if(state.screen==='results') app.innerHTML=renderResults();
+  else if(state.screen==='final') app.innerHTML=renderFinal();
+  window.scrollTo(0,0);
+}
+
+function renderTitle(){
+  return `<div class="screen active title-screen">
+    <div class="title-brand">
+      <div class="eyebrow">SimuLok AI Presents</div>
+      <h1>Dash<span>Mart</span></h1>
+      <div class="subtitle">The 10-Minute War</div>
+      <p class="desc">India's quick commerce market is a battlefield. Four companies, each dominant in one region, are racing to become the national leader. You take the helm of one. Over 12 rounds of strategic decisions, you'll expand stores, curate products, set prices, invest in technology, and navigate market shocks &mdash; all while your three AI rivals fight for the same customers.</p>
+    </div>
+
+    <div class="manual-wrap">
+
+      <div class="manual-section">
+        <h3>&#127919; Your Objective</h3>
+        <p>Win the highest <strong>market share</strong> across all four regions of India by Round 12. But share alone won't save you &mdash; you need <strong>positive EBITDA</strong> and enough <strong>cash</strong> to survive four major market shocks. The winner is the most strategically complete company, not just the biggest.</p>
+        <div class="win-box">
+          <p><strong>How you're scored:</strong> Market share (weighted across regions) is the primary metric. Ties are broken by cumulative EBITDA, then brand score. Going bankrupt (cash below zero) ends your run early.</p>
+        </div>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#9881;&#65039; The 8 Strategy Levers</h3>
+        <p>Each round, you make decisions across six tabs. Here's what each lever does and the trade-offs involved:</p>
+        <div class="lever-grid">
+          <div class="lever-card">
+            <div class="lever-name">&#127978; Store Expansion</div>
+            <div class="lever-desc">Add dark stores in each region using sliders. More stores = more coverage and orders, but each store costs <strong>&#8377;1.5 Cr</strong> to open + ongoing ops cost. Expand into rival regions to steal share, or deepen your home base.</div>
+          </div>
+          <div class="lever-card">
+            <div class="lever-name">&#9889; Delivery Speed</div>
+            <div class="lever-desc"><strong>10-min</strong> (costly, loved by Pros), <strong>15-min</strong> (balanced), or <strong>30-min</strong> (cheap, slower). Speed is critical for Urban Professionals but less so for Families.</div>
+          </div>
+          <div class="lever-card">
+            <div class="lever-name">&#128295; Technology</div>
+            <div class="lever-desc"><strong>Maintain</strong> (&#8377;8 Cr/rnd), <strong>Invest</strong> (&#8377;22 Cr), or <strong>AI Leap</strong> (&#8377;50 Cr). Higher tech improves margins, unlocks cost savings at 70+ tech score, and helps survive shocks.</div>
+          </div>
+          <div class="lever-card">
+            <div class="lever-name">&#128230; Product Catalog</div>
+            <div class="lever-desc">Start with 4 products, expand up to 16. Each product has a cost, margin impact, and <strong>segment affinity</strong>. Adding Pharmacy appeals to Families + Pros. Adding Pet Care targets Young + Pros. Match products to the segments dominant in your target regions.</div>
+          </div>
+          <div class="lever-card">
+            <div class="lever-name">&#128176; Pricing Strategy</div>
+            <div class="lever-desc"><strong>Deep Discount</strong> (high volume, -8% margin), <strong>Competitive</strong> (balanced), or <strong>Premium</strong> (+6% margin, lower volume). Families are price-sensitive; Health & Wellness customers are not.</div>
+          </div>
+          <div class="lever-card">
+            <div class="lever-name">&#128227; Marketing Spend</div>
+            <div class="lever-desc">2% to 20% of revenue. Higher spend boosts brand score and acquires users faster. "Blitz" (20%) is IPL-sponsorship level &mdash; powerful but expensive.</div>
+          </div>
+          <div class="lever-card">
+            <div class="lever-name">&#127991;&#65039; Private Label</div>
+            <div class="lever-desc">0% to 30% own-brand products. Higher private label boosts margins but risks brand perception at 20%+. Sweet spot depends on your pricing strategy.</div>
+          </div>
+          <div class="lever-card">
+            <div class="lever-name">&#127873; Loyalty & Fundraising</div>
+            <div class="lever-desc"><strong>Cashback</strong> or <strong>Subscription Pass</strong> reduce churn and retain users. <strong>Fundraising</strong> injects cash (&#8377;500-2000 Cr) but dilutes ownership. Use fundraising strategically before shocks hit.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#128101; Customer Segments</h3>
+        <p>India's quick commerce customers fall into four segments. Each values different things &mdash; your strategy should target the segments that dominate your chosen regions.</p>
+        <div class="segment-chips">
+          <div class="seg-chip">&#128188; Urban Professionals <span class="seg-pct">28%</span> &mdash; Want speed & tech, premium-tolerant</div>
+          <div class="seg-chip">&#127911; Young Singles <span class="seg-pct">24%</span> &mdash; Brand-conscious, price-aware, impulse buyers</div>
+          <div class="seg-chip">&#128104;&zwj;&#128105;&zwj;&#128103; Families <span class="seg-pct">30%</span> &mdash; Price-sensitive, want wide assortment & coverage</div>
+          <div class="seg-chip">&#129496; Health & Wellness <span class="seg-pct">18%</span> &mdash; Assortment-first, will pay for organic & quality</div>
+        </div>
+        <p style="margin-top:0.8rem">Each segment has a <strong>regional density</strong> &mdash; for example, Health & Wellness customers concentrate in South (32%) and West (35%), while Families dominate the North (32%). Use the <strong>Market Intel</strong> tab during the game to see the heat map and plan your expansion.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#127754; 4 Market Shocks</h3>
+        <p>Four major disruptions will hit during the game. They erode revenue and EBITDA &mdash; but a strong strategy helps you navigate them and even gain competitive advantage while rivals stumble.</p>
+        <div class="shock-timeline">
+          <div class="shock-pill">
+            <div class="shock-round">Round 3</div>
+            <div class="shock-name">&#127754; Monsoon Fury</div>
+            <div class="shock-hint">Floods hit North & East. High tech score mitigates damage.</div>
+          </div>
+          <div class="shock-pill">
+            <div class="shock-round">Round 6</div>
+            <div class="shock-name">&#9878;&#65039; Regulatory Crackdown</div>
+            <div class="shock-hint">Dark store ban. Strong brand gets faster approvals.</div>
+          </div>
+          <div class="shock-pill">
+            <div class="shock-round">Round 9</div>
+            <div class="shock-name">&#127978; Kirana Alliance</div>
+            <div class="shock-hint">Local stores fight back. Loyalty programs retain customers.</div>
+          </div>
+          <div class="shock-pill">
+            <div class="shock-round">Round 11</div>
+            <div class="shock-name">&#10052;&#65039; Funding Winter</div>
+            <div class="shock-hint">No fundraising. Profitable companies thrive; cash-burners suffer.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#128161; Strategy Tips for New Players</h3>
+        <p><strong>1. Read the Market Intel tab</strong> every round. The heat map shows where each customer segment concentrates. Expand stores into regions where your product catalog matches the dominant segment.</p>
+        <p><strong>2. Don't expand everywhere at once.</strong> Consolidate your home region first, then pick one adjacent region to attack. Spreading thin burns cash without gaining meaningful share.</p>
+        <p><strong>3. Watch your cash.</strong> Running out of cash ends your game. Before Round 3's shock, ensure you have a buffer. Consider a Bridge Round fundraise if you're below &#8377;2,000 Cr.</p>
+        <p><strong>4. Products are strategy, not shopping.</strong> Adding Pharmacy (&#8377;15 Cr/rnd) is expensive but attracts 3 segments and boosts margins +4%. Adding Snacks (&#8377;3 Cr) is cheap but only appeals to Young Singles. Think about which segments dominate your target regions.</p>
+        <p><strong>5. Invest in tech early.</strong> Tech score above 70 unlocks a 20% store ops cost reduction &mdash; that's huge at scale. It also helps survive the Monsoon Fury shock in Round 3.</p>
+      </div>
+    </div>
+
+    <div class="manual-cta">
+      <button class="btn btn-primary" data-action="start" style="font-size:1.05rem;padding:0.8rem 2.5rem">I'm Ready &mdash; Choose My Company &#8594;</button>
+    </div>
+  </div>`;
+}
+
+function renderSelect(){
+  const cards=COMPANIES.map(c=>{
+    const ts=Object.values(c.startStores).reduce((a,b)=>a+b,0);
+    const sel=state.selectedCompany===c.id?'selected':'';
+    const home=REGIONS.find(r=>r.id===c.region);
+    return `<div class="company-card ${sel}" data-company="${c.id}">
+      <div class="co-badge" style="background:${c.color}22;color:${c.color}">${c.badge}</div>
+      <h3>${c.name}</h3><div class="co-tag">${c.tag} &mdash; ${home.name}</div>
+      <p class="co-desc">${c.desc}</p>
+      <div class="co-stats">
+        <div class="co-stat"><strong>${ts}</strong>Stores</div>
+        <div class="co-stat"><strong>${fmtCr(c.startCash)}</strong>Cash</div>
+        <div class="co-stat"><strong>${c.startBrand}</strong>Brand</div>
+        <div class="co-stat"><strong>${c.techLevel}</strong>Tech</div>
+      </div></div>`;
+  }).join('');
+  return `<div class="screen active select-screen">
+    <h2>Choose Your Company</h2><p class="hint">Each starts dominant in one region. Your job is to conquer all four.</p>
+    <div class="company-grid">${cards}</div>
+    <button class="btn btn-primary" data-action="begin" ${state.selectedCompany?'':'disabled'}>Launch ${state.selectedCompany?COMPANIES.find(c=>c.id===state.selectedCompany).name:''}</button>
+  </div>`;
+}
+
+function renderPlay(){
+  const p=state.companies.find(c=>c.isPlayer), q=state.quarter, d=state.decisions, at=state.activeTab;
+  const shock=SHOCK_ROUNDS[q], event=QUARTER_EVENTS[q]||shock;
+
+  let rail='';for(let i=1;i<=TOTAL_ROUNDS;i++){
+    const cls=i<q?'done':i===q?'current':'';
+    const shockCls=SHOCK_ROUNDS[i]&&i!==q?' shock':'';
+    rail+=`<div class="qr-dot ${cls}${shockCls}"></div>`;
+  }
+
+  const eCl=p.ebitda>=0?'positive':'negative', sCl=p.marketShare>=0.25?'positive':'negative';
+
+  let eventHtml='';
+  if(event){
+    const cls=shock?'shock':'';
+    eventHtml=`<div class="event-banner ${cls}"><div class="ev-icon">${event.icon}</div><div class="ev-text"><strong>${shock?'⚠ SHOCK — ':''}R${q}: ${event.title}</strong>${event.text}</div></div>`;
+  }
+
+  // Tab: Operations
+  let storeCards=REGIONS.map(r=>{
+    const cur=p.stores[r.id]||0, inv=d.storeInvest?.[r.id]||0;
+    return `<div class="dec-card"><div class="dc-city">${r.name}</div><div class="dc-label">Current: ${cur} stores</div>
+      <div class="slider-wrap"><input type="range" min="0" max="50" value="${inv}" data-store-region="${r.id}"><div class="slider-val">+${inv} new</div></div></div>`;
+  }).join('');
+
+  let speedHtml=SPEED_OPTS.map(s=>`<button class="option-btn ${d.speed===s.id?'selected':''}" data-speed="${s.id}"><strong>${s.label}</strong> &mdash; ${s.desc}</button>`).join('');
+  let techHtml=TECH_OPTS.map(t=>`<button class="option-btn ${d.techInvest===t.id?'selected':''}" data-techinvest="${t.id}"><strong>${t.label}</strong> &mdash; ${t.desc} (${fmtCr(t.costCr)}/rnd)</button>`).join('');
+
+  const opsPanel=`<div class="tab-panel ${at==='operations'?'active':''}" data-panel="operations">
+    <div class="dec-section"><h3><span class="icon">🏗️</span> Store Expansion by Region</h3><div class="dec-grid">${storeCards}</div></div>
+    <div class="dec-section"><h3><span class="icon">⚡</span> Delivery Speed</h3><div class="option-group">${speedHtml}</div></div>
+    <div class="dec-section"><h3><span class="icon">🔧</span> Technology Investment</h3><div class="option-group">${techHtml}</div></div>
+  </div>`;
+
+  // Tab: Products (NEW)
+  const prodPanel=`<div class="tab-panel ${at==='products'?'active':''}" data-panel="products">
+    <div class="dec-section"><h3><span class="icon">📦</span> Product Catalog (${p.catalog.length} active)</h3>
+    <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.6rem">Add products to increase assortment score and attract more segments. Each product has a cost and margin impact. Choose wisely &mdash; adding too many strains your operations.</p>
+    <div class="product-grid">${PRODUCTS.map(prod=>{
+      const inCatalog=p.catalog.includes(prod.id);
+      const adding=d.addProducts?.includes(prod.id);
+      const removing=d.removeProducts?.includes(prod.id);
+      const active=(inCatalog && !removing) || adding;
+      const segTags=(prod.segments||[]).map(sid=>{const s=SEGMENTS.find(sg=>sg.id===sid);return s?`<span class="seg-tag">${s.emoji} ${s.short}</span>`:''}).join('');
+      return `<div class="product-item ${active?'in-catalog':''}">
+        <div class="pi-name">${prod.name}</div>
+        <div style="font-size:0.7rem;color:var(--muted)">${prod.cat} &mdash; ${prod.desc}</div>
+        <div class="seg-tags">${segTags}</div>
+        <div class="pi-stats">
+          <span>Cost: ${fmtCr(prod.costCr)}/rnd</span>
+          <span class="${prod.marginImpact>=0?'positive':'negative'}">Margin: ${prod.marginImpact>=0?'+':''}${(prod.marginImpact*100).toFixed(0)}%</span>
+          <span class="positive">+${prod.assortBoost} assort</span>
+        </div>
+        <button class="pi-btn" data-product="${prod.id}" data-product-action="${active?'remove':'add'}">${active?(inCatalog&&!removing?'Remove':'Adding...'):(adding?'Adding...':'+ Add')}</button>
+      </div>`;
+    }).join('')}</div></div>
+  </div>`;
+
+  // Tab: Market Intel (heat map + users)
+  function heatClass(v){ return v>=0.30?'hm-hot':v>=0.25?'hm-warm':'hm-cool'; }
+  const hmRows=SEGMENTS.map(seg=>{
+    const cells=REGIONS.map(r=>{
+      const d2=seg.regionDensity?.[r.id]||0.25;
+      return `<td><span class="hm-cell ${heatClass(d2)}">${(d2*100).toFixed(0)}%</span></td>`;
+    }).join('');
+    const bestProds=PRODUCTS.filter(pr=>pr.segments?.includes(seg.id)&&!p.catalog.includes(pr.id)).slice(0,2).map(pr=>pr.name).join(', ');
+    return `<tr><td>${seg.emoji} ${seg.short}</td>${cells}<td style="font-size:0.6rem;color:var(--muted);font-family:system-ui,sans-serif;text-align:left">${bestProds||'✓ covered'}</td></tr>`;
+  }).join('');
+
+  const yourRegionFit=REGIONS.map(r=>{
+    const yourStores=p.stores[r.id]||0;
+    const topSeg=SEGMENTS.reduce((a,b)=>(b.regionDensity?.[r.id]||0)>(a.regionDensity?.[r.id]||0)?b:a);
+    const segProds=PRODUCTS.filter(pr=>pr.segments?.includes(topSeg.id)&&p.catalog.includes(pr.id)).length;
+    const totalSegProds=PRODUCTS.filter(pr=>pr.segments?.includes(topSeg.id)).length;
+    return `<div class="intel-row"><span class="ir-name">${r.name.replace(' India','')}</span><span class="ir-val" style="font-size:0.65rem">${topSeg.emoji} ${segProds}/${totalSegProds} prods</span></div>`;
+  }).join('');
+
+  const marketPanel=`<div class="tab-panel ${at==='market'?'active':''}" data-panel="market">
+    <div class="dec-section"><h3><span class="icon">🗺️</span> Segment-Region Heat Map</h3>
+    <p style="font-size:0.75rem;color:var(--muted);margin-bottom:0.4rem">Where each customer segment concentrates. Match your product catalog and store expansion to high-density segments in your target regions.</p>
+    <div style="overflow-x:auto"><table class="heatmap"><thead><tr><th>Segment</th>${REGIONS.map(r=>`<th>${r.name.replace(' India','')}</th>`).join('')}<th>Products to Add</th></tr></thead><tbody>${hmRows}</tbody></table></div></div>
+
+    <div class="dec-section" style="margin-top:1rem"><h3><span class="icon">👥</span> User Acquisition</h3>
+    <div class="user-stat"><span class="us-icon">📱</span><span>Total Users on Platform</span><span class="us-val">${(p.users/1000).toFixed(1)}K</span></div>
+    ${q>1?`<div class="user-stat"><span class="us-icon">📈</span><span>New Users This Round</span><span class="us-val us-delta up">+${(p.newUsers/1000).toFixed(1)}K</span></div>
+    <div class="user-stat"><span class="us-icon">📉</span><span>Users Churned</span><span class="us-val us-delta down">-${(p.churnedUsers/1000).toFixed(1)}K</span></div>
+    <div class="user-stat"><span class="us-icon">📊</span><span>Net Growth</span><span class="us-val us-delta ${p.newUsers-p.churnedUsers>=0?'up':'down'}">${p.newUsers-p.churnedUsers>=0?'+':''}${((p.newUsers-p.churnedUsers)/1000).toFixed(1)}K</span></div>`:'<p style="font-size:0.75rem;color:var(--muted)">User data will appear after Round 1.</p>'}
+    </div>
+
+    <div class="dec-section" style="margin-top:1rem"><h3><span class="icon">🎯</span> Your Region-Product Fit</h3>
+    <p style="font-size:0.75rem;color:var(--muted);margin-bottom:0.4rem">How well your catalog matches the top customer segment in each region.</p>
+    ${yourRegionFit}
+    </div>
+
+    <div class="dec-section" style="margin-top:1rem"><h3><span class="icon">🏆</span> User Base Comparison</h3>
+    ${state.companies.map(co=>`<div class="intel-row"><span class="ir-name"><span class="ir-dot" style="background:${co.color}"></span>${co.name}${co.isPlayer?' (You)':''}</span><span class="ir-val">${(co.users/1000).toFixed(0)}K users</span></div>`).join('')}
+    </div>
+  </div>`;
+
+  // Tab: Commercial
+  let pricingHtml=PRICING_OPTS.map(p=>`<button class="option-btn ${d.pricing===p.id?'selected':''}" data-pricing="${p.id}"><strong>${p.label}</strong> &mdash; ${p.desc}</button>`).join('');
+  let plHtml=PRIVATE_LABEL_OPTS.map(l=>`<button class="option-btn ${d.privateLabel===l.id?'selected':''}" data-privatelabel="${l.id}"><strong>${l.label}</strong> &mdash; ${l.desc}</button>`).join('');
+  let mktHtml=MARKETING_OPTS.map(m=>`<button class="option-btn ${d.marketing===m.id?'selected':''}" data-marketing="${m.id}"><strong>${m.label}</strong> &mdash; ${m.desc}</button>`).join('');
+
+  const comPanel=`<div class="tab-panel ${at==='commercial'?'active':''}" data-panel="commercial">
+    <div class="dec-section"><h3><span class="icon">💰</span> Pricing Strategy</h3><div class="option-group">${pricingHtml}</div></div>
+    <div class="dec-section"><h3><span class="icon">🏷️</span> Private Label Mix</h3><div class="option-group">${plHtml}</div></div>
+    <div class="dec-section"><h3><span class="icon">📣</span> Marketing Spend</h3><div class="option-group">${mktHtml}</div></div>
+  </div>`;
+
+  // Tab: Growth
+  let loyHtml=LOYALTY_OPTS.map(l=>`<button class="option-btn ${d.loyalty===l.id?'selected':''}" data-loyalty="${l.id}"><strong>${l.label}</strong> &mdash; ${l.desc}</button>`).join('');
+  let funHtml=FUNDRAISE_OPTS.map(f=>{
+    const disabled=shock&&shock.noFundraise&&f.id!=='none';
+    return `<button class="option-btn ${d.fundraise===f.id?'selected':''} ${disabled?'disabled':''}" data-fundraise="${f.id}" ${disabled?'disabled':''}><strong>${f.label}</strong> &mdash; ${f.desc}${disabled?' (blocked this round)':''}</button>`;
+  }).join('');
+
+  const growPanel=`<div class="tab-panel ${at==='growth'?'active':''}" data-panel="growth">
+    <div class="dec-section"><h3><span class="icon">🎯</span> Loyalty Program</h3><div class="option-group">${loyHtml}</div></div>
+    <div class="dec-section"><h3><span class="icon">💸</span> Fundraising</h3><div class="option-group">${funHtml}</div></div>
+  </div>`;
+
+  // Tab: Finance
+  const sOpt=SPEED_OPTS.find(s=>s.id===d.speed), tOpt=TECH_OPTS.find(t=>t.id===d.techInvest);
+  const mOpt=MARKETING_OPTS.find(m=>m.id===d.marketing), lOpt=LOYALTY_OPTS.find(l=>l.id===d.loyalty);
+  const pOpt=PRICING_OPTS.find(pp=>pp.id===d.pricing);
+  const ts=Object.values(p.stores).reduce((a,b)=>a+b,0);
+  const investCost=REGIONS.reduce((sum,r)=>(sum+(d.storeInvest?.[r.id]||0)*1.5),0);
+  const estStoreCost=ts*0.10*(sOpt?.costMult||1);
+  const catalogProducts=p.catalog.map(pid=>PRODUCTS.find(pp=>pp.id===pid)).filter(Boolean);
+  const catalogCost=catalogProducts.reduce((s,pp)=>s+pp.costCr,0)*0.3;
+
+  const finPanel=`<div class="tab-panel ${at==='finance'?'active':''}" data-panel="finance">
+    <div class="dec-section"><h3><span class="icon">📊</span> Projected Cost Structure</h3>
+    <div class="mini-pl">
+      <div class="pl-row pl-header"><span>Line Item</span><span>Est. / Round</span></div>
+      <div class="pl-row"><span>Last Round Revenue</span><span class="pl-val">${fmtCr(p.revenue)}</span></div>
+      <div class="pl-row"><span>Store Ops (${ts} stores)</span><span class="pl-val" style="color:var(--loss)">-${fmtCr(estStoreCost)}</span></div>
+      <div class="pl-row"><span>Marketing (${mOpt?.id||'medium'})</span><span class="pl-val" style="color:var(--loss)">-${fmtCr(p.revenue*(mOpt?.costPct||0.06))}</span></div>
+      <div class="pl-row"><span>Catalog Costs (${catalogProducts.length} products)</span><span class="pl-val" style="color:var(--loss)">-${fmtCr(catalogCost)}</span></div>
+      <div class="pl-row"><span>Technology</span><span class="pl-val" style="color:var(--loss)">-${fmtCr(tOpt?.costCr||8)}</span></div>
+      <div class="pl-row pl-total"><span>New Store CapEx</span><span class="pl-val" style="color:var(--loss)">-${fmtCr(investCost)}</span></div>
+    </div></div>
+    <div class="dec-section" style="margin-top:0.8rem"><h3><span class="icon">🏦</span> Balance Sheet</h3>
+    <div class="mini-pl">
+      <div class="pl-row"><span>Cash on Hand</span><span class="pl-val">${fmtCr(p.cash)}</span></div>
+      <div class="pl-row"><span>Total Dilution</span><span class="pl-val">${p.dilutionTotal||0}%</span></div>
+      <div class="pl-row"><span>Cumulative Revenue</span><span class="pl-val">${fmtCr(p.cumRevenue)}</span></div>
+      <div class="pl-row"><span>Cumulative EBITDA</span><span class="pl-val" style="color:${p.cumEbitda>=0?'var(--neem)':'var(--loss)'}">${fmtCr(p.cumEbitda)}</span></div>
+    </div></div>
+  </div>`;
+
+  // Sidebar
+  let shareBar=state.companies.map(co=>`<div class="sb-seg" style="width:${(co.marketShare*100).toFixed(1)}%;background:${co.color}"></div>`).join('');
+  let intel=state.companies.map(co=>`<div class="intel-row"><span class="ir-name"><span class="ir-dot" style="background:${co.color}"></span>${co.name}${co.isPlayer?' (You)':''}</span><span class="ir-val">${fmtPct(co.marketShare)}</span></div>`).join('');
+
+  let regionIntel=REGIONS.map(r=>{
+    const leader=state.companies.reduce((a,b)=>(b.regionShares[r.id]>a.regionShares[r.id]?b:a));
+    return `<div class="region-cell"><span>${r.name.replace(' India','')}</span><span class="rc-leader" style="color:${leader.color}">${leader.badge} ${fmtPct(leader.regionShares[r.id])}</span></div>`;
+  }).join('');
+
+  let stratIntel='';
+  if(q>1) stratIntel=`<div class="intel-section"><h4>Last Round Intel</h4>${state.companies.filter(c=>!c.isPlayer).map(co=>`<div class="intel-row"><span class="ir-name"><span class="ir-dot" style="background:${co.color}"></span>${co.name}</span><span class="ir-val" style="font-size:0.65rem">${co.speed}/${co.pricing}</span></div>`).join('')}</div>`;
+
+  return `<div class="screen active game-screen">
+    <div class="game-header">
+      <div class="qtr-label">R<span>${q}</span> of ${TOTAL_ROUNDS}</div>
+      <div class="quarter-rail">${rail}</div>
+      <div class="metrics-bar">
+        <div class="metric-chip"><div class="label">Revenue</div><div class="val mono">${fmtCr(p.revenue)}</div></div>
+        <div class="metric-chip"><div class="label">EBITDA</div><div class="val mono ${eCl}">${fmtCr(p.ebitda)}</div></div>
+        <div class="metric-chip"><div class="label">Share</div><div class="val mono ${sCl}">${fmtPct(p.marketShare)}</div></div>
+        <div class="metric-chip"><div class="label">Cash</div><div class="val mono ${p.cash>0?'':'negative'}">${fmtCr(p.cash)}</div></div>
+        <div class="metric-chip"><div class="label">Users</div><div class="val mono">${(p.users/1000).toFixed(0)}K</div></div>
+      </div>
+    </div>
+    ${eventHtml}
+    <div class="game-body">
+      <div class="game-main">
+        <div class="tab-bar">
+          <button class="tab-btn ${at==='operations'?'active':''}" data-tab="operations">Operations</button>
+          <button class="tab-btn ${at==='products'?'active':''}" data-tab="products">Products</button>
+          <button class="tab-btn ${at==='commercial'?'active':''}" data-tab="commercial">Commercial</button>
+          <button class="tab-btn ${at==='growth'?'active':''}" data-tab="growth">Growth</button>
+          <button class="tab-btn ${at==='market'?'active':''}" data-tab="market">Market Intel</button>
+          <button class="tab-btn ${at==='finance'?'active':''}" data-tab="finance">Finance</button>
+        </div>
+        ${opsPanel}${prodPanel}${marketPanel}${comPanel}${growPanel}${finPanel}
+      </div>
+      <div class="game-sidebar">
+        <div class="intel-section"><h4>Market Share</h4>${intel}<div class="share-bar" style="margin-top:0.2rem">${shareBar}</div></div>
+        <div class="intel-section"><h4>Regional Leaders</h4><div class="region-grid">${regionIntel}</div></div>
+        ${stratIntel}
+        <div class="intel-section"><h4>Your Position</h4>
+          <div class="intel-row"><span class="ir-name">Total Stores</span><span class="ir-val">${ts}</span></div>
+          <div class="intel-row"><span class="ir-name">Brand</span><span class="ir-val">${Math.round(p.brand)}</span></div>
+          <div class="intel-row"><span class="ir-name">Tech</span><span class="ir-val">${Math.round(p.tech)}</span></div>
+          <div class="intel-row"><span class="ir-name">Products</span><span class="ir-val">${p.catalog.length}</span></div>
+          <div class="intel-row"><span class="ir-name">Users</span><span class="ir-val">${(p.users/1000).toFixed(0)}K</span></div>
+          ${q>1?`<div class="intel-row"><span class="ir-name">New Users</span><span class="ir-val" style="color:var(--neem)">+${(p.newUsers/1000).toFixed(1)}K</span></div>`:''}
+          <div class="intel-row"><span class="ir-name">Home Region</span><span class="ir-val">${p.homeRegion}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="submit-area">
+      <div class="cost-preview">CapEx: <strong>${fmtCr(investCost)}</strong> | Products: <strong>${p.catalog.length}</strong></div>
+      <button class="btn btn-primary" data-action="submit">Submit Round ${q} &rarr;</button>
+    </div>
+  </div>`;
+}
+
+function renderResults(){
+  const p=state.companies.find(c=>c.isPlayer), q=state.quarter;
+  const prev=state.history[state.history.length-2], pp=prev?.companies?.find(c=>c.isPlayer);
+  const rd=pp?p.revenue-pp.revenue:0, sd=pp?p.marketShare-pp.marketShare:0;
+  const sorted=[...state.companies].sort((a,b)=>b.marketShare-a.marketShare);
+  const shock=SHOCK_ROUNDS[q];
+
+  let shockHtml='';
+  if(shock){
+    shockHtml=`<div class="shock-impact"><strong>⚠ ${shock.title} Impact</strong>${shock.text}</div>`;
+  }
+
+  const rows=sorted.map(co=>{
+    const regWins=REGIONS.filter(r=>co.regionShares[r.id]===Math.max(...state.companies.map(c=>c.regionShares[r.id]))).length;
+    return `<tr class="${co.isPlayer?'you':''}">
+    <td><span class="ct-dot" style="background:${co.color}"></span>${co.name}${co.isPlayer?' (You)':''}</td>
+    <td>${fmtPct(co.marketShare)}</td><td>${fmtCr(co.revenue)}</td>
+    <td style="color:${co.ebitda>=0?'var(--neem)':'var(--loss)'}">${fmtCr(co.ebitda)}</td>
+    <td>${Object.values(co.stores).reduce((a,b)=>a+b,0)}</td>
+    <td>${regWins}/4</td>
+    <td>${(co.users/1000).toFixed(0)}K</td>
+    <td>${fmtCr(co.cash)}</td></tr>`;
+  }).join('');
+
+  return `<div class="screen active results-screen"><div class="results-container">
+    <div class="results-header"><div class="rh-quarter">Round ${q} Results</div><h2>The Market Has Spoken</h2></div>
+    ${shockHtml}
+    <div class="results-grid">
+      <div class="result-card"><div class="label rc-label">Revenue</div><div class="rc-val mono">${fmtCr(p.revenue)}</div><div class="rc-delta ${rd>=0?'up':'down'}">${rd>=0?'▲':'▼'} ${fmtCr(Math.abs(rd))}</div></div>
+      <div class="result-card"><div class="label rc-label">EBITDA</div><div class="rc-val mono" style="color:${p.ebitda>=0?'var(--neem)':'var(--loss)'}">${fmtCr(p.ebitda)}</div></div>
+      <div class="result-card"><div class="label rc-label">Market Share</div><div class="rc-val mono">${fmtPct(p.marketShare)}</div><div class="rc-delta ${sd>=0?'up':'down'}">${sd>=0?'▲':'▼'} ${(Math.abs(sd)*100).toFixed(1)}pp</div></div>
+      <div class="result-card"><div class="label rc-label">Cash</div><div class="rc-val mono" style="color:${p.cash>0?'var(--ink)':'var(--loss)'}">${fmtCr(p.cash)}</div></div>
+      <div class="result-card"><div class="label rc-label">Regions Led</div><div class="rc-val mono">${REGIONS.filter(r=>p.regionShares[r.id]===Math.max(...state.companies.map(c=>c.regionShares[r.id]))).length}/4</div></div>
+      <div class="result-card"><div class="label rc-label">Users</div><div class="rc-val mono">${(p.users/1000).toFixed(0)}K</div><div class="rc-delta up">+${(p.newUsers/1000).toFixed(1)}K new</div></div>
+    </div>
+    <h3 style="margin-bottom:0.5rem">Competitive Landscape</h3>
+    <div style="overflow-x:auto;margin-bottom:1rem"><table class="competitor-table"><thead><tr><th>Company</th><th>Share</th><th>Revenue</th><th>EBITDA</th><th>Stores</th><th>Regions</th><th>Users</th><th>Cash</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div style="text-align:center"><button class="btn btn-primary" data-action="${q>=TOTAL_ROUNDS?'final':'nextquarter'}">${q>=TOTAL_ROUNDS?'See Final Score &rarr;':'Next Round &rarr;'}</button></div>
+  </div></div>`;
+}
+
+function renderFinal(){
+  const sorted=[...state.companies].sort((a,b)=>finalScore(b)-finalScore(a));
+  const p=state.companies.find(c=>c.isPlayer), rank=sorted.findIndex(c=>c.isPlayer)+1, score=finalScore(p);
+  const emoji=['','🥇','🥈','🥉',''];
+  const regionsWon=REGIONS.filter(r=>p.regionShares[r.id]===Math.max(...state.companies.map(c=>c.regionShares[r.id]))).length;
+
+  const rows=sorted.map((co,i)=>{
+    const rw=REGIONS.filter(r=>co.regionShares[r.id]===Math.max(...state.companies.map(c=>c.regionShares[r.id]))).length;
+    return `<tr class="${co.isPlayer?'you':''}"><td>#${i+1}</td>
+    <td><span class="ct-dot" style="background:${co.color}"></span>${co.name}${co.isPlayer?' (You)':''}</td>
+    <td>${finalScore(co).toFixed(0)}</td><td>${fmtCr(co.cumRevenue)}</td>
+    <td style="color:${co.cumEbitda>=0?'var(--neem)':'var(--loss)'}">${fmtCr(co.cumEbitda)}</td>
+    <td>${fmtPct(co.marketShare)}</td><td>${rw}/4</td></tr>`;
+  }).join('');
+
+  return `<div class="screen active final-screen"><div class="final-container">
+    <div class="label" style="margin-bottom:0.5rem">Final Standings &mdash; ${TOTAL_ROUNDS} Rounds Complete</div>
+    <div class="final-rank">${emoji[rank]||''} #${rank}</div>
+    <div class="final-rank-label">${p.name} finished with a score of ${score.toFixed(0)}</div>
+    <div class="final-metrics">
+      <div class="final-metric"><div class="label">Revenue</div><div class="fm-val mono">${fmtCr(p.cumRevenue)}</div></div>
+      <div class="final-metric"><div class="label">EBITDA</div><div class="fm-val mono" style="color:${p.cumEbitda>=0?'var(--neem)':'var(--loss)'}">${fmtCr(p.cumEbitda)}</div></div>
+      <div class="final-metric"><div class="label">Share</div><div class="fm-val mono">${fmtPct(p.marketShare)}</div></div>
+      <div class="final-metric"><div class="label">Regions</div><div class="fm-val mono">${regionsWon}/4</div></div>
+    </div>
+    <div style="overflow-x:auto;margin-bottom:1rem;text-align:left"><table class="competitor-table"><thead><tr><th>Rank</th><th>Company</th><th>Score</th><th>Revenue</th><th>EBITDA</th><th>Share</th><th>Regions</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" data-action="restart">Play Again</button>
+      <button class="btn btn-secondary" data-action="restart">Try Another Company</button>
+    </div>
+    <p style="margin-top:1.2rem;font-size:0.72rem;color:var(--muted);max-width:520px;margin-left:auto;margin-right:auto">
+      DashMart is an educational simulation by SimuLok AI. Market dynamics are modelled for teaching, not forecasting. Not affiliated with any company.</p>
+  </div></div>`;
+}
+
+function finalScore(co){
+  const sh=co.marketShare*100*2.0;
+  const pr=co.cumEbitda>0?Math.min(30,co.cumEbitda*0.03):Math.max(-15,co.cumEbitda*0.02);
+  const ca=co.cash>0?Math.min(10,co.cash*0.002):-8;
+  const br=co.brand*0.12;
+  const te=co.tech*0.08;
+  const regWins=REGIONS.filter(r=>co.regionShares[r.id]===Math.max(...state.companies.map(c=>c.regionShares[r.id]))).length;
+  const rg=regWins*8;
+  const cat=co.catalog.length*0.8;
+  const usr=Math.min(10,(co.users/100000)*2);
+  const dil=-(co.dilutionTotal||0)*0.25;
+  return sh+pr+ca+br+te+rg+cat+usr+dil;
+}
+
+// ─── EVENT DELEGATION ───
+document.getElementById('app').addEventListener('click', function(e){
+  const t=e.target.closest('[data-action],[data-company],[data-pricing],[data-marketing],[data-speed],[data-techinvest],[data-loyalty],[data-privatelabel],[data-fundraise],[data-tab],[data-product]');
+  if(!t) return;
+
+  if(t.dataset.tab){
+    state.activeTab=t.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===state.activeTab));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.dataset.panel===state.activeTab));
+    return;
+  }
+  if(t.dataset.company){
+    state.selectedCompany=t.dataset.company;
+    document.querySelectorAll('.company-card').forEach(c=>c.classList.remove('selected'));
+    t.closest('.company-card')?.classList.add('selected');
+    const btn=document.querySelector('[data-action="begin"]');
+    if(btn){btn.disabled=false;btn.textContent='Launch '+COMPANIES.find(c=>c.id===state.selectedCompany).name;}
+    return;
+  }
+  // Product add/remove
+  if(t.dataset.product){
+    const pid=t.dataset.product;
+    const action=t.dataset.productAction;
+    if(action==='add'){
+      if(!state.decisions.addProducts) state.decisions.addProducts=[];
+      state.decisions.removeProducts=state.decisions.removeProducts?.filter(p=>p!==pid)||[];
+      const p=state.companies.find(c=>c.isPlayer);
+      if(!p.catalog.includes(pid) && !state.decisions.addProducts.includes(pid)){
+        state.decisions.addProducts.push(pid);
+      }
+    } else {
+      if(!state.decisions.removeProducts) state.decisions.removeProducts=[];
+      state.decisions.addProducts=state.decisions.addProducts?.filter(p=>p!==pid)||[];
+      const p=state.companies.find(c=>c.isPlayer);
+      if(p.catalog.includes(pid) && !state.decisions.removeProducts.includes(pid)){
+        state.decisions.removeProducts.push(pid);
+      }
+    }
+    render();
+    return;
+  }
+  // Option toggles
+  const optMap={pricing:'pricing',marketing:'marketing',speed:'speed',techinvest:'techInvest',loyalty:'loyalty',privatelabel:'privateLabel',fundraise:'fundraise'};
+  for(const[attr,key] of Object.entries(optMap)){
+    if(t.dataset[attr]!==undefined){
+      if(t.disabled) return;
+      state.decisions[key]=t.dataset[attr];
+      document.querySelectorAll(`[data-${attr}]`).forEach(b=>b.classList.remove('selected'));
+      t.classList.add('selected');
+      if(state.activeTab==='finance'){
+        const fp=document.querySelector('[data-panel="finance"]');
+        if(fp){const tmp=document.createElement('div');tmp.innerHTML=renderPlay();const nfp=tmp.querySelector('[data-panel="finance"]');if(nfp)fp.innerHTML=nfp.innerHTML;}
+      }
+      return;
+    }
+  }
+  const a=t.dataset.action;
+  if(!a) return;
+  if(a==='start'){state.screen='select';render();}
+  else if(a==='begin'){
+    if(!state.selectedCompany) return;
+    state.quarter=1;state.companies=initCompanies(state.selectedCompany);
+    state.decisions=defaultDecisions();state.activeTab='operations';
+    state.history=[{quarter:0,companies:JSON.parse(JSON.stringify(state.companies))}];
+    state.screen='play';render();
+  }
+  else if(a==='submit'){
+    const p=state.companies.find(c=>c.isPlayer);
+    Object.assign(p,{pricing:state.decisions.pricing,marketing:state.decisions.marketing,speed:state.decisions.speed,techInvest:state.decisions.techInvest,
+      loyalty:state.decisions.loyalty,privateLabel:state.decisions.privateLabel,
+      fundraise:state.decisions.fundraise,storeInvest:{...state.decisions.storeInvest},
+      addProducts:state.decisions.addProducts||[],removeProducts:state.decisions.removeProducts||[]});
+    state.companies.filter(c=>!c.isPlayer).forEach(co=>{
+      const d=aiDecisions(co,state.quarter);
+      Object.assign(co,{pricing:d.pricing,marketing:d.marketing,speed:d.speed,
+        techInvest:d.techInvest,loyalty:d.loyalty,privateLabel:d.privateLabel,fundraise:d.fundraise,storeInvest:d.storeInvest,
+        addProducts:d.addProducts,removeProducts:[]});
+    });
+    resolveQuarter(state.companies,state.quarter);
+    state.history.push({quarter:state.quarter,companies:JSON.parse(JSON.stringify(state.companies))});
+    state.screen='results';render();
+  }
+  else if(a==='nextquarter'){
+    state.quarter++;const pp=state.companies.find(c=>c.isPlayer);
+    state.decisions=defaultDecisions();
+    state.decisions.pricing=pp.pricing;state.decisions.marketing=pp.marketing;
+    state.decisions.speed=pp.speed;state.decisions.techInvest=pp.techInvest;state.decisions.loyalty=pp.loyalty;
+    state.decisions.privateLabel=pp.privateLabel;state.decisions.fundraise='none';
+    state.decisions.addProducts=[];state.decisions.removeProducts=[];
+    state.activeTab='operations';state.screen='play';render();
+  }
+  else if(a==='final'){state.screen='final';render();}
+  else if(a==='restart'){state={screen:'select',selectedCompany:null,quarter:0,companies:[],decisions:{},history:[],activeTab:'operations'};render();}
+});
+
+document.getElementById('app').addEventListener('input',function(e){
+  if(e.target.dataset.storeRegion){
+    const region=e.target.dataset.storeRegion;
+    if(!state.decisions.storeInvest) state.decisions.storeInvest={};
+    state.decisions.storeInvest[region]=parseInt(e.target.value);
+    const v=e.target.parentElement.querySelector('.slider-val');
+    if(v) v.textContent='+'+e.target.value+' new';
+    const c=document.querySelector('.cost-preview strong');
+    if(c){const cost=REGIONS.reduce((s,r)=>s+(state.decisions.storeInvest[r.id]||0)*1.5,0);c.textContent=fmtCr(cost);}
+  }
+});
+
+render();
+</script>

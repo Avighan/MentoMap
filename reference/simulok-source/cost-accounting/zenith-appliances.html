@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenith Appliances — The Annual Budget War Room</title>
+</head>
+<body>
+<style>
+:root{
+  --saffron:#D97B2B;--saffron-light:#F5DFC4;--saffron-glow:rgba(217,123,43,0.12);
+  --neem:#1A8A5C;--neem-light:#D0F0E0;
+  --loss:#C0392B;--loss-light:#FADBD8;
+  --ink:#1C2233;--ink-soft:#3A3F4E;
+  --surface:#F4F1EB;--card:#FFFFFF;--card-border:#E4E0D8;
+  --muted:#7E8490;--muted-light:#B8BCC6;
+  --input-bg:#F9F7F3;--shadow:rgba(28,34,51,0.06);--shadow-md:rgba(28,34,51,0.10);
+  --radius:10px;--radius-sm:6px;--radius-lg:16px;
+  --blue:#2980B9;--blue-light:rgba(41,128,185,0.12);
+  --purple:#6C3483;--purple-light:rgba(108,52,131,0.12);
+  --teal:#117A65;--teal-light:rgba(17,122,101,0.12);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink:#E8E4DC;--ink-soft:#B8BCC6;--surface:#121820;--card:#1A2030;
+  --card-border:#2A3040;--muted:#7E8490;--muted-light:#4A5060;
+  --input-bg:#1E2838;--shadow:rgba(0,0,0,0.2);--shadow-md:rgba(0,0,0,0.3);
+  --saffron-light:#3A2810;--neem-light:#102820;--loss-light:#2A1515;
+  --blue-light:rgba(41,128,185,0.15);--purple-light:rgba(108,52,131,0.15);
+  --teal-light:rgba(17,122,101,0.15);
+}}
+[data-theme="dark"]{
+  --ink:#E8E4DC;--ink-soft:#B8BCC6;--surface:#121820;--card:#1A2030;
+  --card-border:#2A3040;--muted:#7E8490;--muted-light:#4A5060;
+  --input-bg:#1E2838;--shadow:rgba(0,0,0,0.2);--shadow-md:rgba(0,0,0,0.3);
+  --saffron-light:#3A2810;--neem-light:#102820;--loss-light:#2A1515;
+  --blue-light:rgba(41,128,185,0.15);--purple-light:rgba(108,52,131,0.15);
+  --teal-light:rgba(17,122,101,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--surface);color:var(--ink);line-height:1.6}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;font-weight:700}
+#app{max-width:860px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.progress-strip{height:3px;background:var(--card-border);position:sticky;top:0;z-index:100}
+.progress-strip-fill{height:100%;background:var(--saffron);transition:width 0.4s}
+
+.game-header{position:sticky;top:3px;z-index:99;background:var(--card);border-bottom:1px solid var(--card-border);padding:8px 16px;display:flex;align-items:center;gap:12px;font-size:0.82rem;box-shadow:0 1px 4px var(--shadow)}
+.brand{display:flex;align-items:center;gap:6px;font-weight:700;color:var(--saffron);font-size:0.85rem;white-space:nowrap}
+.step-badge{background:var(--saffron);color:#fff;padding:2px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;letter-spacing:0.04em;white-space:nowrap}
+.step-badge.event{background:var(--loss)}
+.score-badge{margin-left:auto;padding:2px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;background:var(--neem-light);color:var(--neem);white-space:nowrap}
+
+#main{flex:1;padding:16px}
+
+.round-rail{display:flex;justify-content:center;gap:4px;margin-bottom:16px;flex-wrap:wrap}
+.round-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;border:2px solid var(--card-border);color:var(--muted);background:var(--card);cursor:default;transition:all 0.2s}
+.round-dot.done{background:var(--neem);color:#fff;border-color:var(--neem)}
+.round-dot.current{background:var(--saffron);color:#fff;border-color:var(--saffron);transform:scale(1.15)}
+.round-dot.event-dot{border-color:var(--loss);border-style:dashed}
+.round-dot.event-dot.current{background:var(--loss);border-color:var(--loss);border-style:solid}
+.round-dot.event-dot.done{background:var(--loss);border-color:var(--loss);border-style:solid;opacity:0.8}
+.round-dot.phase-break{margin-left:8px}
+
+.scene-card{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 2px 12px var(--shadow);margin-bottom:16px}
+.scene-header{padding:10px 16px;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:8px}
+.scene-header.budget{background:var(--saffron);color:#fff}
+.scene-header.event{background:var(--loss);color:#fff}
+.scene-header.analysis{background:var(--blue);color:#fff}
+.scene-header.final{background:var(--purple);color:#fff}
+.scene-body{padding:16px 20px}
+.st-title{font-family:Georgia,serif;font-weight:700;font-size:1.05rem;margin-bottom:6px}
+.st-desc{font-size:0.85rem;color:var(--ink-soft);line-height:1.6}
+.st-highlight{color:var(--saffron);font-weight:600}
+.st-loss{color:var(--loss);font-weight:600}
+.st-neem{color:var(--neem);font-weight:600}
+.scene-stats{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 14px}
+.scene-stat{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:6px 10px;text-align:center;flex:1;min-width:80px}
+.ss-val{font-family:ui-monospace,monospace;font-weight:700;font-size:0.82rem}
+.ss-label{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-top:2px}
+
+.concept-box{background:var(--blue-light);border:1.5px solid var(--blue);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px}
+.cb-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.cb-text{font-size:0.84rem;line-height:1.6}
+.cb-formula{font-family:ui-monospace,monospace;font-size:0.82rem;background:var(--input-bg);border:1px solid var(--card-border);padding:8px 12px;border-radius:var(--radius-sm);margin-top:8px;overflow-x:auto}
+
+.data-pack{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px}
+.dp-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:10px}
+.dp-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+.dp-table th{text-align:left;padding:6px 8px;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);border-bottom:1.5px solid var(--card-border);font-weight:600}
+.dp-table td{padding:7px 8px;border-bottom:1px solid var(--card-border)}
+.dp-table td:not(:first-child){text-align:right;font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.dp-table tr.total td{font-weight:700;border-top:2px solid var(--ink);border-bottom:none}
+.dp-table tr:last-child td{border-bottom:none}
+
+.lever-section{background:var(--card);border:1.5px solid var(--saffron);border-radius:var(--radius-lg);padding:16px;margin-bottom:16px}
+.lever-section-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--saffron);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.lever-group{background:var(--input-bg);border:1.5px solid var(--card-border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
+.lever-group:last-child{margin-bottom:0}
+.lever-label{font-weight:700;font-size:0.88rem;margin-bottom:4px}
+.lever-display{font-family:ui-monospace,monospace;font-size:1.4rem;font-weight:700;color:var(--saffron);margin-bottom:8px;font-variant-numeric:tabular-nums}
+.lever-track{width:100%;appearance:none;-webkit-appearance:none;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--neem) 0%,var(--saffron) 50%,var(--loss) 100%);outline:none;cursor:pointer}
+.lever-track::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--saffron);border:3px solid #fff;box-shadow:0 2px 6px var(--shadow-md);cursor:grab}
+.lever-track::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--saffron);border:3px solid #fff;box-shadow:0 2px 6px var(--shadow-md);cursor:grab}
+.lever-range{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--muted);margin-top:4px}
+.lever-hint{font-size:0.78rem;color:var(--ink-soft);margin-top:8px;padding:8px 10px;background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-sm);min-height:36px;transition:all 0.2s}
+.lever-hint .impact-tag{font-weight:600;font-size:0.7rem;padding:1px 6px;border-radius:4px;margin-right:4px}
+.lever-hint .impact-tag.pos{background:var(--neem-light);color:var(--neem)}
+.lever-hint .impact-tag.neg{background:var(--loss-light);color:var(--loss)}
+.lever-hint .impact-tag.neutral{background:var(--saffron-glow);color:var(--saffron)}
+
+.impact-preview{background:var(--card);border:1.5px solid var(--blue);border-radius:var(--radius-lg);padding:16px;margin-bottom:16px}
+.ip-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--blue);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.ip-metric{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:8px 10px;text-align:center;transition:all 0.2s}
+.ip-metric.warn{border-color:var(--loss);background:var(--loss-light)}
+.ip-metric.good{border-color:var(--neem);background:var(--neem-light)}
+.ip-label{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);margin-bottom:2px}
+.ip-value{font-family:ui-monospace,monospace;font-weight:700;font-size:0.88rem;font-variant-numeric:tabular-nums}
+.ip-note{font-size:0.68rem;color:var(--muted);margin-top:2px}
+
+.board-response{border-radius:var(--radius-lg);padding:16px;margin-bottom:16px;animation:fadeIn 0.4s}
+.board-response.strong{background:var(--neem-light);border:1.5px solid var(--neem)}
+.board-response.moderate{background:var(--saffron-light);border:1.5px solid var(--saffron)}
+.board-response.weak{background:var(--loss-light);border:1.5px solid var(--loss)}
+.br-header{font-weight:700;font-size:0.92rem;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.br-text{font-size:0.84rem;line-height:1.65}
+.br-sub{font-size:0.82rem;color:var(--ink-soft);line-height:1.6;margin-top:8px;padding-top:8px;border-top:1px solid var(--card-border)}
+
+.principle-box{background:var(--teal-light);border:1.5px solid var(--teal);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;animation:fadeIn 0.4s}
+.pb-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.pb-text{font-size:0.84rem;line-height:1.6}
+
+.score-reveal{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:16px;animation:fadeIn 0.4s}
+.sr-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,monospace;font-weight:700;font-size:1.1rem;flex-shrink:0}
+.sr-circle.high{background:var(--neem-light);color:var(--neem);border:2px solid var(--neem)}
+.sr-circle.mid{background:var(--saffron-light);color:var(--saffron);border:2px solid var(--saffron)}
+.sr-circle.low{background:var(--loss-light);color:var(--loss);border:2px solid var(--loss)}
+.sr-text{flex:1}
+.sr-label{font-size:0.72rem;text-transform:uppercase;color:var(--muted);font-weight:600}
+.sr-detail{font-size:0.85rem;margin-top:2px}
+
+.nav-row{display:flex;justify-content:flex-end;gap:12px;margin-top:20px;margin-bottom:20px}
+.btn{padding:10px 28px;border-radius:var(--radius);font-weight:700;font-size:0.88rem;border:none;cursor:pointer;transition:all 0.15s}
+.btn-primary{background:var(--saffron);color:#fff}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+.btn-secondary{background:var(--input-bg);color:var(--ink);border:1px solid var(--card-border)}
+
+.intro-screen{text-align:center;padding:30px 20px}
+.intro-screen h1{font-size:2rem;margin-bottom:4px;color:var(--saffron)}
+.intro-subtitle{color:var(--muted);font-style:italic;margin-bottom:24px;font-size:0.9rem}
+.company-card{text-align:left;max-width:660px;margin:0 auto;background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px}
+.quote-box{background:var(--input-bg);border-left:4px solid var(--saffron);padding:16px 20px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin-bottom:20px;font-size:0.92rem;font-style:italic;line-height:1.7;text-align:left;max-width:660px;margin-left:auto;margin-right:auto}
+.quote-attr{font-style:normal;font-weight:700;color:var(--saffron);margin-top:8px;font-size:0.82rem}
+.role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:16px}
+.role-card{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:10px;text-align:center}
+.role-emoji{font-size:1.4rem;margin-bottom:4px}
+.role-name{font-weight:700;font-size:0.78rem}
+.role-type{font-size:0.68rem;color:var(--muted)}
+
+.results-screen{padding:20px 0}
+.results-hero{text-align:center;padding:30px 24px;background:var(--card);border-radius:var(--radius-lg);margin-bottom:20px}
+.grade-circle{width:100px;height:100px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;font-weight:700;border:3px solid}
+.grade-letter{font-family:Georgia,serif;font-size:1.8rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:20px}
+.stat-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:12px;text-align:center}
+.sc-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted)}
+.sc-value{font-family:ui-monospace,monospace;font-weight:700;font-size:0.95rem;margin-top:4px}
+
+.waterfall{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:16px;margin-bottom:16px;overflow-x:auto}
+.wf-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.wf-chart{display:flex;align-items:flex-end;gap:3px;height:200px;padding:0 4px}
+.wf-bar-wrap{display:flex;flex-direction:column;align-items:center;flex:1;min-width:36px}
+.wf-bar{width:100%;border-radius:3px 3px 0 0;transition:height 0.4s;min-height:2px}
+.wf-bar.pos{background:var(--neem)}.wf-bar.neg{background:var(--loss)}.wf-bar.base{background:var(--blue)}.wf-bar.total{background:var(--saffron)}
+.wf-val{font-size:0.6rem;font-family:ui-monospace,monospace;font-weight:600;margin-top:3px;white-space:nowrap}
+.wf-label{font-size:0.55rem;color:var(--muted);text-align:center;margin-top:2px;line-height:1.2;max-width:60px;word-wrap:break-word}
+
+.takeaway-card{display:flex;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--card-border);font-size:0.85rem}
+.takeaway-card:last-child{border-bottom:none}
+.tw-num{background:var(--saffron);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;margin-right:10px;margin-top:2px}
+
+.budget-cascade{background:var(--card);border:1.5px solid var(--saffron);border-radius:var(--radius-lg);padding:14px 16px;margin-bottom:16px}
+.bc-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--saffron);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.bc-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--card-border);font-size:0.82rem}
+.bc-row:last-child{border-bottom:none}
+.bc-val{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  .scene-stats{flex-direction:column}
+  .scene-stat{min-width:auto}
+  .role-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .ip-grid{grid-template-columns:repeat(2,1fr)}
+  .wf-bar-wrap{min-width:28px}
+}
+</style>
+
+<div id="app">
+  <div class="progress-strip"><div class="progress-strip-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="game-header">
+    <div class="brand">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--saffron)" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="var(--saffron)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>SimuLok</span>
+    </div>
+    <span style="color:var(--muted);font-size:0.78rem">Cost Accounting</span>
+    <span class="step-badge" id="stepBadge">START</span>
+    <span class="score-badge" id="scoreBadge" style="display:none">0 / 100</span>
+  </div>
+  <div id="main"></div>
+</div>
+
+<script src="../assets/js/classroom.js"></script>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const $main=$('main'),$strip=$('progressFill'),$badge=$('stepBadge'),$score=$('scoreBadge');
+const TOTAL=14;
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+function fmtCr(v){return '₹'+(v/10000000).toFixed(2)+' Cr';}
+function fmtL(v){return '₹'+(v/100000).toFixed(1)+' L';}
+function fmtN(v){return v.toLocaleString('en-IN');}
+function fmtP(v){return v+'%';}
+
+function zenithClassroomLog(round, choiceLabel, score, extra){
+  try{
+    if(!window.SimulokClassroom||!SimulokClassroom.configured()) return;
+    const auth=SimulokClassroom.loadSession();
+    if(!auth||!auth.session||auth.role==='instructor') return;
+    if(auth.session.sim_id&&auth.session.sim_id!=='zenith') return;
+    SimulokClassroom.logRound({
+      sim_id:'zenith',
+      round:round,
+      choice_label:choiceLabel||'',
+      score:score,
+      extra:extra||{}
+    });
+  }catch(err){ console.warn('zenith classroom log', err); }
+}
+
+let S={round:0,phase:'intro',totalScore:0,maxPossible:0,roundScores:[],locked:false,
+  salesVol:240000,sellPrice:9500,closingFG:14000,closingRM:90000,
+  headcount:487,redeployPct:100,wageRate:220,trainingSpend:25,
+  denomHrs:1050000,denomLabel:'Practical',
+  adBudget:14.4,rndBudget:4.8,serviceCost:220,
+  creditDays:45,odEnhancement:8,capexQ:'Q2',
+  stdMatQty:3.85,stdLabHrs:3.35,stdVOHRate:135,improvTarget:4,
+  correctionPct:100,disclosureLevel:2,processChange:1,
+  fireRateRevision:0,fireReporting:1,
+  volAttribExceptional:100,
+  investigateThreshold:5,investigateCount:4,
+  instAcceptVol:18000,instPrice:8400,instReporting:1,
+  finalCtrlSplit:1,finalResponseEval:1
+};
+
+const ACTUALS={vol:216000,price:9720,matPrice:1120,matQty:4.2,
+  labHrs:3.6,labRate:238,vohActual:11.66,fohActual:15.80,
+  fohBudgeted:15.12,stdProfit:3410};
+
+const EVENT_ROUNDS=[3,6,10,13];
+
+const ROUNDS=[
+{id:1,title:"The Sales Budget",subtitle:"Set the top line — everything cascades from here",phase:"build",isEvent:false,marks:8,
+concept:{title:"The Sales Budget Drives Everything",text:"Every downstream schedule derives from the sales forecast. An error here propagates through production, materials, labour, and overhead — and resurfaces as variances nobody owns. The sales team submitted 216,000 (suspected 7% sandbag). Top-down model suggests 251,000. The MD committed publicly to ₹220 Cr revenue.",formula:"Revenue = Volume × Price\nLabour Hours = Volume × 3.5 hrs/unit\nPlant capacity: 840,000 hours (normal)"},
+dataHtml:`<table class="dp-table"><tr><th>Region</th><th>Last Yr</th><th>Growth</th><th>Note</th></tr>
+<tr><td>North</td><td>68,400</td><td>+8%</td><td>New entrant at ₹7,900</td></tr>
+<tr><td>West</td><td>82,100</td><td>+11%</td><td>Share leader</td></tr>
+<tr><td>South</td><td>51,300</td><td>+14%</td><td>Distribution gaps</td></tr>
+<tr><td>East</td><td>26,200</td><td>+6%</td><td>Weak dealers</td></tr>
+<tr class="total"><td>TOTAL</td><td>228,000</td><td>+10%</td><td></td></tr></table>
+<p style="font-size:0.8rem;color:var(--ink-soft);margin-top:8px">Bottom-up: 216,000 (7% sandbag suspected). Top-down: 251,000. MD's commitment: ₹220 Cr.</p>`,
+levers:[
+  {id:'salesVol',label:'Sales Volume (units)',min:200000,max:260000,step:5000,default:228000,format:'number',
+   hints:[{at:200000,text:'Below bottom-up. No challenge for sales team — they will coast.'},{at:216000,text:'Exactly bottom-up. 7% sandbag suspected — sales will always beat this.'},{at:230000,text:'Modest stretch. Achievable with current distribution.'},{at:240000,text:'Consensus view. Within plant capacity (840K hrs). Defensible.'},{at:251000,text:'Top-down model. Requires 878K hrs — exceeds 840K capacity. Risk.'},{at:260000,text:'Aspirational. Plant cannot produce this without expansion capital.'}]},
+  {id:'sellPrice',label:'Selling Price (₹/unit)',min:8800,max:10200,step:100,default:9500,format:'currency-unit',
+   hints:[{at:8800,text:'Below market. Volume-chasing strategy — margin destruction.'},{at:9200,text:'Defensive. Protects volume but squeezes margin.'},{at:9500,text:'Current blended average. Market-consistent and evidence-based.'},{at:9800,text:'Price premium. New entrant at ₹7,900 in North — risky.'},{at:10000,text:'Aggressive premium. No elasticity evidence to support this.'}]}
+],
+computeImpact:function(v){
+  const rev=v.salesVol*v.sellPrice;const hrs=v.salesVol*3.5;const target=2200000000;
+  return[
+    {l:'Budgeted Revenue',v:fmtCr(rev),cls:rev>=target?'good':''},
+    {l:'Labour Hours Needed',v:fmtN(hrs),cls:hrs>840000?'warn':'good'},
+    {l:'MD Target',v:'₹220 Cr',cls:''},
+    {l:'Gap to Target',v:fmtCr(rev-target),cls:rev>=target?'good':'warn'}
+  ];
+},
+score:function(v){
+  let s=0;
+  if(v.salesVol>=232000&&v.salesVol<=248000)s+=2;else if(v.salesVol>=220000&&v.salesVol<=255000)s+=1;
+  if(v.salesVol*3.5<=840000)s+=0.5;else s-=0.5;
+  if(v.sellPrice>=9300&&v.sellPrice<=9600)s+=1.5;else if(v.sellPrice>=9100&&v.sellPrice<=9800)s+=0.75;
+  if(v.sellPrice>=9800&&v.salesVol>240000)s-=0.5;
+  return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  const hrs=v.salesVol*3.5;const rev=v.salesVol*v.sellPrice;
+  if(sc>=3) return{cls:'strong',icon:'✅',title:'Board Accepts with Confidence',
+    text:'Volume of '+fmtN(v.salesVol)+' is within plant capacity and supported by regional analysis. Price of ₹'+fmtN(v.sellPrice)+' is market-consistent. Assumptions are documented and defensible.',
+    sub:'The board notes that documented assumptions allow a year-end variance to be diagnosed rather than merely allocated.'};
+  if(sc>=2) return{cls:'moderate',icon:'⚠️',title:'Accepted with Reservations',
+    text:(hrs>840000?'Volume requires '+fmtN(Math.round(hrs))+' hrs against 840,000 capacity — overtime not budgeted. ':'')+(v.sellPrice>=9800?'₹'+fmtN(v.sellPrice)+' is unevidenced with new entrant at ₹7,900 in North. ':'')+'The board asks for a quarterly review.',
+    sub:'A budget must be achievable to function as a control tool. An aspirational target converts into unachievable downstream budgets.'};
+  return{cls:'weak',icon:'🔄',title:'Returned for Rework',
+    text:(v.salesVol<=216000?'Accepting bottom-up at '+fmtN(v.salesVol)+' embeds the sandbag. Sales will always beat a budget they sandbagged. ':'')+(v.salesVol>=255000?fmtN(v.salesVol)+' units requires expansion capital that doesn\'t exist. ':'')+(v.sellPrice>=10000?'₹'+fmtN(v.sellPrice)+' has no elasticity evidence. ':'')+'The MD\'s ₹220 Cr commitment is a constraint the committee must work within.',
+    sub:'Incentive to safeguard personal interests results in misrepresentation. A sales team rewarded for beating budget will submit a beatable budget.'};
+},
+principle:"The sales budget is the critical first step because every subsequent schedule derives from it. Negotiated and participative standards work when the negotiation is transparent and assumptions are recorded."},
+
+{id:2,title:"Production & Inventory Policy",subtitle:"Usage drives COGS, purchases drive cash",phase:"build",isEvent:false,marks:7,
+concept:{title:"Production Follows Sales — But Inventory Policy Matters",text:"Production is not equal to sales unless inventory policy holds stock constant. Two separate calculations matter: usage drives COGS, purchases drive cash outflow. Confusing the two breaks the link between operating budget and cash budget.",formula:"Production = Sales + Closing FG − Opening FG (14,000)\nMaterial Usage = Production × 4.0 kg/unit\nPurchases = Usage + Closing RM − Opening RM (38,000 kg)\nWarehouse capacity: 96,000 kg"},
+dataHtml:`<table class="dp-table"><tr><th>Constraint</th><th>Value</th></tr>
+<tr><td>Sales volume (from R1)</td><td id="r2_salesVol">240,000 units</td></tr>
+<tr><td>Opening FG inventory</td><td>14,000 units</td></tr>
+<tr><td>Material per unit</td><td>4.0 kg</td></tr>
+<tr><td>Opening RM inventory</td><td>38,000 kg</td></tr>
+<tr><td>Material price</td><td>₹1,050/kg</td></tr>
+<tr><td>Supplier lead time</td><td>5 weeks</td></tr>
+<tr><td>Warehouse capacity</td><td style="font-weight:700">96,000 kg</td></tr></table>`,
+levers:[
+  {id:'closingFG',label:'Closing FG Inventory (units)',min:0,max:30000,step:1000,default:14000,format:'number',
+   hints:[{at:0,text:'Zero buffer. Clean arithmetic but any sales spike = lost sales.'},{at:7000,text:'Half current level. Lean operation.'},{at:14000,text:'Flat — same as opening. No working capital change.'},{at:21000,text:'Building stock. Check: does production exceed labour capacity?'},{at:28000,text:'6+ weeks of cover. Significant working capital tied up.'}]},
+  {id:'closingRM',label:'Closing RM Safety Stock (kg)',min:0,max:150000,step:5000,default:90000,format:'number',
+   hints:[{at:0,text:'Zero buffer with 5-week import lead time = guaranteed line stoppage.'},{at:38000,text:'Flat — same as opening. Covers ~2 weeks.'},{at:70000,text:'~4 weeks of cover. Moderate safety buffer.'},{at:96000,text:'At warehouse capacity limit (96,000 kg). Maximum physical storage.'},{at:110000,text:'EXCEEDS warehouse capacity (96,000 kg). Physically impossible.'},{at:150000,text:'Far exceeds warehouse — would need 1.5x storage.'}]}
+],
+computeImpact:function(v){
+  const prod=S.salesVol+v.closingFG-14000;const usage=prod*4;const purchases=usage+v.closingRM-38000;
+  const hrs=prod*3.5;const matCost=purchases*1050;
+  return[
+    {l:'Production Volume',v:fmtN(prod)+' units',cls:hrs>840000?'warn':'good'},
+    {l:'Labour Hours',v:fmtN(Math.round(hrs)),cls:hrs>840000?'warn':'good'},
+    {l:'Material Usage',v:fmtN(usage)+' kg',cls:''},
+    {l:'Material Purchases',v:fmtN(purchases)+' kg',cls:''},
+    {l:'RM Purch Cost',v:fmtCr(matCost),cls:''},
+    {l:'Warehouse Check',v:v.closingRM>96000?'EXCEEDS 96K':'OK',cls:v.closingRM>96000?'warn':'good'}
+  ];
+},
+score:function(v){
+  let s=0;const prod=S.salesVol+v.closingFG-14000;const hrs=prod*3.5;
+  if(hrs<=840000)s+=1;else s-=0.5;
+  if(v.closingFG>=10000&&v.closingFG<=20000)s+=1;else if(v.closingFG>=5000)s+=0.5;
+  if(v.closingRM<=96000&&v.closingRM>=60000)s+=1.5;else if(v.closingRM<=96000&&v.closingRM>=30000)s+=0.75;
+  if(v.closingRM>96000)s-=1;
+  if(v.closingRM===0)s-=0.5;
+  return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  const prod=S.salesVol+v.closingFG-14000;
+  if(v.closingRM>96000) return{cls:'weak',icon:'🔄',title:'Returned — Physically Impossible',
+    text:'Closing RM of '+fmtN(v.closingRM)+' kg exceeds warehouse capacity of 96,000 kg. A materials budget that exceeds storage capacity is not a plan.',
+    sub:'Budgets must respect physical constraints. The error only surfaces if someone checks the constraint rather than the arithmetic.'};
+  if(sc>=3) return{cls:'strong',icon:'✅',title:'Board Accepts',
+    text:'Production of '+fmtN(prod)+' units is within capacity. RM safety stock covers the 5-week import lead time with margin. Working capital impact is explicitly costed.',
+    sub:'Usage of '+fmtN(prod*4)+' kg drives COGS while purchases of '+fmtN(prod*4+v.closingRM-38000)+' kg drive cash outflow. Both numbers must be carried forward to different schedules.'};
+  if(sc>=1.5) return{cls:'moderate',icon:'⚠️',title:'Accepted with Risk Note',
+    text:(v.closingRM<30000?'RM buffer of '+fmtN(v.closingRM)+' kg is thin for a 5-week import lead time. ':'')+(v.closingFG===0?'Zero FG buffer means any demand spike = lost sales. ':'')+'Accepted for budget purposes with noted risk.',
+    sub:'The zero-inventory assumption makes budget arithmetic clean but must be recognised as a simplification.'};
+  return{cls:'weak',icon:'🔄',title:'Returned for Rework',
+    text:'The inventory policy creates downstream problems the committee hasn\'t connected yet.',
+    sub:'Inventory policy is not a warehouse decision; it is a production, labour and cash decision.'};
+},
+principle:"Usage drives cost of goods sold while purchases drive cash outflow. The two numbers must both be carried forward, to different schedules."},
+
+{id:3,title:"Membrane Price Shock",subtitle:"When the market moves — hold or revise the standard?",phase:"build",isEvent:true,marks:6,
+concept:{title:"Controllability & Standard Integrity",text:"USD/INR moves from 83 to 88. Composite material price rises from ₹1,050 to ₹1,120/kg. Impact at 960,000 kg usage = +₹6.72 Cr. The Procurement Head's contract contains a currency adjustment clause she did not remove.",formula:"Impact = (1,120 − 1,050) × 960,000 = ₹6.72 Cr\nQuestion: Revise the standard? Or hold it for measurement?"},
+dataHtml:`<table class="dp-table"><tr><th>Item</th><th>Before</th><th>After</th></tr>
+<tr><td>USD/INR rate</td><td>83</td><td>88</td></tr>
+<tr><td>Material price</td><td>₹1,050/kg</td><td>₹1,120/kg</td></tr>
+<tr><td>Impact at 960K kg</td><td></td><td style="color:var(--loss);font-weight:700">+₹6.72 Cr</td></tr></table>
+<p style="font-size:0.8rem;color:var(--loss);margin-top:8px;font-weight:600">The Procurement Head's contract has a currency adjustment clause she failed to remove.</p>`,
+levers:[
+  {id:'fireRateRevision',label:'Standard Revision',min:0,max:1,step:1,default:0,format:'toggle',labels:['Hold at ₹1,050','Revise to ₹1,120'],
+   hints:[{at:0,text:'Hold standard for measurement integrity. Year-end MPV will quantify the currency impact precisely.'},{at:1,text:'Revise standard to ₹1,120. Honest, but destroys the benchmark — year-end variance will show zero.'}]},
+  {id:'fireReporting',label:'Maintain Separate Reforecast?',min:0,max:1,step:1,default:1,format:'toggle',labels:['No — One Number','Yes — Standard + Reforecast'],
+   hints:[{at:0,text:'Single number. Simpler but either the standard or the expectation is wrong.'},{at:1,text:'Two views: standard for variance measurement, reforecast for planning. Requires discipline but serves both functions.'}]}
+],
+computeImpact:function(v){
+  const revised=v.fireRateRevision===1;const reforecast=v.fireReporting===1;
+  return[
+    {l:'Standard Price',v:revised?'₹1,120/kg':'₹1,050/kg',cls:''},
+    {l:'Year-End MPV',v:revised?'₹0 (hidden)':'₹6.72 Cr U (visible)',cls:revised?'warn':'good'},
+    {l:'Budgeted Profit Impact',v:revised?'↓₹6.72 Cr':'Unchanged',cls:''},
+    {l:'Reforecast',v:reforecast?'Separate track':'None',cls:reforecast?'good':''}
+  ];
+},
+score:function(v){
+  let s=0;
+  if(v.fireRateRevision===0)s+=2;else s+=0.5;
+  if(v.fireReporting===1)s+=2;else s+=0.5;
+  return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  if(sc>=3.5) return{cls:'strong',icon:'✅',title:'Board Accepts — The Strongest Answer',
+    text:'Holding at ₹1,050 preserves measurement integrity — the year-end variance will precisely quantify the currency effect. The separate reforecast manages expectations without compromising the standard.',
+    sub:'Maintaining two views — the standard for control and the reforecast for planning — serves both functions without compromising either.'};
+  if(v.fireRateRevision===1) return{cls:'moderate',icon:'⚠️',title:'Accepted — But You Lost Your Benchmark',
+    text:'Revising to ₹1,120 is honest, but the year-end material price variance will show zero — the currency impact becomes invisible in the variance report.',
+    sub:'Revising the standard makes the year-end variance uninformative. The standard\'s purpose is measurement, and changing it mid-year hides the very thing you need to measure.'};
+  return{cls:'moderate',icon:'⚠️',title:'Technically Sound, Practically Risky',
+    text:'Holding the standard preserves the benchmark but leaves an unachievable profit target in the plan without a reforecast to manage expectations.',
+    sub:'The standard preserves measurement integrity but an unachievable target can demoralise the team.'};
+},
+principle:"The standard's purpose is measurement. Maintaining two views — standard for control, reforecast for planning — serves both the measurement and management function."},
+
+{id:4,title:"Labour Budget & Headcount",subtitle:"Where budgets hide invisible inefficiency",phase:"build",isEvent:false,marks:8,
+concept:{title:"The Invisible Inefficiency",text:"Converting hours to headcount requires an explicit assumption about available hours per worker. Theoretical 2,080 hrs minus leave, absenteeism, training = 1,726 effective hrs. At 840,000 budgeted hours, this means 487 workers are needed. Current headcount: 620. Surplus: 133 workers.",formula:"Required = 840,000 ÷ 1,726 = 487 workers\nCurrent: 620 → Surplus: 133\nExcess cost: 133 × ₹220 × 1,726 = ₹5.06 Cr/year"},
+dataHtml:`<table class="dp-table"><tr><th>Item</th><th>Value</th></tr>
+<tr><td>Standard hours/unit</td><td>3.5 hours</td></tr>
+<tr><td>Standard wage rate</td><td>₹220/hr</td></tr>
+<tr><td>Required headcount</td><td>487 workers</td></tr>
+<tr><td>Current headcount</td><td style="color:var(--loss);font-weight:700">620 workers</td></tr>
+<tr><td>Annual surplus cost</td><td style="color:var(--loss)">₹5.06 Cr</td></tr></table>
+<p style="font-size:0.8rem;color:var(--ink-soft);margin-top:8px">Zenith is considering an annual maintenance contract (AMC) service business for redeployment.</p>`,
+levers:[
+  {id:'headcount',label:'Direct Manufacturing Workers',min:400,max:650,step:10,default:487,format:'number',
+   hints:[{at:400,text:'Aggressive reduction. Below the 487 needed — capacity constrained.'},{at:487,text:'Exactly matches budgeted hours. Standard is now clean — no slack.'},{at:530,text:'Moderate buffer. Some slack embedded (~₹1.6 Cr).'},{at:580,text:'Retaining most surplus. ₹3.4 Cr of slack inside the standard.'},{at:620,text:'Full retention. ₹5.06 Cr of waste formally approved — invisible to variance system.'}]},
+  {id:'redeployPct',label:'Surplus Redeployed to Service (% of surplus)',min:0,max:100,step:10,default:100,format:'percent',
+   hints:[{at:0,text:'No redeployment — surplus workers retained or separated.'},{at:30,text:'Partial redeployment. Remaining surplus embedded in manufacturing cost.'},{at:70,text:'Most surplus redeployed. Manufacturing standard nearly clean.'},{at:100,text:'Full redeployment to AMC business. Manufacturing standard clean, surplus visible as a separate business.'}]}
+],
+computeImpact:function(v){
+  const surplus=Math.max(0,620-v.headcount);const redeployed=Math.round(surplus*v.redeployPct/100);
+  const separated=surplus-redeployed;const embedded=Math.max(0,v.headcount-487);
+  const slackCr=(embedded*220*1726/10000000).toFixed(2);
+  const directCost=(v.headcount*220*1726/10000000).toFixed(2);
+  return[
+    {l:'Direct Workers',v:fmtN(v.headcount),cls:v.headcount<487?'warn':v.headcount===487?'good':''},
+    {l:'Surplus Identified',v:fmtN(surplus),cls:''},
+    {l:'Redeployed to AMC',v:fmtN(redeployed),cls:redeployed>0?'good':''},
+    {l:'Separated',v:fmtN(separated),cls:''},
+    {l:'Embedded Slack',v:'₹'+slackCr+' Cr',cls:parseFloat(slackCr)>1?'warn':'good'},
+    {l:'Direct Labour Cost',v:'₹'+directCost+' Cr',cls:''}
+  ];
+},
+score:function(v){
+  let s=0;const surplus=Math.max(0,620-v.headcount);
+  if(v.headcount>=480&&v.headcount<=500)s+=1.5;else if(v.headcount>=460&&v.headcount<=530)s+=1;else if(v.headcount>=400&&v.headcount<460)s+=0.5;
+  if(v.headcount>550)s-=0.5;if(v.headcount>=600)s-=1;
+  if(surplus>0&&v.redeployPct>=80)s+=2;else if(surplus>0&&v.redeployPct>=40)s+=1;else if(surplus>0)s+=0.5;
+  if(v.headcount<=487&&v.redeployPct>=80)s+=0.5;
+  return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  const embedded=Math.max(0,v.headcount-487);const slackCr=(embedded*220*1726/10000000).toFixed(1);
+  if(sc>=3) return{cls:'strong',icon:'✅',title:'Board Accepts — Strong Approval',
+    text:'Manufacturing standard is clean at '+v.headcount+' direct workers. '+(v.redeployPct>=80?'The surplus is visible as a separate AMC business with its own revenue and cost. No inefficiency is hidden inside product cost.':'Most surplus is productively redeployed.'),
+    sub:'Keeping the standard clean and dealing with the surplus as an explicit, separately budgeted decision preserves the integrity of the variance system.'};
+  if(v.headcount>=600) return{cls:'weak',icon:'🔄',title:'Accepted — But ₹'+slackCr+' Cr Waste Approved',
+    text:'Retaining '+v.headcount+' workers embeds ₹'+slackCr+' Cr of slack inside the standard. The variance system will never report it. Every year this budget is rolled forward, the inefficiency becomes permanent.',
+    sub:'A waste factor built into the standard makes the variance system structurally incapable of reporting the inefficiency. The Fortune 500 discovery: allowable waste exceeded total profits.'};
+  return{cls:'moderate',icon:'⚠️',title:'Accepted with Concern',
+    text:(embedded>0?'₹'+slackCr+' Cr of slack remains embedded. ':'')+(v.redeployPct<50?'Low redeployment means surplus workers are either separated (₹4.1 Cr severance) or idle.':''),
+    sub:'A change in headcount changes the overhead absorption rate. A labour decision is also an overhead decision — every schedule is connected.'};
+},
+principle:"In a standard costing system every schedule is connected. Keeping the standard clean and dealing with surplus as an explicit, separately budgeted decision preserves the integrity of the variance system."},
+
+{id:5,title:"Overhead Allocation",subtitle:"The denominator choice nobody realises they're making",phase:"build",isEvent:false,marks:7,
+concept:{title:"The Denominator Choice",text:"The denominator in the fixed overhead rate is a policy choice, not a fact. Budgeted volume, normal capacity, or practical capacity produce materially different rates and product costs. Most committees don't realise they're making a choice.",formula:"Fixed OH: ₹14.04 Cr | Variable OH: ₹6.80 Cr\nBudgeted Vol: 840K hrs → FOH rate ₹167/hr\nNormal (3yr avg): 900K hrs → ₹156/hr\nPractical: 1,050K hrs → ₹134/hr"},
+dataHtml:`<table class="dp-table"><tr><th>Overhead Line</th><th>Amount</th><th>Behaviour</th></tr>
+<tr><td>Supervision</td><td>₹3.84 Cr</td><td>Fixed</td></tr>
+<tr><td>Factory power</td><td>₹4.20 Cr</td><td>Mixed (₹1.1 Cr fixed)</td></tr>
+<tr><td>Consumables</td><td>₹2.94 Cr</td><td>Variable</td></tr>
+<tr><td>Depreciation</td><td>₹4.60 Cr</td><td>Fixed</td></tr>
+<tr><td>Maintenance</td><td>₹2.16 Cr</td><td>Mixed (₹1.4 Cr fixed)</td></tr>
+<tr><td>Quality & testing</td><td>₹1.68 Cr</td><td>Fixed</td></tr>
+<tr><td>Insurance & rates</td><td>₹1.42 Cr</td><td>Fixed</td></tr>
+<tr class="total"><td>TOTAL</td><td>₹20.84 Cr</td><td>Var ₹6.80 + Fix ₹14.04</td></tr></table>`,
+levers:[
+  {id:'denomHrs',label:'Denominator (capacity hours)',min:750000,max:1100000,step:10000,default:1050000,format:'number',
+   hints:[{at:750000,text:'Below budgeted — product cost inflated, but volume variance will be small.'},{at:840000,text:'Budgeted volume. Internally consistent but transfers sales forecast error into manufacturing variance.'},{at:900000,text:'Normal capacity (3-year avg). Smooths rate across demand cycles — pragmatic middle.'},{at:1000000,text:'Near practical. Product cost reflects efficient operation.'},{at:1050000,text:'Practical capacity (3 shifts). Unused capacity reported separately as management decision.'},{at:1100000,text:'Theoretical maximum. Unachievable — permanent under-absorption.'}]}
+],
+computeImpact:function(v){
+  const fohRate=Math.round(1404*100000/v.denomHrs);const vohRate=81;const totalOAR=fohRate+vohRate;
+  const fohUnit=Math.round(fohRate*3.5);const unusedHrs=Math.max(0,v.denomHrs-840000);
+  const unusedCostCr=(unusedHrs*fohRate/10000000).toFixed(2);
+  const label=v.denomHrs<=840000?'Budgeted':v.denomHrs<=920000?'Normal':v.denomHrs>=1020000?'Practical':'Custom';
+  return[
+    {l:'FOH Rate',v:'₹'+fohRate+'/hr',cls:''},
+    {l:'Total OAR',v:'₹'+totalOAR+'/hr',cls:''},
+    {l:'FOH per Unit',v:'₹'+fohUnit,cls:''},
+    {l:'Denominator Type',v:label,cls:''},
+    {l:'Unused Capacity Cost',v:v.denomHrs>840000?'₹'+unusedCostCr+' Cr (separate line)':'₹0 (absorbed)',cls:v.denomHrs>840000?'good':''}
+  ];
+},
+score:function(v){
+  if(v.denomHrs>=1020000&&v.denomHrs<=1080000)return 4;
+  if(v.denomHrs>=880000&&v.denomHrs<=920000)return 3;
+  if(v.denomHrs>=830000&&v.denomHrs<=850000)return 2;
+  return 1;
+},
+feedback:function(v,sc){
+  const label=v.denomHrs<=840000?'budgeted volume':v.denomHrs<=920000?'normal capacity':v.denomHrs>=1020000?'practical capacity':'a custom denominator';
+  if(sc>=3.5) return{cls:'strong',icon:'✅',title:'Board Accepts — Conceptually Strongest',
+    text:'Using practical capacity means product cost reflects efficient operation. The ₹'+((Math.max(0,v.denomHrs-840000)*Math.round(1404*100000/v.denomHrs))/10000000).toFixed(1)+' Cr unused capacity cost is a management investment decision, not a plant performance issue.',
+    sub:'Charging products only for capacity they use, and reporting idle capacity separately, aligns the cost system with the controllability principle.'};
+  if(sc>=2.5) return{cls:'strong',icon:'✅',title:'Board Accepts — Pragmatic Middle',
+    text:'Normal capacity smooths the rate across demand cycles. Under-absorption in weak years offsets over-absorption in strong years. A pragmatic position.',
+    sub:'Normal capacity avoids year-to-year cost swings while remaining simpler to explain than practical capacity.'};
+  return{cls:'moderate',icon:'⚠️',title:'Accepted — Creates a Trap',
+    text:'Using '+label+' means if actual volume falls short, the entire under-absorption appears as an unfavourable volume variance charged to the Plant Head — even when the shortfall was caused by a sales miss.',
+    sub:'The denominator transfers sales forecast error into a manufacturing variance. This misattribution originates here, not when the variance surfaces later.'};
+},
+principle:"The denominator in the overhead rate is a policy choice. Practical capacity charges products only for capacity used and reports idle capacity as a separate management decision."},
+
+{id:6,title:"The Paint Shop Fire",subtitle:"When the uncontrollable destroys the budget",phase:"build",isEvent:true,marks:6,
+concept:{title:"Effectiveness vs. Efficiency",text:"An electrical fault destroys the paint shop in week 19. Plant capacity drops to 62%. The fire affects effectiveness (goal was missed) but NOT efficiency (resources per unit were unchanged). Insurance covers asset replacement but excludes consequential loss.",formula:"Revised capacity: ~216,000 units → 756,000 hrs\nBudgeted FOH: ₹15.12 Cr\nAbsorbed: 756,000 × ₹180 = ₹13.61 Cr\nUNDER-ABSORPTION: ₹1.51 Cr"},
+dataHtml:`<p style="font-size:0.88rem;margin-bottom:12px">The paint shop fire caps production at <strong style="color:var(--loss)">216,000 units (62% of budget)</strong>. The under-absorption is ₹1.51 Cr. The Plant Head could not have prevented the electrical fault.</p>
+<table class="dp-table"><tr><th>Impact</th><th>Value</th></tr>
+<tr><td>Revised capacity</td><td>~216,000 units</td></tr>
+<tr><td>FOH under-absorbed</td><td style="color:var(--loss)">₹1.51 Cr</td></tr></table>`,
+levers:[
+  {id:'fireRateRevision',label:'Overhead Rate Action',min:0,max:1,step:1,default:0,format:'toggle',labels:['Hold Rate at ₹180/hr','Recalculate to ₹200/hr'],
+   hints:[{at:0,text:'Hold rate. Under-absorption of ₹1.51 Cr precisely quantifies the fire\'s cost.'},{at:1,text:'Recalculate to ₹200/hr. Eliminates volume variance but raises product cost ₹70/unit for an unrelated reason.'}]},
+  {id:'fireReporting',label:'Reporting Location',min:0,max:1,step:1,default:1,format:'toggle',labels:['In Plant Head\'s Report','Exceptional Line Above Plant Report'],
+   hints:[{at:0,text:'Appears in Plant Head\'s report — implicitly attributed to them even though uncontrollable.'},{at:1,text:'Reported as exceptional item. Plant Head evaluated only on efficiency — the controllable dimension.'}]}
+],
+computeImpact:function(v){
+  return[
+    {l:'OH Rate',v:v.fireRateRevision===0?'₹180/hr (held)':'₹200/hr (revised)',cls:v.fireRateRevision===0?'good':'warn'},
+    {l:'Volume Variance',v:v.fireRateRevision===0?'₹1.51 Cr U (visible)':'₹0 (hidden)',cls:v.fireRateRevision===0?'good':'warn'},
+    {l:'Product Cost Impact',v:v.fireRateRevision===0?'None':'+₹70/unit',cls:v.fireRateRevision===0?'good':'warn'},
+    {l:'Plant Head Evaluation',v:v.fireReporting===1?'Clean — efficiency only':'Penalised for fire',cls:v.fireReporting===1?'good':'warn'}
+  ];
+},
+score:function(v){
+  let s=0;if(v.fireRateRevision===0)s+=2;else s+=0.5;if(v.fireReporting===1)s+=2;else s+=0.5;return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  if(sc>=3.5) return{cls:'strong',icon:'✅',title:'Board Accepts — The Strongest Answer',
+    text:'Holding the rate quantifies the fire\'s cost at exactly ₹1.51 Cr. Reporting it as exceptional removes it from the Plant Head\'s evaluation. The fire\'s cost is visible as a discrete number.',
+    sub:'This separates effectiveness (the goal was missed due to fire) from efficiency (resources per unit were unchanged), and evaluates the manager only on the latter.'};
+  if(v.fireRateRevision===1) return{cls:'weak',icon:'🔄',title:'Accepted — But Hides the Disruption',
+    text:'Recalculating to ₹200/hr raises product cost ₹70/unit for a reason unrelated to the product. The fire becomes invisible in the cost system — no variance will ever report its cost.',
+    sub:'Revising the rate to absorb the disruption hides the cost inside every product. The variance system can no longer quantify what the fire actually cost.'};
+  return{cls:'moderate',icon:'⚠️',title:'Sound but Incomplete',
+    text:'Holding the rate is correct — but reporting the ₹1.51 Cr in the Plant Head\'s report implicitly penalises them for an uncontrollable event.',
+    sub:'A variance in a manager\'s report is implicitly attributed to that manager unless explicitly excluded.'};
+},
+principle:"Separate effectiveness (was the goal met?) from efficiency (were resources well used?). The fire affected effectiveness, not efficiency. Evaluate the manager only on what they control."},
+
+{id:7,title:"Non-Manufacturing Costs",subtitle:"The discretionary trap — when cuts balance on paper but break the business",phase:"build",isEvent:false,marks:6,
+concept:{title:"Discretionary Costs Are the Most Dangerous to Cut",text:"Budgeted Operating Income: ₹32.88 Cr. Board target: ₹40 Cr. Gap: ₹7.12 Cr. Advertising (₹14.40 Cr) and R&D (₹4.80 Cr) are discretionary and the easiest to cut. But the consequence appears in a later period.",formula:"Gap = ₹40 Cr − ₹32.88 Cr = ₹7.12 Cr\nClosing through volume: +21,000 units needed\nClosing through price: +₹297/unit needed\nClosing through cuts: Ad + R&D = ₹19.20 Cr available"},
+dataHtml:`<table class="dp-table"><tr><th>Line</th><th>Budget</th><th>Type</th></tr>
+<tr><td>Sales force cost</td><td>₹9.60 Cr</td><td>Fixed + commission</td></tr>
+<tr><td>Advertising</td><td>₹14.40 Cr</td><td>Discretionary</td></tr>
+<tr><td>Distribution</td><td>₹6.72 Cr</td><td>Variable</td></tr>
+<tr><td>After-sales service</td><td>₹5.28 Cr</td><td>Variable</td></tr>
+<tr><td>Corporate & admin</td><td>₹8.16 Cr</td><td>Fixed</td></tr>
+<tr><td>R&D</td><td>₹4.80 Cr</td><td>Discretionary</td></tr>
+<tr class="total"><td>TOTAL</td><td>₹48.96 Cr</td><td></td></tr></table>`,
+levers:[
+  {id:'adBudget',label:'Advertising Budget (₹ Cr)',min:5,max:15,step:0.5,default:14.4,format:'cr',
+   hints:[{at:5,text:'Severe cut. North faces a new entrant and South has distribution gaps — both depend on advertising.'},{at:8,text:'Cut ₹6.4 Cr. Volume budget from R1 is now unsupported.'},{at:11,text:'Moderate reduction. Some risk to volume assumptions.'},{at:14,text:'Near full budget. Market position supported.'},{at:14.4,text:'Full budget as submitted. Consistent with volume assumptions.'}]},
+  {id:'rndBudget',label:'R&D Budget (₹ Cr)',min:0,max:6,step:0.5,default:4.8,format:'cr',
+   hints:[{at:0,text:'Zero R&D. AquaPure Pro is in year 4 of its lifecycle — the replacement is now unfunded.'},{at:2,text:'Skeletal R&D. Maintains but doesn\'t advance the product pipeline.'},{at:4,text:'Near full. Core projects funded, some deferrals.'},{at:4.8,text:'Full budget. Pipeline protected.'},{at:6,text:'Enhanced R&D. Accelerates next-gen development.'}]},
+  {id:'serviceCost',label:'After-Sales Service (₹/unit)',min:150,max:280,step:10,default:220,format:'currency-unit',
+   hints:[{at:150,text:'Reduced to ₹150. No process change accompanies this — variance will measure imposition.'},{at:190,text:'Moderate cut. Some risk to service quality.'},{at:220,text:'Current level. Benchmarked and achievable.'},{at:260,text:'Enhanced service. Customer retention focus.'},{at:280,text:'Premium service. May not be cost-justified.'}]}
+],
+computeImpact:function(v){
+  const nonMfg=9.60+v.adBudget+6.72+(v.serviceCost*S.salesVol/10000000)+8.16+v.rndBudget;
+  const opIncome=81.84-nonMfg;const gap=40-opIncome;
+  const adCut=14.4-v.adBudget;const rndCut=4.8-v.rndBudget;
+  return[
+    {l:'Operating Income',v:'₹'+opIncome.toFixed(1)+' Cr',cls:opIncome>=38?'good':opIncome>=32?'':'warn'},
+    {l:'vs ₹40 Cr Target',v:(gap>0?'-':'+')+' ₹'+Math.abs(gap).toFixed(1)+' Cr',cls:gap<=0?'good':'warn'},
+    {l:'Ad Cut',v:adCut>0?'-₹'+adCut.toFixed(1)+' Cr':'None',cls:adCut>3?'warn':''},
+    {l:'R&D Cut',v:rndCut>0?'-₹'+rndCut.toFixed(1)+' Cr':'None',cls:rndCut>2?'warn':''}
+  ];
+},
+score:function(v){
+  let s=0;
+  if(v.adBudget>=12)s+=1.5;else if(v.adBudget>=9)s+=0.75;else s-=0.5;
+  if(v.rndBudget>=3.5)s+=1;else if(v.rndBudget>=2)s+=0.5;else s-=0.5;
+  if(v.serviceCost>=200&&v.serviceCost<=240)s+=1;else if(v.serviceCost>=170)s+=0.5;
+  const nonMfg=9.60+v.adBudget+6.72+(v.serviceCost*S.salesVol/10000000)+8.16+v.rndBudget;
+  const opIncome=81.84-nonMfg;
+  if(opIncome<40&&v.adBudget>=12&&v.rndBudget>=3.5)s+=0.5;
+  return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  const nonMfg=9.60+v.adBudget+6.72+(v.serviceCost*S.salesVol/10000000)+8.16+v.rndBudget;
+  const opIncome=81.84-nonMfg;
+  if(sc>=3) return{cls:'strong',icon:'✅',title:'Board Accepts After Initial Resistance',
+    text:'You presented ₹'+opIncome.toFixed(1)+' Cr honestly'+(opIncome<40?' with a bridge showing what ₹40 Cr requires':'')+'. Discretionary spending is protected. The board owns the gap decision rather than the CFO hiding it through cuts.',
+    sub:'Clarity and transparency. Refusing to let others fool you or to fool yourself. A budget that meets a target through undisclosed consequences is not a plan.'};
+  if(v.rndBudget<=1) return{cls:'weak',icon:'🔄',title:'Current Year Protected, Future Unfunded',
+    text:'Cutting R&D to ₹'+v.rndBudget+' Cr leaves the AquaPure Pro replacement unfunded. The consequence lands in 3 years, well beyond the tenure of most people in the room.',
+    sub:'Cutting discretionary investment to meet a current-year target is the clearest example of a budget promoting short-termism.'};
+  return{cls:'moderate',icon:'⚠️',title:'Accepted — With Noted Risks',
+    text:(v.adBudget<10?'Advertising cut of ₹'+(14.4-v.adBudget).toFixed(1)+' Cr leaves the volume budget unsupported. ':'')+'The budget balances on paper but the business may not.',
+    sub:'Discretionary cost cuts are the clearest case of a budget promoting short-termism. The consequence appears in a later period attributed to sales rather than to the cut.'};
+},
+principle:"A budget that meets a target through undisclosed consequences is not a plan; it is a promise nobody can keep. Present honestly and let the board own the decision."},
+
+{id:8,title:"The Cash Budget",subtitle:"Profitable on paper, uncashable in practice?",phase:"build",isEvent:false,marks:5,
+concept:{title:"The Cash Budget Reveals What P&L Cannot",text:"A profitable budget can be uncashable. The cash budget is where the difference between usage and purchases (from R2) matters. Peak financing: ₹16.80 Cr against an OD limit of ₹18.00 Cr — only 7% headroom.",formula:"Peak OD Draw: ₹16.80 Cr\nOD Limit: ₹18.00 Cr\nHeadroom: ₹1.20 Cr (7%)\nAny collection delay or cost overrun breaches the limit."},
+dataHtml:`<table class="dp-table"><tr><th>Item</th><th>Value</th></tr>
+<tr><td>Opening cash</td><td>₹4.20 Cr</td></tr>
+<tr><td>Min balance required</td><td>₹3.00 Cr</td></tr>
+<tr><td>Current OD limit</td><td>₹18.00 Cr</td></tr>
+<tr><td>OD interest rate</td><td>11.5% p.a.</td></tr>
+<tr><td>Capex planned (Q2)</td><td>₹12.40 Cr</td></tr>
+<tr><td>Peak financing needed</td><td style="color:var(--loss)">₹16.80 Cr</td></tr></table>`,
+levers:[
+  {id:'creditDays',label:'Dealer Credit Terms (days)',min:30,max:60,step:5,default:45,format:'number',
+   hints:[{at:30,text:'Tightened from 45 to 30 days. Cash improves ₹6.2 Cr — but dealers may shift volume to competitors.'},{at:40,text:'Slight tightening. Moderate cash benefit, limited dealer pushback.'},{at:45,text:'Current terms. No disruption to dealer relationships.'},{at:55,text:'Extended terms. Cash worsens but dealer loyalty improves.'},{at:60,text:'Very generous. Cash strain increases — OD limit likely breached.'}]},
+  {id:'odEnhancement',label:'OD Enhancement Requested (₹ Cr)',min:0,max:15,step:1,default:8,format:'cr',
+   hints:[{at:0,text:'No enhancement. Relying on ₹1.20 Cr headroom — no margin for error.'},{at:4,text:'Modest buffer. Headroom improves to ₹5.20 Cr.'},{at:8,text:'Comfortable buffer. ₹9.20 Cr headroom. Fee ~₹14 lakh. Clean solution.'},{at:12,text:'Large enhancement. Conservative but bank may question.'},{at:15,text:'Maximum ask. Bank will want additional security.'}]}
+],
+computeImpact:function(v){
+  const cashBenefit=(45-v.creditDays)*S.salesVol*S.sellPrice/365/10000000;
+  const newPeak=16.80-cashBenefit;const newLimit=18+v.odEnhancement;const headroom=newLimit-newPeak;
+  const fee=v.odEnhancement*0.175;
+  return[
+    {l:'Cash Impact',v:(cashBenefit>=0?'+':'')+cashBenefit.toFixed(1)+' Cr',cls:cashBenefit>=0?'good':'warn'},
+    {l:'New OD Limit',v:'₹'+newLimit.toFixed(0)+' Cr',cls:''},
+    {l:'Peak Financing',v:'₹'+newPeak.toFixed(1)+' Cr',cls:''},
+    {l:'Headroom',v:'₹'+headroom.toFixed(1)+' Cr ('+Math.round(headroom/newLimit*100)+'%)',cls:headroom>5?'good':headroom>2?'':'warn'},
+    {l:'Enhancement Fee',v:fee>0?'₹'+fee.toFixed(0)+' lakh':'₹0',cls:''}
+  ];
+},
+score:function(v){
+  let s=0;const cashBenefit=(45-v.creditDays)*S.salesVol*S.sellPrice/365/10000000;
+  const newPeak=16.80-cashBenefit;const newLimit=18+v.odEnhancement;const headroom=newLimit-newPeak;
+  if(headroom>=7)s+=2;else if(headroom>=3)s+=1;
+  if(v.creditDays>=40&&v.creditDays<=50)s+=1;else if(v.creditDays>=35)s+=0.5;else s-=0.5;
+  if(v.odEnhancement>=5&&v.odEnhancement<=12)s+=1;else if(v.odEnhancement>=3)s+=0.5;
+  return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  if(sc>=3) return{cls:'strong',icon:'✅',title:'Board Approves',
+    text:'OD enhancement of ₹'+v.odEnhancement+' Cr buys genuine headroom without compromising the operating plan. The cash constraint was a financing problem — you solved it where it originated.',
+    sub:'Matching financing structure to business seasonality is a treasury decision with no operational cost.'};
+  if(v.creditDays<=35) return{cls:'moderate',icon:'⚠️',title:'Cash Better — Volume at Risk',
+    text:'Tightening credit to '+v.creditDays+' days improves cash but large dealers may shift volume to competitors. The R1 volume assumption is now at risk from a treasury decision.',
+    sub:'Working capital decisions in finance can invalidate assumptions in sales. Cross-boundary effects must be surfaced.'};
+  return{cls:'moderate',icon:'⚠️',title:'Accepted — But No Safety Margin',
+    text:'The plan works on paper but has minimal headroom. Any collection delay or cost overrun breaches the limit.',
+    sub:'A cash budget without a sensitivity test is a point estimate presented as a plan.'};
+},
+principle:"The cash constraint was a financing structure problem, not an operating problem. Solve it where it originates."},
+
+{id:9,title:"Setting the Standard Cost Card",subtitle:"Where slack hides in plain sight",phase:"standards",isEvent:false,marks:10,
+concept:{title:"The Fortune 500 Discovery",text:"A major company discovered a 20% waste factor built into every standard. The dollar amount of allowable waste was larger than total profits. Zenith's engineering evidence shows the current standards carry slack: material BOM 3.65 kg vs standard 4.0 kg. Best-plant labour 3.2 hrs vs standard 3.5 hrs.",formula:"Material slack: 0.35 kg × ₹1,050 × 240K = ₹8.82 Cr\nLabour slack: 0.30 hrs × ₹220 × 240K = ₹1.58 Cr\nVOH slack: ₹9/hr × 3.5 × 240K = ₹0.76 Cr\nTOTAL SLACK: ₹11.16 Cr = 33.9% of Op Income"},
+dataHtml:`<table class="dp-table"><tr><th>Element</th><th>Current Std</th><th>Engineering</th><th>Gap</th></tr>
+<tr><td>Material qty</td><td>4.00 kg</td><td>3.65 kg (BOM)</td><td>0.35 kg</td></tr>
+<tr><td>Labour hrs</td><td>3.50 hrs</td><td>3.20 hrs (best plant)</td><td>0.30 hrs</td></tr>
+<tr><td>Variable OH</td><td>₹140/hr</td><td>₹131/hr (regression)</td><td>₹9/hr</td></tr></table>
+<p style="font-size:0.8rem;color:var(--loss);margin-top:8px;font-weight:600">Total embedded slack: ₹11.16 Cr — equal to 33.9% of budgeted operating income.</p>`,
+levers:[
+  {id:'stdMatQty',label:'Material Standard (kg/unit)',min:3.50,max:4.20,step:0.05,default:3.85,format:'decimal',
+   hints:[{at:3.50,text:'Below engineering BOM (3.65). Unattainable — permanent unfavourable variances.'},{at:3.65,text:'Engineering BOM. Benchmark, but plant has never achieved this in any month.'},{at:3.80,text:'Between engineering and historical. Achievable with process discipline.'},{at:4.00,text:'Current standard. Contains 0.35 kg (9.6%) of padding.'},{at:4.20,text:'Above current — adding more buffer. Variance system becomes useless.'}]},
+  {id:'stdLabHrs',label:'Labour Standard (hrs/unit)',min:3.00,max:3.80,step:0.05,default:3.35,format:'decimal',
+   hints:[{at:3.00,text:'Below best plant (3.20). Unattainable target.'},{at:3.20,text:'Best-plant benchmark. Achievable only in ideal conditions.'},{at:3.35,text:'Stretch but realistic. Removes most slack without being unattainable.'},{at:3.50,text:'Current standard. Contains 0.30 hrs of padding.'},{at:3.80,text:'Padded further. Will produce reliably favourable variances that mean nothing.'}]},
+  {id:'stdVOHRate',label:'Variable OH Standard (₹/hr)',min:120,max:155,step:1,default:135,format:'currency-unit',
+   hints:[{at:120,text:'Below regression (₹131). Unattainable.'},{at:131,text:'Regression result. Evidence-based lower bound.'},{at:135,text:'Slight buffer above regression. Achievable.'},{at:140,text:'Current standard. Contains ₹9/hr of slack.'},{at:155,text:'Padded. Favourable variances guaranteed — and meaningless.'}]},
+  {id:'improvTarget',label:'Separate Improvement Target (%)',min:0,max:8,step:1,default:4,format:'percent',
+   hints:[{at:0,text:'No improvement target. Standard is the only benchmark.'},{at:2,text:'Modest improvement overlay. Slack visible but gentle pace.'},{at:4,text:'Meaningful target. Slack visible, quantified, and owned as a programme.'},{at:6,text:'Aggressive improvement. May demoralise if perceived as unachievable.'},{at:8,text:'Very aggressive. Risk of the standard being dismissed as unrealistic.'}]}
+],
+computeImpact:function(v){
+  const stdCost=v.stdMatQty*1050+v.stdLabHrs*v.stdVOHRate+v.stdLabHrs*220+v.stdLabHrs*180;
+  const currentStd=4*1050+3.5*140+3.5*220+3.5*180;
+  const slackRemoved=currentStd-stdCost;const slackPct=((currentStd-stdCost)/currentStd*100).toFixed(1);
+  const remainSlack=(stdCost-(3.65*1050+3.2*131+3.2*220+3.2*180));
+  return[
+    {l:'Standard Cost/Unit',v:'₹'+Math.round(stdCost),cls:''},
+    {l:'Current Standard',v:'₹'+Math.round(currentStd),cls:''},
+    {l:'Slack Removed',v:'₹'+Math.round(slackRemoved)+' ('+slackPct+'%)',cls:slackRemoved>0?'good':''},
+    {l:'Remaining Slack',v:'₹'+Math.round(Math.max(0,remainSlack)),cls:remainSlack<200?'good':remainSlack<500?'':'warn'},
+    {l:'Improvement Target',v:v.improvTarget+'% tracked separately',cls:v.improvTarget>0?'good':''}
+  ];
+},
+score:function(v){
+  let s=0;
+  if(v.stdMatQty>=3.75&&v.stdMatQty<=3.95)s+=1;else if(v.stdMatQty>=3.65&&v.stdMatQty<=4.0)s+=0.5;else s-=0.5;
+  if(v.stdLabHrs>=3.25&&v.stdLabHrs<=3.45)s+=1;else if(v.stdLabHrs>=3.20&&v.stdLabHrs<=3.50)s+=0.5;else s-=0.5;
+  if(v.stdVOHRate>=131&&v.stdVOHRate<=140)s+=0.5;
+  if(v.improvTarget>=2&&v.improvTarget<=6)s+=1.5;else if(v.improvTarget>=1)s+=0.5;
+  return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  if(sc>=3) return{cls:'strong',icon:'✅',title:'Board Approves — Asks for Quarterly Reporting',
+    text:'Standards are achievable with process discipline. The '+v.improvTarget+'% improvement target makes slack visible, quantified, and owned as a programme — not hidden inside product cost.',
+    sub:'The strongest approach separates the control function of the standard from the improvement function of the target, so neither compromises the other.'};
+  if(v.stdMatQty<=3.65||v.stdLabHrs<=3.20) return{cls:'weak',icon:'🔄',title:'Numbers Improve — Standards Unattainable',
+    text:'Tightening to engineering benchmarks looks good on paper but the plant has never achieved these. Every month will report unfavourable variances. Within a quarter, the variance report will be dismissed as unrealistic.',
+    sub:'A standard that is never achieved stops functioning as a control tool. Permanently unfavourable variances teach nothing.'};
+  if(v.stdMatQty>=4.0&&v.stdLabHrs>=3.50) return{cls:'weak',icon:'🔄',title:'Slack Retained — ₹11.16 Cr Waste Approved',
+    text:'Retaining current standards formally approves ₹11.16 Cr of waste — the variance system is structurally incapable of reporting it.',
+    sub:'Once inefficiency is inside the standard, the variance system will never report it. Padded budgets do not present an accurate picture.'};
+  return{cls:'moderate',icon:'⚠️',title:'Accepted — Partial Improvement',
+    text:'Some slack removed but '+(v.improvTarget<2?'no separate improvement target means the remaining slack may become permanent.':'the improvement target helps make remaining slack visible.'),
+    sub:'Progressive tightening is pragmatic if followed by continued improvement. Risk: partial action becomes permanent.'};
+},
+principle:"Keep standards achievable for control. Track improvement as a separate overlay. Slack inside the standard is invisible to the variance system — it must be made visible to be managed."},
+
+{id:10,title:"The Padded Standard Revealed",subtitle:"When past padding produces false promotions",phase:"standards",isEvent:true,marks:5,
+concept:{title:"Why Padding Persists",text:"Internal audit reveals the 4.0 kg standard was set 3 years ago with an 8% buffer 'for the new line, to be removed after stabilisation.' The line stabilised 22 months ago. The buffer was never removed. The Plant Head was promoted to VP Operations on consistently favourable material variances — manufactured, not earned.",formula:"Cumulative overstatement: 0.35 × ₹1,050 × 22 months of production ≈ ₹16.17 Cr"},
+dataHtml:`<p style="font-size:0.88rem;margin-bottom:8px">The VP Operations (formerly Plant Head) sits on this committee. His promotion was based on <strong style="color:var(--loss)">manufactured favourable variances</strong> from a padded standard he set.</p>`,
+levers:[
+  {id:'correctionPct',label:'How much of the slack do you correct?',min:0,max:100,step:10,default:100,format:'percent',
+   hints:[{at:0,text:'No correction. Padding remains — approved annually going forward.'},{at:50,text:'Partial correction. Safer politically but signals that padding carries reduced risk.'},{at:100,text:'Full correction. Standard returns to engineering basis.'}]},
+  {id:'disclosureLevel',label:'Disclosure to Board',min:0,max:2,step:1,default:2,format:'toggle3',labels:['Silent Correction','Quantified Report','Full Disclosure + Evaluation Review'],
+   hints:[{at:0,text:'Correct silently. Removes slack but signals that padding carries no risk. Behaviour will recur.'},{at:1,text:'Report ₹16.17 Cr cumulative impact. Board learns the truth. Uncomfortable but honest.'},{at:2,text:'Full disclosure with evaluation review. Addresses the person, the consequence, AND the system.'}]},
+  {id:'processChange',label:'Process Change: Annual Re-certification',min:0,max:1,step:1,default:1,format:'toggle',labels:['No Process Change','Require Annual Engineering Re-certification'],
+   hints:[{at:0,text:'No structural fix. Next Plant Head faces the same incentive with the same opportunity.'},{at:1,text:'Annual re-certification makes padding structurally harder. Addresses the system, not just the person.'}]}
+],
+computeImpact:function(v){
+  const removed=(v.correctionPct/100*11.16).toFixed(1);const remaining=(11.16-removed).toFixed(1);
+  return[
+    {l:'Slack Removed',v:'₹'+removed+' Cr',cls:parseFloat(removed)>8?'good':''},
+    {l:'Slack Remaining',v:'₹'+remaining+' Cr',cls:parseFloat(remaining)<2?'good':'warn'},
+    {l:'Disclosure',v:['Silent','Quantified Report','Full + Eval Review'][v.disclosureLevel],cls:v.disclosureLevel>=1?'good':'warn'},
+    {l:'Process Fix',v:v.processChange?'Re-certification required':'None',cls:v.processChange?'good':'warn'}
+  ];
+},
+score:function(v){
+  let s=0;if(v.correctionPct>=90)s+=1;else if(v.correctionPct>=50)s+=0.5;
+  s+=v.disclosureLevel;if(v.processChange)s+=1;return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  if(sc>=3.5) return{cls:'strong',icon:'✅',title:'Board Accepts — The Most Complete Response',
+    text:'Full correction, full disclosure, and a process change. This addresses the person, the consequence, AND the system. Annual re-certification makes padding structurally harder.',
+    sub:'Without a process change, the next Plant Head faces the same incentive with the same opportunity.'};
+  if(v.disclosureLevel===0) return{cls:'moderate',icon:'⚠️',title:'Slack Removed — No Consequence',
+    text:'Correcting silently removes the slack but signals that padding carries no risk. The behaviour will recur because there is no deterrent.',
+    sub:'Correcting without consequence signals that padding is risk-free. The behaviour is rational for the individual precisely because the system does not punish it.'};
+  return{cls:'moderate',icon:'⚠️',title:'Partially Addressed',
+    text:(v.correctionPct<100?'Only '+v.correctionPct+'% corrected — remaining slack stays invisible. ':'')+(v.processChange===0?'Without a process change, the next manager faces the same incentive.':''),
+    sub:'Padding persists because the incentive system rewards it. Address the person AND the system.'};
+},
+principle:"Address the person, the consequence, AND the system. Without a process change, the next manager faces the same incentive with the same opportunity."},
+
+{id:11,title:"The Flexible Budget",subtitle:"Isolating volume from performance",phase:"analysis",isEvent:false,marks:8,
+concept:{title:"Why Flexing Exists",text:"The static budget was for 240,000 units. Actuals are at 216,000 (fire-capped). Comparing directly mixes volume effects with efficiency. Flexing to actual output isolates volume into a single variance, leaving remaining differences attributable to price and efficiency.",formula:"Sales Volume Variance = (216K − 240K) × ₹3,410 = ₹8.18 Cr U\nWho is responsible? Sales didn't sell? Or Plant couldn't produce?"},
+dataHtml:`<table class="dp-table"><tr><th>Element</th><th>Static (240K)</th><th>Flexed (216K)</th><th>Actual</th></tr>
+<tr><td>Revenue</td><td>₹228.00 Cr</td><td>₹205.20 Cr</td><td>₹209.95 Cr</td></tr>
+<tr><td>Direct material</td><td>₹100.80 Cr</td><td>₹90.72 Cr</td><td>₹101.61 Cr</td></tr>
+<tr><td>Direct labour</td><td>₹18.48 Cr</td><td>₹16.63 Cr</td><td>₹18.51 Cr</td></tr>
+<tr><td>Variable OH</td><td>₹11.76 Cr</td><td>₹10.58 Cr</td><td>₹11.66 Cr</td></tr>
+<tr><td>Fixed OH</td><td>₹15.12 Cr</td><td>₹15.12 Cr</td><td>₹15.80 Cr</td></tr>
+<tr class="total"><td>Gross profit</td><td>₹81.84 Cr</td><td>₹72.15 Cr</td><td>₹62.37 Cr</td></tr></table>`,
+levers:[
+  {id:'volAttribExceptional',label:'Volume Variance (₹8.18 Cr U) — % Attributed to Exceptional/Uncontrollable',min:0,max:100,step:10,default:100,format:'percent',
+   hints:[{at:0,text:'Zero exceptional — all attributed to VP Sales and/or Plant Head. But the fire capped production.'},{at:30,text:'Mostly blamed on managers. The fire caused the shortfall — neither manager controlled it.'},{at:70,text:'Mostly exceptional. Some manager attribution despite fire being uncontrollable.'},{at:100,text:'100% exceptional. Neither manager controlled the fire — both evaluated on the flexed budget for 216,000 units.'}]}
+],
+computeImpact:function(v){
+  const excAmt=(v.volAttribExceptional/100*8.18).toFixed(1);const mgrAmt=(8.18-excAmt).toFixed(1);
+  return[
+    {l:'Exceptional (uncontrollable)',v:'₹'+excAmt+' Cr',cls:parseFloat(excAmt)>6?'good':''},
+    {l:'Charged to Managers',v:'₹'+mgrAmt+' Cr',cls:parseFloat(mgrAmt)<2?'good':'warn'},
+    {l:'VP Sales Evaluated On',v:v.volAttribExceptional>=80?'Price & mix only':'Volume + price',cls:v.volAttribExceptional>=80?'good':'warn'},
+    {l:'Plant Head Evaluated On',v:v.volAttribExceptional>=80?'Efficiency only':'Volume + efficiency',cls:v.volAttribExceptional>=80?'good':'warn'}
+  ];
+},
+score:function(v){if(v.volAttribExceptional>=90)return 4;if(v.volAttribExceptional>=70)return 3;if(v.volAttribExceptional>=40)return 2;return 1;},
+feedback:function(v,sc){
+  if(sc>=3.5) return{cls:'strong',icon:'✅',title:'Board Accepts — This Is Why Flexing Exists',
+    text:'Both managers evaluated against the flexed budget for 216,000 — the volume actually achievable. The fire\'s cost is visible as ₹8.18 Cr, not dissolved into two reports where it can never be traced.',
+    sub:'Flexing to actual output evaluates managers on what they did with the volume they had, and isolates the volume question for separate attribution.'};
+  if(v.volAttribExceptional<=30) return{cls:'weak',icon:'❌',title:'Rejected — Misattribution',
+    text:'Charging managers ₹'+(8.18*(1-v.volAttribExceptional/100)).toFixed(1)+' Cr for volume lost to a fire they couldn\'t prevent is the exact failure this module exists to eliminate.',
+    sub:'A manager should not be penalised for outcomes they cannot control. Reporting by function rather than controllability guarantees this failure.'};
+  return{cls:'moderate',icon:'⚠️',title:'Partially Correct',
+    text:'Attributing '+(100-v.volAttribExceptional)+'% to managers when the fire was uncontrollable is only defensible if they failed to recover production faster — and that should be a separate assessment.',
+    sub:'The general rule is to equate responsibility with controllability.'};
+},
+principle:"The flexible budget exists to evaluate managers on what they did with the volume they had. Equate responsibility with controllability."},
+
+{id:12,title:"Variance Investigation",subtitle:"Which variances deserve management time?",phase:"analysis",isEvent:false,marks:6,
+concept:{title:"Investigation Has a Cost-Benefit Tradeoff",text:"Nine variances total ₹19.46 Cr (net). Investigating all 9 takes ~40 hours of management time. The 4 largest cover 82% of the total. The committee must decide where investigation effort yields the greatest return.",formula:"Top 4: Material price ₹6.35 + Material usage ₹4.54 + Sales price ₹4.75 + FOH volume ₹1.51 = ₹17.15 Cr (82%)\nRemaining 5: ₹2.31 Cr total"},
+dataHtml:`<table class="dp-table"><tr><th>Variance</th><th>Amount</th><th>F/U</th></tr>
+<tr><td>Material price</td><td>₹6.35 Cr</td><td style="color:var(--loss)">U</td></tr>
+<tr><td>Sales price</td><td>₹4.75 Cr</td><td style="color:var(--neem)">F</td></tr>
+<tr><td>Material usage</td><td>₹4.54 Cr</td><td style="color:var(--loss)">U</td></tr>
+<tr><td>FOH volume</td><td>₹1.51 Cr</td><td style="color:var(--loss)">U</td></tr>
+<tr><td>Labour rate</td><td>₹1.40 Cr</td><td style="color:var(--loss)">U</td></tr>
+<tr><td>VOH spending</td><td>₹0.77 Cr</td><td style="color:var(--loss)">U</td></tr>
+<tr><td>FOH spending</td><td>₹0.68 Cr</td><td style="color:var(--loss)">U</td></tr>
+<tr><td>Labour efficiency</td><td>₹0.48 Cr</td><td style="color:var(--loss)">U</td></tr>
+<tr><td>VOH efficiency</td><td>₹0.30 Cr</td><td style="color:var(--loss)">U</td></tr></table>`,
+levers:[
+  {id:'investigateThreshold',label:'Investigation Threshold (%)',min:1,max:15,step:0.5,default:5,format:'percent',
+   hints:[{at:1,text:'Very tight — almost everything gets investigated. High cost, diminishing returns.'},{at:3,text:'Strict threshold. Most variances flagged.'},{at:5,text:'Standard 5% tolerance. Flags the significant outliers.'},{at:8,text:'Relaxed. Only the largest will be caught.'},{at:15,text:'Very relaxed. Only catastrophic variances investigated.'}]},
+  {id:'investigateCount',label:'How many variances will you investigate?',min:1,max:9,step:1,default:4,format:'number',
+   hints:[{at:1,text:'Only the single largest. Misses 72% of the story.'},{at:3,text:'Top 3. Covers 76% of total variance.'},{at:4,text:'Top 4. Covers 82% — efficient cost-benefit tradeoff.'},{at:6,text:'Top 6. Covers 93%. Diminishing returns setting in.'},{at:9,text:'All 9. 100% coverage but ~40 hrs of management time for the last 18%.'}]}
+],
+computeImpact:function(v){
+  const coverage=[28,52,76,82,89,93,96,98,100];const hours=[8,14,20,22,28,32,36,38,40];
+  const c=v.investigateCount-1;
+  return[
+    {l:'Variance Coverage',v:coverage[c]+'%',cls:coverage[c]>=80?'good':coverage[c]>=60?'':'warn'},
+    {l:'Mgmt Time',v:'~'+hours[c]+' hours',cls:hours[c]<=25?'good':'warn'},
+    {l:'Threshold',v:v.investigateThreshold+'%',cls:''},
+    {l:'Efficiency',v:coverage[c]>=80&&hours[c]<=25?'High — good cost-benefit':'',cls:coverage[c]>=80&&hours[c]<=25?'good':''}
+  ];
+},
+score:function(v){
+  let s=0;if(v.investigateCount>=3&&v.investigateCount<=5)s+=2;else if(v.investigateCount>=2&&v.investigateCount<=7)s+=1;
+  if(v.investigateThreshold>=3&&v.investigateThreshold<=7)s+=1.5;else if(v.investigateThreshold>=2&&v.investigateThreshold<=10)s+=0.75;
+  return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  const coverage=[28,52,76,82,89,93,96,98,100];
+  if(sc>=3) return{cls:'strong',icon:'✅',title:'Accepted — Cost-Benefit Applied',
+    text:'Investigating '+v.investigateCount+' variances covers '+coverage[v.investigateCount-1]+'% of total. The remaining amount across smaller variances is below the threshold where investigation cost exceeds expected benefit.',
+    sub:'The correct approach applies cost-benefit analysis to the investigation decision itself.'};
+  if(v.investigateCount>=8) return{cls:'moderate',icon:'⚠️',title:'Thorough but Inefficient',
+    text:'Covers everything but consumes roughly twice the effort for the last 18%. The smallest variances total less than the cost of investigating them.',
+    sub:'Investigation has a cost-benefit tradeoff. Thoroughness has diminishing returns.'};
+  return{cls:'moderate',icon:'⚠️',title:'Accepted — Watch the Coverage',
+    text:'Coverage of '+coverage[v.investigateCount-1]+'% may miss significant items. The material usage variance (₹4.54 Cr) is the largest controllable loss — make sure it\'s included.',
+    sub:'The committee must decide whether the expected benefit of investigating exceeds the cost.'};
+},
+principle:"Investigation has a cost-benefit tradeoff. At Zenith's scale, investigating the 4-5 largest variances covers ~85% of total — the efficient choice."},
+
+{id:13,title:"The Institutional Order",subtitle:"When the right number meets the wrong process",phase:"analysis",isEvent:true,marks:5,
+concept:{title:"Decision Rights vs. Economic Analysis",text:"A government housing authority offers 18,000 units at ₹8,400 (vs standard ₹9,500) in Q3. The VP Sales accepted without committee approval. The plant has idle capacity post-fire. The economics are sound but the governance is not.",formula:"Contribution = (8,400 − 5,460) × 18,000 = ₹5.29 Cr\nFOH recovered = 18,000 × 630 = ₹1.13 Cr\nBUT: Sales Price Var worsened by ₹1.98 Cr in the report"},
+dataHtml:`<table class="dp-table"><tr><th>View</th><th>Position</th><th>Amount</th></tr>
+<tr><td>CFO — price damage</td><td>Price variance worsened</td><td style="color:var(--loss)">₹1.98 Cr</td></tr>
+<tr><td>VP Sales — contribution</td><td>Above variable cost</td><td style="color:var(--neem)">₹5.29 Cr</td></tr>
+<tr><td>VP Sales — absorption</td><td>FOH recovered</td><td style="color:var(--neem)">₹1.13 Cr</td></tr></table>`,
+levers:[
+  {id:'instAcceptVol',label:'Accept Volume (units)',min:0,max:18000,step:1000,default:18000,format:'number',
+   hints:[{at:0,text:'Reject entirely. Idle capacity remains — ₹5.29 Cr contribution lost.'},{at:9000,text:'Half order. Some contribution captured.'},{at:18000,text:'Full order. ₹5.29 Cr contribution + ₹1.13 Cr FOH absorption recovered. Economics are sound.'}]},
+  {id:'instReporting',label:'Reporting of Institutional Sales',min:0,max:1,step:1,default:1,format:'toggle',labels:['Combined with Core Sales','Separate Channel with Own Standard'],
+   hints:[{at:0,text:'Combined reporting. The ₹8,400 price drags down the sales price variance by ₹1.98 Cr — distorting core business performance.'},{at:1,text:'Separate channel with its own ₹8,400 standard. Core business price variance stays clean. Institutional contribution visible separately.'}]}
+],
+computeImpact:function(v){
+  const contrib=Math.round(v.instAcceptVol*(8400-5460)/10000000*100)/100;
+  const fohRecovered=Math.round(v.instAcceptVol*630/10000000*100)/100;
+  return[
+    {l:'Contribution',v:'₹'+contrib.toFixed(2)+' Cr',cls:contrib>0?'good':''},
+    {l:'FOH Recovered',v:'₹'+fohRecovered.toFixed(2)+' Cr',cls:fohRecovered>0?'good':''},
+    {l:'Price Var Impact',v:v.instReporting===0?'₹'+((v.instAcceptVol*(9500-8400))/10000000).toFixed(2)+' Cr adverse':'Clean (separate)',cls:v.instReporting===1?'good':'warn'},
+    {l:'Governance',v:v.instAcceptVol>0?'Establish ≥10% discount approval rule':'N/A',cls:''}
+  ];
+},
+score:function(v){
+  let s=0;if(v.instAcceptVol>=15000)s+=2;else if(v.instAcceptVol>=9000)s+=1;else s+=0.5;
+  if(v.instReporting===1)s+=2;else s+=0.5;return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  if(sc>=3.5) return{cls:'strong',icon:'✅',title:'Board Accepts — Clean Reporting + Sound Economics',
+    text:'Full acceptance at ₹8,400 is correct with idle capacity — any price above variable cost adds contribution. Separate channel reporting keeps the core variance clean.',
+    sub:'When a decision is economically sound but distorts the variance report, the fix is to improve the reporting rather than to reject the decision or accept the distortion.'};
+  if(v.instAcceptVol===0) return{cls:'weak',icon:'🔄',title:'Contribution Lost',
+    text:'Rejecting the order loses ₹5.29 Cr of contribution. With idle capacity post-fire, the alternative was zero revenue — not ₹9,500.',
+    sub:'The variance report measures against the standard, not against the available alternative. With idle capacity, the alternative was ₹0.'};
+  return{cls:'moderate',icon:'⚠️',title:'Economics Sound — Reporting Needs Work',
+    text:(v.instReporting===0?'Combined reporting distorts the core business variance by ₹1.98 Cr. ':'')+'The number was right. '+(v.instAcceptVol<18000?'Accepting only '+fmtN(v.instAcceptVol)+' units leaves some idle capacity on the table.':''),
+    sub:'Good economics do not excuse bad governance. Establish a discount approval threshold.'};
+},
+principle:"The number was right, the process was wrong. Separate channel reporting and a discount approval threshold together form the complete answer."},
+
+{id:14,title:"Responsibility Accounting",subtitle:"The performance review — who owns what?",phase:"final",isEvent:false,marks:13,
+concept:{title:"The Five Sources of Variance",text:"1) Inefficiencies in operations. 2) Randomness of operations (fire). 3) Forecast errors (sales). 4) Inappropriate standards (padding). 5) Inappropriate decision models. Only source #1 is genuinely a performance failure. Correct attribution requires identifying which source produced each variance.",formula:"Total Variance: ₹19.46 Cr Unfavourable\nControllable: ~₹8.50 Cr\nUncontrollable/Exceptional: ~₹15.71 Cr\n→ 81% of total variance was nobody's fault"},
+dataHtml:`<table class="dp-table"><tr><th>Variance</th><th>Amount</th><th>Source</th></tr>
+<tr><td>Sales price</td><td style="color:var(--neem)">₹4.75 Cr F</td><td>Achievement</td></tr>
+<tr><td>Sales volume</td><td style="color:var(--loss)">₹8.18 Cr U</td><td>Fire (uncontrollable)</td></tr>
+<tr><td>Material price</td><td style="color:var(--loss)">₹6.35 Cr U</td><td>Currency + hedge failure</td></tr>
+<tr><td>Material usage</td><td style="color:var(--loss)">₹4.54 Cr U</td><td>Inefficiency (controllable)</td></tr>
+<tr><td>Labour rate</td><td style="color:var(--loss)">₹1.40 Cr U</td><td>Statutory revision</td></tr>
+<tr><td>Labour efficiency</td><td style="color:var(--loss)">₹0.48 Cr U</td><td>Post-fire relearning</td></tr>
+<tr><td>VOH spending</td><td style="color:var(--loss)">₹0.77 Cr U</td><td>Operations</td></tr>
+<tr><td>VOH efficiency</td><td style="color:var(--loss)">₹0.30 Cr U</td><td>Operations</td></tr>
+<tr><td>FOH spending</td><td style="color:var(--loss)">₹0.68 Cr U</td><td>Partly fire repair</td></tr>
+<tr><td>FOH volume</td><td style="color:var(--loss)">₹1.51 Cr U</td><td>Fire (uncontrollable)</td></tr></table>`,
+levers:[
+  {id:'finalCtrlSplit',label:'How do you structure the performance report?',min:0,max:2,step:1,default:1,format:'toggle3',labels:['By Function (no ctrl split)','Controllable vs Uncontrollable','Ctrl/Unctrl + Response Assessment'],
+   hints:[{at:0,text:'Report by function. Plant Head charged ₹15.29 Cr including ₹9.69 Cr from fire + currency they couldn\'t control.'},{at:1,text:'Separate controllable from uncontrollable. ₹15.71 Cr exceptional. Managers evaluated on controllable only.'},{at:2,text:'Ctrl/Unctrl split PLUS evaluate how well each manager responded to uncontrollable events.'}]},
+  {id:'finalResponseEval',label:'Evaluate managers on response quality?',min:0,max:1,step:1,default:1,format:'toggle',labels:['No — Controllable Variances Only','Yes — Include Response to Uncontrollable Events'],
+   hints:[{at:0,text:'Evaluate only on controllable variances. Fair but misses how well managers handled the crisis.'},{at:1,text:'Also evaluate response quality. The Plant Head didn\'t control the fire but DID control the recovery.'}]}
+],
+computeImpact:function(v){
+  const ctrl=v.finalCtrlSplit>=1;const resp=v.finalResponseEval===1;
+  return[
+    {l:'Exceptional Line',v:ctrl?'₹15.71 Cr (81%)':'None — all attributed',cls:ctrl?'good':'warn'},
+    {l:'Plant Head Charged',v:ctrl?'₹6.40 Cr (efficiency)':'₹15.29 Cr (everything)',cls:ctrl?'good':'warn'},
+    {l:'VP Sales Credited',v:ctrl?'₹4.75 Cr F (price)':'Mixed with volume loss',cls:ctrl?'good':''},
+    {l:'Response Assessment',v:resp?'Yes — recovery quality scored':'Not assessed',cls:resp?'good':''},
+    {l:'Real Problem Visible',v:ctrl?'Mat usage ₹4.54 Cr — the one fixable thing':'Buried in noise',cls:ctrl?'good':'warn'}
+  ];
+},
+score:function(v){
+  let s=0;if(v.finalCtrlSplit===2)s+=2.5;else if(v.finalCtrlSplit===1)s+=1.5;else s-=1;
+  if(v.finalResponseEval===1)s+=1.5;else s+=0.5;
+  return clamp(s,0,4);
+},
+feedback:function(v,sc){
+  if(sc>=3.5) return{cls:'strong',icon:'✅',title:'Board Accepts — The Most Complete Answer',
+    text:'For the first time, the MD can see that of ₹19.46 Cr total variance, ₹15.71 Cr was genuinely uncontrollable and ₹6.40 Cr was performance. The conversation shifts from blame to the ₹4.54 Cr material usage — the one thing genuinely wrong. And managers are evaluated on their response to crisis, not just on what they controlled.',
+    sub:'Equating responsibility with controllability converts the variance report from an instrument of blame into an instrument of management.'};
+  if(v.finalCtrlSplit===0) return{cls:'weak',icon:'❌',title:'PENALTY — Misattribution',
+    text:'The Plant Head is charged ₹15.29 Cr including ₹9.69 Cr they could not control. VP Sales is charged for volume that couldn\'t be produced. This is the exact failure this entire module exists to eliminate.',
+    sub:'A manager should not be rewarded or penalised for outcomes they cannot control. Reporting by function rather than controllability guarantees a culture of excuses.'};
+  return{cls:'moderate',icon:'⚠️',title:'Accepted — Good Foundation',
+    text:'Separating controllable from uncontrollable is the right foundation. '+(v.finalResponseEval===0?'But evaluating only on controllable variances misses response quality. The Plant Head\'s strong fire recovery deserves recognition.':''),
+    sub:'A manager does not control whether a fire occurs but does control the response. Evaluating the response is both fair and useful.'};
+},
+principle:"The variance system was not the problem. The attribution was. Equating responsibility with controllability — and evaluating response to the uncontrollable — is the purpose of this entire exercise."}
+];
+
+const PROFILES=[
+{name:"The Balanced Controller",desc:"Kept standards achievable, flexed before evaluating, separated controllable from uncontrollable, and held managers accountable for response quality. The profile this module is designed to produce.",min:80},
+{name:"The Controllability Purist",desc:"Correctly separated controllable from uncontrollable but sometimes used the principle to avoid accountability for response as well as for cause.",min:65},
+{name:"The Volume Chaser",desc:"Focused on hitting revenue targets and under-weighted standard-setting and attribution. Common among executives from commercial backgrounds.",min:50},
+{name:"The Padder",desc:"Built buffers into standards and accepted slack as prudence. Produces reliably favourable variances and structurally unachievable improvement.",min:35},
+{name:"The Blamer",desc:"Assigned unfavourable variances to other functions and retained favourable ones. Skilled at the argument, destructive to the process.",min:0}
+];
+
+function getProfile(){
+  const pct=S.maxPossible>0?Math.round(S.totalScore/S.maxPossible*100):0;
+  for(const p of PROFILES) if(pct>=p.min) return p;
+  return PROFILES[PROFILES.length-1];
+}
+function getGrade(){
+  const pct=S.maxPossible>0?Math.round(S.totalScore/S.maxPossible*100):0;
+  if(pct>=85) return{letter:'Distinction',color:'var(--neem)'};
+  if(pct>=70) return{letter:'Merit',color:'var(--blue)'};
+  if(pct>=55) return{letter:'Pass',color:'var(--saffron)'};
+  if(pct>=45) return{letter:'Marginal',color:'var(--muted)'};
+  return{letter:'Fail',color:'var(--loss)'};
+}
+
+function renderRail(){
+  let h='<div class="round-rail">';
+  for(let i=0;i<TOTAL;i++){
+    const r=ROUNDS[i];let cls='round-dot';
+    if(i+1<S.round) cls+=' done';else if(i+1===S.round) cls+=' current';
+    if(r.isEvent) cls+=' event-dot';
+    if(i===8||i===10) cls+=' phase-break';
+    h+=`<div class="${cls}">${i+1}</div>`;
+  }
+  return h+'</div>';
+}
+
+function leverHTML(lev){
+  const val=S[lev.id]!==undefined?S[lev.id]:lev.default;
+  let fmtV,minL,maxL;
+  if(lev.format==='number') {fmtV=fmtN(val);minL=fmtN(lev.min);maxL=fmtN(lev.max);}
+  else if(lev.format==='currency-unit'){fmtV='₹'+fmtN(val);minL='₹'+fmtN(lev.min);maxL='₹'+fmtN(lev.max);}
+  else if(lev.format==='cr'){fmtV='₹'+val+' Cr';minL='₹'+lev.min+' Cr';maxL='₹'+lev.max+' Cr';}
+  else if(lev.format==='percent'){fmtV=val+'%';minL=lev.min+'%';maxL=lev.max+'%';}
+  else if(lev.format==='decimal'){fmtV=val.toFixed(2);minL=lev.min.toFixed(2);maxL=lev.max.toFixed(2);}
+  else if(lev.format==='toggle'){fmtV=lev.labels[val];minL=lev.labels[0];maxL=lev.labels[1];}
+  else if(lev.format==='toggle3'){fmtV=lev.labels[val];minL=lev.labels[0];maxL=lev.labels[2];}
+  else{fmtV=val;minL=lev.min;maxL=lev.max;}
+  const hintText=getHint(lev,val);
+  return `<div class="lever-group" data-lever-id="${lev.id}">
+    <div class="lever-label">${lev.label}</div>
+    <div class="lever-display" id="lever_val_${lev.id}">${fmtV}</div>
+    <input type="range" class="lever-track" id="lever_${lev.id}" min="${lev.min}" max="${lev.max}" step="${lev.step}" value="${val}" oninput="window.updateLever('${lev.id}',this.value)">
+    <div class="lever-range"><span>${minL}</span><span>${maxL}</span></div>
+    <div class="lever-hint" id="lever_hint_${lev.id}">${hintText}</div>
+  </div>`;
+}
+
+function getHint(lev,val){
+  val=Number(val);if(!lev.hints||!lev.hints.length)return '';
+  let best=lev.hints[0];for(const h of lev.hints)if(val>=h.at)best=h;return best.text;
+}
+
+window.updateLever=function(id,val){
+  if(S.locked) return;
+  const r=ROUNDS[S.round-1];const lev=r.levers.find(l=>l.id===id);if(!lev) return;
+  val=Number(val);
+  if(lev.format==='decimal') val=Math.round(val*100)/100;
+  S[id]=val;
+  const display=$('lever_val_'+id);
+  if(lev.format==='number') display.textContent=fmtN(val);
+  else if(lev.format==='currency-unit') display.textContent='₹'+fmtN(val);
+  else if(lev.format==='cr') display.textContent='₹'+val+' Cr';
+  else if(lev.format==='percent') display.textContent=val+'%';
+  else if(lev.format==='decimal') display.textContent=val.toFixed(2);
+  else if(lev.format==='toggle'||lev.format==='toggle3') display.textContent=lev.labels[val];
+  else display.textContent=val;
+  const hint=$('lever_hint_'+id);if(hint) hint.textContent=getHint(lev,val);
+  updateImpact();
+};
+
+function updateImpact(){
+  const r=ROUNDS[S.round-1];if(!r.computeImpact) return;
+  const vals={};r.levers.forEach(l=>{vals[l.id]=S[l.id]!==undefined?S[l.id]:l.default;});
+  const metrics=r.computeImpact(vals);
+  const grid=$('impactGrid');if(!grid) return;
+  grid.innerHTML=metrics.map(m=>
+    `<div class="ip-metric ${m.cls||''}"><div class="ip-label">${m.l}</div><div class="ip-value">${m.v}</div></div>`
+  ).join('');
+}
+
+function renderIntro(){
+  $badge.textContent='START';$badge.className='step-badge';$score.style.display='none';$strip.style.width='0%';
+  $main.innerHTML=`
+  <div class="intro-screen">
+    <h1>The Annual Budget War Room</h1>
+    <div class="intro-subtitle">Zenith Appliances Ltd. — Aurangabad</div>
+    <div class="quote-box">
+      "Last year we budgeted eighty-two crore and delivered fifty-one. Every functional head has explained, persuasively, why it was not their fault. Collectively they have explained away thirty-one crore. I would like this year to be different. Not the number — the explanation."
+      <div class="quote-attr">— Vikram Sethi, Managing Director</div>
+    </div>
+    <div class="company-card">
+      <table class="dp-table">
+        <tr><td style="font-weight:600">Business</td><td>Domestic water purifiers</td></tr>
+        <tr><td style="font-weight:600">Flagship</td><td>AquaPure Pro — 8-stage RO purifier</td></tr>
+        <tr><td style="font-weight:600">Plant</td><td>Waluj Industrial Area, Aurangabad</td></tr>
+        <tr><td style="font-weight:600">Employees</td><td>1,140 (620 direct workers)</td></tr>
+        <tr><td style="font-weight:600">Last Year Revenue</td><td>₹198 Cr (budget was ₹228 Cr)</td></tr>
+        <tr><td style="font-weight:600">Key Import</td><td>RO membrane (South Korea, USD-priced)</td></tr>
+      </table>
+      <div style="margin-top:16px">
+        <div style="font-weight:700;font-size:0.85rem;margin-bottom:8px">You Are the CFO. Set the levers:</div>
+        <div class="role-grid">
+          <div class="role-card"><div class="role-emoji">📊</div><div class="role-name">Sales Budget</div><div class="role-type">Volume & Price</div></div>
+          <div class="role-card"><div class="role-emoji">🏭</div><div class="role-name">Production</div><div class="role-type">Inventory & Labour</div></div>
+          <div class="role-card"><div class="role-emoji">📋</div><div class="role-name">Standards</div><div class="role-type">Cost Card</div></div>
+          <div class="role-card"><div class="role-emoji">⚖️</div><div class="role-name">Attribution</div><div class="role-type">Who Owns What</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:660px;margin:0 auto">
+      <div class="concept-box" style="text-align:left">
+        <div class="cb-header">🎯 Your Mission</div>
+        <div class="cb-text">You are the CFO of Zenith Appliances. In each round, use the levers to make real cost accounting decisions — set budgets, define standards, handle crises, and attribute variances. The board will react to your choices. There are no right or wrong answers — only consequences, tradeoffs, and principles.</div>
+      </div>
+      <div style="text-align:left;margin-bottom:16px;font-size:0.82rem;color:var(--muted)">
+        <strong>14 Rounds</strong> · <strong>4 Events</strong> · <strong>Lever-Based Decisions</strong> · Based on Horngren's Cost Accounting
+      </div>
+      <div id="classroomBanner" style="display:none;margin:12px 0;padding:10px 12px;border-radius:8px;background:var(--neem-light);color:var(--neem);font-size:0.85rem;font-weight:600"></div>
+    </div>
+    <div class="nav-row" style="justify-content:center">
+      <button class="btn btn-primary" onclick="window.startGame()">Enter the War Room →</button>
+    </div>
+  </div>`;
+  try{
+    if(window.SimulokClassroom){
+      const auth=SimulokClassroom.loadSession();
+      const ban=$('classroomBanner');
+      if(ban&&auth&&auth.session&&auth.session.sim_id==='zenith'&&auth.role!=='instructor'){
+        ban.style.display='block';
+        ban.textContent='Classroom session '+auth.session.session_id+' · signed in as '+auth.student_id+' ('+auth.name+'). Rounds will log to the Sheet.';
+      }
+    }
+  }catch(e){}
+}
+
+window.startGame=function(){S.round=1;S.phase='playing';S.locked=false;S.totalScore=0;S.maxPossible=0;S.roundScores=[];renderRound();};
+
+function renderRound(){
+  const r=ROUNDS[S.round-1];S.locked=false;
+  $badge.textContent=r.isEvent?'EVENT '+r.id:'R'+r.id;
+  $badge.className='step-badge'+(r.isEvent?' event':'');
+  $score.style.display='inline';
+  $score.textContent=S.totalScore.toFixed(1)+' / '+S.maxPossible.toFixed(1);
+  $strip.style.width=((S.round-1)/TOTAL*100)+'%';
+
+  const phaseLabel={build:'BUILD THE BUDGET',standards:'SET STANDARDS',analysis:'ANALYZE VARIANCES',final:'PERFORMANCE REVIEW'};
+  const headerCls=r.isEvent?'event':r.phase==='analysis'?'analysis':r.phase==='final'?'final':'budget';
+  const phaseIcon=r.isEvent?'⚡':r.phase==='analysis'?'📊':r.phase==='final'?'⚖️':'🏗️';
+
+  r.levers.forEach(l=>{if(S[l.id]===undefined)S[l.id]=l.default;});
+
+  let html=renderRail();
+  html+=`<div class="scene-card"><div class="scene-header ${headerCls}">${phaseIcon} ${r.isEvent?'EXCEPTIONAL EVENT':'Round '+r.id} — ${r.title}</div>
+    <div class="scene-body"><div class="st-title">${r.subtitle}</div>
+    <div class="st-desc" style="margin-top:4px"><strong>Phase:</strong> ${phaseLabel[r.phase]||''} · <strong>Weight:</strong> ${r.marks} marks</div></div></div>`;
+
+  html+=`<div class="concept-box"><div class="cb-header">📖 ${r.concept.title}</div><div class="cb-text">${r.concept.text}</div>
+    ${r.concept.formula?`<div class="cb-formula">${r.concept.formula.replace(/\n/g,'<br>')}</div>`:''}</div>`;
+
+  html+=`<div class="data-pack"><div class="dp-header">📋 Data Pack</div>${r.dataHtml}</div>`;
+
+  html+=`<div class="lever-section"><div class="lever-section-header">🎚️ Your Decisions — Set the Levers</div>`;
+  r.levers.forEach(l=>{html+=leverHTML(l);});
+  html+=`</div>`;
+
+  const vals={};r.levers.forEach(l=>{vals[l.id]=S[l.id];});
+  const metrics=r.computeImpact(vals);
+  html+=`<div class="impact-preview"><div class="ip-header">📊 Live Impact Preview</div><div class="ip-grid" id="impactGrid">`;
+  metrics.forEach(m=>{html+=`<div class="ip-metric ${m.cls||''}"><div class="ip-label">${m.l}</div><div class="ip-value">${m.v}</div></div>`;});
+  html+=`</div></div>`;
+
+  html+=`<div id="responseArea"></div>`;
+  html+=`<div class="nav-row">
+    <button class="btn btn-primary" id="lockBtn" onclick="window.lockIn()">Lock In & Submit to Board →</button>
+    <button class="btn btn-primary" id="nextBtn" style="display:none" onclick="window.nextRound()">Next Round →</button>
+  </div>`;
+
+  $main.innerHTML=html;$main.scrollTo(0,0);window.scrollTo(0,0);
+}
+
+window.lockIn=function(){
+  if(S.locked) return;S.locked=true;
+  const r=ROUNDS[S.round-1];
+  const vals={};r.levers.forEach(l=>{vals[l.id]=S[l.id];});
+  const sc=r.score(vals);const marks=sc/4*r.marks;
+  S.totalScore+=marks;S.maxPossible+=r.marks;
+  S.roundScores.push({round:S.round,marks:marks,max:r.marks,rubric:sc});
+  $score.textContent=S.totalScore.toFixed(1)+' / '+S.maxPossible.toFixed(1);
+
+  zenithClassroomLog(S.round, r.title, marks.toFixed(1), {
+    rubric: sc,
+    max_marks: r.marks,
+    levers: vals,
+    running_total: S.totalScore,
+    max_possible: S.maxPossible
+  });
+
+  document.querySelectorAll('.lever-track').forEach(el=>{el.disabled=true;el.style.opacity='0.6';});
+  $('lockBtn').style.display='none';$('nextBtn').style.display='inline';
+
+  const fb=r.feedback(vals,sc);
+  const scoreCls=sc>=3?'high':sc>=2?'mid':'low';
+  let rh=`<div class="board-response ${fb.cls}"><div class="br-header">${fb.icon} Board: ${fb.title}</div><div class="br-text">${fb.text}</div>
+    ${fb.sub?`<div class="br-sub">${fb.sub}</div>`:''}</div>`;
+  rh+=`<div class="principle-box"><div class="pb-header">📚 Costing Principle</div><div class="pb-text">${r.principle}</div></div>`;
+  rh+=`<div class="score-reveal"><div class="sr-circle ${scoreCls}">${marks.toFixed(1)}/${r.marks}</div>
+    <div class="sr-text"><div class="sr-label">Round Score (Quality: ${sc.toFixed(1)}/4)</div>
+    <div class="sr-detail">Running total: <strong>${S.totalScore.toFixed(1)}</strong> of ${S.maxPossible.toFixed(1)} possible</div></div></div>`;
+
+  $('responseArea').innerHTML=rh;
+  $('responseArea').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+window.nextRound=function(){
+  if(S.round>=TOTAL){renderResults();return;}
+  S.round++;renderRound();
+};
+
+function renderResults(){
+  $badge.textContent='RESULTS';$badge.className='step-badge';$strip.style.width='100%';
+  const pct=S.maxPossible>0?Math.round(S.totalScore/S.maxPossible*100):0;
+  const grade=getGrade();const profile=getProfile();
+
+  try{
+    if(window.SimulokClassroom&&SimulokClassroom.configured()&&SimulokClassroom.isClassroomStudent()){
+      SimulokClassroom.completeRun({
+        sim_id:'zenith',
+        total:pct,
+        grade:grade.letter||'',
+        label:profile.name||'',
+        profileName:profile.name||'',
+        profileBlurb:profile.desc||'',
+        display:{ score:Number(S.totalScore.toFixed(1)), max:Number(S.maxPossible.toFixed(1)), pct:pct },
+        highlights:[
+          'Total '+S.totalScore.toFixed(1)+' / '+S.maxPossible.toFixed(1),
+          'Budgeted GP ₹81.84 Cr',
+          'Actual GP ₹62.38 Cr'
+        ]
+      });
+    }
+  }catch(err){ console.warn('zenith complete', err); }
+
+  const wfData=[
+    {label:'Budget GP',val:81.84,type:'base'},{label:'Sales Vol',val:-8.18,type:'neg'},
+    {label:'Sales Price',val:4.75,type:'pos'},{label:'Mat Price',val:-6.35,type:'neg'},
+    {label:'Mat Usage',val:-4.54,type:'neg'},{label:'Lab Rate',val:-1.40,type:'neg'},
+    {label:'Lab Eff',val:-0.48,type:'neg'},{label:'VOH Spend',val:-0.77,type:'neg'},
+    {label:'VOH Eff',val:-0.30,type:'neg'},{label:'FOH Spend',val:-0.68,type:'neg'},
+    {label:'FOH Vol',val:-1.51,type:'neg'},{label:'Actual GP',val:62.38,type:'total'}
+  ];
+  const maxVal=Math.max(...wfData.map(d=>Math.abs(d.val)));
+  let wfBars='';wfData.forEach(d=>{
+    const h=Math.abs(d.val)/maxVal*170;const cls=d.type==='base'?'base':d.type==='total'?'total':d.val>=0?'pos':'neg';
+    const sign=d.val>0?'+':'';const label=d.type==='base'||d.type==='total'?'₹'+d.val+' Cr':sign+d.val;
+    wfBars+=`<div class="wf-bar-wrap"><div class="wf-bar ${cls}" style="height:${h}px"></div><div class="wf-val">${label}</div><div class="wf-label">${d.label}</div></div>`;
+  });
+
+  let roundRows='';S.roundScores.forEach(rs=>{
+    const r=ROUNDS[rs.round-1];const cls=rs.rubric>=3?'color:var(--neem)':rs.rubric>=2?'color:var(--saffron)':'color:var(--loss)';
+    roundRows+=`<tr><td>${r.isEvent?'E':'R'}${r.id}</td><td>${r.title}</td><td style="font-family:ui-monospace,monospace;${cls}">${rs.rubric.toFixed(1)}/4</td><td style="font-family:ui-monospace,monospace">${rs.marks.toFixed(1)}/${rs.max}</td></tr>`;
+  });
+
+  const attribData=[
+    {v:'Material usage ₹4.54 Cr U',c:'Cost Centre (Plant Head)',ctrl:'Yes',s:'Inefficiency'},
+    {v:'Labour efficiency ₹0.48 Cr U',c:'Cost Centre',ctrl:'Yes',s:'Post-fire relearning'},
+    {v:'VOH spending ₹0.77 Cr U',c:'Cost Centre',ctrl:'Yes',s:'Operations'},
+    {v:'VOH efficiency ₹0.30 Cr U',c:'Cost Centre',ctrl:'Yes',s:'Operations'},
+    {v:'Sales price ₹4.75 Cr F',c:'Revenue Centre',ctrl:'Yes',s:'Achievement'},
+    {v:'Material price ₹2.10 Cr U',c:'Procurement',ctrl:'Partly',s:'Hedge failure'},
+    {v:'Sales volume ₹8.18 Cr U',c:'Exceptional',ctrl:'No',s:'Fire'},
+    {v:'Material price ₹4.25 Cr U',c:'Exceptional',ctrl:'No',s:'Currency'},
+    {v:'Labour rate ₹1.40 Cr U',c:'Exceptional',ctrl:'No',s:'Statutory'},
+    {v:'FOH volume ₹1.51 Cr U',c:'Exceptional',ctrl:'No',s:'Fire'},
+    {v:'FOH spending ₹0.37 Cr U',c:'Exceptional',ctrl:'No',s:'Fire repair'}
+  ];
+  let attRows='';attribData.forEach(a=>{
+    const cc=a.ctrl==='Yes'?'color:var(--neem)':a.ctrl==='No'?'color:var(--loss)':'color:var(--saffron)';
+    attRows+=`<tr><td>${a.v}</td><td>${a.c}</td><td style="${cc};font-weight:600">${a.ctrl}</td><td>${a.s}</td></tr>`;
+  });
+
+  $main.innerHTML=`
+  <div class="results-screen">
+    <div class="results-hero" style="border:1.5px solid ${grade.color}">
+      <div style="font-size:0.72rem;text-transform:uppercase;color:var(--muted);letter-spacing:0.08em;margin-bottom:8px">Final Assessment</div>
+      <div class="grade-circle" style="border-color:${grade.color};color:${grade.color}"><div class="grade-letter">${pct}%</div></div>
+      <div style="font-size:1.4rem;font-weight:700;color:${grade.color};font-family:Georgia,serif">${grade.letter}</div>
+      <div style="font-size:1.05rem;font-weight:700;margin-top:16px;font-family:Georgia,serif">Executive Profile: ${profile.name}</div>
+      <div style="font-size:0.85rem;color:var(--muted);margin-top:4px;max-width:500px;margin-left:auto;margin-right:auto">${profile.desc}</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="sc-label">Total Score</div><div class="sc-value">${S.totalScore.toFixed(1)} / ${S.maxPossible.toFixed(1)}</div></div>
+      <div class="stat-card"><div class="sc-label">Percentage</div><div class="sc-value" style="color:${grade.color}">${pct}%</div></div>
+      <div class="stat-card"><div class="sc-label">Rounds</div><div class="sc-value">${TOTAL}</div></div>
+      <div class="stat-card"><div class="sc-label">Budgeted GP</div><div class="sc-value">₹81.84 Cr</div></div>
+      <div class="stat-card"><div class="sc-label">Actual GP</div><div class="sc-value">₹62.38 Cr</div></div>
+      <div class="stat-card"><div class="sc-label">Total Variance</div><div class="sc-value" style="color:var(--loss)">₹19.46 Cr U</div></div>
+    </div>
+
+    <div class="waterfall"><div class="wf-header">📊 Variance Waterfall: Budgeted to Actual Gross Profit</div><div class="wf-chart">${wfBars}</div></div>
+
+    <div class="budget-cascade">
+      <div class="bc-header">📋 Standard Cost Card (Your Settings)</div>
+      <div class="bc-row"><span>Direct material (${(S.stdMatQty||3.85).toFixed(2)} kg × ₹1,050)</span><span class="bc-val">₹${Math.round((S.stdMatQty||3.85)*1050)}</span></div>
+      <div class="bc-row"><span>Direct labour (${(S.stdLabHrs||3.35).toFixed(2)} hrs × ₹220)</span><span class="bc-val">₹${Math.round((S.stdLabHrs||3.35)*220)}</span></div>
+      <div class="bc-row"><span>Variable OH (${(S.stdLabHrs||3.35).toFixed(2)} hrs × ₹${S.stdVOHRate||135})</span><span class="bc-val">₹${Math.round((S.stdLabHrs||3.35)*(S.stdVOHRate||135))}</span></div>
+      <div class="bc-row"><span>Fixed OH (${(S.stdLabHrs||3.35).toFixed(2)} hrs × ₹${Math.round(1404*100000/(S.denomHrs||1050000))})</span><span class="bc-val">₹${Math.round((S.stdLabHrs||3.35)*Math.round(1404*100000/(S.denomHrs||1050000)))}</span></div>
+      <div class="bc-row" style="font-weight:700;border-top:2px solid var(--ink);padding-top:8px"><span>Total Standard Cost</span><span class="bc-val">₹${Math.round((S.stdMatQty||3.85)*1050+(S.stdLabHrs||3.35)*220+(S.stdLabHrs||3.35)*(S.stdVOHRate||135)+(S.stdLabHrs||3.35)*Math.round(1404*100000/(S.denomHrs||1050000)))}</span></div>
+      <div class="bc-row"><span>Selling price</span><span class="bc-val">₹${fmtN(S.sellPrice||9500)}</span></div>
+      <div class="bc-row" style="font-weight:700;color:var(--neem)"><span>Standard Profit per Unit</span><span class="bc-val">₹${fmtN((S.sellPrice||9500)-Math.round((S.stdMatQty||3.85)*1050+(S.stdLabHrs||3.35)*220+(S.stdLabHrs||3.35)*(S.stdVOHRate||135)+(S.stdLabHrs||3.35)*Math.round(1404*100000/(S.denomHrs||1050000))))}</span></div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:16px;margin-bottom:16px;overflow-x:auto">
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:10px">⚖️ Defensible Attribution Matrix</div>
+      <table class="dp-table"><tr><th>Variance</th><th>Centre</th><th>Ctrl?</th><th>Source</th></tr>${attRows}</table>
+      <div style="margin-top:12px;padding:10px;background:var(--input-bg);border-radius:var(--radius-sm);font-size:0.82rem">
+        <strong>The uncomfortable conclusion:</strong> Of ₹19.46 Cr total variance, <span style="color:var(--loss);font-weight:700">₹15.71 Cr (81%)</span> was nobody's fault. The largest controllable loss — ₹4.54 Cr of material usage — sat buried in noise until properly attributed.
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:16px;margin-bottom:16px;overflow-x:auto">
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:10px">📝 Round-by-Round Performance</div>
+      <table class="dp-table"><tr><th>Round</th><th>Topic</th><th>Quality</th><th>Score</th></tr>${roundRows}</table>
+    </div>
+
+    <div class="principle-box">
+      <div class="pb-header">📚 Closing Principles</div>
+      <div class="pb-text">
+        <div class="takeaway-card"><div class="tw-num">1</div><div>Push forward thinking, not just roll forward the past.</div></div>
+        <div class="takeaway-card"><div class="tw-num">2</div><div>Focus on doing the right thing first rather than spending energy on doing it right. A wrong thing done right is still wrong.</div></div>
+        <div class="takeaway-card"><div class="tw-num">3</div><div>Have clarity and transparency. Do not allow others to fool you, and do not fool yourself.</div></div>
+        <div class="takeaway-card"><div class="tw-num">4</div><div>Variance analysis is a journey. Dig deeper, learn from the past, provide direction for the future.</div></div>
+        <div class="takeaway-card"><div class="tw-num">5</div><div>The variance system was not the problem. The attribution was.</div></div>
+      </div>
+    </div>
+
+    <div class="nav-row" style="justify-content:center"><button class="btn btn-secondary" onclick="location.reload()">Play Again</button></div>
+    <div style="text-align:center;margin-top:20px;padding:16px;font-size:0.75rem;color:var(--muted)">
+      SimuLok — Operating Costing & Budgetary Control<br>Based on Horngren's Cost Accounting · Designed for Executive MBA
+    </div>
+  </div>`;
+  $main.scrollTo(0,0);window.scrollTo(0,0);
+}
+
+renderIntro();
+})();
+</script>
+</body>
+</html>

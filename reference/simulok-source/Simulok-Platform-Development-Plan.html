@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Simulok.ai — Platform development plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink-1000: #030A12;
+      --ink-950: #061321;
+      --ink-900: #08192B;
+      --ink-850: #0B2136;
+      --ink-800: #102C45;
+      --teal-200: #B8F2E8;
+      --teal-300: #7FE3D4;
+      --teal-400: #3FD3BE;
+      --teal-500: #0D9B8A;
+      --amber: #F0B429;
+      --coral: #FF8A6B;
+      --sky: #6FC3FF;
+      --violet: #A78BFA;
+      --text: #EAF3FA;
+      --text-soft: #C3D4E3;
+      --muted: #8FA6BC;
+      --faint: #6C839A;
+      --line: rgba(148, 191, 214, 0.14);
+      --line-strong: rgba(148, 191, 214, 0.26);
+      --glass: rgba(255, 255, 255, 0.035);
+      --display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+      --body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --nav-w: 248px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--body);
+      background: var(--ink-1000);
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+    a { color: var(--teal-300); }
+
+    .bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(900px 500px at 10% -10%, rgba(13, 155, 138, 0.18), transparent 55%),
+        radial-gradient(700px 420px at 100% 0%, rgba(111, 195, 255, 0.08), transparent 50%),
+        var(--ink-1000);
+    }
+    .bg::after {
+      content: ""; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(148,191,214,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,191,214,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.45), transparent 70%);
+    }
+
+    .app { position: relative; z-index: 1; display: grid; grid-template-columns: var(--nav-w) 1fr; min-height: 100vh; }
+    .rail {
+      position: sticky; top: 0; height: 100vh; overflow: auto;
+      border-right: 1px solid var(--line);
+      background: rgba(6, 19, 33, 0.78);
+      backdrop-filter: blur(16px);
+      padding: 22px 14px 28px;
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .brand { padding: 0 8px; }
+    .brand .mark {
+      font-family: var(--display); font-weight: 800; letter-spacing: 0.14em;
+      font-size: 11px; color: var(--teal-400); text-transform: uppercase;
+    }
+    .brand h1 { font-family: var(--display); font-size: 15px; font-weight: 700; margin-top: 4px; line-height: 1.3; }
+    .brand p { color: var(--muted); font-size: 12px; margin-top: 4px; }
+    .confidential {
+      display: inline-block; margin-top: 10px; font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--amber); border: 1px solid rgba(240,180,41,0.35);
+      padding: 4px 8px; border-radius: 999px;
+    }
+
+    .toc { display: flex; flex-direction: column; gap: 2px; }
+    .toc button {
+      text-align: left; padding: 8px 10px; border-radius: 10px;
+      color: var(--muted); font-size: 13px; display: flex; gap: 10px; align-items: baseline;
+    }
+    .toc button .n {
+      font-family: var(--display); font-weight: 700; font-size: 11px;
+      color: var(--faint); width: 18px; flex: none;
+    }
+    .toc button:hover { background: var(--glass); color: var(--text-soft); }
+    .toc button.is-on { background: rgba(13, 155, 138, 0.14); color: var(--text); }
+    .toc button.is-on .n { color: var(--teal-400); }
+
+    .rail-foot { margin-top: auto; padding: 10px 8px 0; color: var(--faint); font-size: 11px; line-height: 1.45; }
+    .mode-row { display: flex; gap: 6px; padding: 0 8px; }
+    .mode-row button {
+      flex: 1; border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px;
+      font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .mode-row button.is-on { border-color: var(--teal-500); color: var(--teal-200); background: rgba(13,155,138,0.12); }
+
+    .stage { min-width: 0; }
+    .topbar {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 14px 28px;
+      background: rgba(3, 10, 18, 0.78); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .progress { flex: 1; height: 4px; background: var(--ink-800); border-radius: 99px; overflow: hidden; max-width: 280px; }
+    .progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--teal-500), var(--teal-300)); transition: width 0.35s var(--ease); }
+    .pager { display: flex; align-items: center; gap: 8px; }
+    .pager .hint { color: var(--faint); font-size: 12px; margin-right: 8px; }
+    .pager button.nav {
+      width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line);
+      color: var(--text-soft);
+    }
+    .pager button.nav:hover { border-color: var(--teal-500); color: var(--teal-200); }
+    .pager button.nav:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .chapters { padding: 28px 36px 80px; max-width: 1080px; }
+    .chapter { display: none; animation: in 0.45s var(--ease); }
+    .chapter.is-on { display: block; }
+    body.mode-scroll .chapter { display: block; animation: none; margin-bottom: 72px; padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+    body.mode-scroll .topbar .pager, body.mode-scroll .progress { display: none; }
+    @keyframes in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .chapter { animation: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    .kicker { font-family: var(--display); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal-400); font-weight: 700; }
+    h2 {
+      font-family: var(--display); font-size: clamp(28px, 4vw, 40px); font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.12; margin: 8px 0 14px;
+    }
+    h3 { font-family: var(--display); font-size: 18px; font-weight: 700; margin: 22px 0 10px; }
+    .lede { color: var(--text-soft); font-size: 17px; max-width: 68ch; }
+    .muted { color: var(--muted); }
+    p + p { margin-top: 12px; }
+
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 28px 0 8px; }
+    .metric {
+      background: var(--glass); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px;
+    }
+    .metric b { display: block; font-family: var(--display); font-size: 28px; font-weight: 800; letter-spacing: -0.03em; color: var(--teal-200); }
+    .metric span { display: block; color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 18px; }
+    .card {
+      background: var(--glass); border: 1px solid var(--line); border-radius: 16px; padding: 18px 18px 16px;
+    }
+    .card h4 { font-family: var(--display); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .card ul, .copy ul { margin: 0; padding-left: 18px; color: var(--text-soft); }
+    .card li, .copy li { margin: 6px 0; }
+    .role { position: relative; overflow: hidden; }
+    .role .seat {
+      font-family: var(--display); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal-400); font-weight: 700;
+    }
+    .role h4 { font-size: 18px; margin: 6px 0 8px; }
+    .tag {
+      display: inline-block; margin-top: 12px; font-size: 12px; color: var(--teal-200);
+      border: 1px solid rgba(63,211,190,0.3); padding: 3px 8px; border-radius: 999px;
+    }
+
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+    .yes { border-color: rgba(63,211,190,0.35); }
+    .no { border-color: rgba(255,138,107,0.28); }
+    .yes h4 { color: var(--teal-300); }
+    .no h4 { color: var(--coral); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 12px; }
+    th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+    tbody tr:hover td { background: rgba(255,255,255,0.02); }
+    .num { font-family: var(--display); font-weight: 700; color: var(--teal-200); }
+
+    .gantt { margin-top: 18px; overflow-x: auto; }
+    .gantt-row { display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: center; margin-bottom: 8px; }
+    .gantt-row .lab { font-size: 12px; color: var(--text-soft); }
+    .track { display: grid; grid-template-columns: repeat(11, 1fr); gap: 3px; height: 28px; position: relative; }
+    .ticks { grid-column: 1 / -1; grid-row: 1; display: grid; grid-template-columns: repeat(11, 1fr); gap: 3px; }
+    .ticks i { background: var(--ink-800); border-radius: 4px; font-style: normal; }
+    .bar { grid-row: 1; z-index: 1; border-radius: 6px; height: 28px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 600; white-space: nowrap; overflow: hidden; }
+    .bar.a { background: rgba(63,211,190,0.28); color: var(--teal-200); }
+    .bar.b { background: rgba(111,195,255,0.28); color: var(--sky); }
+    .bar.c { background: rgba(167,139,250,0.28); color: #d4c4ff; }
+    .bar.d { background: rgba(240,180,41,0.3); color: var(--amber); }
+    .bar.e { background: rgba(255,138,107,0.28); color: var(--coral); }
+    .weeks-scale { display: grid; grid-template-columns: 150px 1fr; gap: 10px; margin-bottom: 8px; }
+    .weeks-scale span { display: grid; grid-template-columns: repeat(11, 1fr); gap: 3px; color: var(--faint); font-size: 10px; text-align: center; font-family: var(--display); }
+    .weeks-scale i { font-style: normal; }
+
+    .week-picks { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 12px; }
+    .week-picks button {
+      border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 12px; color: var(--muted);
+    }
+    .week-picks button.is-on { background: rgba(13,155,138,0.18); border-color: var(--teal-500); color: var(--teal-200); }
+    .week-panel .done {
+      margin-top: 14px; padding: 12px 14px; border-radius: 12px;
+      background: rgba(13,155,138,0.12); border: 1px solid rgba(63,211,190,0.25);
+      color: var(--teal-200); font-weight: 500;
+    }
+
+    .callout {
+      margin-top: 18px; padding: 14px 16px; border-radius: 14px;
+      background: rgba(240,180,41,0.08); border: 1px solid rgba(240,180,41,0.28);
+      color: #f6d98a;
+    }
+    .callout.ok { background: rgba(13,155,138,0.1); border-color: rgba(63,211,190,0.28); color: var(--teal-200); }
+
+    .decisions { counter-reset: d; }
+    .decisions li { list-style: none; margin: 10px 0; padding: 12px 14px 12px 52px; position: relative; background: var(--glass); border: 1px solid var(--line); border-radius: 12px; }
+    .decisions li::before {
+      counter-increment: d; content: counter(d);
+      position: absolute; left: 14px; top: 12px; width: 26px; height: 26px; border-radius: 8px;
+      background: rgba(13,155,138,0.2); color: var(--teal-200);
+      font-family: var(--display); font-weight: 700; font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .cover-hero { margin-top: 8px; }
+    .cover-hero h2 { font-size: clamp(34px, 5vw, 52px); max-width: 16ch; }
+
+    @media (max-width: 960px) {
+      .app { grid-template-columns: 1fr; }
+      .rail { position: sticky; top: 0; z-index: 6; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      .toc { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .toc button { padding: 6px 8px; white-space: nowrap; flex: none; }
+      .metrics, .grid-2, .grid-3, .split { grid-template-columns: 1fr; }
+      .chapters { padding: 20px 18px 72px; }
+      .gantt-row, .weeks-scale { grid-template-columns: 1fr; }
+      .rail-foot { display: none; }
+    }
+    @media print {
+      .bg, .rail, .topbar { display: none !important; }
+      .app { display: block; }
+      body.mode-guided .chapter, .chapter { display: block !important; break-inside: avoid; }
+      body { background: #fff; color: #122; }
+      .card, .metric, .callout { border-color: #ccc; }
+    }
+  </style>
+</head>
+<body class="mode-guided">
+  <div class="bg" aria-hidden="true"></div>
+  <div class="app">
+    <aside class="rail">
+      <div class="brand">
+        <div class="mark">Simulok.ai</div>
+        <h1>Platform development plan</h1>
+        <p>Phase 1 · 6 MBA simulations · then keep adding</p>
+        <span class="confidential">Confidential · founders &amp; delivery</span>
+      </div>
+      <nav class="toc" id="toc" aria-label="Steps"></nav>
+      <div class="mode-row">
+        <button type="button" id="mode-guided" class="is-on">Step by step</button>
+        <button type="button" id="mode-scroll">Read all</button>
+      </div>
+      <p class="rail-foot">← → or N / P to move. Click a week on the timeline. Prepared 31 August 2026. Not a vendor quote.</p>
+    </aside>
+
+    <main class="stage">
+      <div class="topbar">
+        <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+        <div class="pager">
+          <span class="hint" id="step-label">1 / 13</span>
+          <button type="button" class="nav" id="prev" aria-label="Previous">←</button>
+          <button type="button" class="nav" id="next" aria-label="Next">→</button>
+        </div>
+      </div>
+
+      <div class="chapters">
+        <!-- 0 -->
+        <section class="chapter is-on" data-title="Start here" id="ch-0">
+          <p class="kicker">Internal briefing</p>
+          <div class="cover-hero">
+            <h2>Go live with 6 MBA titles. Keep adding. Do not wait for 15.</h2>
+          </div>
+          <p class="lede">This is the delivery plan for the signed-in product at <strong>app.simulok.in</strong>. Phase 1 puts a paying college on the portal with six simulations — one of every format, mapped to MBA courses. The rest of the library ships after the first invoice, not before.</p>
+          <div class="metrics">
+            <div class="metric"><b>11</b><span>weeks to go-live (13 if multiplayer slips)</span></div>
+            <div class="metric"><b>6</b><span>MBA titles at launch, all four formats</span></div>
+            <div class="metric"><b>3</b><span>seats, all Cursor Start India ₹649/mo</span></div>
+            <div class="metric"><b>₹15–17L</b><span>plan number, two developers + founder</span></div>
+          </div>
+          <p class="muted" style="margin-top:18px">Rupees are India engineering rates. AWS is ap-south-1 list-price bands. Cursor is Start, not Pro. Press → to begin, or use the list on the left.</p>
+        </section>
+
+        <!-- 1 -->
+        <section class="chapter" data-title="What we are building" id="ch-1">
+          <p class="kicker">01 — Product</p>
+          <h2>A signed-in learning portal, not a zip file.</h2>
+          <p class="lede">Professors, students and college admins sign in, see only what their institution is entitled to, play simulations, and keep a record of judgement — attempts, scores, debriefs.</p>
+          <p class="muted" style="margin-top:12px">Today the playable library is a single-file shell: strong pedagogy, no real accounts, no persistence, no college tenancy. Phase 1 replaces that with a multi-tenant app and goes to market with 6 MBA titles. After the first college is live, adding a title is mounting a new script onto the same shell. That is how we start earning without waiting to finish every pack.</p>
+          <div class="split">
+            <article class="card yes">
+              <h4>Must do on day one</h4>
+              <ul>
+                <li><strong>Student</strong> — log in, see assigned sims, play, finish, view history and feedback.</li>
+                <li><strong>Faculty</strong> — CSV roster, cohort, assign with dates, watch progress, export scores, run multiplayer (join codes, timers, force-advance).</li>
+                <li><strong>College admin</strong> — create the institution, entitle which sims it may use, manage users.</li>
+                <li><strong>Simulok operator</strong> — publish a pack and enable it per college without redeploying the whole app.</li>
+              </ul>
+            </article>
+            <article class="card no">
+              <h4>Not in Phase 1</h4>
+              <ul>
+                <li>Mobile apps, LTI / SCORM, payments.</li>
+                <li>AI tutor, unique UI per simulation.</li>
+                <li>Inventing new engine maths — that lives in the script.</li>
+                <li>White-label, 24/7 SLA, second AWS region.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- 2 -->
+        <section class="chapter" data-title="Team" id="ch-2">
+          <p class="kicker">02 — People</p>
+          <h2>Three seats. Two write code. One owns the classroom.</h2>
+          <p class="lede">All in India. All on Cursor Start. That is enough for Phase 1 if scripts and the shared UI stay as assumed. The two developers do not sit on the same file. Friday: 30 minutes of something a professor could click — not a slide.</p>
+          <div class="grid-3">
+            <article class="card role">
+              <div class="seat">Seat 1</div>
+              <h4>Developer — platform</h4>
+              <p>Auth, tenancy, faculty/admin consoles, AWS, CI/CD, security reviews. Unblocks login and faculty every week.</p>
+              <span class="tag">Cursor Start · ₹649/mo</span>
+            </article>
+            <article class="card role">
+              <div class="seat">Seat 2</div>
+              <h4>Developer — simulations</h4>
+              <p>Pack schema, mount the 6 launch titles, shared round UI, K2 + universe-lite, then a steady add-a-sim cadence.</p>
+              <span class="tag">Cursor Start · ₹649/mo</span>
+            </article>
+            <article class="card role">
+              <div class="seat">Seat 3</div>
+              <h4>Founder / domain</h4>
+              <p>Freeze the 6-title MBA mix, script quality, Friday demo, Week-9 live class, first paying college. Plan/Ask — does not write production code.</p>
+              <span class="tag">Cursor Start · Plan &amp; review</span>
+            </article>
+          </div>
+          <p class="muted" style="margin-top:16px">No separate UI designer or QA hire. Shared shell + Cursor-generated tests + founder playtest against the script. No agency. Cursor is the acceleration layer, not a substitute for the live class.</p>
+        </section>
+
+        <!-- 3 -->
+        <section class="chapter" data-title="Cursor Start" id="ch-3">
+          <p class="kicker">03 — How we build</p>
+          <h2>Everyone on Cursor Start (India). Not Pro.</h2>
+          <p class="lede">₹649 per person per month, tax-inclusive, UPI or Indian cards, Indian phone verification. Agent, Plan, Ask, Cloud Agents, Cursor models (Grok 4.6 / 4.5, Composer 2.5). If a seat exhausts the monthly pool, that person switches to Composer for mechanical pack work — we do not assume a Pro upgrade in this budget.</p>
+          <div class="split">
+            <article class="card yes">
+              <h4>What Cursor shortens every week</h4>
+              <ul>
+                <li><strong>Plan</strong> — break a script into a pack checklist before code.</li>
+                <li><strong>Agent</strong> — CDK, API handlers, pack JSON, golden tests, faculty CSV import.</li>
+                <li><strong>Cloud Agents</strong> — overnight PRs for MCQ extraction; human reviews scoring.</li>
+                <li><strong>Founder Ask</strong> — “does this pack match section 4 of the script?”</li>
+              </ul>
+            </article>
+            <article class="card no">
+              <h4>What AI does not shorten</h4>
+              <ul>
+                <li>A real classroom — late joiners, Wi-Fi, the bell. That week stays.</li>
+                <li>Multiplayer session lifecycle. Cursor drafts; humans debug live.</li>
+                <li>DNS / TLS waits, college timetables, founder sign-off against the script.</li>
+              </ul>
+            </article>
+          </div>
+          <p class="callout ok">Tooling for 3 seats × 3 months ≈ <strong>₹5,850</strong>. A few thousand rupees, not a lakh-line. Calendar shrinks because we launch 6 titles, not 15 — and because packs get faster. Not because we skip the classroom.</p>
+        </section>
+
+        <!-- 4 -->
+        <section class="chapter" data-title="Locked assumptions" id="ch-4">
+          <p class="kicker">04 — Guardrails</p>
+          <h2>These are locked. Changing any of them reopens calendar and cost.</h2>
+          <div class="grid-2">
+            <article class="card"><h4>Script before engineering</h4><p class="muted">Narrative, rounds, options, effects, KPIs, scoring, debrief — ready before that title is built.</p></article>
+            <article class="card"><h4>Maths live in the script</h4><p class="muted">Developers implement and wire. They do not invent pedagogy or models.</p></article>
+            <article class="card"><h4>One shared shell</h4><p class="muted">UI follows the existing Simulok chrome. No per-simulation custom interface.</p></article>
+            <article class="card"><h4>Cursor Start only</h4><p class="muted">All three seats, whole build. No Cursor Pro in the budget.</p></article>
+            <article class="card"><h4>Browser-only v1</h4><p class="muted">Three roles: student, professor/faculty, institution admin.</p></article>
+            <article class="card"><h4>Six at launch, then add</h4><p class="muted">Phase 1 is 6 titles in market. HelioGrid, DashMart, MacroEcon and the rest ship after the first college is live.</p></article>
+          </div>
+        </section>
+
+        <!-- 5 -->
+        <section class="chapter" data-title="Launch mix" id="ch-5">
+          <p class="kicker">05 — Go to market</p>
+          <h2>Six titles. Four formats. Four MBA courses. Then keep adding.</h2>
+          <p class="lede">Do not wait for a 15-title catalogue before the first college can pay. Day-1 revenue comes from these six. HelioGrid, DashMart, MacroEcon, Lemonade and the rest are a post-launch cadence — a live customer can receive a new sim without waiting.</p>
+          <table>
+            <thead><tr><th>#</th><th>Title</th><th>Format</th><th>MBA course</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Dealcraft</td><td>MCQ</td><td>Negotiations</td></tr>
+              <tr><td class="num">2</td><td>Brand Wars</td><td>MCQ</td><td>Marketing</td></tr>
+              <tr><td class="num">3</td><td>The Mumbai Manufacturer</td><td>1-player</td><td>Operations Management</td></tr>
+              <tr><td class="num">4</td><td>Zara — The Fast-Fashion Reckoning</td><td>1-player</td><td>Strategic Innovation / Strategy</td></tr>
+              <tr><td class="num">5</td><td>K2 — The Savage Mountain</td><td>Multiplayer</td><td>Leadership &amp; teams</td></tr>
+              <tr><td class="num">6</td><td>Universe-lite (shared market)</td><td>Universe</td><td>Competitive strategy</td></tr>
+            </tbody>
+          </table>
+          <p class="muted" style="margin-top:16px">Founder may swap a title (HelioGrid instead of Brand Wars is fine). Do not drop a format. If the calendar slips: cut universe first (launch 5), then Brand Wars. Never cut K2 or the live class.</p>
+        </section>
+
+        <!-- 6 -->
+        <section class="chapter" data-title="Why 11 weeks" id="ch-6">
+          <p class="kicker">06 — The clock</p>
+          <h2>15 titles was 13 weeks. 6 titles is 11. Still not 6.</h2>
+          <p class="lede">Multiplayer and the live class do not shrink. What we drop is four extra MCQ packs and four extra 1-player ports — those get added after the first invoice. Commit 11 weeks. Quote 13 only as the K2 slip buffer.</p>
+          <div class="gantt" aria-label="11-week gantt">
+            <div class="weeks-scale"><div></div><span><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i><i>10</i><i>11</i></span></div>
+            <div class="gantt-row"><div class="lab">Walking skeleton</div><div class="track"><span class="ticks" aria-hidden="true"></span><div class="bar a" style="grid-column:1/3">W1–2 Dealcraft</div></div></div>
+            <div class="gantt-row"><div class="lab">Faculty + Brand Wars</div><div class="track"><span class="ticks" aria-hidden="true"></span><div class="bar b" style="grid-column:3/4">W3</div></div></div>
+            <div class="gantt-row"><div class="lab">Mumbai + Zara + profiles</div><div class="track"><span class="ticks" aria-hidden="true"></span><div class="bar a" style="grid-column:4/5">W4</div></div></div>
+            <div class="gantt-row"><div class="lab">Multiplayer K2</div><div class="track"><span class="ticks" aria-hidden="true"></span><div class="bar c" style="grid-column:5/8">W5–7</div></div></div>
+            <div class="gantt-row"><div class="lab">Universe-lite</div><div class="track"><span class="ticks" aria-hidden="true"></span><div class="bar b" style="grid-column:8/9">W8</div></div></div>
+            <div class="gantt-row"><div class="lab">Live class</div><div class="track"><span class="ticks" aria-hidden="true"></span><div class="bar d" style="grid-column:9/10">W9</div></div></div>
+            <div class="gantt-row"><div class="lab">Load + launch</div><div class="track"><span class="ticks" aria-hidden="true"></span><div class="bar e" style="grid-column:10/12">W10–11</div></div></div>
+          </div>
+          <table>
+            <thead><tr><th>Work</th><th>15-title plan</th><th>6-title GTM</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>MCQ</td><td>6 titles, 1 week</td><td class="num">2 titles, inside faculty week</td><td>Faculty console is the work. Two MCQs are a Cursor overnight.</td></tr>
+              <tr><td>1-player + profiles</td><td>3 weeks</td><td class="num">1 week (W4)</td><td>Mumbai + Zara only. Profiles in parallel.</td></tr>
+              <tr><td>Multiplayer</td><td>3 weeks, 2 titles</td><td>3 weeks, K2 only</td><td>Classroom lifecycle is not a typing problem.</td></tr>
+              <tr><td>Universe-lite</td><td>1 week</td><td>1 week</td><td>Format proof. Cut only if we accept 5 titles.</td></tr>
+              <tr><td>Live class</td><td>1 week</td><td>1 week (W9)</td><td>Needs a real timetable. This is how we know we can charge.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- 7 -->
+        <section class="chapter" data-title="Week by week" id="ch-7">
+          <p class="kicker">07 — Sequence</p>
+          <h2>Click a week. That is the exit criterion.</h2>
+          <p class="lede">Week 0 is 3–5 days before the clock. Book the Week-9 MBA class now. After go-live, HelioGrid is the first add — not a launch gate.</p>
+          <div class="week-picks" id="week-picks"></div>
+          <article class="card week-panel" id="week-panel"></article>
+        </section>
+
+        <!-- 8 -->
+        <section class="chapter" data-title="If we slip" id="ch-8">
+          <p class="kicker">08 — Cuts</p>
+          <h2>Slip is multiplayer. Not pack mounting.</h2>
+          <div class="grid-3">
+            <article class="card"><h4>Cut first</h4><p>Universe-lite. Launch 5: still one MCQ, one 1-player, one multiplayer.</p></article>
+            <article class="card"><h4>Cut second</h4><p>Brand Wars. Keep Dealcraft.</p></article>
+            <article class="card no"><h4>Do not cut</h4><p>Week-9 live class. K2 session lifecycle. Tenancy. Server-side scoring.</p></article>
+          </div>
+          <p class="callout">Dealcraft + Brand Wars + Mumbai + Zara can be in a professor’s hands around week 4. Classroom-safe K2 is why we quote 11 weeks, not 6. Time not spent on the other nine titles is spent in market.</p>
+        </section>
+
+        <!-- 9 -->
+        <section class="chapter" data-title="Costs" id="ch-9">
+          <p class="kicker">09 — Money</p>
+          <h2>People dominate. Launch 6, then pay for the rest from invoices.</h2>
+          <p class="lede">Two bills. One-time gets a paying portal with 6 MBA titles. Recurring AWS plus a part-time engineer is how HelioGrid and the next title land while the first college is already live.</p>
+          <div class="metrics">
+            <div class="metric"><b>₹15–17L</b><span>Plan: two developers + founder, 11 weeks, Cursor Start</span></div>
+            <div class="metric"><b>₹5,850</b><span>Cursor Start · 3 × ₹649 × 3 months</span></div>
+            <div class="metric"><b>₹7–11k</b><span>AWS / month at first college</span></div>
+            <div class="metric"><b>₹3–20k</b><span>Each extra MCQ / 1-player after go-live</span></div>
+          </div>
+          <h3>One-time (11 weeks, India)</h3>
+          <table>
+            <thead><tr><th>Line</th><th>Lean (founder + 1)</th><th>Two hires + founder</th></tr></thead>
+            <tbody>
+              <tr><td>Engineering</td><td>₹5.5 – 10 lakh</td><td>₹11 – 19.5 lakh</td></tr>
+              <tr><td>Cursor Start, 3 seats × 3 months</td><td>₹5,850</td><td>₹5,850</td></tr>
+              <tr><td>AWS during build</td><td>₹6,000 – 12,000</td><td>₹6,000 – 12,000</td></tr>
+              <tr><td>Domain / SSL / misc.</td><td>₹5,000 – 15,000</td><td>₹5,000 – 15,000</td></tr>
+              <tr><td>Formula invention / custom UI per sim</td><td>₹0</td><td>₹0</td></tr>
+              <tr><td><strong>Total (recommended)</strong></td><td><strong>₹6 – 10.5 lakh</strong></td><td><strong>₹11.5 – 20 lakh</strong></td></tr>
+            </tbody>
+          </table>
+          <h3>AWS monthly (ap-south-1, cheap stack)</h3>
+          <table>
+            <thead><tr><th></th><th>Idle</th><th>1 college ~80 concurrent</th><th>10 colleges ~800 peak</th></tr></thead>
+            <tbody>
+              <tr><td>Total USD</td><td>25–45</td><td>75–130</td><td>250–500</td></tr>
+              <tr><td>Total INR</td><td>₹2,000 – 4,000</td><td class="num">₹6,500 – 11,000</td><td>₹21,000 – 43,000</td></tr>
+            </tbody>
+          </table>
+          <p class="muted" style="margin-top:12px">Stack: CloudFront + S3, Lambda, HTTP API, WebSockets, RDS Postgres, Cognito, CloudWatch. No NAT, no load balancer, no Kubernetes, no Aurora. Postgres dominates the bill, not per-student clicks. Multi-AZ when a college has an SLA — not day one.</p>
+          <div class="split">
+            <article class="card yes"><h4>This number pays for</h4><ul><li>Auth, institutions, cohorts, entitlements, attempts, profiles.</li><li>Shared play UI for the six and every title added later.</li><li>Six packs: 2 MCQ + 2 1-player + K2 + universe.</li><li>MP lifecycle and universe tick, built once.</li><li>Week-9 MBA pilot.</li></ul></article>
+            <article class="card no"><h4>This number does not pay for</h4><ul><li>HelioGrid, DashMart, MacroEcon, Lemonade, school MCQs — those are §10 after go-live.</li><li>Writing scripts, unique UIs, LTI, payments, mobile.</li></ul></article>
+          </div>
+        </section>
+
+        <!-- 10 -->
+        <section class="chapter" data-title="Adding a sim" id="ch-10">
+          <p class="kicker">10 — After the platform is ready</p>
+          <h2>Add one simulation: effort, steps, cost.</h2>
+          <p class="lede">Same shell, same APIs, same faculty console. No new AWS, no new screens, no redeploy of Dealcraft. A live college gets the new title as a toggle. Suggested first add: HelioGrid.</p>
+          <div class="grid-2">
+            <article class="card yes"><h4>Must already exist</h4><ul>
+              <li>Shared play UI (briefing → round → results).</li>
+              <li>Pack contract + validate:pack + CI publish to S3.</li>
+              <li>Entitlements, assignment version pinning, attempt store.</li>
+            </ul></article>
+            <article class="card no"><h4>Not in an add</h4><ul>
+              <li>No new layout or control type.</li>
+              <li>No invented maths — if the script is thin, send it back.</li>
+              <li>Platform developer is not required unless the shell is missing a control (out of policy).</li>
+            </ul></article>
+          </div>
+          <h3>Effort at a glance (script in hand, Cursor Start, ₹10k/dev-day)</h3>
+          <table>
+            <thead><tr><th>Type</th><th>Wall-clock</th><th>Dev</th><th>Founder</th><th>Cost</th></tr></thead>
+            <tbody>
+              <tr><td>MCQ</td><td>1 day</td><td>0.3–0.5 day</td><td>1–2 hr playtest</td><td class="num">₹3,000 – 6,000</td></tr>
+              <tr><td>1-player</td><td>2–3 days</td><td>1–1.5 days</td><td>Half day</td><td class="num">₹8,000 – 20,000</td></tr>
+              <tr><td>Multiplayer</td><td>4–7 days</td><td>2–4 days</td><td>5-person dry run</td><td>₹16,000 – 48,000</td></tr>
+              <tr><td>Universe</td><td>8–12 days + playtest</td><td>5–8 days</td><td>Two-team playtest</td><td>₹40,000 – 1.0 lakh</td></tr>
+            </tbody>
+          </table>
+          <p class="callout ok">Steady state: about one new MBA title a week. A month of part-time engineering after launch is 3–4 titles, paid for by the first college, not by delaying Phase 1.</p>
+          <h3>Seven steps — every new title</h3>
+          <ol class="decisions">
+            <li><strong>Script gate.</strong> Rounds, choices, effects, KPIs, scoring, debrief, 2–5 golden paths. If blank, it is not in engineering this week.</li>
+            <li><strong>Pack from template.</strong> Copy the closest live pack of the same format. Folder = sim_id (e.g. heliogrid). Fill manifest.</li>
+            <li><strong>Cursor Plan.</strong> Script → section-by-section checklist mapped to content.json (and engine methods if not MCQ). Human accepts before Agent writes.</li>
+            <li><strong>Agent implements 1:1.</strong> Narrative and tables in content.json. Engine only if not MCQ. Do not fork the shared UI.</li>
+            <li><strong>Validator + golden tests.</strong> Schema must pass. Scripted paths must produce the script’s numbers. Fix mapping; do not tune the model.</li>
+            <li><strong>Publish a version.</strong> CI uploads sim_id @ v1. Live classes stay on the version they were assigned.</li>
+            <li><strong>Entitle, assign, play, enable.</strong> Admin toggle → faculty test cohort → founder plays once → real cohort. Students only see what they are assigned.</li>
+          </ol>
+          <h3>Click a format — day-by-day for that add</h3>
+          <div class="week-picks" id="add-picks"></div>
+          <article class="card week-panel" id="add-panel"></article>
+        </section>
+
+        <!-- 11 -->
+        <section class="chapter" data-title="Risks" id="ch-11">
+          <p class="kicker">11 — What still burns calendar</p>
+          <h2>Scripts and Cursor do not retire these.</h2>
+          <div class="grid-2">
+            <article class="card"><h4>Classroom lifecycle · Weeks 5–7</h4><p class="muted">Late join, laptop close, one team blocking others, professor skip-ahead. Independent of pedagogy.</p></article>
+            <article class="card"><h4>Campus Wi-Fi</h4><p class="muted">Keep hot-seat fallback on every multiplayer title.</p></article>
+            <article class="card"><h4>9:00 a.m. login spike</h4><p class="muted">Warm Lambdas from the timetable.</p></article>
+            <article class="card"><h4>Single-AZ Postgres in a graded class</h4><p class="muted">Snapshots + rehearsed restore. Multi-AZ when an SLA exists.</p></article>
+            <article class="card"><h4>Scoring disputes</h4><p class="muted">A named reviewer against the script, or it lands in WhatsApp.</p></article>
+            <article class="card"><h4>Waiting for 15 titles</h4><p class="muted">Phase 1 is 6 on purpose. The catalogue grows after the first invoice.</p></article>
+          </div>
+          <p class="callout">Week-9 live class cannot be AI-shortened. Book the professor now.</p>
+        </section>
+
+        <!-- 12 -->
+        <section class="chapter" data-title="This week" id="ch-12">
+          <p class="kicker">12 — Decisions</p>
+          <h2>Seven things to lock before Week 1 starts.</h2>
+          <ol class="decisions">
+            <li>Freeze the 6-title MBA mix (Dealcraft, Brand Wars, Mumbai Manufacturer, Zara, K2, universe-lite) — or swap a title, do not drop a format.</li>
+            <li>Confirm team shape: three seats as in step 02. That is the ₹15–17 lakh band.</li>
+            <li>Put all three people on Cursor Start (India) at ₹649/month. Do not budget Cursor Pro.</li>
+            <li>Create AWS dev/prod, budgets, MFA.</li>
+            <li>Reserve app.simulok.in and start TLS.</li>
+            <li>Put a real Week-9 MBA classroom on the calendar — named professor, date, 40–80 students.</li>
+            <li>Name the first four post-launch titles (HelioGrid, DashMart, MacroEcon, next MCQ) so adding starts the week you go live.</li>
+          </ol>
+          <p class="muted" style="margin-top:22px">Phase 1 is a 6-title go-to-market, not a finished catalogue. Share this file as-is. Word copy: Simulok-Platform-Development-Plan.docx</p>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const WEEKS = [
+      {
+        id: "w0", label: "Week 0", title: "Kickoff — 3–5 days before the 11-week clock",
+        items: [
+          "AWS Organization: dev and prod. MFA. Budget alerts at USD 50 and USD 200.",
+          "Subscribe all three seats to Cursor Start (India), ₹649/month, UPI. Verify Indian phones.",
+          "Monorepo: apps/web, apps/api, packages/engine-sdk, packs/. Marketing site stays where it is.",
+          "Founder + both developers lock the pack contract in Cursor Plan.",
+          "Freeze the six: Dealcraft, Brand Wars, Mumbai Manufacturer, Zara, K2, universe-lite. Everything else is post-launch (HelioGrid first).",
+          "Freeze the current playable file as v0 for titles not yet on the portal.",
+          "Point app.simulok.in DNS and start the ACM certificate now.",
+          "Book the Week-9 MBA pilot with a named professor and date."
+        ],
+        done: "Kickoff complete when: AWS budgets live, three Cursor Start seats active, empty portal deploys to dev, six-title list frozen, pilot date on a calendar."
+      },
+      {
+        id: "w12", label: "W1–2", title: "Walking skeleton — Dealcraft",
+        items: [
+          "CDK: S3 + CloudFront (SPA), HTTP API + one Lambda, RDS Postgres db.t4g.micro (single-AZ), Cognito.",
+          "Roles: student, faculty, admin. Institution as tenant. Every row carries institution_id.",
+          "Login (your UI, Cognito behind it). Users mirrored in Postgres by cognito_sub.",
+          "Catalog + entitlements: which college may see which sim.",
+          "Dealcraft pack from the script. Student plays end-to-end. Attempt saved.",
+          "CI: GitHub Actions → deploy to dev on merge."
+        ],
+        done: "Done when: two browsers, two roles, Dealcraft, one saved score in Postgres."
+      },
+      {
+        id: "w3", label: "W3", title: "Faculty console + Brand Wars",
+        items: [
+          "Faculty: cohort, CSV roster, assign a simulation version, open/due times.",
+          "Admin: create institution, toggle entitlements per simulation.",
+          "Content pipeline: validate:pack, preview, CI publish to S3. Assignment pins sim_version_id.",
+          "Brand Wars pack. Two MBA MCQs live: negotiations and marketing.",
+          "Students see only assigned sims, not the post-launch backlog."
+        ],
+        done: "Done when: a faculty member can onboard a 40-person cohort without engineering help, and Dealcraft + Brand Wars are playable."
+      },
+      {
+        id: "w4", label: "W4", title: "Mumbai + Zara + profiles",
+        items: [
+          "Shared round UI once: briefing, narrative, choices, KPI bar, results.",
+          "Mumbai Manufacturer (operations) and Zara (strategic innovation): Agent implements 1:1 with each script.",
+          "Golden tests against the script. Founder playtests both.",
+          "Server recomputes score. Client may preview; server is authoritative.",
+          "In parallel: student profile, attempt history, faculty progress, CSV export."
+        ],
+        done: "Done when: both 1-player sims match their scripts, and a professor can answer who has not finished Mumbai Manufacturer."
+      },
+      {
+        id: "w57", label: "W5–7", title: "Multiplayer — K2 only",
+        items: [
+          "Session lobby: faculty creates a session, join code, roles. Humans test with five laptops.",
+          "WebSocket + HTTP polling fallback. Session state in Postgres, not in Lambda memory.",
+          "Round barrier: all submit or timer fires. Professor can force-advance.",
+          "Rejoin after laptop close. Idempotent submit.",
+          "K2: networked mode plus keep single-device hot-seat if campus Wi-Fi dies.",
+          "A second multiplayer title is post-launch — reuse this lobby."
+        ],
+        done: "Done when: 5 people on 5 machines complete a K2 run, one disconnects and rejoins, professor force-resolves a round."
+      },
+      {
+        id: "w8", label: "W8", title: "Universe-lite",
+        items: [
+          "One shared market resolver from the script. N teams, scheduled tick, leaderboard.",
+          "Facilitator: pause tick, inject a scripted shock if defined, end the run.",
+          "Seeded RNG and append-only action log.",
+          "If this week is at risk, launch the other five and add universe after HelioGrid."
+        ],
+        done: "Done when: two teams see each other’s market effect on the next tick, on the script’s rules."
+      },
+      {
+        id: "w9", label: "W9", title: "Live class — untouchable",
+        items: [
+          "One MBA course, 40–80 students, professor in the room.",
+          "1-player plus K2 or universe-lite if the timetable allows.",
+          "On-call engineer. Defect log same day. Cursor drafts patches; humans deploy.",
+          "If this week is skipped, you have a staging environment — and you are not yet earning."
+        ],
+        done: "Done when: the professor would run it again next semester without an engineer in the room, and would consider paying."
+      },
+      {
+        id: "w10", label: "W10", title: "Load, backup, timetable warm-up",
+        items: [
+          "Load test: 200 concurrent on a 1-player assignment; 800 synthetic peak.",
+          "Warm Lambdas 20 minutes before a booked 9:00 a.m. session.",
+          "Snapshots, point-in-time recovery, restore rehearsal.",
+          "Alarms: 5xx, DB CPU, disk, Cognito errors. Log retention 14 days."
+        ],
+        done: "Done when: restore from backup has been done once on purpose, and the load test report is in the repo."
+      },
+      {
+        id: "w11", label: "W11", title: "Launch + start adding",
+        items: [
+          "Accessibility pass. Faculty one-pager + three short videos.",
+          "Production cutover on app.simulok.in. First college entitled to the six titles.",
+          "Launch checklist: 6 packs published, entitlements, support mailbox, runbook.",
+          "Simulations developer starts HelioGrid the same week so the catalogue does not freeze the day invoices start."
+        ],
+        done: "Done when: a new college can start a cohort on the six without a code deploy, and HelioGrid is on the board as the next pack."
+      }
+    ];
+
+    const chapters = [...document.querySelectorAll(".chapter")];
+    const toc = document.getElementById("toc");
+    const bar = document.getElementById("bar");
+    const stepLabel = document.getElementById("step-label");
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+    let i = 0;
+    document.querySelectorAll(".ticks").forEach((el) => {
+      el.innerHTML = "<i></i>".repeat(11);
+    });
+
+    chapters.forEach((ch, idx) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.innerHTML = "<span class=\"n\">" + String(idx).padStart(2, "0") + "</span><span>" + ch.dataset.title + "</span>";
+      b.addEventListener("click", () => go(idx));
+      toc.appendChild(b);
+    });
+
+    function go(n) {
+      i = Math.max(0, Math.min(chapters.length - 1, n));
+      chapters.forEach((ch, idx) => ch.classList.toggle("is-on", idx === i));
+      [...toc.children].forEach((b, idx) => b.classList.toggle("is-on", idx === i));
+      bar.style.width = ((i + 1) / chapters.length * 100) + "%";
+      stepLabel.textContent = (i + 1) + " / " + chapters.length;
+      prevBtn.disabled = i === 0;
+      nextBtn.disabled = i === chapters.length - 1;
+      if (document.body.classList.contains("mode-scroll")) {
+        chapters[i].scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      try {
+        const url = new URL(location.href);
+        url.searchParams.set("s", String(i));
+        history.replaceState(null, "", url);
+      } catch (err) { /* file:// without history is fine */ }
+    }
+
+    prevBtn.addEventListener("click", () => go(i - 1));
+    nextBtn.addEventListener("click", () => go(i + 1));
+    document.getElementById("mode-guided").addEventListener("click", () => {
+      document.body.classList.remove("mode-scroll");
+      document.body.classList.add("mode-guided");
+      document.getElementById("mode-guided").classList.add("is-on");
+      document.getElementById("mode-scroll").classList.remove("is-on");
+      go(i);
+    });
+    document.getElementById("mode-scroll").addEventListener("click", () => {
+      document.body.classList.add("mode-scroll");
+      document.body.classList.remove("mode-guided");
+      document.getElementById("mode-scroll").classList.add("is-on");
+      document.getElementById("mode-guided").classList.remove("is-on");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
+      if (e.key === "ArrowRight" || e.key === "n" || e.key === "N") go(i + 1);
+      if (e.key === "ArrowLeft" || e.key === "p" || e.key === "P") go(i - 1);
+      if (e.key === "Home") go(0);
+      if (e.key === "End") go(chapters.length - 1);
+    });
+
+    const picks = document.getElementById("week-picks");
+    const panel = document.getElementById("week-panel");
+    function showWeek(w) {
+      [...picks.children].forEach((b) => b.classList.toggle("is-on", b.dataset.id === w.id));
+      panel.innerHTML = "<h4>" + w.title + "</h4><ul>" +
+        w.items.map((t) => "<li>" + t + "</li>").join("") +
+        "</ul><p class=\"done\">" + w.done + "</p>";
+    }
+    WEEKS.forEach((w, idx) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.dataset.id = w.id;
+      b.textContent = w.label;
+      b.addEventListener("click", () => showWeek(w));
+      picks.appendChild(b);
+      if (idx === 0) b.classList.add("is-on");
+    });
+    showWeek(WEEKS[0]);
+
+    const ADDS = [
+      {
+        id: "mcq", label: "MCQ · 1 day", title: "Add one MCQ — e.g. next negotiations case",
+        items: [
+          "Morning hour 1 — Domain: script gate (questions, options, scores, debrief).",
+          "Hours 2–4 — Developer + Cursor Plan/Agent: content.json from the script. validate:pack.",
+          "Hour 5 — Golden-check 5 question paths. Fix score mismatches (mapping, not new maths).",
+          "Hour 6 — CI publish v1. Admin entitles one college. Faculty assigns a test group.",
+          "Hour 7 — Founder plays once. If green, enable the real cohort.",
+          "Cost ₹3,000–6,000. Same working day if the script arrived before 10:00. Platform developer not involved."
+        ],
+        done: "Done when: students in the assigned cohort see the new MCQ, scores match the script, Dealcraft and every other live title are untouched."
+      },
+      {
+        id: "onep", label: "1-player · 2–3 days", title: "Add one 1-player — HelioGrid-class (the default add)",
+        items: [
+          "Day 0 — Domain: script names rounds, options, effects, KPIs, weights, debrief, 5 golden paths.",
+          "Day 1 — Developer + Cursor: pack folder, manifest, content + engine methods 1:1 with the script. Shared round UI — no new screens.",
+          "Day 2 — Golden tests for 5–10 scripted paths. Server-side score matches the script. Fix mapping errors.",
+          "Day 3 morning — Publish v1. Admin entitles the college. Faculty assigns a test cohort.",
+          "Day 3 afternoon — Founder plays a full run against the script. If green, enable the real cohort.",
+          "Cost ₹8,000–20,000. Infra does not move. This is HelioGrid, then DashMart, then MacroEcon."
+        ],
+        done: "Done when: a professor can assign HelioGrid to a live cohort without a code deploy, and Mumbai / Zara still score as they did yesterday."
+      },
+      {
+        id: "mp", label: "Multiplayer · 4–7 days", title: "Add a second multiplayer — reuse the K2 lobby",
+        items: [
+          "Days 1–2 — Same as 1-player: pack + roles + engine from the script. Do not build a second lobby.",
+          "Days 3–5 — Classroom QA on the existing session lifecycle: join code, timer, rejoin, force-advance, hidden vs shared views.",
+          "Days 6–7 — Five people on five machines. One disconnects. Professor skip-ahead. Hot-seat fallback still works.",
+          "Founder owns the dry run. Cost ₹16,000–48,000. Still cheaper than delaying Phase 1 to include a second MP title."
+        ],
+        done: "Done when: the new MP title runs on the K2 session machinery, and K2 itself still works."
+      },
+      {
+        id: "uni", label: "Universe · 8–12 days", title: "Add another shared market — tick already exists",
+        items: [
+          "The Phase 1 tick Lambda and leaderboard already exist. New work is the script’s market rules only.",
+          "Days 1–6 — Agent implements the tick tables from the script. Seeded RNG, action log, facilitator pause/shock if specified.",
+          "Days 7–12 — Two-team playtest. Do not add regulators or extra factions.",
+          "Cost ₹40,000–1.0 lakh plus the playtest. Launch Phase 1 without a second universe; add it after HelioGrid if needed."
+        ],
+        done: "Done when: two teams see each other’s market effect on the next tick, on this script’s rules, without changing the Phase 1 universe."
+      }
+    ];
+    const addPicks = document.getElementById("add-picks");
+    const addPanel = document.getElementById("add-panel");
+    function showAdd(a) {
+      [...addPicks.children].forEach((b) => b.classList.toggle("is-on", b.dataset.id === a.id));
+      addPanel.innerHTML = "<h4>" + a.title + "</h4><ul>" +
+        a.items.map((t) => "<li>" + t + "</li>").join("") +
+        "</ul><p class=\"done\">" + a.done + "</p>";
+    }
+    ADDS.forEach((a, idx) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.dataset.id = a.id;
+      b.textContent = a.label;
+      b.addEventListener("click", () => showAdd(a));
+      addPicks.appendChild(b);
+      if (idx === 0) b.classList.add("is-on");
+    });
+    showAdd(ADDS[0]);
+    const start = parseInt(new URLSearchParams(location.search).get("s") || "0", 10);
+    go(Number.isFinite(start) ? start : 0);
+  </script>
+</body>
+</html>

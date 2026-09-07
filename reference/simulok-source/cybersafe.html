@@ -1,0 +1,1112 @@
+<meta charset="UTF-8">
+<title>CyberSafe — Campus Security Training</title>
+<style>
+:root {
+  --saffron: #D97B2B;
+  --saffron-light: #F5DFC4;
+  --saffron-glow: rgba(217,123,43,0.12);
+  --neem: #1A8A5C;
+  --neem-light: #D0F0E0;
+  --loss: #C0392B;
+  --loss-light: #FADBD8;
+  --ink: #1C2233;
+  --ink-soft: #3A3F4E;
+  --surface: #F4F1EB;
+  --card: #FFFFFF;
+  --card-border: #E4E0D8;
+  --muted: #7E8490;
+  --muted-light: #B8BCC6;
+  --input-bg: #F9F7F3;
+  --shadow: rgba(28,34,51,0.06);
+  --shadow-md: rgba(28,34,51,0.10);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+  --warning: #E67E22;
+  --warning-glow: rgba(230,126,34,0.12);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --warning:#F39C12;--warning-glow:rgba(243,156,18,0.10);
+}}
+:root[data-theme="dark"]{
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --warning:#F39C12;--warning-glow:rgba(243,156,18,0.10);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);color:var(--ink);font-family:system-ui,-apple-system,sans-serif;line-height:1.55;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.2;text-wrap:balance}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-0.02em}
+h2{font-size:clamp(1.3rem,2.5vw,1.7rem);letter-spacing:-0.01em}
+h3{font-size:1.05rem}
+.mono{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-variant-numeric:tabular-nums}
+.label{font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)}
+
+#app{min-height:100vh;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;min-height:100vh}
+.screen.active{display:flex}
+
+/* Progress strip */
+.progress-strip{position:fixed;top:0;left:0;right:0;height:4px;background:var(--card-border);z-index:100}
+.progress-strip-fill{height:100%;background:var(--saffron);transition:width 0.5s ease;border-radius:0 2px 2px 0}
+
+/* Header */
+.game-header{position:fixed;top:4px;left:0;right:0;z-index:90;background:var(--card);border-bottom:1px solid var(--card-border);padding:0.5rem 1.2rem;display:flex;align-items:center;gap:1rem}
+.game-header .brand{display:flex;align-items:center;gap:0.5rem;font-weight:700;font-size:0.9rem}
+.game-header .brand svg{flex-shrink:0}
+.game-header .qtr-label{font-family:Georgia,serif;font-weight:700;font-size:0.85rem;white-space:nowrap;margin-left:auto}
+.game-header .qtr-label span{color:var(--saffron)}
+.step-badge{display:inline-block;background:var(--saffron-glow);color:var(--saffron);font-size:0.7rem;font-weight:700;padding:0.25em 0.7em;border-radius:3px;letter-spacing:0.04em}
+
+/* Title screen */
+.title-screen.active{display:block;padding:3rem 2rem;position:relative;overflow:visible;min-height:auto}
+.title-screen::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 60% 40%,var(--saffron-glow) 0%,transparent 60%);pointer-events:none}
+.title-brand{position:relative;z-index:1;text-align:center;max-width:860px;margin:0 auto 1.5rem}
+.title-brand .eyebrow{display:inline-block;background:var(--saffron);color:#fff;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:0.3em 0.9em;border-radius:3px;margin-bottom:1.2rem}
+.title-brand h1{font-size:clamp(2.2rem,5vw,3.2rem);margin-bottom:0.3rem}
+.title-brand h1 em{color:var(--saffron);font-style:normal}
+.title-brand .subtitle{font-family:Georgia,serif;font-style:italic;font-size:clamp(0.95rem,2vw,1.2rem);color:var(--muted);margin-bottom:1.5rem}
+.title-brand .desc{max-width:600px;margin:0 auto 2rem;color:var(--ink-soft);font-size:0.9rem;line-height:1.65}
+
+.manual-wrap{position:relative;z-index:1;max-width:860px;width:100%;margin:0 auto;text-align:left}
+.manual-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px var(--shadow)}
+.manual-section h3{font-size:1rem;margin-bottom:0.5rem;color:var(--saffron);display:flex;align-items:center;gap:0.5rem}
+.manual-section p{font-size:0.85rem;color:var(--ink-soft);line-height:1.65;margin-bottom:0.4rem}
+.manual-section p:last-child{margin-bottom:0}
+.manual-section .mod-tag{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:0.2em 0.6em;border-radius:3px;display:inline-block;margin-bottom:0.5rem}
+.manual-section .mod-tag.phishing{background:var(--loss-light);color:var(--loss)}
+.manual-section .mod-tag.ai-data{background:var(--saffron-glow);color:var(--saffron)}
+.manual-section .mod-tag.guardrails{background:var(--warning-glow);color:var(--warning)}
+
+.manual-cta{text-align:center;margin:1.5rem 0 1rem;position:relative;z-index:1}
+.training-meta{text-align:center;font-size:0.78rem;color:var(--muted);margin-top:0.8rem}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:0.5em;font-family:system-ui,sans-serif;font-weight:600;font-size:0.9rem;padding:0.7em 1.6em;border:none;border-radius:var(--radius);cursor:pointer;transition:transform 0.12s,box-shadow 0.15s}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:var(--saffron);color:#fff;box-shadow:0 2px 8px rgba(217,123,43,0.25)}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(217,123,43,0.35)}
+.btn-secondary{background:var(--card);color:var(--ink);border:1.5px solid var(--card-border)}
+.btn-sm{font-size:0.78rem;padding:0.4em 0.9em}
+.btn-neem{background:var(--neem);color:#fff;box-shadow:0 2px 8px rgba(26,138,92,0.25)}
+
+/* Video player */
+.video-screen{padding:calc(44px + 1rem) 1.5rem 1.5rem}
+.video-wrap{max-width:900px;width:100%;margin:0 auto}
+.video-module-label{display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem}
+.video-module-label .mod-num{background:var(--saffron);color:#fff;width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:800;flex-shrink:0}
+.video-module-label .mod-title{font-family:Georgia,serif;font-weight:700;font-size:1rem}
+.video-module-label .mod-slides{font-size:0.75rem;color:var(--muted);margin-left:auto}
+
+.video-player{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 4px 20px var(--shadow-md)}
+.video-canvas{position:relative;aspect-ratio:16/9;background:#0f1520;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.video-slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:8% 10%;color:#f1f5f9;opacity:0;transition:opacity 0.5s ease;pointer-events:none}
+.video-slide.active{opacity:1;pointer-events:auto}
+.video-slide .vs-eyebrow{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#E8923E;margin-bottom:0.8rem}
+.video-slide .vs-title{font-family:Georgia,serif;font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:700;line-height:1.2;margin-bottom:1rem;text-wrap:balance;letter-spacing:-0.02em;color:#ffffff}
+.video-slide .vs-stat{font-family:ui-monospace,monospace;font-size:clamp(2.5rem,6vw,4rem);font-weight:800;color:#E8923E;line-height:1;margin-bottom:0.4rem;font-variant-numeric:tabular-nums}
+.video-slide .vs-stat-label{font-size:0.85rem;color:#a0aec0;margin-bottom:1rem}
+.video-slide .vs-body{font-size:0.92rem;line-height:1.7;color:#e2e8f0;max-width:600px}
+.video-slide .vs-list{list-style:none;display:grid;gap:0.7rem;margin-top:0.8rem}
+.video-slide .vs-list li{display:flex;align-items:flex-start;gap:0.7rem;font-size:0.88rem;line-height:1.55;color:#e2e8f0}
+.video-slide .vs-list .vs-icon{width:24px;height:24px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;margin-top:1px}
+.video-slide .vs-list .vs-icon.warn{background:rgba(231,76,60,0.25);color:#f87171}
+.video-slide .vs-list .vs-icon.safe{background:rgba(46,187,125,0.25);color:#34d399}
+.video-slide .vs-list .vs-icon.info{background:rgba(232,146,62,0.25);color:#E8923E}
+.video-slide .vs-list .vs-icon.alert{background:rgba(251,191,36,0.25);color:#fbbf24}
+
+.video-slide .vs-email{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-sm);padding:1rem;margin:0.8rem 0;font-family:ui-monospace,monospace;font-size:0.8rem;line-height:1.5;color:#cbd5e1}
+.video-slide .vs-email .from{color:#f87171;font-weight:600}
+.video-slide .vs-email .subject{font-weight:700;color:#ffffff;margin:0.2rem 0 0.6rem}
+
+.video-slide .vs-data-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.6rem;margin:0.8rem 0}
+.vs-data-card{padding:0.8rem;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.12)}
+.vs-data-card h4{font-family:system-ui,sans-serif;font-size:0.78rem;font-weight:700;margin-bottom:0.25rem}
+.vs-data-card p{font-size:0.72rem;color:#cbd5e1;line-height:1.4}
+.vs-data-card.public{background:rgba(46,187,125,0.2);border-color:rgba(46,187,125,0.35)}
+.vs-data-card.public h4{color:#34d399}
+.vs-data-card.internal{background:rgba(232,146,62,0.2);border-color:rgba(232,146,62,0.35)}
+.vs-data-card.internal h4{color:#E8923E}
+.vs-data-card.confidential{background:rgba(251,191,36,0.2);border-color:rgba(251,191,36,0.35)}
+.vs-data-card.confidential h4{color:#fbbf24}
+.vs-data-card.restricted{background:rgba(248,113,113,0.2);border-color:rgba(248,113,113,0.35)}
+.vs-data-card.restricted h4{color:#f87171}
+
+/* Video controls */
+.video-controls{display:flex;align-items:center;gap:0.8rem;padding:0.7rem 1rem;background:var(--card);border-top:1px solid var(--card-border)}
+.vc-play{width:36px;height:36px;border-radius:50%;border:none;background:var(--saffron);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.1s}
+.vc-play:active{transform:scale(0.92)}
+.vc-play svg{width:14px;height:14px}
+.vc-track{flex:1;height:4px;background:var(--card-border);border-radius:2px;cursor:pointer;position:relative}
+.vc-track-fill{height:100%;background:var(--saffron);border-radius:2px;transition:width 0.3s ease}
+.vc-time{font-family:ui-monospace,monospace;font-size:0.72rem;color:var(--muted);font-variant-numeric:tabular-nums;flex-shrink:0;min-width:70px;text-align:right}
+.vc-dots{display:flex;gap:4px;margin-left:0.5rem}
+.vc-dot{width:7px;height:7px;border-radius:50%;background:var(--muted-light);cursor:pointer;transition:all 0.2s}
+.vc-dot.active{background:var(--saffron);width:18px;border-radius:4px}
+.vc-dot.done{background:var(--neem)}
+
+.video-caption{padding:0.8rem 1rem;font-size:0.82rem;color:var(--ink-soft);line-height:1.5;border-top:1px solid var(--card-border);background:var(--input-bg);min-height:60px}
+.video-caption strong{color:var(--ink);font-weight:700}
+
+.video-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;gap:1rem}
+.video-nav .sarvam-badge{display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--muted);background:var(--card);border:1px solid var(--card-border);padding:0.3em 0.7em;border-radius:20px}
+.video-nav .sarvam-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--neem);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+
+/* Language & audio controls */
+.lang-controls{display:flex;align-items:center;gap:0.6rem;padding:0.5rem 1rem;background:var(--input-bg);border-top:1px solid var(--card-border)}
+.lang-label{font-size:0.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.lang-select{font-family:system-ui,sans-serif;font-size:0.78rem;font-weight:600;padding:0.3em 0.6em;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);background:var(--card);color:var(--ink);cursor:pointer}
+.lang-select:focus{outline:2px solid var(--saffron);outline-offset:1px}
+.vol-btn{width:28px;height:28px;border:none;background:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;margin-left:auto}
+.vol-btn:hover{color:var(--ink);background:var(--card-border)}
+.vol-btn.muted-audio{color:var(--loss)}
+.audio-status{font-size:0.7rem;color:var(--muted);display:flex;align-items:center;gap:0.3rem}
+.audio-status .as-dot{width:5px;height:5px;border-radius:50%}
+.audio-status .as-dot.playing{background:var(--neem);animation:pulse 1.5s infinite}
+.audio-status .as-dot.ready{background:var(--saffron)}
+.audio-status .as-dot.no-audio{background:var(--muted-light)}
+
+/* Simulation */
+.sim-screen{padding:calc(44px + 1rem) 1.5rem 1.5rem}
+.sim-wrap{max-width:860px;width:100%;margin:0 auto}
+.sim-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem}
+.sim-header .sim-badge{font-family:Georgia,serif;font-weight:700;font-size:1rem}
+.sim-header .sim-count{font-size:0.78rem;color:var(--muted);margin-left:auto}
+.sim-scenario{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px var(--shadow);animation:fadeUp 0.35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.sim-scenario .topic-tag{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:0.2em 0.6em;border-radius:3px;display:inline-block;margin-bottom:0.7rem}
+.sim-scenario .topic-tag.phishing{background:var(--loss-light);color:var(--loss)}
+.sim-scenario .topic-tag.ai-data{background:var(--saffron-glow);color:var(--saffron)}
+.sim-scenario .topic-tag.guardrails{background:var(--warning-glow);color:var(--warning)}
+.sim-scenario h2{font-size:1.05rem;line-height:1.5}
+
+.sim-chars{display:grid;gap:0.5rem}
+.char-btn{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);cursor:pointer;text-align:left;width:100%;font-family:inherit;font-size:inherit;color:inherit;transition:border-color 0.15s,background 0.15s,transform 0.1s}
+.char-btn:hover:not(.locked){border-color:var(--saffron);transform:translateY(-1px);box-shadow:0 2px 8px var(--shadow)}
+.char-btn.correct{border-color:var(--neem);background:var(--neem-light)}
+.char-btn.wrong{border-color:var(--loss);background:var(--loss-light)}
+.char-btn.reveal{border-color:var(--neem);background:var(--neem-light)}
+.char-btn.locked{cursor:default;opacity:0.5}
+.char-btn.locked.reveal,.char-btn.locked.correct,.char-btn.locked.wrong{opacity:1}
+.char-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:800;color:#fff;flex-shrink:0}
+.char-meta{flex:1;min-width:0}
+.char-name{font-weight:700;font-size:0.82rem;margin-bottom:0.15rem}
+.char-resp{font-size:0.8rem;color:var(--ink-soft);line-height:1.45}
+
+.feedback-box{padding:0.8rem 1rem;border-radius:var(--radius);margin-top:0.8rem;font-size:0.82rem;line-height:1.55;animation:fadeUp 0.3s ease}
+.feedback-box.correct-fb{background:var(--neem-light);border:1px solid var(--neem)}
+.feedback-box.wrong-fb{background:var(--loss-light);border:1px solid var(--loss)}
+.feedback-box strong{display:block;margin-bottom:0.2rem}
+.feedback-box.correct-fb strong{color:var(--neem)}
+.feedback-box.wrong-fb strong{color:var(--loss)}
+.feedback-box p{color:var(--ink-soft)}
+
+.score-bar{display:flex;align-items:center;gap:0.8rem;margin-top:1rem;font-size:0.78rem;color:var(--muted)}
+.score-track{flex:1;height:5px;background:var(--card-border);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;background:var(--neem);border-radius:3px;transition:width 0.4s ease}
+
+/* Quiz */
+.quiz-screen{padding:calc(44px + 1rem) 1.5rem 1.5rem}
+.quiz-wrap{max-width:720px;width:100%;margin:0 auto}
+.quiz-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.5rem 1.8rem;box-shadow:0 2px 8px var(--shadow);animation:fadeUp 0.35s ease}
+.quiz-num{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--saffron);margin-bottom:0.8rem}
+.quiz-q{font-family:Georgia,serif;font-size:1.1rem;font-weight:700;line-height:1.5;margin-bottom:1.2rem;text-wrap:balance}
+.quiz-opts{display:grid;gap:0.5rem}
+.quiz-opt{display:flex;align-items:flex-start;gap:0.8rem;padding:0.7rem 1rem;border:1.5px solid var(--card-border);border-radius:var(--radius);cursor:pointer;font-size:0.85rem;line-height:1.45;transition:border-color 0.12s,background 0.12s;width:100%;text-align:left;font-family:inherit;color:inherit;background:var(--input-bg)}
+.quiz-opt:hover:not(.locked){border-color:var(--saffron);background:var(--saffron-glow)}
+.quiz-opt.correct{border-color:var(--neem);background:var(--neem-light)}
+.quiz-opt.wrong{border-color:var(--loss);background:var(--loss-light)}
+.quiz-opt.locked{cursor:default}
+.quiz-letter{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;background:var(--card-border);flex-shrink:0}
+.quiz-opt.correct .quiz-letter{background:var(--neem);color:#fff}
+.quiz-opt.wrong .quiz-letter{background:var(--loss);color:#fff}
+
+/* Results */
+.results-screen{padding:calc(44px + 1.5rem) 1.5rem 2rem}
+.results-wrap{max-width:620px;width:100%;margin:0 auto;text-align:center}
+.results-icon{width:80px;height:80px;border-radius:50%;margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;font-size:36px}
+.results-icon.pass{background:var(--neem-light)}
+.results-icon.fail{background:var(--loss-light)}
+.results-wrap h1{margin-bottom:0.4rem}
+.results-wrap .r-sub{font-size:0.95rem;color:var(--ink-soft);margin-bottom:2rem;line-height:1.6}
+.results-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:2rem}
+.r-stat{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:1rem;box-shadow:0 1px 4px var(--shadow)}
+.r-stat .r-num{font-family:ui-monospace,monospace;font-size:1.5rem;font-weight:800;color:var(--saffron);font-variant-numeric:tabular-nums}
+.r-stat .r-label{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:0.2rem}
+
+.certificate{background:var(--card);border:2px solid var(--neem);border-radius:var(--radius-lg);padding:1.5rem;margin-top:1.5rem;position:relative;text-align:center}
+.certificate::before{content:'';position:absolute;top:6px;left:6px;right:6px;bottom:6px;border:1px solid var(--neem-light);border-radius:10px;pointer-events:none}
+.certificate .cert-label{font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--neem);margin-bottom:0.8rem}
+.certificate h2{margin-bottom:0.5rem}
+.certificate p{font-size:0.85rem;color:var(--ink-soft);line-height:1.6;max-width:440px;margin:0 auto}
+.certificate .cert-date{font-size:0.75rem;color:var(--muted);margin-top:1rem}
+
+@media(max-width:640px){
+  .title-screen{padding:2rem 1rem}
+  .video-screen,.sim-screen,.quiz-screen,.results-screen{padding:calc(44px + 0.8rem) 0.8rem 1rem}
+  .video-slide{padding:6% 7%}
+  .video-slide .vs-title{font-size:1.2rem}
+  .video-slide .vs-stat{font-size:2rem}
+  .video-slide .vs-data-grid{grid-template-columns:1fr 1fr}
+  .results-stats{grid-template-columns:1fr}
+  .game-header .qtr-label{display:none}
+}
+</style>
+
+<div id="app">
+  <div class="progress-strip"><div class="progress-strip-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="game-header">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" fill="var(--saffron)" opacity="0.15" stroke="var(--saffron)" stroke-width="1.5"/>
+        <path d="M9 12l2 2 4-4" stroke="var(--saffron)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      CyberSafe
+    </div>
+    <span class="step-badge" id="stepBadge">Welcome</span>
+    <div class="qtr-label" id="headerLabel"></div>
+  </div>
+
+  <!-- WELCOME -->
+  <div class="screen title-screen active" id="welcomeScreen">
+    <div class="title-brand">
+      <div class="eyebrow">Security Awareness Training</div>
+      <h1>Learn to Spot Threats.<br>Stay <em>CyberSafe</em>.</h1>
+      <div class="subtitle">Interactive training for students &amp; future professionals</div>
+      <div class="desc">Whether you're working on case competitions, internship projects, or entering the corporate world — you will handle confidential data. This training prepares you to recognise phishing, protect sensitive data from AI leaks, and use AI responsibly.</div>
+    </div>
+
+    <div class="manual-wrap">
+      <div class="manual-section">
+        <div class="mod-tag phishing">Module 1</div>
+        <h3>Email Phishing</h3>
+        <p>Recognise fraudulent emails, malicious links, and social engineering tactics. From fake recruiter emails to scholarship scams — learn the red flags and the response protocol.</p>
+      </div>
+      <div class="manual-section">
+        <div class="mod-tag ai-data">Module 2</div>
+        <h3>AI &amp; Confidential Data</h3>
+        <p>Understand why confidential data must never leave the organisation's boundary through public AI tools. Whether it's a case competition dataset, internship project, or client data — learn data classification and safe AI practices.</p>
+      </div>
+      <div class="manual-section">
+        <div class="mod-tag guardrails">Module 3</div>
+        <h3>AI Guardrails</h3>
+        <p>AI is your most powerful productivity tool — and most dangerous if used blindly. Learn about hallucinations, prompt injection, bias, and why human verification is non-negotiable.</p>
+      </div>
+
+      <div class="manual-cta">
+        <button class="btn btn-primary" onclick="startTraining()">
+          Begin Training
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div class="training-meta">~20 minutes &middot; 3 video modules &middot; 12 simulations &middot; 15 assessment questions</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="screen" id="videoScreen">
+    <div class="video-screen">
+      <div class="video-wrap">
+        <div class="video-module-label" id="videoModLabel"></div>
+        <div class="video-player">
+          <div class="video-canvas" id="videoCanvas"></div>
+          <div class="video-controls">
+            <button class="vc-play" id="vcPlay" onclick="togglePlay()">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
+            </button>
+            <div class="vc-track" id="vcTrack" onclick="seekVideo(event)">
+              <div class="vc-track-fill" id="vcFill" style="width:0%"></div>
+            </div>
+            <div class="vc-time" id="vcTime">0:00 / 0:00</div>
+            <div class="vc-dots" id="vcDots"></div>
+          </div>
+          <div class="lang-controls">
+            <span class="lang-label">Narration</span>
+            <select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
+              <option value="en-IN">English</option>
+              <option value="hi-IN">Hindi</option>
+              <option value="ta-IN">Tamil</option>
+              <option value="te-IN">Telugu</option>
+              <option value="kn-IN">Kannada</option>
+              <option value="bn-IN">Bengali</option>
+              <option value="mr-IN">Marathi</option>
+              <option value="gu-IN">Gujarati</option>
+              <option value="ml-IN">Malayalam</option>
+            </select>
+            <div class="audio-status" id="audioStatus">
+              <span class="as-dot no-audio" id="audioDot"></span>
+              <span id="audioLabel">No audio loaded</span>
+            </div>
+            <button class="vol-btn" id="volBtn" onclick="toggleMute()" title="Mute/Unmute">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+            </button>
+          </div>
+          <div class="video-caption" id="videoCaption"></div>
+        </div>
+        <div class="video-nav">
+          <button class="btn btn-secondary btn-sm" id="vidPrev" onclick="prevVideoSlide()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back
+          </button>
+          <div class="sarvam-badge">
+            <span class="dot"></span>
+            Sarvam AI TTS Ready
+          </div>
+          <button class="btn btn-primary btn-sm" id="vidNext" onclick="nextVideoSlide()">
+            Next
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATION -->
+  <div class="screen" id="simScreen">
+    <div class="sim-screen">
+      <div class="sim-wrap">
+        <div class="sim-header">
+          <div class="sim-badge" id="simBadge">Simulation Rounds</div>
+          <div class="sim-count" id="simCount"></div>
+        </div>
+        <div id="simContent"></div>
+        <div class="score-bar" id="simScoreBar">
+          <span id="simScoreText">0 / 0 correct</span>
+          <div class="score-track"><div class="score-fill" id="simScoreFill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="quizScreen">
+    <div class="quiz-screen">
+      <div class="quiz-wrap">
+        <div class="sim-header" style="margin-bottom:1rem">
+          <div class="sim-badge">Final Assessment</div>
+          <div class="sim-count" id="quizCount"></div>
+        </div>
+        <div id="quizContent"></div>
+        <div class="score-bar" style="margin-top:1rem">
+          <span id="quizScoreText">0 / 0 correct</span>
+          <div class="score-track"><div class="score-fill" id="quizScoreFill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="resultsScreen">
+    <div class="results-screen">
+      <div class="results-wrap" id="resultsContent"></div>
+    </div>
+  </div>
+</div>
+
+<script src="audio/en-IN-manifest.js"></script>
+<script>
+/* ── AUDIO ENGINE ── */
+const Audio$ = {
+  current: null,
+  lang: 'en-IN',
+  muted: false,
+  getAudioSrc(audioId) {
+    if (window.NARRATION_AUDIO && window.NARRATION_AUDIO[this.lang] && window.NARRATION_AUDIO[this.lang][audioId]) {
+      return window.NARRATION_AUDIO[this.lang][audioId];
+    }
+    return null;
+  },
+  play(audioId) {
+    this.stop();
+    const src = this.getAudioSrc(audioId);
+    if (!src) {
+      this.updateStatus('no-audio', 'Generate audio first');
+      return;
+    }
+    this.current = new Audio(src);
+    this.current.muted = this.muted;
+    this.current.addEventListener('play', () => this.updateStatus('playing', 'Playing'));
+    this.current.addEventListener('ended', () => {
+      this.updateStatus('ready', 'Finished');
+      stopPlay();
+    });
+    this.current.addEventListener('error', () => this.updateStatus('no-audio', 'Audio error'));
+    this.current.addEventListener('timeupdate', () => {
+      if (this.current && this.current.duration) {
+        const pct = this.current.currentTime / this.current.duration * 100;
+        document.getElementById('vcFill').style.width = pct + '%';
+        const ce = Math.floor(this.current.currentTime), cd = Math.floor(this.current.duration);
+        const em = Math.floor(ce/60), es = ce%60, dm = Math.floor(cd/60), ds = cd%60;
+        document.getElementById('vcTime').textContent =
+          `${em}:${String(es).padStart(2,'0')} / ${dm}:${String(ds).padStart(2,'0')}`;
+      }
+    });
+    this.current.play().catch(() => this.updateStatus('no-audio', 'Playback blocked'));
+  },
+  stop() {
+    if (this.current) { this.current.pause(); this.current = null; }
+  },
+  toggleMute() {
+    this.muted = !this.muted;
+    if (this.current) this.current.muted = this.muted;
+    const btn = document.getElementById('volBtn');
+    if (this.muted) {
+      btn.classList.add('muted-audio');
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+    } else {
+      btn.classList.remove('muted-audio');
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>';
+    }
+  },
+  seek(pct) {
+    if (this.current && this.current.duration) {
+      this.current.currentTime = pct * this.current.duration;
+    }
+  },
+  hasAudio(audioId) {
+    return !!this.getAudioSrc(audioId);
+  },
+  updateStatus(state, label) {
+    const dot = document.getElementById('audioDot');
+    const lbl = document.getElementById('audioLabel');
+    if (dot) { dot.className = 'as-dot ' + state; }
+    if (lbl) { lbl.textContent = label; }
+  }
+};
+
+function changeLang(lang) {
+  Audio$.lang = lang;
+  Audio$.stop();
+  const mod = MODULES[S.modIdx], slide = mod.slides[S.slideIdx];
+  if (Audio$.hasAudio(slide.audioId)) {
+    Audio$.updateStatus('ready', lang.split('-')[0].toUpperCase() + ' ready');
+  } else {
+    Audio$.updateStatus('no-audio', 'Generate ' + lang + ' audio');
+  }
+}
+function toggleMute() { Audio$.toggleMute(); }
+
+/* ── DATA ── */
+const MODULES = [
+  {
+    id:'phishing', title:'Email Phishing', tag:'phishing',
+    slides:[
+      {
+        audioId:'phishing_01',
+        eyebrow:'The Scale of the Threat',
+        title:'91% of Cyberattacks Start With a Phishing Email',
+        stat:'91%', statLabel:'of data breaches involve phishing — IBM Security, 2024',
+        body:'Phishing is a social engineering attack where criminals impersonate trusted entities to trick you into revealing sensitive information.',
+        caption:'<strong>Key takeaway:</strong> Phishing exploits trust and urgency, not technical flaws. India saw a 700% increase in phishing attacks since 2020. The average cost of a data breach in India is ₹17.9 crore.',
+        list:[
+          {icon:'warn',text:'India saw a 700% increase in phishing attacks between 2020–2024'},
+          {icon:'warn',text:'Average data breach cost in India: ₹17.9 crore (IBM, 2024)'},
+          {icon:'info',text:'Phishing exploits trust and urgency, not technical flaws'}
+        ],
+        duration:45
+      },
+      {
+        audioId:'phishing_02',
+        eyebrow:'Know the Attack Vectors',
+        title:'The Many Faces of Phishing',
+        body:'Attackers choose their method based on the target. Knowing each type helps you spot the pattern.',
+        caption:'<strong>Remember:</strong> Spear phishing uses your personal details (name, role, recent activity) making it far harder to detect than generic phishing.',
+        list:[
+          {icon:'warn',text:'<strong>Email Phishing</strong> — Mass emails impersonating banks, IT support, vendors'},
+          {icon:'warn',text:'<strong>Spear Phishing</strong> — Targeted using your name, role, recent activity'},
+          {icon:'warn',text:'<strong>Whaling</strong> — Aimed at C-suite. Fake board emails, wire transfers'},
+          {icon:'alert',text:'<strong>Smishing & Vishing</strong> — SMS and voice call variants'}
+        ],
+        email:{from:'support@yourbank-secure.co.in',subject:'⚠ Urgent: Account temporarily suspended',body:'Dear Customer,\nWe detected unusual activity on your account.\nClick below to verify your identity immediately\nor your account will be permanently locked.\n\n[VERIFY NOW] ← suspicious link'},
+        duration:50
+      },
+      {
+        audioId:'phishing_03',
+        eyebrow:'Detection Skills',
+        title:'Spot the Red Flags',
+        body:'Every phishing attempt leaves clues. Train your eye to catch these signals.',
+        caption:'<strong>Pro tip:</strong> Always hover over links before clicking. The displayed text and actual URL are often different in phishing emails.',
+        list:[
+          {icon:'warn',text:'<strong>Urgency & threats</strong> — "Act now or lose access"'},
+          {icon:'warn',text:'<strong>Sender mismatch</strong> — Display says "HDFC Bank", email is hdfc-alerts@gmail.com'},
+          {icon:'warn',text:'<strong>Suspicious links</strong> — Hover first. "login.microsoft.com" actually goes to "login.microsft-secure.xyz"'},
+          {icon:'warn',text:'<strong>Unexpected attachments</strong> — Invoice PDFs you never requested'},
+          {icon:'alert',text:'<strong>Grammar & formatting</strong> — Odd phrasing, mismatched logos'}
+        ],
+        duration:45
+      },
+      {
+        audioId:'phishing_04',
+        eyebrow:'Your Response Protocol',
+        title:'What To Do When Something Looks Suspicious',
+        body:'Follow these four steps — in this order.',
+        caption:'<strong>Critical:</strong> Do not forward suspicious emails to colleagues — that just spreads the threat. Use your organisation\'s dedicated reporting channel.',
+        list:[
+          {icon:'safe',text:'<strong>Stop</strong> — Do not click any link, open any attachment, or reply'},
+          {icon:'safe',text:'<strong>Verify</strong> — Contact the sender through a known, separate channel'},
+          {icon:'safe',text:'<strong>Report</strong> — Forward to IT security. Use the phishing report button'},
+          {icon:'safe',text:'<strong>Delete</strong> — Once reported, delete the email'}
+        ],
+        duration:40
+      }
+    ]
+  },
+  {
+    id:'ai-data', title:'AI & Confidential Data', tag:'ai-data',
+    slides:[
+      {
+        audioId:'aidata_01',
+        eyebrow:'The Hidden Risk',
+        title:'When You Paste Data Into AI, It Leaves the Building',
+        body:'Public AI tools process your input on external servers. That means any data you share may be:',
+        caption:'<strong>Key takeaway:</strong> Unlike an email, you cannot recall data sent to an AI model. Once shared, it\'s irrecoverable.',
+        list:[
+          {icon:'warn',text:'<strong>Stored outside India</strong> — potentially violating DPDP Act 2023'},
+          {icon:'warn',text:'<strong>Used to train models</strong> — your confidential strategy could influence competitor responses'},
+          {icon:'warn',text:'<strong>Visible to provider employees</strong> — for safety reviews, debugging'},
+          {icon:'alert',text:'<strong>Irrecoverable</strong> — unlike email, you cannot recall data sent to AI'}
+        ],
+        duration:45
+      },
+      {
+        audioId:'aidata_02',
+        eyebrow:'Data Classification',
+        title:'Know Your Data Levels',
+        body:'Not all data is equal. Each classification level has different rules for AI usage.',
+        caption:'<strong>Rule of thumb:</strong> When in doubt, treat data as Confidential. Only Public data is safe for any AI tool.',
+        dataGrid:[
+          {level:'public',title:'Public',desc:'Press releases, published reports. Safe for any AI tool.'},
+          {level:'internal',title:'Internal',desc:'Internal memos, org charts. Company-approved AI only.'},
+          {level:'confidential',title:'Confidential',desc:'Financial data, client info. Approved AI + anonymisation.'},
+          {level:'restricted',title:'Restricted',desc:'PII, credentials, trade secrets. Never use with any AI.'}
+        ],
+        duration:50
+      },
+      {
+        audioId:'aidata_03',
+        eyebrow:'Real-World Incidents',
+        title:'These Headlines Were Preventable',
+        body:'Each incident happened because someone pasted the wrong data into an AI tool.',
+        caption:'<strong>These are not hypothetical.</strong> Samsung banned all AI tools company-wide after the incident. Multiple lawyers were sanctioned by courts.',
+        list:[
+          {icon:'warn',text:'<strong>Samsung (2023)</strong> — Engineers pasted proprietary source code into ChatGPT. Company-wide AI ban followed.'},
+          {icon:'warn',text:'<strong>Amazon (2023)</strong> — ChatGPT responses matched confidential product plans — likely from employee inputs.'},
+          {icon:'warn',text:'<strong>Law firms (2023–24)</strong> — AI-generated briefs cited fake case law. Courts imposed sanctions.'},
+          {icon:'alert',text:'<strong>Healthcare (2024)</strong> — Staff uploaded patient records for AI summarisation, violating HIPAA.'}
+        ],
+        duration:50
+      },
+      {
+        audioId:'aidata_04',
+        eyebrow:'Safe Practices',
+        title:'The Safe AI Playbook',
+        body:'AI is a powerful tool — use it within these boundaries.',
+        caption:'<strong>Remember:</strong> "I deleted the conversation" does not mean the data is gone. Providers may retain it in backups or training datasets.',
+        list:[
+          {icon:'safe',text:'<strong>Use only approved tools</strong> — Your org\'s AI has data handling agreements. Public tools do not.'},
+          {icon:'safe',text:'<strong>Anonymise before uploading</strong> — Strip names, account numbers, identifying details.'},
+          {icon:'safe',text:'<strong>Never paste credentials</strong> — API keys, passwords, tokens. Not even to "check if valid."'},
+          {icon:'safe',text:'<strong>Check your company policy</strong> — When in doubt, ask your data protection officer.'}
+        ],
+        duration:40
+      }
+    ]
+  },
+  {
+    id:'guardrails', title:'AI Guardrails', tag:'guardrails',
+    slides:[
+      {
+        audioId:'guardrails_01',
+        eyebrow:'Understanding AI Limitations',
+        title:'AI Is Powerful. It Is Not Infallible.',
+        stat:'36%', statLabel:'of AI-generated code contains security vulnerabilities — Stanford, 2023',
+        body:'AI predicts the most likely next word. It has no understanding, no memory of truth, and no ability to verify facts.',
+        caption:'<strong>Key concept:</strong> "Hallucination" — AI generates confident, detailed, and completely fabricated information. It has no concept of truth.',
+        list:[
+          {icon:'alert',text:'AI generates confident, fabricated information — "hallucination"'},
+          {icon:'alert',text:'AI has no concept of truth, only statistical probability from training data'}
+        ],
+        duration:45
+      },
+      {
+        audioId:'guardrails_02',
+        eyebrow:'Systemic Risks',
+        title:'The Hidden Risks of AI in the Workplace',
+        body:'Beyond hallucination, there are systemic risks every employee must understand.',
+        caption:'<strong>Watch out:</strong> Prompt injection is the new attack vector — hidden instructions in documents can hijack AI when the content is processed.',
+        list:[
+          {icon:'warn',text:'<strong>Prompt Injection</strong> — Hidden instructions in documents that manipulate AI behaviour'},
+          {icon:'warn',text:'<strong>Over-reliance</strong> — "The AI said so" is not a source. Errors at scale.'},
+          {icon:'warn',text:'<strong>Bias Amplification</strong> — Biased training data → biased outputs in hiring, lending'},
+          {icon:'alert',text:'<strong>Copyright Risk</strong> — AI may reproduce copyrighted text/code. Legal exposure.'}
+        ],
+        duration:45
+      },
+      {
+        audioId:'guardrails_03',
+        eyebrow:'The Verification Rule',
+        title:'Verify Everything — Human in the Loop',
+        body:'AI output is a first draft, not a final answer. Every AI output must pass human verification.',
+        caption:'<strong>Non-negotiable:</strong> AI fabricates citations routinely. If AI cites a study, a law, or a statistic — look it up.',
+        list:[
+          {icon:'safe',text:'<strong>Fact-check claims</strong> — AI fabricates citations routinely. Look up every study/law cited.'},
+          {icon:'safe',text:'<strong>Review code line by line</strong> — Subtle bugs, security holes, deprecated patterns.'},
+          {icon:'safe',text:'<strong>Cross-check with experts</strong> — AI doesn\'t replace legal, medical, or financial judgment.'},
+          {icon:'safe',text:'<strong>Label AI contributions</strong> — Disclose AI use to stakeholders.'}
+        ],
+        duration:40
+      },
+      {
+        audioId:'guardrails_04',
+        eyebrow:'Accountability',
+        title:'You Own the Output',
+        body:'When you use AI to produce work, the responsibility stays with you.',
+        caption:'<strong>Bottom line:</strong> Treat AI like an intern — useful for drafts, dangerous without supervision. A hallucinated fact damages your credibility.',
+        list:[
+          {icon:'alert',text:'<strong>Legal liability</strong> — If AI content is defamatory or inaccurate, you\'re liable, not the provider.'},
+          {icon:'alert',text:'<strong>Professional standards</strong> — SEBI, RBI, MCI hold humans accountable. "The AI wrote it" is not a defence.'},
+          {icon:'safe',text:'<strong>Quality control</strong> — Treat AI like an intern: useful for drafts, dangerous unsupervised.'},
+          {icon:'safe',text:'<strong>Your reputation</strong> — A hallucinated fact in a client presentation damages your credibility.'}
+        ],
+        duration:40
+      }
+    ]
+  }
+];
+
+const CHARS = [
+  {name:'Priya Sharma',color:'#7c3aed'},
+  {name:'Rahul Verma',color:'#0891b2'},
+  {name:'Ananya Patel',color:'#c026d3'},
+  {name:'Vikram Singh',color:'#C0392B'},
+  {name:'Deepa Krishnan',color:'#1A8A5C'}
+];
+
+const SIMS = [
+  {topic:'phishing',scenario:'You receive an email from "IT-HelpDesk@yourcompanny.com" (note the typo) asking you to click a link and reset your password immediately — "your account has been flagged for suspicious activity."',
+    responses:[
+      {c:0,text:'Click the link quickly — if your account is flagged, you need to act before it gets locked.',ok:false},
+      {c:1,text:'Do not click. Contact the IT helpdesk directly through the company directory or internal chat to verify this request.',ok:true},
+      {c:2,text:'Reply to the email asking them to confirm if this is legitimate.',ok:false},
+      {c:3,text:'Just ignore it and delete it. No need to report to anyone.',ok:false},
+      {c:4,text:'Forward it to your entire team so everyone knows about the suspicious activity.',ok:false}
+    ],
+    explanation:'Never click links in unexpected password reset emails. The misspelled domain ("yourcompanny") is a classic red flag. Always verify through a separate, trusted channel. Report — don\'t just ignore — so IT can warn others.'},
+  {topic:'phishing',scenario:'A vendor your company works with emails you an updated invoice with new bank account details for payment. The email looks legitimate and uses the vendor\'s logo.',
+    responses:[
+      {c:2,text:'Process the payment — the invoice looks official and we\'ve worked with this vendor before.',ok:false},
+      {c:4,text:'Call the vendor on the phone number from your existing records (not the email) to confirm the bank detail change.',ok:true},
+      {c:1,text:'Reply to the email asking them to confirm the new bank details.',ok:false},
+      {c:3,text:'Check if the email domain matches — if it does, it\'s safe to pay.',ok:false},
+      {c:0,text:'Wait a few days and see if they send a reminder.',ok:false}
+    ],
+    explanation:'Business Email Compromise (BEC) is one of the costliest cybercrimes. Attackers compromise or spoof vendor accounts. Always verify bank detail changes by calling a known number — never trust contact details in the suspicious email.'},
+  {topic:'phishing',scenario:'You receive a WhatsApp message from someone claiming to be your CEO: "I\'m in a confidential meeting and need you to buy ₹50,000 in Amazon gift cards for a client. Don\'t call, just text."',
+    responses:[
+      {c:3,text:'Buy the gift cards — the CEO asked and you don\'t want to upset them.',ok:false},
+      {c:0,text:'Text back asking for more details about which client.',ok:false},
+      {c:4,text:'This is a classic social engineering scam. Do not comply. Report to your manager and IT security immediately.',ok:true},
+      {c:1,text:'Buy them but keep the receipts so you can get reimbursed.',ok:false},
+      {c:2,text:'Ask a colleague if they also received this message.',ok:false}
+    ],
+    explanation:'No legitimate executive asks for gift cards via WhatsApp. The "don\'t call" instruction is a red flag — scammers avoid voice verification. Gift card scams caused over $228 million in losses in 2023 (FTC).'},
+  {topic:'phishing',scenario:'You receive an email "Your salary revision letter — effective next month" from what appears to be HR. It has a PDF attachment.',
+    responses:[
+      {c:1,text:'Open the PDF — salary revisions are important and time-sensitive.',ok:false},
+      {c:3,text:'Download the PDF to your phone instead of your work laptop.',ok:false},
+      {c:2,text:'Check the sender\'s actual email, verify with HR through a separate channel, and report if suspicious. Do not open the attachment.',ok:true},
+      {c:0,text:'Scan the attachment with your phone camera to check if it looks legit.',ok:false},
+      {c:4,text:'Forward it to a colleague in HR and ask them to open it first.',ok:false}
+    ],
+    explanation:'Salary revision emails are a top phishing lure — they exploit curiosity and self-interest. Malicious PDFs can contain exploits or credential-harvesting links. Always verify unexpected HR emails through your HRMS portal or direct contact.'},
+  {topic:'ai-data',scenario:'Your colleague needs to analyse 10,000 rows of customer data (names, emails, purchase history) and wants to paste it into ChatGPT for quick insights.',
+    responses:[
+      {c:3,text:'Go ahead — ChatGPT is a big company, they keep data secure.',ok:false},
+      {c:0,text:'It\'s fine as long as you delete the chat afterwards.',ok:false},
+      {c:1,text:'Only paste column headers and sample rows with fake data. Ask AI to write the analysis code, then run it locally on the real data.',ok:true},
+      {c:4,text:'Use ChatGPT but don\'t include email addresses — names and purchase history are fine.',ok:false},
+      {c:2,text:'Copy it to a Google Sheet first, then connect it to ChatGPT.',ok:false}
+    ],
+    explanation:'Customer PII is confidential/restricted data. Pasting it into public AI violates data protection policies and the DPDP Act. The right approach: use AI to write analysis code with dummy data, then run locally on real data.'},
+  {topic:'ai-data',scenario:'You need to quickly summarise a 40-page confidential board strategy document. You consider using an AI tool.',
+    responses:[
+      {c:2,text:'Use ChatGPT — board documents are internal, not restricted.',ok:false},
+      {c:0,text:'Use your company\'s approved AI tool with enterprise data protection. If none exists, summarise manually — board strategy is typically Restricted.',ok:true},
+      {c:4,text:'Copy-paste it section by section so the AI never sees the full document.',ok:false},
+      {c:1,text:'It\'s fine if you remove the company name and replace with "Company X".',ok:false},
+      {c:3,text:'Use any AI tool but do it from your personal device.',ok:false}
+    ],
+    explanation:'Board strategy documents are Restricted. A personal device doesn\'t change data classification. Partial anonymisation is insufficient — context clues identify the company. Use enterprise-approved AI or do it manually.'},
+  {topic:'ai-data',scenario:'A developer wants to debug proprietary backend code using a public AI tool. The code includes database connection strings and API endpoint URLs.',
+    responses:[
+      {c:4,text:'Remove the connection strings first, then paste the code.',ok:false},
+      {c:1,text:'Never paste code with credentials into public AI. Strip all secrets, replace with placeholders, use an approved code assistant. Rotate credentials if already pasted.',ok:true},
+      {c:3,text:'It\'s fine — AI tools don\'t store code, they just process it.',ok:false},
+      {c:0,text:'Use an incognito browser so it can\'t be linked to your company.',ok:false},
+      {c:2,text:'Paste only the error message, not the code.',ok:false}
+    ],
+    explanation:'Code with credentials is Restricted. Connection strings expose infrastructure. Many AI providers log and store inputs. Incognito mode doesn\'t prevent server-side storage. Always sanitise code and rotate any exposed credentials.'},
+  {topic:'ai-data',scenario:'Your manager asks you to use AI to draft performance review comments for 15 team members, providing names, ratings, and specific feedback.',
+    responses:[
+      {c:0,text:'Use ChatGPT — performance reviews are just internal HR documents.',ok:false},
+      {c:3,text:'The manager approved it, so go ahead with any AI tool.',ok:false},
+      {c:2,text:'Use company-approved AI only. Replace real names with codes (Employee A, B, C) and remove identifying details.',ok:true},
+      {c:4,text:'Type the reviews yourself — AI shouldn\'t be used for anything about people.',ok:false},
+      {c:1,text:'Use AI but only for employees who gave consent.',ok:false}
+    ],
+    explanation:'Performance reviews contain sensitive personal data. Under the DPDP Act, this requires protection. Even with manager approval, use only approved tools and anonymise. AI helps with phrasing, but feed it roles and themes, not real identities.'},
+  {topic:'guardrails',scenario:'An AI tool generates a detailed contract clause for a client deal. The clause cites relevant sections of the Indian Contract Act. Your deadline is tomorrow.',
+    responses:[
+      {c:3,text:'Use it as-is — AI is trained on legal data so it should be accurate.',ok:false},
+      {c:1,text:'Quickly search for the cited sections online. If they exist, the clause is fine.',ok:false},
+      {c:4,text:'Send the AI-generated clause to your legal team for review before including in any client agreement, regardless of deadline.',ok:true},
+      {c:0,text:'Use it but add a disclaimer: "This clause was AI-generated."',ok:false},
+      {c:2,text:'Ask a second AI to verify the first one\'s output.',ok:false}
+    ],
+    explanation:'AI fabricates legal citations. In 2023, lawyers were sanctioned for submitting AI briefs with fake case law. Using one AI to verify another doesn\'t solve hallucination. Always route legal content through qualified counsel.'},
+  {topic:'guardrails',scenario:'AI generates a market research report with specific statistics: "India\'s SaaS market grew 42% in 2024, reaching $14.2 billion (NASSCOM)."',
+    responses:[
+      {c:0,text:'Include it — NASSCOM is a reputable source and the numbers sound right.',ok:false},
+      {c:2,text:'The source is named, so it must be real.',ok:false},
+      {c:3,text:'Look up the actual NASSCOM report. If you can\'t find this exact statistic, find the real number or remove the claim. Never present unverified stats to clients.',ok:true},
+      {c:1,text:'Round the numbers ("about 40% growth") so even if slightly off, you\'re covered.',ok:false},
+      {c:4,text:'Add a footnote: "Source: AI-generated estimate."',ok:false}
+    ],
+    explanation:'AI fabricates statistics with real-sounding sources. A citation to "NASSCOM" doesn\'t mean the report exists. Rounding doesn\'t fix fabrication. Every client-facing statistic must be verified against the original source.'},
+  {topic:'guardrails',scenario:'A junior developer uses AI to write a user authentication function. The code compiles, passes basic tests, and looks clean. They want to push to production.',
+    responses:[
+      {c:1,text:'It passes tests and compiles, so it\'s ready for production.',ok:false},
+      {c:4,text:'Conduct a thorough security review: check for SQL injection, token handling, session management, edge cases. AI auth code is high-risk and must not ship without security review.',ok:true},
+      {c:0,text:'Run it through a different AI for a second opinion.',ok:false},
+      {c:3,text:'It\'s fine as long as it\'s behind the company firewall.',ok:false},
+      {c:2,text:'Add more tests. If they all pass, it\'s safe.',ok:false}
+    ],
+    explanation:'AI code often has subtle security vulnerabilities in auth — improper token validation, SQL injection. Stanford found 36% of AI code contains vulnerabilities. Security-critical code demands expert human review, not just passing tests.'},
+  {topic:'guardrails',scenario:'Your team is building a hiring tool. Someone suggests using AI to screen resumes and rank candidates automatically to save HR time.',
+    responses:[
+      {c:3,text:'Great idea — AI is faster and more objective than humans.',ok:false},
+      {c:0,text:'Use it but only as a first filter. HR makes the final decision.',ok:false},
+      {c:1,text:'AI screening can introduce bias from training data. Before deploying, audit the model for fairness, ensure human oversight at every stage, and check compliance with equal opportunity regulations.',ok:true},
+      {c:2,text:'Only use it for technical roles where skills are objective.',ok:false},
+      {c:4,text:'Don\'t use AI for hiring — it\'s too risky.',ok:false}
+    ],
+    explanation:'Amazon scrapped its AI hiring tool in 2018 after it discriminated against women. Historical training data = historical biases. "First filter" still passes biased candidates. Responsible use requires bias auditing and human decisions at every stage.'}
+];
+
+const QUIZ = [
+  {q:'What is the most common entry point for cyberattacks?',opts:['Weak passwords','Phishing emails','Unpatched software','USB drives'],correct:1,topic:'phishing'},
+  {q:'You receive an email from "your bank" asking to verify your account. The link goes to bankname-verify.xyz. What should you do?',opts:['Click — it has the bank name','Ignore it completely','Report to IT and delete','Reply asking for verification'],correct:2,topic:'phishing'},
+  {q:'What is "spear phishing"?',opts:['Phishing via phone calls','Phishing targeted at a specific individual using personal details','Phishing through social media','Phishing that bypasses spam filters'],correct:1,topic:'phishing'},
+  {q:'A colleague forwards you a suspicious-looking "funny link." What is safest?',opts:['Open it — a colleague sent it','Open in incognito mode','Don\'t click, tell colleague it may be malicious, report to IT','Click on phone instead'],correct:2,topic:'phishing'},
+  {q:'Which data type should NEVER be pasted into a public AI tool?',opts:['Published press releases','Company holiday calendar','Customer database with PII','Public product FAQ'],correct:2,topic:'ai-data'},
+  {q:'Your company has no AI usage policy. A colleague says "no policy means it\'s not restricted." Correct?',opts:['Yes — what isn\'t prohibited is permitted','No — treat all non-public data as restricted and seek guidance','Depends on data type','Only for personal use'],correct:1,topic:'ai-data'},
+  {q:'What is the safest way to use AI for sensitive data analysis?',opts:['Any AI, just anonymise first','Company-approved AI with enterprise agreements, plus anonymisation','Don\'t use AI for sensitive data','Use AI offline'],correct:1,topic:'ai-data'},
+  {q:'"I deleted my ChatGPT conversation, so the data is gone." Reliable?',opts:['Yes — deleted means deleted','No — provider may retain data in servers, backups, or training datasets','Only on paid version','Only within 24 hours'],correct:1,topic:'ai-data'},
+  {q:'Under the DPDP Act 2023, who is responsible if employee data leaks through a public AI tool?',opts:['The AI provider','The employee who used it','The organisation (as data fiduciary)','Nobody — grey area'],correct:2,topic:'ai-data'},
+  {q:'What is "AI hallucination"?',opts:['AI refuses to answer','AI generates confident but factually incorrect information','AI copies internet content','AI gives different answers each time'],correct:1,topic:'guardrails'},
+  {q:'AI cites "Supreme Court of India, Sharma v. Maharashtra, 2022." You should:',opts:['Use it — citation is specific','Search for this case — if not found, AI fabricated it','Ask a different AI to confirm','Use with disclaimer'],correct:1,topic:'guardrails'},
+  {q:'What is "prompt injection"?',opts:['Typing very long prompts','Hidden instructions in content that manipulate AI when processed','Using AI to generate prompts','Injecting code into AI models'],correct:1,topic:'guardrails'},
+  {q:'Your org uses AI to shortlist job candidates. The PRIMARY risk is:',opts:['AI might be slow','AI reproduces historical biases from training data','Candidates might object','AI shortlisting is always accurate'],correct:1,topic:'guardrails'},
+  {q:'AI-generated code passes all unit tests. Safe to deploy?',opts:['Yes — tests pass','Yes, with integration tests','No — needs security + human code review regardless','Only for non-critical systems'],correct:2,topic:'guardrails'},
+  {q:'AI generates a report with a factual error. Your client acts on it. Who is liable?',opts:['The AI provider','Nobody — AI errors expected','You and your organisation','The client, for not verifying'],correct:2,topic:'guardrails'}
+];
+
+/* ── STATE ── */
+let S = {
+  screen:'welcome',
+  modIdx:0, slideIdx:0,
+  playing:false, playTimer:null, elapsed:0,
+  simIdx:0, simOk:0, simDone:0,
+  qIdx:0, qOk:0, qDone:0
+};
+
+const totalSteps = MODULES.reduce((a,m)=>a+m.slides.length,0) + SIMS.length + QUIZ.length;
+
+function progress(){
+  let done=0;
+  if(S.screen==='video'){
+    for(let i=0;i<S.modIdx;i++) done+=MODULES[i].slides.length;
+    done+=S.slideIdx;
+  } else if(S.screen==='sim'){
+    done=MODULES.reduce((a,m)=>a+m.slides.length,0)+S.simDone;
+  } else if(S.screen==='quiz'){
+    done=MODULES.reduce((a,m)=>a+m.slides.length,0)+SIMS.length+S.qDone;
+  } else if(S.screen==='results'){
+    done=totalSteps;
+  }
+  document.getElementById('progressFill').style.width=(done/totalSteps*100)+'%';
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id+'Screen').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ── VIDEO ── */
+function startTraining(){
+  S.screen='video'; S.modIdx=0; S.slideIdx=0;
+  show('video'); renderVideo();
+}
+
+function renderVideo(){
+  const mod=MODULES[S.modIdx], slide=mod.slides[S.slideIdx];
+  stopPlay();
+
+  document.getElementById('stepBadge').textContent=`Module ${S.modIdx+1}`;
+  document.getElementById('headerLabel').innerHTML=`<span>${mod.title}</span> — Slide ${S.slideIdx+1}/${mod.slides.length}`;
+
+  document.getElementById('videoModLabel').innerHTML=`
+    <div class="mod-num">${S.modIdx+1}</div>
+    <div class="mod-title">${mod.title}</div>
+    <div class="mod-slides">Slide ${S.slideIdx+1} of ${mod.slides.length}</div>`;
+
+  // Build slide HTML
+  let canvas=document.getElementById('videoCanvas');
+  canvas.innerHTML='';
+  mod.slides.forEach((sl,i)=>{
+    let h=`<div class="video-slide ${i===S.slideIdx?'active':''}" id="vslide${i}">`;
+    if(sl.eyebrow) h+=`<div class="vs-eyebrow">${sl.eyebrow}</div>`;
+    if(sl.stat) h+=`<div class="vs-stat">${sl.stat}</div><div class="vs-stat-label">${sl.statLabel}</div>`;
+    h+=`<div class="vs-title">${sl.title}</div>`;
+    if(sl.body) h+=`<div class="vs-body">${sl.body}</div>`;
+    if(sl.dataGrid){
+      h+='<div class="vs-data-grid">';
+      sl.dataGrid.forEach(d=>{h+=`<div class="vs-data-card ${d.level}"><h4>${d.title}</h4><p>${d.desc}</p></div>`;});
+      h+='</div>';
+    }
+    if(sl.email){
+      h+=`<div class="vs-email"><div class="from">From: ${sl.email.from}</div><div class="subject">${sl.email.subject}</div><div>${sl.email.body.replace(/\n/g,'<br>')}</div></div>`;
+    }
+    if(sl.list){
+      h+='<ul class="vs-list">';
+      sl.list.forEach(li=>{
+        const ic=li.icon==='warn'?'⚠':li.icon==='safe'?'✓':li.icon==='alert'?'!':'i';
+        h+=`<li><span class="vs-icon ${li.icon}">${ic}</span><span>${li.text}</span></li>`;
+      });
+      h+='</ul>';
+    }
+    h+='</div>';
+    canvas.innerHTML+=h;
+  });
+
+  // Caption
+  document.getElementById('videoCaption').innerHTML=slide.caption||'';
+
+  // Dots
+  let dots='';
+  mod.slides.forEach((_,i)=>{
+    const cls=i===S.slideIdx?'active':(i<S.slideIdx?'done':'');
+    dots+=`<div class="vc-dot ${cls}" onclick="jumpSlide(${i})"></div>`;
+  });
+  document.getElementById('vcDots').innerHTML=dots;
+
+  // Audio status
+  S.elapsed=0;
+  if(Audio$.hasAudio(slide.audioId)){
+    Audio$.updateStatus('ready', Audio$.lang.split('-')[0].toUpperCase()+' ready — press play');
+    updateTime();
+  } else {
+    Audio$.updateStatus('no-audio', 'Run generate-narration.js');
+    updateTime();
+  }
+
+  // Nav
+  const isFirst=S.modIdx===0&&S.slideIdx===0;
+  document.getElementById('vidPrev').style.visibility=isFirst?'hidden':'visible';
+  const isLast=S.modIdx===MODULES.length-1&&S.slideIdx===mod.slides.length-1;
+  document.getElementById('vidNext').innerHTML=isLast
+    ?'Start Simulations <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+    :'Next <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+
+  progress();
+}
+
+function jumpSlide(i){
+  S.slideIdx=i; renderVideo();
+}
+
+function updateTime(){
+  const slide=MODULES[S.modIdx].slides[S.slideIdx];
+  const dur=slide.duration||40;
+  const em=Math.floor(S.elapsed/60), es=S.elapsed%60;
+  const dm=Math.floor(dur/60), ds=dur%60;
+  document.getElementById('vcTime').textContent=`${em}:${String(es).padStart(2,'0')} / ${dm}:${String(ds).padStart(2,'0')}`;
+  document.getElementById('vcFill').style.width=Math.min(S.elapsed/dur*100,100)+'%';
+}
+
+function togglePlay(){
+  const slide=MODULES[S.modIdx].slides[S.slideIdx];
+  if(S.playing){stopPlay();}
+  else{
+    S.playing=true;
+    document.getElementById('vcPlay').innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+    if(Audio$.hasAudio(slide.audioId)){
+      Audio$.play(slide.audioId);
+    } else {
+      S.playTimer=setInterval(()=>{
+        const dur=slide.duration||40;
+        S.elapsed++;
+        updateTime();
+        if(S.elapsed>=dur){stopPlay();nextVideoSlide();}
+      },1000);
+    }
+  }
+}
+function stopPlay(){
+  S.playing=false;
+  clearInterval(S.playTimer);
+  Audio$.stop();
+  document.getElementById('vcPlay').innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>';
+}
+function seekVideo(e){
+  const rect=e.currentTarget.getBoundingClientRect();
+  const pct=(e.clientX-rect.left)/rect.width;
+  if(Audio$.current && Audio$.current.duration){
+    Audio$.seek(pct);
+  } else {
+    const dur=MODULES[S.modIdx].slides[S.slideIdx].duration||40;
+    S.elapsed=Math.floor(pct*dur);
+    updateTime();
+  }
+}
+
+function nextVideoSlide(){
+  const mod=MODULES[S.modIdx];
+  if(S.slideIdx<mod.slides.length-1){S.slideIdx++;renderVideo();}
+  else if(S.modIdx<MODULES.length-1){S.modIdx++;S.slideIdx=0;renderVideo();}
+  else{S.screen='sim';S.simIdx=0;S.simOk=0;S.simDone=0;show('sim');renderSim();}
+}
+function prevVideoSlide(){
+  if(S.slideIdx>0){S.slideIdx--;renderVideo();}
+  else if(S.modIdx>0){S.modIdx--;S.slideIdx=MODULES[S.modIdx].slides.length-1;renderVideo();}
+}
+
+/* ── SIMULATION ── */
+function renderSim(){
+  const sim=SIMS[S.simIdx];
+  document.getElementById('stepBadge').textContent='Simulation';
+  document.getElementById('headerLabel').innerHTML=`Round <span>${S.simIdx+1}</span> of ${SIMS.length}`;
+  document.getElementById('simCount').textContent=`${S.simIdx+1} / ${SIMS.length}`;
+
+  const topicLabel=sim.topic==='phishing'?'Email Phishing':sim.topic==='ai-data'?'AI & Data':'AI Guardrails';
+  let h=`<div class="sim-scenario"><span class="topic-tag ${sim.topic}">${topicLabel}</span><h2>${sim.scenario}</h2></div>`;
+  h+='<div class="sim-chars">';
+  sim.responses.forEach((r,i)=>{
+    const c=CHARS[r.c], init=c.name.split(' ').map(w=>w[0]).join('');
+    h+=`<button class="char-btn" id="sc${i}" onclick="pickSim(${i})"><div class="char-avatar" style="background:${c.color}">${init}</div><div class="char-meta"><div class="char-name">${c.name}</div><div class="char-resp">${r.text}</div></div></button>`;
+  });
+  h+='</div><div id="simFeedback"></div>';
+  h+=`<div style="display:flex;justify-content:flex-end;margin-top:0.8rem"><button class="btn btn-primary btn-sm" id="simNext" style="display:none" onclick="nextSim()">Next <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>`;
+
+  document.getElementById('simContent').innerHTML=h;
+  document.getElementById('simScoreText').textContent=`${S.simOk} / ${S.simDone} correct`;
+  document.getElementById('simScoreFill').style.width=S.simDone>0?(S.simOk/S.simDone*100)+'%':'0%';
+  progress();
+}
+
+function pickSim(i){
+  const sim=SIMS[S.simIdx], ok=sim.responses[i].ok;
+  sim.responses.forEach((r,j)=>{
+    const el=document.getElementById('sc'+j);
+    el.classList.add('locked');
+    if(j===i) el.classList.add(ok?'correct':'wrong');
+    if(r.ok&&!ok) el.classList.add('reveal');
+  });
+  S.simDone++;
+  if(ok) S.simOk++;
+  document.getElementById('simFeedback').innerHTML=`<div class="feedback-box ${ok?'correct-fb':'wrong-fb'}"><strong>${ok?'✓ Correct':'✗ Incorrect'}</strong><p>${sim.explanation}</p></div>`;
+  document.getElementById('simScoreText').textContent=`${S.simOk} / ${S.simDone} correct`;
+  document.getElementById('simScoreFill').style.width=(S.simOk/S.simDone*100)+'%';
+  const nb=document.getElementById('simNext');
+  nb.style.display='inline-flex';
+  if(S.simIdx===SIMS.length-1) nb.textContent='Start Assessment';
+  progress();
+}
+
+function nextSim(){
+  if(S.simIdx<SIMS.length-1){S.simIdx++;renderSim();}
+  else{S.screen='quiz';S.qIdx=0;S.qOk=0;S.qDone=0;show('quiz');renderQuiz();}
+}
+
+/* ── QUIZ ── */
+function renderQuiz(){
+  const q=QUIZ[S.qIdx];
+  const topicLabel=q.topic==='phishing'?'Phishing':q.topic==='ai-data'?'AI & Data':'Guardrails';
+  document.getElementById('stepBadge').textContent='Assessment';
+  document.getElementById('headerLabel').innerHTML=`Question <span>${S.qIdx+1}</span> of ${QUIZ.length}`;
+  document.getElementById('quizCount').textContent=`${S.qIdx+1} / ${QUIZ.length}`;
+
+  const letters=['A','B','C','D'];
+  let h=`<div class="quiz-card"><div class="quiz-num">Question ${S.qIdx+1} · ${topicLabel}</div><div class="quiz-q">${q.q}</div><div class="quiz-opts">`;
+  q.opts.forEach((o,i)=>{
+    h+=`<button class="quiz-opt" id="qo${i}" onclick="pickQuiz(${i})"><span class="quiz-letter">${letters[i]}</span><span>${o}</span></button>`;
+  });
+  h+='</div></div>';
+  h+=`<div style="display:flex;justify-content:flex-end;margin-top:0.8rem"><button class="btn btn-primary btn-sm" id="quizNext" style="display:none" onclick="nextQuiz()">Next <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>`;
+
+  document.getElementById('quizContent').innerHTML=h;
+  document.getElementById('quizScoreText').textContent=`${S.qOk} / ${S.qDone} correct`;
+  document.getElementById('quizScoreFill').style.width=S.qDone>0?(S.qOk/S.qDone*100)+'%':'0%';
+  progress();
+}
+
+function pickQuiz(i){
+  const q=QUIZ[S.qIdx], ok=i===q.correct;
+  q.opts.forEach((_,j)=>{
+    const el=document.getElementById('qo'+j);
+    el.classList.add('locked');
+    if(j===i) el.classList.add(ok?'correct':'wrong');
+    if(j===q.correct&&!ok) el.classList.add('correct');
+  });
+  S.qDone++;
+  if(ok) S.qOk++;
+  document.getElementById('quizScoreText').textContent=`${S.qOk} / ${S.qDone} correct`;
+  document.getElementById('quizScoreFill').style.width=(S.qOk/S.qDone*100)+'%';
+  const nb=document.getElementById('quizNext');
+  nb.style.display='inline-flex';
+  if(S.qIdx===QUIZ.length-1) nb.textContent='View Results';
+  progress();
+}
+
+function nextQuiz(){
+  if(S.qIdx<QUIZ.length-1){S.qIdx++;renderQuiz();}
+  else{S.screen='results';show('results');renderResults();progress();}
+}
+
+/* ── RESULTS ── */
+function renderResults(){
+  const total=S.simOk+S.qOk, max=SIMS.length+QUIZ.length;
+  const pct=Math.round(total/max*100), pass=pct>=70;
+  document.getElementById('stepBadge').textContent=pass?'Passed':'Not Passed';
+  document.getElementById('headerLabel').textContent='';
+
+  const today=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  let h=`<div class="results-icon ${pass?'pass':'fail'}">${pass?'🛡️':'📚'}</div>`;
+  h+=`<h1>${pass?'Training Complete':'Not Quite There Yet'}</h1>`;
+  h+=`<p class="r-sub">${pass?`You scored ${pct}% — you've demonstrated strong security awareness.`:`You scored ${pct}%. A passing score is 70%. Review the modules and try again.`}</p>`;
+  h+='<div class="results-stats">';
+  h+=`<div class="r-stat"><div class="r-num">${pct}%</div><div class="r-label">Overall</div></div>`;
+  h+=`<div class="r-stat"><div class="r-num">${S.simOk}/${SIMS.length}</div><div class="r-label">Simulations</div></div>`;
+  h+=`<div class="r-stat"><div class="r-num">${S.qOk}/${QUIZ.length}</div><div class="r-label">Assessment</div></div>`;
+  h+='</div>';
+  if(pass){
+    h+='<div class="certificate"><div class="cert-label">Certificate of Completion</div>';
+    h+='<h2>Security Awareness Training</h2>';
+    h+='<p>This certifies successful completion of the CyberSafe training programme covering Email Phishing, AI & Confidential Data, and AI Guardrails.</p>';
+    h+=`<div class="cert-date">Issued ${today} · CyberSafe by SimuLok AI</div></div>`;
+  }
+  h+=`<div style="margin-top:1.5rem"><button class="btn ${pass?'btn-secondary':'btn-primary'}" onclick="location.reload()">${pass?'Retake Training':'Try Again'}</button></div>`;
+  document.getElementById('resultsContent').innerHTML=h;
+}
+</script>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulok.ai — Classroom Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <script src="../assets/js/classroom.js"></script>
+  <style>
+    :root {
+      --navy-950: #071525;
+      --navy-900: #0B1F33;
+      --navy-800: #132F4C;
+      --surface: #F7F9FC;
+      --card: #FFFFFF;
+      --text: #0F2438;
+      --text-muted: #5A6F86;
+      --accent: #0D9B8A;
+      --accent-soft: rgba(13, 155, 138, 0.12);
+      --danger: #C0392B;
+      --warning: #D68910;
+      --success: #1E8A5A;
+      --border: rgba(15, 36, 56, 0.08);
+      --shadow: 0 10px 30px rgba(7, 21, 37, 0.08);
+      --font: "DM Sans", sans-serif;
+      --display: "Plus Jakarta Sans", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 70% 45% at 10% 0%, rgba(13,155,138,0.14), transparent),
+        linear-gradient(180deg, var(--navy-900), var(--navy-950));
+    }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 1.5rem;
+      background: rgba(7, 21, 37, 0.92);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: sticky; top: 0; z-index: 20;
+    }
+    .brand { font-family: var(--display); font-weight: 800; color: #fff; font-size: 1.15rem; }
+    .brand span { color: var(--accent); }
+    .topbar-meta { color: rgba(234,242,250,0.7); font-size: 0.85rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.25rem 0.65rem; border-radius: 999px;
+      background: rgba(255,255,255,0.08); color: #EAF2FA; font-size: 0.75rem; font-weight: 600;
+    }
+    .pill.live { background: rgba(13,155,138,0.25); color: #7FE3D4; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1.25rem 2.5rem; }
+    .hero {
+      color: #EAF2FA; margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-family: var(--display); font-size: clamp(1.4rem, 3vw, 1.85rem);
+      font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.35rem;
+    }
+    .hero p { color: rgba(234,242,250,0.65); max-width: 42rem; }
+    .stats {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.25rem;
+    }
+    @media (max-width: 800px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+    .stat {
+      background: rgba(255,255,255,0.96); border-radius: 14px; padding: 1rem 1.1rem;
+      border: 1px solid rgba(255,255,255,0.1); box-shadow: var(--shadow);
+    }
+    .stat .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 700; }
+    .stat .value { font-family: var(--display); font-size: 1.65rem; font-weight: 800; margin-top: 0.2rem; color: var(--text); }
+    .layout {
+      display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 1rem;
+    }
+    @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
+    .panel {
+      background: rgba(255,255,255,0.97); border-radius: 16px; padding: 1.15rem 1.25rem;
+      border: 1px solid rgba(255,255,255,0.12); box-shadow: var(--shadow);
+    }
+    .panel h2 {
+      font-family: var(--display); font-size: 1.05rem; font-weight: 800; margin-bottom: 0.85rem;
+    }
+    .empty { color: var(--text-muted); font-size: 0.9rem; padding: 1rem 0; }
+    .error {
+      background: #FADBD8; color: var(--danger); padding: 0.85rem 1rem; border-radius: 12px;
+      margin-bottom: 1rem; font-size: 0.9rem;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { text-align: left; padding: 0.55rem 0.4rem; border-bottom: 1px solid var(--border); }
+    th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+    tr.clickable { cursor: pointer; }
+    tr.clickable:hover { background: var(--accent-soft); }
+    tr.selected { background: var(--accent-soft); }
+    .rank {
+      width: 1.75rem; height: 1.75rem; border-radius: 50%; display: inline-flex;
+      align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem;
+      background: var(--navy-800); color: #fff;
+    }
+    .rank.gold { background: #C9A227; }
+    .rank.silver { background: #8A96A3; }
+    .rank.bronze { background: #B87333; }
+    .badge {
+      display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px;
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .badge.completed { background: rgba(30,138,90,0.15); color: var(--success); }
+    .badge.in_progress { background: rgba(214,137,16,0.18); color: var(--warning); }
+    .badge.not_started { background: rgba(90,111,134,0.15); color: var(--text-muted); }
+    .grade-hero {
+      text-align: center; padding: 1.25rem 1rem; border-radius: 14px;
+      background: linear-gradient(160deg, var(--navy-900), var(--navy-800));
+      color: #EAF2FA; margin-bottom: 1rem;
+    }
+    .grade-letter {
+      font-family: var(--display); font-size: 3.2rem; font-weight: 800; line-height: 1;
+      color: #7FE3D4;
+    }
+    .grade-label { margin-top: 0.5rem; font-size: 0.95rem; opacity: 0.9; }
+    .grade-score { margin-top: 0.35rem; font-size: 0.85rem; color: rgba(234,242,250,0.7); }
+    .score-row {
+      display: grid; grid-template-columns: 7rem 1fr 2.5rem; gap: 0.5rem; align-items: center;
+      margin-bottom: 0.45rem; font-size: 0.82rem;
+    }
+    .bar-track { height: 8px; background: #EEF3F8; border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), #1AC6B0); border-radius: 99px; transition: width 0.5s ease; }
+    .profile-card {
+      margin-top: 0.85rem; padding: 0.85rem 1rem; border-radius: 12px; background: var(--accent-soft);
+    }
+    .profile-card .eyebrow { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); font-weight: 700; }
+    .highlights { margin-top: 0.85rem; }
+    .highlights li { margin: 0.35rem 0 0.35rem 1.1rem; font-size: 0.85rem; color: var(--text-muted); }
+    .muted { color: var(--text-muted); font-size: 0.8rem; }
+    .btn {
+      border: none; cursor: pointer; font-family: inherit; font-weight: 700;
+      padding: 0.45rem 0.85rem; border-radius: 10px; font-size: 0.82rem;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-ghost { background: rgba(255,255,255,0.1); color: #EAF2FA; }
+    a.btn { text-decoration: none; display: inline-block; }
+    .score-link {
+      color: var(--accent); font-weight: 800; text-decoration: underline;
+      text-underline-offset: 2px; cursor: pointer;
+    }
+    .live-kpis {
+      display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.65rem 0 0.85rem;
+    }
+    .live-kpi {
+      background: #EEF3F8; border-radius: 10px; padding: 0.45rem 0.65rem;
+      font-size: 0.78rem; min-width: 5.5rem;
+    }
+    .live-kpi strong { display: block; font-size: 0.95rem; color: var(--text); margin-top: 0.1rem; }
+    .round-table { font-size: 0.8rem; margin-top: 0.5rem; }
+    .round-table th { white-space: nowrap; }
+    .round-table td { vertical-align: top; }
+    .decisions {
+      margin-top: 0.25rem; color: var(--text-muted); font-size: 0.72rem;
+      max-width: 14rem; word-break: break-word;
+    }
+    .detail-section { margin-top: 1rem; }
+    .detail-section h3 {
+      font-family: var(--display); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.5rem;
+    }
+    .session-bar {
+      display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center;
+      margin: 0 0 1.1rem; padding: 0.75rem 0.9rem; border-radius: 12px;
+      background: rgba(255,255,255,0.96); box-shadow: var(--shadow);
+    }
+    .session-bar label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+    .session-bar select {
+      flex: 1; min-width: 16rem; max-width: 100%;
+      padding: 0.45rem 0.65rem; border-radius: 8px; border: 1px solid var(--border);
+      font-family: inherit; font-weight: 600; font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Simulok<span>.ai</span></div>
+    <div class="topbar-meta">
+      <span class="pill live" id="livePill">Live · refreshing…</span>
+      <span class="pill" id="sessionPill">No session</span>
+      <button class="btn btn-ghost" type="button" id="refreshBtn">Refresh now</button>
+      <a class="btn btn-ghost" href="../index.html">Back to platform</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="hero">
+      <h1 id="title">Classroom dashboard</h1>
+      <p id="subtitle">Leaderboard and report cards for the open sitting — or any past session.</p>
+    </div>
+    <div class="session-bar" id="sessionBar">
+      <label for="sessionSelect">Session</label>
+      <select id="sessionSelect"><option value="">Loading…</option></select>
+      <button class="btn btn-primary" type="button" id="loadSessionBtn">Show scores</button>
+    </div>
+    <div id="error" class="error" style="display:none"></div>
+    <div class="stats">
+      <div class="stat"><div class="label">Roster</div><div class="value" id="cRoster">—</div></div>
+      <div class="stat"><div class="label">Not started</div><div class="value" id="cNot">—</div></div>
+      <div class="stat"><div class="label">In progress</div><div class="value" id="cProg">—</div></div>
+      <div class="stat"><div class="label">Completed</div><div class="value" id="cDone">—</div></div>
+    </div>
+
+    <div class="layout">
+      <section class="panel">
+        <h2>Leaderboard</h2>
+        <div id="leaderboard"><p class="empty">Waiting for completions…</p></div>
+        <h2 style="margin-top:1.25rem">All students</h2>
+        <div id="rosterTable"><p class="empty">Loading…</p></div>
+      </section>
+      <section class="panel">
+        <h2>Student score detail</h2>
+        <div id="report"><p class="empty">Click any student or score to open round-by-round detail and the final report card.</p></div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    var selectedId = null;
+    var lastPayload = null;
+    var timer = null;
+    var viewSessionId = null;
+
+    function querySession() {
+      try {
+        var m = String(location.search || '').match(/[?&]session=([^&]+)/);
+        return m ? decodeURIComponent(m[1]) : '';
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function showError(msg) {
+      var el = document.getElementById('error');
+      if (!msg) { el.style.display = 'none'; el.textContent = ''; return; }
+      el.style.display = 'block';
+      el.textContent = msg;
+    }
+
+    function statusBadge(status) {
+      var s = status || 'not_started';
+      var label = s === 'completed' ? 'Completed' : s === 'in_progress' ? 'In progress' : 'Not started';
+      return '<span class="badge ' + s + '">' + label + '</span>';
+    }
+
+    function rankClass(rank) {
+      if (rank === 1) return 'rank gold';
+      if (rank === 2) return 'rank silver';
+      if (rank === 3) return 'rank bronze';
+      return 'rank';
+    }
+
+    function esc(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function barMax(display) {
+      var keys = Object.keys(display || {});
+      var m = 0;
+      keys.forEach(function (k) { m = Math.max(m, Number(display[k]) || 0); });
+      return m || 25;
+    }
+
+    function fmtMetric(v) {
+      if (v == null || v === '') return '—';
+      if (typeof v === 'number') {
+        if (Math.abs(v) >= 1000) return Math.round(v).toLocaleString();
+        if (Math.abs(v) < 1) return String(v);
+        return (Math.round(v * 10) / 10).toLocaleString();
+      }
+      return String(v);
+    }
+
+    function liveKpisHtml(live) {
+      if (!live || typeof live !== 'object') return '';
+      var order = ['stores', 'profit', 'revenue', 'share', 'markdown', 'cash_after', 'cash', 'csat_after', 'inventory_after'];
+      var keys = order.filter(function (k) { return live[k] != null && live[k] !== ''; });
+      Object.keys(live).forEach(function (k) {
+        if (k === 'decisions' || k === 'type' || k === 'strategic_type' || k === 'title') return;
+        if (keys.indexOf(k) < 0 && live[k] != null && live[k] !== '') keys.push(k);
+      });
+      if (!keys.length) return '';
+      return '<div class="live-kpis">' + keys.map(function (k) {
+        return '<div class="live-kpi"><span class="muted">' + esc(k) + '</span><strong>' + esc(fmtMetric(live[k])) + '</strong></div>';
+      }).join('') + '</div>';
+    }
+
+    function decisionsHtml(decisions) {
+      if (!decisions) return '';
+      if (typeof decisions === 'string') return '<div class="decisions">' + esc(decisions) + '</div>';
+      try {
+        var parts = Object.keys(decisions).map(function (k) {
+          return esc(k) + ': ' + esc(decisions[k]);
+        });
+        return parts.length ? '<div class="decisions">' + parts.join(' · ') + '</div>' : '';
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function roundsHtml(student) {
+      var rounds = student.rounds || [];
+      if (!rounds.length) {
+        if (student.status === 'not_started') return '';
+        return '<div class="detail-section"><h3>Round log</h3><p class="muted">No round rows yet' +
+          (student.rounds_done ? ' (count: ' + student.rounds_done + '). Redeploy classroom-session.gs if this stays empty.' : '.') +
+          '</p></div>';
+      }
+      var hasZara = rounds.some(function (r) { return r.metrics && (r.metrics.stores != null || r.metrics.profit != null); });
+      var head = hasZara
+        ? '<th>Round</th><th>Step</th><th>Stores</th><th>Profit</th><th>Revenue</th><th>Share</th><th>Decisions</th>'
+        : '<th>Round</th><th>Step</th><th>Metrics</th>';
+      var body = rounds.map(function (r) {
+        var m = r.metrics || {};
+        if (hasZara) {
+          return '<tr>' +
+            '<td><strong>' + esc(r.round) + '</strong></td>' +
+            '<td>' + esc(r.choice_label || '—') + '<div class="muted">' + esc(r.timestamp || '') + '</div></td>' +
+            '<td>' + esc(fmtMetric(m.stores)) + '</td>' +
+            '<td>' + esc(fmtMetric(m.profit)) + '</td>' +
+            '<td>' + esc(fmtMetric(m.revenue)) + '</td>' +
+            '<td>' + esc(fmtMetric(m.share)) + '</td>' +
+            '<td>' + decisionsHtml(m.decisions) + '</td></tr>';
+        }
+        var metricBits = Object.keys(m).filter(function (k) {
+          return k !== 'decisions' && k !== 'type';
+        }).map(function (k) {
+          return esc(k) + ' ' + esc(fmtMetric(m[k]));
+        }).join(' · ');
+        return '<tr>' +
+          '<td><strong>' + esc(r.round) + '</strong></td>' +
+          '<td>' + esc(r.choice_label || '—') + '<div class="muted">' + esc(r.timestamp || '') + '</div></td>' +
+          '<td>' + (metricBits || '—') + decisionsHtml(m.decisions) + '</td></tr>';
+      }).join('');
+      return '<div class="detail-section"><h3>Round-by-round</h3>' +
+        '<table class="round-table"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>';
+    }
+
+    function gradeCardHtml(student) {
+      if (student.status !== 'completed') return '';
+      var d = student.display || {};
+      var max = barMax(d);
+      var bars = Object.keys(d).map(function (k) {
+        var v = Number(d[k]) || 0;
+        var pct = Math.min(100, (v / max) * 100);
+        return '<div class="score-row"><div>' + esc(k) + '</div>' +
+          '<div class="bar-track"><div class="bar-fill" data-w="' + pct + '"></div></div>' +
+          '<strong>' + v + '</strong></div>';
+      }).join('');
+      var highlights = (student.highlights || []).map(function (h) {
+        return '<li>' + esc(h) + '</li>';
+      }).join('');
+      return '<div class="grade-hero">' +
+          '<div class="muted" style="color:rgba(234,242,250,0.55);margin-bottom:0.35rem">' + esc(student.name) + ' · ' + esc(student.student_id) + '</div>' +
+          '<div class="grade-letter">' + esc(student.grade || '—') + '</div>' +
+          '<div class="grade-label">' + esc(student.label || '') + '</div>' +
+          '<div class="grade-score">Overall score: ' + (student.total == null ? '—' : student.total) + ' / 100</div>' +
+        '</div>' +
+        (bars ? '<div class="detail-section"><h3>Score mix</h3>' + bars + '</div>' : '') +
+        ((student.profileName || student.profileBlurb)
+          ? '<div class="profile-card"><div class="eyebrow">Profile</div><h3 style="font-family:var(--display);font-size:1.05rem;margin-top:0.25rem">' +
+            esc(student.profileName || '') + '</h3><p class="muted" style="margin-top:0.35rem">' +
+            esc(student.profileBlurb || '') + '</p></div>'
+          : '') +
+        (highlights ? '<div class="highlights detail-section"><h3>Highlights</h3><ul>' + highlights + '</ul></div>' : '') +
+        '<p class="muted" style="margin-top:0.85rem">Completed ' + esc(student.completed_at || '') + '</p>';
+    }
+
+    function renderReport(student) {
+      var root = document.getElementById('report');
+      if (!student) {
+        root.innerHTML = '<p class="empty">Click any student or score to open round-by-round detail and the final report card.</p>';
+        return;
+      }
+
+      if (student.status === 'not_started') {
+        root.innerHTML =
+          '<p><strong>' + esc(student.name) + '</strong> (' + esc(student.student_id) + ') — ' +
+          statusBadge(student.status) + '</p>' +
+          '<p class="muted" style="margin-top:0.5rem">No rounds logged yet.</p>';
+        return;
+      }
+
+      var header =
+        '<p><strong>' + esc(student.name) + '</strong> · ' + esc(student.student_id) + ' — ' +
+        statusBadge(student.status) + '</p>' +
+        (student.status === 'in_progress'
+          ? '<p class="muted" style="margin-top:0.35rem">Rounds logged: ' + student.rounds_done +
+            (student.last_round ? ' · last: ' + esc(student.last_round) : '') + '</p>' +
+            liveKpisHtml(student.live)
+          : '');
+
+      root.innerHTML = header + gradeCardHtml(student) + roundsHtml(student);
+
+      requestAnimationFrame(function () {
+        root.querySelectorAll('.bar-fill').forEach(function (el) {
+          el.style.width = el.getAttribute('data-w') + '%';
+        });
+      });
+    }
+
+    function findStudent(id) {
+      if (!lastPayload || !lastPayload.students) return null;
+      for (var i = 0; i < lastPayload.students.length; i++) {
+        if (lastPayload.students[i].student_id === id) return lastPayload.students[i];
+      }
+      return null;
+    }
+
+    function render(data) {
+      lastPayload = data;
+      document.getElementById('title').textContent = data.sim_title || 'Classroom dashboard';
+      document.getElementById('subtitle').textContent =
+        (data.session ? data.session.session_id + ' · ' + (data.session.status || '') : 'No session') +
+        ' — leaderboard updates as students finish (one run each).';
+      document.getElementById('sessionPill').textContent = data.session
+        ? data.session.session_id + ' · ' + data.session.sim_id
+        : 'No session';
+
+      var c = data.counts || {};
+      document.getElementById('cRoster').textContent = c.roster != null ? c.roster : '—';
+      document.getElementById('cNot').textContent = c.not_started != null ? c.not_started : '—';
+      document.getElementById('cProg').textContent = c.in_progress != null ? c.in_progress : '—';
+      document.getElementById('cDone').textContent = c.completed != null ? c.completed : '—';
+
+      var lb = data.leaderboard || [];
+      var lbEl = document.getElementById('leaderboard');
+      if (!lb.length) {
+        lbEl.innerHTML = '<p class="empty">No completions yet. Scores appear when a student finishes.</p>';
+      } else {
+        lbEl.innerHTML = '<table><thead><tr><th>#</th><th>Student</th><th>Score</th><th>Grade</th></tr></thead><tbody>' +
+          lb.map(function (row) {
+            return '<tr class="clickable' + (selectedId === row.student_id ? ' selected' : '') + '" data-id="' + esc(row.student_id) + '">' +
+              '<td><span class="' + rankClass(row.rank) + '">' + row.rank + '</span></td>' +
+              '<td><strong>' + esc(row.name) + '</strong><div class="muted">' + esc(row.student_id) + '</div></td>' +
+              '<td><strong class="score-link">' + (row.total == null ? '—' : row.total) + '</strong></td>' +
+              '<td>' + esc(row.grade || '—') + '</td></tr>';
+          }).join('') + '</tbody></table>';
+      }
+
+      var students = (data.students || []).slice().sort(function (a, b) {
+        var order = { completed: 0, in_progress: 1, not_started: 2 };
+        var oa = order[a.status] != null ? order[a.status] : 9;
+        var ob = order[b.status] != null ? order[b.status] : 9;
+        if (oa !== ob) return oa - ob;
+        return String(a.student_id).localeCompare(String(b.student_id));
+      });
+      var rt = document.getElementById('rosterTable');
+      rt.innerHTML = '<table><thead><tr><th>Student</th><th>Status</th><th>Score</th><th>Live</th></tr></thead><tbody>' +
+        students.map(function (s) {
+          var liveBits = '';
+          if (s.status === 'in_progress' && s.live) {
+            var parts = [];
+            if (s.live.profit != null) parts.push('P ' + fmtMetric(s.live.profit));
+            if (s.live.stores != null) parts.push('S ' + fmtMetric(s.live.stores));
+            if (s.live.share != null) parts.push('Sh ' + fmtMetric(s.live.share));
+            if (s.live.cash_after != null) parts.push('Cash ' + fmtMetric(s.live.cash_after));
+            liveBits = parts.join(' · ') || '—';
+          } else if (s.status === 'completed') {
+            liveBits = esc(s.grade || 'done');
+          } else {
+            liveBits = '—';
+          }
+          var scoreCell = s.total == null
+            ? (s.status === 'in_progress' ? '<span class="score-link">view</span>' : '—')
+            : '<strong class="score-link">' + s.total + '</strong>';
+          return '<tr class="clickable' + (selectedId === s.student_id ? ' selected' : '') + '" data-id="' + esc(s.student_id) + '">' +
+            '<td><strong>' + esc(s.name) + '</strong><div class="muted">' + esc(s.student_id) + '</div></td>' +
+            '<td>' + statusBadge(s.status) + '</td>' +
+            '<td>' + scoreCell + '</td>' +
+            '<td class="muted">' + liveBits + '</td></tr>';
+        }).join('') + '</tbody></table>';
+
+      document.querySelectorAll('tr.clickable').forEach(function (tr) {
+        tr.addEventListener('click', function () {
+          selectedId = tr.getAttribute('data-id');
+          renderReport(findStudent(selectedId));
+          render(lastPayload);
+        });
+      });
+
+      if (selectedId) renderReport(findStudent(selectedId));
+    }
+
+    function demoPayload() {
+      function round(n, stores, profit, revenue, share) {
+        return {
+          timestamp: '2026-09-06T10:' + String(20 + n).padStart(2, '0') + ':00.000Z',
+          round: String(n),
+          choice_label: 'Q' + n + ' levers',
+          score: null,
+          metrics: { stores: stores, profit: profit, revenue: revenue, share: share, decisions: { price: 'hold', marketing: 'push' } }
+        };
+      }
+      var students = [
+        {
+          student_id: 'MBA07', name: 'Ananya Shah', status: 'completed', rounds_done: 4, total: 91,
+          grade: 'A+', label: 'A defensible niche, a disciplined P&L, and a model built for what comes next',
+          profileName: 'Zara CEO', profileBlurb: 'You chose a customer and the numbers followed.',
+          display: { financial: 28, niche: 23, markdown: 18, future: 13, revenue: 9 },
+          highlights: ['Cumulative profit €18.4k', 'Stores 1,420', 'Markdown 16.2%'],
+          completed_at: '2026-09-06T10:42:11.000Z', last_round: '4', report: null,
+          live: { stores: 1420, profit: 18400, revenue: 92000, share: 12.4 },
+          rounds: [round(1, 1180, 2100, 41000, 9.1), round(2, 1260, 6400, 58000, 10.2), round(3, 1350, 12100, 76000, 11.5), round(4, 1420, 18400, 92000, 12.4)]
+        },
+        {
+          student_id: 'MBA03', name: 'Rohan Iyer', status: 'completed', rounds_done: 4, total: 84,
+          grade: 'A', label: 'You chose a customer and the numbers followed',
+          profileName: 'Zara CEO', profileBlurb: 'A real position, reached with disciplined spend.',
+          display: { financial: 25, niche: 21, markdown: 16, future: 12, revenue: 10 },
+          highlights: ['Cumulative profit €14.1k', 'Stores 1,380', 'Markdown 18.5%'],
+          completed_at: '2026-09-06T10:38:02.000Z', last_round: '4', report: null,
+          live: { stores: 1380, profit: 14100, revenue: 88000, share: 11.8 },
+          rounds: [round(1, 1200, 1800, 39000, 8.8), round(2, 1280, 5200, 54000, 9.9), round(3, 1340, 9800, 71000, 10.9), round(4, 1380, 14100, 88000, 11.8)]
+        },
+        {
+          student_id: 'MBA12', name: 'Meera Kapoor', status: 'completed', rounds_done: 4, total: 76,
+          grade: 'B+', label: 'A real position, reached later than it needed to be',
+          profileName: 'Zara CEO', profileBlurb: 'Competent stewardship with a late niche call.',
+          display: { financial: 22, niche: 18, markdown: 15, future: 11, revenue: 10 },
+          highlights: ['Cumulative profit €9.6k', 'Stores 1,510', 'Markdown 21.0%'],
+          completed_at: '2026-09-06T10:45:40.000Z', last_round: '4', report: null,
+          live: { stores: 1510, profit: 9600, revenue: 99000, share: 13.1 },
+          rounds: [round(1, 1250, 900, 42000, 9.4), round(2, 1340, 3100, 61000, 10.8), round(3, 1440, 6200, 82000, 12.0), round(4, 1510, 9600, 99000, 13.1)]
+        },
+        {
+          student_id: 'MBA01', name: 'Student 01', status: 'in_progress', rounds_done: 2, total: null,
+          grade: '', label: '', profileName: '', profileBlurb: '', display: {}, highlights: [],
+          completed_at: '', last_round: '2', report: null,
+          live: { stores: 1290, profit: 4800, revenue: 55000, share: 10.1 },
+          rounds: [round(1, 1210, 1500, 38000, 8.9), round(2, 1290, 4800, 55000, 10.1)]
+        },
+        {
+          student_id: 'MBA15', name: 'Student 15', status: 'not_started', rounds_done: 0, total: null,
+          grade: '', label: '', profileName: '', profileBlurb: '', display: {}, highlights: [],
+          completed_at: '', last_round: '', report: null, live: null, rounds: []
+        },
+        {
+          student_id: 'MBA22', name: 'Student 22', status: 'not_started', rounds_done: 0, total: null,
+          grade: '', label: '', profileName: '', profileBlurb: '', display: {}, highlights: [],
+          completed_at: '', last_round: '', report: null, live: null, rounds: []
+        }
+      ];
+      var completed = students.filter(function (s) { return s.status === 'completed'; })
+        .slice().sort(function (a, b) { return Number(b.total) - Number(a.total); });
+      return {
+        success: 'true',
+        message: 'ok',
+        sim_title: 'Zara — The Fast-Fashion Reckoning (sample class)',
+        session: {
+          session_id: 'Sess_A1',
+          sim_id: 'zara',
+          status: 'open',
+          tab_name: 'Sess_A1',
+          opened_at: '2026-09-06T09:55:00.000Z'
+        },
+        counts: {
+          roster: students.length,
+          not_started: students.filter(function (s) { return s.status === 'not_started'; }).length,
+          in_progress: students.filter(function (s) { return s.status === 'in_progress'; }).length,
+          completed: completed.length
+        },
+        leaderboard: completed.map(function (s, i) {
+          return {
+            rank: i + 1,
+            student_id: s.student_id,
+            name: s.name,
+            total: s.total,
+            grade: s.grade,
+            label: s.label,
+            completed_at: s.completed_at
+          };
+        }),
+        students: students
+      };
+    }
+
+    function isDemoMode() {
+      try {
+        return /(?:\?|&)demo=1(?:&|$)/.test(String(location.search || ''));
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function fillSessionSelect(sessions, openId) {
+      var sel = document.getElementById('sessionSelect');
+      if (!sel) return;
+      if (!sessions || !sessions.length) {
+        sel.innerHTML = '<option value="">No sessions yet</option>';
+        return;
+      }
+      sel.innerHTML = sessions.map(function (s) {
+        var label = s.session_id + ' · ' + (s.sim_title || s.sim_id) +
+          ' · ' + (s.status === 'open' ? 'OPEN' : 'closed');
+        if (s.completed != null) label += ' · ' + (s.completed || 0) + ' completed';
+        return '<option value="' + esc(s.session_id) + '">' + esc(label) + '</option>';
+      }).join('');
+      var prefer = viewSessionId || openId || sessions[0].session_id;
+      sel.value = prefer;
+      viewSessionId = sel.value;
+    }
+
+    function loadSessionList() {
+      if (isDemoMode() || !window.SimulokClassroom || !SimulokClassroom.configured()) return;
+      var auth = SimulokClassroom.loadSession();
+      if (!auth || auth.role !== 'instructor') return;
+      SimulokClassroom.listSessions().then(function (data) {
+        if (data.success !== 'true') return;
+        fillSessionSelect(data.sessions || [], data.open_session_id || '');
+      });
+    }
+
+    function tick() {
+      if (isDemoMode()) {
+        showError('');
+        document.getElementById('livePill').textContent = 'Sample data · demo';
+        document.getElementById('sessionBar').style.display = 'none';
+        if (!selectedId) selectedId = 'MBA07';
+        render(demoPayload());
+        return;
+      }
+      if (!window.SimulokClassroom || !SimulokClassroom.configured()) {
+        showError('Classroom endpoint not configured.');
+        return;
+      }
+      var auth = SimulokClassroom.loadSession();
+      if (!auth || auth.role !== 'instructor') {
+        showError('Sign in as instructor on the platform first (FACULTY), then open this dashboard from the Instructor console. Or open ?demo=1 for sample data.');
+        document.getElementById('livePill').textContent = 'Not signed in';
+        return;
+      }
+      if (!viewSessionId) viewSessionId = querySession() || '';
+      SimulokClassroom.fetchDashboard(viewSessionId || '').then(function (data) {
+        if (data.success !== 'true') {
+          showError(data.message || 'Could not load dashboard');
+          document.getElementById('livePill').textContent = 'Error';
+          return;
+        }
+        showError('');
+        var st = data.session && data.session.status;
+        document.getElementById('livePill').textContent =
+          (st === 'open' ? 'Live · ' : 'History · ') + new Date().toLocaleTimeString();
+        if (data.session && data.session.session_id) {
+          viewSessionId = data.session.session_id;
+          var sel = document.getElementById('sessionSelect');
+          if (sel && sel.value !== viewSessionId) {
+            // keep list; value may update after listSessions
+            try { sel.value = viewSessionId; } catch (e) { /* ignore */ }
+          }
+        }
+        render(data);
+      });
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', tick);
+    document.getElementById('loadSessionBtn').addEventListener('click', function () {
+      var sel = document.getElementById('sessionSelect');
+      viewSessionId = sel ? sel.value : '';
+      selectedId = null;
+      try {
+        var url = new URL(location.href);
+        if (viewSessionId) url.searchParams.set('session', viewSessionId);
+        else url.searchParams.delete('session');
+        history.replaceState(null, '', url.toString());
+      } catch (e) { /* ignore */ }
+      tick();
+    });
+    document.getElementById('sessionSelect').addEventListener('change', function () {
+      viewSessionId = this.value;
+    });
+
+    viewSessionId = querySession() || '';
+    loadSessionList();
+    tick();
+    timer = setInterval(tick, isDemoMode() ? 30000 : 6000);
+  })();
+  </script>
+</body>
+</html>

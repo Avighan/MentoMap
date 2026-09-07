@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DesiEats — QSR Chain Builder</title>
+</head>
+<body>
+<style>
+:root{
+  --saffron:#D97B2B;--saffron-light:#F5DFC4;--saffron-glow:rgba(217,123,43,0.12);
+  --neem:#1A8A5C;--neem-light:#D0F0E0;
+  --loss:#C0392B;--loss-light:#FADBD8;
+  --ink:#1C2233;--ink-soft:#3A3F4E;
+  --surface:#F4F1EB;--card:#FFFFFF;--card-border:#E4E0D8;
+  --muted:#7E8490;--muted-light:#B8BCC6;
+  --input-bg:#F9F7F3;--shadow:rgba(28,34,51,0.06);--shadow-md:rgba(28,34,51,0.10);
+  --radius:10px;--radius-sm:6px;--radius-lg:16px;
+  --blue:#2980B9;--purple:#8E44AD;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink:#E8E4DC;--ink-soft:#B8BCC6;--surface:#121820;--card:#1A2030;
+  --card-border:#2A3040;--muted:#7E8490;--muted-light:#4A5060;
+  --input-bg:#1E2838;--shadow:rgba(0,0,0,0.2);--shadow-md:rgba(0,0,0,0.3);
+  --saffron-light:#3A2810;--neem-light:#102820;--loss-light:#2A1515;
+}}
+[data-theme="dark"]{
+  --ink:#E8E4DC;--ink-soft:#B8BCC6;--surface:#121820;--card:#1A2030;
+  --card-border:#2A3040;--muted:#7E8490;--muted-light:#4A5060;
+  --input-bg:#1E2838;--shadow:rgba(0,0,0,0.2);--shadow-md:rgba(0,0,0,0.3);
+  --saffron-light:#3A2810;--neem-light:#102820;--loss-light:#2A1515;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--surface);color:var(--ink);line-height:1.5}
+h1,h2,h3{font-family:Georgia,serif;font-weight:700}
+#app{max-width:820px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.progress-strip{height:3px;background:var(--card-border);position:sticky;top:0;z-index:100}
+.progress-strip-fill{height:100%;background:var(--saffron);transition:width 0.4s}
+.game-header{position:sticky;top:3px;z-index:99;background:var(--card);border-bottom:1px solid var(--card-border);padding:8px 16px;display:flex;align-items:center;gap:12px;font-size:0.82rem;box-shadow:0 1px 4px var(--shadow)}
+.brand{display:flex;align-items:center;gap:6px;font-weight:700;color:var(--saffron);font-size:0.85rem;white-space:nowrap}
+.brand svg{flex-shrink:0}
+.step-badge{background:var(--saffron);color:#fff;padding:2px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;letter-spacing:0.04em;white-space:nowrap}
+.month-label{margin-left:auto;font-weight:600;font-size:0.82rem;white-space:nowrap}
+.runway-badge{padding:2px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;white-space:nowrap}
+.runway-safe{background:var(--neem-light);color:var(--neem)}
+.runway-warn{background:#FFF3CD;color:#856404}
+.runway-danger{background:var(--loss-light);color:var(--loss);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+#main{flex:1;padding:16px}
+
+/* Round Rail */
+.round-rail{display:flex;justify-content:center;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.round-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;border:2px solid var(--card-border);color:var(--muted);background:var(--card);cursor:default;transition:all 0.2s}
+.round-dot.done{background:var(--neem);color:#fff;border-color:var(--neem)}
+.round-dot.current{background:var(--saffron);color:#fff;border-color:var(--saffron);transform:scale(1.15)}
+.round-dot.shock{border-color:var(--loss)}
+.round-dot.shock.current{background:var(--loss);border-color:var(--loss)}
+.round-dot.funding{border-color:var(--blue)}
+.round-dot.act-break{margin-left:12px}
+
+/* Metric Strip */
+.metric-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:16px}
+.metric-pill{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:8px 10px;text-align:center}
+.m-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:2px}
+.m-value{font-family:ui-monospace,monospace;font-weight:700;font-size:0.9rem;font-variant-numeric:tabular-nums}
+.m-delta{font-size:0.68rem;font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums;margin-top:1px}
+.m-delta.up{color:var(--neem)}.m-delta.down{color:var(--loss)}
+
+/* Unit Economics Dashboard */
+.unit-econ{background:var(--card);border:1.5px solid var(--saffron);border-radius:var(--radius-lg);padding:14px 16px;margin-bottom:16px}
+.ue-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--saffron);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ue-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.ue-item{background:var(--input-bg);border-radius:var(--radius-sm);padding:8px 10px;text-align:center}
+.ue-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em}
+.ue-value{font-family:ui-monospace,monospace;font-weight:700;font-size:0.88rem;margin-top:2px}
+.ue-value.good{color:var(--neem)}.ue-value.bad{color:var(--loss)}
+
+/* Runway Bar */
+.runway-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.rb-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--muted);white-space:nowrap;min-width:55px}
+.rb-track{flex:1;height:8px;background:var(--input-bg);border-radius:4px;overflow:hidden}
+.rb-fill{height:100%;border-radius:4px;transition:width 0.5s,background 0.3s}
+.rb-text{font-size:0.75rem;font-weight:600;white-space:nowrap;min-width:90px;text-align:right}
+
+/* Season Badge */
+.season-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:600;background:var(--input-bg);border:1px solid var(--card-border);margin-bottom:12px}
+
+/* Scene Cards */
+.scene-card{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 2px 12px var(--shadow);margin-bottom:16px}
+.scene-header{padding:10px 16px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:6px}
+.scene-header.saffron{background:var(--saffron);color:#fff}
+.scene-header.loss{background:var(--loss);color:#fff}
+.scene-header.blue{background:var(--blue);color:#fff}
+.scene-header.purple{background:var(--purple);color:#fff}
+.scene-body{padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.scene-emoji-row{display:flex;gap:8px;font-size:2.2rem;line-height:1;flex-shrink:0}
+.scene-text{flex:1;min-width:200px}
+.st-title{font-family:Georgia,serif;font-weight:700;font-size:1.05rem;margin-bottom:6px}
+.st-desc{font-size:0.85rem;color:var(--ink-soft);line-height:1.55}
+.st-highlight{color:var(--saffron);font-weight:600}
+.st-neem{color:var(--neem);font-weight:600}
+.st-loss{color:var(--loss);font-weight:600}
+.scene-stats{display:flex;gap:10px;flex-wrap:wrap;padding:0 20px 14px}
+.scene-stat{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:6px 10px;text-align:center;flex:1;min-width:70px}
+.ss-val{font-family:ui-monospace,monospace;font-weight:700;font-size:0.85rem}
+.ss-label{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-top:2px}
+
+/* Scenario Card */
+.scenario-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;box-shadow:0 1px 6px var(--shadow)}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
+.tag-decision{background:var(--saffron-light);color:var(--saffron)}
+.tag-shock{background:var(--loss-light);color:var(--loss)}
+.tag-info{background:var(--neem-light);color:var(--neem)}
+.tag-outcome{background:var(--saffron-light);color:var(--saffron)}
+.tag-funding{background:rgba(41,128,185,0.12);color:var(--blue)}
+
+/* Option Cards (MCQ) */
+.decision-group{margin-top:20px}
+.dg-label{font-weight:700;font-size:0.88rem;margin-bottom:10px;color:var(--ink)}
+.option-cards{display:flex;flex-direction:column;gap:8px}
+.option-card{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid var(--card-border);border-radius:var(--radius);cursor:pointer;transition:all 0.15s;background:var(--card)}
+.option-card:hover{border-color:var(--saffron);box-shadow:0 2px 8px var(--saffron-glow)}
+.option-card.selected{border-color:var(--saffron);background:var(--saffron-glow);box-shadow:0 0 0 2px var(--saffron)}
+.letter{width:28px;height:28px;border-radius:50%;background:var(--input-bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;color:var(--muted)}
+.option-card.selected .letter{background:var(--saffron);color:#fff}
+.opt-content{flex:1}
+.opt-title{font-weight:700;font-size:0.88rem}
+.opt-desc{font-size:0.8rem;color:var(--muted);margin-top:2px;line-height:1.45}
+.opt-tag{display:inline-block;font-size:0.68rem;font-weight:600;padding:1px 6px;border-radius:4px;margin-top:4px}
+.opt-tag.good{background:var(--neem-light);color:var(--neem)}
+.opt-tag.warn{background:#FFF3CD;color:#856404}
+.opt-tag.bad{background:var(--loss-light);color:var(--loss)}
+
+/* Lever/Slider Component */
+.lever-group{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);padding:16px;margin-top:14px}
+.lever-label{font-weight:700;font-size:0.88rem;margin-bottom:4px}
+.lever-display{font-family:ui-monospace,monospace;font-size:1.4rem;font-weight:700;color:var(--saffron);margin-bottom:8px;font-variant-numeric:tabular-nums}
+.lever-track{width:100%;appearance:none;-webkit-appearance:none;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--neem) 0%,var(--saffron) 50%,var(--loss) 100%);outline:none;cursor:pointer}
+.lever-track::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--saffron);border:3px solid #fff;box-shadow:0 2px 6px var(--shadow-md);cursor:grab}
+.lever-track::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--saffron);border:3px solid #fff;box-shadow:0 2px 6px var(--shadow-md);cursor:grab}
+.lever-range{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--muted);margin-top:4px}
+.lever-hint{font-size:0.78rem;color:var(--ink-soft);margin-top:8px;padding:8px 10px;background:var(--input-bg);border-radius:var(--radius-sm);min-height:36px;transition:all 0.2s}
+.lever-hint .impact-tag{font-weight:600;font-size:0.7rem;padding:1px 6px;border-radius:4px;margin-right:4px}
+.lever-hint .impact-tag.pos{background:var(--neem-light);color:var(--neem)}
+.lever-hint .impact-tag.neg{background:var(--loss-light);color:var(--loss)}
+.lever-hint .impact-tag.neutral{background:var(--saffron-light);color:var(--saffron)}
+
+/* Reviews Panel */
+.reviews-panel{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:14px 16px;margin-bottom:16px}
+.rp-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--loss);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.review-card{padding:10px 12px;background:var(--input-bg);border-radius:var(--radius-sm);margin-bottom:8px}
+.review-card:last-child{margin-bottom:0}
+.rc-stars{font-size:0.75rem;margin-bottom:3px;letter-spacing:2px}
+.rc-text{font-size:0.82rem;font-style:italic;line-height:1.45;color:var(--ink-soft)}
+.rc-author{font-size:0.7rem;color:var(--muted);margin-top:4px;text-align:right}
+
+/* Insight Box */
+.insight-box{background:var(--saffron-glow);border:1.5px solid var(--saffron);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px}
+.ib-header{font-size:0.72rem;font-weight:700;text-transform:uppercase;color:var(--saffron);margin-bottom:6px}
+.ib-text{font-size:0.85rem;line-height:1.55;color:var(--ink)}
+
+/* Decision Journal */
+.journal-box{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px 16px;margin-top:16px}
+.jb-label{font-size:0.75rem;font-weight:700;color:var(--muted);margin-bottom:6px}
+.jb-input{width:100%;min-height:60px;padding:10px;border:1px solid var(--card-border);border-radius:var(--radius-sm);background:var(--input-bg);color:var(--ink);font-family:system-ui;font-size:0.82rem;resize:vertical}
+.jb-input:focus{outline:none;border-color:var(--saffron)}
+
+/* Event Banner */
+.event-banner{padding:12px 16px;border-radius:var(--radius);margin-bottom:16px;display:flex;align-items:flex-start;gap:10px}
+.event-banner.shock{background:var(--loss-light);border:1px solid var(--loss)}
+.event-banner.season{background:var(--saffron-light);border:1px solid var(--saffron)}
+.ev-icon{font-size:1.3rem;flex-shrink:0}
+.ev-text{font-size:0.85rem;line-height:1.5}
+
+/* Outcome Section */
+.outcome-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:16px}
+.outcome-section.negative{border-color:var(--loss)}
+.outcome-list{list-style:none;margin-top:12px}
+.outcome-list li{padding:8px 0;border-bottom:1px solid var(--card-border);display:flex;align-items:flex-start;gap:8px;font-size:0.85rem}
+.outcome-list li:last-child{border-bottom:none}
+.ol-icon{flex-shrink:0;font-size:1rem}
+
+/* Competitor Card */
+.competitor-card{background:var(--loss-light);border:1.5px solid var(--loss);border-radius:var(--radius);padding:16px;margin-bottom:16px;font-size:0.85rem}
+.competitor-card h4{color:var(--loss);margin-bottom:8px}
+
+/* Cost Table */
+.cost-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:0.82rem}
+.cost-table th{text-align:left;padding:6px 0;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);border-bottom:1.5px solid var(--card-border)}
+.cost-table td{padding:8px 0;border-bottom:1px solid var(--card-border)}
+.cost-table td:last-child{text-align:right;font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.cost-table tr.total td{font-weight:700;border-top:2px solid var(--ink);border-bottom:none}
+.cost-table tr.gst td{color:var(--muted);font-size:0.78rem}
+
+/* Buttons */
+.btn{padding:10px 28px;border-radius:var(--radius);font-weight:700;font-size:0.88rem;border:none;cursor:pointer;transition:all 0.15s}
+.btn-primary{background:var(--saffron);color:#fff}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+.btn-secondary{background:var(--input-bg);color:var(--ink);border:1px solid var(--card-border)}
+.nav-row{display:flex;justify-content:flex-end;gap:12px;margin-top:20px;margin-bottom:20px}
+
+/* Intro Screen */
+.intro-screen{text-align:center;padding:30px 20px}
+.intro-screen h1{font-size:2.2rem;margin-bottom:4px;color:var(--saffron)}
+.subtitle{color:var(--muted);font-style:italic;margin-bottom:24px}
+.story{text-align:left;max-width:600px;margin:0 auto;background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:24px;font-size:0.88rem;line-height:1.65;margin-bottom:24px}
+
+/* Results Screen */
+.results-screen{padding:20px 0}
+.results-hero{text-align:center;padding:30px 20px;background:var(--card);border:1.5px solid var(--saffron);border-radius:var(--radius-lg);margin-bottom:20px}
+.valuation-label{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)}
+.valuation-number{font-family:Georgia,serif;font-size:2.4rem;font-weight:700;color:var(--saffron);margin:8px 0}
+.profile-title{font-family:Georgia,serif;font-size:1.1rem;font-weight:700;color:var(--ink)}
+.profile-desc{font-size:0.88rem;color:var(--muted);margin-top:4px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.stat-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px;text-align:center}
+.sc-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted)}
+.sc-value{font-family:ui-monospace,monospace;font-weight:700;font-size:1rem;margin-top:4px}
+.review-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);cursor:pointer;font-size:0.82rem;font-weight:600;margin-bottom:4px;color:var(--ink)}
+.review-toggle .arrow{transition:transform 0.2s}
+.review-toggle.open .arrow{transform:rotate(90deg)}
+.review-panel{max-height:0;overflow:hidden;transition:max-height 0.3s;padding:0 12px;font-size:0.8rem}
+.review-panel.open{max-height:300px;padding:10px 12px;margin-bottom:8px}
+
+/* Game Over */
+.gameover-screen{text-align:center;padding:40px 20px}
+.gameover-screen h1{color:var(--loss);font-size:2rem;margin-bottom:8px}
+
+/* Scene VS card */
+.scene-vs{display:flex;align-items:center;gap:12px;width:100%}
+.scene-vs-card{background:var(--input-bg);border-radius:var(--radius-sm);padding:12px;text-align:center;border:1px solid var(--card-border)}
+.scene-vs-badge{font-weight:900;font-size:1.1rem;color:var(--loss);flex-shrink:0}
+
+/* Takeaway */
+.takeaway-card{display:flex;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--card-border);font-size:0.85rem}
+.tw-num{background:var(--saffron);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;margin-right:10px;margin-top:2px}
+
+@media(max-width:600px){
+  .metric-strip{grid-template-columns:repeat(3,1fr)}
+  .ue-grid{grid-template-columns:repeat(2,1fr)}
+  .scene-body{flex-direction:column;align-items:flex-start}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<div id="app">
+  <div class="progress-strip"><div class="progress-strip-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="game-header">
+    <div class="brand">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--saffron)" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="var(--saffron)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>SimuLok</span>
+    </div>
+    <span style="color:var(--muted);font-size:0.78rem">DesiEats QSR Builder</span>
+    <span class="step-badge" id="stepBadge">START</span>
+    <span class="runway-badge runway-safe" id="runwayBadge" style="display:none">∞ runway</span>
+    <div class="month-label" id="monthLabel">DesiEats</div>
+  </div>
+  <div id="main"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const $main=$('main'),$strip=$('progressFill'),$badge=$('stepBadge'),$rlabel=$('monthLabel'),$runway=$('runwayBadge');
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const rand=(lo,hi)=>lo+Math.random()*(hi-lo);
+const fmt=v=>{v=Math.round(v);if(Math.abs(v)>=10000000)return'₹'+(v/10000000).toFixed(2)+'Cr';if(Math.abs(v)>=100000)return'₹'+(v/100000).toFixed(2)+'L';if(Math.abs(v)>=1000)return'₹'+(v/1000).toFixed(1)+'K';return'₹'+v;};
+const fmtFull=v=>'₹'+Math.round(v).toLocaleString('en-IN');
+const GST_RATE=5/105;
+const TOTAL_ROUNDS=18;
+
+/* ========== SEASONS ========== */
+const SEASONS={
+  1:{name:'January',mod:1.0,event:null,emoji:'❄️'},
+  2:{name:'February',mod:1.0,event:null,emoji:'💐'},
+  3:{name:'March',mod:1.05,event:'Holi season — street food demand rises',emoji:'🎨'},
+  4:{name:'April',mod:0.92,event:'Exam season — college area footfall dips',emoji:'📚'},
+  5:{name:'May',mod:0.88,event:'Summer heat — dine-in drops, delivery spikes',emoji:'☀️'},
+  6:{name:'June',mod:0.82,event:'Monsoon begins — footfall drops, supply disrupted',emoji:'🌧️'},
+  7:{name:'July',mod:0.85,event:'Heavy monsoon continues',emoji:'⛈️'},
+  8:{name:'August',mod:1.08,event:'Independence Day + Raksha Bandhan boost',emoji:'🇮🇳'},
+  9:{name:'September',mod:1.0,event:'Ganesh Chaturthi',emoji:'🐘'},
+  10:{name:'October',mod:1.25,event:'Navratri + Diwali — massive demand spike!',emoji:'🪔'},
+  11:{name:'November',mod:0.88,event:'Post-Diwali lull — discretionary spending down',emoji:'📉'},
+  12:{name:'December',mod:1.12,event:'Christmas + New Year celebrations',emoji:'🎄'},
+  13:{name:'January Y2',mod:1.0,event:null,emoji:'🆕'},
+  14:{name:'February Y2',mod:1.0,event:null,emoji:'💐'},
+  15:{name:'March Y2',mod:1.05,event:'Holi — seasonal spike',emoji:'🎨'},
+  16:{name:'April Y2',mod:0.92,event:'Exam season',emoji:'📚'},
+  17:{name:'May Y2',mod:0.88,event:'Summer heat',emoji:'☀️'},
+  18:{name:'June Y2',mod:0.82,event:'Monsoon arrives',emoji:'🌧️'},
+};
+
+/* ========== LOCATION DATA ========== */
+const LOCATIONS={
+  highstreet:{name:'High Street',rent:100000,footfall:180,factor:1.0,deposit:6,equipment:700000,interiors:500000,licenses:80000,desc:'Busy main road, great visibility. Premium rent.'},
+  foodcourt:{name:'Food Court (Mall)',rent:150000,footfall:250,factor:1.15,deposit:6,equipment:600000,interiors:400000,licenses:80000,desc:'Captive audience, high rent. Mall provides footfall.'},
+  cloud:{name:'Cloud Kitchen',rent:30000,footfall:0,factor:0,deposit:3,equipment:400000,interiors:100000,licenses:60000,desc:'Delivery only. Low overhead, no walk-ins.'},
+  college:{name:'College Area',rent:55000,footfall:200,factor:1.05,deposit:6,equipment:500000,interiors:350000,licenses:70000,desc:'Young crowd, price-sensitive. High lunch traffic.'}
+};
+
+const CUISINES={
+  southindian:{name:'South Indian',margin:0.65,desc:'Dosas, idlis, filter coffee. Low ingredient cost, universal appeal.'},
+  northindian:{name:'North Indian',margin:0.55,desc:'Parathas, chole, lassi. Higher ingredient cost (dairy, paneer).'},
+  burgers:{name:'Burgers & Pizza',margin:0.62,desc:'Western QSR. Youth appeal, moderate food cost.'},
+  biryani:{name:'Biryani Hub',margin:0.58,desc:'Biryani, kebabs. High demand, high competition.'}
+};
+
+const PRICES={
+  budget:{name:'Budget (₹80-120)',ticket:100,elasticity:1.3,desc:'High volume, thin margins. College students love it.'},
+  mid:{name:'Mid-Range (₹150-250)',ticket:200,elasticity:1.0,desc:'Balanced volume and margin. Mass-market positioning.'},
+  premium:{name:'Premium (₹300-500)',ticket:400,elasticity:0.65,desc:'Lower volume, fat margins. Needs quality to justify.'}
+};
+
+/* ========== REVIEW TEMPLATES ========== */
+const REVIEW_DB={
+  positive:[
+    {text:'"Best {cuisine} in the area! Fresh, hot, and the staff is super friendly."',author:'FoodieBengaluru22',stars:5},
+    {text:'"The {signature} is to die for. Already visited 3 times this week."',author:'HungryVibes',stars:5},
+    {text:'"Clean kitchen, quick service, fair prices. What more do you want?"',author:'RationalEater',stars:4},
+    {text:'"My go-to place for {cuisine}. Consistent quality every single time."',author:'DailyDiner_BLR',stars:4},
+    {text:'"That combo deal is insane value. Brought my whole friend group."',author:'BudgetBites',stars:5},
+    {text:'"Delivery was fast and food arrived hot. Packaging is thoughtful too."',author:'SwiggyAddict',stars:4},
+  ],
+  mixed:[
+    {text:'"Food is decent but nothing special. The wait time needs work."',author:'CasualCritic',stars:3},
+    {text:'"Good {cuisine} but ₹{ticket} feels steep for this portion size."',author:'ValueHunter',stars:3},
+    {text:'"Tasty food, but the place was dirty. Clean up your act."',author:'HygieneFirst',stars:3},
+    {text:'"Average experience. The {cuisine} across the street is better honestly."',author:'FoodSnob_BLR',stars:2},
+    {text:'"Ordered via Zomato. Food was cold by the time it arrived."',author:'DeliveryDiary',stars:2},
+  ],
+  negative:[
+    {text:'"Terrible experience. Found a hair in my food. Never again."',author:'DisgustedDiner',stars:1},
+    {text:'"Portions have SHRUNK but prices stayed the same. Classic shrinkflation."',author:'SharpEye_Consumer',stars:1},
+    {text:'"Rude staff, long wait, mediocre food. How is this place still open?"',author:'HonestReviewer',stars:1},
+    {text:'"The {cuisine} tastes like it was made yesterday and reheated. Pass."',author:'FoodiePolice',stars:1},
+    {text:'"Overpriced garbage. ₹{ticket} for THIS? I want a refund."',author:'AngryCustomer',stars:1},
+  ],
+  shrinkflation:[
+    {text:'"Did they think we wouldn\'t notice the smaller portions? 🤡"',author:'SharpEye_Consumer',stars:1},
+    {text:'"Same plate, half the food. Classic cost-cutting. Lost a regular."',author:'DailyDiner_BLR',stars:2},
+  ],
+  priceHike:[
+    {text:'"Prices went up 15% overnight. No improvement in quality. Bye."',author:'ValueHunter',stars:2},
+    {text:'"Used to be affordable, now it\'s overpriced for what you get."',author:'BudgetBites',stars:2},
+  ],
+  competitor:[
+    {text:'"Tried the new QuickBite nearby. Better portions, same price. Sorry DesiEats."',author:'FoodExplorer',stars:2},
+  ],
+  crisis:[
+    {text:'"Service quality has dropped noticeably. New staff? It shows."',author:'RegularPatron',stars:2},
+  ]
+};
+
+/* ========== ROUND DEFINITIONS ========== */
+const ROUNDS={};
+for(let i=1;i<=TOTAL_ROUNDS;i++) ROUNDS[i]={title:'',narrative:'',decisions:[],isShock:false,type:'mcq',act:i<=4?1:i<=8?2:i<=12?3:4};
+
+// Act 1: Foundation
+ROUNDS[1]={title:'The Big Idea',type:'mcq',isShock:false,act:1,narrative:'',decisions:[]};
+ROUNDS[2]={title:'Menu Engineering',type:'lever',isShock:false,act:1,narrative:'',decisions:[]};
+ROUNDS[3]={title:'Team Building',type:'mix',isShock:false,act:1,narrative:'',decisions:[]};
+ROUNDS[4]={title:'Marketing Launch',type:'lever',isShock:false,act:1,narrative:'',decisions:[]};
+// Act 2: Survive
+ROUNDS[5]={title:'FSSAI Health Inspection',type:'mcq',isShock:true,act:2,narrative:'',decisions:[]};
+ROUNDS[6]={title:'Competitor Enters',type:'mcq',isShock:true,act:2,narrative:'',decisions:[]};
+ROUNDS[7]={title:'Growth Crossroads',type:'mix',isShock:false,act:2,narrative:'',decisions:[]};
+ROUNDS[8]={title:'Ingredient Price Spike',type:'mix',isShock:true,act:2,narrative:'',decisions:[]};
+// Act 3: Grow
+ROUNDS[9]={title:'The Viral Review',type:'mcq',isShock:true,act:3,narrative:'',decisions:[]};
+ROUNDS[10]={title:'Staff Crisis',type:'mcq',isShock:true,act:3,narrative:'',decisions:[]};
+ROUNDS[11]={title:'Economic Slowdown',type:'mix',isShock:true,act:3,narrative:'',decisions:[]};
+ROUNDS[12]={title:'Series A Pitch',type:'mcq',isShock:false,act:3,narrative:'',decisions:[]};
+// Act 4: Scale
+ROUNDS[13]={title:'Multi-City Expansion',type:'lever',isShock:false,act:4,narrative:'',decisions:[]};
+ROUNDS[14]={title:'Operating Model',type:'mcq',isShock:false,act:4,narrative:'',decisions:[]};
+ROUNDS[15]={title:'Underperforming Outlets',type:'mcq',isShock:true,act:4,narrative:'',decisions:[]};
+ROUNDS[16]={title:'Series B Pitch',type:'mcq',isShock:false,act:4,narrative:'',decisions:[]};
+ROUNDS[17]={title:'Food Safety at Scale',type:'mcq',isShock:true,act:4,narrative:'',decisions:[]};
+ROUNDS[18]={title:'The Exit',type:'mcq',isShock:false,act:4,narrative:'',decisions:[]};
+
+/* ========== GAME STATE ========== */
+let S={};
+function resetState(){
+  S={
+    round:0,phase:'intro',
+    // Financials
+    cash:1500000,startingCash:1500000,
+    monthlyRevenue:0,monthlyProfit:0,totalRevenue:0,totalProfit:0,peakRevenue:0,
+    loanAmount:0,loanRate:0,monthlyEMI:0,
+    fundingType:'bootstrap',equityGiven:0,
+    // Location & Cuisine
+    location:'',cuisine:'',pricePoint:'',brandStyle:'',
+    locationRent:0,baseFootfall:0,locationFactor:0,
+    grossMargin:0,avgTicket:0,
+    // Operations
+    staffCount:4,staffCapacity:200,avgSalary:15000,trainingLevel:0,payLevel:0,
+    staffMorale:80,menuQuality:0,hasSignatureDish:false,
+    comboDiscount:0,comboVolumeMult:1,
+    marketingBudget:0,marketingMult:1,deliveryOrders:0,deliveryCommission:0,
+    // Scores
+    rating:0,brandScore:0,
+    // Flags
+    outlets:1,hasSOPs:false,hasCentralKitchen:false,hasContractFarming:false,contractFarmingMonth:0,
+    hasLoyalty:false,loyaltyBoost:0,hasTiffin:false,hygieneUpgrade:false,
+    competitorActive:false,competitorPenalty:0,
+    viralBoost:0,viralMonthsLeft:0,
+    economicSlowdown:false,slowdownFootfallPenalty:0,
+    staffCrisisActive:false,ingredientSpike:false,ingredientSpikeExtra:0,
+    // Post Series A
+    cities:[],cityData:{},operatingModel:'',totalOutlets:1,
+    seriesAAmount:0,seriesBAmount:0,
+    // Tracking
+    history:[],decisions:{},journal:{},prevMetrics:null,
+    // Computed
+    dailyCustomers:0,
+    costPerPlate:0,contributionMargin:0,breakEvenCustomers:0,cac:0,burnRate:0,runwayMonths:0,
+    gstPaid:0,totalGST:0,
+  };
+}
+resetState();
+
+/* ========== UTILITY ========== */
+function setupCost(locKey){
+  const L=LOCATIONS[locKey];
+  return L.rent*L.deposit + L.equipment + L.interiors + L.licenses;
+}
+
+function calcUnitEconomics(){
+  if(S.dailyCustomers<=0||S.monthlyRevenue<=0) return;
+  const netRev=S.monthlyRevenue*(1-GST_RATE);
+  const effectiveMargin=S.grossMargin+(S.hasCentralKitchen?0.08:0)-S.ingredientSpikeExtra;
+  const cogsPerPlate=S.avgTicket*(1-effectiveMargin);
+  S.costPerPlate=Math.round(cogsPerPlate+(S.locationRent*S.outlets+S.staffCount*S.avgSalary+S.marketingBudget+10000*S.outlets)/(S.dailyCustomers*30));
+  S.contributionMargin=S.avgTicket-cogsPerPlate;
+  const fixedCosts=S.locationRent*S.outlets+S.staffCount*S.avgSalary+S.marketingBudget+10000*S.outlets+S.monthlyEMI;
+  S.breakEvenCustomers=S.contributionMargin>0?Math.ceil(fixedCosts/(S.contributionMargin*30)):999;
+  const newCustomers=Math.max(1,Math.round(S.dailyCustomers*0.3));
+  S.cac=S.marketingBudget>0?Math.round(S.marketingBudget/newCustomers):0;
+  S.burnRate=S.monthlyProfit<0?Math.abs(S.monthlyProfit):0;
+  S.runwayMonths=S.burnRate>0?Math.round(S.cash/S.burnRate):99;
+}
+
+function generateReviews(){
+  const reviews=[];
+  const cuisine=CUISINES[S.cuisine]?.name||'food';
+  const ticket=S.avgTicket;
+  const fill=(t)=>t.replace('{cuisine}',cuisine).replace('{ticket}',ticket).replace('{signature}','signature dish');
+
+  if(S.rating>=4.0){
+    const pool=REVIEW_DB.positive;
+    reviews.push({...pool[Math.floor(rand(0,pool.length))],text:fill(pool[Math.floor(rand(0,pool.length))].text)});
+    reviews.push({...pool[Math.floor(rand(0,pool.length))],text:fill(pool[Math.floor(rand(0,pool.length))].text)});
+    if(Math.random()>0.5){const m=REVIEW_DB.mixed;reviews.push({...m[0],text:fill(m[0].text)});}
+  } else if(S.rating>=3.0){
+    const p=REVIEW_DB.positive,m=REVIEW_DB.mixed;
+    reviews.push({...p[Math.floor(rand(0,p.length))],text:fill(p[Math.floor(rand(0,p.length))].text)});
+    reviews.push({...m[Math.floor(rand(0,m.length))],text:fill(m[Math.floor(rand(0,m.length))].text)});
+  } else {
+    const m=REVIEW_DB.mixed,n=REVIEW_DB.negative;
+    reviews.push({...n[Math.floor(rand(0,n.length))],text:fill(n[Math.floor(rand(0,n.length))].text)});
+    reviews.push({...m[Math.floor(rand(0,m.length))],text:fill(m[Math.floor(rand(0,m.length))].text)});
+  }
+  // Contextual reviews
+  if(S.ingredientSpikeExtra>0.1 && S.round>=8){
+    const sr=REVIEW_DB.shrinkflation;reviews.push({...sr[0],text:fill(sr[0].text)});
+  }
+  if(S.competitorActive){
+    const cr=REVIEW_DB.competitor;reviews.push({...cr[0],text:fill(cr[0].text)});
+  }
+  if(S.staffCrisisActive){
+    const cc=REVIEW_DB.crisis;reviews.push({...cc[0],text:fill(cc[0].text)});
+  }
+  return reviews.slice(0,3);
+}
+
+function generateInsight(){
+  const r=S.round;
+  const loc=S.location,cui=S.cuisine,price=S.pricePoint,brand=S.brandStyle;
+  const insights=[];
+
+  // Location + cuisine + price synergy
+  if(loc==='college'&&price==='premium') insights.push('Premium pricing in a college area is risky — students are price-sensitive. Your footfall multiplier (0.65x) is working against your high-traffic location. Consider if the margins justify the lower volume.');
+  if(loc==='college'&&price==='budget'&&cui==='southindian') insights.push('South Indian + Budget + College Area is the classic unit economics play — high margin (65%) + high volume (1.3x elasticity) + low rent. This is how Udipi restaurants scaled across India.');
+  if(loc==='foodcourt'&&cui==='burgers') insights.push('Burgers in a Food Court targets the mall\'s captive GenZ audience. Your rent is high (₹1.5L/mo) but footfall is guaranteed. Make sure your ticket size justifies that rent.');
+  if(loc==='cloud'&&price==='premium') insights.push('Premium pricing in a cloud kitchen is bold — customers can\'t see your ambiance or experience your service. Your food has to do ALL the talking. Packaging becomes your storefront.');
+  if(brand==='quirky'&&loc==='college') insights.push('Quirky branding + college area = natural fit. Memes and Instagram reels will spread organically in this demographic. Your brand score will compound faster here.');
+
+  // Round-specific
+  if(r===2&&S.hasSignatureDish) insights.push('Your signature dish is your moat. In QSR, one hero item drives 30-40% of revenue. Think McDonald\'s Big Mac or Haldiram\'s Chole Bhature — the item people come back for.');
+  if(r===3&&S.trainingLevel>=2) insights.push('Professional training costs money now but compounds: trained staff = consistent quality = higher rating = more customers. This is the flywheel that built chains like Saravana Bhavan.');
+  if(r===3&&S.payLevel===-1) insights.push('Below-market pay is a ticking time bomb. In Bengaluru\'s competitive job market, your staff will leave the moment QuickBite or any Zomato kitchen offers ₹2K more. The cost of turnover is 3-4x the salary difference.');
+  if(r===5&&S.trainingLevel>=2) insights.push('Your training investment just paid off — FSSAI inspections are where shortcuts catch up with you. The restaurants that get shut down are almost always the ones that cut corners on staff training.');
+  if(r===7&&S.outlets>1&&!S.hasSOPs) insights.push('You expanded without SOPs — this is the #1 reason restaurant chains fail in India. Without documented processes, quality in outlet #2 depends entirely on who\'s cooking that day.');
+  if(r>=8&&S.hasContractFarming) insights.push('Contract farming is how major chains like McDonald\'s India stabilize costs. It takes 2 months to set up, but once active, you\'re insulated from market spikes.');
+
+  // Financial health
+  if(S.runwayMonths<6&&S.runwayMonths>0) insights.push('⚠️ Your runway is under 6 months. Every decision now is about survival, not growth. Cut costs or increase revenue — you can\'t do both at once. Pick the lever with faster impact.');
+  if(S.monthlyProfit<0&&r>=3) insights.push('You\'re burning cash every month. In startup terms, your "burn rate" is '+fmt(Math.abs(S.monthlyProfit))+'/month. At this rate, you have '+S.runwayMonths+' months before the money runs out.');
+  if(S.breakEvenCustomers>S.dailyCustomers&&r>=3) insights.push('You\'re below break-even ('+S.breakEvenCustomers+' customers/day needed, you have '+Math.round(S.dailyCustomers)+'). Every day you operate, you lose money. This isn\'t sustainable.');
+
+  return insights[Math.floor(rand(0,insights.length))]||'Every decision in a QSR business compounds — good or bad. The choices you make today show up in next month\'s P&L.';
+}
+
+/* ========== SCENE CARDS ========== */
+function getRoundScene(r){
+  const scenes={
+    1:`<div class="scene-card"><div class="scene-header saffron">🏗️ Month 1 — Founding Decisions</div><div class="scene-body"><div class="scene-emoji-row">🏪🍛📍💰</div><div class="scene-text"><div class="st-title">Choose your location, cuisine, funding & vibe</div><div class="st-desc">Every founding choice shapes your <span class="st-highlight">unit economics</span> and <span class="st-highlight">burn rate</span>. Choose wrong and you'll run out of cash before Month 6.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">₹15L</div><div class="ss-label">Your Savings</div></div><div class="scene-stat"><div class="ss-val">₹6.5–20L</div><div class="ss-label">Setup Cost</div></div><div class="scene-stat"><div class="ss-val">5%</div><div class="ss-label">GST on Revenue</div></div></div></div>`,
+    2:`<div class="scene-card"><div class="scene-header saffron">📋 Month 2 — Menu Engineering</div><div class="scene-body"><div class="scene-emoji-row">🍛🍔🥤⭐</div><div class="scene-text"><div class="st-title">Design your menu with sliders</div><div class="st-desc">Use the levers to set menu size, R&D investment, and combo discount. Watch how each slider affects your <span class="st-highlight">cost per plate</span> and <span class="st-highlight">margins</span>.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">5–20</div><div class="ss-label">Menu Items</div></div><div class="scene-stat"><div class="ss-val">₹0–75K</div><div class="ss-label">R&D Budget</div></div><div class="scene-stat"><div class="ss-val">0–25%</div><div class="ss-label">Combo Discount</div></div></div></div>`,
+    3:`<div class="scene-card"><div class="scene-header saffron">👥 Month 3 — Team Building</div><div class="scene-body"><div class="scene-emoji-row">👨‍🍳🧑‍🍳💁‍♀️📋</div><div class="scene-text"><div class="st-title">Hire, train & set salaries</div><div class="st-desc">Staff cost is your biggest fixed expense. Training compounds into <span class="st-neem">quality & morale</span>. Pay below market and watch your team walk to competitors.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">3–8</div><div class="ss-label">Staff Options</div></div><div class="scene-stat"><div class="ss-val">₹12–25K</div><div class="ss-label">Salary Range</div></div><div class="scene-stat"><div class="ss-val">₹0–75K</div><div class="ss-label">Training Budget</div></div></div></div>`,
+    4:`<div class="scene-card"><div class="scene-header saffron">📢 Month 4 — Marketing Launch</div><div class="scene-body"><div class="scene-emoji-row">📱🛵🎉🎯</div><div class="scene-text"><div class="st-title">Set your marketing budget & delivery strategy</div><div class="st-desc">Use sliders to dial your <span class="st-highlight">marketing spend</span> and <span class="st-highlight">launch discount</span>. Higher spend = more reach, but watch your CAC (Customer Acquisition Cost).</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">₹20K–2L</div><div class="ss-label">Budget Range</div></div><div class="scene-stat"><div class="ss-val">0–30%</div><div class="ss-label">Launch Discount</div></div><div class="scene-stat"><div class="ss-val">22–25%</div><div class="ss-label">Delivery Fee</div></div></div></div>`,
+    5:`<div class="scene-card"><div class="scene-header loss">⚠️ SHOCK — FSSAI Health Inspection</div><div class="scene-body"><div class="scene-emoji-row">🔍📋🧪❌</div><div class="scene-text"><div class="st-title">Surprise inspection at your outlet!</div><div class="st-desc">Your <span class="st-loss">hygiene score</span> depends on training, staff count, and menu complexity. Fail badly and you get <span class="st-loss">shut down for a week</span>. Pass well and your rating gets a boost.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">?/100</div><div class="ss-label">Hygiene Score</div></div><div class="scene-stat"><div class="ss-val">₹50K</div><div class="ss-label">Fine (if fail)</div></div><div class="scene-stat"><div class="ss-val">-0.5 ⭐</div><div class="ss-label">Rating Risk</div></div></div></div>`,
+    6:`<div class="scene-card"><div class="scene-header loss">⚡ SHOCK — Competitor Enters</div><div class="scene-body" style="gap:10px"><div class="scene-vs"><div class="scene-vs-card" style="flex:1"><div style="font-size:2rem;margin-bottom:4px">🍛</div><div style="font-weight:700;font-size:0.88rem">DesiEats</div><div style="font-size:0.75rem;color:var(--muted)">Your brand</div></div><div class="scene-vs-badge">VS</div><div class="scene-vs-card" style="flex:1"><div style="font-size:2rem;margin-bottom:4px">🏢</div><div style="font-weight:700;font-size:0.88rem">QuickBite</div><div style="font-size:0.75rem;color:var(--loss)">₹2Cr budget</div></div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val" style="color:var(--loss)">-20%</div><div class="ss-label">Footfall Drop</div></div><div class="scene-stat"><div class="ss-val">500m</div><div class="ss-label">Distance</div></div><div class="scene-stat"><div class="ss-val">Aggressive</div><div class="ss-label">Their Discounts</div></div></div></div>`,
+    7:`<div class="scene-card"><div class="scene-header saffron">🚀 Month 7 — Growth Crossroads</div><div class="scene-body"><div class="scene-emoji-row">🏪📈☁️💪</div><div class="scene-text"><div class="st-title">Scale up or stay lean?</div><div class="st-desc">Open <span class="st-highlight">outlet #2</span> (₹10L), add a cloud kitchen (₹4L), or optimize. Growth without systems is chaos — do you have SOPs?</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">₹10L</div><div class="ss-label">Outlet #2 Cost</div></div><div class="scene-stat"><div class="ss-val">₹4L</div><div class="ss-label">Cloud Kitchen</div></div><div class="scene-stat"><div class="ss-val">-8%</div><div class="ss-label">Central Kitchen COGS</div></div></div></div>`,
+    8:`<div class="scene-card"><div class="scene-header loss">🍅 SHOCK — Ingredient Price Spike</div><div class="scene-body"><div class="scene-emoji-row">🍅🧅📈💸</div><div class="scene-text"><div class="st-title">Tomatoes hit ₹200/kg!</div><div class="st-desc">Food costs jumped <span class="st-loss">35%</span>. Use the slider to set your price adjustment. Absorb it? Raise prices? Every option has a cost.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val" style="color:var(--loss)">₹40→₹200</div><div class="ss-label">Tomato/kg</div></div><div class="scene-stat"><div class="ss-val" style="color:var(--loss)">+35%</div><div class="ss-label">COGS Spike</div></div><div class="scene-stat"><div class="ss-val">₹50K</div><div class="ss-label">Contract Farm</div></div></div></div>`,
+    9:`<div class="scene-card"><div class="scene-header loss">📱 SHOCK — The Viral Review</div><div class="scene-body"><div class="scene-emoji-row">📸⭐🔥💬</div><div class="scene-text"><div class="st-title">A food blogger with 500K followers just posted about you</div><div class="st-desc">Your <span class="st-highlight">rating determines</span> if this is a dream or a nightmare. High rating? Demand floods in. Low rating? Internet roasts you.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">500K</div><div class="ss-label">Reach</div></div><div class="scene-stat"><div class="ss-val">±50%</div><div class="ss-label">Demand Swing</div></div><div class="scene-stat"><div class="ss-val">±25</div><div class="ss-label">Brand Impact</div></div></div></div>`,
+    10:`<div class="scene-card"><div class="scene-header loss">🚪 SHOCK — Staff Crisis</div><div class="scene-body"><div class="scene-emoji-row">👨‍🍳➡️🏢😰</div><div class="scene-text"><div class="st-title">Your head chef + 2 staff quit to join QuickBite</div><div class="st-desc">They were offered <span class="st-loss">40% higher salaries</span>. Service quality drops immediately. Your recipes walked out the door.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val" style="color:var(--loss)">3 gone</div><div class="ss-label">Staff Lost</div></div><div class="scene-stat"><div class="ss-val" style="color:var(--loss)">-0.3 ⭐</div><div class="ss-label">Rating Hit</div></div><div class="scene-stat"><div class="ss-val">+40%</div><div class="ss-label">Their Offer</div></div></div></div>`,
+    11:`<div class="scene-card"><div class="scene-header loss">📉 SHOCK — Economic Slowdown</div><div class="scene-body"><div class="scene-emoji-row">📰💼📉😟</div><div class="scene-text"><div class="st-title">Tech layoffs hit Bengaluru hard</div><div class="st-desc">Footfall drops <span class="st-loss">25%</span>. Restaurants across the city are closing. Use sliders to adjust pricing and cost-cutting measures.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val" style="color:var(--loss)">-25%</div><div class="ss-label">Footfall Drop</div></div><div class="scene-stat"><div class="ss-val">₹99</div><div class="ss-label">Value Meal?</div></div><div class="scene-stat"><div class="ss-val">₹15K</div><div class="ss-label">Tiffin Setup</div></div></div></div>`,
+    12:`<div class="scene-card"><div class="scene-header blue">🎤 Month 12 — Series A Pitch</div><div class="scene-body"><div class="scene-emoji-row">🎯💰🧑‍💼📊</div><div class="scene-text"><div class="st-title">BengaluruBites Demo Day</div><div class="st-desc">Your <span class="st-highlight">EBITDA</span> and <span class="st-highlight">growth trajectory</span> determine your valuation. Investors use 8-12x EBITDA multiples for QSR chains.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">8–12x</div><div class="ss-label">EBITDA Multiple</div></div><div class="scene-stat"><div class="ss-val">15–25%</div><div class="ss-label">Equity Ask</div></div><div class="scene-stat"><div class="ss-val">3 VCs</div><div class="ss-label">Interested</div></div></div></div>`,
+    13:`<div class="scene-card"><div class="scene-header purple">🌍 Month 13 — Multi-City Expansion</div><div class="scene-body"><div class="scene-emoji-row">🏙️✈️🗺️🚀</div><div class="scene-text"><div class="st-title">Take DesiEats beyond Bengaluru</div><div class="st-desc">With Series A funding, choose <span class="st-highlight">2 cities</span> and allocate budget using sliders. Each city has different rent, competition, and taste preferences.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">₹8–15L</div><div class="ss-label">Per City Setup</div></div><div class="scene-stat"><div class="ss-val">5 cities</div><div class="ss-label">Options</div></div><div class="scene-stat"><div class="ss-val">3–6 mo</div><div class="ss-label">Break-even</div></div></div></div>`,
+    14:`<div class="scene-card"><div class="scene-header purple">🏪 Month 14 — Operating Model</div><div class="scene-body"><div class="scene-emoji-row">📋🤝🏗️📊</div><div class="scene-text"><div class="st-title">Franchise, FOCO, or Company-Owned?</div><div class="st-desc">How you replicate determines how fast you grow — and how much control you keep. Each model has different <span class="st-highlight">unit economics</span>.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">5–8%</div><div class="ss-label">Franchise Royalty</div></div><div class="scene-stat"><div class="ss-val">₹10–15L</div><div class="ss-label">FOCO Setup</div></div><div class="scene-stat"><div class="ss-val">₹18–25L</div><div class="ss-label">Company-Owned</div></div></div></div>`,
+    15:`<div class="scene-card"><div class="scene-header loss">📍 SHOCK — Locations Underperforming</div><div class="scene-body"><div class="scene-emoji-row">📉🏪❌💸</div><div class="scene-text"><div class="st-title">2 of your outlets are bleeding money</div><div class="st-desc">One city's taste doesn't match your menu. Another has a rent dispute. <span class="st-loss">Closing costs money too</span> — exit penalties, staff severance, wasted inventory.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val" style="color:var(--loss)">-₹3L/mo</div><div class="ss-label">Combined Loss</div></div><div class="scene-stat"><div class="ss-val">₹5L</div><div class="ss-label">Closing Cost</div></div><div class="scene-stat"><div class="ss-val">3 months</div><div class="ss-label">Lease Lock-in</div></div></div></div>`,
+    16:`<div class="scene-card"><div class="scene-header blue">🎤 Month 16 — Series B Pitch</div><div class="scene-body"><div class="scene-emoji-row">📊💰🦄🌍</div><div class="scene-text"><div class="st-title">Scaling to 50+ outlets needs serious capital</div><div class="st-desc">VCs want to see <span class="st-highlight">same-store sales growth</span>, <span class="st-highlight">unit economics by city</span>, and a path to profitability at scale.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">12–18x</div><div class="ss-label">EBITDA Multiple</div></div><div class="scene-stat"><div class="ss-val">10–15%</div><div class="ss-label">Equity Ask</div></div><div class="scene-stat"><div class="ss-val">₹10Cr+</div><div class="ss-label">Round Size</div></div></div></div>`,
+    17:`<div class="scene-card"><div class="scene-header loss">🚨 SHOCK — Food Safety at Scale</div><div class="scene-body"><div class="scene-emoji-row">🤢📰⚖️😱</div><div class="scene-text"><div class="st-title">Food poisoning incident at one outlet goes viral</div><div class="st-desc">12 customers hospitalized. Media coverage. FSSAI orders <span class="st-loss">audit of ALL locations</span>. Your brand is on the line. This is the test of whether you built systems or just outlets.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val" style="color:var(--loss)">-30</div><div class="ss-label">Brand Hit</div></div><div class="scene-stat"><div class="ss-val">₹25L</div><div class="ss-label">Legal + Audit</div></div><div class="scene-stat"><div class="ss-val">₹50L</div><div class="ss-label">Full Recall Cost</div></div></div></div>`,
+    18:`<div class="scene-card"><div class="scene-header purple">🏁 Month 18 — The Exit</div><div class="scene-body"><div class="scene-emoji-row">🎯🏆💼🚀</div><div class="scene-text"><div class="st-title">Where is DesiEats heading?</div><div class="st-desc">18 months in. Your valuation, brand, and team determine what's possible. <span class="st-highlight">IPO prep, acquisition, or stay private?</span> Every path has a different outcome.</div></div></div><div class="scene-stats"><div class="scene-stat"><div class="ss-val">₹??</div><div class="ss-label">Final Valuation</div></div><div class="scene-stat"><div class="ss-val">${S.totalOutlets||1}</div><div class="ss-label">Total Outlets</div></div><div class="scene-stat"><div class="ss-val">18 mo</div><div class="ss-label">Track Record</div></div></div></div>`,
+  };
+  return scenes[r]||'';
+}
+
+/* ========== RENDER HELPERS ========== */
+function renderRoundRail(){
+  const shockRounds=[5,6,8,9,10,11,15,17];
+  const fundingRounds=[12,16];
+  let h='<div class="round-rail">';
+  for(let i=1;i<=TOTAL_ROUNDS;i++){
+    let cls='round-dot';
+    if(i<S.round) cls+=' done';
+    else if(i===S.round) cls+=' current';
+    if(shockRounds.includes(i)) cls+=' shock';
+    if(fundingRounds.includes(i)) cls+=' funding';
+    if(i===5||i===9||i===13) cls+=' act-break';
+    h+=`<div class="${cls}">${i}</div>`;
+  }
+  h+='</div>';
+  return h;
+}
+
+function renderMetrics(){
+  const prev=S.prevMetrics||{};
+  const metrics=[
+    {label:'Cash',value:fmt(S.cash),raw:S.cash,prev:prev.cash},
+    {label:'Revenue/mo',value:fmt(S.monthlyRevenue),raw:S.monthlyRevenue,prev:prev.monthlyRevenue},
+    {label:'Profit/mo',value:fmt(S.monthlyProfit),raw:S.monthlyProfit,prev:prev.monthlyProfit},
+    {label:'Rating',value:S.rating.toFixed(1)+'/5',raw:S.rating,prev:prev.rating},
+    {label:'Customers/day',value:Math.round(S.dailyCustomers).toString(),raw:S.dailyCustomers,prev:prev.dailyCustomers},
+    {label:'Outlets',value:S.totalOutlets.toString(),raw:S.totalOutlets,prev:prev.totalOutlets},
+    {label:'Morale',value:S.staffMorale+'/100',raw:S.staffMorale,prev:prev.staffMorale},
+    {label:'Brand',value:S.brandScore+'/100',raw:S.brandScore,prev:prev.brandScore},
+  ];
+  let h='<div class="metric-strip">';
+  for(const m of metrics){
+    let delta='';
+    if(m.prev!==undefined&&S.round>1){
+      const d=m.raw-m.prev;
+      if(Math.abs(d)>0.01){
+        const cls=d>0?'up':'down';
+        const arrow=d>0?'▲':'▼';
+        let dv='';
+        if(['Cash','Revenue/mo','Profit/mo'].includes(m.label)) dv=fmt(Math.abs(d));
+        else dv=Math.abs(d).toFixed(m.label==='Rating'?1:0);
+        delta=`<div class="m-delta ${cls}">${arrow} ${dv}</div>`;
+      }
+    }
+    h+=`<div class="metric-pill"><div class="m-label">${m.label}</div><div class="m-value">${m.value}</div>${delta}</div>`;
+  }
+  h+='</div>';
+  return h;
+}
+
+function renderUnitEconomics(){
+  if(S.round<2) return '';
+  calcUnitEconomics();
+  let h='<div class="unit-econ"><div class="ue-header">📊 Unit Economics</div><div class="ue-grid">';
+  const items=[
+    {label:'Cost/Plate',value:'₹'+S.costPerPlate,cls:S.costPerPlate>S.avgTicket?'bad':'good'},
+    {label:'Contribution Margin',value:'₹'+Math.round(S.contributionMargin)+' ('+Math.round(S.contributionMargin/S.avgTicket*100)+'%)',cls:S.contributionMargin>0?'good':'bad'},
+    {label:'Break-even/day',value:S.breakEvenCustomers+' customers',cls:S.breakEvenCustomers<=S.dailyCustomers?'good':'bad'},
+    {label:'CAC',value:S.cac>0?'₹'+S.cac:'N/A',cls:S.cac<S.avgTicket?'good':'bad'},
+    {label:'Monthly Burn',value:S.burnRate>0?fmt(S.burnRate):'Profitable ✓',cls:S.burnRate>0?'bad':'good'},
+    {label:'Runway',value:S.burnRate>0?S.runwayMonths+' months':'∞',cls:S.runwayMonths>12?'good':S.runwayMonths>6?'':'bad'},
+  ];
+  for(const it of items) h+=`<div class="ue-item"><div class="ue-label">${it.label}</div><div class="ue-value ${it.cls}">${it.value}</div></div>`;
+  h+='</div></div>';
+
+  // Runway bar
+  const pct=S.burnRate>0?clamp(S.runwayMonths/24*100,0,100):100;
+  const rCls=S.runwayMonths>12?'var(--neem)':S.runwayMonths>6?'#F39C12':'var(--loss)';
+  const rTxt=S.burnRate>0?S.runwayMonths+' months at current burn':'Profitable — no burn';
+  h+=`<div class="runway-section"><div class="rb-label">Runway</div><div class="rb-track"><div class="rb-fill" style="width:${pct}%;background:${rCls}"></div></div><div class="rb-text" style="color:${rCls}">${rTxt}</div></div>`;
+  return h;
+}
+
+function renderSeason(){
+  const s=SEASONS[S.round];
+  if(!s||!s.event) return '';
+  const emoji=s.emoji||'📅';
+  const modTxt=s.mod>1.0?`+${Math.round((s.mod-1)*100)}% demand`:`${Math.round((s.mod-1)*100)}% demand`;
+  return `<div class="event-banner season"><div class="ev-icon">${emoji}</div><div class="ev-text"><strong>${s.name}:</strong> ${s.event} <span style="font-weight:700;color:${s.mod>=1?'var(--neem)':'var(--loss)'}"> (${modTxt})</span></div></div>`;
+}
+
+function renderReviews(){
+  if(S.round<2) return '';
+  const reviews=generateReviews();
+  if(!reviews.length) return '';
+  let h='<div class="reviews-panel"><div class="rp-header">📱 Zomato Reviews This Month</div>';
+  for(const r of reviews){
+    const stars='⭐'.repeat(r.stars)+'☆'.repeat(5-r.stars);
+    h+=`<div class="review-card"><div class="rc-stars">${stars}</div><div class="rc-text">${r.text}</div><div class="rc-author">— ${r.author}</div></div>`;
+  }
+  h+='</div>';
+  return h;
+}
+
+function renderInsight(){
+  const text=generateInsight();
+  if(!text) return '';
+  return `<div class="insight-box"><div class="ib-header">💡 Entrepreneurship Insight</div><div class="ib-text">${text}</div></div>`;
+}
+
+function renderJournal(){
+  return `<div class="journal-box"><div class="jb-label">📝 Decision Journal — Why did you make these choices?</div><textarea class="jb-input" id="journalInput" placeholder="Reflect on your strategy... (optional, but builds entrepreneurial thinking)"></textarea></div>`;
+}
+
+function optionCardsHTML(dec,groupIdx){
+  let h=`<div class="decision-group"><div class="dg-label">${dec.label}</div><div class="option-cards">`;
+  for(const opt of dec.options){
+    const tagHtml=opt.tag?`<div class="opt-tag ${opt.tag.cls||''}">${opt.tag.text}</div>`:'';
+    h+=`<div class="option-card" data-group="${groupIdx}" data-id="${opt.id}" onclick="window.selectOption(this)">
+      <div class="letter">${opt.letter}</div>
+      <div class="opt-content"><div class="opt-title">${opt.title}</div><div class="opt-desc">${opt.desc}</div>${tagHtml}</div>
+    </div>`;
+  }
+  h+='</div></div>';
+  return h;
+}
+
+function leverHTML(lev){
+  const fmtV=lev.format==='currency'?fmtFull(lev.default):lev.format==='percent'?(lev.default+'%'):lev.default;
+  const minLabel=lev.format==='currency'?fmt(lev.min):lev.format==='percent'?(lev.min+'%'):lev.min;
+  const maxLabel=lev.format==='currency'?fmt(lev.max):lev.format==='percent'?(lev.max+'%'):lev.max;
+  const hintText=getHintForValue(lev,lev.default);
+  return `<div class="lever-group" data-lever-id="${lev.id}">
+    <div class="lever-label">${lev.label}</div>
+    <div class="lever-display" id="lever_val_${lev.id}">${fmtV}</div>
+    <input type="range" class="lever-track" id="lever_${lev.id}" min="${lev.min}" max="${lev.max}" step="${lev.step}" value="${lev.default}" oninput="window.updateLever('${lev.id}',this.value,'${lev.format}')">
+    <div class="lever-range"><span>${minLabel}</span><span>${maxLabel}</span></div>
+    <div class="lever-hint" id="lever_hint_${lev.id}">${hintText}</div>
+  </div>`;
+}
+
+function getHintForValue(lev,val){
+  val=Number(val);
+  if(!lev.hints||!lev.hints.length) return '';
+  let best=lev.hints[0];
+  for(const h of lev.hints){if(val>=h.at) best=h;}
+  return best.text;
+}
+
+/* ========== SELECTION & LEVER LOGIC ========== */
+window.selectOption=function(el){
+  const group=el.dataset.group;
+  document.querySelectorAll(`.option-card[data-group="${group}"]`).forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  checkSubmit();
+};
+
+window.updateLever=function(id,val,format){
+  val=Number(val);
+  const display=$('lever_val_'+id);
+  if(format==='currency') display.textContent=fmtFull(val);
+  else if(format==='percent') display.textContent=val+'%';
+  else display.textContent=val;
+
+  // Find lever config and update hint
+  const rd=ROUNDS[S.round];
+  const levers=[...(rd.levers||[])];
+  const lev=levers.find(l=>l.id===id);
+  if(lev){
+    const hint=$('lever_hint_'+id);
+    if(hint) hint.textContent=getHintForValue(lev,val);
+  }
+  checkSubmit();
+};
+
+function checkSubmit(){
+  const rd=ROUNDS[S.round];
+  const mcqNeeded=(rd.decisions||[]).length;
+  let mcqDone=0;
+  for(let i=0;i<mcqNeeded;i++){
+    if(document.querySelector(`.option-card.selected[data-group="${i}"]`)) mcqDone++;
+  }
+  const btn=document.getElementById('submitBtn');
+  if(btn) btn.disabled=mcqDone<mcqNeeded;
+}
+
+function getDecision(groupIdx){
+  const el=document.querySelector(`.option-card.selected[data-group="${groupIdx}"]`);
+  return el?el.dataset.id:null;
+}
+
+function getLever(id){
+  const el=$('lever_'+id);
+  return el?Number(el.value):0;
+}
+
+/* ========== SIMULATION ENGINE ========== */
+function saveMetrics(){
+  S.prevMetrics={
+    cash:S.cash,monthlyRevenue:S.monthlyRevenue,monthlyProfit:S.monthlyProfit,
+    rating:S.rating,dailyCustomers:S.dailyCustomers,totalOutlets:S.totalOutlets,
+    staffMorale:S.staffMorale,brandScore:S.brandScore,
+  };
+}
+
+function simulateMonth(){
+  const season=SEASONS[S.round]||{mod:1.0};
+
+  const locationFactor=S.location==='cloud'?0:S.locationFactor;
+  const priceElasticity=PRICES[S.pricePoint]?.elasticity||1.0;
+  const ratingFactor=Math.max(S.rating/3.0,0.3);
+  const brandFactor=1+S.brandScore/200;
+  let viralMult=1;
+  if(S.viralMonthsLeft>0){viralMult=1+S.viralBoost;S.viralMonthsLeft--;}
+  let slowdownMult=S.economicSlowdown?1-S.slowdownFootfallPenalty:1;
+  let compMult=1;
+  if(S.competitorActive){compMult=1-S.competitorPenalty;S.competitorPenalty=Math.max(0,S.competitorPenalty-0.03);if(S.competitorPenalty<=0)S.competitorActive=false;}
+  let crisisMult=S.staffCrisisActive?0.8:1;
+  if(S.staffCrisisActive) S.staffCrisisActive=false;
+
+  let rawDaily;
+  if(S.location==='cloud'){
+    rawDaily=80*S.marketingMult*ratingFactor*priceElasticity*brandFactor*viralMult*slowdownMult*compMult*crisisMult*season.mod*rand(0.9,1.1)+S.deliveryOrders;
+  } else {
+    rawDaily=S.baseFootfall*locationFactor*S.marketingMult*ratingFactor*priceElasticity*brandFactor*viralMult*slowdownMult*compMult*crisisMult*S.comboVolumeMult*season.mod*rand(0.9,1.1)+S.deliveryOrders;
+  }
+
+  const cappedDaily=Math.min(rawDaily,S.staffCapacity*S.outlets);
+  const overworked=rawDaily>S.staffCapacity*S.outlets;
+  S.dailyCustomers=Math.max(0,Math.round(S.location==='cloud'?rawDaily:cappedDaily));
+
+  // Revenue (GST inclusive — customer pays this)
+  let effectiveTicket=S.avgTicket;
+  if(S.comboDiscount>0) effectiveTicket*=(1-S.comboDiscount*0.4);
+
+  const dineInCustomers=Math.max(0,S.dailyCustomers-S.deliveryOrders);
+  const dineInRevenue=dineInCustomers*effectiveTicket*30;
+  const deliveryRevenue=S.deliveryOrders*effectiveTicket*(1-S.deliveryCommission)*30;
+  const grossRevenue=dineInRevenue+deliveryRevenue;
+
+  // GST
+  S.gstPaid=Math.round(grossRevenue*GST_RATE);
+  S.totalGST+=S.gstPaid;
+  S.monthlyRevenue=grossRevenue-S.gstPaid; // net of GST
+
+  // Tiffin service
+  if(S.hasTiffin) S.monthlyRevenue+=30000;
+
+  // COGS
+  let effectiveMargin=S.grossMargin+(S.hasCentralKitchen?0.08:0)-S.ingredientSpikeExtra;
+  const cogs=S.monthlyRevenue*(1-effectiveMargin);
+
+  // Fixed costs
+  const rent=S.locationRent*S.outlets;
+  const staffCost=S.staffCount*S.avgSalary;
+  const marketing=S.marketingBudget;
+  const otherCosts=10000*S.outlets;
+  const emi=S.monthlyEMI;
+
+  S.monthlyProfit=S.monthlyRevenue-cogs-rent-staffCost-marketing-otherCosts-emi;
+  S.cash+=S.monthlyProfit;
+
+  if(overworked) S.staffMorale=clamp(S.staffMorale-5,0,100);
+
+  S.totalRevenue+=S.monthlyRevenue;
+  S.totalProfit+=S.monthlyProfit;
+  if(S.monthlyRevenue>S.peakRevenue) S.peakRevenue=S.monthlyRevenue;
+}
+
+function buildPL(){
+  const effectiveMargin=S.grossMargin+(S.hasCentralKitchen?0.08:0)-S.ingredientSpikeExtra;
+  const cogs=S.monthlyRevenue*(1-effectiveMargin);
+  const rent=S.locationRent*S.outlets;
+  const staff=S.staffCount*S.avgSalary;
+  const mkt=S.marketingBudget;
+  const other=10000*S.outlets;
+  const rows=[
+    {label:'Gross Revenue',value:'+'+fmt(S.monthlyRevenue+S.gstPaid)},
+    {label:'GST (5%)',value:'-'+fmt(S.gstPaid),negative:true,gst:true},
+    {label:'Net Revenue',value:fmt(S.monthlyRevenue),total:true},
+    {label:'COGS ('+Math.round((1-effectiveMargin)*100)+'%)',value:'-'+fmt(Math.abs(cogs)),negative:true},
+    {label:'Rent ('+S.outlets+' outlet'+(S.outlets>1?'s':'')+')',value:'-'+fmt(rent),negative:true},
+    {label:'Staff ('+S.staffCount+')',value:'-'+fmt(staff),negative:true},
+    {label:'Marketing',value:'-'+fmt(mkt),negative:true},
+    {label:'Other',value:'-'+fmt(other),negative:true},
+  ];
+  if(S.monthlyEMI>0) rows.push({label:'Loan EMI',value:'-'+fmt(S.monthlyEMI),negative:true});
+  rows.push({label:'Monthly Profit',value:(S.monthlyProfit>=0?'+':'')+fmt(S.monthlyProfit),negative:S.monthlyProfit<0,total:true});
+  rows.push({label:'Cash Balance',value:fmtFull(S.cash),total:true});
+  return rows;
+}
+
+/* ========== ROUND PROCESSORS ========== */
+function processRound1(){
+  const loc=getDecision(0),cuisine=getDecision(1),price=getDecision(2),brand=getDecision(3),funding=getDecision(4);
+
+  S.location=loc;S.cuisine=cuisine;S.pricePoint=price;S.brandStyle=brand;S.fundingType=funding;
+
+  const L=LOCATIONS[loc];
+  S.locationRent=L.rent;S.baseFootfall=L.footfall;S.locationFactor=L.factor;
+  S.grossMargin=CUISINES[cuisine].margin;
+  S.avgTicket=PRICES[price].ticket;
+  S.brandScore=brand==='quirky'?12:brand==='modern'?8:5;
+  S.rating=3.0;
+
+  // Funding
+  if(funding==='family'){S.cash+=1000000;S.loanAmount=1000000;S.loanRate=0;S.monthlyEMI=0;}
+  else if(funding==='bank'){S.cash+=1500000;S.loanAmount=1500000;S.loanRate=0.12;S.monthlyEMI=Math.round(1500000*0.12/12);}
+  else if(funding==='angel'){S.cash+=2000000;S.equityGiven=15;}
+
+  // Setup
+  const setup=setupCost(loc);
+  if(S.cash<setup){
+    S.cash-=setup; // Will go negative — bankruptcy check later
+  } else {
+    S.cash-=setup;
+  }
+
+  S.staffCount=4;S.staffCapacity=200;
+
+  // Soft opening (50%)
+  S.dailyCustomers=Math.round((S.location==='cloud'?30:S.baseFootfall*S.locationFactor*0.5)*rand(0.85,1.0));
+  const effectiveTicket=S.avgTicket;
+  const grossRev=S.dailyCustomers*effectiveTicket*30;
+  S.gstPaid=Math.round(grossRev*GST_RATE);
+  S.monthlyRevenue=grossRev-S.gstPaid;
+  const cogs=S.monthlyRevenue*(1-S.grossMargin);
+  S.monthlyProfit=S.monthlyRevenue-cogs-S.locationRent-S.staffCount*15000-10000-S.monthlyEMI;
+  S.cash+=S.monthlyProfit;
+  S.totalRevenue+=S.monthlyRevenue;S.totalProfit+=S.monthlyProfit;
+  if(S.monthlyRevenue>S.peakRevenue) S.peakRevenue=S.monthlyRevenue;
+
+  S.decisions[1]=`Location: ${L.name}, Cuisine: ${CUISINES[cuisine].name}, Price: ${PRICES[price].name}, Funding: ${funding}`;
+
+  return {
+    title:'Month 1 — Grand Opening',
+    items:[
+      {text:`Location: ${L.name} — Rent ${fmt(S.locationRent)}/mo, Setup: ${fmt(setup)}`,neutral:true},
+      {text:`Cuisine: ${CUISINES[cuisine].name} — ${Math.round(S.grossMargin*100)}% gross margin`,neutral:true},
+      {text:`Price: ${PRICES[price].name} — Avg ticket ₹${S.avgTicket}`,neutral:true},
+      {text:`Funding: ${funding==='bootstrap'?'Bootstrap (₹15L only)':funding==='family'?'Family loan +₹10L (0% interest)':funding==='bank'?'Bank loan +₹15L (EMI: '+fmt(S.monthlyEMI)+'/mo)':'Angel +₹20L (gave 15% equity)'}`,neutral:true},
+      {text:`Soft opening: ${S.dailyCustomers} customers/day`,positive:S.dailyCustomers>50},
+      {text:`First month revenue: ${fmt(S.monthlyRevenue)} (after 5% GST)`,positive:S.monthlyRevenue>0},
+      S.cash<0?{text:`⚠️ Cash is negative! You overspent on setup. Find revenue fast.`,positive:false}:null,
+    ].filter(Boolean),
+    breakdown:buildPL()
+  };
+}
+
+function processRound2(){
+  const menuSize=getLever('menu_size');
+  const rdBudget=getLever('rd_budget');
+  const comboDisc=getLever('combo_discount');
+
+  // Menu quality based on size
+  if(menuSize<=7) S.menuQuality=0.3;
+  else if(menuSize>=15) S.menuQuality=-0.2;
+  else S.menuQuality=0.1;
+
+  // Signature dish based on R&D
+  S.hasSignatureDish=rdBudget>=30000;
+  S.cash-=rdBudget;
+  const ratingBoost=rdBudget>=60000?0.3:rdBudget>=30000?0.2:rdBudget>=10000?0.1:0;
+
+  // Combo
+  S.comboDiscount=comboDisc/100;
+  S.comboVolumeMult=1+comboDisc/100*0.8;
+
+  S.rating=clamp(S.rating+S.menuQuality+ratingBoost,1,5);
+
+  // Variety appeal
+  if(menuSize>=12) S.marketingMult*=1.12;
+  else if(menuSize>=8) S.marketingMult*=1.05;
+
+  simulateMonth();
+  S.decisions[2]=`Menu: ${menuSize} items, R&D: ${fmt(rdBudget)}, Combo: ${comboDisc}%`;
+
+  return {
+    title:'Month 2 — Menu Takes Shape',
+    items:[
+      {text:`Menu: ${menuSize} items ${menuSize<=7?'— Focused! Quality boost +0.3':menuSize>=15?'— Extensive! Harder to maintain quality (-0.2)':'— Standard range'}`,positive:S.menuQuality>=0},
+      {text:`R&D Investment: ${fmt(rdBudget)}${ratingBoost>=0.2?' — Signature dish developed! Rating +'+ratingBoost:ratingBoost>0?' — Menu improved. Rating +'+ratingBoost:' — No R&D investment'}`,positive:ratingBoost>0},
+      {text:`Combo discount: ${comboDisc}%${comboDisc>0?' — Volume boost +'+Math.round((S.comboVolumeMult-1)*100)+'%':' — No combos'}`,neutral:true},
+      {text:`Rating: ${S.rating.toFixed(1)}/5 | Customers: ${Math.round(S.dailyCustomers)}/day`,positive:S.rating>=3.5},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound3(){
+  const staffType=getDecision(0);
+  const salary=getLever('salary');
+  const training=getLever('training_budget');
+
+  if(staffType==='lean'){S.staffCount=3;S.staffCapacity=150;}
+  else if(staffType==='full'){S.staffCount=8;S.staffCapacity=400;}
+  else{S.staffCount=5;S.staffCapacity=250;}
+
+  S.avgSalary=salary;
+  if(salary<14000){S.staffMorale=clamp(S.staffMorale-15,0,100);S.payLevel=-1;}
+  else if(salary>20000){S.staffMorale=clamp(S.staffMorale+10,0,100);S.rating=clamp(S.rating+0.1,1,5);S.payLevel=1;}
+  else{S.payLevel=0;}
+
+  S.trainingLevel=training>=60000?3:training>=25000?2:training>=5000?1:0;
+  S.cash-=training;
+  if(S.trainingLevel>=2){S.staffMorale=clamp(S.staffMorale+15,0,100);S.rating=clamp(S.rating+0.2,1,5);}
+  else if(S.trainingLevel>=1){S.staffMorale=clamp(S.staffMorale+5,0,100);}
+
+  simulateMonth();
+  S.decisions[3]=`Staff: ${staffType} (${S.staffCount}), Salary: ${fmt(salary)}, Training: ${fmt(training)}`;
+
+  return {
+    title:'Month 3 — Team Assembled',
+    items:[
+      {text:`Team: ${S.staffCount} people, capacity ${S.staffCapacity} customers/day`,neutral:true},
+      {text:`Salary: ${fmt(salary)}/person${S.payLevel===-1?' — Below market! Risky for retention':S.payLevel===1?' — Above market. Team is motivated':''}`,positive:S.payLevel>=0},
+      {text:`Training: ${fmt(training)} (Level ${S.trainingLevel})${S.trainingLevel>=2?' — Professional training! Quality +0.2':''}`,positive:S.trainingLevel>=2},
+      {text:`Morale: ${S.staffMorale}/100 | Rating: ${S.rating.toFixed(1)}/5`,positive:S.staffMorale>=70},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound4(){
+  const mktBudget=getLever('mkt_budget');
+  const launchDiscount=getLever('launch_discount');
+  const delivery=getDecision(0);
+
+  S.marketingBudget=mktBudget;
+  S.cash-=mktBudget;
+  if(mktBudget>=150000){S.brandScore=clamp(S.brandScore+25,0,100);S.marketingMult*=1.20;}
+  else if(mktBudget>=80000){S.brandScore=clamp(S.brandScore+15,0,100);S.marketingMult*=1.15;}
+  else if(mktBudget>=40000){S.brandScore=clamp(S.brandScore+10,0,100);S.marketingMult*=1.10;}
+  else{S.brandScore=clamp(S.brandScore+3,0,100);S.marketingMult*=1.05;}
+
+  const launchBoost=launchDiscount/100*1.5;
+  if(launchDiscount>20) S.rating=clamp(S.rating-0.1,1,5);
+
+  if(delivery==='zomato'){S.deliveryOrders=30;S.deliveryCommission=0.25;}
+  else if(delivery==='swiggy'){S.deliveryOrders=30;S.deliveryCommission=0.22;}
+  else if(delivery==='both'){S.deliveryOrders=60;S.deliveryCommission=0.235;}
+  else{S.deliveryOrders=0;S.deliveryCommission=0;}
+
+  const oldMult=S.marketingMult;
+  S.marketingMult*=(1+launchBoost);
+  simulateMonth();
+  S.marketingMult=oldMult;
+  S.marketingBudget=Math.round(mktBudget*0.5);
+
+  S.decisions[4]=`Marketing: ${fmt(mktBudget)}, Discount: ${launchDiscount}%, Delivery: ${delivery}`;
+
+  return {
+    title:'Month 4 — The Launch',
+    items:[
+      {text:`Marketing: ${fmt(mktBudget)} — Brand +${mktBudget>=150000?25:mktBudget>=80000?15:mktBudget>=40000?10:3}`,positive:true},
+      {text:`Launch discount: ${launchDiscount}%${launchDiscount>0?' — '+Math.round(launchBoost*100)+'% temporary footfall boost':''}${launchDiscount>20?' (but too aggressive — rating -0.1)':''}`,positive:launchDiscount>0&&launchDiscount<=20},
+      {text:`Delivery: ${delivery==='both'?'Zomato + Swiggy — +60 orders/day':delivery==='none'?'No delivery':'Single platform — +30 orders/day'}`,positive:delivery!=='none'},
+      {text:`CAC: ₹${S.cac>0?S.cac:'N/A'} | Brand: ${S.brandScore}/100`,neutral:true},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound5(){
+  const hygieneScore=50+(S.trainingLevel*15)+(S.staffCount>=5?10:0)+(S.menuQuality>=0?5:0)+(S.hygieneUpgrade?15:0);
+  const response=getDecision(0);
+
+  if(hygieneScore>80){S.rating=clamp(S.rating+0.3,1,5);S.brandScore=clamp(S.brandScore+10,0,100);}
+  else if(hygieneScore>=60){S.cash-=50000;}
+  else{S.rating=clamp(S.rating-0.5,1,5);S.brandScore=clamp(S.brandScore-15,0,100);S.marketingMult*=0.75;}
+
+  if(response==='upgrade'){S.cash-=200000;S.hygieneUpgrade=true;S.rating=clamp(S.rating+0.2,1,5);}
+  else if(response==='consultant'){S.cash-=40000;S.rating=clamp(S.rating+0.1,1,5);}
+
+  simulateMonth();
+  if(hygieneScore<60) S.marketingMult/=0.75;
+
+  S.decisions[5]=`Hygiene: ${hygieneScore}/100, Response: ${response}`;
+  const items=[];
+  if(hygieneScore>80) items.push({text:`Hygiene: ${hygieneScore}/100 — Passed! Rating +0.3, Brand +10`,positive:true});
+  else if(hygieneScore>=60) items.push({text:`Hygiene: ${hygieneScore}/100 — Minor violations. Fine: ₹50K`,positive:false});
+  else items.push({text:`Hygiene: ${hygieneScore}/100 — Major violations! Shut down 1 week. Rating -0.5`,positive:false});
+
+  if(response==='upgrade') items.push({text:'Full kitchen upgrade (₹2L) — Rating +0.2, future-proofed',positive:true});
+  else if(response==='consultant') items.push({text:'Hygiene consultant (₹40K) — Rating +0.1',positive:true});
+  else if(response==='minimum') items.push({text:'Minimum compliance. Cheap but risky.',neutral:true});
+  else items.push({text:'Ignored. Next inspection will be worse.',positive:false});
+
+  return {title:'Month 5 — FSSAI Inspection',items,breakdown:buildPL()};
+}
+
+function processRound6(){
+  const response=getDecision(0),retention=getDecision(1);
+  S.competitorActive=true;S.competitorPenalty=0.20;
+
+  if(response==='pricewar'){S.competitorPenalty=0.05;S.grossMargin-=0.10;}
+  else if(response==='differentiate'){S.cash-=50000;S.competitorPenalty=0.15;S.rating=clamp(S.rating+0.2,1,5);}
+  else if(response==='loyalty'){S.cash-=20000;S.hasLoyalty=true;S.competitorPenalty=0.12;S.marketingMult*=1.15;}
+  else{S.competitorPenalty=0.18;}
+
+  if(retention==='whatsapp') S.marketingMult*=1.08;
+  else if(retention==='punchcard') S.marketingMult*=1.05;
+
+  simulateMonth();
+  S.decisions[6]=`Response: ${response}, Retention: ${retention}`;
+
+  return {
+    title:'Month 6 — Competition Arrives',
+    items:[
+      {text:'QuickBite opens 500m away. Footfall drops 20% immediately.',positive:false},
+      {text:`Strategy: ${response==='pricewar'?'Price war — recovers footfall but margin crushed -10%':response==='differentiate'?'Differentiate (₹50K) — Rating +0.2, sustainable':response==='loyalty'?'Loyalty program — 15% repeat boost':'Quality focus — gradual recovery'}`,positive:response!=='pricewar'},
+      {text:`Retention: ${retention==='whatsapp'?'WhatsApp community +8%':retention==='punchcard'?'Punch card +5%':'None'}`,positive:retention!=='nothing'},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound7(){
+  const expansion=getDecision(0),ops=getDecision(1);
+
+  if(expansion==='outlet2'){S.cash-=1000000;S.outlets=2;S.totalOutlets=2;S.staffCount+=5;}
+  else if(expansion==='cloudarm'){S.cash-=400000;S.outlets=2;S.totalOutlets=2;S.deliveryOrders+=50;S.staffCount+=2;}
+
+  if(ops==='sops'){S.cash-=20000;S.hasSOPs=true;S.rating=clamp(S.rating+0.1,1,5);}
+  else if(ops==='centralkitchen'){S.cash-=250000;S.hasCentralKitchen=true;}
+
+  simulateMonth();
+  S.decisions[7]=`Expansion: ${expansion}, Ops: ${ops}`;
+
+  return {
+    title:'Month 7 — Growth Decision',
+    items:[
+      {text:`${expansion==='outlet2'?'Opened outlet #2 (₹10L)!':expansion==='cloudarm'?'Launched cloud kitchen (₹4L)!':'Staying single outlet — optimizing'}`,positive:expansion!=='stay',neutral:expansion==='stay'},
+      {text:`Operations: ${ops==='sops'?'SOPs created — consistency +0.1':ops==='centralkitchen'?'Central kitchen — COGS -8%':'Chef-dependent — fragile'}`,positive:ops!=='chefdependent'},
+      {text:`Total outlets: ${S.totalOutlets}`,neutral:true},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound8(){
+  const priceAdj=getLever('price_adjust');
+  const supply=getDecision(0),menuAdapt=getDecision(1);
+
+  S.ingredientSpike=true;S.ingredientSpikeExtra=0.15;
+
+  if(priceAdj>0){
+    S.avgTicket*=(1+priceAdj/100);
+    S.marketingMult*=(1-priceAdj/100*0.8);
+  }
+
+  if(supply==='contract'){S.cash-=50000;S.hasContractFarming=true;S.contractFarmingMonth=S.round;}
+  else if(supply==='wholesale'){S.ingredientSpikeExtra-=0.03;S.rating=clamp(S.rating-0.05,1,5);}
+
+  if(menuAdapt==='monsoon'){S.ingredientSpikeExtra-=0.05;S.brandScore=clamp(S.brandScore+5,0,100);}
+  else if(menuAdapt==='removecostly'){S.ingredientSpikeExtra-=0.05;S.comboVolumeMult*=0.95;}
+
+  simulateMonth();
+  S.decisions[8]=`Price +${priceAdj}%, Supply: ${supply}, Menu: ${menuAdapt}`;
+
+  return {
+    title:'Month 8 — The Tomato Crisis',
+    items:[
+      {text:'Ingredient prices spike! Tomatoes ₹200/kg, onions doubled.',positive:false},
+      {text:`Price adjustment: +${priceAdj}%${priceAdj>0?' — some customer loss':'— absorbing the hit'}`,positive:false},
+      {text:`Supply: ${supply==='contract'?'Contract farming (₹50K) — stabilizes in 2 months':supply==='wholesale'?'Wholesale — cheaper but variable quality':'Current vendor'}`,positive:supply==='contract'},
+      {text:`Menu: ${menuAdapt==='monsoon'?'Monsoon special — creative pivot! Brand +5':menuAdapt==='removecostly'?'Removed costly items — margins protected':'Full menu maintained'}`,positive:menuAdapt!=='keepfull'},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound9(){
+  // Dynamic based on rating
+  if(S.rating>4.0){
+    ROUNDS[9].narrative='A food blogger posts a GLOWING review! "Best new QSR in Bengaluru!" Your DMs explode with orders.';
+    S.viralBoost=0.50;S.viralMonthsLeft=2;S.brandScore=clamp(S.brandScore+20,0,100);
+    ROUNDS[9].decisions=[{id:'viral',label:'Capitalize on the Viral Moment',options:[
+      {id:'offers',letter:'A',title:'Launch Special Offers',desc:'Ride the wave. Maximize short-term revenue.'},
+      {id:'humble',letter:'B',title:'Stay Humble, Maintain Quality',desc:'Don\'t change what works. Sustainable.'},
+      {id:'premium',letter:'C',title:'Raise Prices',desc:'You\'re hot. Capture more value per customer.'},
+    ]}];
+  } else if(S.rating>=3.0){
+    ROUNDS[9].narrative='A food blogger gives a mixed review: "Decent food, nothing special." Mild buzz.';
+    S.viralBoost=0.10;S.viralMonthsLeft=1;S.brandScore=clamp(S.brandScore+5,0,100);
+    ROUNDS[9].decisions=[{id:'viral',label:'How Do You Respond?',options:[
+      {id:'improve',letter:'A',title:'Invest in Improvement (₹30K)',desc:'Take feedback seriously. Upgrade quality.'},
+      {id:'nothing',letter:'B',title:'No Change',desc:'Mixed is fine. Focus elsewhere.'},
+    ]}];
+  } else {
+    ROUNDS[9].narrative='A food blogger posts a BRUTAL video: "Worst QSR in Bengaluru." 2 lakh views in 24 hours.';
+    S.viralBoost=-0.30;S.viralMonthsLeft=2;S.brandScore=clamp(S.brandScore-25,0,100);
+    ROUNDS[9].decisions=[{id:'viral',label:'Damage Control',options:[
+      {id:'apologize',letter:'A',title:'Public Apology + Free Meals (₹20K)',desc:'Take responsibility. Show you care.'},
+      {id:'ignore',letter:'B',title:'Ignore It',desc:'Hope it blows over. Risky.'},
+      {id:'legal',letter:'C',title:'Threaten Legal Action',desc:'TERRIBLE idea. The internet does not forgive.',tag:{text:'⚠️ High Risk',cls:'bad'}},
+    ]}];
+  }
+
+  const response=getDecision(0);
+  if(S.rating>4.0){
+    if(response==='offers') S.marketingMult*=1.15;
+    else if(response==='premium') S.avgTicket*=1.15;
+  } else if(S.rating>=3.0){
+    if(response==='improve'){S.cash-=30000;S.rating=clamp(S.rating+0.2,1,5);}
+  } else {
+    if(response==='apologize'){S.cash-=20000;S.viralBoost=-0.15;S.brandScore=clamp(S.brandScore+10,0,100);}
+    else if(response==='legal'){S.brandScore=clamp(S.brandScore-20,0,100);S.viralBoost=-0.40;}
+  }
+
+  simulateMonth();
+  S.decisions[9]=`Viral: ${S.rating>4.0?'Positive':S.rating>=3.0?'Mixed':'Negative'}, Response: ${response}`;
+
+  const items=[];
+  if(S.rating>4.0) items.push({text:'Viral POSITIVE review! Demand +50% for 2 months, Brand +20!',positive:true});
+  else if(S.rating>=3.0) items.push({text:'Mixed review. Mild buzz on social media.',neutral:true});
+  else items.push({text:'Brutal NEGATIVE review went viral. Demand -30%, Brand -25.',positive:false});
+
+  return {title:'Month 9 — The Viral Review',items,breakdown:buildPL()};
+}
+
+function processRound10(){
+  const replacement=getDecision(0),retention=getDecision(1),systems=getDecision(2);
+  S.rating=clamp(S.rating-0.3,1,5);S.staffCrisisActive=true;
+
+  if(replacement==='quick') S.rating=clamp(S.rating-0.1,1,5);
+  else if(replacement==='careful') S.staffCapacity=Math.round(S.staffCapacity*0.7);
+  else S.staffMorale=clamp(S.staffMorale+10,0,100);
+
+  if(retention==='raise20'){S.avgSalary=Math.round(S.avgSalary*1.20);S.staffMorale=clamp(S.staffMorale+10,0,100);}
+  else if(retention==='profitshare') S.staffMorale=clamp(S.staffMorale+15,0,100);
+  else if(retention==='nothing') S.staffMorale=clamp(S.staffMorale-10,0,100);
+
+  if(systems==='document'){S.cash-=15000;S.hasSOPs=true;}
+  else if(systems==='consultant'){S.cash-=40000;S.hasSOPs=true;S.rating=clamp(S.rating+0.15,1,5);}
+
+  simulateMonth();
+  if(replacement==='careful') S.staffCapacity=Math.round(S.staffCapacity/0.7);
+  S.decisions[10]=`Replace: ${replacement}, Retain: ${retention}, Systems: ${systems}`;
+
+  return {
+    title:'Month 10 — Staff Crisis',
+    items:[
+      {text:'Head chef + 2 quit to join QuickBite. Rating -0.3.',positive:false},
+      {text:`Replacement: ${replacement==='promote'?'Promoted internally — morale boost':replacement==='quick'?'Quick hires — lower quality':'Careful hiring — reduced capacity this month'}`,positive:replacement==='promote'},
+      {text:`Retention: ${retention==='raise20'?'20% raise — stops the bleeding':retention==='profitshare'?'Profit sharing — aligned incentives':'Did nothing — more may leave'}`,positive:retention!=='nothing'},
+      {text:`Systems: ${systems==='consultant'?'Kitchen consultant (₹40K) — expert overhaul':systems==='document'?'Documented recipes (₹15K)':'Institutional knowledge only — fragile'}`,positive:systems!=='institutional'},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound11(){
+  const pricing=getDecision(0),costs=getDecision(1),pivot=getDecision(2);
+  S.economicSlowdown=true;S.slowdownFootfallPenalty=0.25;
+
+  if(pricing==='valuemeals'){S.slowdownFootfallPenalty=0.10;S.avgTicket*=0.85;}
+  else if(pricing==='happyhour') S.slowdownFootfallPenalty=0.18;
+
+  if(costs==='layoff'){S.staffCount=Math.max(2,S.staffCount-2);S.staffMorale=clamp(S.staffMorale-20,0,100);S.staffCapacity=Math.round(S.staffCapacity*0.7);}
+  else if(costs==='cutmarketing'){S.marketingBudget=Math.round(S.marketingBudget*0.5);S.brandScore=clamp(S.brandScore-5,0,100);}
+  else if(costs==='renegotiaterent'){if(Math.random()<0.5) S.locationRent=Math.round(S.locationRent*0.85);}
+
+  if(pivot==='tiffin'){S.cash-=15000;S.hasTiffin=true;}
+  else if(pivot==='corporate') S.monthlyRevenue+=40000;
+
+  simulateMonth();
+  S.decisions[11]=`Pricing: ${pricing}, Costs: ${costs}, Pivot: ${pivot}`;
+
+  return {
+    title:'Month 11 — Slowdown Hits',
+    items:[
+      {text:'Tech layoffs hit Bengaluru. Footfall -25%.',positive:false},
+      {text:`Pricing: ${pricing==='valuemeals'?'₹99 combos — recovered 15% footfall':pricing==='happyhour'?'Happy hour — moderate recovery':'Holding prices'}`,positive:pricing!=='hold'},
+      {text:`Cost cutting: ${costs==='layoff'?'Laid off 2 — saves money, tanks morale':costs==='cutmarketing'?'Cut marketing 50%':costs==='renegotiaterent'?'Rent renegotiation attempted':'No cuts'}`,neutral:true},
+      {text:`Pivot: ${pivot==='tiffin'?'Tiffin service launched — +₹30K/mo stable':pivot==='corporate'?'Corporate orders — high value':'No pivot'}`,positive:pivot!=='nochange'},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound12(){
+  // EBITDA-based valuation
+  const monthlyEBITDA=S.monthlyProfit+S.monthlyEMI; // add back interest for EBITDA
+  const annualizedEBITDA=monthlyEBITDA*12;
+  const ratingMult=S.rating>=4.0?1.3:S.rating>=3.5?1.1:S.rating>=3.0?1.0:0.7;
+  const brandMult=S.brandScore>=60?1.3:S.brandScore>=40?1.1:S.brandScore>=20?1.0:0.7;
+  const outletsMult=S.totalOutlets>=3?1.5:S.totalOutlets>=2?1.3:1.0;
+  const growthTraj=S.history.length>=3&&S.history[S.history.length-1].revenue>S.history[S.history.length-3].revenue*1.05?1.3:1.0;
+  const ebitdaMultiple=annualizedEBITDA>0?10:6;
+  const valuation=Math.max(2000000,Math.round(annualizedEBITDA*ebitdaMultiple*ratingMult*brandMult*outletsMult*growthTraj));
+
+  ROUNDS[12]._valuation=valuation;
+  ROUNDS[12]._ebitda=annualizedEBITDA;
+  ROUNDS[12]._multiple=ebitdaMultiple;
+
+  const decision=getDecision(0);
+  S.decisions[12]=`Series A: ${decision}`;
+
+  const items=[];
+  if(decision==='accept20'){
+    const amt=Math.round(valuation*0.20);S.cash+=amt;S.seriesAAmount=amt;S.equityGiven+=20;
+    items.push({text:`Accepted: ${fmt(amt)} for 20% equity! Valuation: ${fmt(valuation)}`,positive:true});
+  } else if(decision==='negotiate15'){
+    if(S.brandScore>50&&S.rating>3.5){
+      const amt=Math.round(valuation*0.15);S.cash+=amt;S.seriesAAmount=amt;S.equityGiven+=15;
+      items.push({text:`Negotiation successful! ${fmt(amt)} for 15% equity!`,positive:true});
+    } else {
+      items.push({text:'Investors walked away. Metrics didn\'t justify the ask.',positive:false});
+    }
+  } else {
+    items.push({text:'Declined. 100% ownership retained. Bootstrapping ahead.',positive:true});
+    items.push({text:'Respect from investors, but growth will be slower.',neutral:true});
+  }
+  items.push({text:`EBITDA: ${fmt(annualizedEBITDA)}/year × ${ebitdaMultiple}x multiple = ${fmt(valuation)} valuation`,neutral:true});
+
+  return {title:'Month 12 — Series A Pitch',items,breakdown:null};
+}
+
+// Post-Series A rounds
+function processRound13(){
+  const city1=getDecision(0),city2=getDecision(1);
+  const budget1=getLever('city1_budget');
+  const budget2=getLever('city2_budget');
+
+  S.cities=[city1,city2];
+  S.cash-=(budget1+budget2);
+  S.totalOutlets+=2; // 1 per city minimum
+
+  const cityNames={mumbai:'Mumbai',delhi:'Delhi NCR',hyderabad:'Hyderabad',chennai:'Chennai',pune:'Pune'};
+  S.cityData[city1]={budget:budget1,revenue:budget1*0.08,performing:true};
+  S.cityData[city2]={budget:budget2,revenue:budget2*0.06,performing:Math.random()>0.3};
+
+  // Add city revenue
+  S.monthlyRevenue+=(S.cityData[city1].revenue+S.cityData[city2].revenue);
+  simulateMonth();
+
+  S.decisions[13]=`Cities: ${cityNames[city1]}, ${cityNames[city2]}. Budget: ${fmt(budget1)}+${fmt(budget2)}`;
+
+  return {
+    title:'Month 13 — Going Multi-City',
+    items:[
+      {text:`Entered ${cityNames[city1]} (${fmt(budget1)}) and ${cityNames[city2]} (${fmt(budget2)})`,positive:true},
+      {text:`Total outlets: ${S.totalOutlets} across ${S.cities.length+1} cities`,neutral:true},
+      {text:`New city revenue starting to trickle in. Break-even in 3-6 months.`,neutral:true},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound14(){
+  const model=getDecision(0);
+  S.operatingModel=model;
+
+  if(model==='franchise'){S.totalOutlets+=4;S.monthlyRevenue+=S.monthlyRevenue*0.06;S.brandScore=clamp(S.brandScore-5,0,100);}
+  else if(model==='foco'){S.totalOutlets+=2;S.cash-=1200000;S.monthlyRevenue+=S.monthlyRevenue*0.15;}
+  else{S.totalOutlets+=1;S.cash-=2000000;S.monthlyRevenue+=S.monthlyRevenue*0.20;}
+
+  simulateMonth();
+  S.decisions[14]=`Model: ${model}`;
+
+  const modelNames={franchise:'Franchise (royalty)',foco:'FOCO',companyowned:'Company-Owned'};
+  return {
+    title:'Month 14 — Operating Model',
+    items:[
+      {text:`Model: ${modelNames[model]}${model==='franchise'?' — Fast scale, less control. +4 outlets, 6% royalty.':model==='foco'?' — Balanced. +2 outlets, ₹12L invested.':' — Full control. +1 outlet, ₹20L invested.'}`,neutral:true},
+      {text:`Total outlets: ${S.totalOutlets}`,positive:S.totalOutlets>=5},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound15(){
+  const loc1=getDecision(0),loc2=getDecision(1);
+
+  if(loc1==='close'){S.cash-=500000;S.totalOutlets=Math.max(1,S.totalOutlets-1);}
+  else if(loc1==='pivot'){S.cash-=200000;S.rating=clamp(S.rating+0.1,1,5);}
+  else{S.cash-=100000;}
+
+  if(loc2==='close'){S.cash-=500000;S.totalOutlets=Math.max(1,S.totalOutlets-1);}
+  else if(loc2==='cloudswitch'){S.cash-=150000;S.deliveryOrders+=30;}
+  else{S.cash-=50000;}
+
+  simulateMonth();
+  S.decisions[15]=`Location1: ${loc1}, Location2: ${loc2}`;
+
+  return {
+    title:'Month 15 — Underperforming Outlets',
+    items:[
+      {text:'2 locations bleeding money. Taste mismatch + rent dispute.',positive:false},
+      {text:`Outlet A: ${loc1==='close'?'Closed (₹5L exit cost)':loc1==='pivot'?'Menu pivoted (₹2L)':'Discount blitz (₹1L)'}`,neutral:true},
+      {text:`Outlet B: ${loc2==='close'?'Closed (₹5L exit cost)':loc2==='cloudswitch'?'Switched to cloud kitchen (₹1.5L)':'Rent renegotiated (₹50K legal)'}`,neutral:true},
+      {text:`Total outlets: ${S.totalOutlets}`,neutral:true},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound16(){
+  const monthlyEBITDA=S.monthlyProfit+S.monthlyEMI;
+  const annualizedEBITDA=monthlyEBITDA*12;
+  const multiple=S.totalOutlets>=8?15:S.totalOutlets>=5?12:10;
+  const valuation=Math.max(5000000,Math.round(annualizedEBITDA*multiple*(S.totalOutlets>=5?1.5:1.0)*(S.brandScore>=50?1.3:1.0)));
+
+  ROUNDS[16]._valuation=valuation;
+  const decision=getDecision(0);
+
+  if(decision==='accept'){
+    const amt=Math.round(valuation*0.12);S.cash+=amt;S.seriesBAmount=amt;S.equityGiven+=12;
+  }
+
+  S.decisions[16]=`Series B: ${decision}`;
+
+  return {
+    title:'Month 16 — Series B',
+    items:[
+      {text:`Valuation: ${fmt(valuation)} (${multiple}x EBITDA)`,neutral:true},
+      {text:decision==='accept'?`Raised ${fmt(Math.round(valuation*0.12))} for 12% equity!`:'Declined Series B. Growing on revenue.',positive:decision==='accept'},
+    ],
+    breakdown:null
+  };
+}
+
+function processRound17(){
+  const response=getDecision(0);
+
+  S.brandScore=clamp(S.brandScore-30,0,100);
+
+  if(response==='fullrecall'){S.cash-=5000000;S.brandScore=clamp(S.brandScore+20,0,100);S.rating=clamp(S.rating-0.3,1,5);}
+  else if(response==='targeted'){S.cash-=2500000;S.rating=clamp(S.rating-0.5,1,5);}
+  else{S.cash-=500000;S.rating=clamp(S.rating-1.0,1,5);S.brandScore=clamp(S.brandScore-20,0,100);}
+
+  if(S.hasSOPs) S.brandScore=clamp(S.brandScore+10,0,100);
+
+  simulateMonth();
+  S.decisions[17]=`Response: ${response}`;
+
+  return {
+    title:'Month 17 — Food Safety Crisis',
+    items:[
+      {text:'Food poisoning at one outlet. 12 hospitalized. Media coverage.',positive:false},
+      {text:`Response: ${response==='fullrecall'?'Full audit + recall (₹50L) — thorough but expensive':response==='targeted'?'Targeted response (₹25L) — moderate':' PR campaign only (₹5L) — risky'}`,positive:response==='fullrecall'},
+      {text:S.hasSOPs?'Your SOPs helped contain the damage. Brand +10.':'No SOPs — damage harder to contain.',positive:S.hasSOPs},
+    ],
+    breakdown:buildPL()
+  };
+}
+
+function processRound18(){
+  const exit=getDecision(0);
+  S.decisions[18]=`Exit: ${exit}`;
+
+  const monthlyEBITDA=S.monthlyProfit+S.monthlyEMI;
+  const multiple=exit==='ipo'?18:exit==='acquisition'?12:10;
+  const finalVal=Math.max(5000000,Math.round(monthlyEBITDA*12*multiple*(S.totalOutlets/3)*(S.brandScore/50)));
+  ROUNDS[18]._finalValuation=finalVal;
+
+  const items=[];
+  if(exit==='ipo'){items.push({text:`IPO prep begins. Target valuation: ${fmt(finalVal)}. 3-year roadmap.`,positive:finalVal>50000000});}
+  else if(exit==='acquisition'){
+    const acquiAmt=Math.round(finalVal*0.7);S.cash+=acquiAmt;
+    items.push({text:`Acquired by Rebel Foods for ${fmt(acquiAmt)}!`,positive:true});
+  }
+  else if(exit==='private'){items.push({text:`Staying private. Building at your own pace. Valuation: ${fmt(finalVal)}`,positive:true});}
+  else{
+    const sellAmt=Math.round(finalVal*0.6);S.cash+=sellAmt;
+    items.push({text:`Sold majority stake for ${fmt(sellAmt)}. Starting fresh with lessons learned.`,positive:true});
+  }
+
+  return {title:'Month 18 — The Exit',items,breakdown:null};
+}
+
+/* ========== SCREENS ========== */
+function showIntro(){
+  S.phase='intro';
+  $strip.style.width='0%';$badge.textContent='START';$rlabel.textContent='DesiEats';$runway.style.display='none';
+
+  $main.innerHTML=`<div class="intro-screen">
+    <div style="display:flex;justify-content:center;gap:12px;font-size:2.5rem;margin-bottom:16px">🍛🍔🍕☕🥤</div>
+    <h1>DesiEats</h1>
+    <p class="subtitle">QSR Chain Builder Simulator — v2</p>
+    <div class="story">
+      <p>You are <strong>Arjun</strong>, a 22-year-old fresh graduate who has saved <strong>₹15,00,000</strong> (15 lakh).</p><br>
+      <p>Your dream: <strong>build a Quick Service Restaurant chain in Bengaluru</strong> and scale it across India.</p><br>
+      <p>Over <strong>18 months</strong>, you'll navigate founding decisions, menu engineering, marketing, competitor attacks, ingredient crises, viral reviews, funding rounds, multi-city expansion, and an exit strategy.</p><br>
+      <p><strong>New in v2:</strong> Realistic unit economics with GST. Lever-based decisions. EBITDA valuations. Simulated Zomato reviews. Burn rate tracking. Bankruptcy risk. Seasonal demand. Post-Series A scaling.</p><br>
+      <p style="color:var(--saffron);font-weight:700">Can you build a brand valuable enough to attract investors — or will you run out of cash trying?</p>
+    </div>
+    <div class="nav-row" style="justify-content:center">
+      <button class="btn btn-primary" onclick="window.startGame()" style="font-size:1rem;padding:14px 40px">Start Your Journey</button>
+    </div>
+    <div style="text-align:center;margin-top:8px;font-size:0.75rem;color:var(--muted)">18 rounds · MCQ + Lever decisions · 5 shocks · 2 funding rounds · Series A & B</div>
+  </div>`;
+}
+
+function setupRoundDecisions(r){
+  // Set up decisions and levers for each round dynamically
+  if(r===1){
+    ROUNDS[1].decisions=[
+      {label:'Choose Your Location',options:[
+        {id:'highstreet',letter:'A',title:'High Street',desc:`Busy road. Rent ${fmt(100000)}/mo. Footfall 180/day. Setup: ${fmt(setupCost('highstreet'))}.`,tag:{text:'Setup: '+fmt(setupCost('highstreet')),cls:'warn'}},
+        {id:'foodcourt',letter:'B',title:'Food Court (Mall)',desc:`Captive audience. Rent ${fmt(150000)}/mo. Footfall 250/day. Setup: ${fmt(setupCost('foodcourt'))}.`,tag:{text:'Setup: '+fmt(setupCost('foodcourt')),cls:'bad'}},
+        {id:'cloud',letter:'C',title:'Cloud Kitchen',desc:`Delivery only. Rent ${fmt(30000)}/mo. No walk-ins. Setup: ${fmt(setupCost('cloud'))}.`,tag:{text:'Setup: '+fmt(setupCost('cloud')),cls:'good'}},
+        {id:'college',letter:'D',title:'College Area',desc:`Young crowd. Rent ${fmt(55000)}/mo. Footfall 200/day. Setup: ${fmt(setupCost('college'))}.`,tag:{text:'Setup: '+fmt(setupCost('college')),cls:'neutral'}},
+      ]},
+      {label:'Choose Your Cuisine',options:[
+        {id:'southindian',letter:'A',title:'South Indian',desc:'Dosas, idlis, filter coffee. Margin: 65%. Low ingredient cost.'},
+        {id:'northindian',letter:'B',title:'North Indian',desc:'Parathas, chole, lassi. Margin: 55%. Higher ingredient cost.'},
+        {id:'burgers',letter:'C',title:'Burgers & Pizza',desc:'Western QSR. Margin: 62%. Youth appeal.'},
+        {id:'biryani',letter:'D',title:'Biryani Hub',desc:'Biryani, kebabs. Margin: 58%. High demand, competitive.'},
+      ]},
+      {label:'Set Your Price Point',options:[
+        {id:'budget',letter:'A',title:'Budget (₹80-120)',desc:'Avg ticket ₹100. Elasticity 1.3x footfall. Volume play.'},
+        {id:'mid',letter:'B',title:'Mid-Range (₹150-250)',desc:'Avg ticket ₹200. Standard elasticity. Balanced.'},
+        {id:'premium',letter:'C',title:'Premium (₹300-500)',desc:'Avg ticket ₹400. Elasticity 0.65x footfall. Margin play.'},
+      ]},
+      {label:'Brand Personality',options:[
+        {id:'quirky',letter:'A',title:'Quirky & Fun',desc:'Memes, bright colors, GenZ appeal. Brand +12.'},
+        {id:'traditional',letter:'B',title:'Traditional & Trust',desc:'Heritage vibes, family-friendly. Brand +5.'},
+        {id:'modern',letter:'C',title:'Modern & Premium',desc:'Minimalist, Instagram-worthy. Brand +8.'},
+      ]},
+      {label:'Funding Source',options:[
+        {id:'bootstrap',letter:'A',title:'Bootstrap (₹15L only)',desc:'Full ownership. Tight budget. Cloud kitchen or college area only.',tag:{text:'Full ownership',cls:'good'}},
+        {id:'family',letter:'B',title:'Family Loan (+₹10L at 0%)',desc:'₹25L total. No interest, but emotional debt. More location options.'},
+        {id:'bank',letter:'C',title:'Bank Loan (+₹15L at 12%)',desc:'₹30L total. EMI: ~₹15K/mo. All locations unlocked.',tag:{text:'EMI: ₹15K/mo',cls:'warn'}},
+        {id:'angel',letter:'D',title:'Angel Investor (+₹20L for 15%)',desc:'₹35L total. Gives up 15% equity. Best cash position.',tag:{text:'-15% equity',cls:'bad'}},
+      ]},
+    ];
+  }
+  else if(r===2){
+    ROUNDS[2].levers=[
+      {id:'menu_size',label:'Menu Size (number of items)',min:5,max:20,step:1,default:10,format:'number',hints:[
+        {at:5,text:'Focused — fewer items, better quality. Rating boost. Think: Dosa Plaza.'},
+        {at:8,text:'Lean — curated selection. Good balance of quality and variety.'},
+        {at:12,text:'Standard — covers all bases. Manageable complexity.'},
+        {at:16,text:'Extensive — wide selection but harder to maintain consistency.'},
+        {at:19,text:'Massive — your kitchen will struggle. Quality drops. Waste increases.'},
+      ]},
+      {id:'rd_budget',label:'R&D / Signature Dish Investment',min:0,max:75000,step:5000,default:30000,format:'currency',hints:[
+        {at:0,text:'No R&D — generic menu. No signature dish to differentiate.'},
+        {at:10000,text:'Basic testing — minor improvements. Rating +0.1.'},
+        {at:30000,text:'Signature dish developed! Your hero item. Rating +0.2.'},
+        {at:60000,text:'Premium R&D — chef-crafted signature dish. Rating +0.3. Your moat.'},
+      ]},
+      {id:'combo_discount',label:'Combo Discount %',min:0,max:25,step:5,default:10,format:'percent',hints:[
+        {at:0,text:'No combos. Full margin per item.'},
+        {at:5,text:'Light combos — small volume boost (+4%).'},
+        {at:10,text:'Standard combos — good volume boost (+8%). Popular with students.'},
+        {at:15,text:'Aggressive combos — strong volume (+12%) but thinner margins.'},
+        {at:20,text:'Deep discounting — huge volume (+16%) but margin is razor thin.'},
+      ]},
+    ];
+    ROUNDS[2].decisions=[];
+  }
+  else if(r===3){
+    ROUNDS[3].decisions=[
+      {label:'Team Size',options:[
+        {id:'lean',letter:'A',title:'Lean (3 people)',desc:'Low cost, 150/day capacity. You\'ll be overworked.'},
+        {id:'standard',letter:'B',title:'Standard (5 people)',desc:'Balanced. 250/day capacity. Room to breathe.'},
+        {id:'full',letter:'C',title:'Full Team (8 people)',desc:'High capacity (400/day). Higher cost but ready to scale.'},
+      ]},
+    ];
+    ROUNDS[3].levers=[
+      {id:'salary',label:'Monthly Salary per Person',min:12000,max:25000,step:1000,default:15000,format:'currency',hints:[
+        {at:12000,text:'Below market — saves money but morale tanks. Expect turnover.'},
+        {at:15000,text:'Market rate — fair. Standard retention.'},
+        {at:18000,text:'Above average — motivated team. Lower turnover.'},
+        {at:22000,text:'Premium pay — your staff will be loyal. Rating +0.1 from service quality.'},
+      ]},
+      {id:'training_budget',label:'Training Investment',min:0,max:75000,step:5000,default:20000,format:'currency',hints:[
+        {at:0,text:'No training. Staff learns on the job. Quality is inconsistent.'},
+        {at:5000,text:'Basic orientation. Minimal improvement.'},
+        {at:25000,text:'Professional training — hygiene, service, consistency. Rating +0.2. CRITICAL for FSSAI.'},
+        {at:60000,text:'Elite training program — your team operates like a chain. Rating +0.3. Future-proof.'},
+      ]},
+    ];
+  }
+  else if(r===4){
+    ROUNDS[4].levers=[
+      {id:'mkt_budget',label:'Marketing Budget',min:20000,max:200000,step:10000,default:50000,format:'currency',hints:[
+        {at:20000,text:'Minimal — flyers + WhatsApp. Brand +3. Slow organic growth.'},
+        {at:50000,text:'Moderate — Instagram ads + local SEO. Brand +10. Footfall +10%.'},
+        {at:100000,text:'Aggressive — Influencer collabs + Zomato featured. Brand +15. Footfall +15%.'},
+        {at:150000,text:'All-in blitz — multi-channel campaign. Brand +25. Footfall +20%. High CAC.'},
+      ]},
+      {id:'launch_discount',label:'Launch Discount %',min:0,max:30,step:5,default:10,format:'percent',hints:[
+        {at:0,text:'No discount. Full price from day 1. Strong positioning.'},
+        {at:10,text:'Modest 10% off — attracts trial without killing margins.'},
+        {at:20,text:'Aggressive 20% off — big footfall boost but margins hurt.'},
+        {at:25,text:'Deep discount — massive trial but perceived as "cheap". Rating may drop.'},
+      ]},
+    ];
+    ROUNDS[4].decisions=[
+      {label:'Delivery Platforms',options:[
+        {id:'none',letter:'A',title:'No Delivery',desc:'Dine-in focus. Higher margins, limited reach.'},
+        {id:'zomato',letter:'B',title:'Zomato Only',desc:'+30 orders/day. 25% commission.'},
+        {id:'swiggy',letter:'C',title:'Swiggy Only',desc:'+30 orders/day. 22% commission.'},
+        {id:'both',letter:'D',title:'Both Platforms',desc:'+60 orders/day. 23.5% avg commission.'},
+      ]},
+    ];
+  }
+  else if(r===5){
+    ROUNDS[5].decisions=[{label:'Response to Inspection',options:[
+      {id:'upgrade',letter:'A',title:'Full Kitchen Upgrade (₹2L)',desc:'Complete overhaul. Rating +0.2. Future-proofed.',tag:{text:'Best long-term',cls:'good'}},
+      {id:'consultant',letter:'B',title:'Hire Hygiene Consultant (₹40K)',desc:'Targeted fixes. Rating +0.1.'},
+      {id:'minimum',letter:'C',title:'Minimum Compliance',desc:'Cheapest option. Addresses immediate issues only.'},
+      {id:'ignore',letter:'D',title:'Ignore',desc:'Save money now. Risk worse next time.',tag:{text:'⚠️ Risky',cls:'bad'}},
+    ]}];
+  }
+  else if(r===6){
+    ROUNDS[6].decisions=[
+      {label:'Competitive Response',options:[
+        {id:'pricewar',letter:'A',title:'Price War',desc:'Match their discounts. Recovers footfall fast but margin -10%.',tag:{text:'Margin killer',cls:'bad'}},
+        {id:'differentiate',letter:'B',title:'Differentiate (₹50K)',desc:'Unique experience. Rating +0.2. Slower recovery but sustainable.'},
+        {id:'loyalty',letter:'C',title:'Loyalty Program (₹20K)',desc:'Reward regulars. 15% repeat boost.'},
+        {id:'quality',letter:'D',title:'Focus on Quality',desc:'Bet on your product. Gradual organic recovery.'},
+      ]},
+      {label:'Customer Retention',options:[
+        {id:'whatsapp',letter:'A',title:'WhatsApp Community',desc:'Direct channel. +8% repeat rate.'},
+        {id:'punchcard',letter:'B',title:'Punch Card',desc:'Buy 9, get 1 free. +5% repeat rate.'},
+        {id:'nothing',letter:'C',title:'Nothing',desc:'Hope quality speaks for itself.'},
+      ]},
+    ];
+  }
+  else if(r===7){
+    ROUNDS[7].decisions=[
+      {label:'Expansion',options:[
+        {id:'outlet2',letter:'A',title:'Open Outlet #2 (₹10L)',desc:'Physical expansion. +5 staff. 1.3x valuation multiplier.'},
+        {id:'cloudarm',letter:'B',title:'Cloud Kitchen Arm (₹4L)',desc:'Delivery expansion. +50 delivery orders/day. Lower risk.'},
+        {id:'stay',letter:'C',title:'Stay Single Outlet',desc:'Perfect what you have. No expansion cost.'},
+      ]},
+      {label:'Operations',options:[
+        {id:'sops',letter:'A',title:'Create SOPs (₹20K)',desc:'Document recipes + processes. Consistency +0.1. Essential for scaling.'},
+        {id:'centralkitchen',letter:'B',title:'Central Kitchen (₹2.5L)',desc:'Centralize cooking. COGS -8% permanently.'},
+        {id:'chefdependent',letter:'C',title:'Stay Chef-Dependent',desc:'No investment. Knowledge lives in people\'s heads.'},
+      ]},
+    ];
+  }
+  else if(r===8){
+    ROUNDS[8].levers=[
+      {id:'price_adjust',label:'Price Increase %',min:0,max:30,step:5,default:0,format:'percent',hints:[
+        {at:0,text:'Absorb the cost. Your margin takes the full hit. Cash bleeds.'},
+        {at:5,text:'Slight increase. Most customers won\'t notice. Minimal demand loss.'},
+        {at:10,text:'Moderate hike. Some regulars may switch. -8% footfall.'},
+        {at:15,text:'Noticeable increase. -12% footfall. Some negative reviews.'},
+        {at:20,text:'Significant hike. -16% footfall. "Too expensive" complaints.'},
+        {at:25,text:'Major increase. -20% footfall. Risk of losing loyal customers.'},
+      ]},
+    ];
+    ROUNDS[8].decisions=[
+      {label:'Supply Chain',options:[
+        {id:'contract',letter:'A',title:'Contract Farming (₹50K)',desc:'Lock in prices. Stabilizes in 2 months.'},
+        {id:'wholesale',letter:'B',title:'Wholesale Market',desc:'Cheaper but variable quality. Rating -0.05.'},
+        {id:'current',letter:'C',title:'Current Vendor',desc:'No change. Full price exposure.'},
+      ]},
+      {label:'Menu Adaptation',options:[
+        {id:'monsoon',letter:'A',title:'Seasonal Special Menu',desc:'Creative pivot around available ingredients. Brand +5.'},
+        {id:'removecostly',letter:'B',title:'Remove Costly Items',desc:'Protect margins. Slight volume loss.'},
+        {id:'keepfull',letter:'C',title:'Keep Full Menu',desc:'Absorb the cost hit entirely.'},
+      ]},
+    ];
+  }
+  else if(r===10){
+    ROUNDS[10].decisions=[
+      {label:'Replacement Strategy',options:[
+        {id:'quick',letter:'A',title:'Quick Hires',desc:'Operational fast but lower quality. Rating -0.1 extra.'},
+        {id:'careful',letter:'B',title:'Careful Recruitment',desc:'Quality hires but reduced capacity this month.'},
+        {id:'promote',letter:'C',title:'Promote from Within',desc:'Internal promotion + hire juniors. Morale +10.'},
+      ]},
+      {label:'Retain Remaining Staff',options:[
+        {id:'raise20',letter:'A',title:'20% Salary Raise',desc:'Stops further departures. Increases fixed costs.'},
+        {id:'profitshare',letter:'B',title:'Profit Sharing',desc:'Aligned incentives. Morale +15. Variable cost.'},
+        {id:'nothing',letter:'C',title:'Do Nothing',desc:'Hope they stay. Morale -10.'},
+      ]},
+      {label:'Knowledge Systems',options:[
+        {id:'consultant',letter:'A',title:'Kitchen Consultant (₹40K)',desc:'Expert overhaul. SOPs + Rating +0.15.'},
+        {id:'document',letter:'B',title:'Document Recipes (₹15K)',desc:'In-house documentation. SOPs created.'},
+        {id:'institutional',letter:'C',title:'Rely on Memory',desc:'Fragile. Knowledge walks when people walk.'},
+      ]},
+    ];
+  }
+  else if(r===11){
+    ROUNDS[11].decisions=[
+      {label:'Pricing Strategy',options:[
+        {id:'valuemeals',letter:'A',title:'₹99 Value Combos',desc:'Recover 15% footfall. Ticket drops 15%.'},
+        {id:'happyhour',letter:'B',title:'Happy Hour Discounts',desc:'Off-peak boost. Moderate recovery.'},
+        {id:'hold',letter:'C',title:'Hold Prices',desc:'Maintain positioning. Ride it out.'},
+      ]},
+      {label:'Cost Cutting',options:[
+        {id:'layoff',letter:'A',title:'Lay Off 2 Staff',desc:'Saves money. Morale tanks -20. Capacity -30%.'},
+        {id:'cutmarketing',letter:'B',title:'Cut Marketing 50%',desc:'Saves money. Brand -5.'},
+        {id:'renegotiaterent',letter:'C',title:'Renegotiate Rent',desc:'50% chance of 15% reduction.'},
+        {id:'nocuts',letter:'D',title:'No Cuts',desc:'Maintain operations. Hope for recovery.'},
+      ]},
+      {label:'Pivot',options:[
+        {id:'tiffin',letter:'A',title:'Tiffin Service (₹15K)',desc:'Stable ₹30K/mo revenue. New market.'},
+        {id:'corporate',letter:'B',title:'Corporate Bulk Orders',desc:'High-value B2B. Variable but lucrative.'},
+        {id:'nochange',letter:'C',title:'No Pivot',desc:'Stay the course.'},
+      ]},
+    ];
+  }
+  else if(r===12){
+    // Will be set in preprocessor
+    ROUNDS[12].decisions=[];
+  }
+  else if(r===13){
+    ROUNDS[13].decisions=[
+      {label:'City 1',options:[
+        {id:'mumbai',letter:'A',title:'Mumbai',desc:'Huge market. High rent (₹2L+). Fierce competition.'},
+        {id:'delhi',letter:'B',title:'Delhi NCR',desc:'Massive population. North Indian preference. Good delivery infra.'},
+        {id:'hyderabad',letter:'C',title:'Hyderabad',desc:'Biryani capital. Tech crowd. Moderate rents.'},
+        {id:'pune',letter:'D',title:'Pune',desc:'College city. Budget-friendly crowd. Lower setup cost.'},
+      ]},
+      {label:'City 2',options:[
+        {id:'chennai',letter:'A',title:'Chennai',desc:'South Indian heartland. Strong filter coffee culture.'},
+        {id:'mumbai2',letter:'B',title:'Mumbai',desc:'If not chosen above. Massive delivery market.'},
+        {id:'delhi2',letter:'C',title:'Delhi NCR',desc:'If not chosen above.'},
+        {id:'hyderabad2',letter:'D',title:'Hyderabad',desc:'If not chosen above.'},
+      ]},
+    ];
+    ROUNDS[13].levers=[
+      {id:'city1_budget',label:'City 1 Budget',min:500000,max:2500000,step:100000,default:1000000,format:'currency',hints:[
+        {at:500000,text:'Minimal — cloud kitchen only. Low risk, slow start.'},
+        {at:1000000,text:'Standard — 1 outlet + marketing. Solid start.'},
+        {at:1500000,text:'Strong entry — prime location + launch campaign.'},
+        {at:2000000,text:'Premium launch — flagship outlet + aggressive marketing.'},
+      ]},
+      {id:'city2_budget',label:'City 2 Budget',min:500000,max:2500000,step:100000,default:800000,format:'currency',hints:[
+        {at:500000,text:'Lean start — test the market before committing.'},
+        {at:1000000,text:'Standard entry — balanced investment.'},
+        {at:1500000,text:'Strong push — multiple outlets planned.'},
+        {at:2000000,text:'All-in — dominate from day 1.'},
+      ]},
+    ];
+  }
+  else if(r===14){
+    ROUNDS[14].decisions=[{label:'Operating Model',options:[
+      {id:'franchise',letter:'A',title:'Franchise Model',desc:'Fast scaling via franchisees. 6% royalty revenue. Less quality control. +4 outlets.',tag:{text:'Fastest growth',cls:'good'}},
+      {id:'foco',letter:'B',title:'FOCO (Franchise-Owned, Company-Operated)',desc:'Partners own, you operate. ₹12L investment. +2 outlets. Balanced.'},
+      {id:'companyowned',letter:'C',title:'Company-Owned',desc:'Full control. ₹20L per outlet. +1 outlet. Highest quality.',tag:{text:'Most expensive',cls:'warn'}},
+    ]}];
+  }
+  else if(r===15){
+    ROUNDS[15].decisions=[
+      {label:'Underperforming Outlet A (taste mismatch)',options:[
+        {id:'close',letter:'A',title:'Close It (₹5L exit cost)',desc:'Cut losses. Staff severance + lease penalty.'},
+        {id:'pivot',letter:'B',title:'Pivot Menu (₹2L)',desc:'Adapt to local taste. Rating +0.1 if successful.'},
+        {id:'discount',letter:'C',title:'Aggressive Discounts (₹1L)',desc:'Build footfall, hope for turnaround.'},
+      ]},
+      {label:'Underperforming Outlet B (rent dispute)',options:[
+        {id:'close',letter:'A',title:'Close It (₹5L exit cost)',desc:'Walk away from the lease dispute.'},
+        {id:'cloudswitch',letter:'B',title:'Switch to Cloud Kitchen (₹1.5L)',desc:'Reduce rent, keep delivery revenue.'},
+        {id:'renegotiate',letter:'C',title:'Legal Renegotiation (₹50K)',desc:'Fight for better terms.'},
+      ]},
+    ];
+  }
+  else if(r===16){
+    const monthlyEBITDA=S.monthlyProfit+S.monthlyEMI;
+    const annualizedEBITDA=monthlyEBITDA*12;
+    const multiple=S.totalOutlets>=8?15:S.totalOutlets>=5?12:10;
+    const valuation=Math.max(5000000,Math.round(annualizedEBITDA*multiple*(S.totalOutlets>=5?1.5:1.0)*(S.brandScore>=50?1.3:1.0)));
+    ROUNDS[16].decisions=[{label:`Valuation: ${fmt(valuation)} (${multiple}x EBITDA)`,options:[
+      {id:'accept',letter:'A',title:`Accept: ${fmt(Math.round(valuation*0.12))} for 12%`,desc:'Fuel the next phase of growth.'},
+      {id:'negotiate',letter:'B',title:'Negotiate Better Terms',desc:'Push for 8% equity. Risky.'},
+      {id:'decline',letter:'C',title:'Decline — Grow on Revenue',desc:'No dilution. Slower but fully yours.'},
+    ]}];
+  }
+  else if(r===17){
+    ROUNDS[17].decisions=[{label:'Crisis Response',options:[
+      {id:'fullrecall',letter:'A',title:'Full Audit + Recall (₹50L)',desc:'Audit every outlet. Recall affected batches. Most expensive but thorough.',tag:{text:'Brand recovery',cls:'good'}},
+      {id:'targeted',letter:'B',title:'Targeted Response (₹25L)',desc:'Only address affected outlet. Moderate approach.'},
+      {id:'pronly',letter:'C',title:'PR Campaign Only (₹5L)',desc:'Spin it. Cheapest but rating will tank.',tag:{text:'⚠️ High risk',cls:'bad'}},
+    ]}];
+  }
+  else if(r===18){
+    ROUNDS[18].decisions=[{label:'Exit Strategy',options:[
+      {id:'ipo',letter:'A',title:'Prepare for IPO',desc:'3-year roadmap to public listing. Highest potential valuation.'},
+      {id:'acquisition',letter:'B',title:'Strategic Acquisition',desc:'Sell to Rebel Foods/Jubilant. 70% of valuation. Immediate liquidity.'},
+      {id:'private',letter:'C',title:'Stay Private',desc:'Keep building. Full control. Your timeline.'},
+      {id:'sellstart',letter:'D',title:'Sell & Start New',desc:'60% of valuation. Use learnings for venture #2.'},
+    ]}];
+  }
+}
+
+function showRound(){
+  S.phase='decision';
+  const r=S.round;
+  $strip.style.width=((r-1)/TOTAL_ROUNDS*100)+'%';
+  $badge.textContent='MONTH '+r+'/'+TOTAL_ROUNDS;
+  $rlabel.textContent=ROUNDS[r].title;
+
+  // Update runway badge
+  if(r>1){
+    calcUnitEconomics();
+    $runway.style.display='inline-block';
+    if(S.burnRate>0){
+      $runway.textContent=S.runwayMonths+'mo runway';
+      $runway.className='runway-badge '+(S.runwayMonths>12?'runway-safe':S.runwayMonths>6?'runway-warn':'runway-danger');
+    } else {
+      $runway.textContent='Profitable ✓';
+      $runway.className='runway-badge runway-safe';
+    }
+  }
+
+  // Dynamic setup
+  if(r===9){/* processRound9 sets decisions dynamically */}
+  setupRoundDecisions(r);
+
+  const rd=ROUNDS[r];
+  let h=renderRoundRail()+renderMetrics();
+  if(r>1) h+=renderUnitEconomics();
+
+  // Season banner
+  h+=renderSeason();
+
+  // Shock banner
+  if(rd.isShock) h+=`<div class="event-banner shock"><div class="ev-icon">⚠️</div><div class="ev-text"><strong>SHOCK EVENT — Month ${r}</strong><br>${rd.narrative||''}</div></div>`;
+
+  // Scene card
+  h+=getRoundScene(r);
+
+  // Scenario card with decisions
+  h+=`<div class="scenario-card"><span class="tag tag-${rd.isShock?'shock':r===12||r===16?'funding':'decision'}">${rd.isShock?'Shock':r===12||r===16?'Funding':'Month '+r}</span><h2>${rd.title}</h2>`;
+  if(rd.narrative&&!rd.isShock) h+=`<p>${rd.narrative}</p>`;
+
+  // Render levers
+  if(rd.levers){for(const lev of rd.levers) h+=leverHTML(lev);}
+
+  // Render MCQ decisions
+  if(rd.decisions){for(let i=0;i<rd.decisions.length;i++) h+=optionCardsHTML(rd.decisions[i],i);}
+
+  h+='</div>';
+
+  // Journal
+  h+=renderJournal();
+
+  // Submit
+  const autoEnable=!rd.decisions||rd.decisions.length===0;
+  h+=`<div class="nav-row"><button class="btn btn-primary" id="submitBtn" ${autoEnable?'':'disabled'} onclick="window.submitDecisions()">Submit Decisions</button></div>`;
+
+  $main.innerHTML=h;
+  $main.scrollTo({top:0});window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showOutcome(outcomeData){
+  S.phase='outcome';
+  const r=S.round;
+  let h=renderRoundRail()+renderMetrics();
+  if(r>1) h+=renderUnitEconomics();
+
+  // Insight
+  h+=renderInsight();
+
+  // Reviews
+  if(r>=2) h+=renderReviews();
+
+  // Outcome
+  const isPos=S.monthlyProfit>=0;
+  h+=`<div class="outcome-section${isPos?'':' negative'}"><h3>${outcomeData.title}</h3><ul class="outcome-list">`;
+  for(const item of outcomeData.items){
+    const icon=item.positive?'✅':(item.neutral?'ℹ️':'⚠️');
+    h+=`<li><span class="ol-icon">${icon}</span><span>${item.text}</span></li>`;
+  }
+  h+='</ul></div>';
+
+  // P&L
+  if(outcomeData.breakdown){
+    h+=`<div class="scenario-card"><span class="tag tag-info">Financial Summary</span><h2>Month ${r} P&L</h2>`;
+    h+=`<table class="cost-table"><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody>`;
+    for(const row of outcomeData.breakdown){
+      const cls=row.total?' class="total"':row.gst?' class="gst"':'';
+      h+=`<tr${cls}><td>${row.label}</td><td style="color:${row.negative?'var(--loss)':row.total?'var(--ink)':'var(--neem)'}">${row.value}</td></tr>`;
+    }
+    h+='</tbody></table></div>';
+  }
+
+  // Bankruptcy check
+  if(S.cash<0){
+    h+=`<div class="event-banner shock"><div class="ev-icon">🚨</div><div class="ev-text"><strong>CASH NEGATIVE!</strong> You have ${fmtFull(S.cash)}. You need to find revenue or cut costs immediately, or DesiEats shuts down.</div></div>`;
+  }
+
+  const isLast=r>=TOTAL_ROUNDS;
+  h+=`<div class="nav-row"><button class="btn btn-primary" onclick="window.nextRound()">${isLast?'View Final Results':'Next Month →'}</button></div>`;
+
+  $main.innerHTML=h;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showGameOver(){
+  $main.innerHTML=`<div class="gameover-screen">
+    <div style="font-size:3rem;margin-bottom:16px">💸</div>
+    <h1>DesiEats Ran Out of Cash</h1>
+    <p style="color:var(--muted);margin:16px 0;max-width:500px;margin-left:auto;margin-right:auto">You ran out of money in Month ${S.round}. In the real world, this means closing doors, letting go of staff, and losing your deposit. But the lessons you learned are worth more than any MBA textbook.</p>
+    <div class="scenario-card" style="text-align:left;max-width:500px;margin:20px auto">
+      <h3>What went wrong?</h3>
+      <ul style="margin-top:10px;padding-left:20px;font-size:0.88rem;line-height:1.8">
+        <li>Final cash: <strong style="color:var(--loss)">${fmtFull(S.cash)}</strong></li>
+        <li>Setup cost may have been too high for your funding</li>
+        <li>Monthly burn exceeded revenue</li>
+        <li>Total revenue earned: ${fmt(S.totalRevenue)}</li>
+        <li>Total profit: ${fmt(S.totalProfit)}</li>
+      </ul>
+    </div>
+    <div class="nav-row" style="justify-content:center;gap:12px">
+      <button class="btn btn-primary" onclick="window.location.reload()">Try Again</button>
+      <a href="index.html" class="btn btn-secondary" style="text-decoration:none">Back to Hub</a>
+    </div>
+  </div>`;
+}
+
+function showResults(){
+  S.phase='results';
+  $strip.style.width='100%';$badge.textContent='COMPLETE';$rlabel.textContent='Results';
+
+  const finalVal=ROUNDS[18]._finalValuation||ROUNDS[12]._valuation||0;
+
+  let profileTitle,profileDesc;
+  if(finalVal>50000000){profileTitle='The Unicorn Builder';profileDesc='VCs are fighting to get in. You built something remarkable.';}
+  else if(finalVal>20000000){profileTitle='The Growth Machine';profileDesc='Strong fundamentals, clear trajectory. Your QSR chain is real.';}
+  else if(finalVal>10000000){profileTitle='The Bootstrapper';profileDesc='Profitable and sustainable. You proved it works.';}
+  else if(finalVal>5000000){profileTitle='The Survivor';profileDesc='Tough market, but you\'re still standing.';}
+  else{profileTitle='The Lesson Learner';profileDesc='The education was worth more than any MBA.';}
+
+  let h='<div class="results-screen">';
+  h+=`<div class="results-hero"><div class="valuation-label">Final Valuation</div><div class="valuation-number">${fmt(finalVal)}</div><div class="profile-title">"${profileTitle}"</div><div class="profile-desc">${profileDesc}</div></div>`;
+
+  h+='<div class="stats-grid">';
+  const stats=[
+    {label:'Total Revenue',value:fmt(S.totalRevenue)},{label:'Total Profit',value:fmt(S.totalProfit)},
+    {label:'Final Cash',value:fmtFull(S.cash)},{label:'Peak Revenue/mo',value:fmt(S.peakRevenue)},
+    {label:'Rating',value:S.rating.toFixed(1)+'/5'},{label:'Brand Score',value:S.brandScore+'/100'},
+    {label:'Total Outlets',value:S.totalOutlets.toString()},{label:'Equity Retained',value:(100-S.equityGiven)+'%'},
+    {label:'GST Paid',value:fmt(S.totalGST)},{label:'Staff Morale',value:S.staffMorale+'/100'},
+  ];
+  for(const s of stats) h+=`<div class="stat-card"><div class="sc-label">${s.label}</div><div class="sc-value">${s.value}</div></div>`;
+  h+='</div>';
+
+  // Takeaways
+  h+='<div class="scenario-card"><span class="tag tag-outcome">Key Takeaways</span><h2>What You Learned</h2>';
+  const takeaways=[
+    'Unit economics are everything — revenue means nothing if contribution margin is negative.',
+    'Cash is oxygen — track your burn rate and runway obsessively.',
+    'People are your business — training and fair pay compound into quality and retention.',
+    'Shocks are inevitable — the response matters more than the event.',
+    'Brand compounds — every quality decision adds to (or subtracts from) your brand equity.',
+    'Growth without systems is chaos — SOPs and central kitchens scale; gut feelings don\'t.',
+    'GST, compliance, and regulations are real costs — build them into your pricing from day 1.',
+    'Valuation follows EBITDA — investors want profitable growth, not just revenue.',
+  ];
+  for(let i=0;i<takeaways.length;i++) h+=`<div class="takeaway-card"><span class="tw-num">${i+1}</span><span class="tw-text">${takeaways[i]}</span></div>`;
+  h+='</div>';
+
+  // Round review
+  h+='<div class="scenario-card"><span class="tag tag-info">Round-by-Round</span><h2>Your Journey</h2>';
+  const shockRounds=[5,6,8,9,10,11,15,17];
+  for(let i=0;i<S.history.length;i++){
+    const hist=S.history[i];
+    const rn=i+1;
+    const isShock=shockRounds.includes(rn);
+    h+=`<button class="review-toggle" onclick="toggleReview(this)" data-round="${rn}"><span>${isShock?'⚠️ ':''}Month ${rn}: ${ROUNDS[rn].title}</span><span class="arrow">▶</span></button>
+    <div class="review-panel" data-round="${rn}"><p><strong>Decisions:</strong> ${S.decisions[rn]||'N/A'}</p>
+    <p><strong>Revenue:</strong> ${fmt(hist.revenue)} | <strong>Profit:</strong> ${fmt(hist.profit)} | <strong>Cash:</strong> ${fmtFull(hist.cash)}</p>
+    <p><strong>Rating:</strong> ${hist.rating.toFixed(1)} | <strong>Brand:</strong> ${hist.brand} | <strong>Morale:</strong> ${hist.morale} | <strong>Customers:</strong> ${hist.customers}</p>
+    ${S.journal[rn]?'<p><strong>Your Notes:</strong> <em>'+S.journal[rn]+'</em></p>':''}</div>`;
+  }
+  h+='</div>';
+
+  h+=`<div class="nav-row" style="justify-content:center;gap:12px"><button class="btn btn-secondary" onclick="window.location.reload()">Play Again</button><a href="index.html" class="btn btn-primary" style="text-decoration:none">Back to Hub</a></div>`;
+  h+='</div>';
+  $main.innerHTML=h;window.scrollTo({top:0,behavior:'smooth'});
+}
+
+window.toggleReview=function(btn){
+  const r=btn.dataset.round;
+  const panel=document.querySelector(`.review-panel[data-round="${r}"]`);
+  btn.classList.toggle('open');panel.classList.toggle('open');
+};
+
+/* ========== GAME FLOW ========== */
+window.startGame=function(){
+  resetState();
+  S.round=1;
+  showRound();
+};
+
+window.submitDecisions=function(){
+  saveMetrics();
+
+  // Save journal entry
+  const journalEl=document.getElementById('journalInput');
+  if(journalEl&&journalEl.value.trim()) S.journal[S.round]=journalEl.value.trim();
+
+  const processors={
+    1:processRound1,2:processRound2,3:processRound3,4:processRound4,
+    5:processRound5,6:processRound6,7:processRound7,8:processRound8,
+    9:processRound9,10:processRound10,11:processRound11,12:processRound12,
+    13:processRound13,14:processRound14,15:processRound15,16:processRound16,
+    17:processRound17,18:processRound18,
+  };
+
+  const outcome=processors[S.round]();
+
+  S.history.push({
+    round:S.round,revenue:S.monthlyRevenue,profit:S.monthlyProfit,cash:S.cash,
+    rating:S.rating,brand:S.brandScore,morale:S.staffMorale,customers:Math.round(S.dailyCustomers),
+  });
+
+  // Bankruptcy check — only after round 3 (give time to get started)
+  if(S.cash<-500000&&S.round>=3){
+    showGameOver();
+    return;
+  }
+
+  showOutcome(outcome);
+};
+
+window.nextRound=function(){
+  if(S.round>=TOTAL_ROUNDS){showResults();return;}
+  S.round++;
+  showRound();
+};
+
+/* ========== INIT ========== */
+showIntro();
+
+})();
+</script>
+</body>
+</html>
