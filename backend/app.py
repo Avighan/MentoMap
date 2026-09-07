@@ -566,6 +566,41 @@ def get_game_or_400(game_id: str):
     return game, None
 
 
+def _log_choice_label(entry: dict) -> str:
+    """`entry["choice"]` is a `{id, label}` dict for the synthetic log
+    entries auto-finalize writes for board/card/chess/etc. game types, but
+    a plain string (the choice_id itself — see engine.py's apply_choice)
+    for every game driven through the generic engine.py play path. Several
+    report-building call sites assumed the dict shape only and crashed
+    with AttributeError on the string shape; this normalizes both."""
+    choice = entry.get("choice")
+    if isinstance(choice, dict):
+        return choice.get("label", "")
+    if isinstance(choice, str):
+        return choice
+    return ""
+
+
+def _log_choice_id(entry: dict) -> str:
+    """Same dict-or-string normalization as `_log_choice_label`, for id."""
+    choice = entry.get("choice")
+    if isinstance(choice, dict):
+        return choice.get("id", "")
+    if isinstance(choice, str):
+        return choice
+    return ""
+
+
+def _numeric_state_value(value) -> float:
+    """Some games track a state field as a plain number, others as a
+    richer {value, min, max, icon, label} object (see e.g.
+    games/civic-sense-champion-game.json). Unwrap either shape into a
+    plain number instead of letting arithmetic on the dict shape crash."""
+    if isinstance(value, dict):
+        value = value.get("value", 0)
+    return value if isinstance(value, (int, float)) and not isinstance(value, bool) else 0
+
+
 CATEGORY_MAP = {
     "rounds": "Story & Narrative",
     "story_branching": "Story & Narrative",
@@ -952,6 +987,11 @@ def build_round_payload(game: dict, state_obj):
             val = _var_ctx.get(key)
             if val is None:
                 return m.group(0)          # keep placeholder if unknown
+            # Some state fields are a richer {value, min, max, icon, label}
+            # object rather than a plain number — interpolate the number,
+            # not a Python dict repr (see games/civic-sense-champion-game.json).
+            if isinstance(val, dict):
+                val = val.get("value", val)
             if isinstance(val, float) and val == int(val):
                 return str(int(val))
             return str(val)
@@ -1183,8 +1223,8 @@ def build_round_payload(game: dict, state_obj):
         except Exception as arena_enhance_err:
             logger.warning(f"AI Arena round enhancement failed: {arena_enhance_err}")
     payload = {
-        "id": rnd["id"],
-        "title": rnd["title"],
+        "id": rnd.get("id") or rnd.get("round_id"),
+        "title": rnd.get("title") or rnd.get("round_title", ""),
         "story": rnd.get("story", ""),
         "setting": rnd.get("setting", ""),
         "challenge": rnd.get("challenge", ""),
@@ -6319,15 +6359,25 @@ def run_report(run_id):
         try:
             log_choices = [
                 {
-                    "choice_id": x.get("choice", {}).get("id"),
-                    "skill_tags": x.get("choice", {}).get("skill_tags", []),
-                    "risk_level": x.get("choice", {}).get("risk_level", "medium"),
-                    "choice_type": x.get("choice", {}).get("choice_type", ""),
+                    "choice_id": _log_choice_id(x),
+                    # skill_tags is a sibling of "choice" on the outcome dict
+                    # engine.py's apply_choice returns (see its docstring),
+                    # not nested under it — risk_level/choice_type aren't
+                    # tracked by that engine at all, so default them.
+                    "skill_tags": x.get("skill_tags", []),
+                    "risk_level": x.get("risk_level", "medium"),
+                    "choice_type": x.get("choice_type", ""),
                 }
                 for x in r["log"] if x.get("choice")
             ]
             _rounds_state = dict(final_state)
-            if not _rounds_state.get("choice_history"):
+            # Some code paths populate state.choice_history with entries that
+            # aren't the {choice_id, skill_tags, ...} dict shape the scoring
+            # helpers below expect (observed: plain floats) — fall back to
+            # our own freshly-built log_choices whenever that's the case,
+            # rather than crashing deep inside aggregate_behavioral_signals.
+            _existing_ch = _rounds_state.get("choice_history")
+            if not _existing_ch or not all(isinstance(c, dict) for c in _existing_ch):
                 _rounds_state["choice_history"] = log_choices
             if not _rounds_state.get("rounds_completed"):
                 _rounds_state["rounds_completed"] = [x.get("round_id") for x in r["log"] if x.get("round_id")]
@@ -6439,15 +6489,16 @@ def run_report(run_id):
         try:
             log_choices = [
                 {
-                    "choice_id": x.get("choice", {}).get("id"),
-                    "skill_tags": x.get("choice", {}).get("skill_tags", []),
-                    "risk_level": x.get("choice", {}).get("risk_level", "medium"),
-                    "choice_type": x.get("choice", {}).get("choice_type", ""),
+                    "choice_id": _log_choice_id(x),
+                    "skill_tags": x.get("skill_tags", []),
+                    "risk_level": x.get("risk_level", "medium"),
+                    "choice_type": x.get("choice_type", ""),
                 }
                 for x in r["log"] if x.get("choice")
             ]
             _sim_state = dict(final_state)
-            if not _sim_state.get("choice_history"):
+            _existing_ch = _sim_state.get("choice_history")
+            if not _existing_ch or not all(isinstance(c, dict) for c in _existing_ch):
                 _sim_state["choice_history"] = log_choices
             if not _sim_state.get("rounds_completed"):
                 _sim_state["rounds_completed"] = [x.get("round_id") for x in r["log"] if x.get("round_id")]
@@ -6490,7 +6541,7 @@ def run_report(run_id):
             logger.warning(f"Auto-finalize strategy game failed: {e}")
     # Collect deterministic evidence
     nep_tags_seen = sorted({t for x in r["log"] for t in x.get("nep_tags", [])})
-    choices = [{"round_id": x.get("round_id", x.get("scene_id", "")), "choice": x.get("choice", {}).get("label", x.get("label", ""))} for x in r["log"]]
+    choices = [{"round_id": x.get("round_id", x.get("scene_id", "")), "choice": _log_choice_label(x) or x.get("label", "")} for x in r["log"]]
     events = [
         {"round_id": x.get("round_id", x.get("scene_id", "")), "events": x.get("events", [])}
         for x in r["log"]
@@ -6511,37 +6562,30 @@ def run_report(run_id):
         # Get state changes
         state_before = log_entry.get("state_before", {})
         state_after = log_entry.get("state_after_events", {})
-        
-        # Calculate key stat changes
+
+        # Calculate key stat changes. Some games track these as plain
+        # numbers, others as a richer {value, min, max, icon, label} object
+        # (see e.g. games/civic-sense-champion-game.json) — _numeric_state_value
+        # unwraps either shape instead of assuming a plain number and
+        # crashing on the subtraction below.
+        def _stat_pair(key_a, key_b=None):
+            before = _numeric_state_value(state_before.get(key_a, state_before.get(key_b, 0) if key_b else 0))
+            after = _numeric_state_value(state_after.get(key_a, state_after.get(key_b, 0) if key_b else 0))
+            return {"before": before, "after": after, "change": after - before}
+
         stat_changes = {
-            "money": {
-                "before": state_before.get("money_inr", state_before.get("cash_inr", 0)),
-                "after": state_after.get("money_inr", state_after.get("cash_inr", 0)),
-                "change": state_after.get("money_inr", state_after.get("cash_inr", 0)) - state_before.get("money_inr", state_before.get("cash_inr", 0))
-            },
-            "reputation": {
-                "before": state_before.get("reputation", 0),
-                "after": state_after.get("reputation", 0),
-                "change": state_after.get("reputation", 0) - state_before.get("reputation", 0)
-            },
-            "stress": {
-                "before": state_before.get("stress", 0),
-                "after": state_after.get("stress", 0),
-                "change": state_after.get("stress", 0) - state_before.get("stress", 0)
-            },
-            "team_trust": {
-                "before": state_before.get("team_trust", 0),
-                "after": state_after.get("team_trust", 0),
-                "change": state_after.get("team_trust", 0) - state_before.get("team_trust", 0)
-            }
+            "money": _stat_pair("money_inr", "cash_inr"),
+            "reputation": _stat_pair("reputation"),
+            "stress": _stat_pair("stress"),
+            "team_trust": _stat_pair("team_trust"),
         }
         
         round_data = {
             "round_number": idx + 1,
             "round_id": log_entry.get("round_id", log_entry.get("scene_id", "")),
             "round_title": log_entry.get("round_title", ""),
-            "choice": log_entry.get("choice", {}).get("label", ""),
-            "choice_id": log_entry.get("choice", {}).get("id", ""),
+            "choice": _log_choice_label(log_entry),
+            "choice_id": _log_choice_id(log_entry),
             "stat_changes": stat_changes,
             "events": log_entry.get("events", []),
             "reflection": log_entry.get("reflection", ""),
@@ -6652,7 +6696,7 @@ def run_report(run_id):
         from llm import llm_enabled
         if llm_enabled() and normalized_dimensions:
             from llm import generate_skill_report
-            choices_made_text = [x.get("choice", {}).get("label", "") for x in r.get("log", [])]
+            choices_made_text = [_log_choice_label(x) for x in r.get("log", [])]
             skill_report = generate_skill_report(
                 normalized_dimensions,
                 game.get("game_type", "rounds"),
@@ -6686,7 +6730,7 @@ def run_report(run_id):
             debrief = generate_end_debrief({
                 "game_type": game.get("game_type", "rounds"),
                 "title": game.get("title", ""),
-                "choices": [x.get("choice", {}).get("label", "") for x in r.get("log", [])],
+                "choices": [_log_choice_label(x) for x in r.get("log", [])],
                 "dimension_scores": normalized_dimensions,
                 "result": "completed",
             })
@@ -7409,20 +7453,23 @@ def run_report(run_id):
         token = auth_header[7:]
         user = verify_token(token)
         if user:
-            from engines.adaptive_game_engine import track_engagement, recommend_next_game, analyze_play_style
             _uid = user.get("user_id") or user.get("username", "")
             _engagement, _recommendations, _play_style = {}, [], {}
             try:
-                _engagement = track_engagement(_uid, run_id)
-            except Exception as _e:
-                logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
-            try:
-                _recommendations = recommend_next_game(_uid, count=3)
-            except Exception as _e:
-                logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
-            try:
-                _play_style = analyze_play_style(_uid)
-            except Exception as _e:
+                from engines.adaptive_game_engine import track_engagement, recommend_next_game, analyze_play_style
+                try:
+                    _engagement = track_engagement(_uid, run_id)
+                except Exception as _e:
+                    logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
+                try:
+                    _recommendations = recommend_next_game(_uid, count=3)
+                except Exception as _e:
+                    logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
+                try:
+                    _play_style = analyze_play_style(_uid)
+                except Exception as _e:
+                    logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
+            except ImportError as _e:
                 logger.debug("Suppressed %s: %s", type(_e).__name__, _e)
             result["adaptive"] = {
                 "engagement": _engagement,
@@ -7705,7 +7752,7 @@ def run_report_cards(run_id):
         {
             "round_id": x["round_id"],
             "round_title": x["round_title"],
-            "choice": x["choice"]["label"]
+            "choice": _log_choice_label(x)
         }
         for x in r["log"]
     ]
@@ -17810,7 +17857,7 @@ def api_generate_quiz(run_id):
         return err
     st_obj = r["state"]
     final_state = state_to_dict(st_obj)
-    choices = [{"round_id": x["round_id"], "choice": x["choice"]["label"]} for x in r.get("log", [])]
+    choices = [{"round_id": x.get("round_id", ""), "choice": _log_choice_label(x)} for x in r.get("log", [])]
     psych_skills = []
     for s in (game.get("psychological_framework") or {}).get("core_skills", []):
         if isinstance(s, dict) and s.get("id"):
@@ -22998,7 +23045,7 @@ def run_assessment(run_id):
     final_state = state_to_dict(st_obj)
     dimension_scores = final_state.get("dimension_scores", {})
     choices = [
-        {"round_id": x.get("round_id", ""), "choice": x.get("choice", {}).get("label", "")}
+        {"round_id": x.get("round_id", ""), "choice": _log_choice_label(x)}
         for x in r.get("log", [])
     ]
     round_history = r.get("log", [])
