@@ -92,6 +92,15 @@ There's no separate database to configure.
 - **502 from nginx**: the backend service isn't up —
   `sudo systemctl status mentomap-backend` and
   `sudo journalctl -u mentomap-backend -n 50` to see why.
+- **500 from nginx, backend's own `/health` works fine directly on
+  `:5001`**: nginx can't read the frontend files. This happens if nginx's
+  `root` points inside your home directory (`/home/ubuntu/...`), which is
+  usually mode `750` and blocks the `www-data` user nginx runs as from
+  even traversing into it — `sudo tail -20 /var/log/nginx/error.log` will
+  show `Permission denied`. The script now copies the build to
+  `/var/www/mentomap` (owned by `www-data`) instead of serving straight
+  out of `$HOME` to avoid this; re-run `setup_oracle_vm.sh` to pick up
+  the fix on an existing deploy.
 - **Frontend loads but API calls fail**: check the browser console/network
   tab for the actual URL being called — it should be a relative `/api/...`
   path on the same origin, handled by nginx's `location /api/` block.

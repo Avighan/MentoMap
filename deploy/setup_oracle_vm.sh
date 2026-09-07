@@ -101,6 +101,16 @@ cd "$APP_DIR/frontend-react"
 npm ci
 npm run build   # outputs to frontend-react/dist
 
+# Serve from /var/www, not from inside $HOME — Ubuntu home directories are
+# usually mode 750, which blocks the nginx worker (running as www-data)
+# from even traversing into them to read index.html, producing a bare
+# "500 Internal Server Error" with no useful page (this really happened —
+# see the fix commit message for the exact symptom).
+WEB_ROOT="/var/www/mentomap"
+sudo rm -rf "$WEB_ROOT"
+sudo cp -r "$APP_DIR/frontend-react/dist" "$WEB_ROOT"
+sudo chown -R www-data:www-data "$WEB_ROOT"
+
 echo "==> [8/8] nginx: serve the frontend build, reverse-proxy /api to gunicorn"
 SERVER_NAME="${DOMAIN_OR_IP:-_}"
 sudo tee /etc/nginx/sites-available/mentomap > /dev/null <<EOF
@@ -108,7 +118,7 @@ server {
     listen 80;
     server_name $SERVER_NAME;
 
-    root $APP_DIR/frontend-react/dist;
+    root $WEB_ROOT;
     index index.html;
 
     location /api/ {
