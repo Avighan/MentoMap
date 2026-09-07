@@ -41,11 +41,24 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   FaArrowLeft, FaTrophy, FaChartLine, FaGamepad, FaSpinner, FaExclamationTriangle,
-  FaLightbulb, FaArrowRight,
+  FaLightbulb, FaArrowRight, FaTag, FaUsers, FaBullhorn, FaFlask, FaSlidersH,
+  FaPercent, FaChartPie, FaWallet, FaBoxOpen, FaRupeeSign, FaSmile,
 } from 'react-icons/fa';
 import { startGame, dealcraftChoose, mumbaiManufacturerChoose, heliogridQuarter, completePilotRun } from '../api/games';
 import { LoadingState } from '../components/ui/LoadingSpinner';
 import RobotGuide from '../assets/robo.png';
+import dealcraftImg from '../assets/games/dealcraft.jpg';
+import mumbaiImg from '../assets/games/mumbai_manufacturer.jpg';
+import heliogridImg from '../assets/games/heliogrid.jpg';
+
+// Real Simulok cover photography (reference/simulok-source/assets/sim/) —
+// the actual hero images each game's original implementation shipped with,
+// not stock placeholders.
+const HERO_IMAGES = {
+  dealcraft: dealcraftImg,
+  mumbai_manufacturer: mumbaiImg,
+  heliogrid: heliogridImg,
+};
 
 const colors = {
   primary: '#FFD166',
@@ -115,19 +128,23 @@ function fmtNum(n) {
   return Math.round(n * 10) / 10;
 }
 
-function TopBar({ title, icon, onBack }) {
+function TopBar({ title, icon, heroImage, onBack }) {
   return (
     <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-sm border-b shadow-sm">
-      <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
+      <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center gap-3">
         <button
           onClick={onBack}
-          className="flex items-center justify-center w-9 h-9 rounded-lg hover:bg-gray-100 transition-colors"
+          className="flex items-center justify-center w-9 h-9 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
           aria-label="Back to games"
         >
           <FaArrowLeft style={{ color: colors.text }} />
         </button>
-        <span className="text-2xl">{icon}</span>
-        <h1 className="text-lg font-bold" style={{ color: colors.text }}>{title}</h1>
+        {heroImage ? (
+          <img src={heroImage} alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0 shadow" />
+        ) : (
+          <span className="text-2xl">{icon}</span>
+        )}
+        <h1 className="text-lg font-bold truncate" style={{ color: colors.text }}>{title}</h1>
       </div>
     </div>
   );
@@ -277,98 +294,149 @@ function HeliogridLeverForm({ game, onSubmit, submitting }) {
     });
   };
 
-  const Slider = ({ label, value, onChange, min, max, step = 1, suffix = '' }) => (
-    <div className="mb-3">
-      <div className="flex justify-between text-xs font-semibold mb-1" style={{ color: colors.text }}>
+  const Slider = ({ label, value, onChange, min, max, step = 1, suffix = '', accent = colors.primaryDark }) => (
+    <div className="mb-4 last:mb-0">
+      <div className="flex justify-between text-xs font-semibold mb-1.5" style={{ color: colors.text }}>
         <span>{label}</span>
-        <span>{fmtNum(value)}{suffix}</span>
+        <span className="font-extrabold" style={{ color: accent }}>{fmtNum(value)}{suffix}</span>
       </div>
       <input
         type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-current"
-        style={{ color: colors.primaryDark }}
+        className="w-full h-2 rounded-full appearance-none cursor-pointer"
+        style={{ accentColor: accent, backgroundColor: '#F0EFE9' }}
       />
     </div>
   );
 
+  const Section = ({ icon, title, subtitle, accent, children }) => (
+    <div className="mb-5 rounded-xl p-4 border-l-4" style={{ borderColor: accent, backgroundColor: accent + '0D' }}>
+      <div className="flex items-center gap-2 mb-1">
+        <span className="flex items-center justify-center w-7 h-7 rounded-lg text-white text-xs flex-shrink-0" style={{ backgroundColor: accent }}>
+          {icon}
+        </span>
+        <div className="text-sm font-extrabold" style={{ color: colors.text }}>{title}</div>
+      </div>
+      {subtitle && <p className="text-xs mb-3 ml-9" style={{ color: colors.textLight }}>{subtitle}</p>}
+      <div className="mt-3">{children}</div>
+    </div>
+  );
+
+  const spendPct = Math.min(100, Math.round((totalSpend / budget) * 100));
+
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl shadow-md p-6">
-      <div className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: colors.textLight }}>
-        This Quarter's Levers
+      <div className="flex items-center gap-2 mb-4">
+        <FaSlidersH style={{ color: colors.primaryDark }} />
+        <div className="text-sm font-extrabold uppercase tracking-wide" style={{ color: colors.text }}>
+          This Quarter's Levers
+        </div>
       </div>
 
-      <Slider label="List Price (₹)" value={listPrice} onChange={setListPrice} min={100000} max={250000} step={1000} />
-      <Slider label="Headcount" value={headcount} onChange={setHeadcount} min={5} max={30} />
-      <Slider label="Marketing / Comms Spend (₹)" value={commsSpend} onChange={setCommsSpend} min={0} max={150000} step={1000} />
-      <Slider label="R&D Spend (₹)" value={researchSpend} onChange={setResearchSpend} min={0} max={150000} step={1000} />
+      <Section icon={<FaTag />} title="Pricing & Team" subtitle="Your headline price vs. the rival, and how many people are selling it." accent={colors.purple}>
+        <Slider label="List Price (₹)" value={listPrice} onChange={setListPrice} min={100000} max={250000} step={1000} accent={colors.purple} />
+        <Slider label="Headcount" value={headcount} onChange={setHeadcount} min={5} max={30} accent={colors.purple} />
+      </Section>
 
-      <div className="mt-4 mb-2 text-xs font-bold uppercase tracking-wide" style={{ color: colors.textLight }}>
-        Feature Investment
-      </div>
-      <Slider label="Efficiency" value={featureSpend.efficiency} onChange={(v) => setFeatureSpend((f) => ({ ...f, efficiency: v }))} min={0} max={50000} step={1000} />
-      <Slider label="Mass Reduction" value={featureSpend.mass} onChange={(v) => setFeatureSpend((f) => ({ ...f, mass: v }))} min={0} max={50000} step={1000} />
-      <Slider label="Latency" value={featureSpend.latency} onChange={(v) => setFeatureSpend((f) => ({ ...f, latency: v }))} min={0} max={50000} step={1000} />
+      <Section icon={<FaBullhorn />} title="Marketing & R&D Spend" subtitle="Comms drives awareness this quarter; R&D compounds product quality over time." accent={colors.teal}>
+        <Slider label="Marketing / Comms Spend (₹)" value={commsSpend} onChange={setCommsSpend} min={0} max={150000} step={1000} accent={colors.teal} />
+        <Slider label="R&D Spend (₹)" value={researchSpend} onChange={setResearchSpend} min={0} max={150000} step={1000} accent={colors.teal} />
+      </Section>
 
-      <div className="mt-4 mb-2 text-xs font-bold uppercase tracking-wide" style={{ color: colors.textLight }}>
-        Per-Segment Discount (0–20%)
-      </div>
-      {segments.map((s) => (
-        <Slider key={s} label={SEGMENT_LABELS[s] || s} value={discounts[s]} onChange={(v) => setDiscounts((d) => ({ ...d, [s]: v }))} min={0} max={20} suffix="%" />
-      ))}
+      <Section icon={<FaFlask />} title="Feature Investment" subtitle="Where R&D actually goes: efficiency, weight, or response latency." accent={colors.primaryDark}>
+        <Slider label="Efficiency" value={featureSpend.efficiency} onChange={(v) => setFeatureSpend((f) => ({ ...f, efficiency: v }))} min={0} max={50000} step={1000} accent={colors.primaryDark} />
+        <Slider label="Mass Reduction" value={featureSpend.mass} onChange={(v) => setFeatureSpend((f) => ({ ...f, mass: v }))} min={0} max={50000} step={1000} accent={colors.primaryDark} />
+        <Slider label="Latency" value={featureSpend.latency} onChange={(v) => setFeatureSpend((f) => ({ ...f, latency: v }))} min={0} max={50000} step={1000} accent={colors.primaryDark} />
+      </Section>
 
-      <div className="mt-4 mb-2 text-xs font-bold uppercase tracking-wide" style={{ color: colors.textLight }}>
-        Sales Allocation <span className="normal-case font-normal">(auto-normalized to 100%)</span>
-      </div>
-      {segments.map((s) => (
-        <Slider key={s} label={`${SEGMENT_LABELS[s] || s} — ${normalizedAlloc[s]}%`} value={allocRaw[s]} onChange={(v) => setAllocRaw((a) => ({ ...a, [s]: v }))} min={0} max={100} suffix=" (raw)" />
-      ))}
+      <Section icon={<FaPercent />} title="Per-Segment Discount" subtitle="0–20% off list price, set independently for each customer segment." accent={colors.red}>
+        {segments.map((s) => (
+          <Slider key={s} label={SEGMENT_LABELS[s] || s} value={discounts[s]} onChange={(v) => setDiscounts((d) => ({ ...d, [s]: v }))} min={0} max={20} suffix="%" accent={colors.red} />
+        ))}
+      </Section>
 
-      <div
-        className="mt-4 mb-4 flex justify-between items-center px-3 py-2 rounded-lg text-sm font-bold"
-        style={{ backgroundColor: overBudget ? '#FEE2E2' : '#D1FAE5', color: overBudget ? colors.red : colors.green }}
-      >
-        <span>Spend: ₹{fmtNum(totalSpend)} / ₹{fmtNum(budget)}</span>
-        {overBudget && <span>Over budget!</span>}
+      <Section icon={<FaChartPie />} title="Sales Allocation" subtitle="Where your sales team focuses effort — auto-normalized to 100%." accent={colors.green}>
+        {segments.map((s) => (
+          <Slider key={s} label={`${SEGMENT_LABELS[s] || s} — ${normalizedAlloc[s]}%`} value={allocRaw[s]} onChange={(v) => setAllocRaw((a) => ({ ...a, [s]: v }))} min={0} max={100} suffix=" raw" accent={colors.green} />
+        ))}
+      </Section>
+
+      <div className="mb-5">
+        <div className="flex justify-between items-center text-sm font-bold mb-1.5">
+          <span className="flex items-center gap-1.5" style={{ color: colors.text }}><FaWallet style={{ color: overBudget ? colors.red : colors.green }} /> Quarterly Spend</span>
+          <span style={{ color: overBudget ? colors.red : colors.green }}>₹{fmtNum(totalSpend)} / ₹{fmtNum(budget)}</span>
+        </div>
+        <div className="w-full h-3 rounded-full bg-gray-100 overflow-hidden">
+          <motion.div
+            className="h-full rounded-full"
+            style={{ backgroundColor: overBudget ? colors.red : colors.green }}
+            initial={{ width: 0 }}
+            animate={{ width: `${spendPct}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+        {overBudget && <p className="text-xs font-bold mt-1.5" style={{ color: colors.red }}>Over budget — reduce spend to lock in this quarter.</p>}
       </div>
 
       <button
         onClick={handleSubmit}
         disabled={submitting || overBudget}
-        className="w-full py-3 rounded-xl font-bold text-white disabled:opacity-60"
+        className="w-full py-3.5 rounded-xl font-bold text-white disabled:opacity-60 shadow-lg flex items-center justify-center gap-2"
         style={{ backgroundColor: colors.primaryDark, color: colors.text }}
       >
-        {submitting ? 'Resolving quarter…' : 'Lock In This Quarter'}
+        {submitting ? <><FaSpinner className="animate-spin" /> Resolving quarter…</> : <>Lock In This Quarter <FaArrowRight /></>}
       </button>
     </motion.div>
   );
 }
 
-function HeliogridOutcome({ result, segmentLabel, onContinue, isLast }) {
+const HELIOGRID_METRIC_META = {
+  units_sold: { label: 'Units Sold', icon: <FaBoxOpen />, accent: '#118AB2' },
+  revenue: { label: 'Revenue', icon: <FaRupeeSign />, accent: '#4ECDC4', money: true },
+  profit: { label: 'Profit', icon: <FaChartLine />, accent: '#1E8A5A', money: true },
+  market_share_pct: { label: 'Market Share', icon: <FaChartPie />, accent: '#6C5CE7', pct: true },
+  csat: { label: 'Customer Satisfaction', icon: <FaSmile />, accent: '#FFC145' },
+};
+
+function HeliogridOutcome({ result, prevResult, segmentLabel, onContinue, isLast }) {
   if (!result) return null;
+  const rows = [
+    ['units_sold', result.units_sold],
+    ['revenue', result.revenue],
+    ['profit', result.profit],
+    ['market_share_pct', result.market_share_pct],
+    ['csat', result.csat],
+  ];
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl shadow-md p-6">
       <div className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: colors.textLight }}>
         Quarter {result.quarter_index + 1} Results
       </div>
-      <h2 className="text-lg font-bold mb-3" style={{ color: colors.text }}>
+      <h2 className="text-lg font-bold mb-4" style={{ color: colors.text }}>
         Focus segment: {segmentLabel}
       </h2>
       <div className="grid grid-cols-2 gap-3 mb-5">
-        {[
-          ['Units Sold', fmtNum(result.units_sold)],
-          ['Revenue', `₹${fmtNum(result.revenue)}`],
-          ['Profit', `₹${fmtNum(result.profit)}`],
-          ['Market Share', `${fmtNum(result.market_share_pct)}%`],
-          ['Customer Satisfaction', fmtNum(result.csat)],
-        ].map(([label, value]) => (
-          <div key={label} className="p-3 rounded-lg bg-gray-50">
-            <div className="text-[11px] font-bold uppercase" style={{ color: colors.textLight }}>{label}</div>
-            <div className="text-base font-extrabold" style={{ color: result.profit < 0 && label === 'Profit' ? colors.red : colors.text }}>
-              {value}
+        {rows.map(([key, raw]) => {
+          const meta = HELIOGRID_METRIC_META[key];
+          const prev = prevResult?.[key];
+          const delta = typeof prev === 'number' ? raw - prev : null;
+          const value = meta.money ? `₹${fmtNum(raw)}` : meta.pct ? `${fmtNum(raw)}%` : fmtNum(raw);
+          return (
+            <div key={key} className="p-3 rounded-xl" style={{ backgroundColor: meta.accent + '14' }}>
+              <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase mb-1" style={{ color: meta.accent }}>
+                {meta.icon} {meta.label}
+              </div>
+              <div className="text-lg font-extrabold" style={{ color: key === 'profit' && raw < 0 ? colors.red : colors.text }}>
+                {value}
+              </div>
+              {delta !== null && Math.abs(delta) > 0.05 && (
+                <div className="text-xs font-bold mt-0.5" style={{ color: delta > 0 ? colors.green : colors.red }}>
+                  {delta > 0 ? '▲' : '▼'} {delta > 0 ? '+' : ''}{fmtNum(delta)} vs last quarter
+                </div>
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <button
         onClick={onContinue}
@@ -396,6 +464,7 @@ export default function PilotGamePlayPage() {
   const [prevState, setPrevState] = useState(null);
   const [phase, setPhase] = useState('choice'); // 'choice' | 'outcome' | 'complete'
   const [pendingOutcome, setPendingOutcome] = useState(null);
+  const [prevQuarterResult, setPrevQuarterResult] = useState(null);
   const [summary, setSummary] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -466,28 +535,51 @@ export default function PilotGamePlayPage() {
 
   // ---------- Briefing screen (once, before Round 1 / Quarter 1) ----------
   if (showBriefing) {
+    const hero = HERO_IMAGES[gameId];
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-10" style={{ backgroundColor: colors.background }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full">
-          <div className="text-5xl text-center mb-3">{meta.icon}</div>
-          <h1 className="text-2xl font-bold text-center mb-1" style={{ color: colors.text }}>{game.title}</h1>
-          <p className="text-xs font-bold uppercase tracking-wide text-center mb-5" style={{ color: meta.accent }}>{meta.label}</p>
-          <p className="text-sm mb-6" style={{ color: colors.textLight }}>{game.description}</p>
-          <div className="rounded-xl p-4 mb-6" style={{ backgroundColor: colors.primaryLight + '40' }}>
-            <div className="text-xs font-bold uppercase tracking-wide mb-1" style={{ color: colors.textLight }}>Format</div>
-            <p className="text-sm" style={{ color: colors.text }}>
-              {gameId === 'heliogrid'
-                ? `${totalQuarters} quarters of continuous lever decisions — no single right answer, only trade-offs across four customer segments.`
-                : `${game.rounds?.length || 0} rounds — each choice trades off multiple KPIs, and you'll see the impact and a short takeaway after every decision.`}
-            </p>
-          </div>
-          <button
-            onClick={() => setShowBriefing(false)}
-            className="w-full py-3 rounded-xl font-bold text-white"
-            style={{ backgroundColor: colors.purple }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-3xl shadow-2xl overflow-hidden max-w-lg w-full bg-white"
+        >
+          <div
+            className="h-56 relative flex flex-col justify-end p-6"
+            style={{
+              backgroundImage: hero
+                ? `linear-gradient(to top, rgba(0,0,0,0.85) 10%, rgba(0,0,0,0.15)), url(${hero})`
+                : `linear-gradient(135deg, ${meta.accent}, ${colors.purple})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
           >
-            Begin
-          </button>
+            <span
+              className="self-start mb-2 text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full text-white"
+              style={{ backgroundColor: meta.accent }}
+            >
+              {meta.icon} {meta.label}
+            </span>
+            <h1 className="text-2xl font-extrabold text-white drop-shadow-lg leading-tight">{game.title}</h1>
+          </div>
+
+          <div className="p-7">
+            <p className="text-sm mb-6" style={{ color: colors.textLight }}>{game.description}</p>
+            <div className="rounded-xl p-4 mb-6" style={{ backgroundColor: colors.primaryLight + '40' }}>
+              <div className="text-xs font-bold uppercase tracking-wide mb-1" style={{ color: colors.textLight }}>Format</div>
+              <p className="text-sm" style={{ color: colors.text }}>
+                {gameId === 'heliogrid'
+                  ? `${totalQuarters} quarters of continuous lever decisions — no single right answer, only trade-offs across four customer segments.`
+                  : `${game.rounds?.length || 0} rounds — each choice trades off multiple KPIs, and you'll see the impact and a short takeaway after every decision.`}
+              </p>
+            </div>
+            <button
+              onClick={() => setShowBriefing(false)}
+              className="w-full py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg"
+              style={{ backgroundColor: colors.purple }}
+            >
+              Begin Simulation <FaArrowRight />
+            </button>
+          </div>
         </motion.div>
       </div>
     );
@@ -584,6 +676,7 @@ export default function PilotGamePlayPage() {
     } else {
       setQuarterIndex((i) => i + 1);
       setPhase('choice');
+      setPrevQuarterResult(pendingOutcome);
       setPendingOutcome(null);
     }
   };
@@ -592,10 +685,22 @@ export default function PilotGamePlayPage() {
   if (phase === 'complete' && summary) {
     const rankLetter = (summary.band || summary.rank || '?')[0]?.toUpperCase();
     const rankStyle = RANK_STYLES[rankLetter] || RANK_STYLES.C;
+    const hero = HERO_IMAGES[gameId];
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-10" style={{ backgroundColor: colors.background }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full text-center">
-          <img src={RobotGuide} alt="" className="w-14 h-14 mx-auto mb-3" />
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-lg w-full">
+          {hero && (
+            <div
+              className="h-28 relative"
+              style={{
+                backgroundImage: `linear-gradient(to top, rgba(255,255,255,1), rgba(0,0,0,0.15)), url(${hero})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+          )}
+        <div className="p-8 pt-4 text-center">
+          <img src={RobotGuide} alt="" className="w-14 h-14 mx-auto mb-3 -mt-8 relative bg-white rounded-full p-1 shadow-lg" />
           <div className="flex items-center justify-center gap-2 mb-1">
             <FaTrophy style={{ color: colors.primaryDark }} />
             <h1 className="text-xl font-bold" style={{ color: colors.text }}>Run Complete!</h1>
@@ -651,6 +756,7 @@ export default function PilotGamePlayPage() {
               Back to Games
             </button>
           </div>
+        </div>
         </motion.div>
       </div>
     );
@@ -664,7 +770,7 @@ export default function PilotGamePlayPage() {
 
   return (
     <div className="min-h-screen pb-16" style={{ backgroundColor: colors.background }}>
-      <TopBar title={game.title} icon={meta.icon} onBack={() => navigate('/games')} />
+      <TopBar title={game.title} icon={meta.icon} heroImage={HERO_IMAGES[gameId]} onBack={() => navigate('/games')} />
       {gameId !== 'heliogrid' && <KpiBar keys={meta.headlineKpis} state={state} prevState={prevState} />}
       <ProgressBar current={currentStep} total={totalSteps} accent={meta.accent} />
 
@@ -680,6 +786,7 @@ export default function PilotGamePlayPage() {
             <HeliogridOutcome
               key={`hg-outcome-${quarterIndex}`}
               result={pendingOutcome}
+              prevResult={prevQuarterResult}
               segmentLabel={SEGMENT_LABELS[pendingOutcome?.focus_segment] || pendingOutcome?.focus_segment}
               onContinue={handleContinueAfterQuarter}
               isLast={quarterIndex + 1 >= totalQuarters}
