@@ -43,6 +43,7 @@ import {
   FaArrowLeft, FaTrophy, FaChartLine, FaGamepad, FaSpinner, FaExclamationTriangle,
   FaLightbulb, FaArrowRight, FaTag, FaUsers, FaBullhorn, FaFlask, FaSlidersH,
   FaPercent, FaChartPie, FaWallet, FaBoxOpen, FaRupeeSign, FaSmile,
+  FaQuoteLeft, FaListOl, FaCheckCircle, FaBuilding, FaGraduationCap,
 } from 'react-icons/fa';
 import { startGame, dealcraftChoose, mumbaiManufacturerChoose, heliogridQuarter, completePilotRun } from '../api/games';
 import { LoadingState } from '../components/ui/LoadingSpinner';
@@ -210,7 +211,7 @@ function KpiBar({ keys, state, prevState }) {
 /** Post-choice "Decision Outcome" screen — feedback text + KPI deltas + a
  * learning takeaway, matching Simulok's renderOutcome(). Advances only when
  * the player clicks Continue, rather than auto-skipping to the next round. */
-function OutcomeScreen({ title, feedback, deltas, onContinue, isLast }) {
+function OutcomeScreen({ title, feedback, deltas, learning, concepts, onContinue, isLast }) {
   const deltaEntries = Object.entries(deltas || {}).filter(([, v]) => v !== 0);
   return (
     <motion.div
@@ -243,6 +244,21 @@ function OutcomeScreen({ title, feedback, deltas, onContinue, isLast }) {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {learning && (
+        <div className="mb-5 rounded-xl p-4 border-l-4" style={{ borderColor: colors.teal, backgroundColor: colors.teal + '0D' }}>
+          <div className="flex items-center gap-1.5 text-sm font-extrabold mb-1.5" style={{ color: colors.text }}>
+            <FaGraduationCap style={{ color: colors.teal }} /> {learning.key_concept || 'Key Learning'}
+          </div>
+          <div className="text-xs space-y-1" style={{ color: colors.textLight }}>
+            {learning.formula && <p><strong style={{ color: colors.text }}>Formula:</strong> {learning.formula}</p>}
+            {learning.principle && <p><strong style={{ color: colors.text }}>Principle:</strong> {learning.principle}</p>}
+            {learning.application && <p><strong style={{ color: colors.text }}>Application:</strong> {learning.application}</p>}
+            {learning.trade_offs && <p><strong style={{ color: colors.text }}>Trade-offs:</strong> {learning.trade_offs}</p>}
+            {concepts?.length > 0 && <p><strong style={{ color: colors.text }}>Concepts:</strong> {concepts.join(', ')}</p>}
+          </div>
         </div>
       )}
 
@@ -536,12 +552,16 @@ export default function PilotGamePlayPage() {
   // ---------- Briefing screen (once, before Round 1 / Quarter 1) ----------
   if (showBriefing) {
     const hero = HERO_IMAGES[gameId];
+    const briefing = game.briefing || {};
+    const profileRows = briefing.profile || [];
+    const companyProfileRows = briefing.company_profile || [];
+    const resourceRows = briefing.starting_resources || [];
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-10" style={{ backgroundColor: colors.background }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-3xl shadow-2xl overflow-hidden max-w-lg w-full bg-white"
+          className="rounded-3xl shadow-2xl overflow-hidden max-w-2xl w-full bg-white"
         >
           <div
             className="h-56 relative flex flex-col justify-end p-6"
@@ -562,19 +582,112 @@ export default function PilotGamePlayPage() {
             <h1 className="text-2xl font-extrabold text-white drop-shadow-lg leading-tight">{game.title}</h1>
           </div>
 
-          <div className="p-7">
-            <p className="text-sm mb-6" style={{ color: colors.textLight }}>{game.description}</p>
-            <div className="rounded-xl p-4 mb-6" style={{ backgroundColor: colors.primaryLight + '40' }}>
-              <div className="text-xs font-bold uppercase tracking-wide mb-1" style={{ color: colors.textLight }}>Format</div>
-              <p className="text-sm" style={{ color: colors.text }}>
-                {gameId === 'heliogrid'
-                  ? `${totalQuarters} quarters of continuous lever decisions — no single right answer, only trade-offs across four customer segments.`
-                  : `${game.rounds?.length || 0} rounds — each choice trades off multiple KPIs, and you'll see the impact and a short takeaway after every decision.`}
-              </p>
-            </div>
+          <div className="p-7 max-h-[65vh] overflow-y-auto">
+            <p className="text-sm leading-relaxed mb-4" style={{ color: colors.text }}>
+              {briefing.narrative || game.description}
+            </p>
+
+            {briefing.quote && (
+              <div className="flex gap-3 p-4 rounded-xl mb-5" style={{ backgroundColor: meta.accent + '14' }}>
+                <FaQuoteLeft className="flex-shrink-0 mt-0.5" style={{ color: meta.accent }} />
+                <p className="text-sm italic font-medium" style={{ color: colors.text }}>{briefing.quote}</p>
+              </div>
+            )}
+
+            {profileRows.length > 0 && (
+              <div className="grid grid-cols-2 gap-2.5 mb-5">
+                {profileRows.map((p) => (
+                  <div key={p.label} className="rounded-lg px-3 py-2 bg-gray-50">
+                    <div className="text-[10px] font-bold uppercase tracking-wide" style={{ color: colors.textLight }}>{p.label}</div>
+                    <div className="text-sm font-bold" style={{ color: colors.text }}>{p.value}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {companyProfileRows.length > 0 && (
+              <div className="mb-5">
+                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide mb-2" style={{ color: colors.textLight }}>
+                  <FaBuilding /> Company Profile
+                </div>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {companyProfileRows.map((p) => (
+                    <div key={p.label} className="rounded-lg px-3 py-2 bg-gray-50">
+                      <div className="text-[10px] font-bold uppercase tracking-wide" style={{ color: colors.textLight }}>{p.label}</div>
+                      <div className="text-sm font-bold" style={{ color: colors.text }}>{p.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {resourceRows.length > 0 && (
+              <div className="mb-5">
+                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide mb-2" style={{ color: colors.textLight }}>
+                  <FaWallet /> Starting Resources
+                </div>
+                <div className="rounded-lg overflow-hidden border border-gray-100">
+                  {resourceRows.map((p, idx) => (
+                    <div key={p.label} className={`flex justify-between px-3 py-2 text-sm ${idx % 2 ? 'bg-gray-50' : 'bg-white'}`}>
+                      <span style={{ color: colors.textLight }}>{p.label}</span>
+                      <span className="font-bold" style={{ color: colors.text }}>{p.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {(briefing.steps?.length > 0 || briefing.rules?.length > 0) && (
+              <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                {briefing.steps?.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide mb-2" style={{ color: colors.textLight }}>
+                      <FaListOl /> Your Steps
+                    </div>
+                    <ol className="space-y-1.5">
+                      {briefing.steps.map((s, i) => (
+                        <li key={i} className="flex gap-2 text-sm" style={{ color: colors.text }}>
+                          <span className="flex-shrink-0 w-4 h-4 rounded-full text-white text-[10px] font-bold flex items-center justify-center mt-0.5" style={{ backgroundColor: meta.accent }}>
+                            {i + 1}
+                          </span>
+                          {s}
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+                {briefing.rules?.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide mb-2" style={{ color: colors.textLight }}>
+                      <FaCheckCircle /> Rules
+                    </div>
+                    <ul className="space-y-1.5">
+                      {briefing.rules.map((r, i) => (
+                        <li key={i} className="flex gap-2 text-sm" style={{ color: colors.textLight }}>
+                          <FaCheckCircle className="flex-shrink-0 mt-1 text-[10px]" style={{ color: colors.green }} />
+                          {r}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {!briefing.narrative && (
+              <div className="rounded-xl p-4 mb-6" style={{ backgroundColor: colors.primaryLight + '40' }}>
+                <div className="text-xs font-bold uppercase tracking-wide mb-1" style={{ color: colors.textLight }}>Format</div>
+                <p className="text-sm" style={{ color: colors.text }}>
+                  {gameId === 'heliogrid'
+                    ? `${totalQuarters} quarters of continuous lever decisions — no single right answer, only trade-offs across four customer segments.`
+                    : `${game.rounds?.length || 0} rounds — each choice trades off multiple KPIs, and you'll see the impact and a short takeaway after every decision.`}
+                </p>
+              </div>
+            )}
+
             <button
               onClick={() => setShowBriefing(false)}
-              className="w-full py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg"
+              className="w-full py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg sticky bottom-0"
               style={{ backgroundColor: colors.purple }}
             >
               Begin Simulation <FaArrowRight />
@@ -615,7 +728,10 @@ export default function PilotGamePlayPage() {
       }
       setPrevState(state);
       setState(res.state);
-      setPendingOutcome({ title: round.title, feedback: choice.feedback, deltas: choice.effects || {} });
+      setPendingOutcome({
+        title: round.title, feedback: choice.feedback, deltas: choice.effects || {},
+        learning: choice.learning, concepts: choice.concepts,
+      });
       setPhase('outcome');
     } catch (err) {
       setError(err?.response?.data?.error || 'Choice failed.');
@@ -748,6 +864,15 @@ export default function PilotGamePlayPage() {
             </div>
           )}
 
+          {game.reflection_prompt && (
+            <div className="mt-6 text-left rounded-xl p-4 border-l-4" style={{ borderColor: colors.primaryDark, backgroundColor: colors.primaryLight + '40' }}>
+              <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wide mb-1.5" style={{ color: colors.text }}>
+                <FaLightbulb style={{ color: colors.primaryDark }} /> Reflect
+              </div>
+              <p className="text-sm" style={{ color: colors.textLight }}>{game.reflection_prompt}</p>
+            </div>
+          )}
+
           <div className="flex gap-3 mt-8">
             <button onClick={() => window.location.reload()} className="flex-1 px-4 py-2.5 rounded-xl font-bold border-2" style={{ borderColor: colors.purple, color: colors.purple }}>
               Play Again
@@ -799,6 +924,8 @@ export default function PilotGamePlayPage() {
               title={pendingOutcome?.title}
               feedback={pendingOutcome?.feedback}
               deltas={pendingOutcome?.deltas}
+              learning={pendingOutcome?.learning}
+              concepts={pendingOutcome?.concepts}
               onContinue={handleContinueAfterOutcome}
               isLast={roundIndex + 1 >= game.rounds.length}
             />
@@ -806,9 +933,17 @@ export default function PilotGamePlayPage() {
 
           {phase === 'choice' && gameId === 'heliogrid' && (
             <div key="hg-form">
-              <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: meta.accent }}>
-                Quarter {quarterIndex + 1} focus: {SEGMENT_LABELS[focusSegment] || focusSegment}
-              </p>
+              <div className="rounded-xl p-3.5 mb-3 flex items-start gap-2" style={{ backgroundColor: meta.accent + '14' }}>
+                <FaUsers className="flex-shrink-0 mt-0.5" style={{ color: meta.accent }} />
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide" style={{ color: meta.accent }}>
+                    Quarter {quarterIndex + 1} focus: {SEGMENT_LABELS[focusSegment] || focusSegment}
+                  </p>
+                  {game.segments?.[focusSegment]?.blurb && (
+                    <p className="text-sm mt-0.5" style={{ color: colors.text }}>{game.segments[focusSegment].blurb}</p>
+                  )}
+                </div>
+              </div>
               <HeliogridLeverForm game={game} submitting={submitting} onSubmit={handleHeliogridQuarter} />
             </div>
           )}
@@ -823,10 +958,22 @@ export default function PilotGamePlayPage() {
             >
               <div className="flex items-center gap-2 mb-2" style={{ color: colors.textLight }}>
                 <FaGamepad />
-                <span className="text-xs font-bold uppercase tracking-wide">{meta.label}</span>
+                <span className="text-xs font-bold uppercase tracking-wide">
+                  {meta.label}{currentRound.scenario ? ` · ${currentRound.scenario}` : ''}
+                </span>
               </div>
               <h2 className="text-xl font-bold mb-2" style={{ color: colors.text }}>{currentRound.title}</h2>
-              <p className="text-sm mb-5" style={{ color: colors.textLight }}>{currentRound.prompt}</p>
+
+              {currentRound.narrative && (
+                <div className="rounded-xl p-4 mb-3" style={{ backgroundColor: '#F5F4EF' }}>
+                  <p className="text-sm whitespace-pre-line leading-relaxed" style={{ color: colors.text }}>{currentRound.narrative}</p>
+                  {currentRound.dialogue && (
+                    <p className="text-sm mt-2 italic leading-relaxed" style={{ color: colors.textLight }}>&ldquo;{currentRound.dialogue}&rdquo;</p>
+                  )}
+                </div>
+              )}
+
+              <p className="text-sm font-semibold mb-5" style={{ color: colors.text }}>{currentRound.prompt}</p>
 
               <div className="flex flex-col gap-3">
                 {currentRound.choices.map((c, idx) => {

@@ -25,32 +25,91 @@
     "categories": [
       {
         "name": "Results",
-        "kpis": [{"name": "cash", "min": 400, "max": 2000, "weight": 0.25}]
+        "kpis": [
+          {
+            "name": "cash",
+            "min": 400,
+            "max": 2000,
+            "weight": 0.25
+          }
+        ]
       },
       {
         "name": "Skill",
-        "kpis": [{"name": "skills", "min": 0, "max": 100, "weight": 0.25}]
+        "kpis": [
+          {
+            "name": "skills",
+            "min": 0,
+            "max": 100,
+            "weight": 0.25
+          }
+        ]
       },
       {
         "name": "Reputation",
-        "kpis": [{"name": "reputation", "min": 0, "max": 100, "weight": 0.25}]
+        "kpis": [
+          {
+            "name": "reputation",
+            "min": 0,
+            "max": 100,
+            "weight": 0.25
+          }
+        ]
       },
       {
         "name": "Judgment",
-        "kpis": [{"name": "integrity", "min": 0, "max": 100, "weight": 0.15}]
+        "kpis": [
+          {
+            "name": "integrity",
+            "min": 0,
+            "max": 100,
+            "weight": 0.15
+          }
+        ]
       },
       {
         "name": "Resilience",
-        "kpis": [{"name": "energy", "min": 0, "max": 100, "weight": 0.10}]
+        "kpis": [
+          {
+            "name": "energy",
+            "min": 0,
+            "max": 100,
+            "weight": 0.1
+          }
+        ]
       }
     ],
     "grade_table": [
-      {"min": 90, "grade": "A+", "label": "Master dealmaker"},
-      {"min": 80, "grade": "A", "label": "Strategic negotiator"},
-      {"min": 70, "grade": "B+", "label": "Value creator"},
-      {"min": 60, "grade": "B", "label": "Capable closer"},
-      {"min": 50, "grade": "C+", "label": "Developing negotiator"},
-      {"min": 0, "grade": "C", "label": "Needs preparation"}
+      {
+        "min": 90,
+        "grade": "A+",
+        "label": "Master dealmaker"
+      },
+      {
+        "min": 80,
+        "grade": "A",
+        "label": "Strategic negotiator"
+      },
+      {
+        "min": 70,
+        "grade": "B+",
+        "label": "Value creator"
+      },
+      {
+        "min": 60,
+        "grade": "B",
+        "label": "Capable closer"
+      },
+      {
+        "min": 50,
+        "grade": "C+",
+        "label": "Developing negotiator"
+      },
+      {
+        "min": 0,
+        "grade": "C",
+        "label": "Needs preparation"
+      }
     ]
   },
   "rounds": [
@@ -59,134 +118,657 @@
       "title": "Preparation map",
       "prompt": "Before you sit at the table, how do you spend your prep time?",
       "choices": [
-        {"id": "map_interests", "label": "Map interests", "strategic_type": "systematic",
-         "effects": {"cash": 80, "reputation": 4, "skills": 10, "energy": -8, "integrity": 3},
-         "feedback": "Mapping both sides' underlying interests (not just positions) gives you options to trade later — the foundation of value creation."},
-        {"id": "model_numbers", "label": "Model the numbers", "strategic_type": "data_driven",
-         "effects": {"cash": 120, "skills": 8, "energy": -6, "integrity": 1},
-         "feedback": "A tight financial model sharpens your anchor and your walk-away point, but numbers alone miss the relationship side of the deal."},
-        {"id": "call_supplier", "label": "Call the supplier", "strategic_type": "collaborative",
-         "effects": {"reputation": 8, "skills": 4, "energy": -5, "integrity": 2},
-         "feedback": "An early informal call builds trust before the formal ask — reputation compounds even when it doesn't show up on this quarter's ledger."},
-        {"id": "draft_bold_ask", "label": "Draft a bold ask", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": 150, "reputation": -2, "skills": 3, "energy": -3, "integrity": -1},
-         "feedback": "Skipping prep to draft an aggressive ask can work once, but you're negotiating on assumptions instead of information."}
-      ]
+        {
+          "id": "map_interests",
+          "label": "Map interests",
+          "strategic_type": "systematic",
+          "effects": {
+            "cash": 80,
+            "reputation": 4,
+            "skills": 10,
+            "energy": -8,
+            "integrity": 3
+          },
+          "feedback": "Mapping both sides' underlying interests (not just positions) gives you options to trade later — the foundation of value creation.",
+          "description": "Interview stakeholders and build an issue map.",
+          "learning": {
+            "key_concept": "Interest mapping",
+            "principle": "Positions hide needs.",
+            "application": "List each side’s priorities before bargaining.",
+            "trade_offs": "Takes time before visible progress."
+          }
+        },
+        {
+          "id": "model_numbers",
+          "label": "Model the numbers",
+          "strategic_type": "data_driven",
+          "effects": {
+            "cash": 120,
+            "skills": 8,
+            "energy": -6,
+            "integrity": 1
+          },
+          "feedback": "A tight financial model sharpens your anchor and your walk-away point, but numbers alone miss the relationship side of the deal.",
+          "description": "Quantify deal zones and trade values first.",
+          "learning": {
+            "key_concept": "ZOPA analysis",
+            "principle": "Numbers define plausible agreement.",
+            "application": "Estimate reservation prices and trade ranges.",
+            "trade_offs": "Can miss emotional priorities."
+          }
+        },
+        {
+          "id": "call_supplier",
+          "label": "Call the supplier",
+          "strategic_type": "collaborative",
+          "effects": {
+            "reputation": 8,
+            "skills": 4,
+            "energy": -5,
+            "integrity": 2
+          },
+          "feedback": "An early informal call builds trust before the formal ask — reputation compounds even when it doesn't show up on this quarter's ledger.",
+          "description": "Open a relationship channel early.",
+          "learning": {
+            "key_concept": "Relationship capital",
+            "principle": "Trust can expand information flow.",
+            "application": "Ask discovery questions before demands.",
+            "trade_offs": "May reveal urgency too soon."
+          }
+        },
+        {
+          "id": "draft_bold_ask",
+          "label": "Draft a bold ask",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": 150,
+            "reputation": -2,
+            "skills": 3,
+            "energy": -3,
+            "integrity": -1
+          },
+          "feedback": "Skipping prep to draft an aggressive ask can work once, but you're negotiating on assumptions instead of information.",
+          "description": "Set an ambitious internal target.",
+          "learning": {
+            "key_concept": "Aspiration level",
+            "principle": "High goals can improve outcomes.",
+            "application": "Set targets above acceptable terms.",
+            "trade_offs": "Weak support can make the ask brittle."
+          }
+        }
+      ],
+      "scenario": "Your team has one day before first contact.",
+      "narrative": "You need a negotiation plan that clarifies interests, walk-away terms, and likely trades."
     },
     {
       "id": "round_2",
       "title": "First offer",
       "prompt": "It's time to make the opening move. What's your first offer?",
       "choices": [
-        {"id": "justified_anchor", "label": "Justified anchor", "strategic_type": "balanced",
-         "effects": {"cash": 170, "reputation": 4, "skills": 8, "energy": -7, "integrity": 3},
-         "feedback": "An ambitious anchor backed by visible logic sets the frame without burning trust — the other side can push back on the numbers, not on you."},
-        {"id": "open_extremely_low", "label": "Open extremely low", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": 260, "reputation": -10, "skills": 3, "energy": -5, "integrity": -6},
-         "feedback": "An unreasonable opener can anchor hard, but it signals bad faith — expect the other side to harden their own position in response."},
-        {"id": "invite_their_proposal", "label": "Invite their proposal", "strategic_type": "collaborative",
-         "effects": {"reputation": 7, "skills": 6, "energy": -4, "integrity": 2},
-         "feedback": "Letting them anchor first gives up some leverage, but the information you learn about their priorities is often worth more."},
-        {"id": "offer_a_range", "label": "Offer a range", "strategic_type": "flexible",
-         "effects": {"cash": 90, "reputation": 3, "skills": 7, "energy": -4, "integrity": 1},
-         "feedback": "A range signals flexibility while still anchoring on the high end — a middle path between an aggressive number and no number at all."}
-      ]
+        {
+          "id": "justified_anchor",
+          "label": "Justified anchor",
+          "strategic_type": "balanced",
+          "effects": {
+            "cash": 170,
+            "reputation": 4,
+            "skills": 8,
+            "energy": -7,
+            "integrity": 3
+          },
+          "feedback": "An ambitious anchor backed by visible logic sets the frame without burning trust — the other side can push back on the numbers, not on you.",
+          "description": "Make a strong offer with clear logic.",
+          "learning": {
+            "key_concept": "Anchoring",
+            "principle": "First numbers influence expectations.",
+            "application": "Pair ambition with objective standards.",
+            "trade_offs": "Requires evidence and confidence."
+          }
+        },
+        {
+          "id": "open_extremely_low",
+          "label": "Open extremely low",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": 260,
+            "reputation": -10,
+            "skills": 3,
+            "energy": -5,
+            "integrity": -6
+          },
+          "feedback": "An unreasonable opener can anchor hard, but it signals bad faith — expect the other side to harden their own position in response.",
+          "description": "Push for maximum savings immediately.",
+          "learning": {
+            "key_concept": "Aggressive anchoring",
+            "principle": "Extreme anchors can reset ranges.",
+            "application": "Use only when alternatives are strong.",
+            "trade_offs": "May trigger retaliation or walkaway."
+          }
+        },
+        {
+          "id": "invite_their_proposal",
+          "label": "Invite their proposal",
+          "strategic_type": "collaborative",
+          "effects": {
+            "reputation": 7,
+            "skills": 6,
+            "energy": -4,
+            "integrity": 2
+          },
+          "feedback": "Letting them anchor first gives up some leverage, but the information you learn about their priorities is often worth more.",
+          "description": "Ask the supplier to share constraints first.",
+          "learning": {
+            "key_concept": "Information strategy",
+            "principle": "Listening can reveal hidden value.",
+            "application": "Ask about costs, capacity, and risk.",
+            "trade_offs": "The other side may anchor you."
+          }
+        },
+        {
+          "id": "offer_a_range",
+          "label": "Offer a range",
+          "strategic_type": "flexible",
+          "effects": {
+            "cash": 90,
+            "reputation": 3,
+            "skills": 7,
+            "energy": -4,
+            "integrity": 1
+          },
+          "feedback": "A range signals flexibility while still anchoring on the high end — a middle path between an aggressive number and no number at all.",
+          "description": "Present a conditional price band.",
+          "learning": {
+            "key_concept": "Conditional offers",
+            "principle": "Packages beat single-issue haggling.",
+            "application": "Tie price to volume, term, or service.",
+            "trade_offs": "Can seem less decisive."
+          }
+        }
+      ],
+      "scenario": "The supplier asks you to put the first proposal on the table.",
+      "narrative": "Your opening move will frame the bargaining range and the tone of the relationship."
     },
     {
       "id": "round_3",
       "title": "BATNA test",
       "prompt": "The other side is testing whether you actually have alternatives. How do you respond?",
       "choices": [
-        {"id": "validate_backup", "label": "Validate the backup", "strategic_type": "risk_averse",
-         "effects": {"cash": 120, "reputation": 2, "skills": 9, "energy": -8, "integrity": 4},
-         "feedback": "Confirming your BATNA is real (not just assumed) before you lean on it is the single habit that separates prepared negotiators from bluffers."},
-        {"id": "signal_alternatives", "label": "Signal alternatives", "strategic_type": "balanced",
-         "effects": {"cash": 170, "reputation": 1, "skills": 5, "energy": -4, "integrity": 0},
-         "feedback": "A calm, factual mention of other options applies pressure without a confrontation."},
-        {"id": "bluff_better_deal", "label": "Bluff a better deal", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": 240, "reputation": -12, "skills": 1, "energy": -5, "integrity": -15},
-         "feedback": "A bluff that gets called doesn't just cost this deal — it costs every future deal with anyone who hears about it. The integrity hit here is the real price."},
-        {"id": "share_switching_concerns", "label": "Share switching concerns", "strategic_type": "collaborative",
-         "effects": {"cash": 60, "reputation": 9, "skills": 6, "energy": -4, "integrity": 5},
-         "feedback": "Naming your real hesitation invites them to solve it with you instead of against you — slower, but it usually holds up better."}
-      ]
+        {
+          "id": "validate_backup",
+          "label": "Validate the backup",
+          "strategic_type": "risk_averse",
+          "effects": {
+            "cash": 120,
+            "reputation": 2,
+            "skills": 9,
+            "energy": -8,
+            "integrity": 4
+          },
+          "feedback": "Confirming your BATNA is real (not just assumed) before you lean on it is the single habit that separates prepared negotiators from bluffers.",
+          "description": "Run diligence before using it as leverage.",
+          "learning": {
+            "key_concept": "BATNA quality",
+            "principle": "Alternatives must be executable.",
+            "application": "Check capacity, price, and switching costs.",
+            "trade_offs": "Diligence slows the main negotiation."
+          }
+        },
+        {
+          "id": "signal_alternatives",
+          "label": "Signal alternatives",
+          "strategic_type": "balanced",
+          "effects": {
+            "cash": 170,
+            "reputation": 1,
+            "skills": 5,
+            "energy": -4,
+            "integrity": 0
+          },
+          "feedback": "A calm, factual mention of other options applies pressure without a confrontation.",
+          "description": "Mention market options without naming them.",
+          "learning": {
+            "key_concept": "Leverage signaling",
+            "principle": "Credible ambiguity can move terms.",
+            "application": "Reference options with restraint.",
+            "trade_offs": "Weak signals may be ignored."
+          }
+        },
+        {
+          "id": "bluff_better_deal",
+          "label": "Bluff a better deal",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": 240,
+            "reputation": -12,
+            "skills": 1,
+            "energy": -5,
+            "integrity": -15
+          },
+          "feedback": "A bluff that gets called doesn't just cost this deal — it costs every future deal with anyone who hears about it. The integrity hit here is the real price.",
+          "description": "Claim you have a superior signed offer.",
+          "learning": {
+            "key_concept": "Ethical leverage",
+            "principle": "False claims create hidden risk.",
+            "application": "Use facts, not fabrication.",
+            "trade_offs": "Short-term gains can destroy trust."
+          }
+        },
+        {
+          "id": "share_switching_concerns",
+          "label": "Share switching concerns",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": 60,
+            "reputation": 9,
+            "skills": 6,
+            "energy": -4,
+            "integrity": 5
+          },
+          "feedback": "Naming your real hesitation invites them to solve it with you instead of against you — slower, but it usually holds up better.",
+          "description": "Explain why you prefer agreement if risks are solved.",
+          "learning": {
+            "key_concept": "Constructive dependence",
+            "principle": "Stated preferences can unlock trades.",
+            "application": "Share interests without revealing walkaway.",
+            "trade_offs": "May reduce perceived toughness."
+          }
+        }
+      ],
+      "scenario": "A backup vendor signals possible interest.",
+      "narrative": "Your alternative may improve leverage, but it is not fully vetted."
     },
     {
       "id": "round_4",
       "title": "Concession design",
       "prompt": "You need to move off your opening position. How do you concede?",
       "choices": [
-        {"id": "trade_dont_give", "label": "Trade, do not give", "strategic_type": "balanced",
-         "effects": {"cash": 130, "reputation": 5, "skills": 9, "energy": -6, "integrity": 3},
-         "feedback": "Every concession paired with an ask of your own teaches the other side that nothing here is free — and keeps the deal moving toward a real trade."},
-        {"id": "hold_the_line", "label": "Hold the line", "strategic_type": "focused",
-         "effects": {"cash": 180, "reputation": -5, "skills": 4, "energy": -5, "integrity": 1},
-         "feedback": "Refusing to move protects the number this round, but a negotiation with zero concessions from you risks reading as bad-faith stonewalling."},
-        {"id": "split_the_pain", "label": "Split the pain", "strategic_type": "collaborative",
-         "effects": {"cash": -40, "reputation": 10, "skills": 6, "energy": -4, "integrity": 4},
-         "feedback": "Meeting in the middle costs you cash this round but is often the fastest way to preserve a relationship you'll need again."},
-        {"id": "delay_the_issue", "label": "Delay the issue", "strategic_type": "flexible",
-         "effects": {"cash": 30, "reputation": -3, "skills": -1, "energy": -2, "integrity": -2},
-         "feedback": "Punting on a hard issue doesn't make it go away — it usually resurfaces later, at a worse moment, with less goodwill left to spend on it."}
-      ]
+        {
+          "id": "trade_dont_give",
+          "label": "Trade, do not give",
+          "strategic_type": "balanced",
+          "effects": {
+            "cash": 130,
+            "reputation": 5,
+            "skills": 9,
+            "energy": -6,
+            "integrity": 3
+          },
+          "feedback": "Every concession paired with an ask of your own teaches the other side that nothing here is free — and keeps the deal moving toward a real trade.",
+          "description": "Offer price relief for longer terms and service credits.",
+          "learning": {
+            "key_concept": "Concession trading",
+            "principle": "Every give should get.",
+            "application": "Link concessions to concrete returns.",
+            "trade_offs": "Requires careful package design."
+          }
+        },
+        {
+          "id": "hold_the_line",
+          "label": "Hold the line",
+          "strategic_type": "focused",
+          "effects": {
+            "cash": 180,
+            "reputation": -5,
+            "skills": 4,
+            "energy": -5,
+            "integrity": 1
+          },
+          "feedback": "Refusing to move protects the number this round, but a negotiation with zero concessions from you risks reading as bad-faith stonewalling.",
+          "description": "Reject relief until they provide evidence.",
+          "learning": {
+            "key_concept": "Claiming value",
+            "principle": "Standards justify firmness.",
+            "application": "Ask for verified cost data.",
+            "trade_offs": "May slow collaboration."
+          }
+        },
+        {
+          "id": "split_the_pain",
+          "label": "Split the pain",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": -40,
+            "reputation": 10,
+            "skills": 6,
+            "energy": -4,
+            "integrity": 4
+          },
+          "feedback": "Meeting in the middle costs you cash this round but is often the fastest way to preserve a relationship you'll need again.",
+          "description": "Share part of the increase with a review clause.",
+          "learning": {
+            "key_concept": "Contingent terms",
+            "principle": "Uncertainty can be priced with triggers.",
+            "application": "Use review clauses tied to indices.",
+            "trade_offs": "Immediate economics soften."
+          }
+        },
+        {
+          "id": "delay_the_issue",
+          "label": "Delay the issue",
+          "strategic_type": "flexible",
+          "effects": {
+            "cash": 30,
+            "reputation": -3,
+            "skills": -1,
+            "energy": -2,
+            "integrity": -2
+          },
+          "feedback": "Punting on a hard issue doesn't make it go away — it usually resurfaces later, at a worse moment, with less goodwill left to spend on it.",
+          "description": "Move price discussion to the final meeting.",
+          "learning": {
+            "key_concept": "Issue sequencing",
+            "principle": "Order shapes momentum.",
+            "application": "Park issues only with a clear return point.",
+            "trade_offs": "Unresolved economics can derail close."
+          }
+        }
+      ],
+      "scenario": "The supplier requests price relief after cost increases.",
+      "narrative": "You need to concede only in ways that earn reciprocal value."
     },
     {
       "id": "round_5",
       "title": "Multi-party table",
       "prompt": "A third stakeholder just joined the table with their own agenda. What's your move?",
       "choices": [
-        {"id": "create_workstreams", "label": "Create workstreams", "strategic_type": "systematic",
-         "effects": {"cash": 100, "reputation": 5, "skills": 10, "energy": -9, "integrity": 2},
-         "feedback": "Splitting a multi-party deal into parallel workstreams keeps every stakeholder's issue moving without letting one blocker stall the whole table."},
-        {"id": "escalate_to_executives", "label": "Escalate to executives", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": 140, "reputation": 1, "skills": 3, "energy": -5, "integrity": 1},
-         "feedback": "Escalating can break a logjam fast, but it also signals you couldn't resolve this at your own level — use it sparingly."},
-        {"id": "host_joint_workshop", "label": "Host joint workshop", "strategic_type": "collaborative",
-         "effects": {"cash": 60, "reputation": 9, "skills": 8, "energy": -8, "integrity": 3},
-         "feedback": "Getting everyone in one room to align on shared goals costs time and energy, but it's often the only way a genuinely three-way deal actually closes."},
-        {"id": "negotiate_privately", "label": "Negotiate privately", "strategic_type": "focused",
-         "effects": {"cash": 110, "reputation": -4, "skills": 2, "energy": -3, "integrity": -3},
-         "feedback": "Side-channel deals can be efficient, but they erode trust with whoever finds out they were cut out of the room."}
-      ]
+        {
+          "id": "create_workstreams",
+          "label": "Create workstreams",
+          "strategic_type": "systematic",
+          "effects": {
+            "cash": 100,
+            "reputation": 5,
+            "skills": 10,
+            "energy": -9,
+            "integrity": 2
+          },
+          "feedback": "Splitting a multi-party deal into parallel workstreams keeps every stakeholder's issue moving without letting one blocker stall the whole table.",
+          "description": "Split issues by owner with one integrated tracker.",
+          "learning": {
+            "key_concept": "Process design",
+            "principle": "Negotiation is managed as well as argued.",
+            "application": "Assign owners, deadlines, and escalation paths.",
+            "trade_offs": "Coordination costs rise."
+          }
+        },
+        {
+          "id": "escalate_to_executives",
+          "label": "Escalate to executives",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": 140,
+            "reputation": 1,
+            "skills": 3,
+            "energy": -5,
+            "integrity": 1
+          },
+          "feedback": "Escalating can break a logjam fast, but it also signals you couldn't resolve this at your own level — use it sparingly.",
+          "description": "Ask senior leaders to unlock stuck issues.",
+          "learning": {
+            "key_concept": "Escalation",
+            "principle": "Power can break deadlock.",
+            "application": "Use executives for true blockers.",
+            "trade_offs": "Overuse weakens team ownership."
+          }
+        },
+        {
+          "id": "host_joint_workshop",
+          "label": "Host joint workshop",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": 60,
+            "reputation": 9,
+            "skills": 8,
+            "energy": -8,
+            "integrity": 3
+          },
+          "feedback": "Getting everyone in one room to align on shared goals costs time and energy, but it's often the only way a genuinely three-way deal actually closes.",
+          "description": "Bring teams together to solve operating risks.",
+          "learning": {
+            "key_concept": "Integrative bargaining",
+            "principle": "Shared problem solving creates value.",
+            "application": "Workshop service levels and risk owners.",
+            "trade_offs": "Can wander without facilitation."
+          }
+        },
+        {
+          "id": "negotiate_privately",
+          "label": "Negotiate privately",
+          "strategic_type": "focused",
+          "effects": {
+            "cash": 110,
+            "reputation": -4,
+            "skills": 2,
+            "energy": -3,
+            "integrity": -3
+          },
+          "feedback": "Side-channel deals can be efficient, but they erode trust with whoever finds out they were cut out of the room.",
+          "description": "Keep talks between two leads for speed.",
+          "learning": {
+            "key_concept": "Stakeholder alignment",
+            "principle": "Absent owners can veto later.",
+            "application": "Reserve private talks for sensitive issues.",
+            "trade_offs": "Buy-in may suffer."
+          }
+        }
+      ],
+      "scenario": "Legal, operations, and finance join the negotiation.",
+      "narrative": "More voices create both better information and more friction."
     },
     {
       "id": "round_6",
       "title": "Ethics checkpoint",
       "prompt": "You just noticed the other side's numbers contain an error that works heavily in your favor. What do you do?",
       "choices": [
-        {"id": "disclose_the_error", "label": "Disclose the error", "strategic_type": "long_term_investment",
-         "effects": {"cash": -120, "reputation": 12, "skills": 5, "energy": -4, "integrity": 15},
-         "feedback": "Flagging their error costs you the windfall, but a reputation for not exploiting mistakes is worth more than any single deal — people remember who they can trust with the numbers."},
-        {"id": "ask_clarifying_questions", "label": "Ask clarifying questions", "strategic_type": "balanced",
-         "effects": {"cash": 20, "reputation": 7, "skills": 7, "energy": -4, "integrity": 8},
-         "feedback": "Asking a question that lets them catch their own mistake is a middle path — you're not exploiting it, but you're also not doing their job for them."},
-        {"id": "ignore_it", "label": "Ignore it", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": 230, "reputation": -10, "skills": -2, "energy": -2, "integrity": -18},
-         "feedback": "Quietly banking someone else's mistake is the biggest single integrity hit in this negotiation — and errors like this have a way of surfacing after the ink is dry."},
-        {"id": "ask_legal_privately", "label": "Ask legal privately", "strategic_type": "risk_averse",
-         "effects": {"cash": -20, "reputation": 3, "skills": 4, "energy": -5, "integrity": 6},
-         "feedback": "Routing the question through legal protects you procedurally, though it's slower and less direct than raising it at the table."}
-      ]
+        {
+          "id": "disclose_the_error",
+          "label": "Disclose the error",
+          "strategic_type": "long_term_investment",
+          "effects": {
+            "cash": -120,
+            "reputation": 12,
+            "skills": 5,
+            "energy": -4,
+            "integrity": 15
+          },
+          "feedback": "Flagging their error costs you the windfall, but a reputation for not exploiting mistakes is worth more than any single deal — people remember who they can trust with the numbers.",
+          "description": "Correct the model and reset the discussion.",
+          "learning": {
+            "key_concept": "Trust economics",
+            "principle": "Clean process protects durable value.",
+            "application": "Surface material errors promptly.",
+            "trade_offs": "You may surrender immediate gain."
+          }
+        },
+        {
+          "id": "ask_clarifying_questions",
+          "label": "Ask clarifying questions",
+          "strategic_type": "balanced",
+          "effects": {
+            "cash": 20,
+            "reputation": 7,
+            "skills": 7,
+            "energy": -4,
+            "integrity": 8
+          },
+          "feedback": "Asking a question that lets them catch their own mistake is a middle path — you're not exploiting it, but you're also not doing their job for them.",
+          "description": "Guide them to revisit the flawed assumption.",
+          "learning": {
+            "key_concept": "Ethical framing",
+            "principle": "Questions can reveal issues without grandstanding.",
+            "application": "Probe assumptions neutrally.",
+            "trade_offs": "May not fully correct the record."
+          }
+        },
+        {
+          "id": "ignore_it",
+          "label": "Ignore it",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": 230,
+            "reputation": -10,
+            "skills": -2,
+            "energy": -2,
+            "integrity": -18
+          },
+          "feedback": "Quietly banking someone else's mistake is the biggest single integrity hit in this negotiation — and errors like this have a way of surfacing after the ink is dry.",
+          "description": "Accept the favorable math silently.",
+          "learning": {
+            "key_concept": "Opportunism risk",
+            "principle": "Hidden defects often resurface.",
+            "application": "Avoid gains built on known mistakes.",
+            "trade_offs": "Tempting short-term economics."
+          }
+        },
+        {
+          "id": "ask_legal_privately",
+          "label": "Ask legal privately",
+          "strategic_type": "risk_averse",
+          "effects": {
+            "cash": -20,
+            "reputation": 3,
+            "skills": 4,
+            "energy": -5,
+            "integrity": 6
+          },
+          "feedback": "Routing the question through legal protects you procedurally, though it's slower and less direct than raising it at the table.",
+          "description": "Pause and get guidance before responding.",
+          "learning": {
+            "key_concept": "Governance",
+            "principle": "Ethical ambiguity benefits from process.",
+            "application": "Escalate material concerns early.",
+            "trade_offs": "May appear evasive."
+          }
+        }
+      ],
+      "scenario": "You find an error in the supplier’s spreadsheet that favors you.",
+      "narrative": "No one has noticed the error, and correcting it will cost value."
     },
     {
       "id": "round_7",
       "title": "Close the deal",
       "prompt": "Everything is on the table. How do you bring this home?",
       "choices": [
-        {"id": "close_with_package", "label": "Close with a package", "strategic_type": "balanced",
-         "effects": {"cash": 220, "reputation": 7, "skills": 10, "energy": -7, "integrity": 5},
-         "feedback": "Bundling every open item into one final package lets both sides see the whole trade at once — usually the cleanest way to get to yes."},
-        {"id": "use_deadline_pressure", "label": "Use deadline pressure", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": 260, "reputation": -8, "skills": 2, "energy": -5, "integrity": -5},
-         "feedback": "An artificial deadline can force a decision, but it also forces it under duress — watch for buyer's remorse and a colder relationship afterward."},
-        {"id": "close_a_pilot", "label": "Close a pilot", "strategic_type": "risk_averse",
-         "effects": {"cash": 80, "reputation": 9, "skills": 8, "energy": -4, "integrity": 4},
-         "feedback": "Scaling down to a pilot leaves cash on the table now, but it's a low-risk way to prove the relationship before either side commits fully."},
-        {"id": "celebrate_jointly", "label": "Celebrate jointly", "strategic_type": "collaborative",
-         "effects": {"cash": 120, "reputation": 12, "skills": 5, "energy": -6, "integrity": 5},
-         "feedback": "Marking the close together — not just signing and leaving — is what turns a one-off transaction into the start of a relationship."}
-      ]
+        {
+          "id": "close_with_package",
+          "label": "Close with a package",
+          "strategic_type": "balanced",
+          "effects": {
+            "cash": 220,
+            "reputation": 7,
+            "skills": 10,
+            "energy": -7,
+            "integrity": 5
+          },
+          "feedback": "Bundling every open item into one final package lets both sides see the whole trade at once — usually the cleanest way to get to yes.",
+          "description": "Bundle price, service levels, and review clauses.",
+          "learning": {
+            "key_concept": "Deal architecture",
+            "principle": "Packages align trade-offs across issues.",
+            "application": "Close on the full system, not a single term.",
+            "trade_offs": "Needs careful documentation."
+          }
+        },
+        {
+          "id": "use_deadline_pressure",
+          "label": "Use deadline pressure",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": 260,
+            "reputation": -8,
+            "skills": 2,
+            "energy": -5,
+            "integrity": -5
+          },
+          "feedback": "An artificial deadline can force a decision, but it also forces it under duress — watch for buyer's remorse and a colder relationship afterward.",
+          "description": "Demand signature today or pull the offer.",
+          "learning": {
+            "key_concept": "Deadline leverage",
+            "principle": "Time pressure changes behavior.",
+            "application": "Use only when walkaway is credible.",
+            "trade_offs": "Can damage implementation trust."
+          }
+        },
+        {
+          "id": "close_a_pilot",
+          "label": "Close a pilot",
+          "strategic_type": "risk_averse",
+          "effects": {
+            "cash": 80,
+            "reputation": 9,
+            "skills": 8,
+            "energy": -4,
+            "integrity": 4
+          },
+          "feedback": "Scaling down to a pilot leaves cash on the table now, but it's a low-risk way to prove the relationship before either side commits fully.",
+          "description": "Sign a smaller test with expansion triggers.",
+          "learning": {
+            "key_concept": "Staged agreement",
+            "principle": "Pilots convert uncertainty into learning.",
+            "application": "Tie expansion to measurable milestones.",
+            "trade_offs": "Upside is delayed."
+          }
+        },
+        {
+          "id": "celebrate_jointly",
+          "label": "Celebrate jointly",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": 120,
+            "reputation": 12,
+            "skills": 5,
+            "energy": -6,
+            "integrity": 5
+          },
+          "feedback": "Marking the close together — not just signing and leaving — is what turns a one-off transaction into the start of a relationship.",
+          "description": "Close and announce shared operating commitments.",
+          "learning": {
+            "key_concept": "Implementation mindset",
+            "principle": "The deal starts at signature.",
+            "application": "Use launch rituals to align teams.",
+            "trade_offs": "Less focus on final extraction."
+          }
+        }
+      ],
+      "scenario": "Both teams are ready, but final terms remain sensitive.",
+      "narrative": "The close must lock in economics, accountability, and trust."
     }
   ],
-  "reflection_prompt": "Where did you create value before claiming it? Which concession protected the relationship best?"
+  "reflection_prompt": "Where did you create value before claiming it? Which concession protected the relationship best?",
+  "briefing": {
+    "narrative": "You lead a negotiation team trying to close a strategic supplier partnership under time pressure. Each move shapes trust, economics, and your room to maneuver.",
+    "quote": "Great negotiators widen the pie before they divide it.",
+    "profile": [
+      {
+        "label": "Role",
+        "value": "Lead negotiator"
+      },
+      {
+        "label": "Counterparty",
+        "value": "Strategic supplier"
+      },
+      {
+        "label": "Mandate",
+        "value": "Close with discipline"
+      },
+      {
+        "label": "Pressure",
+        "value": "Board deadline"
+      }
+    ],
+    "steps": [
+      "Prepare interests",
+      "Anchor the offer",
+      "Test BATNA",
+      "Trade concessions",
+      "Close cleanly"
+    ],
+    "rules": [
+      "Choose once per round",
+      "Every choice moves KPIs",
+      "Cash is deal value",
+      "Integrity affects grade",
+      "Rounds cannot be replayed"
+    ]
+  }
 }
