@@ -264,8 +264,8 @@ function OutcomeScreen({ title, feedback, deltas, learning, concepts, onContinue
 
       <button
         onClick={onContinue}
-        className="w-full py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2"
-        style={{ backgroundColor: colors.purple }}
+        className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg"
+        style={{ backgroundColor: colors.primary, color: colors.text }}
       >
         {isLast ? 'See Final Results' : 'Continue'} <FaArrowRight />
       </button>
@@ -456,8 +456,8 @@ function HeliogridOutcome({ result, prevResult, segmentLabel, onContinue, isLast
       </div>
       <button
         onClick={onContinue}
-        className="w-full py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2"
-        style={{ backgroundColor: colors.purple }}
+        className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg"
+        style={{ backgroundColor: colors.primary, color: colors.text }}
       >
         {isLast ? 'See Final Results' : 'Next Quarter'} <FaArrowRight />
       </button>
@@ -523,7 +523,7 @@ export default function PilotGamePlayPage() {
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md text-center">
           <FaExclamationTriangle className="text-3xl mx-auto mb-3 text-red-500" />
           <p className="text-gray-700 mb-4">{error}</p>
-          <button onClick={() => navigate('/games')} className="px-4 py-2 rounded-lg font-bold text-white" style={{ backgroundColor: colors.purple }}>
+          <button onClick={() => navigate('/games')} className="px-4 py-2 rounded-lg font-bold shadow-lg" style={{ backgroundColor: colors.primary, color: colors.text }}>
             Back to games
           </button>
         </div>
@@ -541,7 +541,7 @@ export default function PilotGamePlayPage() {
             Dealcraft, Mumbai Manufacturer, and HelioGrid have a play screen so far.
           </p>
           <p className="text-sm text-gray-400 mb-4">A run was started for it on the backend (run id: {runId}).</p>
-          <button onClick={() => navigate('/games')} className="px-4 py-2 rounded-lg font-bold text-white" style={{ backgroundColor: colors.purple }}>
+          <button onClick={() => navigate('/games')} className="px-4 py-2 rounded-lg font-bold shadow-lg" style={{ backgroundColor: colors.primary, color: colors.text }}>
             Back to games
           </button>
         </div>
@@ -687,8 +687,8 @@ export default function PilotGamePlayPage() {
 
             <button
               onClick={() => setShowBriefing(false)}
-              className="w-full py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg sticky bottom-0"
-              style={{ backgroundColor: colors.purple }}
+              className="w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg sticky bottom-0"
+              style={{ backgroundColor: colors.primary, color: colors.text }}
             >
               Begin Simulation <FaArrowRight />
             </button>
@@ -874,10 +874,10 @@ export default function PilotGamePlayPage() {
           )}
 
           <div className="flex gap-3 mt-8">
-            <button onClick={() => window.location.reload()} className="flex-1 px-4 py-2.5 rounded-xl font-bold border-2" style={{ borderColor: colors.purple, color: colors.purple }}>
+            <button onClick={() => window.location.reload()} className="flex-1 px-4 py-2.5 rounded-xl font-bold border-2" style={{ borderColor: colors.primary, color: colors.text, backgroundColor: colors.card }}>
               Play Again
             </button>
-            <button onClick={() => navigate('/games')} className="flex-1 px-4 py-2.5 rounded-xl font-bold text-white" style={{ backgroundColor: colors.purple }}>
+            <button onClick={() => navigate('/games')} className="flex-1 px-4 py-2.5 rounded-xl font-bold shadow-lg" style={{ backgroundColor: colors.primary, color: colors.text }}>
               Back to Games
             </button>
           </div>

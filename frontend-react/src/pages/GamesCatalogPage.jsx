@@ -6,36 +6,68 @@
  * Real backend route: GET /api/games -> { meta, games: [...] } (backend/app.py
  * `games_list`), via api/games.js `listGames()`.
  *
- * Uses the actual Simulok cover photography for the 3 pilot games (see
- * reference/simulok-source/assets/sim/) rather than emoji placeholders —
- * these are the real hero images that game's original implementation shipped.
+ * Design deliberately mirrors HomePage.jsx's own "Popular Learning
+ * Adventures" card exactly — same `colors`/`themeConfig` values, same
+ * category-pill/duration-badge/Play-Now-button conventions — rather than
+ * inventing a separate visual language for this page. The one addition is
+ * a real photo behind the gradient for the 3 pilot games that have one
+ * (reference/simulok-source/assets/sim/); everything else (badges, button,
+ * layout) is unchanged from HomePage's pattern so the app reads as one
+ * consistent product.
  */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaClock, FaSignal, FaLock, FaPlay } from 'react-icons/fa';
+import { FaHeart, FaRocket, FaBrain, FaGamepad, FaClock, FaLock, FaPlayCircle, FaArrowRight } from 'react-icons/fa';
+import { GiMoneyStack, GiPuzzle, GiLemon } from 'react-icons/gi';
 import { listGames } from '../api/games';
 import { LoadingState } from '../components/ui/LoadingSpinner';
 import dealcraftImg from '../assets/games/dealcraft.jpg';
 import mumbaiImg from '../assets/games/mumbai_manufacturer.jpg';
 import heliogridImg from '../assets/games/heliogrid.jpg';
 
+// Same object as HomePage.jsx's `colors` — kept in sync by eye since neither
+// file exports it. Values must match if either changes.
 const colors = {
   primary: '#FFD166',
-  primaryDark: '#FFC145',
   background: '#FFFDF7',
+  card: '#FFFFFF',
   text: '#2D3047',
   textLight: '#6D7286',
-  purple: '#6C5CE7',
+  primaryLight: '#FFF3D6',
+
+  business: '#4ECDC4',
+  social: '#FF6B6B',
+  puzzle: '#9B5DE5',
+  adventure: '#118AB2',
+  strategy: '#06D6A0',
+  lemon: '#FFD93D',
 };
 
+// Identical to HomePage.jsx's `themeConfig` — same keys, same gradients —
+// so a game rendered here and on the home carousel looks like the same card.
+const themeConfig = {
+  business: { color: colors.business, icon: <GiMoneyStack />, bgGradient: 'linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)' },
+  social: { color: colors.social, icon: <FaHeart />, bgGradient: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)' },
+  puzzle: { color: colors.puzzle, icon: <GiPuzzle />, bgGradient: 'linear-gradient(135deg, #9B5DE5 0%, #7C4DFF 100%)' },
+  adventure: { color: colors.adventure, icon: <FaRocket />, bgGradient: 'linear-gradient(135deg, #118AB2 0%, #06BEE1 100%)' },
+  strategy: { color: colors.strategy, icon: <FaBrain />, bgGradient: 'linear-gradient(135deg, #06D6A0 0%, #00CF8A 100%)' },
+  lemon: { color: colors.lemon, icon: <GiLemon />, bgGradient: 'linear-gradient(135deg, #FFD93D 0%, #FFB347 100%)' },
+  default: { color: colors.primary, icon: <FaGamepad />, bgGradient: 'linear-gradient(135deg, #FFD166 0%, #FFB347 100%)' },
+};
+
+function getGameConfig(game) {
+  const theme = game.theme?.toLowerCase();
+  return themeConfig[theme] || themeConfig.default;
+}
+
+// Real Simulok cover photography (reference/simulok-source/assets/sim/) for
+// the 3 pilot games — layered under the same gradient the other cards use.
 const HERO_IMAGES = {
   dealcraft: dealcraftImg,
   mumbai_manufacturer: mumbaiImg,
   heliogrid: heliogridImg,
 };
-
-const CARD_ACCENTS = ['#6C5CE7', '#4ECDC4', '#FF6B6B', '#118AB2', '#FFD166'];
 
 export default function GamesCatalogPage() {
   const navigate = useNavigate();
@@ -60,31 +92,45 @@ export default function GamesCatalogPage() {
 
         {error && <div className="mb-6 px-4 py-3 rounded-lg bg-red-50 text-red-700 text-sm">{error}</div>}
 
-        <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
-          {games.map((g, idx) => {
+        <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+          {games.map((g) => {
             const hero = HERO_IMAGES[g.game_id];
-            const accent = CARD_ACCENTS[idx % CARD_ACCENTS.length];
+            const config = getGameConfig(g);
+            const ageGroup = g.age_category === 'kids' ? '8+' : g.age_category === 'teens' ? '13+' : g.age_category === 'adults' ? '18+' : 'All ages';
             return (
-              <motion.button
+              <motion.div
                 key={g.game_id}
-                onClick={() => !g.locked && navigate(`/play/${g.game_id}`)}
-                disabled={!!g.locked}
                 whileHover={g.locked ? {} : { y: -4 }}
-                className="text-left rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+                className="rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow"
+                style={{ backgroundColor: colors.card }}
               >
                 <div
-                  className="h-36 relative flex items-end p-4"
+                  className="h-40 relative"
                   style={{
-                    backgroundImage: hero
-                      ? `linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.05)), url(${hero})`
-                      : `linear-gradient(135deg, ${accent}, ${accent}CC)`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
+                    background: hero
+                      ? `linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.05)), url(${hero}) center/cover`
+                      : config.bgGradient,
                   }}
                 >
-                  {!hero && <span className="text-4xl">{g.icon || '🎮'}</span>}
+                  {!hero && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-xl">
+                        <div className="text-3xl text-white">{g.icon || config.icon}</div>
+                      </div>
+                    </div>
+                  )}
                   {hero && (
-                    <span className="text-white font-extrabold text-lg leading-tight drop-shadow">{g.title}</span>
+                    <span className="absolute bottom-3 left-4 right-4 text-white font-extrabold text-lg leading-tight drop-shadow line-clamp-2">
+                      {g.title}
+                    </span>
+                  )}
+                  {g.duration_minutes && (
+                    <div className={`absolute top-3 right-3 ${hero ? '' : 'bottom-3 top-auto'}`}>
+                      <div className="flex items-center px-2.5 py-1 rounded-full bg-black/30 backdrop-blur-sm">
+                        <FaClock className="text-white text-xs mr-1" />
+                        <span className="text-xs font-bold text-white">{g.duration_minutes} min</span>
+                      </div>
+                    </div>
                   )}
                   {g.locked && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -93,38 +139,54 @@ export default function GamesCatalogPage() {
                   )}
                 </div>
 
-                <div className="p-4">
+                <div className="p-5">
                   {!hero && (
-                    <div className="font-bold mb-1" style={{ color: colors.text }}>{g.title}</div>
+                    <h3 className="text-lg font-bold mb-2 line-clamp-1" style={{ color: colors.text }}>{g.title}</h3>
                   )}
-                  <p className="text-sm mb-3" style={{ color: colors.textLight, minHeight: 40 }}>
-                    {(g.description || '').slice(0, 100)}{g.description?.length > 100 ? '…' : ''}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-xs font-semibold" style={{ color: colors.textLight }}>
-                      {g.duration_minutes && (
-                        <span className="flex items-center gap-1"><FaClock /> {g.duration_minutes} min</span>
-                      )}
-                      {g.difficulty && (
-                        <span className="flex items-center gap-1"><FaSignal /> {g.difficulty}</span>
-                      )}
-                    </div>
-                    {!g.locked && (
-                      <span
-                        className="flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full text-white"
-                        style={{ backgroundColor: accent }}
-                      >
-                        <FaPlay className="text-[9px]" /> Play
-                      </span>
-                    )}
+                  <div className="flex items-center mb-3">
+                    <span
+                      className="text-xs font-semibold px-3 py-1 rounded-full"
+                      style={{ backgroundColor: config.color + '20', color: config.color }}
+                    >
+                      {g.theme || 'Adventure'}
+                    </span>
                   </div>
-                  {g.locked && (
-                    <div className="text-xs mt-2 font-semibold" style={{ color: colors.textLight }}>
+                  <p className="text-sm mb-4 line-clamp-2" style={{ color: colors.textLight, minHeight: 40 }}>
+                    {g.description}
+                  </p>
+
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                      <FaBrain className="flex-shrink-0 text-amber-400" size={10} />
+                      {g.difficulty || 'Soft Skills'}
+                    </span>
+                    <div
+                      className="text-xs font-semibold px-3 py-1 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: colors.primaryLight, color: colors.text }}
+                    >
+                      {ageGroup}
+                    </div>
+                  </div>
+
+                  {g.locked ? (
+                    <div className="text-xs font-semibold text-center py-2" style={{ color: colors.textLight }}>
                       🔒 {g.unlock_hint || 'Locked'}
                     </div>
+                  ) : (
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => navigate(`/play/${g.game_id}`)}
+                      className="w-full py-3 rounded-xl font-bold flex items-center justify-center shadow-lg"
+                      style={{ backgroundColor: config.color, color: colors.text }}
+                    >
+                      <FaPlayCircle className="mr-2 text-lg" />
+                      Play Now
+                      <FaArrowRight className="ml-2" />
+                    </motion.button>
                   )}
                 </div>
-              </motion.button>
+              </motion.div>
             );
           })}
         </div>
