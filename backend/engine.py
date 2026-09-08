@@ -118,9 +118,26 @@ def apply_choice(game: dict, state, choice_id, stress_event=None, time_to_decide
     events: List[str] = []
     skill_tags: List[str] = []
     for c in chosen:
-        _apply_delta(state, c.get("delta") or {})
+        # A few games (e.g. startup-founders-journey.json, prisoners-
+        # dilemma.json) author the resource mutation as `effects` instead
+        # of `delta` — without this fallback the choice's state changes are
+        # silently dropped and every round plays as a no-op.
+        _apply_delta(state, c.get("delta") or c.get("effects") or {})
         if c.get("feedback"):
             events.append(c["feedback"])
+        elif c.get("outcome_text"):
+            events.append(c["outcome_text"])
+        elif c.get("events"):
+            # Some games (e.g. my-ward-my-responsibility.json) author their
+            # per-choice consequence as a structured events[] list instead
+            # of a single `feedback` string — surface that narrative text
+            # too, rather than silently dropping it and leaving the player
+            # with no visible outcome for their decision.
+            for ev in c["events"]:
+                if isinstance(ev, dict) and ev.get("description"):
+                    events.append(ev["description"])
+                elif isinstance(ev, str):
+                    events.append(ev)
         skill_tags.extend(c.get("skill_tags", []) or [])
 
     if isinstance(stress_event, dict) and stress_event.get("delta"):

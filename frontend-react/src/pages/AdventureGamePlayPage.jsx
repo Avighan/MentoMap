@@ -77,10 +77,35 @@ function fmtNum(n) {
   return Math.round(n * 10) / 10;
 }
 
-/** Sticky headline resource bar — picks the "surface" resources (state
+/** Tiny inline sparkline (no charting lib) — plots a metric's value across
+ * every round played so far, so the dashboard reads as a running simulation
+ * trace rather than a single frozen number. */
+function Sparkline({ values, color }) {
+  if (!values || values.length < 2) return null;
+  const w = 56;
+  const h = 20;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = max - min || 1;
+  const pts = values.map((v, i) => {
+    const x = (i / (values.length - 1)) * w;
+    const y = h - ((v - min) / range) * h;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  });
+  return (
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="mx-auto mt-0.5" aria-hidden="true">
+      <polyline points={pts.join(' ')} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/** Sticky headline resource dashboard — picks the "surface" resources (state
  * fields without a `category` tag; the NEP/psychological dimensions carry
  * one and are better shown in full on the final report) rather than
- * hardcoding field names, since every game's state schema differs. */
+ * hardcoding field names, since every game's state schema differs. Reads
+ * as a live simulation dashboard (current value + trend + delta) instead
+ * of a single static score, which is what made these screens feel like a
+ * quiz rather than a running simulation. */
 // Bookkeeping fields the engine adds to every run's state — never a
 // player-facing resource, so never a KpiBar candidate.
 const META_STATE_KEYS = new Set([
@@ -88,44 +113,55 @@ const META_STATE_KEYS = new Set([
   'rounds_completed', 'total_rounds', 'current_round', 'log',
 ]);
 
-function KpiBar({ state, prevState }) {
-  const surfaceKeys = Object.entries(state || {})
+function surfaceStateKeys(state) {
+  return Object.entries(state || {})
     .filter(([k, v]) => !META_STATE_KEYS.has(k) && (
       typeof v === 'number' ||
       (v && typeof v === 'object' && typeof v.value === 'number' && v.category !== 'Story & Narrative')
     ))
     .map(([k]) => k)
-    .slice(0, 5);
+    .slice(0, 8);
+}
+
+function KpiBar({ state, prevState, history }) {
+  const surfaceKeys = surfaceStateKeys(state);
   if (!surfaceKeys.length) return null;
   return (
     <div className="sticky top-[57px] z-10 bg-white border-b shadow-sm">
-      <div className="max-w-3xl mx-auto px-4 py-2.5 grid gap-2" style={{ gridTemplateColumns: `repeat(${surfaceKeys.length}, 1fr)` }}>
-        {surfaceKeys.map((key) => {
-          const entry = state[key];
-          const value = numericValue(entry);
-          const prev = prevState ? numericValue(prevState[key]) : null;
-          const delta = prev !== null ? value - prev : 0;
-          const flash = delta > 0 ? 'bg-green-50' : delta < 0 ? 'bg-red-50' : 'bg-gray-50';
-          const icon = stateIcon(entry);
-          return (
-            <motion.div
-              key={key}
-              className={`rounded-lg px-2 py-1.5 text-center ${flash}`}
-              animate={{ scale: delta !== 0 ? [1, 1.06, 1] : 1 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="text-[10px] font-bold uppercase tracking-wide truncate" style={{ color: colors.textLight }}>
-                {icon ? `${icon} ` : ''}{stateLabel(key, entry)}
-              </div>
-              <div className="text-sm font-extrabold" style={{ color: colors.text }}>{fmtNum(value)}</div>
-              {delta !== 0 && (
-                <div className="text-[10px] font-bold" style={{ color: delta > 0 ? colors.green : colors.red }}>
-                  {delta > 0 ? '+' : ''}{fmtNum(delta)}
+      <div className="max-w-3xl mx-auto px-4 py-2.5">
+        <div className="text-[9px] font-bold uppercase tracking-widest mb-1.5" style={{ color: colors.textLight }}>
+          Simulation Dashboard
+        </div>
+        <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${Math.min(surfaceKeys.length, 4)}, 1fr)` }}>
+          {surfaceKeys.map((key) => {
+            const entry = state[key];
+            const value = numericValue(entry);
+            const prev = prevState ? numericValue(prevState[key]) : null;
+            const delta = prev !== null ? value - prev : 0;
+            const flash = delta > 0 ? 'bg-green-50' : delta < 0 ? 'bg-red-50' : 'bg-gray-50';
+            const icon = stateIcon(entry);
+            const trend = (history || []).map((h) => numericValue(h[key]));
+            return (
+              <motion.div
+                key={key}
+                className={`rounded-lg px-2 py-1.5 text-center ${flash}`}
+                animate={{ scale: delta !== 0 ? [1, 1.06, 1] : 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="text-[10px] font-bold uppercase tracking-wide truncate" style={{ color: colors.textLight }}>
+                  {icon ? `${icon} ` : ''}{stateLabel(key, entry)}
                 </div>
-              )}
-            </motion.div>
-          );
-        })}
+                <div className="text-sm font-extrabold" style={{ color: colors.text }}>{fmtNum(value)}</div>
+                {delta !== 0 && (
+                  <div className="text-[10px] font-bold" style={{ color: delta > 0 ? colors.green : colors.red }}>
+                    {delta > 0 ? '+' : ''}{fmtNum(delta)}
+                  </div>
+                )}
+                <Sparkline values={trend} color={delta < 0 ? colors.red : colors.teal} />
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -148,6 +184,79 @@ function ProgressBar({ current, total }) {
           transition={{ duration: 0.4 }}
         />
       </div>
+    </div>
+  );
+}
+
+/** Horizontal stage-by-stage pip tracker underneath the progress bar — gives
+ * the run a visible multi-stage shape (like a simulation's day/quarter
+ * timeline) instead of feeling like an open-ended series of questions. */
+function StageRoadmap({ current, total }) {
+  if (!total || total < 2) return null;
+  const stages = Array.from({ length: total }, (_, i) => i + 1);
+  return (
+    <div className="max-w-3xl mx-auto px-4 pt-2 flex items-center gap-1 overflow-x-auto">
+      {stages.map((n) => {
+        const done = n < current;
+        const active = n === current;
+        return (
+          <div
+            key={n}
+            className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-colors"
+            style={{
+              backgroundColor: done ? colors.teal : active ? colors.purple : '#EEEDE7',
+              color: done || active ? '#fff' : colors.textLight,
+              boxShadow: active ? `0 0 0 3px ${colors.purple}33` : 'none',
+            }}
+            title={`Stage ${n}`}
+          >
+            {done ? '✓' : n}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Renders a round-authored `decision_data` block — structured numbers a
+ * player needs to actually reason about the decision (a budget breakdown,
+ * a financial snapshot, a performance trend) instead of prose alone. Mirrors
+ * PilotGamePlayPage's "Key data this stage" table for the pilot engine. */
+function DecisionDataPanel({ data }) {
+  if (!data?.rows?.length) return null;
+  return (
+    <div className="mb-4 rounded-xl border border-gray-100 overflow-hidden">
+      <div className="text-xs font-bold uppercase tracking-wide px-3 py-2 bg-gray-50 flex items-center gap-1.5" style={{ color: colors.textLight }}>
+        <FaChartLine style={{ color: colors.teal }} /> {data.title || 'Key data this stage'}
+      </div>
+      {data.rows.map((row, idx) => (
+        <div key={row.label} className={`flex justify-between items-center px-3 py-1.5 text-sm ${idx % 2 ? 'bg-gray-50/60' : ''}`}>
+          <span style={{ color: colors.textLight }}>{row.icon ? `${row.icon} ` : ''}{row.label}</span>
+          <span className="font-semibold" style={{ color: colors.text }}>{row.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Compact preview of every non-zero resource a choice would move, not just
+ * the single largest one — lets the player weigh a real trade-off (e.g.
+ * "+12 infrastructure, -8 budget") before committing, the way a simulation's
+ * decision-consequence preview works. */
+function ImpactPreview({ delta }) {
+  const entries = Object.entries(delta || {}).filter(([, v]) => typeof v === 'number' && v !== 0);
+  if (!entries.length) return null;
+  return (
+    <div className="flex flex-wrap gap-1 mt-1.5">
+      {entries.map(([key, val]) => (
+        <span
+          key={key}
+          className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+          style={{ backgroundColor: val > 0 ? '#D1FAE5' : '#FEE2E2', color: val > 0 ? colors.green : colors.red }}
+        >
+          {val > 0 ? '+' : ''}{fmtNum(val)} {stateLabel(key)}
+        </span>
+      ))}
     </div>
   );
 }
@@ -180,6 +289,10 @@ export default function AdventureGamePlayPage() {
   const [totalRounds, setTotalRounds] = useState(1);
   const [state, setState] = useState(null);
   const [prevState, setPrevState] = useState(null);
+  // One snapshot per round played (starting state first) so the dashboard
+  // can plot a trend per resource instead of just a single before/after —
+  // this is what makes the run read as a simulation trajectory.
+  const [stateHistory, setStateHistory] = useState([]);
   const [phase, setPhase] = useState('choice'); // 'choice' | 'outcome' | 'complete'
   const [pendingOutcome, setPendingOutcome] = useState(null);
   const [newSkills, setNewSkills] = useState([]);
@@ -197,7 +310,9 @@ export default function AdventureGamePlayPage() {
         setRunId(data.run_id);
         setGame(data.game_data);
         setRound(data.round || null);
-        setState(data.state || data.game_data?.initial_state || null);
+        const initialState = data.state || data.game_data?.initial_state || null;
+        setState(initialState);
+        setStateHistory(initialState ? [initialState] : []);
         setTotalRounds(data.game_data?.rounds?.length || 1);
       })
       .catch((err) => {
@@ -239,6 +354,7 @@ export default function AdventureGamePlayPage() {
       const res = await submitChoice(runId, choice.id);
       setPrevState(state);
       setState(res.state);
+      setStateHistory((h) => [...h, res.state]);
       const outcome = res.outcome || null;
       if (outcome) {
         // expert_pick is a full {choice_id, reason} object in some games
@@ -415,6 +531,34 @@ export default function AdventureGamePlayPage() {
               <p className="text-xs mt-1" style={{ color: colors.textLight }}>Better than {mento.percentile}% of players</p>
             )}
 
+            {stateHistory.length > 1 && surfaceStateKeys(state).length > 0 && (
+              <div className="mt-6 rounded-xl p-4 text-left border border-gray-100">
+                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide mb-3" style={{ color: colors.textLight }}>
+                  <FaChartLine style={{ color: colors.teal }} /> Simulation Trajectory
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {surfaceStateKeys(state).slice(0, 4).map((key) => {
+                    const trend = stateHistory.map((h) => numericValue(h[key]));
+                    const start = trend[0];
+                    const end = trend[trend.length - 1];
+                    const delta = end - start;
+                    return (
+                      <div key={key} className="rounded-lg bg-gray-50 px-3 py-2">
+                        <div className="text-[10px] font-bold uppercase tracking-wide truncate" style={{ color: colors.textLight }}>
+                          {stateIcon(state[key]) ? `${stateIcon(state[key])} ` : ''}{stateLabel(key, state[key])}
+                        </div>
+                        <div className="flex items-center justify-between mt-0.5">
+                          <span className="text-xs" style={{ color: colors.textLight }}>{fmtNum(start)} → <span className="font-bold" style={{ color: colors.text }}>{fmtNum(end)}</span></span>
+                          <span className="text-[10px] font-bold" style={{ color: delta >= 0 ? colors.green : colors.red }}>{delta > 0 ? '+' : ''}{fmtNum(delta)}</span>
+                        </div>
+                        <Sparkline values={trend} color={delta < 0 ? colors.red : colors.teal} />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {dna.archetype_name && (
               <div className="mt-6 rounded-xl p-4 text-left" style={{ backgroundColor: colors.purple + '0D' }}>
                 <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide mb-1" style={{ color: colors.purple }}>
@@ -495,8 +639,9 @@ export default function AdventureGamePlayPage() {
   return (
     <div className="min-h-screen pb-16" style={{ backgroundColor: colors.background }}>
       <TopBar title={game.title} icon={game.icon} onBack={() => navigate('/games')} />
-      <KpiBar state={state} prevState={prevState} />
+      <KpiBar state={state} prevState={prevState} history={stateHistory} />
       <ProgressBar current={Math.min(roundIndex, totalRounds)} total={totalRounds} />
+      <StageRoadmap current={Math.min(roundIndex, totalRounds)} total={totalRounds} />
 
       <div className="max-w-3xl mx-auto px-4 mt-6">
         {error && (
@@ -518,6 +663,36 @@ export default function AdventureGamePlayPage() {
                   ))}
                 </div>
               )}
+
+              {(() => {
+                const changedKeys = surfaceStateKeys(state).filter((k) => {
+                  const before = prevState ? numericValue(prevState[k]) : null;
+                  const after = numericValue(state[k]);
+                  return before !== null && before !== after;
+                });
+                if (!changedKeys.length) return null;
+                return (
+                  <div className="mb-4 rounded-xl border border-gray-100 overflow-hidden">
+                    <div className="text-xs font-bold uppercase tracking-wide px-3 py-2 bg-gray-50" style={{ color: colors.textLight }}>
+                      How this changed the simulation
+                    </div>
+                    {changedKeys.map((k, idx) => {
+                      const before = numericValue(prevState[k]);
+                      const after = numericValue(state[k]);
+                      const delta = after - before;
+                      return (
+                        <div key={k} className={`flex justify-between items-center px-3 py-1.5 text-sm ${idx % 2 ? 'bg-gray-50/60' : ''}`}>
+                          <span style={{ color: colors.textLight }}>{stateIcon(state[k]) ? `${stateIcon(state[k])} ` : ''}{stateLabel(k, state[k])}</span>
+                          <span className="font-semibold flex items-center gap-1.5" style={{ color: colors.text }}>
+                            {fmtNum(before)} <FaArrowRight className="text-[10px]" style={{ color: colors.textLight }} /> {fmtNum(after)}
+                            <span style={{ color: delta > 0 ? colors.green : colors.red }}>({delta > 0 ? '+' : ''}{fmtNum(delta)})</span>
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
 
               {pendingOutcome.mira && (
                 <div className="flex gap-3 p-4 rounded-xl mb-4" style={{ backgroundColor: colors.purple + '0D' }}>
@@ -584,13 +759,32 @@ export default function AdventureGamePlayPage() {
               </div>
               <h2 className="text-xl font-bold mb-2" style={{ color: colors.text }}>{round.title}</h2>
 
-              {round.story && (
+              {/* `situation` is the meaty scene-setting text several games
+                  author (e.g. my-ward-my-responsibility.json,
+                  pro-difficult-1on1.json) alongside a much shorter `story`
+                  aside/moral. When both exist, `situation` takes the main
+                  narrative box and `story` becomes a smaller aside — when
+                  only `story` exists (the majority of games), it keeps its
+                  original full-weight box treatment. */}
+              {round.situation && (
                 <div className="rounded-xl p-4 mb-3" style={{ backgroundColor: '#F5F4EF' }}>
-                  <p className="text-sm whitespace-pre-line leading-relaxed" style={{ color: colors.text }}>{textBody(round.story)}</p>
+                  <p className="text-sm whitespace-pre-line leading-relaxed" style={{ color: colors.text }}>{textBody(round.situation)}</p>
                 </div>
               )}
 
+              {round.story && (
+                round.situation ? (
+                  <p className="text-sm italic mb-3" style={{ color: colors.textLight }}>{textBody(round.story)}</p>
+                ) : (
+                  <div className="rounded-xl p-4 mb-3" style={{ backgroundColor: '#F5F4EF' }}>
+                    <p className="text-sm whitespace-pre-line leading-relaxed" style={{ color: colors.text }}>{textBody(round.story)}</p>
+                  </div>
+                )
+              )}
+
               {round.goal && <p className="text-sm font-semibold mb-3" style={{ color: colors.text }}>{textBody(round.goal)}</p>}
+
+              <DecisionDataPanel data={round.decision_data} />
 
               {round.coaching_moment && (
                 <div className="flex gap-2 items-start text-xs mb-4 px-3 py-2 rounded-lg" style={{ backgroundColor: colors.primaryLight + '40', color: colors.text }}>
@@ -603,37 +797,33 @@ export default function AdventureGamePlayPage() {
               )}
 
               <div className="flex flex-col gap-3">
-                {(round.choices || []).map((c, idx) => {
-                  const topEffect = Object.entries(c.delta || {}).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))[0];
-                  return (
-                    <motion.button
-                      key={c.id}
-                      disabled={submitting}
-                      onClick={() => handleChoice(c)}
-                      whileHover={{ scale: submitting ? 1 : 1.01 }}
-                      whileTap={{ scale: submitting ? 1 : 0.99 }}
-                      className="text-left p-4 rounded-xl border-2 border-gray-100 hover:border-current disabled:opacity-60 transition-colors"
-                      style={{ color: colors.purple }}
-                    >
-                      <div className="flex items-start gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: colors.purple }}>
-                          {String.fromCharCode(65 + idx)}
-                        </span>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between gap-2">
-                            <div className="font-bold" style={{ color: colors.text }}>{c.label}</div>
-                            {topEffect && (
-                              <span className="text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0" style={{ backgroundColor: topEffect[1] > 0 ? '#D1FAE5' : '#FEE2E2', color: topEffect[1] > 0 ? colors.green : colors.red }}>
-                                {topEffect[1] > 0 ? '+' : ''}{fmtNum(topEffect[1])} {stateLabel(topEffect[0])}
-                              </span>
-                            )}
+                {(round.choices || []).map((c, idx) => (
+                  <motion.button
+                    key={c.id}
+                    disabled={submitting}
+                    onClick={() => handleChoice(c)}
+                    whileHover={{ scale: submitting ? 1 : 1.01 }}
+                    whileTap={{ scale: submitting ? 1 : 0.99 }}
+                    className="text-left p-4 rounded-xl border-2 border-gray-100 hover:border-current disabled:opacity-60 transition-colors"
+                    style={{ color: colors.purple }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: colors.purple }}>
+                        {String.fromCharCode(65 + idx)}
+                      </span>
+                      <div className="flex-1">
+                        <div className="font-bold" style={{ color: colors.text }}>{c.label}</div>
+                        {c.description && <div className="text-sm mt-0.5" style={{ color: colors.textLight }}>{c.description}</div>}
+                        {c.consequence_hint && (
+                          <div className="text-xs italic mt-1" style={{ color: colors.textLight }}>
+                            💭 {c.consequence_hint}
                           </div>
-                          {c.description && <div className="text-sm mt-0.5" style={{ color: colors.textLight }}>{c.description}</div>}
-                        </div>
+                        )}
+                        <ImpactPreview delta={c.delta} />
                       </div>
-                    </motion.button>
-                  );
-                })}
+                    </div>
+                  </motion.button>
+                ))}
               </div>
             </motion.div>
           )}

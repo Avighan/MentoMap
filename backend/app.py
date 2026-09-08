@@ -1004,10 +1004,26 @@ def build_round_payload(game: dict, state_obj):
                 return str(int(val))
             return str(val)
         return _var_re.sub(_repl, text)
+    # A handful of games (e.g. my-ward-my-responsibility.json) author a
+    # single-brace {player_name} placeholder instead of {{player_name}} —
+    # resolve it here too so players don't see the literal token.
+    try:
+        _pn_token = get_token_from_request()
+        _pn_user = verify_token(_pn_token) if _pn_token else None
+        _resolved_player_name = "Player"
+        if _pn_user:
+            _pn_prof = player_profile.get_profile(_pn_user["user_id"])
+            _resolved_player_name = _pn_prof.get("display_name") or _pn_user.get("username", "Player")
+    except Exception:
+        _resolved_player_name = "Player"
+    def _sub_player_name(text):
+        if not isinstance(text, str) or "{player_name}" not in text:
+            return text
+        return text.replace("{player_name}", _resolved_player_name)
     # Apply to all narrative fields in the round definition
-    for _f in ("story", "setting", "challenge", "goal", "title"):
+    for _f in ("story", "setting", "challenge", "goal", "title", "situation"):
         if _f in rnd and isinstance(rnd[_f], str):
-            rnd[_f] = _sub(rnd[_f])
+            rnd[_f] = _sub_player_name(_sub(rnd[_f]))
     # Also substitute in choice labels and descriptions
     for _c in rnd.get("choices", []):
         for _cf in ("label", "description"):
@@ -1033,6 +1049,8 @@ def build_round_payload(game: dict, state_obj):
             choice_data["detailed_plan"] = choice["detailed_plan"]
         if "character_reactions" in choice:
             choice_data["character_reactions"] = choice["character_reactions"]
+        if choice.get("consequence_hint"):
+            choice_data["consequence_hint"] = choice["consequence_hint"]
         # --- Quiz/knowledge-testing fields for science/math games ---
         if "is_correct" in choice:
             choice_data["is_correct"] = choice["is_correct"]
@@ -1041,13 +1059,20 @@ def build_round_payload(game: dict, state_obj):
         if "mastery_level" in choice:
             choice_data["mastery_level"] = choice["mastery_level"]
         # --- Delta passthrough (for resource preview tags in ChoiceCard) ---
+        # `effects` is an alternate field name used by a few games (e.g.
+        # startup-founders-journey.json, prisoners-dilemma.json) — without
+        # this fallback their choices show no resource-impact preview at all.
         if choice.get("delta"):
             choice_data["delta"] = choice["delta"]
         elif choice.get("deltas"):
             choice_data["delta"] = choice["deltas"]
+        elif choice.get("effects"):
+            choice_data["delta"] = choice["effects"]
         # --- Feedback passthrough (needed for quiz mode to show explanations) ---
         if choice.get("feedback"):
             choice_data["feedback"] = choice["feedback"]
+        elif choice.get("outcome_text"):
+            choice_data["feedback"] = choice["outcome_text"]
         # Fallback: construct feedback from psychological_impact if no explicit feedback
         if not choice_data.get("feedback") and choice.get("psychological_impact"):
             _impacts = []
@@ -1233,7 +1258,10 @@ def build_round_payload(game: dict, state_obj):
     payload = {
         "id": rnd.get("id") or rnd.get("round_id"),
         "title": rnd.get("title") or rnd.get("round_title", ""),
-        "story": rnd.get("story", ""),
+        # story_text is an alternate field name used by a few games (e.g.
+        # startup-founders-journey.json) — without this fallback their rich
+        # narrative prose is silently dropped and the round shows nothing.
+        "story": rnd.get("story") or rnd.get("story_text", ""),
         "setting": rnd.get("setting", ""),
         "challenge": rnd.get("challenge", ""),
         "goal": rnd.get("goal", ""),
@@ -1265,7 +1293,7 @@ def build_round_payload(game: dict, state_obj):
                         "concept", "badge", "emotional_beat", "emotional_intensity",
                         "title_override", "video_script", "npc_spotlight",
                         "dynamic_intros", "decision_panel", "expert_debrief",
-                        "inbox_events"):
+                        "inbox_events", "decision_data"):
         if rnd.get(_sim_field) is not None:
             payload[_sim_field] = rnd[_sim_field]
 
