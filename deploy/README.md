@@ -84,6 +84,31 @@ Unlike most free PaaS tiers, this is a real VM with a real disk —
 persists across restarts and redeploys as long as you don't `rm -rf` it.
 There's no separate database to configure.
 
+`setup_oracle_vm.sh` also installs a nightly backup: a `mentomap-backup.timer`
+systemd unit runs `deploy/backup_data.sh`, which tars `backend/data` into
+`~/mentomap-backups/data-<timestamp>.tar.gz` and keeps the last 20. This
+protects against an app bug corrupting a JSON file or an accidental
+delete — it does **not** protect against losing the VM/boot volume itself,
+since the backups live on that same disk. For real off-instance
+durability, periodically copy those tarballs elsewhere, e.g. from your own
+machine:
+
+```bash
+scp -i ~/.ssh/id_rsa "ubuntu@<ip>:~/mentomap-backups/*.tar.gz" ./local-backups/
+```
+
+**To restore** a backup (on the VM, with the backend service stopped):
+
+```bash
+sudo systemctl stop mentomap-backend
+rm -rf ~/MentoMap/backend/data
+tar -xzf ~/mentomap-backups/data-<timestamp>.tar.gz -C ~/MentoMap/backend
+sudo systemctl start mentomap-backend
+```
+
+Check the timer's own health any time with `systemctl status mentomap-backup.timer`
+or `journalctl -u mentomap-backup.service`.
+
 ## Troubleshooting
 
 - **Nothing loads at all**: almost always the OCI Security List (Part A,

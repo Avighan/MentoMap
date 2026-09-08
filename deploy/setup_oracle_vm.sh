@@ -17,7 +17,7 @@ REPO_BRANCH="${REPO_BRANCH:-main}"
 APP_DIR="${APP_DIR:-$HOME/MentoMap}"
 DOMAIN_OR_IP="${DOMAIN_OR_IP:-}"   # optional: your domain, for nginx server_name
 
-echo "==> [1/8] Installing system packages"
+echo "==> [1/9] Installing system packages"
 sudo apt-get update -y
 sudo apt-get install -y python3-venv python3-pip nginx git curl
 
@@ -27,7 +27,7 @@ if ! command -v node >/dev/null 2>&1; then
   sudo apt-get install -y nodejs
 fi
 
-echo "==> [2/8] Opening the VM's local firewall for HTTP (port 80)"
+echo "==> [2/9] Opening the VM's local firewall for HTTP (port 80)"
 # Oracle's Ubuntu images ship with iptables rules that only allow port 22
 # inbound by default — separate from (and in addition to) the VCN Security
 # List you configure in the OCI web console. Both need to allow port 80.
@@ -50,7 +50,7 @@ if command -v iptables >/dev/null 2>&1; then
     (sudo apt-get install -y iptables-persistent && sudo netfilter-persistent save)
 fi
 
-echo "==> [3/8] Fetching MentoMap ($REPO_BRANCH) into $APP_DIR"
+echo "==> [3/9] Fetching MentoMap ($REPO_BRANCH) into $APP_DIR"
 if [ -d "$APP_DIR/.git" ]; then
   git -C "$APP_DIR" fetch origin "$REPO_BRANCH"
   git -C "$APP_DIR" checkout "$REPO_BRANCH"
@@ -59,7 +59,7 @@ else
   git clone --branch "$REPO_BRANCH" "$REPO_URL" "$APP_DIR"
 fi
 
-echo "==> [4/8] Backend: venv + dependencies"
+echo "==> [4/9] Backend: venv + dependencies"
 cd "$APP_DIR/backend"
 python3 -m venv venv
 source venv/bin/activate
@@ -67,7 +67,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 deactivate
 
-echo "==> [5/8] Writing backend/.env (generates secrets on first run only)"
+echo "==> [5/9] Writing backend/.env (generates secrets on first run only)"
 ENV_FILE="$APP_DIR/backend/.env.deploy"
 if [ ! -f "$ENV_FILE" ]; then
   SECRET_KEY_VAL="$(python3 -c 'import secrets; print(secrets.token_hex(32))')"
@@ -82,7 +82,7 @@ else
   echo "    Reusing existing secrets in $ENV_FILE."
 fi
 
-echo "==> [6/8] systemd service for the backend (gunicorn, single worker)"
+echo "==> [6/9] systemd service for the backend (gunicorn, single worker)"
 sudo tee /etc/systemd/system/mentomap-backend.service > /dev/null <<EOF
 [Unit]
 Description=MentoMap Flask backend
@@ -108,7 +108,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable mentomap-backend
 sudo systemctl restart mentomap-backend
 
-echo "==> [7/8] Frontend: build static files"
+echo "==> [7/9] Frontend: build static files"
 cd "$APP_DIR/frontend-react"
 npm ci
 npm run build   # outputs to frontend-react/dist
@@ -123,7 +123,7 @@ sudo rm -rf "$WEB_ROOT"
 sudo cp -r "$APP_DIR/frontend-react/dist" "$WEB_ROOT"
 sudo chown -R www-data:www-data "$WEB_ROOT"
 
-echo "==> [8/8] nginx: serve the frontend build, reverse-proxy /api to gunicorn"
+echo "==> [8/9] nginx: serve the frontend build, reverse-proxy /api to gunicorn"
 SERVER_NAME="${DOMAIN_OR_IP:-_}"
 sudo tee /etc/nginx/sites-available/mentomap > /dev/null <<EOF
 server {
@@ -156,6 +156,33 @@ sudo nginx -t
 sudo systemctl reload nginx
 sudo systemctl enable nginx
 
+echo "==> [9/9] Nightly backup of backend/data (user accounts, game runs, wallets)"
+chmod +x "$APP_DIR/deploy/backup_data.sh"
+sudo tee /etc/systemd/system/mentomap-backup.service > /dev/null <<EOF
+[Unit]
+Description=MentoMap backend/data backup
+
+[Service]
+Type=oneshot
+User=$USER
+Environment=APP_DIR=$APP_DIR
+ExecStart=$APP_DIR/deploy/backup_data.sh
+EOF
+sudo tee /etc/systemd/system/mentomap-backup.timer > /dev/null <<EOF
+[Unit]
+Description=Run mentomap-backup nightly
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable --now mentomap-backup.timer
+APP_DIR="$APP_DIR" "$APP_DIR/deploy/backup_data.sh" || true   # first backup, right now
+
 PUBLIC_IP="$(curl -s -4 ifconfig.me || echo '<your-vm-public-ip>')"
 echo ""
 echo "================================================================"
@@ -168,4 +195,10 @@ echo ""
 echo " Remember: the OCI web console's VCN Security List must ALSO allow"
 echo " ingress on port 80 (0.0.0.0/0, TCP, port 80) — this script only"
 echo " opened the VM's own firewall, not OCI's network-level one."
+echo ""
+echo " Nightly backups of backend/data run via the mentomap-backup.timer"
+echo " systemd unit, into ~/mentomap-backups/ (last 20 kept). This survives"
+echo " redeploys and reboots but NOT the VM/disk being destroyed — copy"
+echo " those tarballs off the instance periodically for real durability."
+echo " Check status:  systemctl status mentomap-backup.timer"
 echo "================================================================"
