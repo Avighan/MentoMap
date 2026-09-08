@@ -1,0 +1,771 @@
+<title>SimuLok Decision Room</title>
+<style>
+:root {
+  --ground: #f5f4f0;
+  --surface: #ffffff;
+  --surface-alt: #edecea;
+  --text-1: #1a1d24;
+  --text-2: #585e6e;
+  --text-3: #949aac;
+  --accent: #b5882e;
+  --accent-text: #8a6618;
+  --accent-bg: rgba(181,136,46,0.09);
+  --positive: #2a7d5f;
+  --positive-bg: rgba(42,125,95,0.09);
+  --negative: #b34848;
+  --negative-bg: rgba(179,72,72,0.09);
+  --border: #dad9d4;
+  --border-strong: #c5c4bf;
+  --chart-f: #c99a30;
+  --chart-esop: #3d9e7a;
+  --chart-adv: #7a7fbd;
+  --chart-inv1: #d46a4e;
+  --chart-inv2: #5aa0c4;
+  --chart-inv3: #9b6baf;
+  --chart-inv4: #d4914e;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground: #12151c;
+  --surface: #1a1f2c;
+  --surface-alt: #232a3a;
+  --text-1: #e2e4ea;
+  --text-2: #8b92a6;
+  --text-3: #555d74;
+  --accent: #d4a23e;
+  --accent-text: #d4a23e;
+  --accent-bg: rgba(212,162,62,0.12);
+  --positive: #3faf7e;
+  --positive-bg: rgba(63,175,126,0.10);
+  --negative: #d45a5a;
+  --negative-bg: rgba(212,90,90,0.10);
+  --border: #2a3040;
+  --border-strong: #3a4258;
+  --chart-f: #d4a73e;
+  --chart-esop: #4cc093;
+  --chart-adv: #9599d6;
+  --chart-inv1: #e07a5e;
+  --chart-inv2: #6bb4d8;
+  --chart-inv3: #b07ec4;
+  --chart-inv4: #e0a15e;
+}}
+:root[data-theme="dark"]{
+  --ground: #12151c;
+  --surface: #1a1f2c;
+  --surface-alt: #232a3a;
+  --text-1: #e2e4ea;
+  --text-2: #8b92a6;
+  --text-3: #555d74;
+  --accent: #d4a23e;
+  --accent-text: #d4a23e;
+  --accent-bg: rgba(212,162,62,0.12);
+  --positive: #3faf7e;
+  --positive-bg: rgba(63,175,126,0.10);
+  --negative: #d45a5a;
+  --negative-bg: rgba(212,90,90,0.10);
+  --border: #2a3040;
+  --border-strong: #3a4258;
+  --chart-f: #d4a73e;
+  --chart-esop: #4cc093;
+  --chart-adv: #9599d6;
+  --chart-inv1: #e07a5e;
+  --chart-inv2: #6bb4d8;
+  --chart-inv3: #b07ec4;
+  --chart-inv4: #e0a15e;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; padding:2rem 1.25rem 4rem;
+  background:var(--ground); color:var(--text-1);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  font-size:15px; line-height:1.55;
+}
+
+.wrap{max-width:900px;margin:0 auto}
+
+/* Header */
+header{text-align:center;padding:1.5rem 0 2.5rem}
+.eyebrow{
+  display:inline-block;
+  font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--accent-text);
+  background:var(--accent-bg);
+  padding:4px 12px;border-radius:4px;
+  margin-bottom:0.75rem;
+}
+header h1{
+  font-family:Georgia,'Palatino Linotype',Palatino,serif;
+  font-size:clamp(1.75rem,4vw,2.5rem);font-weight:normal;
+  margin:0.5rem 0 0.4rem;color:var(--text-1);
+  text-wrap:balance;
+}
+header .subtitle{color:var(--text-2);margin:0;font-size:15px}
+
+/* Cards */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1.75rem 2rem;
+  margin-bottom:1.25rem;
+  position:relative;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:1.5rem;right:1.5rem;
+  height:2px;background:var(--accent);border-radius:0 0 2px 2px;
+  opacity:0.5;
+}
+.section-tag{
+  font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--accent-text);margin-bottom:0.3rem;
+}
+.card h2{
+  font-family:Georgia,'Palatino Linotype',Palatino,serif;
+  font-size:1.35rem;font-weight:normal;margin:0 0 0.25rem;
+}
+.card .desc{color:var(--text-2);font-size:13.5px;margin:0 0 1.25rem}
+
+/* Two-column layout */
+.two-col{display:flex;gap:2rem;align-items:flex-start}
+.two-col>.col-inputs{flex:1;min-width:0}
+.two-col>.col-viz{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+@media(max-width:640px){.two-col{flex-direction:column}.two-col>.col-viz{width:100%}}
+
+/* Input groups */
+.ig{margin-bottom:1rem}
+.ig label{display:block;font-size:12.5px;font-weight:600;color:var(--text-2);margin-bottom:4px}
+.slider-row{display:flex;align-items:center;gap:10px}
+.slider-row input[type="range"]{flex:1;-webkit-appearance:none;appearance:none;height:5px;border-radius:3px;background:var(--surface-alt);outline:none;border:1px solid var(--border)}
+.slider-row input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--surface)}
+.slider-row input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--surface)}
+.slider-val{
+  font-family:'SF Mono',SFMono-Regular,'Cascadia Code',Menlo,Consolas,monospace;
+  font-size:13px;font-weight:600;color:var(--text-1);
+  min-width:80px;text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+
+/* Metrics row */
+.metrics{display:flex;gap:1px;margin-top:1.25rem;border-radius:8px;overflow:hidden;background:var(--border)}
+.metric{flex:1;background:var(--surface-alt);padding:0.75rem 1rem;text-align:center}
+.metric-label{display:block;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:2px}
+.metric-value{
+  display:block;
+  font-family:'SF Mono',SFMono-Regular,'Cascadia Code',Menlo,Consolas,monospace;
+  font-size:1.15rem;font-weight:700;color:var(--accent-text);
+  font-variant-numeric:tabular-nums;
+}
+.metric-sub{display:block;font-size:11px;color:var(--text-3);margin-top:1px}
+
+/* Funnel */
+.funnel{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;padding:1rem 0}
+.funnel-tier{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 16px;border-radius:6px;
+  background:var(--accent-bg);
+  border:1px solid var(--border);
+  transition:width 0.35s ease;
+  min-width:120px;
+}
+.funnel-tier .fl{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-2)}
+.funnel-tier .fv{
+  font-family:'SF Mono',SFMono-Regular,'Cascadia Code',Menlo,Consolas,monospace;
+  font-size:14px;font-weight:700;color:var(--text-1);
+}
+.funnel-tier:first-child{background:var(--accent-bg);border-color:var(--accent)}
+.funnel-tier:last-child .fv{color:var(--accent-text)}
+
+/* Donut container */
+.donut-wrap{position:relative;width:200px;height:200px}
+.donut-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;
+}
+.donut-center .dc-val{
+  font-family:'SF Mono',SFMono-Regular,'Cascadia Code',Menlo,Consolas,monospace;
+  font-size:1.3rem;font-weight:700;color:var(--text-1);display:block;
+}
+.donut-center .dc-label{font-size:11px;color:var(--text-3);display:block}
+
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:0.75rem;justify-content:center}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text-2)}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* Comparison */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+@media(max-width:640px){.compare-grid{grid-template-columns:1fr}}
+.compare-box{
+  border:1px solid var(--border);border-radius:8px;padding:1.25rem;
+  background:var(--surface-alt);
+}
+.compare-box h3{
+  font-family:Georgia,'Palatino Linotype',Palatino,serif;
+  font-size:1rem;font-weight:normal;margin:0 0 0.75rem;
+}
+.compare-box .cb-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid var(--border)}
+.compare-box .cb-row:last-child{border-bottom:none}
+.compare-box .cb-row span:first-child{color:var(--text-2)}
+.compare-box .cb-row span:last-child{
+  font-family:'SF Mono',SFMono-Regular,'Cascadia Code',Menlo,Consolas,monospace;
+  font-weight:600;color:var(--text-1);font-variant-numeric:tabular-nums;
+}
+
+/* Verdict box */
+.verdict{
+  margin-top:1rem;padding:1rem 1.25rem;
+  border-radius:8px;border-left:3px solid var(--positive);
+  background:var(--positive-bg);
+}
+.verdict strong{color:var(--positive)}
+.verdict p{margin:0.25rem 0 0;font-size:13.5px;color:var(--text-2)}
+
+/* Rounds table */
+.rounds-table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:13px}
+.rounds-table th{
+  text-align:left;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--text-3);padding:6px 8px;border-bottom:2px solid var(--border);
+}
+.rounds-table td{padding:8px;border-bottom:1px solid var(--border);vertical-align:middle}
+.rounds-table td:not(:first-child){
+  font-family:'SF Mono',SFMono-Regular,'Cascadia Code',Menlo,Consolas,monospace;
+  font-variant-numeric:tabular-nums;text-align:right;font-size:12.5px;
+}
+.rounds-table th:not(:first-child){text-align:right}
+.rounds-table .highlight-row{background:var(--accent-bg)}
+.rounds-table .round-name{font-weight:600;color:var(--text-1)}
+.target-badge{
+  display:inline-block;font-size:9px;font-weight:700;
+  background:var(--accent);color:#fff;
+  padding:1px 6px;border-radius:3px;margin-left:6px;
+  letter-spacing:0.04em;vertical-align:middle;
+}
+
+/* Round inputs */
+.round-inputs{display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:0.5rem}
+.ri-group{flex:1;min-width:140px}
+.ri-group label{display:block;font-size:11px;font-weight:600;color:var(--text-3);margin-bottom:3px}
+.ri-group input[type="number"]{
+  width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:5px;
+  background:var(--surface);color:var(--text-1);font-size:13px;
+  font-family:'SF Mono',SFMono-Regular,'Cascadia Code',Menlo,Consolas,monospace;
+}
+.ri-group input[type="number"]:focus{outline:none;border-color:var(--accent)}
+
+/* Dilution bar */
+.dilution-bar{height:28px;display:flex;border-radius:6px;overflow:hidden;margin-top:1rem;gap:1px}
+.dilution-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;transition:width 0.35s ease;min-width:0;overflow:hidden}
+
+/* Summary grid */
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:1rem}
+.summary-item{
+  background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;
+  padding:1rem;text-align:center;
+}
+.summary-item .si-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em}
+.summary-item .si-value{
+  font-family:'SF Mono',SFMono-Regular,'Cascadia Code',Menlo,Consolas,monospace;
+  font-size:1.4rem;font-weight:700;color:var(--accent-text);
+  display:block;margin:4px 0;font-variant-numeric:tabular-nums;
+}
+.summary-item .si-sub{font-size:12px;color:var(--text-2)}
+
+/* Recommendations */
+.recs{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.25rem}
+@media(max-width:640px){.recs{grid-template-columns:1fr}}
+.rec{
+  padding:1rem 1.25rem;border-radius:8px;
+  border:1px solid var(--border);background:var(--surface-alt);
+}
+.rec-title{font-weight:600;font-size:13.5px;margin-bottom:3px;color:var(--text-1)}
+.rec-body{font-size:12.5px;color:var(--text-2);margin:0}
+
+/* Waterfall chart */
+.waterfall{display:flex;flex-direction:column;gap:6px;margin-top:1rem}
+.wf-row{display:flex;align-items:center;gap:10px}
+.wf-label{width:70px;font-size:11px;font-weight:600;color:var(--text-2);text-align:right;flex-shrink:0}
+.wf-bar-wrap{flex:1;height:22px;background:var(--surface-alt);border-radius:4px;overflow:hidden;position:relative}
+.wf-bar{height:100%;border-radius:4px;transition:width 0.35s ease;display:flex;align-items:center;padding:0 6px}
+.wf-bar span{font-size:10px;font-weight:700;color:#fff;white-space:nowrap}
+.wf-pct{font-size:12px;font-weight:600;color:var(--text-2);width:45px;text-align:right;flex-shrink:0;font-family:'SF Mono',SFMono-Regular,'Cascadia Code',Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+.overflow-x{overflow-x:auto}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">SimuLok AI</div>
+    <h1>Decision Room</h1>
+    <p class="subtitle">Market sizing, equity structure, and fundraising strategy for four founders</p>
+  </header>
+
+  <!-- MARKET SIZING -->
+  <section class="card" id="s-market">
+    <div class="section-tag">Market Sizing</div>
+    <h2>TAM &rarr; SAM &rarr; SOM</h2>
+    <p class="desc">Size the business simulation opportunity. Adjust assumptions to see the addressable market shift.</p>
+    <div class="two-col">
+      <div class="col-inputs">
+        <div class="ig">
+          <label>Global Business Simulation Market</label>
+          <div class="slider-row">
+            <input type="range" id="in-tam" min="10000" max="50000" step="1000" value="25000">
+            <span class="slider-val" id="v-tam"></span>
+          </div>
+        </div>
+        <div class="ig">
+          <label>India + Emerging Markets Share</label>
+          <div class="slider-row">
+            <input type="range" id="in-sam-pct" min="3" max="30" step="1" value="14">
+            <span class="slider-val" id="v-sam-pct"></span>
+          </div>
+        </div>
+        <div class="ig">
+          <label>Target B-Schools (5-Year)</label>
+          <div class="slider-row">
+            <input type="range" id="in-schools" min="50" max="2000" step="50" value="400">
+            <span class="slider-val" id="v-schools"></span>
+          </div>
+        </div>
+        <div class="ig">
+          <label>Avg Students per School/Year</label>
+          <div class="slider-row">
+            <input type="range" id="in-students" min="30" max="300" step="10" value="100">
+            <span class="slider-val" id="v-students"></span>
+          </div>
+        </div>
+        <div class="ig">
+          <label>Price per Student Seat (₹/yr)</label>
+          <div class="slider-row">
+            <input type="range" id="in-price" min="500" max="8000" step="250" value="2500">
+            <span class="slider-val" id="v-price"></span>
+          </div>
+        </div>
+        <div class="ig">
+          <label>Corporate Training Addition</label>
+          <div class="slider-row">
+            <input type="range" id="in-corp" min="0" max="500" step="25" value="75">
+            <span class="slider-val" id="v-corp"></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-viz">
+        <div class="funnel" id="funnel"></div>
+      </div>
+    </div>
+    <div class="metrics" id="market-metrics"></div>
+  </section>
+
+  <!-- CAP TABLE -->
+  <section class="card" id="s-cap">
+    <div class="section-tag">Equity Structure</div>
+    <h2>Pre-Fundraise Cap Table</h2>
+    <p class="desc">Four founders at equal split. Set aside ESOP and advisor pools before fundraising to avoid founder-only dilution later.</p>
+    <div class="two-col">
+      <div class="col-inputs">
+        <div class="ig">
+          <label>ESOP Pool (for future hires)</label>
+          <div class="slider-row">
+            <input type="range" id="in-esop" min="5" max="20" step="1" value="12">
+            <span class="slider-val" id="v-esop"></span>
+          </div>
+        </div>
+        <div class="ig">
+          <label>Advisor Pool</label>
+          <div class="slider-row">
+            <input type="range" id="in-adv" min="0" max="10" step="0.5" value="3">
+            <span class="slider-val" id="v-adv"></span>
+          </div>
+        </div>
+        <div id="cap-breakdown" style="margin-top:1rem"></div>
+      </div>
+      <div class="col-viz">
+        <div class="donut-wrap" id="donut-wrap">
+          <svg id="donut-svg" viewBox="0 0 200 200" width="200" height="200"></svg>
+          <div class="donut-center">
+            <span class="dc-val" id="donut-center-val"></span>
+            <span class="dc-label">per founder</span>
+          </div>
+        </div>
+        <div class="legend" id="cap-legend"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFESSOR COMPENSATION -->
+  <section class="card" id="s-prof">
+    <div class="section-tag">Advisor Compensation</div>
+    <h2>Equity vs Royalty for Professors</h2>
+    <p class="desc">Professors like Sudeep Bapat build mathematical models for specific simulations. Compare giving them equity versus a royalty on the simulations they create.</p>
+    <div class="two-col" style="margin-bottom:0.75rem">
+      <div class="col-inputs">
+        <div class="ig">
+          <label>Number of Academic Advisors</label>
+          <div class="slider-row">
+            <input type="range" id="in-nprof" min="1" max="8" step="1" value="3">
+            <span class="slider-val" id="v-nprof"></span>
+          </div>
+        </div>
+        <div class="ig">
+          <label>Equity per Professor (if equity route)</label>
+          <div class="slider-row">
+            <input type="range" id="in-prof-eq" min="0.25" max="3" step="0.25" value="1">
+            <span class="slider-val" id="v-prof-eq"></span>
+          </div>
+        </div>
+        <div class="ig">
+          <label>Royalty Rate on Their Simulation Revenue</label>
+          <div class="slider-row">
+            <input type="range" id="in-royalty" min="1" max="15" step="1" value="5">
+            <span class="slider-val" id="v-royalty"></span>
+          </div>
+        </div>
+        <div class="ig">
+          <label>Year-5 Revenue from Prof-Built Sims</label>
+          <div class="slider-row">
+            <input type="range" id="in-profrev" min="1" max="30" step="1" value="8">
+            <span class="slider-val" id="v-profrev"></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-viz" style="align-items:stretch">
+        <div id="prof-verdict"></div>
+      </div>
+    </div>
+    <div class="compare-grid" id="prof-compare"></div>
+  </section>
+
+  <!-- FUNDRAISING -->
+  <section class="card" id="s-raise">
+    <div class="section-tag">Fundraising</div>
+    <h2>Dilution Across Rounds</h2>
+    <p class="desc">Model each fundraising round. See how founder ownership dilutes from Angel through Series B. Your target: ₹50 Cr pre-money at Series A.</p>
+    <div id="rounds-config"></div>
+    <div class="overflow-x">
+      <table class="rounds-table" id="rounds-table"></table>
+    </div>
+    <div id="dilution-waterfall"></div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="card" id="s-summary">
+    <div class="section-tag">Decision Summary</div>
+    <h2>Your Numbers at a Glance</h2>
+    <div class="summary-grid" id="summary-grid"></div>
+    <div class="recs" id="recs"></div>
+  </section>
+</div>
+
+<script>
+const S = {
+  tamGlobal: 25000,
+  samPct: 14,
+  schools: 400,
+  students: 100,
+  price: 2500,
+  corpAdd: 75,
+  esop: 12,
+  adv: 3,
+  nProf: 3,
+  profEq: 1,
+  royaltyRate: 5,
+  profRevY5: 8,
+  rounds: [
+    { name: 'Angel', raise: 1.5, pre: 6 },
+    { name: 'Seed', raise: 4, pre: 20 },
+    { name: 'Series A', raise: 15, pre: 50, target: true },
+    { name: 'Series B', raise: 40, pre: 200 },
+  ],
+};
+
+function fmtCr(v) {
+  if (Math.abs(v) >= 100) return '₹' + Math.round(v).toLocaleString('en-IN') + ' Cr';
+  if (Math.abs(v) >= 1) return '₹' + v.toFixed(1) + ' Cr';
+  if (Math.abs(v) >= 0.01) return '₹' + (v * 100).toFixed(0) + ' L';
+  return '₹' + (v * 10000).toFixed(0) + ' K';
+}
+function fmtP(v) { return v.toFixed(1) + '%'; }
+function fmtPi(v) { return Math.round(v).toLocaleString('en-IN'); }
+
+function compute() {
+  const C = {};
+  C.tam = S.tamGlobal;
+  C.sam = S.tamGlobal * S.samPct / 100;
+  C.somStudents = S.schools * S.students * S.price / 10000000;
+  C.som = C.somStudents + S.corpAdd;
+
+  C.founderPct = (100 - S.esop - S.adv) / 4;
+  C.founderTotal = 100 - S.esop - S.adv;
+
+  C.profTotalEq = S.nProf * S.profEq;
+  const revGrowth = [0.05, 0.15, 0.35, 0.65, 1.0];
+  C.profRoyaltyByYear = revGrowth.map(g => S.profRevY5 * g * S.royaltyRate / 100);
+  C.profRoyaltyTotal = C.profRoyaltyByYear.reduce((a, b) => a + b, 0);
+
+  C.rounds = [];
+  let foundersPct = C.founderTotal;
+  let esopPct = S.esop;
+  let advPct = S.adv;
+  let investors = [];
+  for (let i = 0; i < S.rounds.length; i++) {
+    const r = S.rounds[i];
+    const postMoney = r.pre + r.raise;
+    const dilution = r.raise / postMoney;
+    foundersPct *= (1 - dilution);
+    esopPct *= (1 - dilution);
+    advPct *= (1 - dilution);
+    investors = investors.map(inv => ({ ...inv, pct: inv.pct * (1 - dilution) }));
+    investors.push({ name: r.name, pct: dilution * 100 });
+    C.rounds.push({
+      ...r,
+      postMoney,
+      dilutionPct: dilution * 100,
+      foundersAfter: foundersPct,
+      perFounder: foundersPct / 4,
+      esopAfter: esopPct,
+      advAfter: advPct,
+      investors: [...investors],
+      perFounderValue: (foundersPct / 4 / 100) * postMoney,
+    });
+  }
+  C.finalFounders = foundersPct;
+  C.finalPerFounder = foundersPct / 4;
+  C.lastRound = C.rounds[C.rounds.length - 1];
+  C.seriesA = C.rounds.find(r => r.target) || C.rounds[2];
+
+  C.profEqValueAtA = S.profEq / 100 * C.seriesA.postMoney;
+  C.profEqValueDilutedAtExit = S.profEq;
+  let profEqSurv = S.profEq;
+  let foundA = false;
+  for (const r of C.rounds) {
+    if (r.target) foundA = true;
+    if (foundA && !r.target) profEqSurv *= (1 - r.dilutionPct / 100);
+  }
+  C.profEqAtExit = profEqSurv;
+
+  return C;
+}
+
+function renderMarket(C) {
+  document.getElementById('v-tam').textContent = fmtCr(S.tamGlobal);
+  document.getElementById('v-sam-pct').textContent = S.samPct + '%';
+  document.getElementById('v-schools').textContent = fmtPi(S.schools);
+  document.getElementById('v-students').textContent = S.students;
+  document.getElementById('v-price').textContent = '₹' + S.price.toLocaleString('en-IN');
+  document.getElementById('v-corp').textContent = fmtCr(S.corpAdd);
+
+  const tamW = 100, samW = Math.max(25, Math.min(80, (C.sam / C.tam) * 200)), somW = Math.max(15, Math.min(samW - 5, (C.som / C.tam) * 300));
+  document.getElementById('funnel').innerHTML = `
+    <div class="funnel-tier" style="width:${tamW}%"><span class="fl">TAM</span><span class="fv">${fmtCr(C.tam)}</span></div>
+    <div class="funnel-tier" style="width:${samW}%"><span class="fl">SAM</span><span class="fv">${fmtCr(C.sam)}</span></div>
+    <div class="funnel-tier" style="width:${somW}%"><span class="fl">SOM</span><span class="fv">${fmtCr(C.som)}</span></div>
+  `;
+
+  document.getElementById('market-metrics').innerHTML = `
+    <div class="metric"><span class="metric-label">TAM</span><span class="metric-value">${fmtCr(C.tam)}</span><span class="metric-sub">Global business sim</span></div>
+    <div class="metric"><span class="metric-label">SAM</span><span class="metric-value">${fmtCr(C.sam)}</span><span class="metric-sub">India + emerging</span></div>
+    <div class="metric"><span class="metric-label">SOM (5yr)</span><span class="metric-value">${fmtCr(C.som)}</span><span class="metric-sub">${fmtPi(S.schools)} schools + corp</span></div>
+    <div class="metric"><span class="metric-label">Annual Rev</span><span class="metric-value">${fmtCr(C.somStudents)}</span><span class="metric-sub">Student seats only</span></div>
+  `;
+}
+
+function renderDonut(C) {
+  const segments = [
+    { label: 'Founders (4×)', value: C.founderTotal, color: 'var(--chart-f)' },
+    { label: 'ESOP Pool', value: S.esop, color: 'var(--chart-esop)' },
+    { label: 'Advisor Pool', value: S.adv, color: 'var(--chart-adv)' },
+  ];
+  const total = 100;
+  const cx = 100, cy = 100, r = 70;
+  const circ = 2 * Math.PI * r;
+  let offset = 0;
+  let arcs = '';
+  const cs = getComputedStyle(document.documentElement);
+  const colorMap = { 'var(--chart-f)': cs.getPropertyValue('--chart-f').trim(), 'var(--chart-esop)': cs.getPropertyValue('--chart-esop').trim(), 'var(--chart-adv)': cs.getPropertyValue('--chart-adv').trim() };
+
+  for (const seg of segments) {
+    if (seg.value <= 0) continue;
+    const pct = seg.value / total;
+    const dash = pct * circ;
+    const gap = circ - dash;
+    const col = colorMap[seg.color] || seg.color;
+    arcs += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col}" stroke-width="28" stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})" stroke-linecap="butt"/>`;
+    offset += dash;
+  }
+  document.getElementById('donut-svg').innerHTML = arcs;
+  document.getElementById('donut-center-val').textContent = fmtP(C.founderPct);
+
+  document.getElementById('cap-legend').innerHTML = segments.filter(s => s.value > 0).map(s => {
+    const col = colorMap[s.color] || s.color;
+    return `<span class="legend-item"><span class="legend-dot" style="background:${col}"></span>${s.label}: ${fmtP(s.value)}</span>`;
+  }).join('');
+
+  document.getElementById('v-esop').textContent = S.esop + '%';
+  document.getElementById('v-adv').textContent = S.adv + '%';
+
+  document.getElementById('cap-breakdown').innerHTML = `
+    <div style="font-size:13px;color:var(--text-2)">
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span>Founder share (total)</span><strong style="color:var(--text-1)">${fmtP(C.founderTotal)}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span>Per founder (×4)</span><strong style="color:var(--accent-text)">${fmtP(C.founderPct)}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span>ESOP pool</span><strong style="color:var(--text-1)">${fmtP(S.esop)}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0"><span>Advisor pool</span><strong style="color:var(--text-1)">${fmtP(S.adv)}</strong></div>
+    </div>
+  `;
+}
+
+function renderProfessor(C) {
+  document.getElementById('v-nprof').textContent = S.nProf;
+  document.getElementById('v-prof-eq').textContent = S.profEq + '%';
+  document.getElementById('v-royalty').textContent = S.royaltyRate + '%';
+  document.getElementById('v-profrev').textContent = fmtCr(S.profRevY5);
+
+  const eqVal = C.profEqValueAtA;
+  const growthLabels = ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'];
+
+  document.getElementById('prof-compare').innerHTML = `
+    <div class="compare-box">
+      <h3>Equity Route</h3>
+      <div class="cb-row"><span>Equity per professor</span><span>${fmtP(S.profEq)}</span></div>
+      <div class="cb-row"><span>Total equity (${S.nProf} profs)</span><span>${fmtP(C.profTotalEq)}</span></div>
+      <div class="cb-row"><span>Value at Series A</span><span>${fmtCr(eqVal)} each</span></div>
+      <div class="cb-row"><span>Post-Series B (diluted)</span><span>~${fmtP(C.profEqAtExit)}</span></div>
+      <div style="margin-top:8px;font-size:12px;color:var(--text-3)">Paper value only. Illiquid until exit or secondary sale. Dilutes every round.</div>
+    </div>
+    <div class="compare-box">
+      <h3>Royalty Route</h3>
+      ${growthLabels.map((y, i) => `<div class="cb-row"><span>${y} payout</span><span>${fmtCr(C.profRoyaltyByYear[i])}</span></div>`).join('')}
+      <div class="cb-row" style="border-top:2px solid var(--border);font-weight:600"><span>5-Year Total (per prof)</span><span style="color:var(--positive)">${fmtCr(C.profRoyaltyTotal / S.nProf)}</span></div>
+      <div style="margin-top:8px;font-size:12px;color:var(--text-3)">Cash payout. No cap table dilution. Scales to any number of academic collaborators.</div>
+    </div>
+  `;
+
+  const royaltyBetter = C.profRoyaltyTotal / S.nProf > eqVal * 0.5;
+  document.getElementById('prof-verdict').innerHTML = `
+    <div class="verdict">
+      <strong>Recommendation: Royalty model</strong>
+      <p>At ${S.royaltyRate}% royalty on ${fmtCr(S.profRevY5)} Year-5 revenue, each professor earns ${fmtCr(C.profRoyaltyTotal / S.nProf)} over 5 years in cash — no cap table dilution, and it scales as you onboard more academic collaborators. Reserve the advisor equity pool (${fmtP(S.adv)}) for ongoing strategic advisors, not per-simulation contributors.</p>
+    </div>
+  `;
+}
+
+function renderRounds(C) {
+  const colors = ['var(--chart-inv1)', 'var(--chart-inv2)', 'var(--chart-inv3)', 'var(--chart-inv4)'];
+  const cs = getComputedStyle(document.documentElement);
+
+  let configHTML = '';
+  S.rounds.forEach((r, i) => {
+    configHTML += `<div style="margin-bottom:1rem"><div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text-1)">${r.name}${r.target ? '<span class="target-badge">TARGET</span>' : ''}</div><div class="round-inputs">
+      <div class="ri-group"><label>Raise (₹ Cr)</label><input type="number" data-round="${i}" data-field="raise" value="${r.raise}" min="0.5" max="200" step="0.5"></div>
+      <div class="ri-group"><label>Pre-Money (₹ Cr)</label><input type="number" data-round="${i}" data-field="pre" value="${r.pre}" min="2" max="1000" step="1"></div>
+    </div></div>`;
+  });
+  document.getElementById('rounds-config').innerHTML = configHTML;
+
+  document.querySelectorAll('#rounds-config input[type="number"]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const ri = +inp.dataset.round;
+      const field = inp.dataset.field;
+      const val = parseFloat(inp.value);
+      if (!isNaN(val) && val > 0) { S.rounds[ri][field] = val; render(); }
+    });
+  });
+
+  let tableHTML = `<thead><tr><th>Round</th><th>Raise</th><th>Pre-Money</th><th>Post-Money</th><th>Dilution</th><th>Founders</th><th>Per Founder</th><th>Your Value</th></tr></thead><tbody>`;
+  tableHTML += `<tr><td class="round-name">Pre-Raise</td><td>—</td><td>—</td><td>—</td><td>—</td><td>${fmtP(C.founderTotal)}</td><td>${fmtP(C.founderPct)}</td><td>—</td></tr>`;
+  C.rounds.forEach((r, i) => {
+    const cls = r.target ? ' class="highlight-row"' : '';
+    tableHTML += `<tr${cls}>
+      <td class="round-name">${r.name}${r.target ? '<span class="target-badge">₹50Cr</span>' : ''}</td>
+      <td>${fmtCr(r.raise)}</td><td>${fmtCr(r.pre)}</td><td>${fmtCr(r.postMoney)}</td>
+      <td style="color:var(--negative)">${fmtP(r.dilutionPct)}</td>
+      <td>${fmtP(r.foundersAfter)}</td><td style="font-weight:700">${fmtP(r.perFounder)}</td>
+      <td style="color:var(--positive);font-weight:700">${fmtCr(r.perFounderValue)}</td>
+    </tr>`;
+  });
+  tableHTML += '</tbody>';
+  document.getElementById('rounds-table').innerHTML = tableHTML;
+
+  const last = C.lastRound;
+  const totalPct = 100;
+  const fPct = last.foundersAfter;
+  const ePct = last.esopAfter;
+  const aPct = last.advAfter;
+  const invPcts = last.investors;
+
+  const resolveColor = (c) => c.startsWith('var(') ? cs.getPropertyValue(c.slice(4, -1)).trim() : c;
+  let barHTML = `<div class="dilution-bar">`;
+  barHTML += `<div class="dilution-seg" style="width:${fPct}%;background:${resolveColor('var(--chart-f)')}">${fPct > 8 ? `<span>Founders ${fmtP(fPct)}</span>` : ''}</div>`;
+  barHTML += `<div class="dilution-seg" style="width:${ePct}%;background:${resolveColor('var(--chart-esop)')}">${ePct > 5 ? `<span>ESOP</span>` : ''}</div>`;
+  if (aPct > 0.5) barHTML += `<div class="dilution-seg" style="width:${aPct}%;background:${resolveColor('var(--chart-adv)')}">${aPct > 3 ? `<span>Adv</span>` : ''}</div>`;
+  invPcts.forEach((inv, i) => {
+    const col = resolveColor(colors[i % colors.length]);
+    barHTML += `<div class="dilution-seg" style="width:${inv.pct}%;background:${col}">${inv.pct > 6 ? `<span>${inv.name}</span>` : ''}</div>`;
+  });
+  barHTML += '</div>';
+
+  let legendHTML = '<div class="legend" style="margin-top:0.5rem">';
+  legendHTML += `<span class="legend-item"><span class="legend-dot" style="background:${resolveColor('var(--chart-f)')}"></span>Founders ${fmtP(fPct)}</span>`;
+  legendHTML += `<span class="legend-item"><span class="legend-dot" style="background:${resolveColor('var(--chart-esop)')}"></span>ESOP ${fmtP(ePct)}</span>`;
+  if (aPct > 0.5) legendHTML += `<span class="legend-item"><span class="legend-dot" style="background:${resolveColor('var(--chart-adv)')}"></span>Advisors ${fmtP(aPct)}</span>`;
+  invPcts.forEach((inv, i) => {
+    const col = resolveColor(colors[i % colors.length]);
+    legendHTML += `<span class="legend-item"><span class="legend-dot" style="background:${col}"></span>${inv.name} ${fmtP(inv.pct)}</span>`;
+  });
+  legendHTML += '</div>';
+
+  document.getElementById('dilution-waterfall').innerHTML = barHTML + legendHTML;
+
+  const wfHTML = `<div style="margin-top:1.25rem"><div style="font-size:12px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Founder Ownership by Round</div><div class="waterfall">
+    <div class="wf-row"><span class="wf-label">Start</span><div class="wf-bar-wrap"><div class="wf-bar" style="width:${C.founderTotal}%;background:${resolveColor('var(--chart-f)')}"><span>${fmtP(C.founderTotal)}</span></div></div><span class="wf-pct">${fmtP(C.founderTotal)}</span></div>
+    ${C.rounds.map(r => `<div class="wf-row"><span class="wf-label">${r.name}</span><div class="wf-bar-wrap"><div class="wf-bar" style="width:${r.foundersAfter}%;background:${resolveColor('var(--chart-f)')}">${r.foundersAfter > 15 ? `<span>${fmtP(r.foundersAfter)}</span>` : ''}</div></div><span class="wf-pct">${fmtP(r.foundersAfter)}</span></div>`).join('')}
+  </div></div>`;
+  document.getElementById('dilution-waterfall').innerHTML += wfHTML;
+}
+
+function renderSummary(C) {
+  const sa = C.seriesA;
+  document.getElementById('summary-grid').innerHTML = `
+    <div class="summary-item"><span class="si-label">SOM (5-Year)</span><span class="si-value">${fmtCr(C.som)}</span><span class="si-sub">${fmtPi(S.schools)} schools + corporate</span></div>
+    <div class="summary-item"><span class="si-label">Per Founder (Post Series A)</span><span class="si-value">${fmtP(sa.perFounder)}</span><span class="si-sub">Worth ${fmtCr(sa.perFounderValue)}</span></div>
+    <div class="summary-item"><span class="si-label">Series A Dilution</span><span class="si-value">${fmtP(sa.dilutionPct)}</span><span class="si-sub">at ${fmtCr(sa.pre)} pre-money</span></div>
+    <div class="summary-item"><span class="si-label">Prof Royalty (5yr each)</span><span class="si-value">${fmtCr(C.profRoyaltyTotal / S.nProf)}</span><span class="si-sub">${S.royaltyRate}% of their sim revenue</span></div>
+  `;
+
+  document.getElementById('recs').innerHTML = `
+    <div class="rec"><div class="rec-title" style="color:var(--positive)">Use royalty for professors</div><p class="rec-body">${S.royaltyRate}% royalty on each professor's simulation revenue. Pays them in cash, doesn't dilute the cap table, and scales as you add more academic collaborators.</p></div>
+    <div class="rec"><div class="rec-title" style="color:var(--accent-text)">ESOP pool at ${S.esop}%</div><p class="rec-body">Set aside before fundraising. This pool attracts engineering and design talent without additional founder dilution at hiring time.</p></div>
+    <div class="rec"><div class="rec-title" style="color:var(--accent-text)">Vest over 4 years</div><p class="rec-body">All four founders should vest on a 4-year schedule with a 1-year cliff. Protects everyone if a co-founder leaves early.</p></div>
+    <div class="rec"><div class="rec-title" style="color:var(--positive)">Series A at ${fmtCr(sa.pre)} pre-money</div><p class="rec-body">Raising ${fmtCr(sa.raise)} gives ${fmtP(sa.dilutionPct)} dilution. Each founder retains ${fmtP(sa.perFounder)} worth ${fmtCr(sa.perFounderValue)}. ${C.lastRound.foundersAfter > 35 ? 'Founders keep majority control through Series B.' : 'Consider higher pre-money to retain more control.'}</p></div>
+  `;
+}
+
+function render() {
+  const C = compute();
+  renderMarket(C);
+  renderDonut(C);
+  renderProfessor(C);
+  renderRounds(C);
+  renderSummary(C);
+}
+
+const sliderMap = {
+  'in-tam': v => S.tamGlobal = +v,
+  'in-sam-pct': v => S.samPct = +v,
+  'in-schools': v => S.schools = +v,
+  'in-students': v => S.students = +v,
+  'in-price': v => S.price = +v,
+  'in-corp': v => S.corpAdd = +v,
+  'in-esop': v => S.esop = +v,
+  'in-adv': v => S.adv = +v,
+  'in-nprof': v => S.nProf = +v,
+  'in-prof-eq': v => S.profEq = +v,
+  'in-royalty': v => S.royaltyRate = +v,
+  'in-profrev': v => S.profRevY5 = +v,
+};
+Object.keys(sliderMap).forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => { sliderMap[id](el.value); render(); });
+});
+
+render();
+</script>

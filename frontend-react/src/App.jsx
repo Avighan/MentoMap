@@ -1,12 +1,13 @@
 import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { OrgProvider } from './contexts/OrgContext';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import GamesCatalogPage from './pages/GamesCatalogPage';
-import PilotGamePlayPage from './pages/PilotGamePlayPage';
+import PlayRouter from './pages/PlayRouter';
 import ModulesCatalogPage from './pages/ModulesCatalogPage';
 import ModuleDetailPage from './pages/ModuleDetailPage';
 import ModuleReportPage from './pages/ModuleReportPage';
@@ -34,7 +35,7 @@ function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<RequireAuth><HomePage /></RequireAuth>} />
       <Route path="/games" element={<RequireAuth><GamesCatalogPage /></RequireAuth>} />
-      <Route path="/play/:gameId" element={<RequireAuth><PilotGamePlayPage /></RequireAuth>} />
+      <Route path="/play/:gameId" element={<RequireAuth><PlayRouter /></RequireAuth>} />
       <Route path="/modules" element={<RequireAuth><ModulesCatalogPage /></RequireAuth>} />
       <Route path="/modules/:moduleId" element={<RequireAuth><ModuleDetailPage /></RequireAuth>} />
       <Route path="/modules/:moduleId/report" element={<RequireAuth><ModuleReportPage /></RequireAuth>} />
@@ -48,7 +49,9 @@ function AppRoutes() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <OrgProvider>
+        <AppRoutes />
+      </OrgProvider>
     </AuthProvider>
   );
 }

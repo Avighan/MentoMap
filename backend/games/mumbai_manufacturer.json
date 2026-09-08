@@ -36,154 +36,841 @@
     "unit_revenue": 1500,
     "holding_cost_per_unit": 80,
     "bank_debt_interest_rate": 0.02,
-    "bullwhip_reducing_choice_ids": ["mrp_system", "trust_market_data", "cpfr_collaboration", "vmi", "ai_demand_sensing"],
-    "bullwhip_increasing_choice_ids": ["jit_strategy", "trust_customer_forecast"]
+    "bullwhip_reducing_choice_ids": [
+      "mrp_system",
+      "trust_market_data",
+      "cpfr_collaboration",
+      "vmi",
+      "ai_demand_sensing"
+    ],
+    "bullwhip_increasing_choice_ids": [
+      "jit_strategy",
+      "trust_customer_forecast"
+    ]
   },
   "rounds": [
     {
-      "id": "round_1", "title": "The Inventory Decision",
+      "id": "round_1",
+      "title": "The Inventory Decision",
       "concept": "Economic order quantity vs. lean/JIT vs. safety stock vs. MRP",
       "prompt": "Q1 demand is forecast at 8,000 units. How do you set your inventory policy?",
       "quarter_demand": 8000,
       "choices": [
-        {"id": "eoq_model", "label": "EOQ Model", "strategic_type": "balanced",
-         "effects": {"cash": -4000000, "current_inventory": 1500, "customer_satisfaction": 3, "reputation": 3, "working_capital_efficiency": 10},
-         "feedback": "The Economic Order Quantity model balances ordering cost against holding cost — a textbook-solid default when demand is reasonably stable."},
-        {"id": "jit_strategy", "label": "JIT Strategy", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": -8000000, "current_inventory": 200, "customer_satisfaction": -5, "reputation": -5, "working_capital_efficiency": 20},
-         "feedback": "Just-in-time frees up working capital dramatically, but with almost no buffer, any demand spike or supplier hiccup turns straight into a stockout."},
-        {"id": "safety_stock_heavy", "label": "Safety Stock Heavy", "strategic_type": "risk_averse",
-         "effects": {"cash": -1000000, "current_inventory": 2500, "customer_satisfaction": 6, "reputation": 5, "working_capital_efficiency": -15},
-         "feedback": "A large safety buffer protects service levels but ties up working capital that could otherwise fund growth."},
-        {"id": "mrp_system", "label": "MRP System", "strategic_type": "systematic",
-         "effects": {"cash": -3500000, "current_inventory": 1200, "customer_satisfaction": 4, "reputation": 6, "working_capital_efficiency": 8},
-         "feedback": "Materials Requirements Planning ties procurement directly to the production schedule — less buffer than safety stock, but far more informed than a flat reorder point."}
-      ]
+        {
+          "id": "eoq_model",
+          "label": "EOQ Model",
+          "strategic_type": "balanced",
+          "effects": {
+            "cash": -4000000,
+            "current_inventory": 1500,
+            "customer_satisfaction": 3,
+            "reputation": 3,
+            "working_capital_efficiency": 10
+          },
+          "feedback": "The Economic Order Quantity model balances ordering cost against holding cost — a textbook-solid default when demand is reasonably stable.",
+          "description": "Order 2,000 units × 4 orders. Optimal ordering quantity balancing setup and holding costs.",
+          "concepts": [
+            "EOQ",
+            "Ordering Cost",
+            "Holding Cost"
+          ],
+          "learning": {
+            "key_concept": "Economic Order Quantity",
+            "formula": "EOQ = sqrt(2DS/H)",
+            "application": "Best for stable, predictable demand patterns",
+            "trade_offs": "Assumes constant demand and lead time"
+          }
+        },
+        {
+          "id": "jit_strategy",
+          "label": "JIT Strategy",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": -8000000,
+            "current_inventory": 200,
+            "customer_satisfaction": -5,
+            "reputation": -5,
+            "working_capital_efficiency": 20
+          },
+          "feedback": "Just-in-time frees up working capital dramatically, but with almost no buffer, any demand spike or supplier hiccup turns straight into a stockout.",
+          "description": "Order 500 units × 16 orders. Minimize inventory investment through frequent small orders.",
+          "concepts": [
+            "JIT",
+            "Lean Manufacturing",
+            "Supplier Reliability"
+          ],
+          "learning": {
+            "key_concept": "Just-In-Time Manufacturing",
+            "principle": "Produce only what is needed, when needed",
+            "application": "Best in stable environments with reliable suppliers",
+            "trade_offs": "High vulnerability to supply chain disruptions"
+          }
+        },
+        {
+          "id": "safety_stock_heavy",
+          "label": "Safety Stock Heavy",
+          "strategic_type": "risk_averse",
+          "effects": {
+            "cash": -1000000,
+            "current_inventory": 2500,
+            "customer_satisfaction": 6,
+            "reputation": 5,
+            "working_capital_efficiency": -15
+          },
+          "feedback": "A large safety buffer protects service levels but ties up working capital that could otherwise fund growth.",
+          "description": "Order 4,000 units × 2 orders with 2,000 units safety stock. Maximum protection.",
+          "concepts": [
+            "Safety Stock",
+            "Service Level",
+            "Inventory Investment"
+          ],
+          "learning": {
+            "key_concept": "Safety Stock Management",
+            "formula": "SS = Z * sigma * sqrt(L)",
+            "application": "Critical for high-value or scarce products",
+            "trade_offs": "Working capital investment vs stockout risk"
+          }
+        },
+        {
+          "id": "mrp_system",
+          "label": "MRP System",
+          "strategic_type": "systematic",
+          "effects": {
+            "cash": -3500000,
+            "current_inventory": 1200,
+            "customer_satisfaction": 4,
+            "reputation": 6,
+            "working_capital_efficiency": 8
+          },
+          "feedback": "Materials Requirements Planning ties procurement directly to the production schedule — less buffer than safety stock, but far more informed than a flat reorder point.",
+          "description": "Dynamic ordering based on production schedule. Variable quantities 1,500–3,000 units.",
+          "concepts": [
+            "MRP",
+            "Rolling Forecast",
+            "Production Planning"
+          ],
+          "learning": {
+            "key_concept": "Materials Requirement Planning",
+            "principle": "Dependent demand through BOM explosion",
+            "application": "Complex products with multiple components",
+            "trade_offs": "System complexity vs planning accuracy"
+          }
+        }
+      ],
+      "scenario": "Setting up baseline inventory strategy",
+      "narrative": "Quarter 1, Week 1 — Chakan Manufacturing Facility.\n\nYour Operations Manager, Priya Sharma, walks in with a spreadsheet.",
+      "dialogue": "Sir, Tata Motors expects 8,000 crankshafts this quarter. Our current inventory is 500 units. Our EOQ analysis shows an optimal order quantity — but you need to decide the inventory strategy for the entire quarter. Different strategies will give us different risk–return profiles.",
+      "quarter_data": {
+        "demand": 8000,
+        "variance": 0.15,
+        "setup_cost": 50000,
+        "holding_cost": 200,
+        "stockout_cost": 1500,
+        "lead_time_days": 15
+      }
     },
     {
-      "id": "round_2", "title": "The Bullwhip Effect",
+      "id": "round_2",
+      "title": "The Bullwhip Effect",
       "concept": "Demand signal distortion up the supply chain",
       "prompt": "Your biggest customer is forecasting 15,000 units next quarter. Independent market data says actual sell-through will be closer to 10,000. Who do you believe?",
       "quarter_demand": 10000,
       "customer_stated_demand": 15000,
       "choices": [
-        {"id": "trust_customer_forecast", "label": "Trust Customer Forecast", "strategic_type": "customer_focused",
-         "effects": {"cash": -6000000, "current_inventory": 3500, "customer_satisfaction": 3, "reputation": -3, "working_capital_efficiency": -25},
-         "feedback": "Ordering to the customer's own number feels safe, but when their forecast runs hot, you're the one holding the excess inventory — the classic bullwhip trap."},
-        {"id": "trust_market_data", "label": "Trust Market Data", "strategic_type": "data_driven",
-         "effects": {"cash": -4500000, "current_inventory": 1800, "customer_satisfaction": 2, "reputation": 8, "working_capital_efficiency": 15},
-         "feedback": "Independent sell-through data is a noisier signal to act on politically, but it's usually the more honest one — and it dampens the bullwhip instead of amplifying it."},
-        {"id": "hybrid_postponement", "label": "Hybrid Postponement", "strategic_type": "flexible",
-         "effects": {"cash": -5200000, "current_inventory": 1200, "customer_satisfaction": 5, "reputation": 12, "working_capital_efficiency": 10},
-         "feedback": "Committing to a smaller base quantity now and postponing final configuration until real orders land hedges against being wrong in either direction."},
-        {"id": "cpfr_collaboration", "label": "CPFR Collaboration", "strategic_type": "collaborative",
-         "effects": {"cash": -5500000, "current_inventory": 2200, "customer_satisfaction": 6, "tata_relationship": 15, "reputation": 12, "working_capital_efficiency": 12},
-         "feedback": "Collaborative Planning, Forecasting and Replenishment gets both sides looking at the same numbers — it takes relationship investment to set up, but it's the structural fix for the bullwhip, not just a one-quarter guess."}
-      ]
+        {
+          "id": "trust_customer_forecast",
+          "label": "Trust Customer Forecast",
+          "strategic_type": "customer_focused",
+          "effects": {
+            "cash": -6000000,
+            "current_inventory": 3500,
+            "customer_satisfaction": 3,
+            "reputation": -3,
+            "working_capital_efficiency": -25
+          },
+          "feedback": "Ordering to the customer's own number feels safe, but when their forecast runs hot, you're the one holding the excess inventory — the classic bullwhip trap.",
+          "description": "Produce at maximum capacity: 11,000 units. Trust customer knows their business.",
+          "concepts": [
+            "Bullwhip Effect",
+            "Customer Trust",
+            "Overstocking"
+          ],
+          "learning": {
+            "key_concept": "The Bullwhip Effect",
+            "principle": "Demand information distortion up the supply chain",
+            "application": "Understanding true vs stated demand",
+            "trade_offs": "Customer relationship vs operational efficiency"
+          }
+        },
+        {
+          "id": "trust_market_data",
+          "label": "Trust Market Data",
+          "strategic_type": "data_driven",
+          "effects": {
+            "cash": -4500000,
+            "current_inventory": 1800,
+            "customer_satisfaction": 2,
+            "reputation": 8,
+            "working_capital_efficiency": 15
+          },
+          "feedback": "Independent sell-through data is a noisier signal to act on politically, but it's usually the more honest one — and it dampens the bullwhip instead of amplifying it.",
+          "description": "Produce 10,000 units aligned with actual consumer demand.",
+          "concepts": [
+            "Market Analysis",
+            "Demand Forecasting",
+            "Data-Driven Decisions"
+          ],
+          "learning": {
+            "key_concept": "Market-Based Forecasting",
+            "principle": "End-consumer demand drives supply chain",
+            "application": "Cross-referencing multiple data sources",
+            "trade_offs": "Analytical time vs decision speed"
+          }
+        },
+        {
+          "id": "hybrid_postponement",
+          "label": "Hybrid Postponement",
+          "strategic_type": "flexible",
+          "effects": {
+            "cash": -5200000,
+            "current_inventory": 1200,
+            "customer_satisfaction": 5,
+            "reputation": 12,
+            "working_capital_efficiency": 10
+          },
+          "feedback": "Committing to a smaller base quantity now and postponing final configuration until real orders land hedges against being wrong in either direction.",
+          "description": "8,000 base + 3,000 semi-finished. Complete based on actual pull demand.",
+          "concepts": [
+            "Postponement",
+            "Mass Customization",
+            "Flexibility"
+          ],
+          "learning": {
+            "key_concept": "Postponement Strategy",
+            "principle": "Delay final commitment until demand is clear",
+            "application": "Volatile demand with product variations",
+            "trade_offs": "Operational complexity vs demand flexibility"
+          }
+        },
+        {
+          "id": "cpfr_collaboration",
+          "label": "CPFR Collaboration",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": -5500000,
+            "current_inventory": 2200,
+            "customer_satisfaction": 6,
+            "tata_relationship": 15,
+            "reputation": 12,
+            "working_capital_efficiency": 12
+          },
+          "feedback": "Collaborative Planning, Forecasting and Replenishment gets both sides looking at the same numbers — it takes relationship investment to set up, but it's the structural fix for the bullwhip, not just a one-quarter guess.",
+          "description": "Joint forecasting meeting with Tata. Share data. Produce 12,000 with staged delivery.",
+          "concepts": [
+            "CPFR",
+            "Supply Chain Collaboration",
+            "Information Sharing"
+          ],
+          "learning": {
+            "key_concept": "CPFR - Collaborative Planning, Forecasting, Replenishment",
+            "principle": "Shared information reduces uncertainty",
+            "application": "Strategic customer partnerships",
+            "trade_offs": "Information sharing vs competitive advantage"
+          }
+        }
+      ],
+      "scenario": "Managing demand variability and information distortion",
+      "narrative": "Tata's procurement team has revised their forecast upward — sharply. Market research tells a quieter story.",
+      "dialogue": "Priya: 'They want 15,000 units. Market data suggests end-consumer demand closer to 10,000. If we chase their number, we may create the classic bullwhip.'",
+      "quarter_data": {
+        "customer_stated_demand": 15000,
+        "market_actual_demand": 10000,
+        "production_capacity_max": 9000,
+        "overtime_capacity": 2000,
+        "overtime_cost_per_unit": 1000
+      }
     },
     {
-      "id": "round_3", "title": "Production Capacity Dilemma",
+      "id": "round_3",
+      "title": "Production Capacity Dilemma",
       "concept": "Make-vs-buy and capacity expansion under demand exceeding capacity",
       "prompt": "Total demand across all three OEMs is now 18,000 units against 9,000 units of capacity. How do you close the gap?",
       "quarter_demand": 18000,
       "total_demand": 18000,
       "capacity": 9000,
       "choices": [
-        {"id": "new_cnc_machine", "label": "New CNC Machine", "strategic_type": "long_term_investment",
-         "effects": {"cash": -30000000, "production_capacity": 55, "customer_satisfaction": 5, "reputation": 15, "working_capital_efficiency": -30},
-         "feedback": "Capital investment in a new CNC line permanently raises your ceiling, but it's a large, slow-to-pay-back commitment of cash."},
-        {"id": "outsource", "label": "Outsource", "strategic_type": "flexible_capacity",
-         "effects": {"cash": -18000000, "customer_satisfaction": 12, "reputation": 8, "working_capital_efficiency": -5, "supplier_reliability": -10},
-         "feedback": "A contract manufacturer closes the gap fast without capex, but now a piece of your quality and delivery promise depends on someone else's factory floor."},
-        {"id": "three_shift_operations", "label": "3-Shift Operations", "strategic_type": "internal_expansion",
-         "effects": {"cash": -12000000, "production_capacity": 40, "customer_satisfaction": 8, "reputation": 10, "working_capital_efficiency": 5},
-         "feedback": "Running three shifts squeezes more out of the assets you already have — cheaper than new capex, though it stresses your workforce and maintenance windows."},
-        {"id": "selective_order_acceptance", "label": "Selective Order Acceptance", "strategic_type": "focused",
-         "effects": {"cash": -4000000, "customer_satisfaction": -10, "reputation": -8, "mahindra_relationship": -25, "tata_relationship": 15, "working_capital_efficiency": 20},
-         "feedback": "Choosing to fully serve your best relationship and under-serve another protects working capital, but the customer you shortchange will remember it."}
-      ]
+        {
+          "id": "new_cnc_machine",
+          "label": "New CNC Machine",
+          "strategic_type": "long_term_investment",
+          "effects": {
+            "cash": -30000000,
+            "production_capacity": 55,
+            "customer_satisfaction": 5,
+            "reputation": 15,
+            "working_capital_efficiency": -30
+          },
+          "feedback": "Capital investment in a new CNC line permanently raises your ceiling, but it's a large, slow-to-pay-back commitment of cash.",
+          "description": "₹3 Crore investment. +5,000 units/quarter capacity. 45-day setup.",
+          "concepts": [
+            "Capacity Expansion",
+            "CapEx Decisions",
+            "Long-term Planning"
+          ],
+          "learning": {
+            "key_concept": "Capacity Investment",
+            "principle": "CapEx trades cash today for structural advantage tomorrow",
+            "application": "Sustained demand growth with strong cash position",
+            "trade_offs": "Cash outlay and lead time vs long-term competitiveness"
+          }
+        },
+        {
+          "id": "outsource",
+          "label": "Outsource",
+          "strategic_type": "flexible_capacity",
+          "effects": {
+            "cash": -18000000,
+            "customer_satisfaction": 12,
+            "reputation": 8,
+            "working_capital_efficiency": -5,
+            "supplier_reliability": -10
+          },
+          "feedback": "A contract manufacturer closes the gap fast without capex, but now a piece of your quality and delivery promise depends on someone else's factory floor.",
+          "description": "₹1,200/unit outsource cost (vs ₹800 internal). Immediate 9,000 units capacity.",
+          "concepts": [
+            "Make vs Buy",
+            "Outsourcing",
+            "Capacity Flexibility"
+          ],
+          "learning": {
+            "key_concept": "Make vs Buy",
+            "principle": "Outsourcing trades margin for speed and flexibility",
+            "application": "Demand surges that outstrip internal capacity",
+            "trade_offs": "Margin compression vs quality/supplier dependency risk"
+          }
+        },
+        {
+          "id": "three_shift_operations",
+          "label": "3-Shift Operations",
+          "strategic_type": "internal_expansion",
+          "effects": {
+            "cash": -12000000,
+            "production_capacity": 40,
+            "customer_satisfaction": 8,
+            "reputation": 10,
+            "working_capital_efficiency": 5
+          },
+          "feedback": "Running three shifts squeezes more out of the assets you already have — cheaper than new capex, though it stresses your workforce and maintenance windows.",
+          "description": "24-hour production. +4,500 units/quarter. 40% labor cost premium.",
+          "concepts": [
+            "Shift Management",
+            "Labor Utilization",
+            "Overtime Costs"
+          ],
+          "learning": {
+            "key_concept": "Shift Expansion",
+            "principle": "Labor-based capacity has human sustainability limits",
+            "application": "Short-to-medium term demand spikes",
+            "trade_offs": "Employee fatigue/turnover vs fast capacity gains"
+          }
+        },
+        {
+          "id": "selective_order_acceptance",
+          "label": "Selective Order Acceptance",
+          "strategic_type": "focused",
+          "effects": {
+            "cash": -4000000,
+            "customer_satisfaction": -10,
+            "reputation": -8,
+            "mahindra_relationship": -25,
+            "tata_relationship": 15,
+            "working_capital_efficiency": 20
+          },
+          "feedback": "Choosing to fully serve your best relationship and under-serve another protects working capital, but the customer you shortchange will remember it.",
+          "description": "Accept only Tata full order. Partial Mahindra (3,000 vs 6,000).",
+          "concepts": [
+            "Priority Setting",
+            "Customer Selection",
+            "Opportunity Cost"
+          ],
+          "learning": {
+            "key_concept": "Order Prioritization",
+            "principle": "Protecting core accounts can mean sacrificing new ones",
+            "application": "Constrained capacity with unequal customer value",
+            "trade_offs": "Preserved core relationship vs lost growth opportunity"
+          }
+        }
+      ],
+      "scenario": "Make-vs-Buy under demand surge — Mahindra new order",
+      "narrative": "A surprise RFQ from Mahindra lands on your desk. Capacity is already stretched across Tata and Bajaj commitments.",
+      "dialogue": "Sales: 'This is a door into Mahindra's EV supply chain. Operations: We have a 9,000-unit gap. Make, buy, sweat the plant — or say no.'",
+      "quarter_data": {
+        "total_demand": 18000,
+        "production_capacity": 9000,
+        "capacity_gap": 9000,
+        "tata": 9000,
+        "bajaj": 3000,
+        "mahindra_new": 6000
+      }
     },
     {
-      "id": "round_4", "title": "Seasonal Demand Volatility",
+      "id": "round_4",
+      "title": "Seasonal Demand Volatility",
       "concept": "Level production vs. chase strategy vs. hybrid vs. demand shaping",
       "prompt": "Q4 demand is spiking to 22,000 units, but Q1 next year drops back to 8,000. How do you plan production across the swing?",
       "quarter_demand": 15000,
       "q4_demand": 22000,
       "q1_demand": 8000,
       "choices": [
-        {"id": "level_production", "label": "Level Production", "strategic_type": "balanced",
-         "effects": {"cash": -12000000, "current_inventory": 3500, "reputation": 5, "working_capital_efficiency": -10},
-         "feedback": "Producing at a constant rate all year and letting inventory absorb the swing keeps your workforce stable, at the cost of carrying a lot of stock through the trough."},
-        {"id": "chase_strategy", "label": "Chase Strategy", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": -8500000, "customer_satisfaction": 5, "working_capital_efficiency": 15},
-         "feedback": "Flexing production to match demand quarter by quarter keeps inventory lean, but ramping labor and shifts up and down is operationally expensive in its own right."},
-        {"id": "hybrid_postponement_seasonal", "label": "Hybrid w/ Postponement", "strategic_type": "flexible",
-         "effects": {"cash": -10000000, "reputation": 6, "working_capital_efficiency": 0},
-         "feedback": "Blending a stable base load with postponed final assembly for the peak splits the difference between the two pure strategies."},
-        {"id": "promotional_pricing", "label": "Promotional Pricing", "strategic_type": "collaborative",
-         "effects": {"cash": -6000000, "customer_satisfaction": 6, "tata_relationship": 5, "mahindra_relationship": 5, "working_capital_efficiency": 18},
-         "feedback": "Using pricing to shift some Q4 demand into the Q1 trough smooths the load on your own factory by shaping the customer's behavior instead."}
-      ]
+        {
+          "id": "level_production",
+          "label": "Level Production",
+          "strategic_type": "balanced",
+          "effects": {
+            "cash": -12000000,
+            "current_inventory": 3500,
+            "reputation": 5,
+            "working_capital_efficiency": -10
+          },
+          "feedback": "Producing at a constant rate all year and letting inventory absorb the swing keeps your workforce stable, at the cost of carrying a lot of stock through the trough.",
+          "description": "Produce constant 15,000 units across 2 quarters. Build inventory in the slow quarter for peak demand.",
+          "concepts": [
+            "Level Production",
+            "Workforce Stability",
+            "Storage Cost"
+          ],
+          "learning": {
+            "key_concept": "Level Production Strategy",
+            "principle": "Smooth output, absorb demand swings in inventory",
+            "application": "Best when carrying costs are low and demand is predictable",
+            "trade_offs": "Storage/obsolescence cost vs workforce stability"
+          }
+        },
+        {
+          "id": "chase_strategy",
+          "label": "Chase Strategy",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": -8500000,
+            "customer_satisfaction": 5,
+            "working_capital_efficiency": 15
+          },
+          "feedback": "Flexing production to match demand quarter by quarter keeps inventory lean, but ramping labor and shifts up and down is operationally expensive in its own right.",
+          "description": "Vary production to match actual demand. Overtime and temp workers in peak, reduced hours in trough.",
+          "concepts": [
+            "Chase Strategy",
+            "Overtime Costs",
+            "Labor Flexibility"
+          ],
+          "learning": {
+            "key_concept": "Chase Strategy",
+            "principle": "Production tracks demand exactly, cost of volatility shifts to labor",
+            "application": "When storage costs exceed labor flexibility costs",
+            "trade_offs": "Employee turnover and skill loss vs minimal inventory carrying cost"
+          }
+        },
+        {
+          "id": "hybrid_postponement_seasonal",
+          "label": "Hybrid w/ Postponement",
+          "strategic_type": "flexible",
+          "effects": {
+            "cash": -10000000,
+            "reputation": 6,
+            "working_capital_efficiency": 0
+          },
+          "feedback": "Blending a stable base load with postponed final assembly for the peak splits the difference between the two pure strategies.",
+          "description": "Standard base production of 10,000 units/quarter. Peak boost via temp workers and semi-finished inventory.",
+          "concepts": [
+            "Postponement",
+            "Hybrid Planning",
+            "Operational Complexity"
+          ],
+          "learning": {
+            "key_concept": "Hybrid Production Planning",
+            "principle": "Combine level and chase to balance cost and flexibility",
+            "application": "Moderate seasonality with capable planning teams",
+            "trade_offs": "Operational complexity vs balanced cost/flexibility"
+          }
+        },
+        {
+          "id": "promotional_pricing",
+          "label": "Promotional Pricing",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": -6000000,
+            "customer_satisfaction": 6,
+            "tata_relationship": 5,
+            "mahindra_relationship": 5,
+            "working_capital_efficiency": 18
+          },
+          "feedback": "Using pricing to shift some Q4 demand into the Q1 trough smooths the load on your own factory by shaping the customer's behavior instead.",
+          "description": "Offer discounts to key customers for advance orders in the trough quarter.",
+          "concepts": [
+            "Demand Management",
+            "Promotional Pricing",
+            "Channel Incentives"
+          ],
+          "learning": {
+            "key_concept": "Demand Smoothing",
+            "principle": "Pricing can shift demand timing, reducing production volatility",
+            "application": "Mature industries with cooperative channel partners",
+            "trade_offs": "Margin impact vs smoother, lower-cost production"
+          }
+        }
+      ],
+      "scenario": "Managing feast-and-famine cycles across Q4 peak and Q1 trough",
+      "narrative": "Festive auto demand will spike, then collapse. Your planning board is stuck between level and chase.",
+      "dialogue": "Priya: 'Q4 wants 22,000. Q1 will barely clear 8,000. Storage is capped. How do we keep people and cash both intact?'",
+      "quarter_data": {
+        "q4_demand": 22000,
+        "q1_demand": 8000,
+        "regular_capacity": 9000,
+        "storage_capacity_max": 5000,
+        "peak_trough_ratio": 2.75,
+        "storage_cost_per_unit": 500
+      }
     },
     {
-      "id": "round_5", "title": "Technology Disruption",
+      "id": "round_5",
+      "title": "Technology Disruption",
       "concept": "EV transition strategy under demand uncertainty",
       "prompt": "Electric vehicles are reshaping what your OEM customers need from suppliers. How far do you commit?",
       "quarter_demand": 16000,
       "choices": [
-        {"id": "full_ev_pivot", "label": "Full EV Pivot", "strategic_type": "long_term_investment",
-         "effects": {"cash": -60000000, "ev_readiness": 40, "reputation": 15, "customer_satisfaction": -4, "working_capital_efficiency": -20},
-         "feedback": "Committing fully to EV components is the boldest bet on where the market is going — and the most exposed if the transition takes longer than expected."},
-        {"id": "dual_track", "label": "Dual-Track", "strategic_type": "balanced",
-         "effects": {"cash": -30000000, "ev_readiness": 20, "reputation": 15, "working_capital_efficiency": -5},
-         "feedback": "Running ICE and EV product lines in parallel hedges the transition risk, at the cost of splitting your capital and engineering attention."},
-        {"id": "defend_ice", "label": "Defend ICE", "strategic_type": "risk_averse",
-         "effects": {"cash": -5000000, "ev_readiness": -10, "reputation": -20, "customer_satisfaction": 3, "working_capital_efficiency": 10},
-         "feedback": "Doubling down on your current internal-combustion business protects near-term cash, but every quarter you wait, catching up on EV gets more expensive."},
-        {"id": "strategic_partnership", "label": "Strategic Partnership", "strategic_type": "collaborative",
-         "effects": {"cash": -20000000, "ev_readiness": 25, "reputation": 10, "working_capital_efficiency": -10, "supplier_reliability": 10},
-         "feedback": "Partnering with an EV-component specialist buys you readiness faster than building it alone, in exchange for sharing the upside."}
-      ]
+        {
+          "id": "full_ev_pivot",
+          "label": "Full EV Pivot",
+          "strategic_type": "long_term_investment",
+          "effects": {
+            "cash": -60000000,
+            "ev_readiness": 40,
+            "reputation": 15,
+            "customer_satisfaction": -4,
+            "working_capital_efficiency": -20
+          },
+          "feedback": "Committing fully to EV components is the boldest bet on where the market is going — and the most exposed if the transition takes longer than expected.",
+          "description": "Invest ₹6 Crore in complete transformation to EV components. 6-month transition.",
+          "concepts": [
+            "EV Transformation",
+            "First-Mover Strategy",
+            "Execution Risk"
+          ],
+          "learning": {
+            "key_concept": "First-Mover Transformation",
+            "principle": "Bold pivots can redefine competitive position",
+            "application": "Strong cash position and execution capability required",
+            "trade_offs": "Short-term ICE disruption vs long-term growth potential"
+          }
+        },
+        {
+          "id": "dual_track",
+          "label": "Dual-Track",
+          "strategic_type": "balanced",
+          "effects": {
+            "cash": -30000000,
+            "ev_readiness": 20,
+            "reputation": 15,
+            "working_capital_efficiency": -5
+          },
+          "feedback": "Running ICE and EV product lines in parallel hedges the transition risk, at the cost of splitting your capital and engineering attention.",
+          "description": "Maintain ICE at 70%. Invest ₹3 Crore in EV capability over a 3-year gradual transition.",
+          "concepts": [
+            "Dual-Track Transformation",
+            "Portfolio Management",
+            "Risk Balancing"
+          ],
+          "learning": {
+            "key_concept": "Dual-Track Strategy",
+            "principle": "Hedge disruption risk by running old and new business models in parallel",
+            "application": "Uncertain transition timelines",
+            "trade_offs": "Diluted focus and resources vs balanced risk exposure"
+          }
+        },
+        {
+          "id": "defend_ice",
+          "label": "Defend ICE",
+          "strategic_type": "risk_averse",
+          "effects": {
+            "cash": -5000000,
+            "ev_readiness": -10,
+            "reputation": -20,
+            "customer_satisfaction": 3,
+            "working_capital_efficiency": 10
+          },
+          "feedback": "Doubling down on your current internal-combustion business protects near-term cash, but every quarter you wait, catching up on EV gets more expensive.",
+          "description": "₹50 Lakh in Lean/Six Sigma to optimize current ICE business. Ride the ICE market as long as possible.",
+          "concepts": [
+            "Cost Optimization",
+            "Cash Cow Strategy",
+            "Obsolescence Risk"
+          ],
+          "learning": {
+            "key_concept": "Cash Cow / Harvest Strategy",
+            "principle": "Optimizing a declining business buys time, not a future",
+            "application": "Only sound with a deliberate, planned exit or transition",
+            "trade_offs": "Short-term profit vs long-term market position"
+          }
+        },
+        {
+          "id": "strategic_partnership",
+          "label": "Strategic Partnership",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": -20000000,
+            "ev_readiness": 25,
+            "reputation": 10,
+            "working_capital_efficiency": -10,
+            "supplier_reliability": 10
+          },
+          "feedback": "Partnering with an EV-component specialist buys you readiness faster than building it alone, in exchange for sharing the upside.",
+          "description": "₹2 Crore joint venture for EV technology access. 50% profit sharing on new business.",
+          "concepts": [
+            "Strategic Partnership",
+            "Joint Venture",
+            "Technology Access"
+          ],
+          "learning": {
+            "key_concept": "Partnership-Based Growth",
+            "principle": "JVs trade full ownership of upside for reduced execution risk",
+            "application": "When you lack specific capabilities in-house",
+            "trade_offs": "Complex governance and shared profit vs faster capability access"
+          }
+        }
+      ],
+      "scenario": "The EV revolution and product portfolio transformation",
+      "narrative": "ICE crankshaft demand is softening. EV platforms are rewriting supplier shortlists.",
+      "dialogue": "Board advisor: 'You can harvest ICE cash, dual-track, partner for EV tech — or go all-in. Waiting is also a strategy, until it isn't.'",
+      "quarter_data": {
+        "ice_decline_pct": 15,
+        "ev_growth_pct": 60,
+        "current_mix_ice_pct": 100,
+        "ev_market_share_2030": 30,
+        "investment_range_cr": "5-8"
+      }
     },
     {
-      "id": "round_6", "title": "Supply Chain Optimization",
+      "id": "round_6",
+      "title": "Supply Chain Optimization",
       "concept": "VMI, cross-docking, digital demand sensing, network consolidation",
       "prompt": "Your supply chain cost ratio is eating into margin. Which lever do you pull?",
       "quarter_demand": 17000,
       "choices": [
-        {"id": "vmi", "label": "VMI", "strategic_type": "collaborative",
-         "effects": {"cash": -8000000, "supply_chain_cost_ratio": -5, "supplier_reliability": 20, "working_capital_efficiency": 15},
-         "feedback": "Vendor-Managed Inventory hands your suppliers visibility into your actual consumption — it takes trust to set up, but it structurally reduces the whiplash they see from you."},
-        {"id": "cross_docking", "label": "Cross-Docking", "strategic_type": "systematic",
-         "effects": {"cash": -12000000, "supply_chain_cost_ratio": -4, "working_capital_efficiency": 10, "reputation": 5},
-         "feedback": "Routing goods straight from inbound to outbound trucks cuts warehousing cost and time, at the cost of a more tightly-scheduled, less forgiving logistics operation."},
-        {"id": "ai_demand_sensing", "label": "AI Demand Sensing", "strategic_type": "long_term_investment",
-         "effects": {"cash": -20000000, "supply_chain_cost_ratio": -6, "digital_maturity": 25, "customer_satisfaction": 8},
-         "feedback": "A demand-sensing platform reads real point-of-sale and market signals instead of relying on one customer's forecast — the most direct structural fix to the bullwhip effect, at real up-front cost."},
-        {"id": "consolidate_warehouses", "label": "Consolidate Warehouses", "strategic_type": "focused",
-         "effects": {"cash": -9000000, "supply_chain_cost_ratio": -5, "working_capital_efficiency": 15, "customer_satisfaction": -5},
-         "feedback": "Fewer, larger warehouses cut fixed cost, but customers further from the remaining hubs will feel the difference in delivery time."}
-      ]
+        {
+          "id": "vmi",
+          "label": "VMI",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": -8000000,
+            "supply_chain_cost_ratio": -5,
+            "supplier_reliability": 20,
+            "working_capital_efficiency": 15
+          },
+          "feedback": "Vendor-Managed Inventory hands your suppliers visibility into your actual consumption — it takes trust to set up, but it structurally reduces the whiplash they see from you.",
+          "description": "Suppliers manage your inventory. Reduces holding costs by 30%.",
+          "concepts": [
+            "VMI",
+            "Supplier Partnership",
+            "Cost Reduction"
+          ],
+          "learning": {
+            "key_concept": "Vendor Managed Inventory",
+            "principle": "Shift inventory ownership/responsibility upstream to the supplier",
+            "application": "Deep, trusted supplier relationships",
+            "trade_offs": "Loss of direct control vs reduced holding cost and supplier accountability"
+          }
+        },
+        {
+          "id": "cross_docking",
+          "label": "Cross-Docking",
+          "strategic_type": "systematic",
+          "effects": {
+            "cash": -12000000,
+            "supply_chain_cost_ratio": -4,
+            "working_capital_efficiency": 10,
+            "reputation": 5
+          },
+          "feedback": "Routing goods straight from inbound to outbound trucks cuts warehousing cost and time, at the cost of a more tightly-scheduled, less forgiving logistics operation.",
+          "description": "Direct supplier-to-customer routing through cross-docking. Eliminates a warehousing step.",
+          "concepts": [
+            "Cross-Docking",
+            "Logistics Consolidation",
+            "Transportation Efficiency"
+          ],
+          "learning": {
+            "key_concept": "Cross-Docking",
+            "principle": "Removing a handling/storage step compresses total cost and lead time",
+            "application": "High-volume, predictable flows between fixed nodes",
+            "trade_offs": "Coordination complexity vs transportation/warehousing savings"
+          }
+        },
+        {
+          "id": "ai_demand_sensing",
+          "label": "AI Demand Sensing",
+          "strategic_type": "long_term_investment",
+          "effects": {
+            "cash": -20000000,
+            "supply_chain_cost_ratio": -6,
+            "digital_maturity": 25,
+            "customer_satisfaction": 8
+          },
+          "feedback": "A demand-sensing platform reads real point-of-sale and market signals instead of relying on one customer's forecast — the most direct structural fix to the bullwhip effect, at real up-front cost.",
+          "description": "Machine learning demand forecasting. Reduces stockouts by 60% and inventory by 25%.",
+          "concepts": [
+            "AI Forecasting",
+            "Digital Transformation",
+            "Demand Sensing"
+          ],
+          "learning": {
+            "key_concept": "AI-Powered Forecasting",
+            "principle": "Better demand signal quality reduces both stockouts and excess inventory simultaneously",
+            "application": "Organizations with clean data and digital readiness",
+            "trade_offs": "High upfront investment and long payoff cycle vs step-change in accuracy"
+          }
+        },
+        {
+          "id": "consolidate_warehouses",
+          "label": "Consolidate Warehouses",
+          "strategic_type": "focused",
+          "effects": {
+            "cash": -9000000,
+            "supply_chain_cost_ratio": -5,
+            "working_capital_efficiency": 15,
+            "customer_satisfaction": -5
+          },
+          "feedback": "Fewer, larger warehouses cut fixed cost, but customers further from the remaining hubs will feel the difference in delivery time.",
+          "description": "Reduce from 5 to 2 strategic warehouse locations.",
+          "concepts": [
+            "Network Consolidation",
+            "Warehouse Strategy",
+            "Service Level Trade-off"
+          ],
+          "learning": {
+            "key_concept": "Network Consolidation",
+            "principle": "Fewer nodes cut fixed cost but increase distance to some customers",
+            "application": "When service-level risk in remote areas is acceptable",
+            "trade_offs": "Regional service degradation vs lower fixed network cost"
+          }
+        }
+      ],
+      "scenario": "Closing an 8-point supply chain cost gap versus industry benchmark",
+      "narrative": "Your total supply chain cost sits at 32% of revenue. Benchmark peers run closer to 24%.",
+      "dialogue": "CFO: 'Eight points is the difference between funding EV and defending margins. Pick a lever — VMI, network, AI, or consolidation.'",
+      "quarter_data": {
+        "total_cost_pct_revenue": 32,
+        "industry_benchmark_pct": 24,
+        "holding_cr": 8.5,
+        "transportation_cr": 6.2,
+        "warehousing_cr": 4.8,
+        "ordering_cr": 3.5,
+        "stockout_cr": 2.8
+      }
     },
     {
-      "id": "round_7", "title": "The Final Challenge",
+      "id": "round_7",
+      "title": "The Final Challenge",
       "concept": "Long-run strategic positioning",
       "prompt": "With three years of runway ahead, what's the one bet that defines this company's next chapter?",
       "quarter_demand": 19000,
       "choices": [
-        {"id": "sustainable_manufacturing_leader", "label": "Sustainable Manufacturing Leader", "strategic_type": "long_term_investment",
-         "effects": {"cash": -80000000, "sustainability_score": 40, "reputation": 25, "customer_satisfaction": 15},
-         "feedback": "Betting on sustainability as your differentiator is a slow-burning advantage — it rarely wins the next quarter's RFP, but it increasingly wins the next decade's."},
-        {"id": "global_expansion", "label": "Global Expansion", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": -120000000, "reputation": 15, "working_capital_efficiency": -15},
-         "feedback": "Expanding beyond your home market multiplies your addressable demand, and your operational complexity, in the same stroke."},
-        {"id": "vertical_integration", "label": "Vertical Integration", "strategic_type": "systematic",
-         "effects": {"cash": -150000000, "working_capital_efficiency": -20, "supply_chain_cost_ratio": -8, "reputation": 10},
-         "feedback": "Owning more of your own upstream supply chain is the largest single bet on this list — it removes a layer of supplier risk permanently, in exchange for a huge capital commitment."},
-        {"id": "digital_manufacturing_platform", "label": "Digital Manufacturing Platform", "strategic_type": "long_term_investment",
-         "effects": {"cash": -60000000, "digital_maturity": 40, "reputation": 20, "working_capital_efficiency": 10},
-         "feedback": "A digital backbone across planning, production, and logistics compounds every other decision in this simulation — the bullwhip, the capacity calls, the seasonal swings all get easier to see coming."}
-      ]
+        {
+          "id": "sustainable_manufacturing_leader",
+          "label": "Sustainable Manufacturing Leader",
+          "strategic_type": "long_term_investment",
+          "effects": {
+            "cash": -80000000,
+            "sustainability_score": 40,
+            "reputation": 25,
+            "customer_satisfaction": 15
+          },
+          "feedback": "Betting on sustainability as your differentiator is a slow-burning advantage — it rarely wins the next quarter's RFP, but it increasingly wins the next decade's.",
+          "description": "₹8 Crore investment: solar-powered facility, circular economy adoption, zero waste to landfill.",
+          "concepts": [
+            "Sustainability Strategy",
+            "ESG",
+            "Premium Positioning"
+          ],
+          "learning": {
+            "key_concept": "Sustainability as Strategy",
+            "principle": "ESG leadership can command premium pricing and brand value",
+            "application": "Markets with regulatory tightening and ESG-aware customers",
+            "trade_offs": "Large upfront capital vs long-term brand and pricing power"
+          }
+        },
+        {
+          "id": "global_expansion",
+          "label": "Global Expansion",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": -120000000,
+            "reputation": 15,
+            "working_capital_efficiency": -15
+          },
+          "feedback": "Expanding beyond your home market multiplies your addressable demand, and your operational complexity, in the same stroke.",
+          "description": "₹12 Crore investment: export to Southeast Asia, new facility in Vietnam.",
+          "concepts": [
+            "Global Expansion",
+            "Currency Risk",
+            "Market Diversification"
+          ],
+          "learning": {
+            "key_concept": "International Expansion",
+            "principle": "New markets diversify revenue but add currency and operational complexity",
+            "application": "Strong management bandwidth and risk appetite",
+            "trade_offs": "Currency and execution risk vs large revenue upside"
+          }
+        },
+        {
+          "id": "vertical_integration",
+          "label": "Vertical Integration",
+          "strategic_type": "systematic",
+          "effects": {
+            "cash": -150000000,
+            "working_capital_efficiency": -20,
+            "supply_chain_cost_ratio": -8,
+            "reputation": 10
+          },
+          "feedback": "Owning more of your own upstream supply chain is the largest single bet on this list — it removes a layer of supplier risk permanently, in exchange for a huge capital commitment.",
+          "description": "₹15 Crore to acquire the raw material supplier. Own steel processing. ~15% cost reduction.",
+          "concepts": [
+            "Vertical Integration",
+            "Supply Security",
+            "M&A"
+          ],
+          "learning": {
+            "key_concept": "Vertical Integration",
+            "principle": "Owning the supply base secures margin and continuity, at the cost of focus",
+            "application": "Only when you can run the acquired business better than its current owners",
+            "trade_offs": "Reduced strategic flexibility vs supply security and margin capture"
+          }
+        },
+        {
+          "id": "digital_manufacturing_platform",
+          "label": "Digital Manufacturing Platform",
+          "strategic_type": "long_term_investment",
+          "effects": {
+            "cash": -60000000,
+            "digital_maturity": 40,
+            "reputation": 20,
+            "working_capital_efficiency": 10
+          },
+          "feedback": "A digital backbone across planning, production, and logistics compounds every other decision in this simulation — the bullwhip, the capacity calls, the seasonal swings all get easier to see coming.",
+          "description": "₹6 Crore Industry 4.0 transformation: IoT sensors, predictive maintenance, digital twin.",
+          "concepts": [
+            "Industry 4.0",
+            "Digital Twin",
+            "Predictive Maintenance"
+          ],
+          "learning": {
+            "key_concept": "Industry 4.0 Transformation",
+            "principle": "Digital infrastructure compounds efficiency gains across every other decision",
+            "application": "Competitive necessity for scaled manufacturers",
+            "trade_offs": "Large upfront investment vs 40%+ efficiency gain and future readiness"
+          }
+        }
+      ],
+      "scenario": "Legacy and sustainability — setting Mumbai Motors' 10-year strategic direction",
+      "narrative": "The board asks for a decade thesis. Four futures are on the table — each expensive, each defining.",
+      "dialogue": "Chair: 'Rohan, what will Mumbai Motors be known for in 2035 — sustainability, global scale, vertical control, or digital manufacturing?'"
     }
   ],
   "scheduled_events": [
@@ -193,14 +880,50 @@
       "title": "Monsoon Disruption",
       "prompt": "Heavy monsoon flooding has shut down your primary steel supplier's plant for two weeks.",
       "choices": [
-        {"id": "expedite_air_freight", "label": "Expedite via air freight", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": -3000000, "reputation": 5, "customer_satisfaction": 5, "supplier_reliability": -2}},
-        {"id": "activate_backup_supplier", "label": "Activate backup supplier", "strategic_type": "systematic",
-         "effects": {"cash": -1500000, "reputation": 3, "customer_satisfaction": 2, "supplier_reliability": 8}},
-        {"id": "absorb_the_delay", "label": "Absorb the delay, notify customers", "strategic_type": "risk_averse",
-         "effects": {"cash": -500000, "reputation": -8, "customer_satisfaction": -12, "supplier_reliability": 0}},
-        {"id": "renegotiate_with_supplier", "label": "Renegotiate terms with the supplier", "strategic_type": "collaborative",
-         "effects": {"cash": -800000, "reputation": 2, "customer_satisfaction": -4, "supplier_reliability": 12}}
+        {
+          "id": "expedite_air_freight",
+          "label": "Expedite via air freight",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": -3000000,
+            "reputation": 5,
+            "customer_satisfaction": 5,
+            "supplier_reliability": -2
+          }
+        },
+        {
+          "id": "activate_backup_supplier",
+          "label": "Activate backup supplier",
+          "strategic_type": "systematic",
+          "effects": {
+            "cash": -1500000,
+            "reputation": 3,
+            "customer_satisfaction": 2,
+            "supplier_reliability": 8
+          }
+        },
+        {
+          "id": "absorb_the_delay",
+          "label": "Absorb the delay, notify customers",
+          "strategic_type": "risk_averse",
+          "effects": {
+            "cash": -500000,
+            "reputation": -8,
+            "customer_satisfaction": -12,
+            "supplier_reliability": 0
+          }
+        },
+        {
+          "id": "renegotiate_with_supplier",
+          "label": "Renegotiate terms with the supplier",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": -800000,
+            "reputation": 2,
+            "customer_satisfaction": -4,
+            "supplier_reliability": 12
+          }
+        }
       ]
     },
     {
@@ -209,14 +932,46 @@
       "title": "Quality Crisis",
       "prompt": "A defective batch of 2,000 units has been traced back to your line and is already in a customer's assembly plant.",
       "choices": [
-        {"id": "full_recall", "label": "Full recall and replace", "strategic_type": "long_term_investment",
-         "effects": {"cash": -5000000, "reputation": 10, "quality_score": 8}},
-        {"id": "targeted_replacement", "label": "Targeted replacement only", "strategic_type": "balanced",
-         "effects": {"cash": -2000000, "reputation": 2, "quality_score": 4}},
-        {"id": "quietly_credit_the_account", "label": "Quietly credit the account", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": -800000, "reputation": -10, "quality_score": -5}},
-        {"id": "root_cause_overhaul", "label": "Root-cause overhaul of the line", "strategic_type": "systematic",
-         "effects": {"cash": -6000000, "reputation": 12, "quality_score": 15}}
+        {
+          "id": "full_recall",
+          "label": "Full recall and replace",
+          "strategic_type": "long_term_investment",
+          "effects": {
+            "cash": -5000000,
+            "reputation": 10,
+            "quality_score": 8
+          }
+        },
+        {
+          "id": "targeted_replacement",
+          "label": "Targeted replacement only",
+          "strategic_type": "balanced",
+          "effects": {
+            "cash": -2000000,
+            "reputation": 2,
+            "quality_score": 4
+          }
+        },
+        {
+          "id": "quietly_credit_the_account",
+          "label": "Quietly credit the account",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": -800000,
+            "reputation": -10,
+            "quality_score": -5
+          }
+        },
+        {
+          "id": "root_cause_overhaul",
+          "label": "Root-cause overhaul of the line",
+          "strategic_type": "systematic",
+          "effects": {
+            "cash": -6000000,
+            "reputation": 12,
+            "quality_score": 15
+          }
+        }
       ]
     },
     {
@@ -225,14 +980,51 @@
       "title": "Raw Material Price Shock",
       "prompt": "Global steel prices have jumped 35% overnight on a supply-side shock.",
       "choices": [
-        {"id": "absorb_the_margin_hit", "label": "Absorb the margin hit", "strategic_type": "risk_averse",
-         "effects": {"cash": -9000000, "reputation": 5, "tata_relationship": 5, "mahindra_relationship": 5}},
-        {"id": "pass_through_to_customers", "label": "Pass the increase through to customers", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": -2000000, "reputation": -8, "tata_relationship": -10, "mahindra_relationship": -10}},
-        {"id": "lock_in_forward_contracts", "label": "Lock in forward contracts", "strategic_type": "systematic",
-         "effects": {"cash": -5000000, "reputation": 6, "tata_relationship": 3, "mahindra_relationship": 3}},
-        {"id": "split_the_increase", "label": "Split the increase with customers", "strategic_type": "collaborative",
-         "effects": {"cash": -5500000, "reputation": 3, "tata_relationship": 8, "mahindra_relationship": 8, "bajaj_relationship": 8}}
+        {
+          "id": "absorb_the_margin_hit",
+          "label": "Absorb the margin hit",
+          "strategic_type": "risk_averse",
+          "effects": {
+            "cash": -9000000,
+            "reputation": 5,
+            "tata_relationship": 5,
+            "mahindra_relationship": 5
+          }
+        },
+        {
+          "id": "pass_through_to_customers",
+          "label": "Pass the increase through to customers",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": -2000000,
+            "reputation": -8,
+            "tata_relationship": -10,
+            "mahindra_relationship": -10
+          }
+        },
+        {
+          "id": "lock_in_forward_contracts",
+          "label": "Lock in forward contracts",
+          "strategic_type": "systematic",
+          "effects": {
+            "cash": -5000000,
+            "reputation": 6,
+            "tata_relationship": 3,
+            "mahindra_relationship": 3
+          }
+        },
+        {
+          "id": "split_the_increase",
+          "label": "Split the increase with customers",
+          "strategic_type": "collaborative",
+          "effects": {
+            "cash": -5500000,
+            "reputation": 3,
+            "tata_relationship": 8,
+            "mahindra_relationship": 8,
+            "bajaj_relationship": 8
+          }
+        }
       ]
     },
     {
@@ -241,14 +1033,46 @@
       "title": "Cyber Attack",
       "prompt": "A ransomware attack has locked your production-scheduling systems overnight.",
       "choices": [
-        {"id": "pay_the_ransom", "label": "Pay the ransom", "strategic_type": "aggressive_efficiency",
-         "effects": {"cash": -4000000, "digital_maturity": -10, "reputation": -15}},
-        {"id": "restore_from_backups", "label": "Restore from backups", "strategic_type": "systematic",
-         "effects": {"cash": -6000000, "digital_maturity": 10, "reputation": -3}},
-        {"id": "rebuild_and_harden", "label": "Rebuild and harden security", "strategic_type": "long_term_investment",
-         "effects": {"cash": -12000000, "digital_maturity": 25, "reputation": 8}},
-        {"id": "revert_to_manual", "label": "Revert to manual scheduling temporarily", "strategic_type": "risk_averse",
-         "effects": {"cash": -2000000, "digital_maturity": -5, "reputation": -8}}
+        {
+          "id": "pay_the_ransom",
+          "label": "Pay the ransom",
+          "strategic_type": "aggressive_efficiency",
+          "effects": {
+            "cash": -4000000,
+            "digital_maturity": -10,
+            "reputation": -15
+          }
+        },
+        {
+          "id": "restore_from_backups",
+          "label": "Restore from backups",
+          "strategic_type": "systematic",
+          "effects": {
+            "cash": -6000000,
+            "digital_maturity": 10,
+            "reputation": -3
+          }
+        },
+        {
+          "id": "rebuild_and_harden",
+          "label": "Rebuild and harden security",
+          "strategic_type": "long_term_investment",
+          "effects": {
+            "cash": -12000000,
+            "digital_maturity": 25,
+            "reputation": 8
+          }
+        },
+        {
+          "id": "revert_to_manual",
+          "label": "Revert to manual scheduling temporarily",
+          "strategic_type": "risk_averse",
+          "effects": {
+            "cash": -2000000,
+            "digital_maturity": -5,
+            "reputation": -8
+          }
+        }
       ]
     }
   ],
@@ -258,53 +1082,235 @@
       {
         "name": "Financial",
         "kpis": [
-          {"name": "cash_net_debt", "min": -20000000, "max": 250000000, "weight": 0.15},
-          {"name": "working_capital_efficiency", "min": 0, "max": 100, "weight": 0.06},
-          {"name": "bullwhip_index", "min": 100, "max": 0, "weight": 0.04}
+          {
+            "name": "cash_net_debt",
+            "min": -20000000,
+            "max": 250000000,
+            "weight": 0.15
+          },
+          {
+            "name": "working_capital_efficiency",
+            "min": 0,
+            "max": 100,
+            "weight": 0.06
+          },
+          {
+            "name": "bullwhip_index",
+            "min": 100,
+            "max": 0,
+            "weight": 0.04
+          }
         ]
       },
       {
         "name": "Operational",
         "kpis": [
-          {"name": "quality_score", "min": 0, "max": 100, "weight": 0.10},
-          {"name": "supply_chain_cost_ratio", "min": 60, "max": 15, "weight": 0.08},
-          {"name": "production_capacity", "min": 100, "max": 300, "weight": 0.07}
+          {
+            "name": "quality_score",
+            "min": 0,
+            "max": 100,
+            "weight": 0.1
+          },
+          {
+            "name": "supply_chain_cost_ratio",
+            "min": 60,
+            "max": 15,
+            "weight": 0.08
+          },
+          {
+            "name": "production_capacity",
+            "min": 100,
+            "max": 300,
+            "weight": 0.07
+          }
         ]
       },
       {
         "name": "Customer",
         "kpis": [
-          {"name": "customer_satisfaction", "min": 0, "max": 100, "weight": 0.10},
-          {"name": "tata_relationship", "min": 0, "max": 100, "weight": 0.05},
-          {"name": "mahindra_relationship", "min": 0, "max": 100, "weight": 0.05},
-          {"name": "bajaj_relationship", "min": 0, "max": 100, "weight": 0.05}
+          {
+            "name": "customer_satisfaction",
+            "min": 0,
+            "max": 100,
+            "weight": 0.1
+          },
+          {
+            "name": "tata_relationship",
+            "min": 0,
+            "max": 100,
+            "weight": 0.05
+          },
+          {
+            "name": "mahindra_relationship",
+            "min": 0,
+            "max": 100,
+            "weight": 0.05
+          },
+          {
+            "name": "bajaj_relationship",
+            "min": 0,
+            "max": 100,
+            "weight": 0.05
+          }
         ]
       },
       {
         "name": "Strategic",
         "kpis": [
-          {"name": "ev_readiness", "min": 0, "max": 100, "weight": 0.06},
-          {"name": "digital_maturity", "min": 0, "max": 100, "weight": 0.05},
-          {"name": "sustainability_score", "min": 0, "max": 100, "weight": 0.04}
+          {
+            "name": "ev_readiness",
+            "min": 0,
+            "max": 100,
+            "weight": 0.06
+          },
+          {
+            "name": "digital_maturity",
+            "min": 0,
+            "max": 100,
+            "weight": 0.05
+          },
+          {
+            "name": "sustainability_score",
+            "min": 0,
+            "max": 100,
+            "weight": 0.04
+          }
         ]
       },
       {
         "name": "Risk",
         "kpis": [
-          {"name": "supplier_reliability", "min": 0, "max": 100, "weight": 0.04},
-          {"name": "reputation", "min": 0, "max": 100, "weight": 0.03},
-          {"name": "bank_debt", "min": 100000000, "max": 0, "weight": 0.03}
+          {
+            "name": "supplier_reliability",
+            "min": 0,
+            "max": 100,
+            "weight": 0.04
+          },
+          {
+            "name": "reputation",
+            "min": 0,
+            "max": 100,
+            "weight": 0.03
+          },
+          {
+            "name": "bank_debt",
+            "min": 100000000,
+            "max": 0,
+            "weight": 0.03
+          }
         ]
       }
     ],
     "grade_table": [
-      {"min": 90, "grade": "A+", "label": "Supply Chain Master"},
-      {"min": 80, "grade": "A", "label": "Operations Excellence"},
-      {"min": 70, "grade": "B+", "label": "Strong Manager"},
-      {"min": 60, "grade": "B", "label": "Competent Leader"},
-      {"min": 50, "grade": "C+", "label": "Developing Manager"},
-      {"min": 0, "grade": "C", "label": "Learning Journey"}
+      {
+        "min": 90,
+        "grade": "A+",
+        "label": "Supply Chain Master"
+      },
+      {
+        "min": 80,
+        "grade": "A",
+        "label": "Operations Excellence"
+      },
+      {
+        "min": 70,
+        "grade": "B+",
+        "label": "Strong Manager"
+      },
+      {
+        "min": 60,
+        "grade": "B",
+        "label": "Competent Leader"
+      },
+      {
+        "min": 50,
+        "grade": "C+",
+        "label": "Developing Manager"
+      },
+      {
+        "min": 0,
+        "grade": "C",
+        "label": "Learning Journey"
+      }
     ]
   },
-  "reflection_prompt": "Which decision most amplified the bullwhip effect down your supply chain, and what would you do differently with the same information next time?"
+  "reflection_prompt": "Which decision most amplified the bullwhip effect down your supply chain, and what would you do differently with the same information next time?",
+  "briefing": {
+    "narrative": "You are Rohan Mehta, COO of Mumbai Motors Pvt. Ltd. — a mid-sized auto components manufacturer in Chakan Industrial Area, Pune. You supply precision crankshafts and engine parts to Tata Motors, Bajaj Auto, and Mahindra & Mahindra.",
+    "quote": "Manage inventory, production, and cash through seven quarters. Every decision ripples through operations, relationships, and your balance sheet.",
+    "company_profile": [
+      {
+        "label": "Annual Revenue",
+        "value": "₹120 Crore"
+      },
+      {
+        "label": "Employees",
+        "value": "350"
+      },
+      {
+        "label": "Product SKUs",
+        "value": "12 (Crankshafts, Pistons, Valves…)"
+      },
+      {
+        "label": "Main Product",
+        "value": "Precision Crankshafts — Tata Nexon"
+      },
+      {
+        "label": "Recent Contract",
+        "value": "₹40 Crore with Tata Motors"
+      },
+      {
+        "label": "Location",
+        "value": "Chakan Industrial Area, Pune"
+      }
+    ],
+    "starting_resources": [
+      {
+        "label": "Cash Position",
+        "value": "₹5,00,00,000"
+      },
+      {
+        "label": "Current Inventory",
+        "value": "500 units"
+      },
+      {
+        "label": "Production Capacity",
+        "value": "100 units/day (9,000/quarter)"
+      },
+      {
+        "label": "Customer Satisfaction",
+        "value": "85 / 100"
+      },
+      {
+        "label": "Company Reputation",
+        "value": "75 / 100"
+      },
+      {
+        "label": "Working Capital Efficiency",
+        "value": "70 / 100"
+      },
+      {
+        "label": "Quality Score",
+        "value": "95 / 100"
+      },
+      {
+        "label": "Supplier Reliability",
+        "value": "80 / 100"
+      }
+    ],
+    "steps": [
+      "Read the round scenario and operational data",
+      "Choose one of four strategic options (A–D)",
+      "Review the outcome — KPI changes and key takeaway",
+      "If a crisis appears, pick a response under time pressure",
+      "Continue through all rounds, then see your final results"
+    ],
+    "rules": [
+      "One decision per round — you cannot go back once confirmed",
+      "Watch the live KPI bar: cash, inventory, satisfaction, reputation, and more",
+      "Crisis events can appear after certain rounds; treat them as mandatory",
+      "Every option has trade-offs — there is no single “perfect” path",
+      "Final grade reflects financial, operational, customer, strategic, and risk outcomes"
+    ]
+  }
 }

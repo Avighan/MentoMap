@@ -1336,6 +1336,7 @@ export default function PostGameInsights({ summary, state, gameType, won, report
       {/* Challenge a friend — async peer challenge card */}
       {user?.role === 'student' && reportCore?.game_id && (
         <PostGameChallenge
+          runId={runId}
           gameId={reportCore.game_id}
           score={Math.round(reportCore?.mento_score?.score || reportCore?.final_score || 0)}
         />

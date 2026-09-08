@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cost Accounting Lab &middot; SimuLok</title>
+<style>
+:root{
+  --saffron:#D97B2B;--saffron-glow:rgba(217,123,43,0.12);
+  --neem:#1A8A5C;--neem-light:rgba(26,138,92,0.12);
+  --purple:#8E44AD;--purple-light:rgba(142,68,173,0.12);
+  --blue:#2980B9;--blue-light:rgba(41,128,185,0.12);
+  --ink:#1a1a1a;--ink-soft:#555;--muted:#888;
+  --bg:#FAFAF7;--card:#fff;--card-border:rgba(0,0,0,0.07);
+  --input-bg:#f5f5f0;--shadow:rgba(0,0,0,0.04);
+  --radius:10px;--radius-lg:14px;--radius-sm:6px;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink:#e8e6e1;--ink-soft:#aaa;--muted:#777;
+  --bg:#1a1a1a;--card:#242420;--card-border:rgba(255,255,255,0.08);
+  --input-bg:#2a2a26;--shadow:rgba(0,0,0,0.3);
+}}
+:root[data-theme="dark"]{
+  --ink:#e8e6e1;--ink-soft:#aaa;--muted:#777;
+  --bg:#1a1a1a;--card:#242420;--card-border:rgba(255,255,255,0.08);
+  --input-bg:#2a2a26;--shadow:rgba(0,0,0,0.3);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+.hub{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 3rem}
+
+.hub-header{text-align:center;margin-bottom:2.2rem}
+.brand-row{display:flex;align-items:center;justify-content:center;gap:0.5rem;font-weight:800;font-size:0.95rem;color:var(--saffron);margin-bottom:0.8rem;letter-spacing:-0.01em}
+.hub-header h1{font-size:1.7rem;letter-spacing:-0.02em;line-height:1.2;margin-bottom:0.35rem}
+.hub-header h1 em{font-style:normal;color:var(--saffron)}
+.subtitle{font-family:Georgia,serif;font-style:italic;font-size:0.92rem;color:var(--muted);margin-bottom:1rem}
+.badge-row{display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.badge{font-size:0.68rem;font-weight:700;padding:0.3em 0.7em;border-radius:20px;letter-spacing:0.03em}
+.badge-saffron{background:var(--saffron-glow);color:var(--saffron)}
+.badge-neem{background:var(--neem-light);color:var(--neem)}
+.badge-blue{background:var(--blue-light);color:var(--blue)}
+.desc{max-width:540px;margin:0 auto;font-size:0.85rem;color:var(--ink-soft);line-height:1.7}
+
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-bottom:2rem}
+.sim-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:0 2px 12px var(--shadow);display:flex;flex-direction:column;transition:transform 0.15s,box-shadow 0.15s}
+.sim-card:hover{transform:translateY(-3px);box-shadow:0 6px 24px var(--shadow)}
+
+.sim-card .card-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:1rem}
+.sim-card.medium .card-icon{background:var(--saffron-glow)}
+
+.sim-card .card-diff{display:inline-block;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:0.2em 0.6em;border-radius:3px;margin-bottom:0.6rem;width:fit-content}
+.sim-card.medium .card-diff{background:var(--saffron-glow);color:var(--saffron)}
+
+.sim-card h2{font-size:1.15rem;margin-bottom:0.15rem}
+.sim-card .card-sub{font-family:Georgia,serif;font-style:italic;font-size:0.82rem;color:var(--muted);margin-bottom:0.6rem}
+.sim-card .card-desc{font-size:0.82rem;color:var(--ink-soft);line-height:1.6;margin-bottom:1rem;flex:1}
+
+.card-meta{display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1rem;font-size:0.72rem;color:var(--muted)}
+.card-meta span{display:flex;align-items:center;gap:0.3rem}
+
+.card-skills{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1.2rem}
+.skill-tag{font-size:0.62rem;font-weight:600;padding:0.2em 0.55em;border-radius:3px;background:var(--input-bg);border:1px solid var(--card-border);color:var(--ink-soft)}
+
+.btn{display:inline-flex;align-items:center;gap:0.5em;font-family:system-ui,sans-serif;font-weight:600;font-size:0.88rem;padding:0.65em 1.4em;border:none;border-radius:var(--radius);cursor:pointer;transition:transform 0.12s,box-shadow 0.15s;text-decoration:none;width:100%;justify-content:center}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:var(--saffron);color:#fff;box-shadow:0 2px 8px rgba(217,123,43,0.25)}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(217,123,43,0.35)}
+
+.footer-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;box-shadow:0 2px 8px var(--shadow)}
+.footer-section h3{font-size:0.95rem;margin-bottom:0.6rem;color:var(--saffron);display:flex;align-items:center;gap:0.5rem}
+.footer-section p{font-size:0.82rem;color:var(--ink-soft);line-height:1.65;margin-bottom:0.4rem}
+.footer-section p:last-child{margin-bottom:0}
+
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.6rem;margin-top:0.8rem}
+.learn-item{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:0.6rem 0.8rem}
+.learn-item .li-icon{font-size:1rem;margin-bottom:0.2rem}
+.learn-item .li-title{font-weight:700;font-size:0.78rem;margin-bottom:0.15rem}
+.learn-item .li-desc{font-size:0.7rem;color:var(--muted);line-height:1.4}
+
+.powered-by{text-align:center;font-size:0.72rem;color:var(--muted);margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--card-border)}
+.powered-by a{color:var(--saffron);text-decoration:none;font-weight:600}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.sim-card{animation:fadeUp 0.4s ease both}
+
+@media(max-width:640px){
+  .hub{padding:1.5rem 1rem 2rem}
+  .sim-grid{grid-template-columns:1fr}
+  .learn-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="hub">
+  <div class="hub-header">
+    <div class="brand-row">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.15"/>
+        <path d="M14 14h7v7h-7z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.35"/>
+        <path d="M6.5 6.5h0M17.5 6.5h0M6.5 17.5h0M17.5 17.5h0" stroke="var(--saffron)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>SimuLok</span>
+    </div>
+    <h1>The <em>Cost Accounting</em> Lab</h1>
+    <div class="subtitle">Budget. Analyze. Control. Defend.</div>
+    <div class="badge-row">
+      <span class="badge badge-saffron">1 Simulator</span>
+      <span class="badge badge-neem">14 Rounds</span>
+      <span class="badge badge-blue">EMBA Level</span>
+    </div>
+    <p class="desc">Step into the shoes of the CFO at an Indian manufacturing firm. Build master budgets, compute standard costs, analyze variances, and defend your numbers to the board. Based on Horngren's Cost Accounting framework.</p>
+  </div>
+
+  <div class="sim-grid">
+
+    <!-- Zenith Appliances -->
+    <div class="sim-card medium">
+      <div class="card-icon">&#128167;</div>
+      <div class="card-diff">Medium &middot; 14 Rounds</div>
+      <h2>Zenith Appliances Ltd.</h2>
+      <div class="card-sub">Operating Costing &amp; Budgetary Control</div>
+      <p class="card-desc">You are the CFO of a water purifier manufacturer in Aurangabad. Prepare the master budget cascade, set standard costs, face exceptional events (trade wars, droughts, audits), compute all 9 variances, and defend your decisions to the board.</p>
+      <div class="card-meta">
+        <span>&#9201; ~45 min</span>
+        <span>&#127922; 14 rounds</span>
+        <span>&#9889; 4 events</span>
+      </div>
+      <div class="card-skills">
+        <span class="skill-tag">Master Budget</span>
+        <span class="skill-tag">Standard Costing</span>
+        <span class="skill-tag">Variance Analysis</span>
+        <span class="skill-tag">Flexible Budgets</span>
+        <span class="skill-tag">Responsibility Accounting</span>
+        <span class="skill-tag">Controllability</span>
+      </div>
+      <a class="btn btn-primary" href="zenith-appliances.html">
+        Launch Zenith Appliances
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-section" style="margin-bottom:1.2rem">
+    <h3>&#128196; Documents</h3>
+    <p>Download the companion documents for this simulator:</p>
+    <div class="learn-grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+      <a href="Zenith-Appliances-Student-Handbook.docx" style="text-decoration:none;color:inherit" class="learn-item" download>
+        <div class="li-icon">&#128218;</div>
+        <div class="li-title">Student Handbook</div>
+        <div class="li-desc">Round-by-round guide, tips, variances reference, and how to play. For MBA students.</div>
+      </a>
+      <a href="Zenith-Appliances-LLD.docx" style="text-decoration:none;color:inherit" class="learn-item" download>
+        <div class="li-icon">&#128736;</div>
+        <div class="li-title">Low-Level Design (LLD)</div>
+        <div class="li-desc">Technical architecture, round schemas, scoring model, and extension guide. For developers.</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-section">
+    <h3>&#127891; What You'll Learn</h3>
+    <p>These simulations teach operating costing and budgetary control through realistic Indian business scenarios. Every round mirrors a real CFO challenge — from budget season to board defense.</p>
+    <div class="learn-grid">
+      <div class="learn-item">
+        <div class="li-icon">&#128202;</div>
+        <div class="li-title">Master Budget Cascade</div>
+        <div class="li-desc">Sales &rarr; Production &rarr; Materials &rarr; Labour &rarr; OH &rarr; COGS &rarr; P&amp;L &rarr; Cash</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#128207;</div>
+        <div class="li-title">Standard Costing</div>
+        <div class="li-desc">Build standard cost cards, set benchmarks, separate price from efficiency</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#128270;</div>
+        <div class="li-title">Variance Analysis</div>
+        <div class="li-desc">All 9 variances — material, labour, and overhead (spending, efficiency, volume)</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#128200;</div>
+        <div class="li-title">Flexible Budgets</div>
+        <div class="li-desc">Separate volume from efficiency effects, avoid the static-budget trap</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#9878;&#65039;</div>
+        <div class="li-title">Responsibility Accounting</div>
+        <div class="li-desc">Controllability principle — attribute variances to the right manager</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#128101;</div>
+        <div class="li-title">Board Defense</div>
+        <div class="li-desc">Present numbers to non-finance stakeholders, handle pushback, avoid blame</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a href="#">SimuLok</a> &middot; India's Business Simulation Platform
+  </div>
+</div>
+</body>
+</html>

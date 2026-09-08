@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SimuLok — Entrepreneurship Lab</title>
+</head>
+<body>
+<style>
+:root {
+  --saffron: #D97B2B;
+  --saffron-light: #F5DFC4;
+  --saffron-glow: rgba(217,123,43,0.12);
+  --neem: #1A8A5C;
+  --neem-light: #D0F0E0;
+  --loss: #C0392B;
+  --loss-light: #FADBD8;
+  --ink: #1C2233;
+  --ink-soft: #3A3F4E;
+  --surface: #F4F1EB;
+  --card: #FFFFFF;
+  --card-border: #E4E0D8;
+  --muted: #7E8490;
+  --muted-light: #B8BCC6;
+  --input-bg: #F9F7F3;
+  --shadow: rgba(28,34,51,0.06);
+  --shadow-md: rgba(28,34,51,0.10);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+  --blue: #2980B9;
+  --blue-light: #D6EAF8;
+  --purple: #8E44AD;
+  --purple-light: #E8DAEF;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --blue:#3498DB;--blue-light:#1A2A3D;--purple:#A569BD;--purple-light:#2D1A3D;
+}}
+:root[data-theme="dark"]{
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --blue:#3498DB;--blue-light:#1A2A3D;--purple:#A569BD;--purple-light:#2D1A3D;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);color:var(--ink);font-family:system-ui,-apple-system,sans-serif;line-height:1.55;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.2;text-wrap:balance}
+
+.hub{max-width:960px;margin:0 auto;padding:2.5rem 1.5rem 3rem}
+.hub-header{text-align:center;margin-bottom:2.5rem;position:relative}
+.hub-header::before{content:'';position:absolute;top:-60%;left:-30%;width:160%;height:220%;background:radial-gradient(ellipse at 50% 40%,var(--saffron-glow) 0%,transparent 55%);pointer-events:none;z-index:0}
+
+.brand-row{display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:1.2rem;position:relative;z-index:1}
+.brand-row svg{flex-shrink:0}
+.brand-row span{font-weight:700;font-size:0.85rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted)}
+
+.hub-header h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-0.02em;margin-bottom:0.4rem;position:relative;z-index:1}
+.hub-header h1 em{color:var(--saffron);font-style:normal}
+.hub-header .subtitle{font-family:Georgia,serif;font-style:italic;color:var(--muted);font-size:clamp(0.9rem,2vw,1.1rem);margin-bottom:1rem;position:relative;z-index:1}
+.hub-header .desc{max-width:600px;margin:0 auto;font-size:0.88rem;color:var(--ink-soft);line-height:1.65;position:relative;z-index:1}
+
+.badge-row{display:flex;justify-content:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.2rem;position:relative;z-index:1}
+.badge{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:0.3em 0.8em;border-radius:4px}
+.badge-saffron{background:var(--saffron-glow);color:var(--saffron)}
+.badge-neem{background:var(--neem-light);color:var(--neem)}
+.badge-blue{background:var(--blue-light);color:var(--blue)}
+
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-bottom:2rem}
+
+.sim-card{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:0 2px 12px var(--shadow);transition:transform 0.15s,box-shadow 0.15s,border-color 0.15s;cursor:default;display:flex;flex-direction:column}
+.sim-card:hover{transform:translateY(-3px);box-shadow:0 6px 24px var(--shadow-md);border-color:var(--saffron)}
+
+.sim-card .card-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:1rem}
+.sim-card.easy .card-icon{background:var(--neem-light)}
+.sim-card.medium .card-icon{background:var(--saffron-glow)}
+.sim-card.hard .card-icon{background:var(--purple-light)}
+
+.sim-card .card-diff{display:inline-block;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:0.2em 0.6em;border-radius:3px;margin-bottom:0.6rem;width:fit-content}
+.sim-card.easy .card-diff{background:var(--neem-light);color:var(--neem)}
+.sim-card.medium .card-diff{background:var(--saffron-glow);color:var(--saffron)}
+.sim-card.hard .card-diff{background:var(--purple-light);color:var(--purple)}
+
+.sim-card h2{font-size:1.15rem;margin-bottom:0.15rem}
+.sim-card .card-sub{font-family:Georgia,serif;font-style:italic;font-size:0.82rem;color:var(--muted);margin-bottom:0.6rem}
+.sim-card .card-desc{font-size:0.82rem;color:var(--ink-soft);line-height:1.6;margin-bottom:1rem;flex:1}
+
+.card-meta{display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1rem;font-size:0.72rem;color:var(--muted)}
+.card-meta span{display:flex;align-items:center;gap:0.3rem}
+
+.card-skills{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1.2rem}
+.skill-tag{font-size:0.62rem;font-weight:600;padding:0.2em 0.55em;border-radius:3px;background:var(--input-bg);border:1px solid var(--card-border);color:var(--ink-soft)}
+
+.btn{display:inline-flex;align-items:center;gap:0.5em;font-family:system-ui,sans-serif;font-weight:600;font-size:0.88rem;padding:0.65em 1.4em;border:none;border-radius:var(--radius);cursor:pointer;transition:transform 0.12s,box-shadow 0.15s;text-decoration:none;width:100%;justify-content:center}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:var(--saffron);color:#fff;box-shadow:0 2px 8px rgba(217,123,43,0.25)}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(217,123,43,0.35)}
+.btn-neem{background:var(--neem);color:#fff;box-shadow:0 2px 8px rgba(26,138,92,0.25)}
+.btn-neem:hover{box-shadow:0 4px 16px rgba(26,138,92,0.35)}
+.btn-purple{background:var(--purple);color:#fff;box-shadow:0 2px 8px rgba(142,68,173,0.25)}
+.btn-purple:hover{box-shadow:0 4px 16px rgba(142,68,173,0.35)}
+
+.footer-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;box-shadow:0 2px 8px var(--shadow)}
+.footer-section h3{font-size:0.95rem;margin-bottom:0.6rem;color:var(--saffron);display:flex;align-items:center;gap:0.5rem}
+.footer-section p{font-size:0.82rem;color:var(--ink-soft);line-height:1.65;margin-bottom:0.4rem}
+.footer-section p:last-child{margin-bottom:0}
+
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.6rem;margin-top:0.8rem}
+.learn-item{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:0.6rem 0.8rem}
+.learn-item .li-icon{font-size:1rem;margin-bottom:0.2rem}
+.learn-item .li-title{font-weight:700;font-size:0.78rem;margin-bottom:0.15rem}
+.learn-item .li-desc{font-size:0.7rem;color:var(--muted);line-height:1.4}
+
+.powered-by{text-align:center;font-size:0.72rem;color:var(--muted);margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--card-border)}
+.powered-by a{color:var(--saffron);text-decoration:none;font-weight:600}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.sim-card{animation:fadeUp 0.4s ease both}
+.sim-card:nth-child(2){animation-delay:0.1s}
+.sim-card:nth-child(3){animation-delay:0.2s}
+
+@media(max-width:640px){
+  .hub{padding:1.5rem 1rem 2rem}
+  .sim-grid{grid-template-columns:1fr}
+  .learn-grid{grid-template-columns:1fr}
+}
+</style>
+
+<div class="hub">
+  <div class="hub-header">
+    <div class="brand-row">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.15"/>
+        <path d="M14 14h7v7h-7z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.35"/>
+        <path d="M6.5 6.5h0M17.5 6.5h0M6.5 17.5h0M17.5 17.5h0" stroke="var(--saffron)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>SimuLok</span>
+    </div>
+    <h1>The <em>Entrepreneurship</em> Lab</h1>
+    <div class="subtitle">Build. Compete. Scale. Raise Funding.</div>
+    <div class="badge-row">
+      <span class="badge badge-saffron">3 Simulators</span>
+      <span class="badge badge-neem">41 Rounds</span>
+      <span class="badge badge-blue">College Level</span>
+    </div>
+    <p class="desc">Run your own business from scratch — a lemonade stall, a fast-food chain, or a fashion empire. Make real decisions on pricing, marketing, hiring, and scaling. Face shocks, outsmart competitors, and pitch to investors. No MBA required.</p>
+  </div>
+
+  <div class="sim-grid">
+
+    <!-- NimbooWala -->
+    <div class="sim-card easy">
+      <div class="card-icon">&#127819;</div>
+      <div class="card-diff">Easy &middot; Start Here</div>
+      <h2>NimbooWala</h2>
+      <div class="card-sub">Campus Lemonade Empire</div>
+      <p class="card-desc">You have &#8377;5,000 and a dream. Start a lemonade stall at your college fest, learn pricing and demand, survive weather shocks, and scale from a cart to a campus brand.</p>
+      <div class="card-meta">
+        <span>&#9201; ~15 min</span>
+        <span>&#127922; 8 rounds</span>
+        <span>&#9889; 2 shocks</span>
+      </div>
+      <div class="card-skills">
+        <span class="skill-tag">Pricing</span>
+        <span class="skill-tag">Demand Forecasting</span>
+        <span class="skill-tag">Cost Control</span>
+        <span class="skill-tag">Inventory</span>
+        <span class="skill-tag">Scaling</span>
+      </div>
+      <a class="btn btn-neem" href="nimboo-wala.html">
+        Launch NimbooWala
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- DesiEats -->
+    <div class="sim-card medium">
+      <div class="card-icon">&#127828;</div>
+      <div class="card-diff">Medium</div>
+      <h2>DesiEats</h2>
+      <div class="card-sub">QSR Chain Builder</div>
+      <p class="card-desc">Open a QSR in Bengaluru with &#8377;15 lakh. Choose funding, set levers for pricing &amp; marketing, survive shocks, scale to multi-city, and pitch Series A &amp; B. Real unit economics, GST, EBITDA valuations, and bankruptcy risk.</p>
+      <div class="card-meta">
+        <span>&#9201; ~40 min</span>
+        <span>&#127922; 18 rounds</span>
+        <span>&#9889; 8 shocks</span>
+      </div>
+      <div class="card-skills">
+        <span class="skill-tag">Operations</span>
+        <span class="skill-tag">Marketing</span>
+        <span class="skill-tag">Competitor Analysis</span>
+        <span class="skill-tag">Scaling</span>
+        <span class="skill-tag">Fundraising</span>
+        <span class="skill-tag">Crisis Management</span>
+      </div>
+      <a class="btn btn-primary" href="desi-eats.html">
+        Launch DesiEats
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- ThreadCraft -->
+    <div class="sim-card hard">
+      <div class="card-icon">&#128087;</div>
+      <div class="card-diff">Hard</div>
+      <h2>ThreadCraft</h2>
+      <div class="card-sub">Fast Fashion Startup</div>
+      <p class="card-desc">Launch a Zara-style fashion brand. Bet on trends, manage a supply chain from design to shelf, balance sustainability with speed, and raise Series A &amp; B funding to become a &#8377;100 Cr brand.</p>
+      <div class="card-meta">
+        <span>&#9201; ~45 min</span>
+        <span>&#127922; 15 rounds</span>
+        <span>&#9889; 5 shocks</span>
+      </div>
+      <div class="card-skills">
+        <span class="skill-tag">Trend Forecasting</span>
+        <span class="skill-tag">Supply Chain</span>
+        <span class="skill-tag">Sustainability</span>
+        <span class="skill-tag">Omnichannel</span>
+        <span class="skill-tag">Series A & B</span>
+        <span class="skill-tag">Brand Building</span>
+      </div>
+      <a class="btn btn-purple" href="thread-craft.html">
+        Launch ThreadCraft
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-section">
+    <h3>&#127891; What You'll Learn</h3>
+    <p>These simulations are designed to build an entrepreneurial mindset through practice, not theory. Every decision has consequences — and every round teaches a real business lesson.</p>
+    <div class="learn-grid">
+      <div class="learn-item">
+        <div class="li-icon">&#128176;</div>
+        <div class="li-title">Unit Economics</div>
+        <div class="li-desc">Contribution margins, break-even analysis, cash burn rate</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#128200;</div>
+        <div class="li-title">Growth Strategy</div>
+        <div class="li-desc">When to scale, franchise vs own, market expansion</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#9878;&#65039;</div>
+        <div class="li-title">Competitor Response</div>
+        <div class="li-desc">Porter's forces in action — differentiate, compete, or pivot</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#128184;</div>
+        <div class="li-title">Fundraising</div>
+        <div class="li-desc">Valuation, pitch metrics, investor psychology, dilution</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#9888;&#65039;</div>
+        <div class="li-title">Crisis Management</div>
+        <div class="li-desc">Health inspections, PR disasters, supply shocks, recessions</div>
+      </div>
+      <div class="learn-item">
+        <div class="li-icon">&#127793;</div>
+        <div class="li-title">Sustainability</div>
+        <div class="li-desc">ESG trade-offs, green supply chains, conscious consumerism</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a href="#">SimuLok</a> &middot; India's Business Simulation Platform
+  </div>
+</div>
+</body>
+</html>

@@ -47,7 +47,7 @@ const HotspotLayer = ({ hotspots = [], exits = [], onExamine, onMoveTo }) => {
           const [x, y, w, h] = exit.bbox || [0, 0, 0, 0];
           return (
             <button
-              key={exit.id}
+              key={exit.id || exit.to}
               type="button"
               onClick={() => onMoveTo?.(exit.to)}
               aria-label={exit.label || `Go to ${exit.to}`}
@@ -75,7 +75,7 @@ const HotspotLayer = ({ hotspots = [], exits = [], onExamine, onMoveTo }) => {
           </li>
         ))}
         {exits.map((exit) => (
-          <li key={`sr-e-${exit.id}`}>
+          <li key={`sr-e-${exit.id || exit.to}`}>
             <button type="button" onClick={() => onMoveTo?.(exit.to)}>
               {exit.label || `Go to ${exit.to}`}
             </button>

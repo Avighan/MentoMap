@@ -1,0 +1,1037 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bullwhip Effect — TinyCare Supply Chain</title>
+<style>
+:root {
+  --saffron: #D97B2B;
+  --saffron-light: #F5DFC4;
+  --saffron-glow: rgba(217,123,43,0.12);
+  --neem: #1A8A5C;
+  --neem-light: #D0F0E0;
+  --loss: #C0392B;
+  --loss-light: #FADBD8;
+  --ink: #1C2233;
+  --ink-soft: #3A3F4E;
+  --surface: #F4F1EB;
+  --card: #FFFFFF;
+  --card-border: #E4E0D8;
+  --muted: #7E8490;
+  --muted-light: #B8BCC6;
+  --input-bg: #F9F7F3;
+  --shadow: rgba(28,34,51,0.06);
+  --shadow-md: rgba(28,34,51,0.10);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+  --warning: #E67E22;
+  --warning-glow: rgba(230,126,34,0.12);
+  --blue: #2980B9;
+  --blue-light: #D6EAF8;
+  --purple: #8E44AD;
+  --purple-light: #E8DAEF;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --warning:#F39C12;--warning-glow:rgba(243,156,18,0.10);
+  --blue:#3498DB;--blue-light:#1A2A3D;--purple:#A569BD;--purple-light:#2D1A3D;
+}}
+:root[data-theme="dark"]{
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+  --warning:#F39C12;--warning-glow:rgba(243,156,18,0.10);
+  --blue:#3498DB;--blue-light:#1A2A3D;--purple:#A569BD;--purple-light:#2D1A3D;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);color:var(--ink);font-family:system-ui,-apple-system,sans-serif;line-height:1.55;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.2;text-wrap:balance}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-0.02em}
+h2{font-size:clamp(1.2rem,2.5vw,1.5rem);letter-spacing:-0.01em}
+h3{font-size:1.05rem}
+.mono{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-variant-numeric:tabular-nums}
+
+#app{min-height:100vh;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;min-height:100vh}
+.screen.active{display:flex}
+
+.progress-strip{position:fixed;top:0;left:0;right:0;height:4px;background:var(--card-border);z-index:100}
+.progress-strip-fill{height:100%;background:var(--saffron);transition:width 0.5s ease;border-radius:0 2px 2px 0}
+
+.game-header{position:fixed;top:4px;left:0;right:0;z-index:90;background:var(--card);border-bottom:1px solid var(--card-border);padding:0.5rem 1.2rem;display:flex;align-items:center;gap:1rem}
+.game-header .brand{display:flex;align-items:center;gap:0.5rem;font-weight:700;font-size:0.9rem;white-space:nowrap}
+.game-header .brand svg{flex-shrink:0}
+.game-header .step-badge{display:inline-block;background:var(--saffron-glow);color:var(--saffron);font-size:0.7rem;font-weight:700;padding:0.25em 0.7em;border-radius:3px;letter-spacing:0.04em}
+.game-header .qtr-label{font-family:Georgia,serif;font-weight:700;font-size:0.85rem;white-space:nowrap;margin-left:auto}
+.game-header .qtr-label span{color:var(--saffron)}
+
+.btn{display:inline-flex;align-items:center;gap:0.5em;font-family:system-ui,sans-serif;font-weight:600;font-size:0.9rem;padding:0.7em 1.6em;border:none;border-radius:var(--radius);cursor:pointer;transition:transform 0.12s,box-shadow 0.15s}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:var(--saffron);color:#fff;box-shadow:0 2px 8px rgba(217,123,43,0.25)}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(217,123,43,0.35)}
+.btn-secondary{background:var(--card);color:var(--ink);border:1.5px solid var(--card-border)}
+.btn-sm{font-size:0.78rem;padding:0.4em 0.9em}
+.btn-neem{background:var(--neem);color:#fff;box-shadow:0 2px 8px rgba(26,138,92,0.25)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Title */
+.title-screen.active{display:block;padding:3rem 2rem;position:relative;overflow:visible;min-height:auto}
+.title-screen::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 60% 40%,var(--saffron-glow) 0%,transparent 60%);pointer-events:none}
+.title-brand{position:relative;z-index:1;text-align:center;max-width:860px;margin:0 auto 1.5rem}
+.title-brand .eyebrow{display:inline-block;background:var(--saffron);color:#fff;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:0.3em 0.9em;border-radius:3px;margin-bottom:1.2rem}
+.title-brand h1{font-size:clamp(2.2rem,5vw,3.2rem);margin-bottom:0.3rem}
+.title-brand h1 em{color:var(--saffron);font-style:normal}
+.title-brand .subtitle{font-family:Georgia,serif;font-style:italic;font-size:clamp(0.95rem,2vw,1.2rem);color:var(--muted);margin-bottom:1.5rem}
+.title-brand .desc{max-width:640px;margin:0 auto 2rem;color:var(--ink-soft);font-size:0.9rem;line-height:1.65}
+.manual-wrap{position:relative;z-index:1;max-width:860px;width:100%;margin:0 auto;text-align:left}
+.manual-section{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px var(--shadow)}
+.manual-section h3{font-size:1rem;margin-bottom:0.5rem;color:var(--saffron);display:flex;align-items:center;gap:0.5rem}
+.manual-section p{font-size:0.85rem;color:var(--ink-soft);line-height:1.65;margin-bottom:0.4rem}
+.manual-section p:last-child{margin-bottom:0}
+.manual-cta{text-align:center;margin:1.5rem 0 1rem;position:relative;z-index:1}
+.training-meta{text-align:center;font-size:0.78rem;color:var(--muted);margin-top:0.8rem}
+
+.round-timeline{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.8rem}
+.rt-item{background:var(--input-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:0.4rem 0.65rem;font-size:0.72rem;flex:1;min-width:100px}
+.rt-item.challenge{background:var(--loss-light);border-color:var(--loss)}
+.rt-item .rt-num{font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--saffron);font-size:0.65rem}
+.rt-item.challenge .rt-num{color:var(--loss)}
+.rt-item .rt-name{font-weight:600;font-size:0.78rem;margin-top:0.1rem}
+
+.echelon-chain{display:flex;align-items:center;gap:0.3rem;margin-top:0.8rem;flex-wrap:wrap}
+.echelon-node{background:var(--saffron-glow);border:1.5px solid var(--saffron);border-radius:var(--radius);padding:0.5rem 0.8rem;text-align:center;flex:1;min-width:80px}
+.echelon-node .en-icon{font-size:1.2rem}
+.echelon-node .en-name{font-size:0.72rem;font-weight:700;margin-top:0.15rem}
+.echelon-arrow{color:var(--muted);font-size:0.9rem;flex-shrink:0}
+
+.quote-box{background:var(--input-bg);border-left:3px solid var(--saffron);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:0.8rem 1rem;margin:0.8rem 0;font-style:italic;font-size:0.85rem;color:var(--ink-soft);line-height:1.6}
+.quote-box .quote-attr{font-style:normal;font-weight:700;font-size:0.78rem;color:var(--muted);margin-top:0.4rem}
+
+/* Sim screen */
+.sim-screen{padding:calc(44px + 1rem) 1.5rem 1.5rem}
+.sim-wrap{max-width:900px;width:100%;margin:0 auto}
+.sim-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.8rem}
+.sim-header .sim-badge{font-family:Georgia,serif;font-weight:700;font-size:1rem}
+.sim-header .sim-count{font-size:0.78rem;color:var(--muted);margin-left:auto}
+
+.round-rail{display:flex;gap:3px;margin-bottom:1rem}
+.round-rail .rr-dot{flex:1;height:5px;border-radius:3px;background:var(--muted-light);transition:background 0.3s}
+.round-rail .rr-dot.done{background:var(--neem)}
+.round-rail .rr-dot.current{background:var(--saffron)}
+.round-rail .rr-dot.challenge{background:var(--loss)}
+
+.metrics-strip{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.metric-pill{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);padding:0.5rem 0.8rem;flex:1;min-width:110px;text-align:center}
+.metric-pill .mp-label{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted)}
+.metric-pill .mp-val{font-family:ui-monospace,monospace;font-weight:800;font-size:1rem;font-variant-numeric:tabular-nums;margin-top:0.15rem}
+.metric-pill .mp-val.good{color:var(--neem)}
+.metric-pill .mp-val.bad{color:var(--loss)}
+.metric-pill .mp-val.neutral{color:var(--saffron)}
+.metric-pill .mp-delta{font-size:0.65rem;font-weight:600;margin-top:0.1rem}
+.metric-pill .mp-delta.up{color:var(--neem)}
+.metric-pill .mp-delta.down{color:var(--loss)}
+
+.event-banner{background:var(--saffron-glow);border:1.5px solid var(--saffron);border-radius:var(--radius);padding:0.7rem 1rem;margin-bottom:1rem;display:flex;gap:0.6rem;align-items:flex-start;animation:fadeUp 0.35s ease}
+.event-banner.shock{background:var(--loss-light);border-color:var(--loss)}
+.event-banner .ev-icon{font-size:1.3rem;flex-shrink:0}
+.event-banner .ev-text{font-size:0.82rem;line-height:1.5}
+.event-banner .ev-text strong{display:block;margin-bottom:0.15rem}
+
+.scenario-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px var(--shadow);animation:fadeUp 0.35s ease}
+.scenario-card .sc-tag{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:0.2em 0.6em;border-radius:3px;display:inline-block;margin-bottom:0.6rem}
+.scenario-card .sc-tag.round{background:var(--saffron-glow);color:var(--saffron)}
+.scenario-card .sc-tag.challenge{background:var(--loss-light);color:var(--loss)}
+.scenario-card .sc-tag.concept{background:var(--blue-light);color:var(--blue)}
+.scenario-card h2{margin-bottom:0.5rem}
+.scenario-card .sc-body{font-size:0.85rem;color:var(--ink-soft);line-height:1.65}
+
+.result-table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.78rem}
+.result-table th{text-align:left;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:0.4rem 0.5rem;border-bottom:2px solid var(--card-border);font-weight:600}
+.result-table td{padding:0.4rem 0.5rem;border-bottom:1px solid var(--card-border);font-variant-numeric:tabular-nums}
+.result-table td:not(:first-child){font-family:ui-monospace,monospace;text-align:right}
+.result-table th:not(:first-child){text-align:right}
+.result-table tr.highlight td{font-weight:700;background:var(--saffron-glow)}
+
+.amp-chart{display:flex;align-items:flex-end;gap:0.5rem;height:120px;padding:0.5rem 0;margin:0.8rem 0}
+.amp-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem}
+.amp-bar{width:100%;border-radius:4px 4px 0 0;transition:height 0.5s ease;min-height:4px;position:relative}
+.amp-bar .ab-val{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-family:ui-monospace,monospace;font-size:0.65rem;font-weight:700;white-space:nowrap}
+.amp-bar-label{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);text-align:center}
+
+.options-grid{display:grid;gap:0.6rem;margin:1rem 0}
+.option-card{display:flex;align-items:flex-start;gap:0.8rem;padding:0.9rem 1rem;background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);cursor:pointer;text-align:left;width:100%;font-family:inherit;font-size:inherit;color:inherit;transition:border-color 0.15s,background 0.15s,transform 0.1s}
+.option-card:hover:not(.locked){border-color:var(--saffron);transform:translateY(-1px);box-shadow:0 2px 8px var(--shadow)}
+.option-card.selected{border-color:var(--saffron);background:var(--saffron-glow)}
+.option-card.locked{cursor:default;opacity:0.45;pointer-events:none}
+.option-card.locked.selected{opacity:1}
+.option-letter{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.82rem;background:var(--input-bg);border:1.5px solid var(--card-border);flex-shrink:0;font-family:Georgia,serif}
+.option-card.selected .option-letter{background:var(--saffron);color:#fff;border-color:var(--saffron)}
+.option-meta{flex:1;min-width:0}
+.option-meta .om-title{font-weight:700;font-size:0.85rem;margin-bottom:0.2rem}
+.option-meta .om-desc{font-size:0.78rem;color:var(--ink-soft);line-height:1.45}
+.option-meta .om-policy{font-size:0.7rem;color:var(--muted);margin-top:0.3rem;font-style:italic}
+
+.feedback-box{padding:0.9rem 1.1rem;border-radius:var(--radius);margin-top:0.8rem;font-size:0.82rem;line-height:1.6;animation:fadeUp 0.3s ease}
+.feedback-box.correct-fb{background:var(--neem-light);border:1px solid var(--neem)}
+.feedback-box.wrong-fb{background:var(--loss-light);border:1px solid var(--loss)}
+.feedback-box strong{display:block;margin-bottom:0.3rem}
+.feedback-box.correct-fb strong{color:var(--neem)}
+.feedback-box.wrong-fb strong{color:var(--loss)}
+.feedback-box p{color:var(--ink-soft);margin-bottom:0.4rem}
+.feedback-box p:last-child{margin-bottom:0}
+
+.outcome-box{background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);padding:0.8rem 1rem;margin-top:0.6rem}
+.outcome-box h4{font-size:0.82rem;margin-bottom:0.4rem;color:var(--ink)}
+.outcome-box .ob-stats{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:0.4rem}
+.outcome-box .ob-stat{font-size:0.75rem}
+.outcome-box .ob-stat .obs-label{color:var(--muted);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.04em}
+.outcome-box .ob-stat .obs-val{font-family:ui-monospace,monospace;font-weight:700;font-size:0.9rem}
+
+.krajewski-box{background:var(--blue-light);border:1px solid var(--blue);border-radius:var(--radius);padding:0.7rem 0.9rem;margin-top:0.6rem;font-size:0.78rem;line-height:1.55}
+.krajewski-box .kb-tag{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue);margin-bottom:0.3rem}
+.krajewski-box p{color:var(--ink-soft)}
+
+.score-bar{display:flex;align-items:center;gap:0.8rem;margin-top:0.8rem;font-size:0.78rem;color:var(--muted)}
+.score-track{flex:1;height:5px;background:var(--card-border);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;background:var(--neem);border-radius:3px;transition:width 0.4s ease}
+
+.nav-row{display:flex;justify-content:flex-end;margin-top:0.8rem;gap:0.6rem}
+
+/* Results */
+.results-screen{padding:calc(44px + 1.5rem) 1.5rem 2rem}
+.results-wrap{max-width:700px;width:100%;margin:0 auto}
+.results-icon{width:80px;height:80px;border-radius:50%;margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;font-size:36px}
+.results-icon.champion{background:var(--saffron-glow)}
+.results-icon.pass{background:var(--neem-light)}
+.results-icon.fail{background:var(--loss-light)}
+.results-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.6rem;margin:1.5rem 0}
+.r-stat{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:0.8rem;text-align:center}
+.r-stat .r-num{font-family:ui-monospace,monospace;font-size:1.3rem;font-weight:800;color:var(--saffron);font-variant-numeric:tabular-nums}
+.r-stat .r-label{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:0.2rem}
+
+.profile-card{background:var(--card);border:2px solid var(--saffron);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-top:1.2rem;text-align:center}
+.profile-card .pc-icon{font-size:2.5rem;margin-bottom:0.5rem}
+.profile-card .pc-name{font-family:Georgia,serif;font-size:1.2rem;font-weight:700;margin-bottom:0.3rem}
+.profile-card .pc-desc{font-size:0.82rem;color:var(--ink-soft);line-height:1.55;max-width:480px;margin:0 auto}
+
+.takeaways{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;margin-top:1.2rem;text-align:left}
+.takeaways h3{font-size:0.95rem;margin-bottom:0.7rem;color:var(--saffron)}
+.takeaways ol{padding-left:1.2rem;font-size:0.82rem;color:var(--ink-soft);line-height:1.7}
+.takeaways ol li{margin-bottom:0.4rem}
+
+.round-review{margin-top:1.2rem}
+.round-review h3{font-size:0.95rem;margin-bottom:0.7rem;color:var(--saffron)}
+.rr-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);margin-bottom:0.6rem;overflow:hidden}
+.rr-card-header{display:flex;align-items:center;gap:0.6rem;padding:0.65rem 0.9rem;cursor:pointer;user-select:none;transition:background 0.15s}
+.rr-card-header:hover{background:var(--input-bg)}
+.rr-card-header .rr-icon{font-size:0.9rem;flex-shrink:0}
+.rr-card-header .rr-name{flex:1;font-size:0.82rem;font-weight:600}
+.rr-card-header .rr-result{font-weight:700;font-size:0.75rem;flex-shrink:0}
+.rr-card-header .rr-result.correct{color:var(--neem)}
+.rr-card-header .rr-result.wrong{color:var(--loss)}
+.rr-card-header .rr-chevron{font-size:0.7rem;color:var(--muted);transition:transform 0.2s;flex-shrink:0}
+.rr-card.open .rr-chevron{transform:rotate(180deg)}
+.rr-card-body{display:none;padding:0 0.9rem 0.9rem;border-top:1px solid var(--card-border)}
+.rr-card.open .rr-card-body{display:block}
+.rr-choice-row{display:flex;gap:0.5rem;align-items:flex-start;margin-top:0.6rem;font-size:0.78rem;line-height:1.5}
+.rr-choice-tag{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:0.2em 0.5em;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:0.15rem}
+.rr-choice-tag.yours{background:var(--saffron-glow);color:var(--saffron)}
+.rr-choice-tag.best{background:var(--neem-light);color:var(--neem)}
+.rr-choice-content{flex:1;min-width:0}
+.rr-choice-content strong{display:block;margin-bottom:0.15rem;font-size:0.82rem}
+.rr-choice-content p{color:var(--ink-soft);margin:0}
+.rr-why{margin-top:0.6rem;padding:0.6rem 0.8rem;background:var(--input-bg);border-radius:var(--radius-sm);font-size:0.78rem;line-height:1.55;color:var(--ink-soft)}
+.rr-why strong{color:var(--blue);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:0.2rem}
+.rr-concept{margin-top:0.5rem;padding:0.5rem 0.7rem;background:var(--blue-light);border-radius:var(--radius-sm);font-size:0.72rem;line-height:1.5;color:var(--ink-soft)}
+.rr-concept strong{color:var(--blue);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:0.15rem}
+
+.rr-all-options{margin-top:0.6rem}
+.rr-opt{padding:0.55rem 0.7rem;border-radius:var(--radius-sm);margin-bottom:0.4rem;font-size:0.78rem;line-height:1.55;border:1px solid var(--card-border)}
+.rr-opt.is-best{background:var(--neem-light);border-color:var(--neem)}
+.rr-opt.is-yours:not(.is-best){background:var(--saffron-glow);border-color:var(--saffron)}
+.rr-opt-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem}
+.rr-opt-letter{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.7rem;background:var(--input-bg);border:1px solid var(--card-border);flex-shrink:0;font-family:Georgia,serif}
+.rr-opt.is-best .rr-opt-letter{background:var(--neem);color:#fff;border-color:var(--neem)}
+.rr-opt.is-yours:not(.is-best) .rr-opt-letter{background:var(--saffron);color:#fff;border-color:var(--saffron)}
+.rr-opt-title{font-weight:700;font-size:0.82rem;flex:1}
+.rr-opt-tags{display:flex;gap:0.3rem;flex-shrink:0}
+.rr-opt-tag{font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:0.15em 0.45em;border-radius:3px}
+.rr-opt-tag.best{background:var(--neem);color:#fff}
+.rr-opt-tag.yours{background:var(--saffron);color:#fff}
+.rr-opt-tag.score-tag{background:var(--input-bg);color:var(--muted)}
+.rr-opt p{color:var(--ink-soft);margin:0}
+
+.fail-banner{background:var(--loss-light);border:2px solid var(--loss);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;margin-top:1.2rem}
+.fail-banner h2{color:var(--loss);margin-bottom:0.5rem}
+.fail-banner p{font-size:0.88rem;color:var(--ink-soft);line-height:1.6;margin-bottom:1rem}
+.pass-banner{background:var(--neem-light);border:2px solid var(--neem);border-radius:var(--radius-lg);padding:1.2rem;text-align:center;margin-top:1.2rem}
+.pass-banner h2{color:var(--neem);margin-bottom:0.3rem}
+.pass-banner p{font-size:0.85rem;color:var(--ink-soft)}
+
+@media(max-width:640px){
+  .title-screen{padding:2rem 1rem}
+  .sim-screen,.results-screen{padding:calc(44px + 0.8rem) 0.8rem 1rem}
+  .metrics-strip{gap:0.3rem}
+  .metric-pill{min-width:80px;padding:0.4rem 0.5rem}
+  .metric-pill .mp-val{font-size:0.85rem}
+  .results-stats{grid-template-columns:repeat(2,1fr)}
+  .round-timeline{flex-direction:column}
+  .echelon-chain{justify-content:center}
+  .echelon-arrow{transform:rotate(90deg)}
+  .game-header .qtr-label{display:none}
+}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--muted-light);border-radius:3px}
+</style>
+
+<div id="app">
+  <div class="progress-strip"><div class="progress-strip-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="game-header">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.15"/>
+        <path d="M14 14h7v7h-7z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.35"/>
+        <path d="M6.5 6.5h0M17.5 6.5h0M6.5 17.5h0M17.5 17.5h0" stroke="var(--saffron)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Bullwhip Effect
+    </div>
+    <span class="step-badge" id="stepBadge">Welcome</span>
+    <div class="qtr-label" id="headerLabel"></div>
+  </div>
+
+  <!-- WELCOME -->
+  <div class="screen title-screen active" id="welcomeScreen">
+    <div class="title-brand">
+      <div class="eyebrow">Operations Simulator</div>
+      <h1>The <em>Bullwhip</em> Effect</h1>
+      <div class="subtitle">TinyCare Baby Products &mdash; The Amplification Trap</div>
+      <div class="desc">Baby diaper consumption is rock-steady. Yet TinyCare's supply chain lurches between idle lines and mandatory overtime. Your job: diagnose why stable demand produces chaos, and fix it &mdash; one decision at a time.</div>
+    </div>
+
+    <div class="manual-wrap">
+      <div class="manual-section">
+        <h3>&#128218; The Scenario</h3>
+        <div class="quote-box">
+          "Meera, I have the plant manager telling me he needs a third shift, the fluff pulp supplier threatening to derate us, and a warehouse holding fourteen weeks of finished goods. Household consumption grew 3% last year &mdash; steadily. Somebody explain how stable consumption produces this chaos."
+          <div class="quote-attr">&mdash; Rajiv Malhotra, MD, TinyCare Baby Products</div>
+        </div>
+        <p>You play as <strong>Meera Joshi</strong>, newly appointed supply chain analyst at TinyCare. Over 10 decision points, you'll uncover why the bullwhip effect turns stable demand into supply chain chaos &mdash; and what to do about it.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#127968; The Four-Echelon Supply Chain</h3>
+        <p>TinyCare's supply chain has four links. Only the Retailer sees actual consumer demand. Every other tier forecasts from a signal that has already been distorted.</p>
+        <div class="echelon-chain">
+          <div class="echelon-node"><div class="en-icon">&#128722;</div><div class="en-name">Retailer</div></div>
+          <div class="echelon-arrow">&#8594;</div>
+          <div class="echelon-node"><div class="en-icon">&#128666;</div><div class="en-name">Distributor</div></div>
+          <div class="echelon-arrow">&#8594;</div>
+          <div class="echelon-node"><div class="en-icon">&#127981;</div><div class="en-name">Manufacturer</div></div>
+          <div class="echelon-arrow">&#8594;</div>
+          <div class="echelon-node"><div class="en-icon">&#127795;</div><div class="en-name">Supplier</div></div>
+        </div>
+        <p style="margin-top:0.6rem"><strong>Demand:</strong> Normal(60, 10) &mdash; mean 60 cases/period, SD of 10. The ordering rule: Order = 2 &times; Incoming Order &minus; Ending Inventory. Each tier doubles what it received and subtracts stock on hand.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#127919; Learning Objectives</h3>
+        <p><strong>1.</strong> Measure variance amplification using the Bullwhip Ratio = SD(Orders) / SD(Demand)</p>
+        <p><strong>2.</strong> Identify the five root causes: demand signal processing, order batching, price fluctuation, shortage gaming, and lead time</p>
+        <p><strong>3.</strong> Compare forecasting methods and their impact on upstream variability</p>
+        <p><strong>4.</strong> Compute the cost of the bullwhip in inventory, stockouts and capacity</p>
+        <p><strong>5.</strong> Design a coordination mechanism (POS sharing, VMI, CPFR) to dampen amplification</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#128197; Simulation Structure</h3>
+        <p>7 rounds, each building on the last, plus 3 unexpected challenges that test your instincts:</p>
+        <div class="round-timeline">
+          <div class="rt-item"><div class="rt-num">R1</div><div class="rt-name">Two-Echelon Baseline</div></div>
+          <div class="rt-item"><div class="rt-num">R2</div><div class="rt-name">Four Echelons</div></div>
+          <div class="rt-item challenge"><div class="rt-num">&#9888; C1</div><div class="rt-name">Competitor Recall</div></div>
+          <div class="rt-item"><div class="rt-num">R3</div><div class="rt-name">Moving Average</div></div>
+          <div class="rt-item"><div class="rt-num">R4</div><div class="rt-name">Exponential Smoothing</div></div>
+          <div class="rt-item challenge"><div class="rt-num">&#9888; C2</div><div class="rt-name">Transporters' Strike</div></div>
+          <div class="rt-item"><div class="rt-num">R5</div><div class="rt-name">Order Batching</div></div>
+          <div class="rt-item challenge"><div class="rt-num">&#9888; C3</div><div class="rt-name">Diwali Trade Scheme</div></div>
+          <div class="rt-item"><div class="rt-num">R6</div><div class="rt-name">Shortage Gaming</div></div>
+          <div class="rt-item"><div class="rt-num">R7</div><div class="rt-name">Coordination Championship</div></div>
+        </div>
+      </div>
+
+      <div class="manual-section">
+        <h3>&#127942; Scoring</h3>
+        <p><strong>30%</strong> Bullwhip Ratio Reduction &mdash; cumulative amplification vs the 41.3&times; naive baseline</p>
+        <p><strong>25%</strong> Total Supply Chain Cost &mdash; holding + stockout + capacity across all tiers</p>
+        <p><strong>20%</strong> Root Cause Diagnosis &mdash; correctly identifying which of Krajewski's five causes is active</p>
+        <p><strong>15%</strong> Forecasting Method Selection &mdash; appropriate method and parameter choice</p>
+        <p><strong>10%</strong> Coordination Mechanism Design &mdash; quality of the Round 7 recommendation</p>
+      </div>
+
+      <div class="manual-cta">
+        <button class="btn btn-primary" onclick="startSim()">
+          Begin Simulation
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div class="training-meta">~45 minutes &middot; 7 rounds &middot; 3 challenges &middot; 4 echelons &middot; 5 root causes</div>
+        <div class="training-meta" style="margin-top:0.3rem"><em>Reference: Krajewski, Malhotra &amp; Ritzman &mdash; Operations Management, Chapter 12</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATION -->
+  <div class="screen" id="simScreen">
+    <div class="sim-screen">
+      <div class="sim-wrap">
+        <div class="sim-header">
+          <div class="sim-badge" id="simBadge">TinyCare Supply Chain</div>
+          <div class="sim-count" id="simCount"></div>
+        </div>
+        <div class="round-rail" id="roundRail"></div>
+        <div class="metrics-strip" id="metricsStrip"></div>
+        <div id="simContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="resultsScreen">
+    <div class="results-screen">
+      <div class="results-wrap" id="resultsContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ROUNDS = [
+  {
+    id:'r1', type:'round', num:'Round 1', title:'The Two-Echelon Baseline',
+    focus:'Reproduce the class illustration and see amplification for the first time',
+    scenario:`<strong>Week 1 &mdash; Meera Builds Her First Model</strong><br><br>Meera starts small. She models just two links: the Retailer who sees actual consumer demand, and the Manufacturer who sees only the Retailer's orders. She uses the ordering rule the planning team has always used:<br><br><em>"Order twice what you just sold, minus what you have on the shelf. It's been in the system since 2011."</em>`,
+    resultIntro:`Consumer demand has SD of 10 cases. By the time the signal reaches the Manufacturer, SD is 78.5 cases. The Manufacturer is planning against a signal <strong>nearly 8&times; more volatile</strong> than actual demand.`,
+    resultData:{custSD:10, retSD:33.1, mfgSD:78.5, cumRatio:'7.85x'},
+    concept:{name:'Demand Signal Processing', text:'The first of Krajewski\'s five root causes. Each echelon treats the order it receives as demand and forecasts from it. But that order already contains the downstream tier\'s inventory correction. The correction is re-amplified at every hop. No individual actor is behaving foolishly.'},
+    question:'How do you interpret this result?',
+    best:2,
+    options:[
+      {letter:'A', title:'Impose Order Caps on the Retailer', desc:'Cap retailer orders at 1.5x trailing demand. The Retailer is clearly the source of the swing.',
+       policy:'Hard cap on retailer orders at 1.5x trailing average',
+       outcome:{retSD:18.4, mfgSD:44.1, fillRate:'91.2%', ratio:'4.41x'},
+       feedback:'Capping the symptom without fixing the information flow shifts the problem. Krajewski warns that unilateral constraints typically trigger compensating behaviour elsewhere. Retailers begin holding shadow inventory.',
+       score:4},
+      {letter:'B', title:'Reduce the Order Multiplier from 2 to 1.5', desc:'The multiplier of 2 seems arbitrarily aggressive. Reduce it and orders should be less extreme.',
+       policy:'Order = MAX(1.5 x Incoming Order - Ending Inventory, 0) at both echelons',
+       outcome:{retSD:24.8, mfgSD:51.3, fillRate:'94.1%', ratio:'5.13x'},
+       feedback:'Reducing the multiplier lowers both amplification AND cover simultaneously. A genuine improvement but limited, because the structural problem — forecasting from a distorted signal — remains untouched.',
+       score:6},
+      {letter:'C', title:'Accept the Result and Extend to Four Echelons', desc:'Before prescribing anything, understand the full picture. TinyCare\'s real chain has four links, not two.',
+       policy:'No policy change. Extend model to Distributor and Supplier tiers. Diagnose before prescribing.',
+       outcome:{retSD:33.1, mfgSD:78.5, fillRate:'98.6%', ratio:'7.85x'},
+       feedback:'The right answer. Krajewski presents the bullwhip as a system-level phenomenon; analysing a truncated chain systematically understates it. The two-echelon result was understating the problem by a factor of five.',
+       score:10},
+      {letter:'D', title:'Commission a Better Forecasting Package', desc:'The planning team\'s forecasts are clearly poor. Buy a statistical forecasting module for the ERP.',
+       policy:'Investment: ₹34 lakh in forecasting software. Deploy at manufacturer only.',
+       outcome:{retSD:33.1, mfgSD:61.2, fillRate:'97.8%', ratio:'6.12x'},
+       feedback:'Better forecasting of a distorted signal produces a better forecast of a distorted signal. Krajewski is explicit: the bullwhip is an information problem, and technology applied to bad information yields limited returns.',
+       score:3}
+    ]
+  },
+  {
+    id:'r2', type:'round', num:'Round 2', title:'Four Echelons — Amplification Compounds',
+    focus:'Multiplicative amplification and why long chains suffer disproportionately',
+    scenario:`<strong>Week 3 &mdash; The Full Chain Revealed</strong><br><br>Meera extends the model to all four echelons. She keeps the naive ordering rule identical at every tier — the same rule, applied by the same kind of competent planner, with the same intent.`,
+    resultIntro:`The Supplier is planning fluff pulp production against SD of 412.7 cases when actual consumption varies by 10. That is a <strong>41-fold amplification</strong>, produced by four competent planners each doing something reasonable.`,
+    resultData:{custSD:10, retSD:33.1, distSD:78.5, mfgSD:181.4, supSD:412.7, cumRatio:'41.3x'},
+    concept:{name:'Amplification Is Multiplicative', text:'Each tier multiplies the incoming variability by roughly 2.3x. Across four tiers: 3.31 × 2.37 × 2.31 × 2.28 = 41.3. This is why deep supply chains suffer far more than short ones. The cumulative ratio is the PRODUCT of tier ratios, not their sum.'},
+    question:'Where do you intervene first?',
+    best:1,
+    options:[
+      {letter:'A', title:'Intervene at the Supplier Tier', desc:'The Supplier faces SD of 412.7, by far the worst. Fix the biggest problem first.',
+       policy:'Improve supplier forecasting and buffer. Additional safety stock funded by TinyCare.',
+       outcome:{supSD:412.7, fillRate:'99.4%', chainInv:'₹70.1 Cr', ratio:'41.3x'},
+       feedback:'Intervening at the point of greatest pain treats the accumulation rather than the generation. The incoming signal is unchanged; you just buffered the symptom at a cost of ₹8.2 crore in additional inventory.',
+       score:3},
+      {letter:'B', title:'Intervene at the Retailer Tier', desc:'The largest single tier ratio is 3.31x at the Retailer. Fix the first hop and everything downstream inherits the improvement.',
+       policy:'Change retailer ordering rule to MA(3). Tiers 2-4 unchanged.',
+       outcome:{retSD:19.6, supSD:244.4, chainInv:'₹37.1 Cr', ratio:'24.4x'},
+       feedback:'The correct leverage point. Improvements at the first hop are multiplied through every subsequent tier. A single-tier change reduced chain inventory by ₹25.8 crore. This is a direct consequence of the multiplicative structure.',
+       score:10},
+      {letter:'C', title:'Shorten the Chain — Bypass the Distributor', desc:'If amplification is multiplicative in the number of tiers, remove a tier. Sell direct to modern trade.',
+       policy:'Eliminate Distributor for modern trade (38% of volume). Direct retailer-to-manufacturer.',
+       outcome:{blendedRatio:'32.2x', chainInv:'₹52.8 Cr', cost:'₹4.2 Cr setup'},
+       feedback:'Disintermediation directly attacks the multiplicative structure. Effective, but capital intensive and commercially disruptive. Krajewski notes channel design is a bullwhip lever, not merely a commercial decision.',
+       score:6},
+      {letter:'D', title:'Change the Ordering Rule at All Four Tiers', desc:'If every tier is amplifying, change the rule everywhere at once rather than sequentially.',
+       policy:'MA(3) implemented at all four echelons. Requires partner agreement.',
+       outcome:{cumRatio:'21.2x', chainInv:'₹30.5 Cr', saving:'₹32.4 Cr'},
+       feedback:'System-wide intervention outperforms single-tier, but requires negotiating coordinated change with three independent commercial partners. The coordination cost is real — Krajewski identifies exactly this tension.',
+       score:8}
+    ]
+  },
+  {
+    id:'c1', type:'challenge', num:'Challenge 1', title:'The Competitor Recall',
+    focus:'How a single demand spike propagates through a four-echelon chain',
+    scenario:`<strong>Breaking News</strong><br><br>A competing diaper brand issues a national recall after a skin-irritation complaint goes viral. Within four days, TinySoft sell-through at retail jumps 34%.<br><br>Under the naive rule, the retailer order jumps from 61 to <strong>187 cases</strong>. The Distributor sees 187 and orders <strong>421</strong>. The Manufacturer orders <strong>908</strong>. The Supplier receives a signal suggesting the market has tripled.<br><br>Actual consumption rose 34%. The signal reaching the Supplier suggests it rose <strong>1,300%</strong>.`,
+    resultIntro:null,
+    resultData:null,
+    concept:{name:'Why a Phone Call Beats a Forecast', text:'The problem is that upstream tiers don\'t know what actual demand is. Any mechanism that transmits true demand — a phone call, an EDI feed, a shared dashboard — dominates any amount of sophistication applied to the distorted signal.'},
+    question:'How do you respond to the competitor recall?',
+    best:1,
+    options:[
+      {letter:'A', title:'Let the Signal Propagate', desc:'The market will correct itself. No intervention needed.',
+       policy:'No action. Let each tier react independently.',
+       outcome:{supOrder:'1,847 cases', excessInv:'₹31 lakh', writedown:'11 months'},
+       feedback:'The Supplier produces against a phantom. TinyCare is contractually obliged to take it. The competitor returned to shelves in six weeks; this surplus takes eleven months to clear.',
+       score:2},
+      {letter:'B', title:'Call the Supplier Directly', desc:'Tell them the true consumer number: demand rose 34%, not 1,300%. One phone call.',
+       policy:'Direct communication of actual consumer demand to all upstream tiers.',
+       outcome:{supOrder:'81 cases', excessInv:'₹0', cost:'Nothing'},
+       feedback:'A single phone call conveying "consumer demand rose 34%, not 1,300%" prevents the entire overproduction. Costs nothing. This IS the central lesson of the bullwhip literature.',
+       score:10},
+      {letter:'C', title:'Freeze All Order Increases Above 20%', desc:'Damp the spike until the situation is verified. Two-week freeze on unusual orders.',
+       policy:'Hard cap on order increases. Freeze period: 2 weeks.',
+       outcome:{fillRate:'88%', damping:'Partial'},
+       feedback:'Damps the spike but risks genuine stockout if the competitor exit proves permanent. Retail fill rate falls to 88% during the freeze — a blunt instrument.',
+       score:5},
+      {letter:'D', title:'Reset All Forecasts Upward Permanently', desc:'Treat the recall as a permanent share gain. Adjust baseline demand to the new level.',
+       policy:'All four echelons reset baseline forecast upward by 34%.',
+       outcome:{excessCapacity:'₹1.9 Cr', risk:'Competitor recovered in 6 weeks'},
+       feedback:'If the competitor recovers — and they did in six weeks — TinyCare is left with structurally excess capacity and inventory. Never treat a disruption as permanent without evidence.',
+       score:1}
+    ]
+  },
+  {
+    id:'r3', type:'round', num:'Round 3', title:'Smoothing the Signal — Moving Average',
+    focus:'How much amplification can forecasting alone remove?',
+    scenario:`<strong>Week 8 &mdash; The Planning Team Proposes Smoothing</strong><br><br>Meera's demand planner, Anand, proposes replacing the naive rule with a three-period moving average at every tier. Instead of reacting to the single most recent order, each tier averages the last three before deciding how much to buy.<br><br><em>"If we stop reacting to every blip, the blips stop propagating. Simple as that."</em>`,
+    resultIntro:`Cumulative amplification falls from 41.3&times; to <strong>21.2&times;</strong> — a 49% reduction from a change that costs nothing but a formula edit. But 21.2&times; is still enormous.`,
+    resultData:{custSD:10, retSD:19.6, distSD:44.8, mfgSD:98.2, supSD:211.5, cumRatio:'21.2x'},
+    concept:{name:'Smoothing Attenuates, It Does Not Eliminate', text:'A moving average reduces the variance of the input signal. But the structural cause persists: each tier still forecasts from a distorted order stream. Smoothing buys a large one-time improvement and then stops helping.'},
+    question:'How far do you push smoothing?',
+    best:3,
+    options:[
+      {letter:'A', title:'Adopt MA(3) and Declare Victory', desc:'A 49% reduction for zero cost is excellent. Lock it in and move to other priorities.',
+       policy:'MA(3) at all four echelons. No further investment.',
+       outcome:{cumRatio:'21.2x', chainInv:'₹32.2 Cr', saving:'₹30.7 Cr'},
+       feedback:'Genuine and valuable, but stops short of the achievable. Krajewski cautions against declaring success on a partial fix when the root cause remains active. Rounds 4 and 7 will show substantially more is available.',
+       score:4},
+      {letter:'B', title:'Extend to MA(7) for Maximum Smoothing', desc:'If MA(3) helps, MA(7) should help more. Average over a longer window for maximum damping.',
+       policy:'MA(7) at all four echelons. Maximum damping.',
+       outcome:{cumRatio:'12.8x', fillRate:'93.1%', responseTime:'9 periods'},
+       feedback:'Longer windows trade responsiveness for stability. When a genuine demand shift occurs, the chain takes nine periods to respond. Fill rate falls to 93.1% during shocks. Krajewski frames this as the classic forecasting trade-off.',
+       score:4},
+      {letter:'C', title:'Apply MA(3) Upstream Only, Keep Retailer Responsive', desc:'The Retailer genuinely needs to respond to real demand. Only tiers 2-4 are reacting to noise.',
+       policy:'Retailer: naive rule. Distributor, Manufacturer, Supplier: MA(3).',
+       outcome:{retSD:33.1, cumRatio:'26.7x', responsiveness:'Retailer fully responsive'},
+       feedback:'A defensible design. The tier closest to real demand should be most responsive; tiers far from it should be most damped. Krajewski\'s discussion of positioning in the chain supports differentiated policy by echelon.',
+       score:7},
+      {letter:'D', title:'Reduce Multiplier to 1.5 and Combine with MA(3)', desc:'Attack both the multiplier and the signal noise together for maximum effect.',
+       policy:'Order = 1.5 x MA(3) - Ending Inventory at all four tiers.',
+       outcome:{cumRatio:'14.6x', fillRate:'95.7%', chainInv:'₹22.1 Cr'},
+       feedback:'Combining levers compounds the benefit. But each lever has its own cost — the multiplier reduction buys amplification improvement with service. This must be a conscious trade rather than accidental.',
+       score:10}
+    ]
+  },
+  {
+    id:'r4', type:'round', num:'Round 4', title:'Exponential Smoothing & The Forecasting Floor',
+    focus:'Tuning alpha, and discovering the floor that forecasting cannot break through',
+    scenario:`<strong>Week 12 &mdash; Testing Every Method Available</strong><br><br>Meera runs a systematic comparison. She tests moving averages of different lengths and exponential smoothing across a range of alpha values, applying each uniformly at all four echelons.`,
+    resultIntro:`The pattern: more damping always reduces amplification, but returns diminish sharply. Even at alpha = 0.05, amplification remains above <strong>9&times;</strong>. There is a floor no forecasting method can break through.`,
+    resultData:{naive:'41.3x', ma3:'21.2x', ma5:'15.3x', ses20:'12.8x', ses10:'10.1x', ses05:'9.2x'},
+    concept:{name:'The Forecasting Floor', text:'No forecasting method can drive amplification to 1.0, because the ordering rule itself inherently amplifies. Each tier must order more than it sold when inventory is drawn down, and less when built up. That inventory correction is the irreducible engine of the bullwhip as long as tiers forecast from orders rather than from demand.'},
+    question:'Which forecasting configuration do you adopt?',
+    best:3,
+    options:[
+      {letter:'A', title:'SES with alpha = 0.05 — Maximum Damping', desc:'Take the lowest amplification the comparison offers. Minimum variability.',
+       policy:'SES, alpha = 0.05, all four tiers. Cumulative 9.17x.',
+       outcome:{cumRatio:'9.17x', fillRate:'86.4%', responseTime:'14 periods'},
+       feedback:'Lowest amplification available through forecasting alone. But response to a demand shift takes fourteen periods — retail fill rate collapses to 86.4% during shocks. Optimising a single metric produces a distorted design.',
+       score:3},
+      {letter:'B', title:'SES with alpha = 0.20 — Balanced', desc:'Accept slightly higher amplification in exchange for reasonable responsiveness.',
+       policy:'SES, alpha = 0.20, all four tiers. Cumulative 12.84x.',
+       outcome:{cumRatio:'12.84x', fillRate:'97.8%', responseTime:'5 periods'},
+       feedback:'The best balance within forecasting-only solutions. Krajewski\'s guidance: choose the alpha that balances stability against the need to track genuine change.',
+       score:7},
+      {letter:'C', title:'Differentiated Alpha by Echelon', desc:'Set alpha high at the Retailer (who needs responsiveness) and low upstream (where the signal is mostly noise).',
+       policy:'Retailer: 0.50, Distributor: 0.25, Manufacturer: 0.15, Supplier: 0.10.',
+       outcome:{cumRatio:'11.62x', chainInv:'₹17.8 Cr', retailResponse:'2 periods'},
+       feedback:'The most sophisticated forecasting-only answer. Position in the chain should determine policy, because the signal-to-noise ratio differs systematically by echelon. Better on both dimensions than any uniform setting.',
+       score:8},
+      {letter:'D', title:'Stop Optimising Forecasts — Investigate Information Sharing', desc:'The comparison shows a floor around 9x. That floor is structural. Redirect effort to the structure.',
+       policy:'Adopt SES 0.20 as interim. Open discussions with Sahyadri Distributors on POS data sharing.',
+       outcome:{cumRatio:'12.84x', insight:'Distributor already receives daily POS extracts from modern trade'},
+       feedback:'The insight this round is built to produce. When a family of solutions hits a floor, the binding constraint lies elsewhere. Krajewski identifies information sharing as the structural remedy, and forecasting refinement as a palliative.',
+       score:10}
+    ]
+  },
+  {
+    id:'c2', type:'challenge', num:'Challenge 2', title:'The Transporters\' Strike',
+    focus:'Lead time as a root cause — not merely a delay, but an amplifier',
+    scenario:`<strong>Breaking News</strong><br><br>The All India Motor Transport Congress calls an indefinite strike. Replenishment lead time between every echelon rises from <strong>one period to three</strong>.<br><br>Nothing about consumer demand changes. Babies consume diapers at exactly the same rate. But every tier now waits three periods for stock, and each independently decides to increase cover.<br><br>Lead time tripling raised cumulative amplification from 12.84&times; to <strong>32.46&times;</strong>, wiping out every gain from four rounds of forecasting improvement.`,
+    resultIntro:null,
+    resultData:null,
+    concept:{name:'Lead Time as a Root Cause', text:'Krajewski lists lead time among the five causes of the bullwhip. Longer lead times require larger safety stock, and each tier reacts more aggressively to any signal change. Reducing and stabilising lead time is a direct bullwhip countermeasure, not merely a service improvement.'},
+    question:'How do you respond to the strike?',
+    best:2,
+    options:[
+      {letter:'A', title:'Increase Cover at Every Tier', desc:'The intuitive response. Build buffers to protect service through the strike.',
+       policy:'All tiers increase safety stock independently. No coordination.',
+       outcome:{cumRatio:'41.2x', addlInv:'₹27 Cr'},
+       feedback:'The response every tier will take independently — and it raises amplification further to 41.2x and adds ₹27 crore of chain inventory. The intuitive response is the worst one.',
+       score:2},
+      {letter:'B', title:'Hold Cover Constant, Accept Lower Service', desc:'Don\'t let each tier buffer independently. Communicate the constraint honestly to partners.',
+       policy:'No cover changes. Retail fill rate falls to 91%. Transparent communication.',
+       outcome:{cumRatio:'32.46x', fillRate:'91%', addlInv:'₹0'},
+       feedback:'Prevents the independent buffering that causes the worst amplification. Honest communication about a temporary constraint is better than panic ordering. Amplification stays at 32.46x rather than climbing to 41.2x.',
+       score:6},
+      {letter:'C', title:'Use Rail for Mumbai-Chakan, Prioritise Road for Last-Mile', desc:'Restore the critical leg with an alternative transport mode. Pay the freight premium.',
+       policy:'Rail for manufacturer-to-distributor. Cost: ₹18 lakh freight premium.',
+       outcome:{cumRatio:'21.3x', cost:'₹18 lakh', leadTimeRestore:'1.5 periods'},
+       feedback:'Restores the critical lead time at modest cost. Cumulative amplification drops from 32.46x to 21.3x. Attacking the root cause — the lead time itself — is more effective than any buffering strategy.',
+       score:10},
+      {letter:'D', title:'Freeze Ordering Rules — Instruct All Tiers Not to Change Cover', desc:'Prevent the independent buffering that makes things worse. Requires partner agreement.',
+       policy:'Coordinated freeze on cover changes. Requires agreement from three partners.',
+       outcome:{cumRatio:'32.46x', preventedDamage:'Prevented climb to 41.2x'},
+       feedback:'Prevents the worst outcome but doesn\'t improve the situation. Requires agreement from three external partners. Better than A, but C actually solves the problem.',
+       score:5}
+    ]
+  },
+  {
+    id:'r5', type:'round', num:'Round 5', title:'Order Batching & The Truckload Problem',
+    focus:'How freight economics create lumpiness that forecasting cannot touch',
+    scenario:`<strong>Week 18 &mdash; The Truckload Economics Problem</strong><br><br>Sahyadri Distributors places orders in full-truckload quantities because part-load freight costs 2.3&times; as much per case. A truck holds 600 cases. Instead of ordering 63 cases every period, Sahyadri accumulates demand until it can justify a truck, then orders 600 at once.<br><br>Consumer demand is perfectly smooth. The order stream reaching TinyCare is a series of zeros punctuated by 600s.<br><br>Full-truckload batching alone raises cumulative amplification from 12.84&times; to <strong>73.68&times;</strong>.`,
+    resultIntro:null,
+    resultData:null,
+    concept:{name:'Order Batching', text:'The second of Krajewski\'s five causes. Fixed ordering costs and transport economics push firms toward infrequent large orders. Each individual decision is cost-optimal for that firm, but the aggregate effect converts a smooth demand stream into a lumpy order stream.'},
+    question:'How do you break the batching?',
+    best:3,
+    options:[
+      {letter:'A', title:'Accept Batching — Freight Economics Are Non-Negotiable', desc:'Part-load freight costs 2.3x more per case. The batching saves real money.',
+       policy:'Retain 600-case FTL ordering. Freight saving ₹41 lakh/year.',
+       outcome:{cumRatio:'73.68x', freightSaving:'₹41 lakh', invCost:'₹22.3 Cr/year'},
+       feedback:'A textbook example of local optimisation destroying system value. The distributor optimises its freight bill; the chain pays fifty times over in inventory. Krajewski frames the bullwhip as precisely this kind of local-versus-system conflict.',
+       score:1},
+      {letter:'B', title:'Mixed-SKU Truckloads', desc:'TinyCare makes 11 SKUs. Fill the truck with a mix rather than accumulating one SKU to 600.',
+       policy:'Order every period, mixed SKU. Truck still runs full. Setup cost ₹34 lakh.',
+       outcome:{cumRatio:'15.21x', freightEcon:'Preserved', setupCost:'₹34 lakh'},
+       feedback:'The classic countermeasure Krajewski recommends. Mixed loading breaks the link between truckload economics and per-SKU order lumpiness. An operational fix that preserves the commercial logic.',
+       score:8},
+      {letter:'C', title:'Reduce Ordering Cost Through EDI', desc:'The fixed cost that justifies batching is largely administrative. Remove it electronically.',
+       policy:'EDI link between all tiers. Automated PO generation. Order cost: ₹4,200 → ₹180.',
+       outcome:{cumRatio:'17.4x', investment:'₹52 lakh', payback:'Under 5 months'},
+       feedback:'Attacking the root of the batching incentive rather than the behaviour. Krajewski identifies reduced transaction cost as an enabler of smaller, more frequent orders.',
+       score:7},
+      {letter:'D', title:'Third-Party Milk Run', desc:'A logistics provider collects from TinyCare and delivers to six distributors on a fixed daily route.',
+       policy:'Daily milk run, fixed schedule. Logistics cost shared across six parties.',
+       outcome:{cumRatio:'13.8x', freightCost:'-8% per case', coordination:'6 partners'},
+       feedback:'The strongest answer. Consolidation across parties achieves truckload economics without per-party batching. Freight cost actually falls 8% due to cross-party consolidation. Requires coordinating six independent businesses.',
+       score:10}
+    ]
+  },
+  {
+    id:'c3', type:'challenge', num:'Challenge 3', title:'The Diwali Trade Scheme',
+    focus:'Price fluctuation and forward buying — the most common self-inflicted cause',
+    scenario:`<strong>Breaking News</strong><br><br>TinyCare's sales team launches its annual Diwali trade scheme: <strong>18% off</strong> on all distributor purchases during a three-week window, designed to hit the quarterly volume target.<br><br>Sahyadri Distributors, entirely rationally, buys <strong>fourteen weeks of cover</strong> at the discounted price. Retailers buy nine weeks. For three weeks orders explode. For the next eleven weeks, orders collapse to near zero as the channel destocks.<br><br>Household diaper consumption over those fourteen weeks: <strong>perfectly constant</strong>.<br><br>The plant ran three shifts for three weeks, then idled two lines for seven weeks.`,
+    resultIntro:null,
+    resultData:null,
+    concept:{name:'Price Fluctuation and Forward Buying', text:'The third of Krajewski\'s five causes, and the one most often self-inflicted. Trade promotions create a buying opportunity unrelated to consumption, so orders reflect deal timing rather than demand. Krajewski recommends everyday low pricing and shifting from trade deals to consumer promotions — the same conclusion P&G reached with Pampers.'},
+    question:'How do you handle the trade promotion problem?',
+    best:1,
+    options:[
+      {letter:'A', title:'Continue the Scheme — It Hits the Target', desc:'The quarterly volume target is met. The sales team is happy.',
+       policy:'Continue annual Diwali trade scheme. Volume target met.',
+       outcome:{mfgCost:'₹1.4 Cr shift swings', volumeTarget:'Met (borrowed from Q+1)'},
+       feedback:'The volume is borrowed from the following quarter, not created. Manufacturing cost of the shift swings is ₹1.4 crore. The target is met on paper and the chain pays for it in reality.',
+       score:1},
+      {letter:'B', title:'Move to Everyday Low Pricing', desc:'Eliminate trade schemes entirely. Remove the incentive for forward buying.',
+       policy:'EDLP. No trade promotions. Smooth ordering year-round.',
+       outcome:{orderSD:'34 (during scheme weeks, was 1,847)', amplification:'Eliminated'},
+       feedback:'Krajewski\'s recommended solution. Distributor order SD falls from 1,847 to 34 during what would have been scheme weeks. Requires the sales org to abandon a familiar lever — commercially disruptive but structurally right.',
+       score:10},
+      {letter:'C', title:'Keep Discount, Cap Purchase at 4 Weeks', desc:'Retain the commercial incentive while limiting the forward-buying damage.',
+       policy:'Diwali discount retained. Maximum purchase quantity: 4 weeks of cover.',
+       outcome:{amplification:'~70% reduction during scheme weeks', salesAcceptance:'High'},
+       feedback:'A workable compromise that sales will accept. Amplification during scheme weeks falls by roughly 70%. Practical but does not eliminate the structural problem.',
+       score:7},
+      {letter:'D', title:'Shift from Trade to Consumer Promotion', desc:'Fund a shelf-price reduction instead of a trade discount. Orders follow actual sell-through.',
+       policy:'Consumer promotion: 12% shelf price reduction. No trade buying window.',
+       outcome:{demandRise:'12% genuine', amplification:'Near baseline'},
+       feedback:'Consumer offtake rises genuinely by 12%, and the channel orders to match actual sell-through rather than exploit a buying window. Krajewski\'s preferred alternative — shifts the promotion to where consumption happens.',
+       score:9}
+    ]
+  },
+  {
+    id:'r6', type:'round', num:'Round 6', title:'Shortage Gaming — When Orders Become Bids',
+    focus:'The fifth root cause, and why rationing rules shape behaviour',
+    scenario:`<strong>Week 26 &mdash; Capacity Constrained</strong><br><br>Global fluff pulp supply tightens. TinyCare can produce only <strong>78% of orders received</strong>. The company announces proportional allocation: available product will be split based on orders placed.<br><br>Within one week, every distributor does the arithmetic. If allocation is proportional and you expect 78%, order 128% of what you need. If everyone does this, the ratio falls, so order more still.<br><br>Orders grew from 4,800 to <strong>12,930</strong> — a 169% increase. Actual requirement did not move. The demand signal has become meaningless.`,
+    resultIntro:null,
+    resultData:null,
+    concept:{name:'Rationing and Shortage Gaming', text:'The fourth of Krajewski\'s five causes. When allocation is proportional to orders placed, inflating orders is individually rational and collectively self-defeating. The countermeasure: allocate on past sales rather than current orders, removing the incentive entirely.'},
+    question:'How do you stop the gaming?',
+    best:1,
+    options:[
+      {letter:'A', title:'Maintain Proportional Allocation', desc:'The allocation is fair — everyone is treated identically. Let the market sort it out.',
+       policy:'Proportional allocation on current orders. No change.',
+       outcome:{orders:'21,400 by week 8', trueRequirement:'4,800', whipsawCost:'₹4.1 Cr'},
+       feedback:'By week 8, orders reach 21,400 against true requirement of 4,800. The Supplier commits to capacity expansion based on a phantom signal. When supply normalises, orders collapse. Krajewski notes this reliably destroys information.',
+       score:1},
+      {letter:'B', title:'Allocate on Historical Sell-Through', desc:'Allocation based on each distributor\'s average sales over the past six months, regardless of what they order now.',
+       policy:'Trailing sell-through allocation. Current orders have no effect on allocation.',
+       outcome:{orders:'4,850 within 3 weeks', incentiveToGame:'Removed entirely'},
+       feedback:'Within three weeks orders return to 4,850 — essentially true requirement. The incentive to inflate has been removed entirely. The demand signal recovers its information content. The correct countermeasure and Krajewski recommends it explicitly.',
+       score:10},
+      {letter:'C', title:'Share Capacity Information Openly', desc:'Publish available capacity weekly so distributors can plan against reality, not speculation.',
+       policy:'Weekly capacity dashboard. Allocation remains proportional.',
+       outcome:{orders:'~7,200', gamingReduction:'Partial'},
+       feedback:'Transparency helps but does not eliminate an incentive problem. Orders settle around 7,200 rather than 12,930 — improvement, but partial. Information sharing and incentive design are complementary; neither substitutes for the other.',
+       score:5},
+      {letter:'D', title:'Order Commitment with Cancellation Penalties', desc:'Distributors must accept and pay for whatever is allocated. Cancellation carries a 12% penalty.',
+       policy:'Firm commitment on orders. 12% cancellation penalty.',
+       outcome:{orders:'5,340', partnerRelationships:'Two damaged'},
+       feedback:'Effective through cost imposition rather than incentive removal. Works, but the penalty damages two distributor relationships. Krajewski\'s preference for allocation-rule change achieves the same result without adversarial mechanics.',
+       score:6}
+    ]
+  },
+  {
+    id:'r7', type:'round', num:'Round 7', title:'The Coordination Championship',
+    focus:'What information sharing achieves that no forecasting method can',
+    scenario:`<strong>Week 34 &mdash; The Board Presentation</strong><br><br>Meera presents six rounds of findings. Amplification has been reduced from 41.3&times; to about 13&times; through forecasting, batching fixes, promotion redesign, and allocation-rule change.<br><br>The board is impressed. But Meera is not finished.<br><br><em>"Every improvement so far treats the consequence. The cause is that three of our four echelons have never seen actual consumer demand. Not once. They've been forecasting from each other's order corrections for eleven years."</em>`,
+    resultIntro:null,
+    resultData:null,
+    concept:{name:'The Answer to the Simulation', text:'The bullwhip effect is an information problem, not a forecasting problem. It arises because upstream echelons do not know what actual demand is, and it persists regardless of how sophisticated their forecasting becomes. Krajewski Ch. 12 places supply chain integration and information sharing at the centre of the remedy.'},
+    question:'Which coordination mechanism do you recommend to the board?',
+    best:2,
+    options:[
+      {letter:'A', title:'Point-of-Sale Data Sharing', desc:'Every echelon receives daily consumer offtake data and forecasts from that, rather than from downstream orders.',
+       policy:'Daily POS feed from modern trade + sampled kirana. Investment: ₹78 lakh.',
+       outcome:{retSD:'11.9', distSD:'13.4', mfgSD:'15.1', supSD:'17.2', cumRatio:'1.72x', chainInv:'₹5.1 Cr'},
+       feedback:'The structural fix. This single change outperforms every forecasting refinement combined, at a fraction of the cumulative cost. From 41.3x to 1.72x. Krajewski identifies information sharing as the primary remedy because it removes the cause.',
+       score:8},
+      {letter:'B', title:'Vendor Managed Inventory (VMI)', desc:'TinyCare takes responsibility for distributor and retailer stock levels. Partners stop ordering; TinyCare ships to maintain agreed cover.',
+       policy:'TinyCare owns replenishment for tiers 1-2. Investment: ₹1.4 Cr.',
+       outcome:{retSD:'11.2', distSD:'12.1', mfgSD:'13.0', supSD:'14.1', cumRatio:'1.41x', chainInv:'₹4.2 Cr'},
+       feedback:'VMI collapses multiple decision points into one, eliminating independent inventory corrections entirely. Better than POS sharing because the ordering decision is centralised. Requires substantial trust and system integration.',
+       score:9},
+      {letter:'C', title:'CPFR — Collaborative Planning, Forecasting & Replenishment', desc:'All four parties build a single shared forecast, agree exception thresholds, and jointly resolve deviations.',
+       policy:'Joint monthly planning cycle. Single consensus forecast. Investment: ₹2.1 Cr.',
+       outcome:{retSD:'10.8', distSD:'11.3', mfgSD:'11.9', supSD:'12.6', cumRatio:'1.26x', chainInv:'₹3.8 Cr'},
+       feedback:'The most complete solution, closest to the theoretical minimum. Krajewski presents CPFR as the mature form of supply chain integration. Cost and organisational demand are correspondingly higher, but so is the payoff.',
+       score:10},
+      {letter:'D', title:'Share POS Data with the Supplier Only', desc:'The Supplier suffers worst. Give the fluff pulp supplier direct visibility of consumer demand.',
+       policy:'Direct POS feed to Nordic Fluff Pulp only. Investment: ₹12 lakh.',
+       outcome:{supSD:'31.2', cumRatio:'12.84x (orders unchanged)', note:'Supplier plans better but still receives lumpy orders'},
+       feedback:'Partial information sharing produces partial benefit. The Supplier can now interpret the noise but cannot prevent it — the physical orders it must fill are still generated by tiers operating on distorted signals.',
+       score:4}
+    ]
+  }
+];
+
+const PROFILES = [
+  {id:'local', name:'The Local Optimiser', icon:'\u{1F50D}',
+   desc:'Made each tier efficient in isolation — full truckloads, minimal ordering cost, tight local inventory. Every decision defensible, system outcome poor. The most common profile and the one the simulation is designed to challenge.',
+   trigger: s => s.totalScore < 35},
+  {id:'signal', name:'The Signal Chaser', icon:'⚡',
+   desc:'Responded quickly to every order change, believing responsiveness is always a virtue. Amplified aggressively. Strong in genuinely volatile markets, destructive in stable ones.',
+   trigger: s => s.totalScore >= 35 && s.totalScore < 55},
+  {id:'buffer', name:'The Buffer Builder', icon:'\u{1F6E1}️',
+   desc:'Answered every disruption with more safety stock. Never stocked out, never asked whether the variability was real. Service excellent, capital employed enormous.',
+   trigger: s => s.totalScore >= 55 && s.totalScore < 70},
+  {id:'smoother', name:'The Smoother', icon:'\u{1F4C9}',
+   desc:'Reached for forecasting refinement at every opportunity and achieved real gains, but plateaued at the forecasting floor without recognising the structural constraint.',
+   trigger: s => s.totalScore >= 70 && s.totalScore < 85},
+  {id:'integrator', name:'The System Integrator', icon:'\u{1F310}',
+   desc:'Recognised early that the problem was informational, pursued data sharing and coordination, and accepted the organisational difficulty that came with it. The profile the simulation is built to develop.',
+   trigger: s => s.totalScore >= 85}
+];
+
+let S = {
+  screen: 'welcome',
+  roundIdx: 0,
+  correct: 0,
+  done: 0,
+  totalScore: 0,
+  maxScore: 0,
+  choices: [],
+  currentRatio: '41.3x',
+  chainCost: 62.9
+};
+
+function startSim() {
+  S.screen = 'sim';
+  S.roundIdx = 0;
+  S.correct = 0;
+  S.done = 0;
+  S.totalScore = 0;
+  S.maxScore = ROUNDS.reduce((s,r) => s + Math.max(...r.options.map(o=>o.score)), 0);
+  S.choices = [];
+  S.currentRatio = '41.3x';
+  S.chainCost = 62.9;
+  show('sim');
+  renderRound();
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id + 'Screen').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function progress() {
+  const pct = ((S.done) / ROUNDS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function getRatioColor(ratio) {
+  const n = parseFloat(ratio);
+  if (n <= 2) return 'good';
+  if (n <= 15) return 'neutral';
+  return 'bad';
+}
+
+function renderRound() {
+  const r = ROUNDS[S.roundIdx];
+  const isChallenge = r.type === 'challenge';
+
+  document.getElementById('stepBadge').textContent = isChallenge ? 'Challenge' : 'Simulation';
+  document.getElementById('headerLabel').innerHTML = `${r.num}`;
+  document.getElementById('simCount').textContent = `${S.roundIdx + 1} / ${ROUNDS.length}`;
+
+  let rail = '';
+  ROUNDS.forEach((rd, i) => {
+    let cls = i < S.roundIdx ? 'done' : i === S.roundIdx ? 'current' : '';
+    if (rd.type === 'challenge' && i === S.roundIdx) cls = 'challenge';
+    rail += `<div class="rr-dot ${cls}"></div>`;
+  });
+  document.getElementById('roundRail').innerHTML = rail;
+
+  document.getElementById('metricsStrip').innerHTML = `
+    <div class="metric-pill"><div class="mp-label">Decision</div><div class="mp-val neutral">${S.roundIdx + 1} of ${ROUNDS.length}</div></div>
+  `;
+
+  let h = '';
+
+  if (isChallenge) {
+    h += `<div class="event-banner shock"><div class="ev-icon">⚠️</div><div class="ev-text"><strong>Unexpected Challenge: ${r.title}</strong>${r.focus}</div></div>`;
+  }
+
+  h += `<div class="scenario-card">`;
+  h += `<span class="sc-tag ${r.type}">${r.num}</span>`;
+  h += `<h2>${r.title}</h2>`;
+  h += `<div class="sc-body">${r.scenario}</div>`;
+
+  if (r.resultIntro) {
+    h += `<div style="margin-top:0.8rem;padding:0.7rem 0.9rem;background:var(--input-bg);border-radius:var(--radius-sm);font-size:0.82rem;line-height:1.6;color:var(--ink-soft)">${r.resultIntro}</div>`;
+  }
+
+  if (r.resultData && !Array.isArray(r.resultData)) {
+    const d = r.resultData;
+    if (d.cumRatio) {
+      const bars = [];
+      if (d.custSD !== undefined) bars.push({label:'Customer', sd:d.custSD, color:'var(--neem)'});
+      if (d.retSD !== undefined) bars.push({label:'Retailer', sd:d.retSD, color:'var(--saffron)'});
+      if (d.distSD !== undefined) bars.push({label:'Distributor', sd:d.distSD, color:'var(--warning)'});
+      if (d.mfgSD !== undefined) bars.push({label:'Manufacturer', sd:d.mfgSD, color:'var(--loss)'});
+      if (d.supSD !== undefined) bars.push({label:'Supplier', sd:d.supSD, color:'var(--purple)'});
+
+      if (bars.length > 0) {
+        const maxSD = Math.max(...bars.map(b => b.sd));
+        h += `<div class="amp-chart">`;
+        bars.forEach(b => {
+          const pct = Math.max((b.sd / maxSD) * 100, 3);
+          h += `<div class="amp-bar-wrap"><div class="amp-bar" style="height:${pct}%;background:${b.color}"><span class="ab-val" style="color:${b.color}">${b.sd}</span></div><div class="amp-bar-label">${b.label}</div></div>`;
+        });
+        h += `</div>`;
+        h += `<div style="text-align:center;font-size:0.78rem;color:var(--muted);margin-top:-0.3rem">Cumulative Bullwhip Ratio: <strong style="color:var(--loss)">${d.cumRatio}</strong></div>`;
+      }
+    } else {
+      h += `<div style="margin-top:0.8rem"><table class="result-table"><thead><tr><th>Method</th><th>Cumulative Ratio</th></tr></thead><tbody>`;
+      const entries = Object.entries(d);
+      const labels = {naive:'Naive (baseline)', ma3:'MA(3)', ma5:'MA(5)', ses20:'SES α=0.20', ses10:'SES α=0.10', ses05:'SES α=0.05'};
+      entries.forEach(([k, v]) => {
+        const cls = k === 'naive' ? ' class="highlight"' : '';
+        h += `<tr${cls}><td>${labels[k]||k}</td><td>${v}</td></tr>`;
+      });
+      h += `</tbody></table></div>`;
+    }
+  }
+  h += `</div>`;
+
+  h += `<div class="scenario-card" style="margin-top:0.8rem"><h2 style="font-size:1.1rem">${r.question}</h2>`;
+  h += `<div class="options-grid">`;
+  r.options.forEach((opt, i) => {
+    h += `<button class="option-card" id="opt${i}" onclick="pickOption(${i})">`;
+    h += `<div class="option-letter">${opt.letter}</div>`;
+    h += `<div class="option-meta"><div class="om-title">${opt.title}</div><div class="om-desc">${opt.desc}</div>`;
+    if (opt.policy) h += `<div class="om-policy">${opt.policy}</div>`;
+    h += `</div></button>`;
+  });
+  h += `</div></div>`;
+
+  document.getElementById('simContent').innerHTML = h;
+  progress();
+}
+
+function pickOption(idx) {
+  const r = ROUNDS[S.roundIdx];
+  const isBest = idx === r.best;
+  const opt = r.options[idx];
+
+  r.options.forEach((o, j) => {
+    const el = document.getElementById('opt' + j);
+    el.classList.add('locked');
+    if (j === idx) el.classList.add('selected');
+  });
+
+  S.done++;
+  S.totalScore += opt.score;
+  if (isBest) S.correct++;
+  S.choices.push({roundId: r.id, chosen: idx, isBest, score: opt.score});
+
+  setTimeout(() => nextRound(), 600);
+}
+
+function nextRound() {
+  if (S.roundIdx < ROUNDS.length - 1) {
+    S.roundIdx++;
+    renderRound();
+  } else {
+    S.screen = 'results';
+    show('results');
+    renderResults();
+    progress();
+  }
+}
+
+function getGrade(pct) {
+  if (pct === 100) return 'A+';
+  if (pct >= 97) return 'A+';
+  if (pct >= 93) return 'A';
+  if (pct >= 90) return 'A-';
+  if (pct >= 87) return 'B+';
+  if (pct >= 83) return 'B';
+  if (pct >= 80) return 'B-';
+  if (pct >= 77) return 'C+';
+  if (pct >= 73) return 'C';
+  if (pct >= 70) return 'C-';
+  if (pct >= 67) return 'D+';
+  if (pct >= 60) return 'D';
+  return 'F';
+}
+
+function renderResults() {
+  const pct = Math.round((S.totalScore / S.maxScore) * 100);
+  const passed = pct >= 90;
+  const grade = getGrade(pct);
+  const profile = PROFILES.find(p => p.trigger({totalScore: pct})) || PROFILES[PROFILES.length - 1];
+
+  document.getElementById('stepBadge').textContent = passed ? 'Passed' : 'Not Passed';
+  document.getElementById('headerLabel').textContent = '';
+
+  let h = '';
+
+  h += `<div class="results-icon ${passed ? 'pass' : 'fail'}">${passed ? '\u{1F3C6}' : '\u{1F4DA}'}</div>`;
+  h += `<h1 style="text-align:center">${passed ? 'Simulation Passed' : 'Simulation Not Passed'}</h1>`;
+  h += `<p style="text-align:center;color:var(--ink-soft);margin-top:0.3rem;font-size:0.95rem">${passed ? 'You demonstrated strong understanding of the bullwhip effect and its remedies.' : 'You need 90% or above to pass. Review the explanations below, then retake the simulation.'}</p>`;
+
+  h += `<div class="results-stats">`;
+  h += `<div class="r-stat"><div class="r-num" style="color:${passed ? 'var(--neem)' : 'var(--loss)'}">${pct}%</div><div class="r-label">Score (90% to pass)</div></div>`;
+  h += `<div class="r-stat"><div class="r-num" style="font-family:Georgia,serif;font-size:1.6rem;color:${passed ? 'var(--neem)' : 'var(--loss)'}">${grade}</div><div class="r-label">Grade</div></div>`;
+  h += `<div class="r-stat"><div class="r-num">${S.correct}/${ROUNDS.length}</div><div class="r-label">Best Choices</div></div>`;
+  h += `<div class="r-stat"><div class="r-num">${S.totalScore}/${S.maxScore}</div><div class="r-label">Points</div></div>`;
+  h += `</div>`;
+
+  if (!passed) {
+    h += `<div class="fail-banner">`;
+    h += `<h2>Grade: ${grade} — Below 90% Threshold</h2>`;
+    h += `<p>You need a minimum of A- (90%) to pass. Read through every explanation below carefully. Each round explains why the best choice is correct and why the other options fall short. Once you understand the reasoning, retake the simulation.</p>`;
+    h += `<button class="btn btn-primary" onclick="location.reload()" style="margin-top:0.3rem">Retake Simulation</button>`;
+    h += `</div>`;
+  } else {
+    h += `<div class="pass-banner">`;
+    h += `<h2>Grade: ${grade} — ${pct}%</h2>`;
+    h += `<p>You passed the simulation. Review the detailed explanations below to consolidate your understanding.</p>`;
+    h += `</div>`;
+  }
+
+  h += `<div class="profile-card" style="margin-top:1.2rem">`;
+  h += `<div class="pc-icon">${profile.icon}</div>`;
+  h += `<div class="pc-name">${profile.name}</div>`;
+  h += `<div class="pc-desc">${profile.desc}</div>`;
+  h += `</div>`;
+
+  h += `<div class="round-review" style="margin-top:1.5rem"><h3>Detailed Explanations — All 10 Decisions</h3><p style="font-size:0.78rem;color:var(--muted);margin:-0.3rem 0 0.8rem">Every option is explained below. Click any round to expand.</p>`;
+
+  S.choices.forEach((c, i) => {
+    const r = ROUNDS[i];
+    const icon = c.isBest ? '✅' : '❌';
+    const maxPts = Math.max(...r.options.map(o => o.score));
+
+    h += `<div class="rr-card open" id="rrCard${i}">`;
+    h += `<div class="rr-card-header" onclick="document.getElementById('rrCard${i}').classList.toggle('open')">`;
+    h += `<span class="rr-icon">${icon}</span>`;
+    h += `<span class="rr-name">${r.num}: ${r.title}</span>`;
+    h += `<span class="rr-result ${c.isBest ? 'correct' : 'wrong'}">${c.score}/${maxPts} pts</span>`;
+    h += `<span class="rr-chevron">▼</span>`;
+    h += `</div>`;
+
+    h += `<div class="rr-card-body">`;
+
+    h += `<div class="rr-all-options">`;
+    r.options.forEach((opt, j) => {
+      const isBestOpt = j === r.best;
+      const isChosen = j === c.chosen;
+      let cls = 'rr-opt';
+      if (isBestOpt) cls += ' is-best';
+      if (isChosen) cls += ' is-yours';
+
+      h += `<div class="${cls}">`;
+      h += `<div class="rr-opt-header">`;
+      h += `<div class="rr-opt-letter">${opt.letter}</div>`;
+      h += `<div class="rr-opt-title">${opt.title}</div>`;
+      h += `<div class="rr-opt-tags">`;
+      if (isBestOpt) h += `<span class="rr-opt-tag best">Best</span>`;
+      if (isChosen) h += `<span class="rr-opt-tag yours">Yours</span>`;
+      h += `<span class="rr-opt-tag score-tag">${opt.score}/${maxPts}</span>`;
+      h += `</div></div>`;
+      h += `<p>${opt.feedback}</p>`;
+      h += `</div>`;
+    });
+    h += `</div>`;
+
+    if (r.concept) {
+      h += `<div class="rr-concept"><strong>Krajewski Concept: ${r.concept.name}</strong>${r.concept.text}</div>`;
+    }
+
+    h += `</div></div>`;
+  });
+  h += `</div>`;
+
+  h += `<div class="takeaways"><h3>Key Takeaways</h3><ol>`;
+  h += `<li>Amplification compounds multiplicatively across echelons — long chains suffer disproportionately.</li>`;
+  h += `<li>Nobody in the chain behaves irrationally. The bullwhip emerges from locally sensible decisions made on distorted information.</li>`;
+  h += `<li>Forecasting refinement delivers large early gains, then hits a floor it cannot break through.</li>`;
+  h += `<li>Order batching driven by freight economics can do more damage than the ordering rule itself.</li>`;
+  h += `<li>Trade promotions are usually the largest self-inflicted source of amplification in consumer goods.</li>`;
+  h += `<li>Proportional allocation during shortage guarantees order inflation. Allocate on past sales instead.</li>`;
+  h += `<li>Lead time is an amplifier, not merely a delay. Reducing it is a bullwhip countermeasure.</li>`;
+  h += `<li><strong>Information sharing outperforms every other intervention combined</strong>, because it removes the cause rather than damping the effect.</li>`;
+  h += `</ol></div>`;
+
+  h += `<div style="text-align:center;margin-top:1.5rem">`;
+  h += `<button class="btn ${passed ? 'btn-neem' : 'btn-primary'}" onclick="location.reload()">${passed ? 'Retake Simulation' : 'Retake Simulation (Required)'}</button>`;
+  h += `</div>`;
+
+  h += `<div style="text-align:center;margin-top:1rem;font-size:0.75rem;color:var(--muted)">`;
+  h += `Reference: Krajewski, Malhotra & Ritzman — Operations Management (8th ed.), Chapter 12<br>`;
+  h += `SimuLok AI × Prof. Indrajit — IIT Bombay`;
+  h += `</div>`;
+
+  document.getElementById('resultsContent').innerHTML = h;
+}
+</script>

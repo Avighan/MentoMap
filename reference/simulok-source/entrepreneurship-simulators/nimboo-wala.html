@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NimbooWala — Campus Lemonade Empire</title>
+</head>
+<body>
+<style>
+:root {
+  --saffron: #D97B2B;
+  --saffron-light: #F5DFC4;
+  --saffron-glow: rgba(217,123,43,0.12);
+  --neem: #1A8A5C;
+  --neem-light: #D0F0E0;
+  --loss: #C0392B;
+  --loss-light: #FADBD8;
+  --ink: #1C2233;
+  --ink-soft: #3A3F4E;
+  --surface: #F4F1EB;
+  --card: #FFFFFF;
+  --card-border: #E4E0D8;
+  --muted: #7E8490;
+  --muted-light: #B8BCC6;
+  --input-bg: #F9F7F3;
+  --shadow: rgba(28,34,51,0.06);
+  --shadow-md: rgba(28,34,51,0.10);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+}}
+:root[data-theme="dark"]{
+  --saffron:#E8923E;--saffron-light:#3D2A14;--saffron-glow:rgba(232,146,62,0.10);
+  --neem:#2EBB7D;--neem-light:#132E22;--loss:#E74C3C;--loss-light:#3D1A16;
+  --ink:#E2DFD8;--ink-soft:#B0ADA6;--surface:#0E1117;--card:#181D28;
+  --card-border:#2A2F3A;--muted:#6B6E78;--muted-light:#3A3D46;
+  --input-bg:#1E2330;--shadow:rgba(0,0,0,0.18);--shadow-md:rgba(0,0,0,0.28);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);color:var(--ink);font-family:system-ui,-apple-system,sans-serif;line-height:1.55;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.2;text-wrap:balance}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-0.02em}
+h2{font-size:clamp(1.2rem,2.5vw,1.5rem);letter-spacing:-0.01em}
+h3{font-size:1.05rem}
+.mono{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-variant-numeric:tabular-nums}
+
+/* Progress strip */
+.progress-strip{position:fixed;top:0;left:0;right:0;height:4px;background:var(--card-border);z-index:100}
+.progress-strip-fill{height:100%;background:var(--saffron);transition:width 0.5s ease;border-radius:0 2px 2px 0}
+
+/* Header */
+.game-header{position:fixed;top:4px;left:0;right:0;z-index:90;background:var(--card);border-bottom:1px solid var(--card-border);padding:0.5rem 1.2rem;display:flex;align-items:center;gap:0.75rem}
+.game-header .brand{display:flex;align-items:center;gap:0.5rem;font-weight:700;font-size:0.9rem;text-decoration:none;color:var(--ink)}
+.game-header .brand svg{flex-shrink:0}
+.step-badge{display:inline-block;background:var(--saffron-glow);color:var(--saffron);font-size:0.7rem;font-weight:700;padding:0.25em 0.7em;border-radius:3px;letter-spacing:0.04em}
+.game-header .day-label{font-family:Georgia,serif;font-weight:700;font-size:0.85rem;white-space:nowrap;margin-left:auto}
+.game-header .day-label span{color:var(--saffron)}
+
+/* Round rail */
+.round-rail{display:flex;gap:5px;align-items:center;justify-content:center;padding:0.6rem 0;margin-bottom:0.6rem}
+.round-dot{width:10px;height:10px;border-radius:50%;background:var(--muted-light);transition:all 0.3s ease;cursor:default;position:relative}
+.round-dot.done{background:var(--neem)}
+.round-dot.current{background:var(--saffron);width:22px;border-radius:5px}
+.round-dot.shock{background:var(--loss);animation:shockPulse 1.2s ease infinite}
+@keyframes shockPulse{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,0.35)}50%{box-shadow:0 0 0 5px rgba(192,57,43,0)}}
+
+/* Metric pills */
+.metric-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.5rem;margin-bottom:1rem}
+.metric-pill{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:0.6rem 0.8rem;box-shadow:0 1px 4px var(--shadow);text-align:center;transition:transform 0.2s}
+.metric-pill .m-label{font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.metric-pill .m-value{font-family:ui-monospace,monospace;font-size:1.1rem;font-weight:800;font-variant-numeric:tabular-nums;color:var(--ink)}
+.metric-pill .m-delta{font-size:0.65rem;font-weight:700;margin-top:0.1rem}
+.metric-pill .m-delta.up{color:var(--neem)}
+.metric-pill .m-delta.down{color:var(--loss)}
+.metric-pill .m-delta.neutral{color:var(--muted)}
+.metric-pill.highlight{border-color:var(--saffron);background:var(--saffron-glow)}
+
+/* Event banners */
+.event-banner{padding:0.8rem 1rem;border-radius:var(--radius);margin-bottom:0.8rem;font-size:0.85rem;line-height:1.55;animation:fadeUp 0.4s ease;display:flex;align-items:flex-start;gap:0.6rem}
+.event-banner .eb-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.1rem}
+.event-banner .eb-text{flex:1}
+.event-banner .eb-text strong{display:block;margin-bottom:0.15rem;font-size:0.9rem}
+.event-banner.normal{background:var(--saffron-glow);border:1.5px solid var(--saffron)}
+.event-banner.normal strong{color:var(--saffron)}
+.event-banner.shock{background:var(--loss-light);border:1.5px solid var(--loss)}
+.event-banner.shock strong{color:var(--loss)}
+.event-banner.good{background:var(--neem-light);border:1.5px solid var(--neem)}
+.event-banner.good strong{color:var(--neem)}
+
+/* Scenario card */
+.scenario-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:0.8rem;box-shadow:0 2px 8px var(--shadow);animation:fadeUp 0.35s ease}
+.scenario-card .sc-tag{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:0.2em 0.6em;border-radius:3px;display:inline-block;margin-bottom:0.6rem;background:var(--saffron-glow);color:var(--saffron)}
+.scenario-card .sc-tag.shock-tag{background:var(--loss-light);color:var(--loss)}
+.scenario-card h2{margin-bottom:0.5rem}
+.scenario-card p{font-size:0.88rem;color:var(--ink-soft);line-height:1.65}
+
+/* Decision sections */
+.decision-section{margin-bottom:1rem;animation:fadeUp 0.4s ease}
+.decision-section .ds-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem}
+.decision-section .ds-label .ds-num{background:var(--saffron);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;flex-shrink:0}
+
+/* Option cards */
+.option-grid{display:grid;gap:0.5rem}
+.option-grid.cols-2{grid-template-columns:repeat(2,1fr)}
+.option-grid.cols-4{grid-template-columns:repeat(2,1fr)}
+@media(min-width:600px){.option-grid.cols-4{grid-template-columns:repeat(4,1fr)}}
+.option-card{display:flex;align-items:flex-start;gap:0.7rem;padding:0.7rem 0.9rem;background:var(--input-bg);border:1.5px solid var(--card-border);border-radius:var(--radius);cursor:pointer;text-align:left;width:100%;transition:border-color 0.15s,background 0.15s,transform 0.1s,box-shadow 0.15s;font-family:inherit;font-size:inherit;color:inherit}
+.option-card:hover{border-color:var(--saffron);transform:translateY(-1px);box-shadow:0 2px 8px var(--shadow)}
+.option-card.selected{border-color:var(--saffron);background:var(--saffron-glow);box-shadow:0 0 0 3px var(--saffron-glow)}
+.option-card .oc-letter{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;background:var(--card-border);color:var(--ink-soft);flex-shrink:0;transition:all 0.15s}
+.option-card.selected .oc-letter{background:var(--saffron);color:#fff}
+.option-card .oc-content{flex:1;min-width:0}
+.option-card .oc-title{font-weight:700;font-size:0.82rem;margin-bottom:0.1rem}
+.option-card .oc-desc{font-size:0.72rem;color:var(--muted);line-height:1.4}
+
+/* Slider */
+.slider-wrap{display:flex;align-items:center;gap:1rem;padding:0.4rem 0}
+.slider-wrap input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:6px;background:var(--card-border);border-radius:3px;outline:none}
+.slider-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--saffron);cursor:pointer;box-shadow:0 2px 6px rgba(217,123,43,0.3)}
+.slider-wrap input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--saffron);cursor:pointer;border:none}
+.slider-value{font-family:ui-monospace,monospace;font-weight:800;font-size:1.1rem;font-variant-numeric:tabular-nums;min-width:42px;text-align:center;color:var(--saffron)}
+.slider-cost{font-size:0.75rem;color:var(--muted);margin-top:0.2rem}
+
+/* Feedback boxes */
+.feedback-box{padding:0.8rem 1rem;border-radius:var(--radius);margin-bottom:0.8rem;font-size:0.82rem;line-height:1.55;animation:fadeUp 0.3s ease}
+.feedback-box.good-fb{background:var(--neem-light);border:1px solid var(--neem)}
+.feedback-box.good-fb strong{color:var(--neem)}
+.feedback-box.bad-fb{background:var(--loss-light);border:1px solid var(--loss)}
+.feedback-box.bad-fb strong{color:var(--loss)}
+.feedback-box.neutral-fb{background:var(--saffron-glow);border:1px solid var(--saffron)}
+.feedback-box.neutral-fb strong{color:var(--saffron)}
+.feedback-box strong{display:block;margin-bottom:0.2rem}
+.feedback-box p{color:var(--ink-soft)}
+
+/* Results screen */
+.results-wrap{max-width:700px;width:100%;margin:0 auto;text-align:center}
+.results-icon{width:80px;height:80px;border-radius:50%;margin:0 auto 1.2rem;display:flex;align-items:center;justify-content:center;font-size:36px}
+.results-icon.profit{background:var(--neem-light)}
+.results-icon.loss{background:var(--loss-light)}
+.results-wrap h1{margin-bottom:0.3rem}
+.results-wrap .r-sub{font-size:0.92rem;color:var(--ink-soft);margin-bottom:1.5rem;line-height:1.6}
+
+.results-headline{font-family:ui-monospace,monospace;font-size:clamp(2rem,5vw,3rem);font-weight:800;font-variant-numeric:tabular-nums;margin-bottom:0.3rem}
+.results-headline.positive{color:var(--neem)}
+.results-headline.negative{color:var(--loss)}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.6rem;margin-bottom:1.5rem;text-align:center}
+.stat-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:0.8rem;box-shadow:0 1px 4px var(--shadow)}
+.stat-card .sc-num{font-family:ui-monospace,monospace;font-size:1.2rem;font-weight:800;color:var(--saffron);font-variant-numeric:tabular-nums}
+.stat-card .sc-label{font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:0.15rem}
+
+/* Profile card */
+.profile-card{background:var(--card);border:2px solid var(--saffron);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.5rem;position:relative;text-align:center}
+.profile-card::before{content:'';position:absolute;top:5px;left:5px;right:5px;bottom:5px;border:1px solid var(--saffron-glow);border-radius:12px;pointer-events:none}
+.profile-card .pc-badge{font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--saffron);margin-bottom:0.6rem}
+.profile-card h2{margin-bottom:0.4rem}
+.profile-card p{font-size:0.85rem;color:var(--ink-soft);line-height:1.6;max-width:500px;margin:0 auto}
+
+/* Takeaways */
+.takeaways{text-align:left;background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:1.3rem 1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px var(--shadow)}
+.takeaways h3{font-size:1rem;margin-bottom:0.8rem;color:var(--saffron);display:flex;align-items:center;gap:0.5rem}
+.takeaways ol{padding-left:1.2rem;display:grid;gap:0.5rem}
+.takeaways li{font-size:0.82rem;color:var(--ink-soft);line-height:1.55}
+.takeaways li strong{color:var(--ink);font-weight:700}
+
+/* Round review */
+.round-review{text-align:left;margin-bottom:1.5rem}
+.round-review h3{font-size:1rem;margin-bottom:0.8rem;color:var(--saffron)}
+.rr-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);margin-bottom:0.5rem;box-shadow:0 1px 4px var(--shadow);overflow:hidden}
+.rr-header{padding:0.7rem 1rem;cursor:pointer;display:flex;align-items:center;gap:0.6rem;font-weight:700;font-size:0.85rem;transition:background 0.15s}
+.rr-header:hover{background:var(--input-bg)}
+.rr-header .rr-day{color:var(--saffron);min-width:50px}
+.rr-header .rr-profit{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums;margin-left:auto}
+.rr-header .rr-profit.positive{color:var(--neem)}
+.rr-header .rr-profit.negative{color:var(--loss)}
+.rr-header .rr-arrow{transition:transform 0.2s;color:var(--muted)}
+.rr-header.open .rr-arrow{transform:rotate(180deg)}
+.rr-body{display:none;padding:0.5rem 1rem 0.8rem;font-size:0.78rem;color:var(--ink-soft);line-height:1.55;border-top:1px solid var(--card-border)}
+.rr-body.open{display:block}
+.rr-body .rr-row{display:flex;justify-content:space-between;padding:0.15rem 0}
+.rr-body .rr-row span:last-child{font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink)}
+.rr-body .rr-tip{margin-top:0.4rem;padding:0.4rem 0.6rem;background:var(--saffron-glow);border-radius:var(--radius-sm);font-size:0.72rem;color:var(--saffron);font-weight:600}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:0.5em;font-family:system-ui,sans-serif;font-weight:600;font-size:0.9rem;padding:0.7em 1.6em;border:none;border-radius:var(--radius);cursor:pointer;transition:transform 0.12s,box-shadow 0.15s;text-decoration:none}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:var(--saffron);color:#fff;box-shadow:0 2px 8px rgba(217,123,43,0.25)}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(217,123,43,0.35)}
+.btn-secondary{background:var(--card);color:var(--ink);border:1.5px solid var(--card-border)}
+.btn-secondary:hover{border-color:var(--saffron)}
+.btn-neem{background:var(--neem);color:#fff;box-shadow:0 2px 8px rgba(26,138,92,0.25)}
+.btn-neem:hover{box-shadow:0 4px 16px rgba(26,138,92,0.35)}
+.btn-loss{background:var(--loss);color:#fff;box-shadow:0 2px 8px rgba(192,57,43,0.25)}
+.btn[disabled]{opacity:0.45;cursor:not-allowed;transform:none!important}
+
+/* Layout */
+#app{min-height:100vh}
+.screen{display:none}
+.screen.active{display:block}
+.game-area{padding:calc(44px + 0.8rem) 1.2rem 1.5rem;max-width:860px;width:100%;margin:0 auto}
+
+/* Title screen */
+.title-screen.active{display:block;padding:2.5rem 1.5rem;position:relative}
+.title-screen::before{content:'';position:absolute;top:-40%;left:-40%;width:180%;height:180%;background:radial-gradient(ellipse at 55% 35%,var(--saffron-glow) 0%,transparent 55%);pointer-events:none}
+.title-content{position:relative;z-index:1;max-width:700px;margin:0 auto;text-align:center}
+.title-content .eyebrow{display:inline-block;background:var(--neem);color:#fff;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:0.3em 0.9em;border-radius:3px;margin-bottom:1rem}
+.title-content h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:0.3rem}
+.title-content h1 em{color:var(--saffron);font-style:normal}
+.title-content .subtitle{font-family:Georgia,serif;font-style:italic;font-size:clamp(0.9rem,2vw,1.15rem);color:var(--muted);margin-bottom:1.5rem}
+.title-content .desc{max-width:560px;margin:0 auto 2rem;color:var(--ink-soft);font-size:0.88rem;line-height:1.65}
+
+.brief-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.8rem;margin-bottom:2rem;text-align:left;position:relative;z-index:1;max-width:700px;margin-left:auto;margin-right:auto}
+.brief-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:0.8rem 1rem;box-shadow:0 1px 4px var(--shadow)}
+.brief-card .bc-icon{font-size:1.2rem;margin-bottom:0.3rem}
+.brief-card .bc-title{font-weight:700;font-size:0.8rem;margin-bottom:0.15rem}
+.brief-card .bc-desc{font-size:0.72rem;color:var(--muted);line-height:1.45}
+
+.cta-area{text-align:center;position:relative;z-index:1}
+.cta-meta{font-size:0.75rem;color:var(--muted);margin-top:0.8rem}
+
+/* Competitor info */
+.competitor-info{background:var(--input-bg);border:1.5px dashed var(--card-border);border-radius:var(--radius);padding:0.8rem 1rem;margin-bottom:0.8rem;font-size:0.82rem;display:flex;align-items:center;gap:0.8rem}
+.competitor-info .ci-icon{font-size:1.5rem}
+.competitor-info .ci-name{font-weight:700;color:var(--loss);font-size:0.88rem}
+.competitor-info .ci-details{color:var(--ink-soft);line-height:1.5}
+
+/* Action bar */
+.action-bar{display:flex;justify-content:flex-end;gap:0.8rem;margin-top:0.8rem;padding-top:0.8rem;border-top:1px solid var(--card-border)}
+
+/* Day results */
+.day-results{animation:fadeUp 0.4s ease}
+.dr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.5rem;margin-bottom:0.8rem}
+.dr-item{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:0.6rem;text-align:center}
+.dr-item .dr-val{font-family:ui-monospace,monospace;font-size:1rem;font-weight:800;font-variant-numeric:tabular-nums}
+.dr-item .dr-val.positive{color:var(--neem)}
+.dr-item .dr-val.negative{color:var(--loss)}
+.dr-item .dr-lbl{font-size:0.6rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:0.15rem}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Responsive */
+@media(max-width:640px){
+  .title-screen{padding:1.5rem 1rem}
+  .game-area{padding:calc(44px + 0.6rem) 0.8rem 1rem}
+  .metric-strip{grid-template-columns:repeat(3,1fr)}
+  .option-grid.cols-2,.option-grid.cols-4{grid-template-columns:1fr}
+  .brief-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .game-header .day-label{display:none}
+  .dr-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* Scroll */
+html{scroll-behavior:smooth}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--muted-light);border-radius:3px}
+</style>
+
+<div id="app">
+  <div class="progress-strip"><div class="progress-strip-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="game-header">
+    <a class="brand" href="index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.15"/>
+        <path d="M14 14h7v7h-7z" stroke="var(--saffron)" stroke-width="1.5" fill="var(--saffron)" opacity="0.35"/>
+        <path d="M6.5 6.5h0M17.5 6.5h0M6.5 17.5h0M17.5 17.5h0" stroke="var(--saffron)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      NimbooWala
+    </a>
+    <span class="step-badge" id="stepBadge">Welcome</span>
+    <div class="day-label" id="dayLabel"></div>
+  </div>
+
+  <!-- TITLE SCREEN -->
+  <div class="screen title-screen active" id="titleScreen">
+    <div class="title-content">
+      <div class="eyebrow">Entrepreneurship Simulator</div>
+      <h1>Build Your <em>NimbooWala</em> Empire</h1>
+      <div class="subtitle">From a lemon, a dream, and &#8377;5,000 in your pocket</div>
+      <p class="desc">You are Priya, a 2nd-year engineering student at a Pune college. The annual fest "Technovanza" starts tomorrow. You have 8 days to turn your savings into a thriving lemonade business. Every decision matters — pricing, inventory, location, marketing, and how you handle surprises.</p>
+    </div>
+
+    <div class="brief-grid">
+      <div class="brief-card">
+        <div class="bc-icon">&#128176;</div>
+        <div class="bc-title">Unit Economics</div>
+        <div class="bc-desc">Learn cost per glass, margins, and break-even before setting prices</div>
+      </div>
+      <div class="brief-card">
+        <div class="bc-icon">&#128200;</div>
+        <div class="bc-title">Demand Forecasting</div>
+        <div class="bc-desc">Prepare what you can sell, not what you hope to sell</div>
+      </div>
+      <div class="brief-card">
+        <div class="bc-icon">&#127758;</div>
+        <div class="bc-title">Location Strategy</div>
+        <div class="bc-desc">The best product fails in the wrong spot</div>
+      </div>
+      <div class="brief-card">
+        <div class="bc-icon">&#9889;</div>
+        <div class="bc-title">Crisis Management</div>
+        <div class="bc-desc">Rain, rivals, viral posts — adapt or freeze</div>
+      </div>
+      <div class="brief-card">
+        <div class="bc-icon">&#11088;</div>
+        <div class="bc-title">Brand Building</div>
+        <div class="bc-desc">Reputation compounds — quality today pays off tomorrow</div>
+      </div>
+      <div class="brief-card">
+        <div class="bc-icon">&#128640;</div>
+        <div class="bc-title">Scaling Up</div>
+        <div class="bc-desc">Think beyond the fest — can this become a real business?</div>
+      </div>
+    </div>
+
+    <div class="cta-area">
+      <button class="btn btn-primary" onclick="startGame()">
+        Start Day 1
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <div class="cta-meta">~15 minutes &middot; 8 rounds &middot; 2 shocks &middot; Starting cash: &#8377;5,000</div>
+    </div>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div class="screen" id="gameScreen">
+    <div class="game-area">
+      <div class="round-rail" id="roundRail"></div>
+      <div class="metric-strip" id="metricStrip"></div>
+      <div id="gameContent"></div>
+      <div class="action-bar" id="actionBar"></div>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="screen" id="resultsScreen">
+    <div class="game-area">
+      <div id="resultsContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   NIMBOOWALA — Campus Lemonade Empire
+   Complete Game Engine
+   ═══════════════════════════════════════════════════ */
+
+// ─── GAME STATE ─────────────────────────────────
+const G = {
+  day: 0,          // 0 = title, 1-8 = game days
+  phase: 'title',  // title | decide | results | feedback | final
+  cash: 5000,
+  rating: 3.0,
+  totalRevenue: 0,
+  totalProfit: 0,
+  totalSold: 0,
+  totalWaste: 0,
+  totalCustomers: 0,
+  history: [],     // per-day results
+  decisions: {},   // current day decisions
+  bulkOrderAccepted: false,
+  stayOpenDay7: true,
+  cafeAgreed: false,
+};
+
+// ─── GAME DATA ──────────────────────────────────
+const DAYS = [
+  null, // index 0 unused
+  { base_demand: 40,  weather: 1.0,  weatherLabel: 'Sunny',     isShock: false },
+  { base_demand: 55,  weather: 1.0,  weatherLabel: 'Sunny',     isShock: false },
+  { base_demand: 70,  weather: 1.0,  weatherLabel: 'Sunny',     isShock: false },
+  { base_demand: 80,  weather: 1.0,  weatherLabel: 'Clear',     isShock: false },
+  { base_demand: 100, weather: 1.2,  weatherLabel: 'Scorching', isShock: false },
+  { base_demand: 120, weather: 1.3,  weatherLabel: 'Scorching', isShock: true  },
+  { base_demand: 90,  weather: 0.4,  weatherLabel: 'Heavy Rain',isShock: true  },
+  { base_demand: 150, weather: 1.1,  weatherLabel: 'Pleasant',  isShock: false },
+];
+
+const LOCATIONS = [
+  { id: 'main_gate',    name: 'Main Gate',     mult: 1.2, rent: 0, letter: 'A' },
+  { id: 'canteen',      name: 'Canteen Area',  mult: 1.0, rent: 0, letter: 'B' },
+  { id: 'hostel',       name: 'Hostel Road',   mult: 0.7, rent: 0, letter: 'C' },
+  { id: 'workshop',     name: 'Workshop Area', mult: 0.5, rent: 0, letter: 'D' },
+];
+
+const RECIPES = [
+  { id: 'basic',    name: 'Basic Nimbu Pani',      cost: 5,  qualityDelta: -0.1, letter: 'A' },
+  { id: 'standard', name: 'Standard (Masala)',      cost: 8,  qualityDelta: 0,    letter: 'B' },
+  { id: 'premium',  name: 'Premium (Mint+Ginger)',  cost: 12, qualityDelta: 0.1,  letter: 'C' },
+  { id: 'exotic',   name: 'Exotic (Jaljeera Twist)',cost: 15, qualityDelta: 0.2,  letter: 'D' },
+];
+
+const PRICES = [
+  { value: 15, label: '&#8377;15', letter: 'A' },
+  { value: 20, label: '&#8377;20', letter: 'B' },
+  { value: 25, label: '&#8377;25', letter: 'C' },
+  { value: 30, label: '&#8377;30', letter: 'D' },
+];
+
+const MARKETING = [
+  { id: 'none',      name: 'No Marketing',           cost: 0,   boost: 1.0,  letter: 'A' },
+  { id: 'flyers',    name: 'Flyers (campus)',         cost: 200, boost: 1.15, letter: 'B' },
+  { id: 'instagram', name: 'Instagram Ads',           cost: 300, boost: 1.25, letter: 'C' },
+  { id: 'both',      name: 'Flyers + Instagram',      cost: 450, boost: 1.4,  letter: 'D' },
+];
+
+function getPriceElasticity(price) {
+  if (price <= 15) return 1.3;
+  if (price <= 20) return 1.1;
+  if (price <= 25) return 1.0;
+  if (price <= 30) return 0.85;
+  if (price <= 40) return 0.6;
+  return 0.4;
+}
+
+function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+function fmt(n) { return n < 0 ? '-₹' + Math.abs(Math.round(n)).toLocaleString('en-IN') : '₹' + Math.round(n).toLocaleString('en-IN'); }
+function fmtPlus(n) { return (n >= 0 ? '+' : '') + fmt(n); }
+
+// ─── DAY NARRATIVES ─────────────────────────────
+const NARRATIVES = [
+  null,
+  // Day 1
+  {
+    title: 'Day 1: Setup Day',
+    tag: 'Day 1 of 8',
+    narrative: 'Day 1 of Technovanza! The campus is buzzing with energy. Students from other colleges are pouring in. You\'ve secured your NimbooWala stall permit. Time to make your first business decisions. Choose wisely — today sets the foundation.',
+  },
+  // Day 2
+  {
+    title: 'Day 2: Finding Your Feet',
+    tag: 'Day 2 of 8',
+    narrative: null, // dynamic based on day 1
+  },
+  // Day 3
+  {
+    title: 'Day 3: The Competitor',
+    tag: 'Day 3 of 8',
+    narrative: 'Uh oh — a rival stall "FreshSqueeze" has opened near the canteen! They\'re selling at ₹15/glass with decent quality. The competition is heating up. Will you lower prices, move location, improve quality, or double down on marketing?',
+    hasCompetitor: true,
+  },
+  // Day 4
+  {
+    title: 'Day 4: Bulk Order Opportunity',
+    tag: 'Day 4 of 8',
+    narrative: 'The fest organizing committee approaches you: "We need 50 glasses for our volunteer team lunch. We can pay ₹12 per glass — take it or leave it." It\'s below your retail price, but it\'s guaranteed volume. Classic business dilemma: volume vs. margin.',
+    hasBulkOrder: true,
+  },
+  // Day 5
+  {
+    title: 'Day 5: Peak Heat',
+    tag: 'Day 5 of 8',
+    narrative: 'It\'s 42°C outside! Everyone on campus is dying for cold drinks. The water cooler lines are insane. This is your golden opportunity — demand is through the roof. Prepare extra inventory and make it count!',
+  },
+  // Day 6 (SHOCK)
+  {
+    title: 'Day 6: The Social Media Moment',
+    tag: 'SHOCK',
+    tagClass: 'shock-tag',
+    narrative: null, // dynamic based on rating
+    isShock: true,
+  },
+  // Day 7 (SHOCK)
+  {
+    title: 'Day 7: Monsoon Hits',
+    tag: 'SHOCK',
+    tagClass: 'shock-tag',
+    narrative: 'Heavy rain since morning! Puddles everywhere, footfall is down 60%. Half the stalls have already shut down. The question is — do you stay open and serve the brave few, or shut for the day and save your costs?',
+    isShock: true,
+    hasShutDecision: true,
+  },
+  // Day 8
+  {
+    title: 'Day 8: Grand Finale',
+    tag: 'Day 8 of 8',
+    narrative: 'Last day of Technovanza! The campus is absolutely packed — everyone wants one final taste before it\'s over. Go all-out today. Also, a local cafe owner has been watching your stall all week...',
+    hasCafeOffer: true,
+  },
+];
+
+// ─── UI RENDERING ───────────────────────────────
+function show(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const pct = G.day === 0 ? 0 : ((G.day - 1) / 8 * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function updateHeader() {
+  const badge = document.getElementById('stepBadge');
+  const label = document.getElementById('dayLabel');
+  if (G.phase === 'title') {
+    badge.textContent = 'Welcome';
+    label.innerHTML = '';
+  } else if (G.phase === 'final') {
+    badge.textContent = 'Results';
+    label.innerHTML = 'Technovanza <span>Complete</span>';
+  } else {
+    badge.textContent = G.phase === 'decide' ? 'Decisions' : 'Outcome';
+    label.innerHTML = 'Day <span>' + G.day + '</span> of 8';
+  }
+}
+
+function renderRoundRail() {
+  const rail = document.getElementById('roundRail');
+  let html = '';
+  for (let i = 1; i <= 8; i++) {
+    let cls = 'round-dot';
+    if (i < G.day) cls += ' done';
+    else if (i === G.day) {
+      cls += DAYS[i].isShock ? ' shock' : ' current';
+    }
+    html += '<div class="' + cls + '" title="Day ' + i + '"></div>';
+  }
+  rail.innerHTML = html;
+}
+
+function renderMetrics() {
+  const strip = document.getElementById('metricStrip');
+  const todayRev = G.history.length > 0 ? G.history[G.history.length - 1].revenue : 0;
+  const todayInv = G.history.length > 0 ? G.history[G.history.length - 1].inventory : 0;
+  const prevProfit = G.history.length > 1 ? G.history[G.history.length - 2].profit : null;
+  const curProfit = G.history.length > 0 ? G.history[G.history.length - 1].profit : null;
+
+  const metrics = [
+    { icon: '💰', label: 'Cash', value: fmt(G.cash) },
+    { icon: '📊', label: 'Revenue (today)', value: fmt(todayRev) },
+    { icon: '📦', label: 'Last Inventory', value: todayInv.toString() },
+    { icon: '⭐', label: 'Rating', value: G.rating.toFixed(1) + '/5.0' },
+    { icon: '👥', label: 'Customers', value: G.totalCustomers.toString() },
+    { icon: '📈', label: 'Total Profit', value: fmt(G.totalProfit), highlight: true },
+  ];
+
+  strip.innerHTML = metrics.map(m => {
+    let deltaHtml = '';
+    if (curProfit !== null && m.label === 'Total Profit') {
+      const cl = G.totalProfit >= 0 ? 'up' : 'down';
+      deltaHtml = '<div class="m-delta ' + cl + '">' + (G.totalProfit >= 0 ? '▲' : '▼') + ' ' + fmt(Math.abs(G.totalProfit)) + '</div>';
+    }
+    return '<div class="metric-pill' + (m.highlight && G.totalProfit > 0 ? ' highlight' : '') + '">' +
+      '<div class="m-label">' + m.icon + ' ' + m.label + '</div>' +
+      '<div class="m-value">' + m.value + '</div>' +
+      deltaHtml +
+      '</div>';
+  }).join('');
+}
+
+// ─── GAME START ─────────────────────────────────
+function startGame() {
+  G.day = 1;
+  G.phase = 'decide';
+  updateProgress();
+  updateHeader();
+  show('gameScreen');
+  renderRoundRail();
+  renderMetrics();
+  renderDecisionPhase();
+}
+
+// ─── DECISION PHASE ─────────────────────────────
+function renderDecisionPhase() {
+  G.phase = 'decide';
+  G.decisions = { location: null, recipe: null, price: null, quantity: 50, marketing: null, bulkOrder: null, stayOpen: null, cafeOffer: null };
+  updateHeader();
+  renderRoundRail();
+
+  const day = G.day;
+  const narr = NARRATIVES[day];
+  let html = '';
+
+  // Show previous day results if day > 1
+  if (day > 1 && G.history.length > 0) {
+    const prev = G.history[G.history.length - 1];
+    html += renderDayResultsSummary(prev);
+  }
+
+  // Day 6 narrative depends on rating
+  let narrativeText = narr.narrative;
+  if (day === 6) {
+    if (G.rating > 3.5) {
+      narrativeText = 'A popular college Instagram page just posted a reel about your stall! They loved your drinks and called NimbooWala "the must-try at Technovanza." Your rating is strong (' + G.rating.toFixed(1) + '/5), so this could be a massive demand boost. Prepare for a rush!';
+    } else {
+      narrativeText = 'A popular college Instagram page posted a reel about your stall... but they weren\'t impressed. "Overpriced and meh quality" was the verdict. With your current rating at ' + G.rating.toFixed(1) + '/5, this could tank your demand today. Damage control time.';
+    }
+  }
+  if (day === 2) {
+    const prev = G.history[0];
+    const adjective = G.rating >= 3.5 ? 'pretty good' : G.rating >= 2.5 ? 'okay' : 'not great';
+    narrativeText = 'Day 2 and word is spreading! A few regulars are forming. You overheard someone say: "That NimbooWala stall is ' + adjective + '." Yesterday you sold ' + prev.sold + ' glasses and earned ' + fmt(prev.revenue) + ' in revenue. Use that data to make smarter choices today.';
+  }
+
+  // Event banner for shocks
+  if (narr.isShock) {
+    html += '<div class="event-banner shock"><div class="eb-icon">⚡</div><div class="eb-text"><strong>SHOCK EVENT</strong>' + (day === 6 ? 'Social media spotlight!' : 'Heavy monsoon rain!') + '</div></div>';
+  } else if (day === 4) {
+    html += '<div class="event-banner normal"><div class="eb-icon">📦</div><div class="eb-text"><strong>Special Event</strong>The fest committee wants to place a bulk order!</div></div>';
+  } else if (day === 5) {
+    html += '<div class="event-banner normal"><div class="eb-icon">☀️</div><div class="eb-text"><strong>Heatwave!</strong>Temperature hit 42°C. Cold drink demand is soaring.</div></div>';
+  } else if (day === 8) {
+    html += '<div class="event-banner good"><div class="eb-icon">🎉</div><div class="eb-text"><strong>Grand Finale</strong>Last day! The campus is packed. Make it count.</div></div>';
+  }
+
+  // Scenario card
+  html += '<div class="scenario-card">';
+  html += '<div class="sc-tag ' + (narr.tagClass || '') + '">' + narr.tag + '</div>';
+  html += '<h2>' + narr.title + '</h2>';
+  html += '<p>' + narrativeText + '</p>';
+  html += '</div>';
+
+  // Competitor info on Day 3+
+  if (day >= 3) {
+    html += '<div class="competitor-info">';
+    html += '<div class="ci-icon">🏪</div>';
+    html += '<div><div class="ci-name">FreshSqueeze (Competitor)</div>';
+    html += '<div class="ci-details">₹15/glass · Standard recipe · Canteen Area · Active since Day 3</div></div>';
+    html += '</div>';
+  }
+
+  // Day 7 shut decision
+  if (narr.hasShutDecision) {
+    html += '<div class="decision-section"><div class="ds-label"><span class="ds-num">!</span> CRITICAL DECISION</div>';
+    html += '<div class="option-grid cols-2">';
+    html += '<button class="option-card" onclick="selectDecision(\'stayOpen\',true,this)"><div class="oc-letter">A</div><div class="oc-content"><div class="oc-title">Stay Open</div><div class="oc-desc">Low demand (0.4x) but +0.3 rating for dedication. Shows grit.</div></div></button>';
+    html += '<button class="option-card" onclick="selectDecision(\'stayOpen\',false,this)"><div class="oc-letter">B</div><div class="oc-content"><div class="oc-title">Shut for the Day</div><div class="oc-desc">Zero revenue, zero cost. No rating change. Play it safe.</div></div></button>';
+    html += '</div></div>';
+  }
+
+  // Day 4 bulk order decision
+  if (narr.hasBulkOrder) {
+    html += '<div class="decision-section"><div class="ds-label"><span class="ds-num">!</span> BULK ORDER</div>';
+    html += '<div class="option-grid cols-2">';
+    html += '<button class="option-card" onclick="selectDecision(\'bulkOrder\',true,this)"><div class="oc-letter">A</div><div class="oc-content"><div class="oc-title">Accept Order</div><div class="oc-desc">Guaranteed 50 glasses at ₹12 each = ₹600 revenue. Below retail but certain.</div></div></button>';
+    html += '<button class="option-card" onclick="selectDecision(\'bulkOrder\',false,this)"><div class="oc-letter">B</div><div class="oc-content"><div class="oc-title">Decline Order</div><div class="oc-desc">Sell everything at full retail price. Higher margin if demand is there.</div></div></button>';
+    html += '</div></div>';
+  }
+
+  // Day 8 cafe offer
+  if (narr.hasCafeOffer) {
+    html += '<div class="decision-section"><div class="ds-label"><span class="ds-num">!</span> SCALING OPPORTUNITY</div>';
+    html += '<div class="event-banner normal"><div class="eb-icon">☕</div><div class="eb-text"><strong>Cafe Owner Proposition</strong>"I love your brand. Want to supply NimbooWala at my cafe post-fest? I\'d need 100 glasses/day at ₹18/glass."</div></div>';
+    html += '<div class="option-grid cols-2">';
+    html += '<button class="option-card" onclick="selectDecision(\'cafeOffer\',true,this)"><div class="oc-letter">A</div><div class="oc-content"><div class="oc-title">Agree to Partner</div><div class="oc-desc">100 glasses/day at ₹18. Lower margin but steady post-fest income.</div></div></button>';
+    html += '<button class="option-card" onclick="selectDecision(\'cafeOffer\',false,this)"><div class="oc-letter">B</div><div class="oc-content"><div class="oc-title">Politely Decline</div><div class="oc-desc">Focus on what you know. The fest is your playground.</div></div></button>';
+    html += '</div></div>';
+  }
+
+  // Regular decisions (skip if Day 7 and user shuts)
+  if (!(day === 7)) {
+    html += renderRegularDecisions();
+  } else {
+    // Day 7: show regular decisions but they only apply if stayOpen is true
+    html += '<div id="day7Decisions" style="opacity:0.4;pointer-events:none">';
+    html += renderRegularDecisions();
+    html += '</div>';
+  }
+
+  document.getElementById('gameContent').innerHTML = html;
+
+  // Render action bar
+  document.getElementById('actionBar').innerHTML =
+    '<button class="btn btn-primary" id="submitBtn" onclick="submitDecisions()" disabled>' +
+    'Confirm Decisions <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>';
+
+  // Initialize slider
+  updateSlider();
+  checkSubmitReady();
+}
+
+function renderRegularDecisions() {
+  let html = '';
+
+  // 1. Location
+  html += '<div class="decision-section"><div class="ds-label"><span class="ds-num">1</span> LOCATION</div>';
+  html += '<div class="option-grid cols-4">';
+  LOCATIONS.forEach(loc => {
+    html += '<button class="option-card" onclick="selectDecision(\'location\',\'' + loc.id + '\',this)">';
+    html += '<div class="oc-letter">' + loc.letter + '</div>';
+    html += '<div class="oc-content"><div class="oc-title">' + loc.name + '</div>';
+    html += '<div class="oc-desc">' + loc.mult + 'x demand</div></div></button>';
+  });
+  html += '</div></div>';
+
+  // 2. Recipe
+  html += '<div class="decision-section"><div class="ds-label"><span class="ds-num">2</span> RECIPE</div>';
+  html += '<div class="option-grid cols-4">';
+  RECIPES.forEach(r => {
+    html += '<button class="option-card" onclick="selectDecision(\'recipe\',\'' + r.id + '\',this)">';
+    html += '<div class="oc-letter">' + r.letter + '</div>';
+    html += '<div class="oc-content"><div class="oc-title">' + r.name + '</div>';
+    html += '<div class="oc-desc">₹' + r.cost + '/glass · Quality ' + (r.qualityDelta >= 0 ? '+' : '') + r.qualityDelta.toFixed(1) + '</div></div></button>';
+  });
+  html += '</div></div>';
+
+  // 3. Price
+  html += '<div class="decision-section"><div class="ds-label"><span class="ds-num">3</span> PRICE PER GLASS</div>';
+  html += '<div class="option-grid cols-4">';
+  PRICES.forEach(p => {
+    html += '<button class="option-card" onclick="selectDecision(\'price\',' + p.value + ',this)">';
+    html += '<div class="oc-letter">' + p.letter + '</div>';
+    html += '<div class="oc-content"><div class="oc-title">' + p.label + '</div>';
+    html += '<div class="oc-desc">Elasticity ' + getPriceElasticity(p.value).toFixed(2) + 'x</div></div></button>';
+  });
+  html += '</div></div>';
+
+  // 4. Quantity (slider)
+  html += '<div class="decision-section"><div class="ds-label"><span class="ds-num">4</span> GLASSES TO PREPARE</div>';
+  html += '<div class="slider-wrap">';
+  html += '<span style="font-size:0.75rem;color:var(--muted)">20</span>';
+  html += '<input type="range" id="qtySlider" min="20" max="200" value="50" step="5" oninput="updateSlider()">';
+  html += '<span style="font-size:0.75rem;color:var(--muted)">200</span>';
+  html += '<div class="slider-value" id="qtyValue">50</div>';
+  html += '</div>';
+  html += '<div class="slider-cost" id="qtyCost">Cost: calculating...</div>';
+  html += '</div>';
+
+  // 5. Marketing
+  html += '<div class="decision-section"><div class="ds-label"><span class="ds-num">5</span> MARKETING</div>';
+  html += '<div class="option-grid cols-4">';
+  MARKETING.forEach(m => {
+    html += '<button class="option-card" onclick="selectDecision(\'marketing\',\'' + m.id + '\',this)">';
+    html += '<div class="oc-letter">' + m.letter + '</div>';
+    html += '<div class="oc-content"><div class="oc-title">' + m.name + '</div>';
+    html += '<div class="oc-desc">' + (m.cost > 0 ? '₹' + m.cost + ' · ' : '') + m.boost + 'x boost</div></div></button>';
+  });
+  html += '</div></div>';
+
+  return html;
+}
+
+function selectDecision(key, value, el) {
+  G.decisions[key] = value;
+
+  // Visual: deselect siblings, select this
+  const parent = el.parentElement;
+  parent.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Day 7: toggle regular decisions visibility
+  if (key === 'stayOpen') {
+    const d7 = document.getElementById('day7Decisions');
+    if (d7) {
+      if (value === true) {
+        d7.style.opacity = '1';
+        d7.style.pointerEvents = 'auto';
+      } else {
+        d7.style.opacity = '0.4';
+        d7.style.pointerEvents = 'none';
+        // Auto-fill defaults for shut day
+        G.decisions.location = 'canteen';
+        G.decisions.recipe = 'standard';
+        G.decisions.price = 20;
+        G.decisions.marketing = 'none';
+      }
+    }
+  }
+
+  updateSlider();
+  checkSubmitReady();
+}
+
+function updateSlider() {
+  const slider = document.getElementById('qtySlider');
+  const valEl = document.getElementById('qtyValue');
+  const costEl = document.getElementById('qtyCost');
+  if (!slider) return;
+
+  const qty = parseInt(slider.value);
+  G.decisions.quantity = qty;
+  if (valEl) valEl.textContent = qty;
+
+  const recipe = RECIPES.find(r => r.id === G.decisions.recipe);
+  const costPerGlass = recipe ? recipe.cost : 8;
+  const totalCost = qty * costPerGlass;
+  if (costEl) costEl.innerHTML = 'Cost: ₹' + totalCost.toLocaleString('en-IN') + ' (₹' + costPerGlass + ' × ' + qty + ') · ' + (totalCost <= G.cash ? '<span style="color:var(--neem)">Affordable</span>' : '<span style="color:var(--loss)">Over budget!</span>');
+
+  checkSubmitReady();
+}
+
+function checkSubmitReady() {
+  const btn = document.getElementById('submitBtn');
+  if (!btn) return;
+
+  const d = G.decisions;
+  let ready = false;
+
+  if (G.day === 7) {
+    if (d.stayOpen === false) {
+      ready = true;
+    } else if (d.stayOpen === true) {
+      ready = d.location && d.recipe && d.price && d.marketing;
+    }
+  } else {
+    ready = d.location && d.recipe && d.price && d.marketing;
+    if (NARRATIVES[G.day].hasBulkOrder && d.bulkOrder === null) ready = false;
+    if (NARRATIVES[G.day].hasShutDecision && d.stayOpen === null) ready = false;
+    if (NARRATIVES[G.day].hasCafeOffer && d.cafeOffer === null) ready = false;
+  }
+
+  btn.disabled = !ready;
+}
+
+// ─── SIMULATION ENGINE ──────────────────────────
+function submitDecisions() {
+  const d = G.decisions;
+  const dayData = DAYS[G.day];
+  const narr = NARRATIVES[G.day];
+
+  // Day 7 shut decision
+  if (G.day === 7 && d.stayOpen === false) {
+    const result = {
+      day: G.day,
+      shutDown: true,
+      revenue: 0, sold: 0, waste: 0, profit: 0, inventory: 0,
+      demand: 0, price: 0, costPerGlass: 0, marketingCost: 0,
+      ratingBefore: G.rating, ratingAfter: G.rating, ratingDelta: 0,
+      location: 'N/A', recipe: 'N/A', marketing: 'N/A',
+      weatherLabel: dayData.weatherLabel,
+      decisions: { ...d },
+    };
+    G.history.push(result);
+    renderFeedback(result);
+    return;
+  }
+
+  // Resolve all parameters
+  const location = LOCATIONS.find(l => l.id === d.location);
+  const recipe = RECIPES.find(r => r.id === d.recipe);
+  const marketing = MARKETING.find(m => m.id === d.marketing);
+  const price = d.price;
+  const quantity = d.quantity;
+
+  // Cost
+  const costPerGlass = recipe.cost;
+  const inventoryCost = quantity * costPerGlass;
+  const marketingCost = marketing.cost;
+
+  // Demand calculation
+  let demand = dayData.base_demand;
+  demand *= dayData.weather;
+  demand *= location.mult;
+  demand *= getPriceElasticity(price);
+  demand *= marketing.boost;
+  demand *= (G.rating / 3.0);
+
+  // Day 6 social media effect
+  if (G.day === 6) {
+    if (G.rating > 3.5) {
+      demand *= 1.5;
+    } else {
+      demand *= 0.6;
+    }
+  }
+
+  // Random variance 0.85 to 1.15
+  const variance = 0.85 + Math.random() * 0.30;
+  demand *= variance;
+  demand = Math.round(demand);
+
+  // Bulk order (Day 4)
+  let bulkRevenue = 0;
+  let bulkSold = 0;
+  if (G.day === 4 && d.bulkOrder === true) {
+    bulkSold = 50;
+    bulkRevenue = 50 * 12;
+  }
+
+  // Sales
+  const regularInventory = Math.max(0, quantity - bulkSold);
+  const regularSold = Math.min(demand, regularInventory);
+  const totalSold = regularSold + bulkSold;
+  const waste = Math.max(0, quantity - totalSold);
+
+  // Revenue
+  const regularRevenue = regularSold * price;
+  const revenue = regularRevenue + bulkRevenue;
+
+  // Profit
+  const cogs = quantity * costPerGlass;
+  const profit = revenue - cogs - marketingCost;
+
+  // Rating
+  const wastePenalty = waste > 20 ? 0.15 : waste > 10 ? 0.08 : 0;
+  const serviceDelta = totalSold >= demand * 0.9 ? 0.05 : -0.05;
+  let ratingDelta = recipe.qualityDelta + serviceDelta - wastePenalty;
+  // Day 7 stay open bonus
+  if (G.day === 7 && d.stayOpen === true) {
+    ratingDelta += 0.3;
+  }
+  const newRating = clamp(G.rating + ratingDelta, 1.0, 5.0);
+  const ratingBefore = G.rating;
+
+  // Update state
+  G.cash += profit;
+  G.rating = newRating;
+  G.totalRevenue += revenue;
+  G.totalProfit += profit;
+  G.totalSold += totalSold;
+  G.totalWaste += waste;
+  G.totalCustomers += totalSold;
+  if (G.day === 4) G.bulkOrderAccepted = d.bulkOrder === true;
+  if (G.day === 7) G.stayOpenDay7 = d.stayOpen;
+  if (G.day === 8) G.cafeAgreed = d.cafeOffer === true;
+
+  const result = {
+    day: G.day,
+    shutDown: false,
+    revenue, sold: totalSold, regularSold, bulkSold, waste, profit, inventory: quantity,
+    demand, price, costPerGlass, marketingCost, cogs,
+    ratingBefore, ratingAfter: newRating, ratingDelta,
+    location: location.name, recipe: recipe.name, marketing: marketing.name,
+    weatherLabel: dayData.weatherLabel, variance: variance.toFixed(2),
+    decisions: { ...d },
+  };
+
+  G.history.push(result);
+  renderFeedback(result);
+}
+
+// ─── FEEDBACK PHASE ─────────────────────────────
+function renderFeedback(result) {
+  G.phase = 'feedback';
+  updateHeader();
+  updateProgress();
+  renderRoundRail();
+  renderMetrics();
+
+  let html = '';
+
+  // Day results summary
+  html += '<div class="scenario-card"><div class="sc-tag">Day ' + result.day + ' Results</div>';
+  html += '<h2>' + (result.shutDown ? 'You stayed in and saved costs' : (result.profit >= 0 ? 'A ' + (result.profit > 500 ? 'great' : 'decent') + ' day at the stall!' : 'Tough day — you lost money')) + '</h2></div>';
+
+  if (!result.shutDown) {
+    html += '<div class="day-results">';
+    html += '<div class="dr-grid">';
+    html += '<div class="dr-item"><div class="dr-val">' + result.sold + '</div><div class="dr-lbl">Glasses Sold</div></div>';
+    html += '<div class="dr-item"><div class="dr-val">' + fmt(result.revenue) + '</div><div class="dr-lbl">Revenue</div></div>';
+    html += '<div class="dr-item"><div class="dr-val ' + (result.profit >= 0 ? 'positive' : 'negative') + '">' + fmt(result.profit) + '</div><div class="dr-lbl">Profit</div></div>';
+    html += '<div class="dr-item"><div class="dr-val ' + (result.waste > 10 ? 'negative' : '') + '">' + result.waste + '</div><div class="dr-lbl">Wasted</div></div>';
+    html += '<div class="dr-item"><div class="dr-val">' + result.demand + '</div><div class="dr-lbl">Demand</div></div>';
+    html += '<div class="dr-item"><div class="dr-val">' + result.ratingAfter.toFixed(1) + '</div><div class="dr-lbl">Rating</div></div>';
+    html += '</div>';
+
+    // Feedback analysis
+    if (result.waste > 20) {
+      html += '<div class="feedback-box bad-fb"><strong>📦 Overstock Warning</strong><p>You wasted ' + result.waste + ' glasses. That\'s ' + fmt(result.waste * result.costPerGlass) + ' down the drain. Next time, match inventory to expected demand more carefully.</p></div>';
+    } else if (result.demand > result.inventory) {
+      html += '<div class="feedback-box neutral-fb"><strong>📈 Missed Sales</strong><p>Demand was ' + result.demand + ' but you only had ' + result.inventory + ' glasses. You left ' + fmt((result.demand - result.inventory) * result.price) + ' on the table. Consider preparing more tomorrow.</p></div>';
+    } else {
+      html += '<div class="feedback-box good-fb"><strong>✅ Good Inventory Management</strong><p>You matched supply to demand well. Only ' + result.waste + ' glasses wasted. Efficient!</p></div>';
+    }
+
+    if (result.profit < 0) {
+      html += '<div class="feedback-box bad-fb"><strong>📉 Loss Alert</strong><p>You lost ' + fmt(Math.abs(result.profit)) + ' today. Check your unit economics — cost per glass was ₹' + result.costPerGlass + ', and you charged ₹' + result.price + '. Factor in marketing cost of ' + fmt(result.marketingCost) + ' too.</p></div>';
+    }
+
+    if (result.ratingDelta > 0.1) {
+      html += '<div class="feedback-box good-fb"><strong>⭐ Rating Up!</strong><p>Your rating improved by ' + result.ratingDelta.toFixed(2) + ' to ' + result.ratingAfter.toFixed(1) + '/5. Quality and service are paying off. Higher ratings drive more demand in future rounds.</p></div>';
+    } else if (result.ratingDelta < -0.1) {
+      html += '<div class="feedback-box bad-fb"><strong>⭐ Rating Down</strong><p>Your rating dropped by ' + Math.abs(result.ratingDelta).toFixed(2) + ' to ' + result.ratingAfter.toFixed(1) + '/5. Waste and lower quality are hurting your reputation.</p></div>';
+    }
+
+    if (result.bulkSold > 0) {
+      html += '<div class="feedback-box neutral-fb"><strong>📦 Bulk Order Fulfilled</strong><p>You sold 50 glasses to the committee at ₹12 each = ' + fmt(result.bulkSold * 12) + '. Lower margin but guaranteed volume.</p></div>';
+    }
+
+    html += '</div>';
+  } else {
+    html += '<div class="feedback-box neutral-fb"><strong>🌧️ Shut for the Day</strong><p>Smart play or missed opportunity? No revenue, but no costs either. Your rating stays at ' + result.ratingAfter.toFixed(1) + '/5.</p></div>';
+  }
+
+  // Cash status
+  html += '<div class="feedback-box ' + (G.cash > 3000 ? 'good-fb' : G.cash > 1000 ? 'neutral-fb' : 'bad-fb') + '">';
+  html += '<strong>💰 Cash Position: ' + fmt(G.cash) + '</strong>';
+  html += '<p>' + (G.cash > 5000 ? 'You\'re in profit territory! More than your starting ₹5,000.' : G.cash > 3000 ? 'Solid cash position. Keep optimizing.' : G.cash > 1000 ? 'Getting tight. Watch your costs carefully.' : 'Dangerously low! Every rupee counts now.') + '</p></div>';
+
+  document.getElementById('gameContent').innerHTML = html;
+
+  // Action bar
+  if (G.day < 8) {
+    document.getElementById('actionBar').innerHTML =
+      '<button class="btn btn-primary" onclick="nextDay()">Continue to Day ' + (G.day + 1) + ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>';
+  } else {
+    document.getElementById('actionBar').innerHTML =
+      '<button class="btn btn-neem" onclick="showResults()">See Final Results <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>';
+  }
+}
+
+function renderDayResultsSummary(prev) {
+  if (prev.shutDown) {
+    return '<div class="feedback-box neutral-fb" style="margin-bottom:1rem"><strong>🌧️ Yesterday: Shut Down</strong><p>You chose to close on Day ' + prev.day + '. No revenue, no costs.</p></div>';
+  }
+  return '<div class="feedback-box ' + (prev.profit >= 0 ? 'good-fb' : 'bad-fb') + '" style="margin-bottom:1rem">' +
+    '<strong>' + (prev.profit >= 0 ? '✅' : '❌') + ' Day ' + prev.day + ' Recap: ' + fmt(prev.profit) + ' profit</strong>' +
+    '<p>Sold ' + prev.sold + '/' + prev.inventory + ' glasses at ' + prev.location + '. Revenue ' + fmt(prev.revenue) + ', waste ' + prev.waste + ' glasses. Rating: ' + prev.ratingAfter.toFixed(1) + '/5.</p></div>';
+}
+
+function nextDay() {
+  G.day++;
+  updateProgress();
+  renderDecisionPhase();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── RESULTS SCREEN ─────────────────────────────
+function showResults() {
+  G.phase = 'final';
+  updateProgress();
+  updateHeader();
+  document.getElementById('progressFill').style.width = '100%';
+  show('resultsScreen');
+
+  const profit = G.totalProfit;
+  const isProfit = profit >= 0;
+
+  // Profile
+  let profileTitle, profileDesc;
+  if (profit > 8000) {
+    profileTitle = 'The Natural';
+    profileDesc = 'You have business instincts that can\'t be taught. From pricing to inventory, you read the market like a book. Investors would queue up for you.';
+  } else if (profit > 4000) {
+    profileTitle = 'The Hustler';
+    profileDesc = 'You made solid money and learned fast. A few missteps, but you course-corrected like a pro. You\'ve got the hustle gene.';
+  } else if (profit > 1000) {
+    profileTitle = 'The Learner';
+    profileDesc = 'You survived the fest and turned a profit. The real profit was the lessons you learned. Next time, you\'ll crush it.';
+  } else if (profit > 0) {
+    profileTitle = 'The Survivor';
+    profileDesc = 'Barely broke even, but you didn\'t quit. That persistence is the #1 entrepreneurship trait. Most people never even start.';
+  } else {
+    profileTitle = 'The Dreamer';
+    profileDesc = 'You lost money, but now you know exactly why. Most successful founders failed first. The question is: will you try again?';
+  }
+
+  // Best/worst day
+  let bestDay = null, worstDay = null, bestRev = -Infinity, worstRev = Infinity;
+  G.history.forEach(h => {
+    if (h.revenue > bestRev) { bestRev = h.revenue; bestDay = h.day; }
+    if (h.revenue < worstRev) { worstRev = h.revenue; worstDay = h.day; }
+  });
+
+  let html = '<div class="results-wrap">';
+
+  // Icon
+  html += '<div class="results-icon ' + (isProfit ? 'profit' : 'loss') + '">' + (isProfit ? '🍋' : '😢') + '</div>';
+
+  // Headline
+  html += '<h1>Technovanza is Over!</h1>';
+  html += '<div class="r-sub">' + (isProfit ? 'You turned ₹5,000 into a profitable lemonade business.' : 'The fest didn\'t go as planned, but every loss is a lesson.') + '</div>';
+
+  // Total profit headline
+  html += '<div class="results-headline ' + (isProfit ? 'positive' : 'negative') + '">' + fmt(profit) + '</div>';
+  html += '<div style="font-size:0.75rem;color:var(--muted);margin-bottom:1.5rem">Total Profit</div>';
+
+  // Stats grid
+  html += '<div class="stats-grid">';
+  html += '<div class="stat-card"><div class="sc-num">' + fmt(G.totalRevenue) + '</div><div class="sc-label">Total Revenue</div></div>';
+  html += '<div class="stat-card"><div class="sc-num">' + G.totalSold + '</div><div class="sc-label">Glasses Sold</div></div>';
+  html += '<div class="stat-card"><div class="sc-num">' + G.totalWaste + '</div><div class="sc-label">Total Waste</div></div>';
+  html += '<div class="stat-card"><div class="sc-num">' + G.rating.toFixed(1) + '</div><div class="sc-label">Final Rating</div></div>';
+  html += '<div class="stat-card"><div class="sc-num">' + fmt(bestRev) + '</div><div class="sc-label">Best Day (Day ' + bestDay + ')</div></div>';
+  html += '<div class="stat-card"><div class="sc-num">' + fmt(worstRev) + '</div><div class="sc-label">Worst Day (Day ' + worstDay + ')</div></div>';
+  html += '<div class="stat-card"><div class="sc-num">' + fmt(G.cash) + '</div><div class="sc-label">Cash on Hand</div></div>';
+  html += '<div class="stat-card"><div class="sc-num">' + G.totalCustomers + '</div><div class="sc-label">Customers Served</div></div>';
+  html += '</div>';
+
+  // Profile card
+  html += '<div class="profile-card">';
+  html += '<div class="pc-badge">Your Entrepreneur Profile</div>';
+  html += '<h2>"' + profileTitle + '"</h2>';
+  html += '<p>' + profileDesc + '</p>';
+  html += '</div>';
+
+  // Cafe deal note
+  if (G.cafeAgreed) {
+    html += '<div class="feedback-box good-fb" style="text-align:left"><strong>☕ Post-Fest Deal Secured!</strong><p>You agreed to supply the cafe with 100 glasses/day at ₹18/glass. That\'s ₹1,800/day in guaranteed revenue. NimbooWala lives beyond the fest!</p></div>';
+  }
+
+  // Takeaways
+  html += '<div class="takeaways">';
+  html += '<h3>🎓 Key Takeaways</h3>';
+  html += '<ol>';
+  html += '<li><strong>Unit economics matter</strong> — know your cost per glass before setting prices. If your cost is ₹12 and you charge ₹15, your margin is razor-thin.</li>';
+  html += '<li><strong>Demand forecasting saves waste</strong> — prepare what you can sell, not what you hope to sell. Every wasted glass is money thrown away.</li>';
+  html += '<li><strong>Location and marketing are multipliers</strong> — the best product fails in the wrong spot. A 1.2x location multiplier on 100 base demand = 20 extra potential customers.</li>';
+  html += '<li><strong>Reputation compounds</strong> — early quality investments pay off in later rounds through higher demand via the rating factor.</li>';
+  html += '<li><strong>Shocks test your resilience</strong> — the best entrepreneurs adapt, they don\'t freeze. Rain, competitors, viral posts — each is an opportunity in disguise.</li>';
+  html += '</ol>';
+  html += '</div>';
+
+  // Round-by-round review
+  html += '<div class="round-review">';
+  html += '<h3>Round-by-Round Review</h3>';
+
+  G.history.forEach((h, idx) => {
+    const optTip = getOptimalTip(h);
+    html += '<div class="rr-card">';
+    html += '<div class="rr-header" onclick="toggleReview(this)">';
+    html += '<span class="rr-day">Day ' + h.day + '</span>';
+    html += '<span>' + DAYS[h.day].weatherLabel + '</span>';
+    html += '<span class="rr-profit ' + (h.profit >= 0 ? 'positive' : 'negative') + '">' + fmt(h.profit) + '</span>';
+    html += '<span class="rr-arrow">▼</span>';
+    html += '</div>';
+    html += '<div class="rr-body">';
+    if (h.shutDown) {
+      html += '<div class="rr-row"><span>Decision</span><span>Shut for the day</span></div>';
+      html += '<div class="rr-row"><span>Revenue</span><span>₹0</span></div>';
+      html += '<div class="rr-row"><span>Profit</span><span>₹0</span></div>';
+    } else {
+      html += '<div class="rr-row"><span>Location</span><span>' + h.location + '</span></div>';
+      html += '<div class="rr-row"><span>Recipe</span><span>' + h.recipe + '</span></div>';
+      html += '<div class="rr-row"><span>Price</span><span>₹' + h.price + '</span></div>';
+      html += '<div class="rr-row"><span>Prepared</span><span>' + h.inventory + ' glasses</span></div>';
+      html += '<div class="rr-row"><span>Marketing</span><span>' + h.marketing + '</span></div>';
+      html += '<div class="rr-row"><span>Demand</span><span>' + h.demand + '</span></div>';
+      html += '<div class="rr-row"><span>Sold</span><span>' + h.sold + '</span></div>';
+      html += '<div class="rr-row"><span>Waste</span><span>' + h.waste + '</span></div>';
+      html += '<div class="rr-row"><span>Revenue</span><span>' + fmt(h.revenue) + '</span></div>';
+      html += '<div class="rr-row"><span>COGS</span><span>' + fmt(h.cogs) + '</span></div>';
+      html += '<div class="rr-row"><span>Marketing Cost</span><span>' + fmt(h.marketingCost) + '</span></div>';
+      html += '<div class="rr-row"><span>Profit</span><span>' + fmt(h.profit) + '</span></div>';
+      html += '<div class="rr-row"><span>Rating</span><span>' + h.ratingBefore.toFixed(1) + ' → ' + h.ratingAfter.toFixed(1) + '</span></div>';
+    }
+    html += '<div class="rr-tip">💡 ' + optTip + '</div>';
+    html += '</div>';
+    html += '</div>';
+  });
+
+  html += '</div>';
+
+  // Back to hub + replay
+  html += '<div style="display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem">';
+  html += '<a class="btn btn-secondary" href="index.html">← Back to Hub</a>';
+  html += '<button class="btn btn-primary" onclick="replayGame()">Play Again</button>';
+  html += '</div>';
+
+  html += '<div style="text-align:center;font-size:0.72rem;color:var(--muted);padding-bottom:1rem">Powered by SimuLok · India\'s Business Simulation Platform</div>';
+
+  html += '</div>'; // results-wrap
+
+  document.getElementById('resultsContent').innerHTML = html;
+  document.getElementById('actionBar').innerHTML = '';
+}
+
+function getOptimalTip(h) {
+  if (h.shutDown) return 'Staying open in rain builds loyalty (+0.3 rating). But shutting saves money if you\'re cash-strapped.';
+  if (h.waste > 30) return 'You over-prepared by ' + h.waste + ' glasses. Try to match inventory closer to expected demand next time.';
+  if (h.demand > h.inventory * 1.3) return 'You could have sold ' + Math.round(h.demand - h.sold) + ' more glasses! When conditions are hot, scale up inventory.';
+  if (h.profit < 0) return 'Negative profit usually means cost per glass + marketing exceeds what you earn per sale. Check your unit economics.';
+  if (h.waste === 0 && h.demand > h.inventory) return 'Sold out completely! Great, but you left demand on the table. Prepare a bit more.';
+  if (h.waste <= 5 && h.profit > 0) return 'Excellent round! Low waste, positive profit. This is the sweet spot.';
+  return 'Solid performance. Keep optimizing the balance between inventory, pricing, and demand multipliers.';
+}
+
+function toggleReview(el) {
+  el.classList.toggle('open');
+  const body = el.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+function replayGame() {
+  // Reset all state
+  G.day = 0;
+  G.phase = 'title';
+  G.cash = 5000;
+  G.rating = 3.0;
+  G.totalRevenue = 0;
+  G.totalProfit = 0;
+  G.totalSold = 0;
+  G.totalWaste = 0;
+  G.totalCustomers = 0;
+  G.history = [];
+  G.decisions = {};
+  G.bulkOrderAccepted = false;
+  G.stayOpenDay7 = true;
+  G.cafeAgreed = false;
+
+  updateProgress();
+  updateHeader();
+  show('titleScreen');
+}
+</script>
+</body>
+</html>
