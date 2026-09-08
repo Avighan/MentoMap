@@ -1935,6 +1935,29 @@ _DISCOVER_WHITELIST = {
     'the-first-100-days',
     'the-other-chair',
     'the-peace-table',
+    # 33 more from the original (pre-restoration) curated whitelist —
+    # verified end-to-end (start, play every round, fetch final report) —
+    # only the "simulation"-type games from that pre-restoration list.
+    # The other 19 candidates (story_branching/minigame/debate/mystery_room/
+    # ai_lab) return round=null from /api/run/start — they use their own
+    # dedicated endpoints (e.g. /branching-choice), not the generic
+    # /choose flow AdventureGamePlayPage.jsx speaks, and need their own
+    # play screen before they can be safely enabled. See the whitelist
+    # audit in this session for the full compatibility breakdown.
+    'cfo_quarterly_close',
+    'series_a_founders_journey',
+    'g8-crisis-capstone',
+    'g7-startup-sprint',
+    'the_founders_gauntlet',
+    'new_bu_launch',
+    'smart-city-builder',
+    'cfo_quarterly_close_q2',
+    'summer-sports-league-v2',
+    'g7-batna-negotiator',
+    'skunkworks_atlas_corp',
+    'summer-sports-league',
+    'project_management_mastery',
+    'summer_money_challenge_complete_v2',
 }
 _DISCOVER_WHITELIST_FULL = {
     # User-mandated highlights

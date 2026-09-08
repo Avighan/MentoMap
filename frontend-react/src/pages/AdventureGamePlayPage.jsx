@@ -49,6 +49,19 @@ function numericValue(v) {
   return typeof v === 'number' ? v : 0;
 }
 
+// Free-text fields (description, coaching_moment, ...) are a plain string
+// in most games but a richer {title, body} object in others (see e.g.
+// games/cfo-quarterly-close.json) — these unwrap either shape instead of
+// assuming a string and crashing React on an object child.
+function textBody(v) {
+  if (typeof v === 'string') return v;
+  if (v && typeof v === 'object') return v.body || v.text || '';
+  return '';
+}
+function textTitle(v) {
+  return (v && typeof v === 'object' && v.title) || null;
+}
+
 function stateLabel(key, entry) {
   if (entry && typeof entry === 'object' && entry.label) return entry.label;
   return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
@@ -221,11 +234,29 @@ export default function AdventureGamePlayPage() {
   const handleChoice = async (choice) => {
     setSubmitting(true);
     setError('');
+    const answeredRound = round;
     try {
       const res = await submitChoice(runId, choice.id);
       setPrevState(state);
       setState(res.state);
-      setPendingOutcome(res.outcome || null);
+      const outcome = res.outcome || null;
+      if (outcome) {
+        // expert_pick is a full {choice_id, reason} object in some games
+        // (e.g. civic-sense-champion-game.json) but just the winning
+        // choice_id as a bare string in others (e.g. cfo-quarterly-close.json)
+        // — resolve the string form against the round we just answered so
+        // there's still a label + reason to show, not a blank box.
+        if (typeof outcome.expert_pick === 'string') {
+          const pick = (answeredRound?.choices || []).find((c) => c.id === outcome.expert_pick);
+          outcome.expert_pick = pick
+            ? { choice_id: pick.id, label: pick.label, reason: pick.expert_rationale || `An expert would choose: "${pick.label}"` }
+            : null;
+        }
+        if (answeredRound?.expert_debrief) {
+          outcome.expert_debrief = answeredRound.expert_debrief;
+        }
+      }
+      setPendingOutcome(outcome);
       setNewSkills(res.new_skills_introduced || []);
       if (res.round) {
         setRound(res.round);
@@ -272,12 +303,17 @@ export default function AdventureGamePlayPage() {
           </div>
 
           <div className="p-7 max-h-[65vh] overflow-y-auto">
-            <p className="text-sm leading-relaxed mb-4" style={{ color: colors.text }}>{game.description}</p>
+            <p className="text-sm leading-relaxed mb-4" style={{ color: colors.text }}>{textBody(game.description)}</p>
 
             {game.coaching_moment && (
               <div className="flex gap-3 p-4 rounded-xl mb-5" style={{ backgroundColor: colors.primaryLight + '40' }}>
                 <FaQuoteLeft className="flex-shrink-0 mt-0.5" style={{ color: colors.primaryDark }} />
-                <p className="text-sm italic font-medium" style={{ color: colors.text }}>{game.coaching_moment}</p>
+                <div>
+                  {textTitle(game.coaching_moment) && (
+                    <div className="text-sm font-bold mb-0.5" style={{ color: colors.text }}>{textTitle(game.coaching_moment)}</div>
+                  )}
+                  <p className="text-sm italic font-medium" style={{ color: colors.text }}>{textBody(game.coaching_moment)}</p>
+                </div>
               </div>
             )}
 
@@ -487,9 +523,9 @@ export default function AdventureGamePlayPage() {
                 <div className="flex gap-3 p-4 rounded-xl mb-4" style={{ backgroundColor: colors.purple + '0D' }}>
                   <img src={RobotGuide} alt="" className="w-8 h-8 rounded-full flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-medium" style={{ color: colors.text }}>{pendingOutcome.mira}</p>
+                    <p className="text-sm font-medium" style={{ color: colors.text }}>{textBody(pendingOutcome.mira)}</p>
                     {pendingOutcome.mira_question && (
-                      <p className="text-xs italic mt-1.5" style={{ color: colors.textLight }}>{pendingOutcome.mira_question}</p>
+                      <p className="text-xs italic mt-1.5" style={{ color: colors.textLight }}>{textBody(pendingOutcome.mira_question)}</p>
                     )}
                   </div>
                 </div>
@@ -497,16 +533,25 @@ export default function AdventureGamePlayPage() {
 
               {pendingOutcome.skill_callout && (
                 <div className="flex items-center gap-2 mb-4 text-sm font-semibold px-3 py-2 rounded-lg" style={{ backgroundColor: (pendingOutcome.skill_callout.color || colors.teal) + '14', color: pendingOutcome.skill_callout.color || colors.teal }}>
-                  <FaStar /> {pendingOutcome.skill_callout.message}
+                  <FaStar /> {textBody(pendingOutcome.skill_callout.message)}
                 </div>
               )}
 
-              {pendingOutcome.expert_pick && (
+              {pendingOutcome.expert_pick?.reason && (
                 <div className="mb-4 rounded-xl p-4 border-l-4" style={{ borderColor: colors.teal, backgroundColor: colors.teal + '0D' }}>
                   <div className="flex items-center gap-1.5 text-sm font-extrabold mb-1" style={{ color: colors.text }}>
                     <FaGraduationCap style={{ color: colors.teal }} /> What an expert would do
                   </div>
-                  <p className="text-xs" style={{ color: colors.textLight }}>{pendingOutcome.expert_pick.reason}</p>
+                  <p className="text-xs" style={{ color: colors.textLight }}>{textBody(pendingOutcome.expert_pick.reason)}</p>
+                </div>
+              )}
+
+              {pendingOutcome.expert_debrief && (
+                <div className="mb-4 rounded-xl p-4 border-l-4" style={{ borderColor: colors.purple, backgroundColor: colors.purple + '0D' }}>
+                  <div className="flex items-center gap-1.5 text-sm font-extrabold mb-1" style={{ color: colors.text }}>
+                    <FaGraduationCap style={{ color: colors.purple }} /> {textTitle(pendingOutcome.expert_debrief) || 'Expert Debrief'}
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{ color: colors.textLight }}>{textBody(pendingOutcome.expert_debrief)}</p>
                 </div>
               )}
 
@@ -541,16 +586,19 @@ export default function AdventureGamePlayPage() {
 
               {round.story && (
                 <div className="rounded-xl p-4 mb-3" style={{ backgroundColor: '#F5F4EF' }}>
-                  <p className="text-sm whitespace-pre-line leading-relaxed" style={{ color: colors.text }}>{round.story}</p>
+                  <p className="text-sm whitespace-pre-line leading-relaxed" style={{ color: colors.text }}>{textBody(round.story)}</p>
                 </div>
               )}
 
-              {round.goal && <p className="text-sm font-semibold mb-3" style={{ color: colors.text }}>{round.goal}</p>}
+              {round.goal && <p className="text-sm font-semibold mb-3" style={{ color: colors.text }}>{textBody(round.goal)}</p>}
 
               {round.coaching_moment && (
                 <div className="flex gap-2 items-start text-xs mb-4 px-3 py-2 rounded-lg" style={{ backgroundColor: colors.primaryLight + '40', color: colors.text }}>
                   <FaLightbulb className="flex-shrink-0 mt-0.5" style={{ color: colors.primaryDark }} />
-                  {round.coaching_moment}
+                  <div>
+                    {textTitle(round.coaching_moment) && <div className="font-bold mb-0.5">{textTitle(round.coaching_moment)}</div>}
+                    {textBody(round.coaching_moment)}
+                  </div>
                 </div>
               )}
 
