@@ -129,6 +129,34 @@ function fmtNum(n) {
   return Math.round(n * 10) / 10;
 }
 
+// Reused from Simulok's own quarterDataRows() label map (reference/simulok-source/
+// index.html) — the "Key data this stage" table shown per round, e.g. Dealcraft's
+// negotiation deadline/target value or Mumbai's demand/holding-cost figures.
+const QUARTER_DATA_LABELS = {
+  deadline: 'Deadline', target_value: 'Target Value', known_alternatives: 'Known Alternatives',
+  demand: 'Quarterly Demand', variance: 'Demand Variance', setup_cost: 'Setup Cost / Order',
+  holding_cost: 'Holding Cost / Unit', stockout_cost: 'Stockout Cost / Unit', lead_time_days: 'Lead Time',
+  customer_stated_demand: 'Customer Stated Demand', market_actual_demand: 'Market Actual Demand',
+  production_capacity_max: 'Max Production Capacity', overtime_capacity: 'Overtime Capacity',
+  overtime_cost_per_unit: 'Overtime Cost / Unit', total_demand: 'Total Demand',
+  production_capacity: 'Current Capacity', capacity_gap: 'Capacity Gap',
+  q4_demand: 'Q4 Peak Demand', q1_demand: 'Q1 Trough Demand', regular_capacity: 'Regular Capacity',
+  storage_capacity_max: 'Max Storage', peak_trough_ratio: 'Peak / Trough Ratio',
+  storage_cost_per_unit: 'Storage Cost / Unit',
+};
+
+function quarterDataRows(data) {
+  return Object.entries(data || {}).map(([k, v]) => {
+    let shown = v;
+    if (k === 'variance' && typeof v === 'number') shown = `${v * 100}%`;
+    else if (typeof v === 'number' && /cost|value/i.test(k)) shown = `₹${fmtNum(v)}`;
+    else if (typeof v === 'number' && k.includes('days')) shown = `${v} days`;
+    else if (typeof v === 'number') shown = v.toLocaleString('en-IN');
+    const label = QUARTER_DATA_LABELS[k] || k.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    return [label, shown];
+  });
+}
+
 function TopBar({ title, icon, heroImage, onBack }) {
   return (
     <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-sm border-b shadow-sm">
@@ -970,6 +998,20 @@ export default function PilotGamePlayPage() {
                   {currentRound.dialogue && (
                     <p className="text-sm mt-2 italic leading-relaxed" style={{ color: colors.textLight }}>&ldquo;{currentRound.dialogue}&rdquo;</p>
                   )}
+                </div>
+              )}
+
+              {currentRound.quarter_data && Object.keys(currentRound.quarter_data).length > 0 && (
+                <div className="mb-4 rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="text-xs font-bold uppercase tracking-wide px-3 py-2 bg-gray-50" style={{ color: colors.textLight }}>
+                    Key data this stage
+                  </div>
+                  {quarterDataRows(currentRound.quarter_data).map(([label, value], idx) => (
+                    <div key={label} className={`flex justify-between px-3 py-1.5 text-sm ${idx % 2 ? 'bg-gray-50/60' : ''}`}>
+                      <span style={{ color: colors.textLight }}>{label}</span>
+                      <span className="font-semibold" style={{ color: colors.text }}>{value}</span>
+                    </div>
+                  ))}
                 </div>
               )}
 
