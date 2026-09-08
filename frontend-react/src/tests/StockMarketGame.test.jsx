@@ -1,19 +1,28 @@
-/* ASPIRATIONAL TEST — vitest not yet installed. This file documents the
- * intended test contract. When vitest is added, move back to ../ and run.
- */
 /**
- * StockMarketGame.test.jsx — aspirational vitest suite for the Tier-2
- * realtime stocksim renderer. NOTE: vitest and @testing-library/react are
- * NOT yet installed in frontend-react/package.json. This file is committed
- * so the test contract is documented; it will run once the dev deps land.
+ * StockMarketGame.test.jsx — vitest suite for the Tier-2 realtime stocksim
+ * renderer, now reachable at /play/:gameId via StockMarketPlayPage.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import StockMarketGame from '../../components/game/renderers/StockMarketGame';
-import * as stocksimApi from '../../api/stocksim';
+import { AuthProvider } from '../contexts/AuthContext';
+import { OrgProvider } from '../contexts/OrgContext';
+import StockMarketGame from '../components/game/renderers/StockMarketGame';
+import * as stocksimApi from '../api/stocksim';
 
 vi.mock('../api/stocksim');
+
+function renderGame(props) {
+  return render(
+    <MemoryRouter>
+      <AuthProvider>
+        <OrgProvider>
+          <StockMarketGame {...props} />
+        </OrgProvider>
+      </AuthProvider>
+    </MemoryRouter>,
+  );
+}
 
 const mockStart = {
   seed: 12345,
@@ -90,15 +99,7 @@ describe('StockMarketGame', () => {
   });
 
   it('mounts and starts a stocksim session', async () => {
-    render(
-      <MemoryRouter>
-        <StockMarketGame
-          runId="r1"
-          gameData={{ title: 'Stock Market' }}
-          config={{}}
-        />
-      </MemoryRouter>,
-    );
+    renderGame({ runId: 'r1', gameData: { title: 'Stock Market' }, config: {} });
     await waitFor(() =>
       expect(stocksimApi.startStocksim).toHaveBeenCalledWith(
         'r1',
@@ -107,27 +108,22 @@ describe('StockMarketGame', () => {
     );
   });
 
-  it('renders cash, P&L, and depth ladder', async () => {
-    render(
-      <MemoryRouter>
-        <StockMarketGame runId="r1" gameData={{}} config={{}} />
-      </MemoryRouter>,
-    );
+  it('renders net worth, P&L, and depth ladder', async () => {
+    // v2 UI (the default — see StockMarketGame's v2Enabled check) shows net
+    // worth/P&L in the sticky PersistentStrip rather than the legacy
+    // stocksim-cash element, which only renders when v2 is disabled.
+    renderGame({ runId: 'r1', gameData: {}, config: {} });
+    await waitFor(() => expect(screen.getByText('NET WORTH')).toBeInTheDocument());
     await waitFor(() =>
-      expect(screen.getByTestId('stocksim-cash')).toBeInTheDocument(),
+      expect(screen.getByTestId('persistent-pnl')).toBeInTheDocument(),
     );
-    expect(screen.getByTestId('stocksim-pnl')).toBeInTheDocument();
     await waitFor(() =>
       expect(screen.getByTestId('stocksim-depth-ladder')).toBeInTheDocument(),
     );
   });
 
   it('places a buy order via placeStocksimTrade', async () => {
-    render(
-      <MemoryRouter>
-        <StockMarketGame runId="r1" gameData={{}} config={{}} />
-      </MemoryRouter>,
-    );
+    renderGame({ runId: 'r1', gameData: {}, config: {} });
     await waitFor(() => screen.getByTestId('stocksim-buy-btn'));
     fireEvent.click(screen.getByTestId('stocksim-buy-btn'));
     await waitFor(() =>
@@ -148,16 +144,7 @@ describe('StockMarketGame', () => {
       ...mockState,
       state: { ...mockStart.state, current_tick: 21, completed: true },
     });
-    render(
-      <MemoryRouter>
-        <StockMarketGame
-          runId="r1"
-          gameData={{}}
-          config={{}}
-          onComplete={onComplete}
-        />
-      </MemoryRouter>,
-    );
+    renderGame({ runId: 'r1', gameData: {}, config: {}, onComplete });
     await waitFor(() =>
       expect(stocksimApi.completeStocksim).toHaveBeenCalledWith('r1'),
     );
