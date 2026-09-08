@@ -22,13 +22,25 @@ const MysteryRoomRenderer = ({
   gameData,
   gameState,         // initial snapshot from GamePlayPage (may be stale)
   runId,
-  onComplete,        // eslint-disable-line no-unused-vars -- used by later tasks
+  onComplete,
   onBack,
   playerProfile,     // eslint-disable-line no-unused-vars -- used by later tasks
 }) => {
   const [runState, setRunState] = useState(gameState || null);
   const [loading, setLoading] = useState(!gameState);
   const [error, setError] = useState(null);
+
+  // The climax modal's onChoose sets run_state.outcome_label on the backend
+  // (see escape_room_engine.py's _climax_choose) but nothing here ever read
+  // it back out — the case never actually "ended" from the page's point of
+  // view. Fire onComplete exactly once when it first appears.
+  const completedRef = React.useRef(false);
+  useEffect(() => {
+    if (runState?.outcome_label && !completedRef.current) {
+      completedRef.current = true;
+      onComplete?.(runState);
+    }
+  }, [runState?.outcome_label, onComplete]);
 
   // Puzzle modal state (Task 19)
   const [openPuzzleId, setOpenPuzzleId] = useState(null);

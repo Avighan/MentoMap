@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { OrgProvider } from './contexts/OrgContext';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 
 import LoginPage from './pages/LoginPage';
@@ -48,7 +49,9 @@ function AppRoutes() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <OrgProvider>
+        <AppRoutes />
+      </OrgProvider>
     </AuthProvider>
   );
 }

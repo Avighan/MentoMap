@@ -1958,6 +1958,28 @@ _DISCOVER_WHITELIST = {
     'summer-sports-league',
     'project_management_mastery',
     'summer_money_challenge_complete_v2',
+    # The 16 remaining candidates from the audit above, now that each has
+    # its own dedicated play screen speaking its dedicated backend contract:
+    # story_branching -> StoryBranchingPlayPage (/branching-choice),
+    # mystery_room -> MysteryRoomPlayPage (escape_room_engine),
+    # minigame/stock_market -> StockMarketPlayPage (/stocksim/*),
+    # ai_lab -> AiLabPlayPage (/ai-lab/*). See frontend PlayRouter.jsx.
+    'city-mayor',
+    'climate-champions',
+    'kids-kindness-quest',
+    'kids-share-the-toys',
+    'kids-tiny-leader',
+    'pro-burnout-recovery',
+    'pro-promotion-case',
+    'space-explorer-expanded',
+    'the-great-bazaar-deal',
+    'the-startup-decision',
+    'the-street-market-negotiator',
+    'the-treaty',
+    'the-substitute-teacher',
+    'stock-market-day-trader',
+    'stock-market-simulator',
+    'ai-prompt-lab-school',
 }
 _DISCOVER_WHITELIST_FULL = {
     # User-mandated highlights

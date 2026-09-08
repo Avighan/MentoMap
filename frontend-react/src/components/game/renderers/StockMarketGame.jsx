@@ -226,6 +226,11 @@ const StockMarketGame = ({
   const tradeMessageTimerRef = useRef(null);
   const pnlRef = useRef({ total: 0, realized: 0, unrealized: 0 });
   const currentTickRef = useRef(0);
+  // Guards the one-time session bootstrap below against StrictMode's
+  // double effect invocation in dev, which would otherwise fire
+  // startStocksim twice and have the second call rejected with 409
+  // (a session already exists for this run).
+  const bootstrappedRunIdRef = useRef(null);
 
   // Cleanup trade-message timer on unmount.
   useEffect(() => () => {
@@ -233,13 +238,18 @@ const StockMarketGame = ({
   }, []);
 
   // ── Bootstrap session ───────────────────────────────────────────────
+  // Tracks staleness by runId (not a per-invocation boolean) so that
+  // StrictMode's dev-only mount→cleanup→remount cycle — which reuses this
+  // component instance and its refs — doesn't discard the one real
+  // request's result just because the first invocation's cleanup ran.
   useEffect(() => {
-    let cancelled = false;
     if (!runId) return undefined;
+    if (bootstrappedRunIdRef.current === runId) return undefined;
+    bootstrappedRunIdRef.current = runId;
     (async () => {
       try {
         const data = await startStocksim(runId, { profile });
-        if (cancelled) return;
+        if (bootstrappedRunIdRef.current !== runId) return;
         setSeed(data.seed);
         setSessionConfig(data.config || {});
         setServerState(data.state || {});
@@ -254,16 +264,14 @@ const StockMarketGame = ({
         });
         setPriceHistory(hist);
       } catch (err) {
-        if (!cancelled) {
+        if (bootstrappedRunIdRef.current === runId) {
           // eslint-disable-next-line no-console
           console.error('stocksim start failed', err);
           setLoadError(err?.message || 'Failed to start stocksim');
         }
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return undefined;
   }, [runId, profile]);
 
   // ── Authoritative state poll ────────────────────────────────────────

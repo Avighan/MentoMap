@@ -636,3 +636,20 @@ export const completePilotRun = async (runId) => {
   const response = await apiClient.post(`/api/run/${runId}/complete`);
   return response.data;
 };
+
+// ── AI Prompt Lab (game_type: ai_lab) ──────────────────────────────────
+
+export const getAiLabState = async (runId) => {
+  const response = await apiClient.get(`/api/run/${runId}/ai-lab/state`);
+  return response.data;
+};
+
+export const submitAiLabPrompt = async (runId, taskId, prompt) => {
+  const response = await apiClient.post(`/api/run/${runId}/ai-lab/prompt`, { task_id: taskId, prompt });
+  return response.data;
+};
+
+export const advanceAiLab = async (runId) => {
+  const response = await apiClient.post(`/api/run/${runId}/ai-lab/advance`);
+  return response.data;
+};
